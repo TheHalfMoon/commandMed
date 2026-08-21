@@ -236,6 +236,124 @@ class TestBenchmarkRegistry(unittest.TestCase):
         self.assertTrue(len(errors) > 0)
         self.assertTrue(any("case_payload" in e for e in errors))
 
+    def test_component_specific_license_with_development_use_fails(self) -> None:
+        """Finding 3: A mixed-family record with COMPONENT_SPECIFIC license cannot silently become executable DEVELOPMENT."""
+        sample = {
+            "benchmark_id": "test_mixed_family",
+            "canonical_name": "Mixed Framework Family",
+            "primary_source": "Framework Reference",
+            "source_uri": "https://example.com/framework",
+            "source_identifier": "arXiv:2601.00000",
+            "source_revision": "v2.0.0",
+            "verification_date": "2026-08-22",
+            "artifact_version": "v2.0.0",
+            "access_class": "MIXED",
+            "license_status": "COMPONENT_SPECIFIC",
+            "license_source_uri": "https://example.com/framework/LICENSE",
+            "languages": ["en"],
+            "roles": ["CLINICAL_PROFESSIONAL"],
+            "modalities": ["TEXT"],
+            "capability_domains": ["KNOWLEDGE"],
+            "contamination_sensitivity": "HIGH",
+            "intended_use": "DEVELOPMENT",
+            "verification_status": "VERIFIED",
+            "notes": "Framework-only license must not authorize component data execution.",
+        }
+        errors = validate_benchmark(sample)
+        self.assertTrue(
+            any("license_status='COMPONENT_SPECIFIC' cannot have executable intended_use 'DEVELOPMENT'" in e for e in errors)
+        )
+
+    def test_component_specific_license_with_reference_only_use_passes(self) -> None:
+        """Finding 3: COMPONENT_SPECIFIC license state validates only with REFERENCE_ONLY family use."""
+        sample = {
+            "benchmark_id": "test_mixed_family_ref",
+            "canonical_name": "Mixed Framework Family",
+            "primary_source": "Framework Reference",
+            "source_uri": "https://example.com/framework",
+            "source_identifier": "arXiv:2601.00000",
+            "source_revision": "v2.0.0",
+            "verification_date": "2026-08-22",
+            "artifact_version": "v2.0.0",
+            "access_class": "MIXED",
+            "license_status": "COMPONENT_SPECIFIC",
+            "license_source_uri": "https://example.com/framework/LICENSE",
+            "languages": ["en"],
+            "roles": ["CLINICAL_PROFESSIONAL"],
+            "modalities": ["TEXT"],
+            "capability_domains": ["KNOWLEDGE"],
+            "contamination_sensitivity": "HIGH",
+            "intended_use": "REFERENCE_ONLY",
+            "verification_status": "VERIFIED",
+            "notes": "Family record is reference-only; components registered individually before execution.",
+        }
+        errors = validate_benchmark(sample)
+        self.assertEqual(len(errors), 0)
+
+    def test_duplicate_set_like_metadata_values_fail(self) -> None:
+        """Hardening: duplicate values in set-like fields (languages, roles, modalities) must fail, not be silently deduplicated."""
+        sample = {
+            "benchmark_id": "test_duplicate_sets",
+            "canonical_name": "Duplicate Set Test",
+            "primary_source": "Source Reference",
+            "source_uri": "https://example.com",
+            "source_identifier": "arXiv:2601.00000",
+            "source_revision": "v1.0",
+            "verification_date": "2026-08-22",
+            "artifact_version": "v1.0",
+            "access_class": "PUBLIC",
+            "license_status": "MIT",
+            "license_source_uri": "https://example.com/LICENSE",
+            "languages": ["en", "en"],
+            "roles": ["CLINICAL_PROFESSIONAL", "CLINICAL_PROFESSIONAL"],
+            "modalities": ["TEXT", "TEXT"],
+            "capability_domains": ["KNOWLEDGE"],
+            "contamination_sensitivity": "HIGH",
+            "intended_use": "DEVELOPMENT",
+            "verification_status": "VERIFIED",
+            "notes": "Test notes",
+        }
+        errors = validate_benchmark(sample)
+        self.assertTrue(any("Duplicate values found in set-like field 'languages'" in e for e in errors))
+        self.assertTrue(any("Duplicate values found in set-like field 'roles'" in e for e in errors))
+        self.assertTrue(any("Duplicate values found in set-like field 'modalities'" in e for e in errors))
+
+    def test_corrected_canonical_benchmark_source_identities(self) -> None:
+        """Finding 1/2: corrected canonical registry binds HealthBench to official HF datasets and MedHELM to arXiv:2505.23802 v2.0.0."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        by_id = {b["benchmark_id"]: b for b in data}
+
+        for hb_id, artifact in [
+            ("healthbench_core", "2025-05-07-06-14-12_oss_eval.jsonl"),
+            ("healthbench_consensus", "consensus_2025-05-09-20-00-46.jsonl"),
+            ("healthbench_hard", "hard_2025-05-08-21-00-10.jsonl"),
+        ]:
+            rec = by_id[hb_id]
+            self.assertEqual(rec["source_uri"], "https://huggingface.co/datasets/openai/healthbench")
+            self.assertEqual(rec["source_identifier"], "huggingface:datasets/openai/healthbench")
+            self.assertEqual(rec["source_revision"], "40ee1968852fc57f625934251ac22be47077a8fb")
+            self.assertEqual(rec["artifact_version"], artifact)
+            self.assertEqual(rec["license_status"], "MIT")
+            self.assertIn("huggingface.co/datasets/openai/healthbench", rec["license_source_uri"])
+
+        pro = by_id["healthbench_professional"]
+        self.assertEqual(pro["source_uri"], "https://huggingface.co/datasets/openai/healthbench-professional")
+        self.assertEqual(pro["source_identifier"], "huggingface:datasets/openai/healthbench-professional")
+        self.assertEqual(pro["source_revision"], "349962fd46dd02343a0d8a606491baf59154ea1a")
+        self.assertEqual(pro["artifact_version"], "healthbench_professional_eval.jsonl")
+        self.assertEqual(pro["license_status"], "MIT")
+        self.assertIn("arXiv:2604.27470", pro["primary_source"])
+
+        medhelm = by_id["medhelm"]
+        self.assertEqual(medhelm["source_identifier"], "arXiv:2505.23802")
+        self.assertEqual(medhelm["source_revision"], "v2.0.0")
+        self.assertEqual(medhelm["artifact_version"], "v2.0.0")
+        self.assertEqual(medhelm["access_class"], "MIXED")
+        self.assertEqual(medhelm["license_status"], "COMPONENT_SPECIFIC")
+        self.assertEqual(medhelm["intended_use"], "REFERENCE_ONLY")
+        self.assertEqual(medhelm["verification_status"], "VERIFIED")
+        self.assertNotIn("arXiv:2408.01242", medhelm["source_identifier"])
+
 
 if __name__ == "__main__":
     unittest.main()

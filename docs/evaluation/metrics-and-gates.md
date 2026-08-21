@@ -1,6 +1,6 @@
 # commandMed Metrics Catalog & Hard Gates
 
-**Status:** CANONICAL EVALUATION GOVERNANCE
+**Status:** SPEC_001_CLOSEOUT_CANDIDATE — BECOMES CANONICAL ONLY AFTER SPEC 001 CLOSURE
 **Spec:** `specs/001-eval-charter`
 
 ## 1. Safety Hard-Gate Principle

@@ -1,6 +1,6 @@
 # commandMed Private Gold Protocols & Quarantine Governance
 
-**Status:** CANONICAL EVALUATION GOVERNANCE
+**Status:** SPEC_001_CLOSEOUT_CANDIDATE — BECOMES CANONICAL ONLY AFTER SPEC 001 CLOSURE
 **Spec:** `specs/001-eval-charter`
 
 ## 1. The Three Canonical Gold Families
@@ -20,7 +20,7 @@ To prevent evaluation degradation and benchmark gaming, commandMed maintains thr
 
 ## 3. Strict Optimization Prohibition
 
-Private Gold assets are under strict cryptographic and operational quarantine. Private Gold content is strictly prohibited from entering:
+No real Private Gold assets exist yet (`REAL_GOLD_CASES_CREATED_OR_ACCESSED=0`). Any Private Gold assets created under later authorized specs MUST be placed under the cryptographic, operational, and access-control quarantine defined by the applicable Gold protocol. Private Gold content is strictly prohibited from entering:
 
 - Continued Pretraining (CPT)
 - Supervised Fine-Tuning (SFT)
@@ -51,4 +51,4 @@ The contamination contract establishes interfaces for tracking:
 1. **Exact-Match Contamination:** 13-gram hashing and n-gram overlap checks against candidate training streams.
 2. **Semantic Overlap:** High-level contamination risk classifications.
 
-*Pre-experimental state:* At Spec 001, no candidate training corpora or real Gold cases exist. Records are in state `NOT_ASSESSED` with `evidence_artifact_id="NONE"`. Claiming `CHECKED_CLEAN` or `ASSESSED_LOW_RISK` strictly requires a resolved evidence artifact identifier.
+*Pre-experimental state:* At Spec 001, no candidate training corpora or real Gold cases exist. Records are in state `NOT_ASSESSED` with `evidence_artifact_id="NONE"`. Evidence symmetry applies: any substantive assessment claim — `CHECKED_CLEAN`, `OVERLAP_FOUND`, `BLOCKED` (exact-match) or `ASSESSED_LOW_RISK`, `ASSESSED_HIGH_RISK`, `BLOCKED` (semantic-overlap) — strictly requires a resolved evidence artifact identifier. `NOT_ASSESSED` and `PENDING` remain valid evidence-free states.

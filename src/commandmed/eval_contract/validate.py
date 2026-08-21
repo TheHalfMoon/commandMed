@@ -79,6 +79,17 @@ def check_no_payload_markers(obj: Any, path: str = "") -> list[str]:
     return errors
 
 
+def check_list_unique(items: list[Any], field_name: str, prefix: str) -> list[str]:
+    """Reject duplicate elements in set-like list fields rather than silently tolerating them."""
+    errors: list[str] = []
+    if len(items) != len(set(items)):
+        duplicates = [x for x in items if items.count(x) > 1]
+        errors.append(
+            f"{prefix}: Duplicate values found in set-like field '{field_name}': {sorted(set(duplicates))}"
+        )
+    return errors
+
+
 def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
     """Validate a single benchmark metadata entry with evidence-bound rules."""
     errors: list[str] = []
@@ -183,6 +194,15 @@ def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
                 f"{prefix}: VERIFIED benchmark must have a resolved license_source_uri"
             )
 
+    # Invariant: COMPONENT_SPECIFIC license boundary is permitted only for REFERENCE_ONLY framework/family records
+    if lic_stat == "COMPONENT_SPECIFIC":
+        if i_use not in {IntendedUse.REFERENCE_ONLY.value, IntendedUse.PROHIBITED.value}:
+            errors.append(
+                f"{prefix}: Benchmark with license_status='COMPONENT_SPECIFIC' cannot have executable intended_use '{i_use}'. "
+                f"Must be '{IntendedUse.REFERENCE_ONLY.value}' or '{IntendedUse.PROHIBITED.value}'. "
+                "Component benchmarks must be registered individually before execution."
+            )
+
     # Invariant: UNRESOLVED verification status cannot be executable for DEVELOPMENT / RELEASE
     if v_stat == VerificationStatus.UNRESOLVED.value:
         if i_use in {IntendedUse.DEVELOPMENT.value, IntendedUse.POSSIBLE_RELEASE_GATE.value}:
@@ -214,6 +234,7 @@ def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
         if not isinstance(val, list) or len(val) == 0:
             errors.append(f"{prefix}: '{arr_field}' must be a non-empty list")
         else:
+            errors.extend(check_list_unique(val, arr_field, prefix))
             allowed_vals = {e.value for e in allowed_enum}
             for item in val:
                 if item not in allowed_vals:
@@ -225,6 +246,8 @@ def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
     langs = entry.get("languages")
     if not isinstance(langs, list) or len(langs) == 0:
         errors.append(f"{prefix}: 'languages' must be a non-empty list of language codes")
+    else:
+        errors.extend(check_list_unique(langs, "languages", prefix))
 
     return errors
 
@@ -312,6 +335,7 @@ def validate_metric(entry: dict[str, Any], index: int = 0) -> list[str]:
         if not isinstance(val, list) or len(val) == 0:
             errors.append(f"{prefix}: '{arr_field}' must be a non-empty list")
         else:
+            errors.extend(check_list_unique(val, arr_field, prefix))
             allowed_vals = {e.value for e in allowed_enum}
             for item in val:
                 if item not in allowed_vals:
@@ -319,8 +343,11 @@ def validate_metric(entry: dict[str, Any], index: int = 0) -> list[str]:
                         f"{prefix}: Invalid item '{item}' in '{arr_field}'. Allowed {enum_name} values: {sorted(allowed_vals)}"
                     )
 
-    if not isinstance(entry.get("applicable_languages"), list) or len(entry.get("applicable_languages")) == 0:
+    langs = entry.get("applicable_languages")
+    if not isinstance(langs, list) or len(langs) == 0:
         errors.append(f"{prefix}: 'applicable_languages' must be a non-empty list")
+    else:
+        errors.extend(check_list_unique(langs, "applicable_languages", prefix))
 
     return errors
 
@@ -399,6 +426,7 @@ def validate_gold_protocol(entry: dict[str, Any], index: int = 0) -> list[str]:
     if not isinstance(prohibitions, list):
         errors.append(f"{prefix}: 'prohibited_optimization_uses' must be a list")
     else:
+        errors.extend(check_list_unique(prohibitions, "prohibited_optimization_uses", prefix))
         proh_set = set(prohibitions)
         missing = MANDATORY_GOLD_PROHIBITIONS - proh_set
         if missing:
@@ -411,6 +439,7 @@ def validate_gold_protocol(entry: dict[str, Any], index: int = 0) -> list[str]:
     if not isinstance(scoring_stages, list) or len(scoring_stages) == 0:
         errors.append(f"{prefix}: 'permitted_scoring_stages' must be a non-empty list")
     else:
+        errors.extend(check_list_unique(scoring_stages, "permitted_scoring_stages", prefix))
         for stage in scoring_stages:
             if not isinstance(stage, str):
                 errors.append(f"{prefix}: Scoring stage must be a string, got '{stage}'")
@@ -424,8 +453,11 @@ def validate_gold_protocol(entry: dict[str, Any], index: int = 0) -> list[str]:
 
     # Array checks
     for f in ["intended_strata", "allowed_access_roles"]:
-        if not isinstance(entry.get(f), list) or len(entry.get(f)) == 0:
+        val = entry.get(f)
+        if not isinstance(val, list) or len(val) == 0:
             errors.append(f"{prefix}: '{f}' must be a non-empty list")
+        else:
+            errors.extend(check_list_unique(val, f, prefix))
 
     return errors
 
@@ -494,8 +526,13 @@ def validate_quarantine_rules(entries: list[dict[str, Any]]) -> tuple[bool, list
 
         if not isinstance(r.get("allowed_sources"), list):
             errors.append(f"{prefix}: 'allowed_sources' must be a list")
+        else:
+            errors.extend(check_list_unique(r.get("allowed_sources"), "allowed_sources", prefix))
+
         if not isinstance(r.get("prohibited_sources"), list):
             errors.append(f"{prefix}: 'prohibited_sources' must be a list")
+        else:
+            errors.extend(check_list_unique(r.get("prohibited_sources"), "prohibited_sources", prefix))
 
     missing = allowed_purposes - seen_purposes
     if missing:
@@ -505,7 +542,7 @@ def validate_quarantine_rules(entries: list[dict[str, Any]]) -> tuple[bool, list
 
 
 def validate_contamination_records(entries: list[dict[str, Any]]) -> tuple[bool, list[str]]:
-    """Validate benchmark contamination metadata interface."""
+    """Validate benchmark contamination metadata interface with evidence symmetry."""
     errors: list[str] = []
     if not isinstance(entries, list) or len(entries) == 0:
         return False, ["Contamination records must be a non-empty list"]
@@ -543,17 +580,28 @@ def validate_contamination_records(entries: list[dict[str, Any]]) -> tuple[bool,
             )
 
         ev_id = item.get("evidence_artifact_id", "").strip()
-        # Invariant: Claiming clean/low-risk contamination requires actual evidence identifier
-        if em_stat == ExactMatchStatus.CHECKED_CLEAN.value:
+
+        # Invariant (Finding 6 - Evidence Symmetry): Any substantive assessment state requires a resolved evidence_artifact_id
+        substantive_exact_states = {
+            ExactMatchStatus.CHECKED_CLEAN.value,
+            ExactMatchStatus.OVERLAP_FOUND.value,
+            ExactMatchStatus.BLOCKED.value,
+        }
+        if em_stat in substantive_exact_states:
             if not ev_id or ev_id in {"NONE", "UNRESOLVED"}:
                 errors.append(
-                    f"{prefix}: exact_match_status='CHECKED_CLEAN' requires a resolved evidence_artifact_id (cannot be '{ev_id}')"
+                    f"{prefix}: exact_match_status='{em_stat}' requires a resolved evidence_artifact_id (cannot be '{ev_id}')"
                 )
 
-        if so_stat == SemanticOverlapStatus.ASSESSED_LOW_RISK.value:
+        substantive_semantic_states = {
+            SemanticOverlapStatus.ASSESSED_LOW_RISK.value,
+            SemanticOverlapStatus.ASSESSED_HIGH_RISK.value,
+            SemanticOverlapStatus.BLOCKED.value,
+        }
+        if so_stat in substantive_semantic_states:
             if not ev_id or ev_id in {"NONE", "UNRESOLVED"}:
                 errors.append(
-                    f"{prefix}: semantic_overlap_status='ASSESSED_LOW_RISK' requires a resolved evidence_artifact_id (cannot be '{ev_id}')"
+                    f"{prefix}: semantic_overlap_status='{so_stat}' requires a resolved evidence_artifact_id (cannot be '{ev_id}')"
                 )
 
     return len(errors) == 0, errors

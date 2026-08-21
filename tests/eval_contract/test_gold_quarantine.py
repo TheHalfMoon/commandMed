@@ -170,6 +170,95 @@ class TestGoldAndQuarantine(unittest.TestCase):
         self.assertFalse(is_valid)
         self.assertTrue(any("semantic_overlap_status='ASSESSED_LOW_RISK' requires a resolved evidence_artifact_id" in e for e in errors))
 
+    def test_overlap_found_without_evidence_fails(self) -> None:
+        """Finding 6: Substantive assessment OVERLAP_FOUND without evidence ID must fail (evidence symmetry)."""
+        bad_records = [
+            {
+                "asset_id": "test_asset",
+                "exact_match_status": ExactMatchStatus.OVERLAP_FOUND.value,
+                "semantic_overlap_status": SemanticOverlapStatus.NOT_ASSESSED.value,
+                "evidence_artifact_id": "NONE",  # Unsubstantiated claim!
+                "methodology_interface": "13-gram hash",
+                "notes": "Notes",
+            }
+        ]
+        is_valid, errors = validate_contamination_records(bad_records)
+        self.assertFalse(is_valid)
+        self.assertTrue(any("exact_match_status='OVERLAP_FOUND' requires a resolved evidence_artifact_id" in e for e in errors))
+
+    def test_assessed_high_risk_without_evidence_fails(self) -> None:
+        """Finding 6: Substantive assessment ASSESSED_HIGH_RISK without evidence ID must fail (evidence symmetry)."""
+        bad_records = [
+            {
+                "asset_id": "test_asset",
+                "exact_match_status": ExactMatchStatus.NOT_ASSESSED.value,
+                "semantic_overlap_status": SemanticOverlapStatus.ASSESSED_HIGH_RISK.value,
+                "evidence_artifact_id": "NONE",  # Unsubstantiated claim!
+                "methodology_interface": "Embedding search",
+                "notes": "Notes",
+            }
+        ]
+        is_valid, errors = validate_contamination_records(bad_records)
+        self.assertFalse(is_valid)
+        self.assertTrue(any("semantic_overlap_status='ASSESSED_HIGH_RISK' requires a resolved evidence_artifact_id" in e for e in errors))
+
+    def test_blocked_assessment_without_evidence_fails(self) -> None:
+        """Finding 6: BLOCKED caused by an actual assessment must also be evidence-bound."""
+        bad_records = [
+            {
+                "asset_id": "test_asset",
+                "exact_match_status": ExactMatchStatus.BLOCKED.value,
+                "semantic_overlap_status": SemanticOverlapStatus.BLOCKED.value,
+                "evidence_artifact_id": "NONE",  # Unsubstantiated claim!
+                "methodology_interface": "13-gram hash",
+                "notes": "Notes",
+            }
+        ]
+        is_valid, errors = validate_contamination_records(bad_records)
+        self.assertFalse(is_valid)
+        self.assertTrue(any("exact_match_status='BLOCKED' requires a resolved evidence_artifact_id" in e for e in errors))
+        self.assertTrue(any("semantic_overlap_status='BLOCKED' requires a resolved evidence_artifact_id" in e for e in errors))
+
+    def test_substantive_assessment_with_evidence_passes(self) -> None:
+        """Finding 6: Substantive contamination assessments with a resolved evidence ID validate cleanly."""
+        good_records = [
+            {
+                "asset_id": "test_asset_clean",
+                "exact_match_status": ExactMatchStatus.CHECKED_CLEAN.value,
+                "semantic_overlap_status": SemanticOverlapStatus.ASSESSED_LOW_RISK.value,
+                "evidence_artifact_id": "evidence:decontam-report-2026-08-22-sha256-abc123",
+                "methodology_interface": "13-gram hash + embedding search",
+                "notes": "Evidence-bound assessment",
+            },
+            {
+                "asset_id": "test_asset_overlap",
+                "exact_match_status": ExactMatchStatus.OVERLAP_FOUND.value,
+                "semantic_overlap_status": SemanticOverlapStatus.ASSESSED_HIGH_RISK.value,
+                "evidence_artifact_id": "evidence:decontam-report-2026-08-22-sha256-def456",
+                "methodology_interface": "13-gram hash + embedding search",
+                "notes": "Evidence-bound assessment",
+            },
+        ]
+        is_valid, errors = validate_contamination_records(good_records)
+        self.assertTrue(is_valid, f"evidence-bound records failed validation: {errors}")
+        self.assertEqual(len(errors), 0)
+
+    def test_not_assessed_and_pending_remain_valid_without_evidence(self) -> None:
+        """Finding 6: NOT_ASSESSED and PENDING remain valid evidence-free states."""
+        baseline_records = [
+            {
+                "asset_id": "test_asset_baseline",
+                "exact_match_status": ExactMatchStatus.NOT_ASSESSED.value,
+                "semantic_overlap_status": SemanticOverlapStatus.PENDING.value,
+                "evidence_artifact_id": "NONE",
+                "methodology_interface": "Interface specification",
+                "notes": "Pre-experimental baseline",
+            }
+        ]
+        is_valid, errors = validate_contamination_records(baseline_records)
+        self.assertTrue(is_valid, f"baseline records failed validation: {errors}")
+        self.assertEqual(len(errors), 0)
+
 
 if __name__ == "__main__":
     unittest.main()
