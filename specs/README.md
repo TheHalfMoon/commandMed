@@ -17,7 +17,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 
 | ID | Name | State at v0.1 | Depends on | Notes |
 |---|---|---|---|---|
-| 000 | Program Charter | `CANONICAL_PLANNING` | — | Establishes mission, authority, constitution and roadmap. |
+| 000 | Program Charter | `CANONICAL_PLANNING` | — | Planning package must merge first; a dedicated closure-only PR then records the canonical merge identity and changes this state to `CLOSED_CANONICAL`. |
 | 001 | Evaluation Charter | `T001_AUTHORIZED_TO_START` only after 000 is `CLOSED_CANONICAL`; T002–T010 blocked until T001 passes | 000 | First executable spec. T001 performs safe Spec Kit `agy` bootstrap reconciliation + planning analysis. No models/inference/training. |
 | 002 | Safety Gates | `BLOCKED` | 001 | Freeze hard safety and escalation/tool boundaries. |
 | 003 | Data, License & Provenance | `BLOCKED` | 001 | Machine-verifiable lineage/data-use contract. |
@@ -35,6 +35,10 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 015 | Human Evaluation | `BLOCKED` | patient/professional candidate + safety readiness | Patient comprehension and human+AI evidence. |
 | 016 | Advanced Modality Adapters | `DEFERRED` | separate modality prerequisites | ECG, wearables, imaging volumes, WSI, audio/video etc. |
 | 017 | Release Review & Paper | `BLOCKED` | all claimed capabilities | Independent review and claims package. |
+
+## Spec 000 closeout rule
+
+Merging the v0.1 planning package does **not** silently mutate Spec 000 into `CLOSED_CANONICAL`. A dedicated closure-only PR must record the exact planning merge identity, verify the required artifacts on canonical `main`, update Spec 000's header and this registry row, and contain no Spec 001 implementation.
 
 ## Spec 001 staged authority
 
