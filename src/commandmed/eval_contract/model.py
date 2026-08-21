@@ -24,6 +24,20 @@ class VerificationStatus(str, Enum):
     EXCLUDED = "EXCLUDED"
 
 
+class LicenseStatus(str, Enum):
+    """Controlled vocabulary for benchmark license status (fail-closed).
+
+    Only statuses verified as present in the canonical registry are listed.
+    Arbitrary license strings are rejected by validation.
+    """
+
+    MIT = "MIT"
+    APACHE_2_0 = "Apache-2.0"
+    CC_BY_NC_4_0 = "CC-BY-NC-4.0"
+    COMPONENT_SPECIFIC = "COMPONENT_SPECIFIC"
+    UNRESOLVED = "UNRESOLVED"
+
+
 class IntendedUse(str, Enum):
     """Permitted commandMed research usage for an evaluation suite."""
 

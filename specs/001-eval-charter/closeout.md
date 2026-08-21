@@ -23,7 +23,7 @@ Computed via semantic canonical JSON serialization:
 
 | Artifact Path | Canonical Semantic SHA-256 Digest |
 |---|---|
-| `data/eval/benchmarks.json` | `9c47b9096ab84d4679c5c0b8fa34d2c0bbd73c76ac77b9f1a7336db4a1f9f9de` |
+| `data/eval/benchmarks.json` | `ede24c2ecd8eb5680f2448d0a9b0cfaec2e07931e371efea78ab3eae8d4d39ed` |
 | `data/eval/gold_protocols.json` | `8e7c8a71e664996e8722adc4a6b32dc712ed59e81fff31053556bf52b465a592` |
 | `data/eval/metrics.json` | `304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a` |
 | `data/eval/quarantine.json` | `b59fd86a7f63c8de7058a0386f57de1cadc7c817edfa1e9e0aa392ca5219e080` |
@@ -39,12 +39,12 @@ python -m unittest discover -s tests -p "test_*.py"
 
 **Result:**
 ```text
-Ran 46 tests in 0.018s
+Ran 51 tests in 0.095s
 OK
 ```
 
 ### Coverage Breakdown:
-1. `tests/eval_contract/test_registry.py`: Validates canonical benchmark registry, 10 VERIFIED entries and 1 explicitly UNRESOLVED (`medqabstain`), schema validation, fail-closed handling on missing/duplicate/invalid fields, fail-closed rejection of VERIFIED status with UNRESOLVED licenses/sources, fail-closed rejection of DEVELOPMENT use on UNRESOLVED suites, zero payload markers, rejection of `COMPONENT_SPECIFIC` license with executable use, acceptance of `COMPONENT_SPECIFIC` with `REFERENCE_ONLY`, rejection of duplicate set-like metadata values, and corrected canonical source identities (HealthBench bound to official Hugging Face datasets with immutable commits; HealthBench Professional bound to separate official dataset and arXiv:2604.27470; MedHELM bound to arXiv:2505.23802 v2.0.0 with `MIXED`/`COMPONENT_SPECIFIC`/`REFERENCE_ONLY` boundary).
+1. `tests/eval_contract/test_registry.py`: Validates canonical benchmark registry, 10 VERIFIED entries and 1 explicitly UNRESOLVED (`medqabstain`), schema validation, fail-closed handling on missing/duplicate/invalid fields, fail-closed rejection of VERIFIED status with UNRESOLVED licenses/sources, fail-closed rejection of DEVELOPMENT use on UNRESOLVED suites, zero payload markers, rejection of `COMPONENT_SPECIFIC` license with executable use, acceptance of `COMPONENT_SPECIFIC` with `REFERENCE_ONLY`, rejection of duplicate set-like metadata values, corrected canonical source identities (HealthBench bound to official Hugging Face datasets with immutable commits; HealthBench Professional bound to separate official dataset and arXiv:2604.27470; MedHELM bound to arXiv:2505.23802 v2.0.0 with `MIXED`/`COMPONENT_SPECIFIC`/`REFERENCE_ONLY` boundary), truthful HealthBench language/role representation (MULTILINGUAL sentinel; MULTI_ROLE for core/consensus/hard; paper-proven CLINICAL_PROFESSIONAL for Professional), controlled license vocabulary (fake license string fails; all canonical statuses within vocabulary), and MedHELM versioned identity URI (v2.0.0, not `/latest/`).
 2. `tests/eval_contract/test_hard_gates.py`: Validates metrics catalog, presence of required hard gates, and proves hard-gate dominance (a run with 99.5% accuracy but failing 1 hard gate yields overall `FAIL`; unevaluated hard gates yield `INSUFFICIENT_EVIDENCE`).
 3. `tests/eval_contract/test_gold_quarantine.py`: Validates 3 canonical Gold protocols, mandatory power analysis requirement, mandatory optimization prohibitions, rejection of candidate selection scoring stages, zero payload/PHI, quarantine rule validation, rejection of model selection on `PUBLIC_EXTERNAL_EVAL`, evidence-symmetry enforcement (all substantive contamination states `CHECKED_CLEAN`, `OVERLAP_FOUND`, `BLOCKED`, `ASSESSED_LOW_RISK`, `ASSESSED_HIGH_RISK` require resolved evidence identifiers), evidence-bound substantive assessments pass, and validation of baseline `NOT_ASSESSED`/`PENDING` records.
 4. `tests/eval_contract/test_canonical.py`: Proves key-order independence, set-like list field reordering invariance, entity collection reordering invariance, SHA-256 digest stability, and semantic mutation sensitivity.
@@ -63,7 +63,7 @@ OK
 | 6 | Gold quarantine/prohibited-use validation is enforced (including non-selection) | `validate_gold_protocol`, `validate_quarantine_rules` | PASS |
 | 7 | Contamination metadata/interface is defined with evidence requirement | `data/eval/quarantine.json`, `test_gold_quarantine.py` (evidence symmetry across all substantive states) | PASS |
 | 8 | Canonical serialization is semantic, deterministic, and SHA-256 identity is stable | `src/commandmed/eval_contract/canonical.py`, `test_canonical.py` | PASS |
-| 9 | Fixture-only tests cover required failure modes and pass offline | 46 unit tests passing offline with stdlib runner | PASS |
+| 9 | Fixture-only tests cover required failure modes and pass offline | 51 unit tests passing offline with stdlib runner | PASS |
 | 10 | No unauthorized dependency or framework introduced | Python 3.11 standard library only; zero external packages | PASS |
 | 11 | No model/data execution prohibited by this spec occurred | Zero model downloads, inference, training, PHI, Gold cases | PASS |
 | 12 | Closeout evidence follows two-layer evidence protocol | In-tree artifact identities bound here; candidate HEAD recorded in PR/review metadata | PASS |
@@ -74,10 +74,11 @@ OK
 
 1. **MedQAbstain Licensing Boundary:** Licensing across derived upstream subsets in MedQAbstain remains unverified; classified as `UNRESOLVED` and restricted to `REFERENCE_ONLY`.
 2. **MedAbstain Non-Commercial Terms:** MedAbstain is licensed under CC-BY-NC-4.0; classified as `DEVELOPMENT` only.
-3. **MedHELM Component Registration:** The MedHELM family record is `REFERENCE_ONLY` with `license_status=COMPONENT_SPECIFIC`. Its 35 component benchmarks (14 public, 7 gated, 14 private) are intentionally NOT individually registered in Spec 001 (Ponytail/YAGNI). Each executable component must be registered individually with exact component identity, access class, license/use rights, revision, and contamination status before commandMed may execute it.
-4. **Clinical Metric Thresholds:** Numerical threshold values are intentionally marked `DEFINED_NOT_YET_THRESHOLD_FROZEN` in Spec 001. They will be formally frozen in Spec 002 (Safety Gates) prior to candidate model runs.
-5. **Contamination Assessment Pipelines:** Contamination records define the interface with state `NOT_ASSESSED` (evidence: `NONE`); automated token-overlap and embedding decontamination pipelines will be integrated in subsequent specs when candidate corpora exist. Evidence symmetry now requires resolved evidence identifiers for all substantive assessment states.
-6. **HealthBench Professional External Implementation:** OpenAI does not release an official external evaluation implementation for HealthBench Professional (internal implementation only; `simple-evals` remains the reference for ordinary HealthBench). Execution harness identity must be resolved before any executable use.
+3. **MedHELM Component Registration:** The MedHELM family record is `REFERENCE_ONLY` with `license_status=COMPONENT_SPECIFIC`, pinned to the versioned identity URI `https://crfm.stanford.edu/helm/medhelm/v2.0.0/`. Its 35 component benchmarks (14 public, 7 gated, 14 private) are intentionally NOT individually registered in Spec 001 (Ponytail/YAGNI). Each executable component must be registered individually with exact component identity, access class, license/use rights, revision, and contamination status before commandMed may execute it.
+4. **HealthBench Exact Language Inventory Not Enumerated:** The HealthBench family records use the `MULTILINGUAL` sentinel because the primary sources explicitly describe the benchmarks as multilingual without enumerating an exact language inventory (49/52 contributor-physician languages are a contributor fact, not a benchmark inventory). Deriving an exact inventory would require artifact case inspection under a recorded evidence method in a later authorized spec.
+5. **Clinical Metric Thresholds:** Numerical threshold values are intentionally marked `DEFINED_NOT_YET_THRESHOLD_FROZEN` in Spec 001. They will be formally frozen in Spec 002 (Safety Gates) prior to candidate model runs.
+6. **Contamination Assessment Pipelines:** Contamination records define the interface with state `NOT_ASSESSED` (evidence: `NONE`); automated token-overlap and embedding decontamination pipelines will be integrated in subsequent specs when candidate corpora exist. Evidence symmetry now requires resolved evidence identifiers for all substantive assessment states.
+7. **HealthBench Professional External Implementation:** OpenAI does not release an official external evaluation implementation for HealthBench Professional (internal implementation only; `simple-evals` remains the reference for ordinary HealthBench). Execution harness identity must be resolved before any executable use.
 
 ---
 

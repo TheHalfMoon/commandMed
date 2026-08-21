@@ -13,6 +13,7 @@ from .model import (
     GateEvaluationState,
     GoldFamilyId,
     IntendedUse,
+    LicenseStatus,
     MetricDirection,
     Modality,
     Purpose,
@@ -160,8 +161,13 @@ def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
             f"{prefix}: Invalid intended_use '{i_use}'. Must be one of {[e.value for e in IntendedUse]}"
         )
 
-    # License status
+    # License status (controlled vocabulary - fail closed on arbitrary strings)
     lic_stat = str(entry.get("license_status", "")).strip()
+    if lic_stat not in {e.value for e in LicenseStatus}:
+        errors.append(
+            f"{prefix}: Invalid license_status '{lic_stat}'. "
+            f"Must be one of the controlled vocabulary: {[e.value for e in LicenseStatus]}"
+        )
 
     # Invariant: VERIFIED requires resolved source references, license status, and valid date
     if v_stat == VerificationStatus.VERIFIED.value:

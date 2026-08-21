@@ -354,6 +354,89 @@ class TestBenchmarkRegistry(unittest.TestCase):
         self.assertEqual(medhelm["verification_status"], "VERIFIED")
         self.assertNotIn("arXiv:2408.01242", medhelm["source_identifier"])
 
+    def test_healthbench_family_multilingual_language_truth(self) -> None:
+        """Third reconciliation Finding 1: HealthBench records must not make unsupported English-only claims."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        by_id = {b["benchmark_id"]: b for b in data}
+
+        for hb_id in ["healthbench_core", "healthbench_consensus", "healthbench_hard", "healthbench_professional"]:
+            rec = by_id[hb_id]
+            self.assertEqual(
+                rec["languages"],
+                ["MULTILINGUAL"],
+                f"{hb_id} must record the MULTILINGUAL sentinel, not an unsupported English-only claim",
+            )
+            # Sentinel semantics must be documented in the record notes.
+            self.assertIn("MULTILINGUAL", rec["notes"])
+
+    def test_healthbench_role_scope_truth(self) -> None:
+        """Third reconciliation Finding 1: Consensus/Hard (and full-set Core) must not make clinician-only or guessed-role claims."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        by_id = {b["benchmark_id"]: b for b in data}
+
+        for hb_id in ["healthbench_core", "healthbench_consensus", "healthbench_hard"]:
+            self.assertEqual(
+                by_id[hb_id]["roles"],
+                ["MULTI_ROLE"],
+                f"{hb_id} must use the broad MULTI_ROLE representation (subset role composition not proven without case inspection)",
+            )
+
+        # HealthBench Professional clinician-only role IS proven by its primary source
+        # (every example is a physician-authored conversation with ChatGPT for Clinicians).
+        self.assertEqual(by_id["healthbench_professional"]["roles"], ["CLINICAL_PROFESSIONAL"])
+
+    def test_verified_benchmark_with_fake_license_status_fails(self) -> None:
+        """Third reconciliation Finding 2: VERIFIED benchmark with an uncontrolled license string must FAIL validation."""
+        sample = {
+            "benchmark_id": "test_fake_license",
+            "canonical_name": "Fake License Test",
+            "primary_source": "Canonical Paper 2026",
+            "source_uri": "https://example.com/source",
+            "source_identifier": "arXiv:2601.00000",
+            "source_revision": "v1.0",
+            "verification_date": "2026-08-22",
+            "artifact_version": "v1.0",
+            "access_class": "PUBLIC",
+            "license_status": "NOT_A_REAL_LICENSE",  # Outside controlled vocabulary!
+            "license_source_uri": "https://example.com/LICENSE",
+            "languages": ["en"],
+            "roles": ["CLINICAL_PROFESSIONAL"],
+            "modalities": ["TEXT"],
+            "capability_domains": ["KNOWLEDGE"],
+            "contamination_sensitivity": "HIGH",
+            "intended_use": "DEVELOPMENT",
+            "verification_status": "VERIFIED",
+            "notes": "Test notes",
+        }
+        errors = validate_benchmark(sample)
+        self.assertTrue(
+            any("Invalid license_status 'NOT_A_REAL_LICENSE'" in e for e in errors),
+            f"Uncontrolled license string must fail; got errors: {errors}",
+        )
+
+    def test_all_canonical_license_statuses_within_controlled_vocabulary(self) -> None:
+        """Third reconciliation Finding 2: every license status in the canonical registry must be within the controlled vocabulary."""
+        from src.commandmed.eval_contract.model import LicenseStatus
+
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        vocabulary = {e.value for e in LicenseStatus}
+        canonical_statuses = {b["license_status"] for b in data}
+        self.assertTrue(
+            canonical_statuses.issubset(vocabulary),
+            f"Canonical registry contains license statuses outside the controlled vocabulary: {canonical_statuses - vocabulary}",
+        )
+        # Every canonical status also passes full benchmark validation via the registry-level test.
+
+    def test_medhelm_bound_to_versioned_uri_not_latest(self) -> None:
+        """Third reconciliation Finding 3: MedHELM v2.0.0 must be pinned to the versioned identity URI, not /latest/."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        medhelm = next(b for b in data if b["benchmark_id"] == "medhelm")
+        self.assertEqual(medhelm["source_uri"], "https://crfm.stanford.edu/helm/medhelm/v2.0.0/")
+        self.assertNotIn("/latest/", medhelm["source_uri"])
+        self.assertNotIn("/latest/", medhelm["primary_source"])
+        # The /latest/ URL may appear only in notes as a convenience reference.
+        self.assertIn("v2.0.0", medhelm["notes"])
+
 
 if __name__ == "__main__":
     unittest.main()
