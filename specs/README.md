@@ -15,10 +15,10 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 
 ## Registry
 
-| ID | Name | State at v0.1 | Depends on | Notes |
+| ID | Name | State | Depends on | Notes |
 |---|---|---|---|---|
-| 000 | Program Charter | `CANONICAL_PLANNING` | — | Planning package must merge first; a dedicated closure-only PR then records the canonical merge identity and changes this state to `CLOSED_CANONICAL`. |
-| 001 | Evaluation Charter | `T001_AUTHORIZED_TO_START` only after 000 is `CLOSED_CANONICAL`; T002–T010 blocked until T001 passes | 000 | First executable spec. T001 performs safe Spec Kit `agy` bootstrap reconciliation + planning analysis. No models/inference/training. |
+| 000 | Program Charter | `CLOSED_CANONICAL` | — | Planning package canonical at `b0398f2fe514bd3ccd339908d739aef61055f929`; closure evidence in `specs/000-program-charter/closeout.md`. State becomes effective when this closure-only PR is merged and canonical main is verified. |
+| 001 | Evaluation Charter | `T001_AUTHORIZED_TO_START` after 000 closure is effective; T002–T010 blocked until T001 passes | 000 | First executable spec. T001 performs immutable Spec Kit `agy` bootstrap reconciliation + planning analysis. No models/inference/training. |
 | 002 | Safety Gates | `BLOCKED` | 001 | Freeze hard safety and escalation/tool boundaries. |
 | 003 | Data, License & Provenance | `BLOCKED` | 001 | Machine-verifiable lineage/data-use contract. |
 | 004 | Tournament Harness | `BLOCKED` | 001, 002, 003 | Fixture-only harness before model execution. |
@@ -36,16 +36,18 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 016 | Advanced Modality Adapters | `DEFERRED` | separate modality prerequisites | ECG, wearables, imaging volumes, WSI, audio/video etc. |
 | 017 | Release Review & Paper | `BLOCKED` | all claimed capabilities | Independent review and claims package. |
 
-## Spec 000 closeout rule
+## Spec 000 closure rule
 
-Merging the v0.1 planning package does **not** silently mutate Spec 000 into `CLOSED_CANONICAL`. A dedicated closure-only PR must record the exact planning merge identity, verify the required artifacts on canonical `main`, update Spec 000's header and this registry row, and contain no Spec 001 implementation.
+The `CLOSED_CANONICAL` state above is a state transition carried by the dedicated closure-only PR. It becomes effective only when that PR is merged to canonical `main` and the resulting GitHub merge SHA is immediately verified as live main.
+
+The closeout file is bound to the already-known planning-package merge and canonical artifact blobs. The closure PR's own future merge SHA is represented by GitHub's canonical merge record; a recursive third PR is not required solely to rewrite that SHA into repository text.
 
 ## Spec 001 staged authority
 
 Spec 001 deliberately starts with a narrow bootstrap gate:
 
-1. after Spec 000 is `CLOSED_CANONICAL`, T001 alone is authorized;
-2. T001 safely initializes/reconciles pinned Spec Kit `agy` support and runs planning analysis;
+1. after Spec 000 closure becomes effective, T001 alone is authorized;
+2. T001 initializes Spec Kit `agy` from immutable source commit `489a3d51d152fa160d88d86781a924e99c4af832`, records bootstrap source/environment/dependency evidence, reconciles generated changes, and runs planning analysis;
 3. if T001 acceptance passes with no material contradiction, T002–T010 may proceed in their declared dependency order;
 4. failure of T001 is a hard stop, not permission to bypass Spec Kit or overwrite canonical planning files.
 
@@ -59,4 +61,4 @@ Prefer one bounded spec per implementation branch/PR. A spec's merged closeout e
 
 ## Training authority
 
-At this registry baseline, **no spec authorizes training or model execution**. Spec 001 is the only intended next executable unit and is fixture-only.
+**No spec currently authorizes training or model execution.** Spec 001 T001 is the next bounded authority only after Spec 000 closure becomes effective, and it is governance/bootstrap analysis only.
