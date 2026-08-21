@@ -1,6 +1,8 @@
 # Spec 001 — Evaluation Charter
 
-**State:** `T001_AUTHORIZED_TO_START` only after Spec 000 is `CLOSED_CANONICAL`; T002–T010 remain blocked until T001 safely reconciles Spec Kit bootstrap and planning analysis has no material contradiction
+**State:** ACTIVE (CLOSEOUT_CANDIDATE)
+**State effectiveness:** becomes CLOSED_CANONICAL only via dedicated post-merge closure PR after canonical merge of this implementation
+**Closeout evidence candidate:** `specs/001-eval-charter/closeout.md`
 **Training authority:** NONE
 **Model execution authority:** NONE
 

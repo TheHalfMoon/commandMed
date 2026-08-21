@@ -1,0 +1,73 @@
+"""Evaluation contract module for commandMed.
+
+Provides deterministic validation, canonical serialization, SHA-256 identity computation,
+and governance rules for benchmarks, metrics, hard gates, Gold protocols, and quarantine.
+"""
+
+from .canonical import (
+    canonical_json_dumps,
+    compute_canonical_sha256,
+    compute_file_canonical_sha256,
+)
+from .model import (
+    AccessClass,
+    BenchmarkRecord,
+    CapabilityDomain,
+    ContaminationRecord,
+    ContaminationSensitivity,
+    GateEvaluationState,
+    GoldFamilyId,
+    GoldProtocolRecord,
+    IntendedUse,
+    MetricDirection,
+    MetricRecord,
+    Purpose,
+    QuarantineRule,
+    Role,
+    ThresholdState,
+    VerificationStatus,
+)
+from .validate import (
+    check_no_payload_markers,
+    evaluate_hard_gates,
+    validate_benchmark,
+    validate_benchmark_registry,
+    validate_contamination_records,
+    validate_gold_protocol,
+    validate_gold_protocols,
+    validate_metric,
+    validate_metrics_catalog,
+    validate_quarantine_rules,
+)
+
+__all__ = [
+    "AccessClass",
+    "BenchmarkRecord",
+    "CapabilityDomain",
+    "ContaminationRecord",
+    "ContaminationSensitivity",
+    "GateEvaluationState",
+    "GoldFamilyId",
+    "GoldProtocolRecord",
+    "IntendedUse",
+    "MetricDirection",
+    "MetricRecord",
+    "Purpose",
+    "QuarantineRule",
+    "Role",
+    "ThresholdState",
+    "VerificationStatus",
+    "canonical_json_dumps",
+    "check_no_payload_markers",
+    "compute_canonical_sha256",
+    "compute_file_canonical_sha256",
+    "evaluate_hard_gates",
+    "validate_benchmark",
+    "validate_benchmark_registry",
+    "validate_contamination_records",
+    "validate_gold_protocol",
+    "validate_gold_protocols",
+    "validate_metric",
+    "validate_metrics_catalog",
+    "validate_quarantine_rules",
+]

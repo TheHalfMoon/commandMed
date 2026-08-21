@@ -1,0 +1,304 @@
+[
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "2025.1",
+    "benchmark_id": "healthbench_consensus",
+    "canonical_name": "HealthBench Consensus",
+    "capability_domains": [
+      "REASONING",
+      "EVIDENCE_USE"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "MIT",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Evaluates alignment with multi-expert clinical consensus on ambiguous and complex presentations.",
+    "primary_source": "OpenAI / HealthBench Benchmark Suite",
+    "roles": [
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "2025.1",
+    "benchmark_id": "healthbench_core",
+    "canonical_name": "HealthBench Core",
+    "capability_domains": [
+      "COMMUNICATION",
+      "REASONING",
+      "SAFETY"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "MIT",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Conversational health intelligence benchmark with real-world physician and patient query scenarios.",
+    "primary_source": "OpenAI / HealthBench Benchmark Suite",
+    "roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "2025.1",
+    "benchmark_id": "healthbench_hard",
+    "canonical_name": "HealthBench Hard",
+    "capability_domains": [
+      "REASONING",
+      "DIAGNOSTIC",
+      "SAFETY"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "MIT",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Subset targeting hard clinical reasoning, subtle presentations, and differential diagnosis.",
+    "primary_source": "OpenAI / HealthBench Benchmark Suite",
+    "roles": [
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "2025.1",
+    "benchmark_id": "healthbench_professional",
+    "canonical_name": "HealthBench Professional",
+    "capability_domains": [
+      "WORKFLOW",
+      "REASONING",
+      "EVIDENCE_USE"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "MIT",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Professional clinical documentation, guideline application, and management decisions.",
+    "primary_source": "OpenAI / HealthBench Benchmark Suite",
+    "roles": [
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "v1.0",
+    "benchmark_id": "medabstain",
+    "canonical_name": "MedAbstain: Selective Classification and Deferral in Clinical AI",
+    "capability_domains": [
+      "UNCERTAINTY_ABSTENTION",
+      "SAFETY"
+    ],
+    "contamination_sensitivity": "MEDIUM",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "CC-BY-4.0",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Measures coverage vs selective risk when model is permitted to abstain or refer to clinician.",
+    "primary_source": "Clinical NLP Research Group 2024-2025",
+    "roles": [
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "v1.0",
+    "benchmark_id": "medhelm",
+    "canonical_name": "MedHELM: Holistic Evaluation of Language Models in Medicine",
+    "capability_domains": [
+      "KNOWLEDGE",
+      "REASONING",
+      "SAFETY"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "Apache-2.0 / CC-BY-4.0",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Holistic clinical evaluation across multiple clinical specialties and diverse task types.",
+    "primary_source": "Stanford CRFM / Nature Medicine / arXiv:2408.01242",
+    "roles": [
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "v1.0",
+    "benchmark_id": "medmcqa",
+    "canonical_name": "MedMCQA: Multi-Subject Multi-Choice Medical Entrance Exams",
+    "capability_domains": [
+      "KNOWLEDGE"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "Apache-2.0",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Indian medical entrance examination QA across 21 medical subjects.",
+    "primary_source": "Pal et al., 2022 (CHIL 2022 / arXiv:2203.14381)",
+    "roles": [
+      "LEARNER_RESEARCHER"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "4-option-USMLE",
+    "benchmark_id": "medqa_usmle",
+    "canonical_name": "MedQA (USMLE)",
+    "capability_domains": [
+      "KNOWLEDGE",
+      "REASONING"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en",
+      "zh",
+      "es"
+    ],
+    "license_status": "MIT",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Board-style multiple choice questions. Standard development reference; not sufficient for patient safety claims.",
+    "primary_source": "Jin et al., 2021 (Appl. Sci. / arXiv:2009.13081)",
+    "roles": [
+      "LEARNER_RESEARCHER",
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "v1.0",
+    "benchmark_id": "medqabstain",
+    "canonical_name": "MedQAbstain: Evaluating Medical Question Answering with Abstention",
+    "capability_domains": [
+      "UNCERTAINTY_ABSTENTION",
+      "SAFETY"
+    ],
+    "contamination_sensitivity": "MEDIUM",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "CC-BY-4.0",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Evaluates model ability to recognize insufficient clinical context and abstain rather than hallucinate.",
+    "primary_source": "Medical NLP / arXiv / Uncertainty Benchmarks 2024-2025",
+    "roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "v1.0",
+    "benchmark_id": "medxpertqa",
+    "canonical_name": "MedXpertQA: Expert Medical QA & Multimodal Interpretation",
+    "capability_domains": [
+      "DIAGNOSTIC",
+      "REASONING",
+      "EXTRACTION"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "license_status": "CC-BY-NC-4.0",
+    "modalities": [
+      "TEXT",
+      "DOCUMENT",
+      "LAB_REPORT",
+      "PHOTO",
+      "MULTIMODAL"
+    ],
+    "notes": "Expert-level clinical questions and multimodal medical case interpretation.",
+    "primary_source": "arXiv:2501.18378 / Tsinghua / PKU Medical AI",
+    "roles": [
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  },
+  {
+    "access_class": "PUBLIC",
+    "artifact_version": "pqa_labeled",
+    "benchmark_id": "pubmedqa",
+    "canonical_name": "PubMedQA: Biomedical Research Question Answering",
+    "capability_domains": [
+      "EVIDENCE_USE",
+      "REASONING"
+    ],
+    "contamination_sensitivity": "HIGH",
+    "intended_use": "DEVELOPMENT",
+    "languages": [
+      "en"
+    ],
+    "license_status": "MIT",
+    "modalities": [
+      "TEXT"
+    ],
+    "notes": "Biomedical research QA with reasoning over PubMed abstracts (yes/no/maybe).",
+    "primary_source": "Jin et al., 2019 (EMNLP 2019 / arXiv:1909.06146)",
+    "roles": [
+      "LEARNER_RESEARCHER"
+    ],
+    "verification_date": "2026-08-21",
+    "verification_status": "VERIFIED"
+  }
+]

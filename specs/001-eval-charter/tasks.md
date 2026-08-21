@@ -1,6 +1,6 @@
 # Spec 001 Tasks — Evaluation Charter
 
-**State:** READY_FOR_ANALYZE
+**State:** ACTIVE (IMPLEMENTATION_COMPLETE_CANDIDATE)
 
 Execute in dependency order. Do not start a later task merely because its files are obvious.
 
