@@ -1,8 +1,14 @@
 # Spec 001 — Evaluation Charter
 
-**State:** AUTHORIZED_TO_START only after Spec 000 planning baseline is canonical and Spec Kit bootstrap is reconciled
+**State:** `T001_AUTHORIZED_TO_START` only after Spec 000 is `CLOSED_CANONICAL`; T002–T010 remain blocked until T001 safely reconciles Spec Kit bootstrap and planning analysis has no material contradiction
 **Training authority:** NONE
 **Model execution authority:** NONE
+
+## Authority boundary
+
+After Spec 000 is `CLOSED_CANONICAL`, only **T001 — Reconcile Spec Kit bootstrap** is authorized. T001 owns the safe `agy` initialization/reconciliation and planning-consistency analysis. T002–T010 do not become executable until T001 passes its acceptance criteria on the active branch.
+
+This avoids a circular prerequisite: Spec Kit reconciliation is the first bounded action inside Spec 001, not a prerequisite that must somehow occur outside Spec 001 authority.
 
 ## Problem
 
