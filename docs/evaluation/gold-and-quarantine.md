@@ -16,6 +16,7 @@ To prevent evaluation degradation and benchmark gaming, commandMed maintains thr
 - **No Payloads in Repository:** Spec 001 establishes governance protocols, metadata contracts, and access policies only. No real Gold cases, patient records, or answer keys are stored in the codebase.
 - **Mandatory Power Analysis:** Every Gold protocol strictly requires statistical power analysis before any claim evaluation is conducted.
 - **Double-Blind Clinical Adjudication:** Gold cases require independent clinician consensus review.
+- **Non-Selection Invariant:** Private Gold is strictly prohibited from selecting backbones, checkpoints, prompts, adapters, hyperparameters, or training recipes. Private Gold can only execute final PASS/FAIL safety audits on a pre-selected candidate.
 
 ## 3. Strict Optimization Prohibition
 
@@ -39,11 +40,15 @@ Private Gold assets are under strict cryptographic and operational quarantine. P
 | `DEV` | `false` | `true` | Verified dev splits, held-out synthetic pilot cases | `PRIVATE_GOLD` |
 | `CALIBRATION` | `false` | `true` | Calibration hold-out splits | `PRIVATE_GOLD` |
 | `CHECKPOINT_SELECTION` | `false` | `true` | Model selection dev sets, public benchmark dev splits | `PRIVATE_GOLD` |
-| `PUBLIC_EXTERNAL_EVAL` | `false` | `true` | Public benchmark canonical test splits | `PRIVATE_GOLD` |
+| `PUBLIC_EXTERNAL_EVAL` | `false` | `false` | Public benchmark canonical test splits | `PRIVATE_GOLD` |
 | `PRIVATE_GOLD` | `false` | `false` | Curated air-gapped clinical gold cases | All training/dev/public splits |
+
+*Note on Test Set Protection:* `PUBLIC_EXTERNAL_EVAL` has `can_select_model=false` to prevent public test set leakage and overfitting.
 
 ## 5. Contamination Interface
 
-The contamination contract establishes interfaces for tracking both:
+The contamination contract establishes interfaces for tracking:
 1. **Exact-Match Contamination:** 13-gram hashing and n-gram overlap checks against candidate training streams.
-2. **Semantic Overlap:** High-level contamination risk classifications (`PENDING_DECONTAMINATION_INTERFACE`, `ASSESSED_LOW_RISK`, `ASSESSED_HIGH_RISK`).
+2. **Semantic Overlap:** High-level contamination risk classifications.
+
+*Pre-experimental state:* At Spec 001, no candidate training corpora or real Gold cases exist. Records are in state `NOT_ASSESSED` with `evidence_artifact_id="NONE"`. Claiming `CHECKED_CLEAN` or `ASSESSED_LOW_RISK` strictly requires a resolved evidence artifact identifier.

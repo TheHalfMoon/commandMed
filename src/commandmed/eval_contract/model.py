@@ -13,6 +13,7 @@ class AccessClass(str, Enum):
     GATED = "GATED"
     PRIVATE_EXTERNAL = "PRIVATE_EXTERNAL"
     REFERENCE_ONLY = "REFERENCE_ONLY"
+    MIXED = "MIXED"
 
 
 class VerificationStatus(str, Enum):
@@ -120,6 +121,26 @@ class GoldFamilyId(str, Enum):
     COMMANDMED_MULTIMODAL_GOLD = "COMMANDMED_MULTIMODAL_GOLD"
 
 
+class ExactMatchStatus(str, Enum):
+    """Status of exact-match contamination evaluation."""
+
+    NOT_ASSESSED = "NOT_ASSESSED"
+    PENDING = "PENDING"
+    CHECKED_CLEAN = "CHECKED_CLEAN"
+    OVERLAP_FOUND = "OVERLAP_FOUND"
+    BLOCKED = "BLOCKED"
+
+
+class SemanticOverlapStatus(str, Enum):
+    """Status of semantic-overlap contamination evaluation."""
+
+    NOT_ASSESSED = "NOT_ASSESSED"
+    PENDING = "PENDING"
+    ASSESSED_LOW_RISK = "ASSESSED_LOW_RISK"
+    ASSESSED_HIGH_RISK = "ASSESSED_HIGH_RISK"
+    BLOCKED = "BLOCKED"
+
+
 @dataclass(frozen=True)
 class BenchmarkRecord:
     """Metadata record for a registered benchmark family."""
@@ -127,10 +148,14 @@ class BenchmarkRecord:
     benchmark_id: str
     canonical_name: str
     primary_source: str
+    source_uri: str
+    source_identifier: str
+    source_revision: str
     verification_date: str
     artifact_version: str
     access_class: str
     license_status: str
+    license_source_uri: str
     languages: tuple[str, ...]
     roles: tuple[str, ...]
     modalities: tuple[str, ...]
@@ -195,5 +220,6 @@ class ContaminationRecord:
     asset_id: str
     exact_match_status: str
     semantic_overlap_status: str
+    evidence_artifact_id: str
     methodology_interface: str
     notes: str

@@ -112,7 +112,7 @@
 
 ## I. Closeout evidence
 
-- [x] Exact HEAD is recorded.
+- [x] Two-layer evidence protocol is followed (in-tree candidate evidence + PR review candidate HEAD).
 - [x] Exact changed paths are recorded.
 - [x] Validation/test commands and results are recorded.
 - [x] Canonical artifact SHA-256 identities are recorded.
@@ -125,4 +125,4 @@
 ## Final gate
 
 - [x] No unchecked hard item above is being silently waived.
-- [x] Spec 001 is eligible to be proposed `CLOSED_CANONICAL`.
+- [x] Spec 001 is eligible to be submitted as `CLOSEOUT_CANDIDATE` for review.

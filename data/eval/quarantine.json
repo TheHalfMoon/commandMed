@@ -1,51 +1,23 @@
 {
   "contamination_records": [
     {
-      "asset_id": "public_benchmarks_catalog_v1",
-      "exact_match_status": "CHECKED_CLEAN",
-      "methodology_interface": "Exact 13-gram hashing and n-gram overlap check against candidate pretraining and SFT token streams.",
-      "notes": "Standard baseline exact-match filter interface to detect benchmark leakage in candidate datasets.",
-      "semantic_overlap_status": "PENDING_DECONTAMINATION_INTERFACE"
+      "asset_id": "private_gold_catalog_v1",
+      "evidence_artifact_id": "NONE",
+      "exact_match_status": "NOT_ASSESSED",
+      "methodology_interface": "Interface specification for air-gapped non-exposure verification; Gold cases will be verified unexposed to training/optimization pipelines before scoring.",
+      "notes": "Protocol specification only. Zero private Gold cases exist in repository.",
+      "semantic_overlap_status": "NOT_ASSESSED"
     },
     {
-      "asset_id": "private_gold_catalog_v1",
-      "exact_match_status": "CHECKED_CLEAN",
-      "methodology_interface": "Cryptographic zero-knowledge quarantine verification; Gold items never exposed to tokenization or training pipelines.",
-      "notes": "Air-gapped protocol guaranteeing absolute non-exposure to training pipelines.",
-      "semantic_overlap_status": "ASSESSED_LOW_RISK"
+      "asset_id": "public_benchmarks_catalog_v1",
+      "evidence_artifact_id": "NONE",
+      "exact_match_status": "NOT_ASSESSED",
+      "methodology_interface": "Interface specification for 13-gram exact match hashing and n-gram overlap check against candidate pretraining and SFT token streams once candidate corpora are ingested in Spec 003.",
+      "notes": "Pre-experimental baseline interface definition. No candidate corpora exist in Spec 001; formal assessment occurs in downstream data specs.",
+      "semantic_overlap_status": "NOT_ASSESSED"
     }
   ],
   "quarantine_rules": [
-    {
-      "allowed_sources": [
-        "VERIFIED_PERMISSIVE_PRETRAINING_CORPUS",
-        "VERIFIED_SFT_CURRICULUM_DATA",
-        "VERIFIED_SYNTHETIC_DERIVED_EXAMPLES"
-      ],
-      "can_select_model": false,
-      "can_train": true,
-      "prohibited_sources": [
-        "COMMANDMED_CLINICAL_GOLD",
-        "COMMANDMED_ARABIC_GOLD",
-        "COMMANDMED_MULTIMODAL_GOLD",
-        "PUBLIC_EXTERNAL_EVAL"
-      ],
-      "purpose": "TRAIN"
-    },
-    {
-      "allowed_sources": [
-        "VERIFIED_DEV_SPLIT",
-        "HELD_OUT_SYNTHETIC_PILOT_CASES"
-      ],
-      "can_select_model": true,
-      "can_train": false,
-      "prohibited_sources": [
-        "COMMANDMED_CLINICAL_GOLD",
-        "COMMANDMED_ARABIC_GOLD",
-        "COMMANDMED_MULTIMODAL_GOLD"
-      ],
-      "purpose": "DEV"
-    },
     {
       "allowed_sources": [
         "CALIBRATION_HOLD_OUT_SPLIT"
@@ -53,8 +25,8 @@
       "can_select_model": true,
       "can_train": false,
       "prohibited_sources": [
-        "COMMANDMED_CLINICAL_GOLD",
         "COMMANDMED_ARABIC_GOLD",
+        "COMMANDMED_CLINICAL_GOLD",
         "COMMANDMED_MULTIMODAL_GOLD"
       ],
       "purpose": "CALIBRATION"
@@ -67,39 +39,69 @@
       "can_select_model": true,
       "can_train": false,
       "prohibited_sources": [
-        "COMMANDMED_CLINICAL_GOLD",
         "COMMANDMED_ARABIC_GOLD",
+        "COMMANDMED_CLINICAL_GOLD",
         "COMMANDMED_MULTIMODAL_GOLD"
       ],
       "purpose": "CHECKPOINT_SELECTION"
     },
     {
       "allowed_sources": [
-        "PUBLIC_BENCHMARK_CANONICAL_TEST_SPLITS"
+        "HELD_OUT_SYNTHETIC_PILOT_CASES",
+        "VERIFIED_DEV_SPLIT"
       ],
       "can_select_model": true,
       "can_train": false,
       "prohibited_sources": [
-        "COMMANDMED_CLINICAL_GOLD",
         "COMMANDMED_ARABIC_GOLD",
+        "COMMANDMED_CLINICAL_GOLD",
+        "COMMANDMED_MULTIMODAL_GOLD"
+      ],
+      "purpose": "DEV"
+    },
+    {
+      "allowed_sources": [
+        "COMMANDMED_ARABIC_GOLD",
+        "COMMANDMED_CLINICAL_GOLD",
+        "COMMANDMED_MULTIMODAL_GOLD"
+      ],
+      "can_select_model": false,
+      "can_train": false,
+      "prohibited_sources": [
+        "DEVELOPMENT_SPLITS",
+        "PUBLIC_SCRAPED_DATA",
+        "TRAINING_CORPORA"
+      ],
+      "purpose": "PRIVATE_GOLD"
+    },
+    {
+      "allowed_sources": [
+        "PUBLIC_BENCHMARK_CANONICAL_TEST_SPLITS"
+      ],
+      "can_select_model": false,
+      "can_train": false,
+      "prohibited_sources": [
+        "COMMANDMED_ARABIC_GOLD",
+        "COMMANDMED_CLINICAL_GOLD",
         "COMMANDMED_MULTIMODAL_GOLD"
       ],
       "purpose": "PUBLIC_EXTERNAL_EVAL"
     },
     {
       "allowed_sources": [
-        "COMMANDMED_CLINICAL_GOLD",
-        "COMMANDMED_ARABIC_GOLD",
-        "COMMANDMED_MULTIMODAL_GOLD"
+        "VERIFIED_PERMISSIVE_PRETRAINING_CORPUS",
+        "VERIFIED_SFT_CURRICULUM_DATA",
+        "VERIFIED_SYNTHETIC_DERIVED_EXAMPLES"
       ],
       "can_select_model": false,
-      "can_train": false,
+      "can_train": true,
       "prohibited_sources": [
-        "TRAINING_CORPORA",
-        "DEVELOPMENT_SPLITS",
-        "PUBLIC_SCRAPED_DATA"
+        "COMMANDMED_ARABIC_GOLD",
+        "COMMANDMED_CLINICAL_GOLD",
+        "COMMANDMED_MULTIMODAL_GOLD",
+        "PUBLIC_EXTERNAL_EVAL"
       ],
-      "purpose": "PRIVATE_GOLD"
+      "purpose": "TRAIN"
     }
   ]
 }

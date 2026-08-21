@@ -9,6 +9,7 @@ from .model import (
     AccessClass,
     CapabilityDomain,
     ContaminationSensitivity,
+    ExactMatchStatus,
     GateEvaluationState,
     GoldFamilyId,
     IntendedUse,
@@ -16,6 +17,7 @@ from .model import (
     Modality,
     Purpose,
     Role,
+    SemanticOverlapStatus,
     ThresholdState,
     VerificationStatus,
 )
@@ -49,6 +51,14 @@ MANDATORY_GOLD_PROHIBITIONS = {
     "BACKBONE_SELECTION",
 }
 
+# Prohibited substrings in Gold permitted scoring stages (cannot choose among candidates)
+PROHIBITED_GOLD_STAGE_SUBSTRINGS = {
+    "SELECTION",
+    "ADAPTER_GATE",
+    "BACKBONE_GATE",
+    "CHECKPOINT_GATE",
+}
+
 
 def check_no_payload_markers(obj: Any, path: str = "") -> list[str]:
     """Recursively check that no prohibited case/PHI payload keys exist."""
@@ -70,7 +80,7 @@ def check_no_payload_markers(obj: Any, path: str = "") -> list[str]:
 
 
 def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
-    """Validate a single benchmark metadata entry."""
+    """Validate a single benchmark metadata entry with evidence-bound rules."""
     errors: list[str] = []
     prefix = f"Benchmark[{index}]"
 
@@ -79,10 +89,14 @@ def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
         "benchmark_id",
         "canonical_name",
         "primary_source",
+        "source_uri",
+        "source_identifier",
+        "source_revision",
         "verification_date",
         "artifact_version",
         "access_class",
         "license_status",
+        "license_source_uri",
         "languages",
         "roles",
         "modalities",
@@ -128,23 +142,59 @@ def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
             f"{prefix}: Invalid verification_status '{v_stat}'. Must be one of {[e.value for e in VerificationStatus]}"
         )
 
-    # Verified status requires non-empty primary_source and valid date
-    if v_stat == VerificationStatus.VERIFIED.value:
-        src = entry.get("primary_source", "").strip()
-        if not src or src == "UNRESOLVED":
-            errors.append(
-                f"{prefix}: VERIFIED benchmark must have a non-empty primary_source reference"
-            )
-        if not DATE_PATTERN.match(str(v_date)):
-            errors.append(
-                f"{prefix}: VERIFIED benchmark must have a valid verification_date"
-            )
-
     # Intended use
     i_use = entry.get("intended_use")
     if i_use not in {e.value for e in IntendedUse}:
         errors.append(
             f"{prefix}: Invalid intended_use '{i_use}'. Must be one of {[e.value for e in IntendedUse]}"
+        )
+
+    # License status
+    lic_stat = str(entry.get("license_status", "")).strip()
+
+    # Invariant: VERIFIED requires resolved source references, license status, and valid date
+    if v_stat == VerificationStatus.VERIFIED.value:
+        src = entry.get("primary_source", "").strip()
+        if not src or src == "UNRESOLVED":
+            errors.append(
+                f"{prefix}: VERIFIED benchmark must have a non-empty, resolved primary_source reference"
+            )
+        src_uri = entry.get("source_uri", "").strip()
+        if not src_uri or src_uri == "UNRESOLVED":
+            errors.append(
+                f"{prefix}: VERIFIED benchmark must have a resolved source_uri"
+            )
+        src_id = entry.get("source_identifier", "").strip()
+        if not src_id or src_id == "UNRESOLVED":
+            errors.append(
+                f"{prefix}: VERIFIED benchmark must have a resolved source_identifier"
+            )
+        if not DATE_PATTERN.match(str(v_date)):
+            errors.append(
+                f"{prefix}: VERIFIED benchmark must have a valid verification_date matching YYYY-MM-DD"
+            )
+        if not lic_stat or lic_stat == "UNRESOLVED":
+            errors.append(
+                f"{prefix}: VERIFIED benchmark must have a resolved license_status (cannot be 'UNRESOLVED')"
+            )
+        lic_uri = entry.get("license_source_uri", "").strip()
+        if not lic_uri or lic_uri == "UNRESOLVED":
+            errors.append(
+                f"{prefix}: VERIFIED benchmark must have a resolved license_source_uri"
+            )
+
+    # Invariant: UNRESOLVED verification status cannot be executable for DEVELOPMENT / RELEASE
+    if v_stat == VerificationStatus.UNRESOLVED.value:
+        if i_use in {IntendedUse.DEVELOPMENT.value, IntendedUse.POSSIBLE_RELEASE_GATE.value}:
+            errors.append(
+                f"{prefix}: UNRESOLVED benchmark cannot have executable intended_use '{i_use}'. "
+                f"Must be '{IntendedUse.REFERENCE_ONLY.value}' or '{IntendedUse.PROHIBITED.value}'."
+            )
+
+    # Invariant: license_status == UNRESOLVED cannot be VERIFIED
+    if lic_stat == "UNRESOLVED" and v_stat == VerificationStatus.VERIFIED.value:
+        errors.append(
+            f"{prefix}: Benchmark with license_status='UNRESOLVED' cannot have verification_status='VERIFIED'."
         )
 
     # Contamination sensitivity
@@ -356,8 +406,24 @@ def validate_gold_protocol(entry: dict[str, Any], index: int = 0) -> list[str]:
                 f"{prefix}: 'prohibited_optimization_uses' is missing mandatory prohibitions: {sorted(missing)}"
             )
 
+    # Permitted scoring stages must NOT contain selection stages
+    scoring_stages = entry.get("permitted_scoring_stages")
+    if not isinstance(scoring_stages, list) or len(scoring_stages) == 0:
+        errors.append(f"{prefix}: 'permitted_scoring_stages' must be a non-empty list")
+    else:
+        for stage in scoring_stages:
+            if not isinstance(stage, str):
+                errors.append(f"{prefix}: Scoring stage must be a string, got '{stage}'")
+            else:
+                for prohibited_sub in PROHIBITED_GOLD_STAGE_SUBSTRINGS:
+                    if prohibited_sub in stage.upper():
+                        errors.append(
+                            f"{prefix}: Contradiction in permitted_scoring_stages: '{stage}' contains "
+                            f"prohibited keyword '{prohibited_sub}'. Private Gold cannot perform candidate selection."
+                        )
+
     # Array checks
-    for f in ["intended_strata", "allowed_access_roles", "permitted_scoring_stages"]:
+    for f in ["intended_strata", "allowed_access_roles"]:
         if not isinstance(entry.get(f), list) or len(entry.get(f)) == 0:
             errors.append(f"{prefix}: '{f}' must be a non-empty list")
 
@@ -417,8 +483,14 @@ def validate_quarantine_rules(entries: list[dict[str, Any]]) -> tuple[bool, list
         if p in {Purpose.PRIVATE_GOLD.value, Purpose.PUBLIC_EXTERNAL_EVAL.value}:
             if can_train is True:
                 errors.append(f"{prefix}: Quarantine violation: purpose '{p}' must have can_train=False")
-            if p == Purpose.PRIVATE_GOLD.value and can_select is True:
-                errors.append(f"{prefix}: Quarantine violation: purpose '{p}' must have can_select_model=False")
+
+        # Invariant: PRIVATE_GOLD and PUBLIC_EXTERNAL_EVAL can NEVER select models
+        if p in {Purpose.PRIVATE_GOLD.value, Purpose.PUBLIC_EXTERNAL_EVAL.value}:
+            if can_select is True:
+                errors.append(
+                    f"{prefix}: Quarantine violation: purpose '{p}' must have can_select_model=False. "
+                    "Canonical evaluation test sets must not be used for model/checkpoint selection."
+                )
 
         if not isinstance(r.get("allowed_sources"), list):
             errors.append(f"{prefix}: 'allowed_sources' must be a list")
@@ -448,9 +520,41 @@ def validate_contamination_records(entries: list[dict[str, Any]]) -> tuple[bool,
             errors.append(f"Duplicate asset_id '{asset_id}' in contamination records")
         seen_ids.add(asset_id)
 
-        for f in ["exact_match_status", "semantic_overlap_status", "methodology_interface", "notes"]:
+        for f in [
+            "exact_match_status",
+            "semantic_overlap_status",
+            "evidence_artifact_id",
+            "methodology_interface",
+            "notes",
+        ]:
             if f not in item or not isinstance(item[f], str):
                 errors.append(f"{prefix}: Missing or non-string field '{f}'")
+
+        em_stat = item.get("exact_match_status")
+        if em_stat not in {e.value for e in ExactMatchStatus}:
+            errors.append(
+                f"{prefix}: Invalid exact_match_status '{em_stat}'. Allowed: {[e.value for e in ExactMatchStatus]}"
+            )
+
+        so_stat = item.get("semantic_overlap_status")
+        if so_stat not in {e.value for e in SemanticOverlapStatus}:
+            errors.append(
+                f"{prefix}: Invalid semantic_overlap_status '{so_stat}'. Allowed: {[e.value for e in SemanticOverlapStatus]}"
+            )
+
+        ev_id = item.get("evidence_artifact_id", "").strip()
+        # Invariant: Claiming clean/low-risk contamination requires actual evidence identifier
+        if em_stat == ExactMatchStatus.CHECKED_CLEAN.value:
+            if not ev_id or ev_id in {"NONE", "UNRESOLVED"}:
+                errors.append(
+                    f"{prefix}: exact_match_status='CHECKED_CLEAN' requires a resolved evidence_artifact_id (cannot be '{ev_id}')"
+                )
+
+        if so_stat == SemanticOverlapStatus.ASSESSED_LOW_RISK.value:
+            if not ev_id or ev_id in {"NONE", "UNRESOLVED"}:
+                errors.append(
+                    f"{prefix}: semantic_overlap_status='ASSESSED_LOW_RISK' requires a resolved evidence_artifact_id (cannot be '{ev_id}')"
+                )
 
     return len(errors) == 0, errors
 

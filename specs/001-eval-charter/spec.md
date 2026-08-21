@@ -176,21 +176,16 @@ Fixtures must not contain patient data or copied restricted benchmark content.
 
 ### FR-010 — Closeout evidence
 
-Spec 001 closeout SHALL report:
+Spec 001 closeout SHALL follow a two-layer evidence protocol:
 
-- exact HEAD;
-- exact changed paths;
-- test/validation commands and results;
-- canonical registry/contract artifact digests;
-- acceptance criterion status;
-- unresolved benchmark/license facts;
-- explicit statement that Spec 002+ are not started.
+- in-tree candidate evidence records starting base, artifact digests, validation results, acceptance status, and unresolved risks;
+- exact candidate commit HEAD is recorded in PR and review metadata after commit.
 
 ## Non-functional requirements
 
 ### NFR-001 — Determinism
 
-Given the same semantic inputs and implementation version, generated canonical artifacts must be byte-identical.
+Given the same semantic inputs and implementation version, generated canonical artifacts must be byte-identical through semantic canonical normalization (entity sort and set-like list field sort).
 
 ### NFR-002 — Minimal dependencies
 
@@ -243,7 +238,7 @@ Every external evaluation family must have a primary/current source recorded bef
 9. Fixture-only tests cover required failure modes and pass.
 10. No dependency/framework beyond what the minimal plan authorizes is introduced.
 11. No model/data execution prohibited by this spec occurred.
-12. Closeout evidence binds results to exact HEAD and exact artifact identities.
+12. Closeout evidence binds results to exact candidate HEAD (in PR review metadata) and exact artifact identities (in in-tree evidence).
 
 ## Exit state
 

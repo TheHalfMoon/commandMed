@@ -1,4 +1,4 @@
-"""Tests for deterministic canonical serialization and SHA-256 identity computation."""
+"""Tests for deterministic semantic canonical serialization and SHA-256 identity computation."""
 
 import json
 from pathlib import Path
@@ -12,7 +12,7 @@ from src.commandmed.eval_contract.canonical import (
 
 
 class TestCanonicalSerialization(unittest.TestCase):
-    """Tests for deterministic canonical JSON serialization and SHA-256 digests."""
+    """Tests for deterministic semantic canonical JSON serialization and SHA-256 digests."""
 
     def setUp(self) -> None:
         self.data_dir = Path(__file__).resolve().parents[2] / "data" / "eval"
@@ -36,6 +36,40 @@ class TestCanonicalSerialization(unittest.TestCase):
         self.assertEqual(canonical_a, canonical_b)
         self.assertEqual(compute_canonical_sha256(obj_a), compute_canonical_sha256(obj_b))
 
+    def test_set_like_field_reordering_semantic_invariance(self) -> None:
+        """Finding 6: Reordering set-like list fields (roles, modalities, languages) produces the same semantic digest."""
+        benchmark_a = {
+            "benchmark_id": "test_bench",
+            "roles": ["PATIENT_CAREGIVER", "CLINICAL_PROFESSIONAL"],
+            "modalities": ["TEXT", "MULTIMODAL"],
+            "languages": ["en", "ar"],
+        }
+        benchmark_b = {
+            "benchmark_id": "test_bench",
+            "roles": ["CLINICAL_PROFESSIONAL", "PATIENT_CAREGIVER"],
+            "modalities": ["MULTIMODAL", "TEXT"],
+            "languages": ["ar", "en"],
+        }
+
+        self.assertEqual(canonical_json_dumps(benchmark_a), canonical_json_dumps(benchmark_b))
+        self.assertEqual(compute_canonical_sha256(benchmark_a), compute_canonical_sha256(benchmark_b))
+
+    def test_registry_records_reordering_semantic_invariance(self) -> None:
+        """Finding 6: Reordering benchmark records in registry produces the same semantic digest."""
+        registry_a = [
+            {"benchmark_id": "medqa", "canonical_name": "MedQA"},
+            {"benchmark_id": "healthbench", "canonical_name": "HealthBench"},
+            {"benchmark_id": "pubmedqa", "canonical_name": "PubMedQA"},
+        ]
+        registry_b = [
+            {"benchmark_id": "pubmedqa", "canonical_name": "PubMedQA"},
+            {"benchmark_id": "medqa", "canonical_name": "MedQA"},
+            {"benchmark_id": "healthbench", "canonical_name": "HealthBench"},
+        ]
+
+        self.assertEqual(canonical_json_dumps(registry_a), canonical_json_dumps(registry_b))
+        self.assertEqual(compute_canonical_sha256(registry_a), compute_canonical_sha256(registry_b))
+
     def test_semantic_mutation_changes_digest(self) -> None:
         """FR-008: Any semantic mutation to data changes the SHA-256 digest."""
         base_obj = {"benchmark_id": "medqa", "version": "1.0"}
@@ -57,7 +91,6 @@ class TestCanonicalSerialization(unittest.TestCase):
 
             self.assertEqual(digest1, digest2)
             self.assertEqual(len(digest1), 64)
-            # Verify hexadecimal characters
             int(digest1, 16)
 
 

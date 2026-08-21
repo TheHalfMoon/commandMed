@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import unittest
 
-from src.commandmed.eval_contract.model import GoldFamilyId, Purpose
+from src.commandmed.eval_contract.model import ExactMatchStatus, GoldFamilyId, Purpose, SemanticOverlapStatus
 from src.commandmed.eval_contract.validate import (
     check_no_payload_markers,
     validate_contamination_records,
@@ -41,6 +41,26 @@ class TestGoldAndQuarantine(unittest.TestCase):
         }
         self.assertEqual(present_families, expected)
 
+    def test_gold_selection_stage_contradiction_fails(self) -> None:
+        """Finding 3: Gold protocol cannot specify candidate selection scoring stages."""
+        bad_gold = dict(self.gold_data[0])
+        bad_gold["permitted_scoring_stages"] = [
+            "FINAL_BACKBONE_SELECTION_GATE",  # Contradiction with non-selection policy!
+            "PRE_RELEASE_SAFETY_AUDIT",
+        ]
+        errors = validate_gold_protocol(bad_gold)
+        self.assertTrue(any("Private Gold cannot perform candidate selection" in e for e in errors))
+
+    def test_gold_adapter_gate_contradiction_fails(self) -> None:
+        """Finding 3: Gold protocol cannot specify ADAPTER_GATE candidate selection."""
+        bad_gold = dict(self.gold_data[2])
+        bad_gold["permitted_scoring_stages"] = [
+            "MULTIMODAL_ADAPTER_GATE",  # Contradiction!
+            "PRE_RELEASE_SAFETY_AUDIT",
+        ]
+        errors = validate_gold_protocol(bad_gold)
+        self.assertTrue(any("Private Gold cannot perform candidate selection" in e for e in errors))
+
     def test_gold_protocol_requires_power_analysis(self) -> None:
         """Gold protocols MUST require power analysis; failing to require it fails validation."""
         bad_gold = dict(self.gold_data[0])
@@ -67,6 +87,28 @@ class TestGoldAndQuarantine(unittest.TestCase):
         self.assertTrue(is_valid, f"quarantine_rules failed validation: {errors}")
         self.assertEqual(len(errors), 0)
 
+    def test_public_external_eval_cannot_select_model(self) -> None:
+        """Finding 5: PUBLIC_EXTERNAL_EVAL must have can_select_model=False to prevent test leakage."""
+        rules = self.quarantine_data["quarantine_rules"]
+        public_rule = next(r for r in rules if r["purpose"] == Purpose.PUBLIC_EXTERNAL_EVAL.value)
+        self.assertFalse(public_rule["can_train"])
+        self.assertFalse(public_rule["can_select_model"])
+
+    def test_public_external_eval_with_selection_fails(self) -> None:
+        """Finding 5: Attempting to set can_select_model=True on PUBLIC_EXTERNAL_EVAL fails validation."""
+        illegal_rules = [
+            {
+                "purpose": Purpose.PUBLIC_EXTERNAL_EVAL.value,
+                "allowed_sources": ["PUBLIC_BENCHMARK_CANONICAL_TEST_SPLITS"],
+                "prohibited_sources": ["PRIVATE_GOLD"],
+                "can_train": False,
+                "can_select_model": True,  # Illegal!
+            }
+        ]
+        is_valid, errors = validate_quarantine_rules(illegal_rules)
+        self.assertFalse(is_valid)
+        self.assertTrue(any("purpose 'PUBLIC_EXTERNAL_EVAL' must have can_select_model=False" in e for e in errors))
+
     def test_private_gold_cannot_train_or_select_model(self) -> None:
         """FR-006: Quarantine rule for PRIVATE_GOLD must have can_train=False and can_select_model=False."""
         rules = self.quarantine_data["quarantine_rules"]
@@ -89,12 +131,44 @@ class TestGoldAndQuarantine(unittest.TestCase):
         self.assertFalse(is_valid)
         self.assertTrue(any("Quarantine violation" in e for e in errors))
 
-    def test_contamination_records_validate(self) -> None:
-        """FR-007: Contamination metadata records validate cleanly."""
+    def test_canonical_contamination_records_validate(self) -> None:
+        """Finding 4: Canonical contamination metadata records validate cleanly with NOT_ASSESSED state."""
         records = self.quarantine_data["contamination_records"]
         is_valid, errors = validate_contamination_records(records)
         self.assertTrue(is_valid, f"contamination_records failed validation: {errors}")
         self.assertEqual(len(errors), 0)
+
+    def test_checked_clean_without_evidence_fails(self) -> None:
+        """Finding 4: Claiming CHECKED_CLEAN with evidence_artifact_id='NONE' fails validation."""
+        bad_records = [
+            {
+                "asset_id": "test_asset",
+                "exact_match_status": ExactMatchStatus.CHECKED_CLEAN.value,
+                "semantic_overlap_status": SemanticOverlapStatus.NOT_ASSESSED.value,
+                "evidence_artifact_id": "NONE",  # Unsubstantiated claim!
+                "methodology_interface": "13-gram hash",
+                "notes": "Notes",
+            }
+        ]
+        is_valid, errors = validate_contamination_records(bad_records)
+        self.assertFalse(is_valid)
+        self.assertTrue(any("exact_match_status='CHECKED_CLEAN' requires a resolved evidence_artifact_id" in e for e in errors))
+
+    def test_assessed_low_risk_without_evidence_fails(self) -> None:
+        """Finding 4: Claiming ASSESSED_LOW_RISK with evidence_artifact_id='NONE' fails validation."""
+        bad_records = [
+            {
+                "asset_id": "test_asset",
+                "exact_match_status": ExactMatchStatus.NOT_ASSESSED.value,
+                "semantic_overlap_status": SemanticOverlapStatus.ASSESSED_LOW_RISK.value,
+                "evidence_artifact_id": "NONE",  # Unsubstantiated claim!
+                "methodology_interface": "Embedding search",
+                "notes": "Notes",
+            }
+        ]
+        is_valid, errors = validate_contamination_records(bad_records)
+        self.assertFalse(is_valid)
+        self.assertTrue(any("semantic_overlap_status='ASSESSED_LOW_RISK' requires a resolved evidence_artifact_id" in e for e in errors))
 
 
 if __name__ == "__main__":
