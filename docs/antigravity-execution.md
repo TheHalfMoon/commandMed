@@ -22,7 +22,9 @@ Canonical planning files include at least:
 
 At the planning snapshot date, use a pinned known release rather than an unbounded moving main branch. Verify the release before execution.
 
-From the repository branch that contains this plan:
+The bootstrap itself is **Spec 001 T001**. It is not a prerequisite that occurs outside bounded execution authority.
+
+After Spec 000 is `CLOSED_CANONICAL`, start Spec 001 by creating a dedicated Spec 001 implementation branch. On that branch, T001 may run the pinned initialization command:
 
 ```bash
 uvx --from git+https://github.com/github/spec-kit.git@v0.15.1 specify init --here --force --integration agy --script py
@@ -30,7 +32,9 @@ uvx --from git+https://github.com/github/spec-kit.git@v0.15.1 specify init --her
 
 Why `--force`: the repository is no longer empty. This flag permits initialization into the directory; it is NOT permission to accept arbitrary overwrites.
 
-## 3. Safe initialization protocol
+T002–T010 remain blocked until T001 safely reconciles generated changes and planning analysis reports no material contradiction.
+
+## 3. Safe T001 initialization protocol
 
 Before running Spec Kit initialization:
 
@@ -56,7 +60,9 @@ Then reconcile deliberately:
 - do not delete safety/provenance language because a generated template is shorter;
 - do not accept unexpected generated files without understanding why they exist.
 
-If initialization cannot be reconciled without destroying canonical planning content, stop and report the conflict rather than improvising.
+T001 must then run the planning consistency analysis required by `specs/001-eval-charter/tasks.md`.
+
+If initialization cannot be reconciled without destroying canonical planning content, or analysis finds an unresolved material contradiction, stop and report the conflict rather than improvising. T002–T010 stay blocked.
 
 ## 4. Ponytail use
 
@@ -80,25 +86,26 @@ In early specs, reject unnecessary:
 For one bounded spec only:
 
 1. Read constitution and active spec.
-2. Run/perform `specify` only if the active spec is not already canonical.
-3. `clarify` unresolved ambiguities that affect acceptance.
-4. `plan` the smallest implementation satisfying the spec.
-5. Build a requirement checklist.
-6. Generate bounded tasks.
-7. Run `analyze` against constitution/spec/plan/tasks.
-8. If material inconsistency exists: STOP; repair the planning artifacts first.
-9. Implement only the authorized tasks.
-10. Run required validation.
-11. Produce an evidence/closeout report.
-12. Do not start the next spec until the current exit state is explicitly proven.
+2. Reconcile the Spec Kit bootstrap if the active spec explicitly owns that task.
+3. Run/perform `specify` only if the active spec is not already canonical.
+4. `clarify` unresolved ambiguities that affect acceptance.
+5. `plan` the smallest implementation satisfying the spec.
+6. Build a requirement checklist.
+7. Generate bounded tasks.
+8. Run `analyze` against constitution/spec/plan/tasks.
+9. If material inconsistency exists: STOP; repair the planning artifacts first.
+10. Implement only the authorized tasks.
+11. Run required validation.
+12. Produce an evidence/closeout report.
+13. Do not start the next spec until the current exit state is explicitly proven.
 
 A roadmap dependency becoming visible is not authorization to execute it.
 
 ## 6. First Antigravity assignment
 
-The first executable implementation assignment is **Spec 001 — Evaluation Charter**.
+The first executable assignment after Spec 000 is `CLOSED_CANONICAL` is **Spec 001 — Evaluation Charter**, beginning with **T001 only**.
 
-Use this prompt after the Spec Kit integration has been safely initialized:
+Use this prompt on a dedicated Spec 001 branch created from the exact canonical main that closed Spec 000:
 
 ```text
 COMMANDMED — EXECUTE SPEC 001 ONLY
@@ -117,14 +124,20 @@ Read, in order:
 9. specs/001-eval-charter/checklists/requirements.md
 10. .agents/skills/ponytail/SKILL.md
 
-Use the installed GitHub Spec Kit Antigravity skills (`agy`).
 Use Ponytail throughout: implement the minimum mechanism required by Spec 001.
 
-Before implementation:
+Authority sequence:
+- verify that Spec 000 is CLOSED_CANONICAL on the exact main used as this branch base;
+- execute T001 first: safely initialize/reconcile the pinned GitHub Spec Kit Antigravity integration (`agy`) and run the required planning analysis;
+- DO NOT start T002–T010 unless T001 acceptance passes and analysis reports no unresolved material contradiction;
+- if T001 fails, stop and report exact evidence.
+
+Before any implementation beyond T001:
 - verify exact git branch and HEAD;
-- inspect the working tree;
-- run the Spec Kit analysis step against constitution/spec/plan/tasks;
-- if material contradictions remain, do not implement; report them.
+- inspect the working tree and bootstrap diff;
+- preserve commandMed canonical planning authority;
+- confirm T001 acceptance;
+- confirm Spec Kit analysis is clean enough to proceed.
 
 Hard scope:
 - execute ONLY Spec 001;
@@ -139,7 +152,7 @@ Hard scope:
 - no Gold case content;
 - no patient-facing medical claims.
 
-Target outcome:
+Target outcome after T001 unlocks the remaining tasks:
 Build the minimal evaluation-governance foundation specified by Spec 001:
 - verified benchmark registry contract;
 - metrics and hard-gate catalog;
