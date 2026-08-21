@@ -67,8 +67,24 @@ Establish commandMed's mission, constitutional rules, planning evidence, bounded
 11. Ponytail safety carve-outs are explicit.
 12. Spec 001 is bounded and does not authorize model execution.
 
+## Canonical closeout protocol
+
+This planning PR intentionally keeps the header state at `CANONICAL_PLANNING`; it must not claim canonical closure before its own artifacts exist on canonical `main`.
+
+After this planning package is reviewed and merged, create a **dedicated closure-only PR** from the exact resulting canonical `main`. That closeout must:
+
+1. record the exact planning-package merge commit SHA;
+2. verify every required artifact exists on that exact canonical main;
+3. record the exact artifact/commit evidence used for closure;
+4. change this header to `CLOSED_CANONICAL`;
+5. update the Spec 000 row in `specs/README.md` to `CLOSED_CANONICAL`;
+6. explicitly state that Spec 001 T001, and only T001, becomes authorized after the closure PR is merged;
+7. introduce no model work, data ingestion, Spec Kit bootstrap, or Spec 001 implementation in the closure PR.
+
+This makes closure state a post-merge fact rather than a prediction made inside the planning PR.
+
 ## Exit state
 
-`CLOSED_CANONICAL` only after these artifacts are reviewed and merged as the canonical planning baseline.
+`CLOSED_CANONICAL` only after the planning artifacts are reviewed and merged, and the dedicated closure-only PR above is itself merged canonically with exact merge identity recorded.
 
-Closing Spec 000 authorizes planning/execution of Spec 001 only. It does not authorize Spec 002+, model inference, or training.
+Closing Spec 000 authorizes Spec 001 **T001 only**. It does not authorize T002–T010 until T001 passes, and it does not authorize Spec 002+, model inference, or training.
