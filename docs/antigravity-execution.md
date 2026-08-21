@@ -18,19 +18,39 @@ Canonical planning files include at least:
 - `specs/README.md`
 - active bounded spec files
 
-## 2. Recommended pinned Spec Kit bootstrap
-
-At the planning snapshot date, use a pinned known release rather than an unbounded moving main branch. Verify the release before execution.
+## 2. Immutable Spec Kit bootstrap
 
 The bootstrap itself is **Spec 001 T001**. It is not a prerequisite that occurs outside bounded execution authority.
 
-After Spec 000 is `CLOSED_CANONICAL`, start Spec 001 by creating a dedicated Spec 001 implementation branch. On that branch, T001 may run the pinned initialization command:
+The reviewed Spec Kit source identity for the v0.15.1 planning baseline is:
 
-```bash
-uvx --from git+https://github.com/github/spec-kit.git@v0.15.1 specify init --here --force --integration agy --script py
+```text
+SPEC_KIT_RELEASE=v0.15.1
+SPEC_KIT_COMMIT=489a3d51d152fa160d88d86781a924e99c4af832
 ```
 
-Why `--force`: the repository is no longer empty. This flag permits initialization into the directory; it is NOT permission to accept arbitrary overwrites.
+The commit above is the GitHub `github/spec-kit` release commit that sets version `0.15.1`. T001 must re-verify that exact commit identity before executing it. A movable tag name alone is not sufficient execution evidence.
+
+After Spec 000 is `CLOSED_CANONICAL`, start Spec 001 on a dedicated branch created from the exact canonical main that closed Spec 000. T001 may then run the immutable-source initialization command in uvx's isolated tool environment:
+
+```bash
+uvx --from git+https://github.com/github/spec-kit.git@489a3d51d152fa160d88d86781a924e99c4af832 specify init --here --force --integration agy --script py
+```
+
+`--force` is required because the repository is non-empty. It is **not** permission to trust overwrites.
+
+Before accepting the generated diff, T001 must record bootstrap evidence including at least:
+
+- commandMed pre-bootstrap HEAD;
+- Spec Kit commit SHA above;
+- `specify version` output from the same immutable source;
+- `uv --version`;
+- Python version;
+- resolved package/dependency evidence available from the execution environment/logs;
+- exact files changed by initialization;
+- confirmation that the pre-bootstrap commandMed commit remains a rollback/checkpoint identity.
+
+If the execution environment cannot provide enough dependency-resolution evidence to make the bootstrap reviewable, perform the bootstrap in a scratch clone/worktree at the same commandMed HEAD and treat its generated files as untrusted inputs to be copied/reconciled deliberately. Do not weaken reproducibility just to save a bootstrap step.
 
 T002–T010 remain blocked until T001 safely reconciles generated changes and planning analysis reports no material contradiction.
 
@@ -43,6 +63,8 @@ git status --short
 git rev-parse HEAD
 git ls-files -s AGENTS.md .specify/memory/constitution.md docs specs
 ```
+
+The worktree must be clean/known and the exact pre-bootstrap commit must be recorded before `--force` is used.
 
 After initialization:
 
@@ -58,11 +80,12 @@ Then reconcile deliberately:
 - preserve canonical master-plan/decision/spec files;
 - keep valid Spec Kit-generated skills/templates/scripts needed for `agy` integration;
 - do not delete safety/provenance language because a generated template is shorter;
-- do not accept unexpected generated files without understanding why they exist.
+- do not accept unexpected generated files without understanding why they exist;
+- do not allow the bootstrap to change project authority merely because a generated file has a canonical-looking name.
 
 T001 must then run the planning consistency analysis required by `specs/001-eval-charter/tasks.md`.
 
-If initialization cannot be reconciled without destroying canonical planning content, or analysis finds an unresolved material contradiction, stop and report the conflict rather than improvising. T002–T010 stay blocked.
+If initialization cannot be reconciled without destroying canonical planning content, dependency/source identity cannot be evidenced, or analysis finds an unresolved material contradiction, stop and report the conflict rather than improvising. T002–T010 stay blocked.
 
 ## 4. Ponytail use
 
@@ -128,7 +151,8 @@ Use Ponytail throughout: implement the minimum mechanism required by Spec 001.
 
 Authority sequence:
 - verify that Spec 000 is CLOSED_CANONICAL on the exact main used as this branch base;
-- execute T001 first: safely initialize/reconcile the pinned GitHub Spec Kit Antigravity integration (`agy`) and run the required planning analysis;
+- execute T001 first using the immutable Spec Kit source commit 489a3d51d152fa160d88d86781a924e99c4af832;
+- safely initialize/reconcile the GitHub Spec Kit Antigravity integration (`agy`), record bootstrap source/environment evidence, and run the required planning analysis;
 - DO NOT start T002–T010 unless T001 acceptance passes and analysis reports no unresolved material contradiction;
 - if T001 fails, stop and report exact evidence.
 
