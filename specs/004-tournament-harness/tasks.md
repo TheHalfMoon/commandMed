@@ -1,8 +1,8 @@
 # Spec 004 — Tournament Harness Tasks
 
-**Status:** IMPLEMENTATION_COMPLETE_EXTERNAL_FINAL_GATES_REQUIRED
+**Status:** `CLOSED_CANONICAL` — effective only after the dedicated closure-only PR containing this record is merged and the resulting canonical `main` is verified
 
-> Exact-head qualification and independent review are external evidence produced only after repository content freezes. This file intentionally does not self-attest the final head/run/review that contains it; doing so would mutate the head and invalidate that evidence.
+> This file records the completed Spec 004 task lifecycle. Implementation qualification/review evidence is external and directly linked below. The closure state is intentionally non-self-referential: it becomes effective only after the unchanged closure PR is independently reviewed, guarded-merged, and canonical `main` is verified.
 
 ## T004-01 — Freeze manifest and result contracts — COMPLETE
 
@@ -120,52 +120,68 @@ No real benchmark/model/Gold payload, network, subprocess, provider, or runtime 
 - comparison semantics;
 - no-selection semantics;
 - deterministic identity rules;
-- material review reconciliation through R004-09;
+- material implementation-review reconciliation through R004-09;
+- closure-review reconciliation through C004-03;
 - Spec 005 boundary and deferred founder decisions.
 
-## T004-09 — Regression and semantic-identity verification — EXTERNAL EXACT-HEAD GATE
+## T004-09 — Regression and semantic-identity verification — COMPLETE
 
-Repository implementation work is complete. After this content is frozen, one unchanged exact head must externally prove:
+Final implementation exact-head evidence is complete on:
 
 ```text
+EXACT_HEAD=cf6158ea4193aa7db895607c6fac5a3a1442f708
+RUN=32603944702
+JOB=97106155513
 PYTHON_SYNTAX=PASS
 CANONICAL_TOURNAMENT_IDENTITIES=PASS
 EXECUTION_SURFACE_PREFLIGHT=PASS
-FOCUSED_SPEC004=PASS
-INHERITED_HARD_GATES=PASS
-FULL_OFFLINE_SUITE=PASS
+FOCUSED_SPEC004_TESTS=48/48 PASS
+INHERITED_HARD_GATES=9/9 PASS
+FULL_OFFLINE_SUITE=276/276 PASS
 GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-The authoritative run/job/head belongs in PR/carrier evidence, not by mutating this file after the run.
+Direct evidence:
 
-## T004-10 — Independent exact-head review and closeout candidate — EXTERNAL GATES IN PROGRESS
+- [GitHub Actions Run 32603944702](https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702)
+- [GitHub Actions Job 97106155513](https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702/job/97106155513)
 
-Completed in repository content:
+## T004-10 — Independent exact-head review and implementation merge — COMPLETE
 
-- material implementation/review findings through R004-09 reconciled;
-- predecessor qualification invalidated after every semantic repair;
-- non-self-referential implementation closeout candidate exists at `specs/004-tournament-harness/closeout.md`;
-- stale task bookkeeping identified during prior final review reconciled;
-- predecessor independent reviews retained only as historical context.
+Final exact implementation head:
 
-External gates remaining after this content freezes:
+```text
+cf6158ea4193aa7db895607c6fac5a3a1442f708
+```
 
-- exact-head qualification required by T004-09;
-- fresh independent review of that exact unchanged head with no material blocker;
-- guarded squash merge PR #28 only if canonical `main`, exact PR head, qualification, and review remain unchanged.
+Fresh independent review reported no material correctness, security, scientific-integrity, lifecycle, authorization, deterministic-reporting, or execution-surface blocker on that exact head. Direct evidence:
 
-## T004-11 — Dedicated canonical closure — BLOCKED ON IMPLEMENTATION MERGE
+- [PR #28 fresh exact-head Qodo review](https://github.com/TheHalfMoon/commandMed/pull/28#issuecomment-5383054440)
+- [Qodo review updated through exact `cf6158ea...`](https://github.com/TheHalfMoon/commandMed/pull/28#issuecomment-5383058920)
+- [Implementation PR #28](https://github.com/TheHalfMoon/commandMed/pull/28)
 
-After qualified implementation merge only:
+The guarded squash merge used the exact expected head and produced:
 
-- verify canonical implementation merge SHA/tree;
-- create closure-only branch from exact canonical main;
-- bind implementation merge SHA/tree in Spec 004 closeout;
-- update lifecycle registry only as required;
-- independently review exact closure head;
-- guarded squash merge closure PR;
-- verify resulting canonical main before marking Spec 004 `CLOSED_CANONICAL`.
+```text
+CANONICAL_IMPLEMENTATION_MERGE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
+CANONICAL_IMPLEMENTATION_TREE=7e37fa626f825ee25271e0bf21a627a2e64e49da
+```
 
-Spec 005 remains blocked unless its separate founder prerequisites and explicit start authorization are satisfied.
+Canonical `main` was verified at that merge/tree before closure work began. Temporary carrier PR #29 was closed without merge.
+
+## T004-11 — Dedicated canonical closure — COMPLETE ON CLOSURE MERGE
+
+This dedicated closure-only transition records completion of the final governance task. Its `CLOSED_CANONICAL` state is effective only after this closure PR is independently reviewed, guarded-merged unchanged, and the resulting canonical `main` plus lifecycle files are verified.
+
+Closure transition requirements:
+
+- closure branch starts from exact canonical implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`;
+- canonical implementation tree remains `7e37fa626f825ee25271e0bf21a627a2e64e49da`;
+- lifecycle/governance documentation only is changed;
+- final implementation evidence remains linked and unchanged;
+- exact closure head receives fresh independent review with no material lifecycle/governance/authorization/integrity blocker;
+- closure PR is guarded squash-merged without head drift;
+- resulting canonical `main` and lifecycle files are verified.
+
+Spec 005 remains `BLOCKED`. Spec 004 closure does not satisfy Spec 005's separate founder license/device prerequisites and does not grant explicit Spec 005 start authorization.
