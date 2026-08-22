@@ -102,6 +102,38 @@ class TournamentReviewHardeningTests(unittest.TestCase):
                 msg=f"expected unresolved candidate_id error for {invalid_id!r}: {report}",
             )
 
+    def test_mixed_type_manifest_keys_fail_closed_without_hash_exception(self):
+        malformed = copy.deepcopy(self.manifest)
+        malformed[7] = "unexpected"
+
+        report = evaluate_tournament(malformed, [], self.artifacts)
+
+        self.assertEqual(report["tournament_state"], "NO_SELECTION")
+        self.assertEqual(report["reason_code"], "INVALID_MANIFEST_OR_PROTOCOL")
+        self.assertIsNone(report["tournament_manifest_sha256"])
+        self.assertTrue(
+            any("object key" in error and "string" in error for error in report["result_set_errors"]),
+            msg=f"expected mixed-key validation error: {report}",
+        )
+
+    def test_mixed_type_candidate_keys_fail_closed_as_incomplete(self):
+        malformed = self.result("fixture-model-a", 2.0, 0.2)
+        malformed[7] = "unexpected"
+        valid = self.result("fixture-model-b", 1.0, 0.3)
+
+        report = evaluate_tournament(self.manifest, [malformed, valid], self.artifacts)
+
+        self.assertEqual(report["tournament_state"], "NO_SELECTION")
+        self.assertEqual(report["reason_code"], "CANDIDATE_EVIDENCE_INCOMPLETE")
+        by_id = {item["candidate_id"]: item for item in report["candidate_reports"]}
+        candidate = by_id["fixture-model-a"]
+        self.assertEqual(candidate["state"], "INCOMPLETE")
+        self.assertIn("MALFORMED_CANDIDATE_RESULT", candidate["reason_codes"])
+        self.assertTrue(
+            any("object key" in error and "string" in error for error in candidate["validation_errors"]),
+            msg=f"expected mixed-key candidate validation error: {candidate}",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
