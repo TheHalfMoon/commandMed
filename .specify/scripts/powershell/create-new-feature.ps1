@@ -280,8 +280,9 @@ if (-not $DryRun) {
         }
     }
 
-    # Persist to .specify/feature.json so downstream commands can find the feature
-    Save-FeatureJson -RepoRoot $repoRoot -FeatureDirectory $featureDir
+    # Persist repository-relative feature state with POSIX separators so the
+    # same feature.json resolves correctly on Windows, Linux, and macOS.
+    Save-FeatureJson -RepoRoot $repoRoot -FeatureDirectory "specs/$branchName"
 
     # Set environment variables for the current session
     $env:SPECIFY_FEATURE = $branchName
