@@ -2,7 +2,7 @@
 
 **Feature Branch:** `spec/002-safety-gates`
 **Created:** 2026-08-22
-**State:** ACTIVE (PLANNING / ANALYZE CANDIDATE)
+**State:** ACTIVE (CLOSEOUT_CANDIDATE)
 **Canonical starting base:** `cc02b0d99d67e5a720502953c99307c8b991720d`
 **Dependency:** Spec 001 — `CLOSED_CANONICAL`
 **Training authority:** NONE
