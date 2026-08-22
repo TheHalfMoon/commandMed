@@ -1,0 +1,79 @@
+name: Spec 001 Final Exact-Head Validation
+
+on:
+  pull_request:
+    branches:
+      - spec/001-eval-charter
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-exact-head:
+    if: github.head_ref == 'validation/spec001-153b-final-head'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact final Spec 001 candidate
+        uses: actions/checkout@v4
+        with:
+          ref: 153b79e88ed1e7145654c34cb22bda691886d38a
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          echo "EXACT_HEAD=$actual"
+          test "$actual" = "153b79e88ed1e7145654c34cb22bda691886d38a"
+          git status --short
+      - name: Python syntax validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile src/commandmed/eval_contract/*.py tests/eval_contract/*.py .specify/scripts/python/*.py
+      - name: PowerShell syntax and bounded behavior validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v pwsh >/dev/null 2>&1
+          pwsh -NoProfile -NonInteractive -Command '$ErrorActionPreference="Stop"; Get-ChildItem .specify/scripts/powershell/*.ps1 | ForEach-Object { $tokens=$null; $errs=$null; [System.Management.Automation.Language.Parser]::ParseFile($_.FullName,[ref]$tokens,[ref]$errs) > $null; if ($errs.Count -gt 0) { $errs | ForEach-Object { Write-Error $_ }; exit 1 } }; Write-Output "POWERSHELL_PARSE=PASS"'
+          set +e
+          pwsh -NoProfile -NonInteractive -File .specify/scripts/powershell/setup-plan.ps1 --definitely-unsupported >/tmp/setup-plan.out 2>/tmp/setup-plan.err
+          rc=$?
+          set -e
+          cat /tmp/setup-plan.out || true
+          cat /tmp/setup-plan.err || true
+          echo "SETUP_PLAN_UNKNOWN_ARG_EXIT=$rc"
+          test "$rc" -ne 0
+      - name: Run full unittest suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p "test_*.py"
+      - name: Verify diff hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check 30283d7d45c1d257f6c448d3648b25034e8ee5d5..HEAD
+          echo "GIT_DIFF_CHECK=PASS"
+      - name: Compute canonical semantic hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from src.commandmed.eval_contract.canonical import compute_file_canonical_sha256
+          expected = {
+              "benchmarks.json": "7f58edba1ac179cbf24cb2d5c902e2ef947024bfd1c6eacdbef1a609b00f64a7",
+              "gold_protocols.json": "40c89702469d759f4dc893aff6bc6fdb7e300f9cb2d8f19f2b3e0dbd78200666",
+              "metrics.json": "304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a",
+              "quarantine.json": "b59fd86a7f63c8de7058a0386f57de1cadc7c817edfa1e9e0aa392ca5219e080",
+          }
+          for name, wanted in expected.items():
+              actual = compute_file_canonical_sha256(Path("data/eval") / name)
+              print(f"{name}={actual}")
+              if actual != wanted:
+                  raise SystemExit(f"semantic hash mismatch for {name}: {actual} != {wanted}")
+          PY
