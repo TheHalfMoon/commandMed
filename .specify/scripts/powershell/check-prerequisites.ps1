@@ -40,10 +40,10 @@ OPTIONS:
   -Help, -h           Show this help message
 
 EXAMPLES:
-  # Check task prerequisites (plan.md required)
+  # Check task prerequisites (spec.md + plan.md required)
   .\check-prerequisites.ps1 -Json
 
-  # Check implementation prerequisites (plan.md + tasks.md required)
+  # Check implementation prerequisites (spec.md + plan.md + tasks.md required)
   .\check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
 
   # Get feature paths only (no validation)
@@ -90,14 +90,21 @@ if ($PathsOnly) {
 # Validate required directories and files
 if (-not (Test-Path $paths.FEATURE_DIR -PathType Container)) {
     [Console]::Error.WriteLine("ERROR: Feature directory not found: $($paths.FEATURE_DIR)")
-    $specifyCommand = '/speckit-specify'
+    $specifyCommand = Format-SpecKitCommand -CommandName 'specify' -RepoRoot $paths.REPO_ROOT
     [Console]::Error.WriteLine("Run $specifyCommand first to create the feature structure.")
+    exit 1
+}
+
+if (-not (Test-Path $paths.FEATURE_SPEC -PathType Leaf)) {
+    [Console]::Error.WriteLine("ERROR: spec.md not found in $($paths.FEATURE_DIR)")
+    $specifyCommand = Format-SpecKitCommand -CommandName 'specify' -RepoRoot $paths.REPO_ROOT
+    [Console]::Error.WriteLine("Run $specifyCommand first to create the feature specification.")
     exit 1
 }
 
 if (-not (Test-Path $paths.IMPL_PLAN -PathType Leaf)) {
     [Console]::Error.WriteLine("ERROR: plan.md not found in $($paths.FEATURE_DIR)")
-    $planCommand = '/speckit-plan'
+    $planCommand = Format-SpecKitCommand -CommandName 'plan' -RepoRoot $paths.REPO_ROOT
     [Console]::Error.WriteLine("Run $planCommand first to create the implementation plan.")
     exit 1
 }
@@ -105,7 +112,7 @@ if (-not (Test-Path $paths.IMPL_PLAN -PathType Leaf)) {
 # Check for tasks.md if required
 if ($RequireTasks -and -not (Test-Path $paths.TASKS -PathType Leaf)) {
     [Console]::Error.WriteLine("ERROR: tasks.md not found in $($paths.FEATURE_DIR)")
-    $tasksCommand = '/speckit-tasks'
+    $tasksCommand = Format-SpecKitCommand -CommandName 'tasks' -RepoRoot $paths.REPO_ROOT
     [Console]::Error.WriteLine("Run $tasksCommand first to create the task list.")
     exit 1
 }
