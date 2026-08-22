@@ -1,6 +1,8 @@
 # Spec 004 — Tournament Harness Tasks
 
-**Status:** IMPLEMENTATION_REPAIRED_AWAITING_FINAL_EXACT_HEAD_QUALIFICATION
+**Status:** IMPLEMENTATION_COMPLETE_EXTERNAL_FINAL_GATES_REQUIRED
+
+> Exact-head qualification and independent review are external evidence produced only after repository content freezes. This file intentionally does not self-attest the final head/run/review that contains it; doing so would mutate the head and invalidate that evidence.
 
 ## T004-01 — Freeze manifest and result contracts — COMPLETE
 
@@ -12,6 +14,7 @@ Exit evidence:
 - exact V1 candidate-result fields enforced;
 - execution/payload surface denylist enforced recursively, including separator/whitespace hardening;
 - mixed string/non-string object keys fail closed instead of raising during closed-shape validation;
+- non-object manifests are invalid and do not receive a tournament-manifest identity;
 - candidate IDs unique;
 - ordered comparison metric IDs unique;
 - unknown execution mode/strategy/tie policy rejected.
@@ -83,9 +86,10 @@ Exit evidence:
 - duplicate or undeclared candidate envelope fails closed;
 - input candidate order does not alter result/report identity;
 - report carries exact canonical artifact identities;
-- report digest binds lexicographic comparison-vector order.
+- report digest binds lexicographic comparison-vector order;
+- invalid manifest shapes cannot carry a misleading tournament-manifest digest.
 
-## T004-07 — Focused fixture tests — COMPLETE / FINAL REQUALIFICATION PENDING
+## T004-07 — Focused fixture tests — COMPLETE
 
 Focused synthetic/non-medical regression coverage exists in:
 
@@ -95,17 +99,14 @@ tests/test_tournament_contract_hardening.py
 tests/test_tournament_review_hardening.py
 ```
 
-Historical pre-repair evidence at `7a04d40030a2aa28b4c2f0d5db6e4d387388c756` was:
+Coverage includes the final-review boundaries for:
 
-```text
-RUN=32601812794
-JOB=97101112661
-FOCUSED_SPEC004_TESTS=45/45 PASS
-INHERITED_HARD_GATES=9/9 PASS
-FULL_OFFLINE_SUITE=273/273 PASS
-```
-
-That predecessor evidence is not merge evidence after the final-review mixed-key repair. Current regression coverage additionally exercises mixed-type manifest and candidate object keys through `evaluate_tournament()` and requires a new exact-head run.
+- malformed/non-list candidate-result sets;
+- mixed-type manifest and candidate object keys;
+- wholly non-object string/list/`None` manifests producing `INVALID_MANIFEST_OR_PROTOCOL` with `tournament_manifest_sha256=None`;
+- prohibited-key separator normalization;
+- comparison-vector hash-order binding;
+- arbitrarily large integer comparison and final report hashing.
 
 No real benchmark/model/Gold payload, network, subprocess, provider, or runtime dependency is used.
 
@@ -119,14 +120,12 @@ No real benchmark/model/Gold payload, network, subprocess, provider, or runtime 
 - comparison semantics;
 - no-selection semantics;
 - deterministic identity rules;
-- material review reconciliation;
+- material review reconciliation through R004-09;
 - Spec 005 boundary and deferred founder decisions.
 
-## T004-09 — Regression and semantic-identity verification — REQUALIFICATION REQUIRED
+## T004-09 — Regression and semantic-identity verification — EXTERNAL EXACT-HEAD GATE
 
-Historical closeout-head Run `32602120618` on `6c1a359f969222dd7868248d1ba12fc114f413d9` passed 45 focused / 9 inherited hard-gate / 273 full tests, exact identities, execution-surface preflight, diff hygiene, and bounded paths, but that qualification is invalidated by final independent finding R004-08 and its semantic repair.
-
-The unchanged final repair head must now independently prove:
+Repository implementation work is complete. After this content is frozen, one unchanged exact head must externally prove:
 
 ```text
 PYTHON_SYNTAX=PASS
@@ -139,21 +138,23 @@ GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-## T004-10 — Independent exact-head review and closeout candidate — IN PROGRESS
+The authoritative run/job/head belongs in PR/carrier evidence, not by mutating this file after the run.
 
-Completed:
+## T004-10 — Independent exact-head review and closeout candidate — EXTERNAL GATES IN PROGRESS
 
-- material implementation/review findings through R004-08 reconciled in repository content;
+Completed in repository content:
+
+- material implementation/review findings through R004-09 reconciled;
 - predecessor qualification invalidated after every semantic repair;
 - non-self-referential implementation closeout candidate exists at `specs/004-tournament-harness/closeout.md`;
-- stale task bookkeeping identified during final review has been reconciled;
-- predecessor independent reviews remain historical context only.
+- stale task bookkeeping identified during prior final review reconciled;
+- predecessor independent reviews retained only as historical context.
 
-Remaining:
+External gates remaining after this content freezes:
 
-- requalify the exact final repair head;
-- obtain fresh independent review of that exact unchanged head with no material blocker;
-- guarded squash merge PR #28 only if canonical `main` remains unchanged and the exact head remains unchanged.
+- exact-head qualification required by T004-09;
+- fresh independent review of that exact unchanged head with no material blocker;
+- guarded squash merge PR #28 only if canonical `main`, exact PR head, qualification, and review remain unchanged.
 
 ## T004-11 — Dedicated canonical closure — BLOCKED ON IMPLEMENTATION MERGE
 
