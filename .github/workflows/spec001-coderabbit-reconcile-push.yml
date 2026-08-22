@@ -1,0 +1,52 @@
+name: Spec 001 CodeRabbit Reconcile Push
+
+on:
+  push:
+    branches:
+      - repair/spec001-coderabbit-reconcile
+
+permissions:
+  contents: write
+
+jobs:
+  run-reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: repair/spec001-coderabbit-reconcile
+          fetch-depth: 0
+      - name: Execute reconciliation run blocks
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          source = Path('.github/workflows/spec001-coderabbit-reconcile.yml').read_text(encoding='utf-8').splitlines()
+          blocks = []
+          i = 0
+          while i < len(source):
+              if source[i] == '        run: |':
+                  i += 1
+                  block = []
+                  while i < len(source):
+                      line = source[i]
+                      if line.startswith('          '):
+                          block.append(line[10:])
+                          i += 1
+                          continue
+                      break
+                  blocks.append('\n'.join(block) + '\n')
+                  continue
+              i += 1
+
+          if len(blocks) != 6:
+              raise SystemExit(f'expected 6 reconciliation run blocks, found {len(blocks)}')
+
+          for index, block in enumerate(blocks, 1):
+              path = Path(f'/tmp/spec001-reconcile-{index}.sh')
+              path.write_text('set -euo pipefail\n' + block, encoding='utf-8')
+              print(f'=== running block {index}/{len(blocks)} ===')
+              subprocess.run(['bash', str(path)], check=True)
+          PY
