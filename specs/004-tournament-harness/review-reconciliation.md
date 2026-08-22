@@ -161,9 +161,62 @@ Layer 2 repair:
 - booleans remain booleans and are not treated as integers;
 - metric envelope validation rejects non-finite floats globally;
 - integer comparison/ranking remains exact;
-- the oversized-integer regression must pass through comparison **and final report hashing**.
+- the oversized-integer regression passes through comparison and final report hashing.
 
 The tagged hexadecimal form is an internal scientific-hash projection only; it is not a mutation of the reported score or any inherited canonical Specs 001–003 artifact.
+
+## R004-05 — Recursive denylist separator/whitespace bypass
+
+**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`
+**Reviewer:** Qodo
+**Severity:** MATERIAL / SECURITY
+**Status:** REPAIRED
+
+The predecessor normalized only literal spaces and hyphens. A nested field such as `api\tkey` could therefore avoid matching `api_key` in objects whose canonical validators permit additional metadata.
+
+Repair:
+
+- normalize key names through Unicode NFKC compatibility normalization plus case folding;
+- collapse every non-ASCII-alphanumeric separator sequence to `_`;
+- compare both normalized and underscore-free compact forms against the prohibited vocabulary, preventing separator and camel-style variants from creating a hidden channel;
+- use normalized path labels in deterministic errors rather than raw control-character-bearing keys;
+- regression rejects `api\tkey`, `api\u200bkey`, and `provider.endpoint` inside manifest safety scope.
+
+No new execution surface or dependency is introduced; `unicodedata` and `re` are Python standard library.
+
+## R004-06 — Report digest did not bind comparison-vector order
+
+**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`
+**Reviewer:** Qodo
+**Severity:** MATERIAL / SCIENTIFIC IDENTITY
+**Status:** REPAIRED
+
+The inherited semantic canonicalizer sorts lists of dictionary records that carry recognized IDs such as `metric_id`. That behavior is correct for set-like catalog records but would erase the scientific order of a lexicographic `comparison_vector` if the vector remained a list of dictionaries in the hash projection.
+
+Repair:
+
+- keep the public report unchanged;
+- in the report-hash projection only, map each comparison-vector record to an ordered positional sequence `[metric_id, direction, score, evidence_artifact_id]`;
+- positional sequence order is preserved by the inherited canonicalizer;
+- exact-integer tagged hashing remains applied after this projection;
+- regression proves reversing a candidate's comparison vector changes `report_sha256`.
+
+The implementation does not modify the inherited Spec 001 canonicalizer or any canonical artifact identity.
+
+## R004-07 — Bounded spec lacked explicit template exit headings
+
+**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`
+**Reviewer:** Qodo
+**Severity:** GOVERNANCE / AUDITABILITY
+**Status:** REPAIRED
+
+The spec already contained explicit prohibited scope and acceptance/exit semantics, but the headings were not the exact review-template labels.
+
+Repair:
+
+- rename the section to the explicit `## Exclusions` heading;
+- add a non-empty `## Exit Evidence` section enumerating exact-head CI, independent review, closeout, guarded implementation merge, and dedicated closure-only requirements;
+- preserve the rule that Spec 004 is not `CLOSED_CANONICAL` until the separate closure PR is merged and canonical main is verified.
 
 ## Qualification invalidation history
 
@@ -181,6 +234,10 @@ The tagged hexadecimal form is an internal scientific-hash projection only; it i
 
 a8e3c197cd7320539b096821266bba7c36902c27
   -> Run 32600855451 failed focused test V004-02 after 39 tests passed and oversized-int final report hashing raised ValueError
+
+8da820fde8974ec382afde7009cd201ee8f59bdf
+  -> Run 32600976193 green (40 focused / 9 hard / 268 full)
+  -> invalidated by second independent review findings R004-05/R004-06/R004-07
 ```
 
 No predecessor PASS is merge evidence for the current implementation head.
