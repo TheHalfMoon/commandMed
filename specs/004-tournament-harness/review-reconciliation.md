@@ -15,22 +15,13 @@ A green predecessor is not reusable as final qualification after a later materia
 **Severity:** MATERIAL / INTEGRATION
 **Status:** REPAIRED
 
-The canonical `data/eval/quarantine.json` artifact is a container with:
-
-```text
-quarantine_rules
-contamination_records
-```
-
-The initial adapter passed the entire container directly to `validate_quarantine_rules()`, causing focused validation to fail.
+The canonical `data/eval/quarantine.json` artifact is a container with `quarantine_rules` and `contamination_records`. The initial adapter passed the entire container directly to `validate_quarantine_rules()`.
 
 Repair:
 
 - validate `quarantine_rules` with `validate_quarantine_rules()`;
 - validate `contamination_records` with `validate_contamination_records()`;
-- retain the semantic SHA-256 over the complete canonical quarantine container.
-
-`19cd7697...` is invalidated as a qualification candidate.
+- retain semantic SHA-256 over the complete canonical quarantine container.
 
 ## S004-01 — Caller-supplied alternate protocol bundle
 
@@ -38,15 +29,15 @@ Repair:
 **Severity:** MATERIAL / PROTOCOL INTEGRITY
 **Status:** REPAIRED
 
-Internal consistency between caller artifacts and manifest declarations is insufficient to establish canonical authority.
+Internal consistency between caller artifacts and manifest declarations is insufficient canonical authority.
 
 Repair:
 
-- hard-pin the exact six canonical Specs 001–003 semantic identities in `CANONICAL_UPSTREAM_IDENTITIES_V1`;
+- hard-pin the exact six Specs 001–003 identities in `CANONICAL_UPSTREAM_IDENTITIES_V1`;
 - require recomputed supplied-artifact identities to equal that map;
 - require manifest-declared identities to equal that same map.
 
-A semantically valid but noncanonical policy bundle therefore fails closed.
+A valid-but-noncanonical contract bundle therefore fails closed.
 
 ## S004-02 — Incomplete candidate subset-selection bypass
 
@@ -54,9 +45,7 @@ A semantically valid but noncanonical policy bundle therefore fails closed.
 **Severity:** MATERIAL / COMPARISON INTEGRITY
 **Status:** REPAIRED
 
-A missing or unresolved candidate must not disappear from the frozen candidate set and allow selection among a convenient subset.
-
-Repair:
+Candidate states are:
 
 ```text
 QUALIFIED
@@ -64,7 +53,7 @@ DISQUALIFIED
 INCOMPLETE
 ```
 
-Only complete decisive evidence may produce `DISQUALIFIED`, currently:
+Only complete decisive evidence may produce `DISQUALIFIED`:
 
 - lineage `PROHIBITED`;
 - lineage `REFERENCE_ONLY` for the exact use;
@@ -79,23 +68,23 @@ NO_SELECTION
 reason=CANDIDATE_EVIDENCE_INCOMPLETE
 ```
 
-Unknown extra candidates or duplicate result envelopes invalidate the result set and also force `NO_SELECTION`.
+Unknown extra candidates or duplicate result envelopes invalidate the result set and force `NO_SELECTION`.
 
-## R004-01 — Candidate schema conflicted with FR-006 safety-scope wording
+## R004-01 — FR-006 candidate schema conflict
 
 **Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
 **Severity:** MATERIAL / CONTRACT CONSISTENCY
 **Status:** REPAIRED
 
-The closed candidate schema rejected an extra candidate-level `safety_scope`, while the original FR-006 wording appeared to require one.
+Original FR-006 wording appeared to require a candidate-level `safety_scope`, while the closed candidate schema rejected that duplicate field.
 
 Canonical resolution:
 
-- safety scope exists once in the frozen tournament manifest;
-- every candidate result carries exact `tournament_manifest_sha256`;
+- safety scope exists once in the frozen manifest;
+- every candidate carries exact `tournament_manifest_sha256`;
 - that digest binds the candidate to the manifest safety scope;
-- candidate-level duplicate safety scope is intentionally prohibited to avoid two sources of truth;
-- manifest digest mismatch is `INCOMPLETE` evidence and prevents selection.
+- a duplicate candidate-level safety scope is prohibited to avoid two sources of truth;
+- manifest digest mismatch is `INCOMPLETE` and prevents ranking.
 
 `spec.md` and `plan.md` now state this explicitly.
 
@@ -105,73 +94,93 @@ Canonical resolution:
 **Severity:** MATERIAL / COMPARISON INTEGRITY
 **Status:** REPAIRED
 
-The implementation and Analyze contract already used `QUALIFIED / DISQUALIFIED / INCOMPLETE`, but the implementation plan still described missing candidates as generic non-qualifying evidence and permitted ranking too early.
-
 Repair:
 
-- remove `NON_QUALIFYING` from the plan;
-- require explicit `INCOMPLETE` candidate records;
+- remove `NON_QUALIFYING`;
+- use `QUALIFIED / DISQUALIFIED / INCOMPLETE`;
 - evaluate the incomplete-candidate gate before ranking;
 - rank only when no declared candidate is incomplete.
 
-## R004-03 — Selection report omitted canonical artifact identities
+## R004-03 — Report omitted canonical artifact identities
 
 **Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
 **Severity:** MATERIAL / REPORT INTEGRITY
 **Status:** REPAIRED
 
-FR-012 requires the report itself to expose the canonical identity map. The predecessor report contained only `tournament_manifest_sha256`.
-
 Repair:
 
 - every report carries `canonical_artifact_identities` equal to `CANONICAL_UPSTREAM_IDENTITIES_V1`;
-- the identity map is included in the non-self-referential scientific report digest;
+- the map participates in the non-self-referential report digest;
 - regression proves identity-map mutation changes `report_sha256`.
 
-## S004-03 — Invalid result-set reports were input-order sensitive
+## S004-03 — Invalid result-set report identity depended on input order
 
 **Discovered by:** post-qualification self-audit
 **Affected predecessor:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
 **Severity:** MATERIAL / DETERMINISTIC IDENTITY
 **Status:** REPAIRED
 
-Valid candidate reports were order-normalized, but malformed/unknown result-set error strings included caller list indexes. Reordering semantically equivalent invalid envelopes could therefore change `report_sha256`.
+Malformed/unknown result-set errors embedded caller list indexes, so equivalent permutations could change `report_sha256`.
 
 Repair:
 
-- result-set errors no longer embed caller iteration indexes;
-- recursive denylist paths use order-neutral `[]` list notation;
+- result-set errors do not embed caller indexes;
+- recursive denylist list paths use order-neutral `[]` notation;
 - report error collections are sorted before hashing;
-- regressions prove malformed and unknown-extra result permutations yield identical reports and report identities.
+- regressions prove malformed and unknown-extra result permutations yield identical reports/identities.
 
-## R004-04 — Arbitrarily large integer scores could raise `OverflowError`
+## R004-04 — Large integer comparison overflow
 
 **Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
 **Severity:** MATERIAL / STABILITY
+**Status:** REPAIRED IN TWO LAYERS
+
+The predecessor accepted arbitrary Python integers, but `math.isfinite(10 ** 10000)` can raise `OverflowError` due to float conversion.
+
+Layer 1 repair:
+
+- booleans/non-numeric values remain rejected;
+- `math.isfinite()` applies only to `float` values;
+- integer ranking remains exact without float coercion.
+
+## V004-02 — Large integer report-hash decimal conversion limit
+
+**Discovered by:** GitHub exact-head carrier Run `32600855451`
+**Affected predecessor:** `a8e3c197cd7320539b096821266bba7c36902c27`
+**Severity:** MATERIAL / STABILITY + DETERMINISTIC IDENTITY
 **Status:** REPAIRED
 
-Python/JSON arbitrary-precision integers passed the numeric type check, but the predecessor then called `math.isfinite(score)`, which converts large integers through floating point and may raise `OverflowError`.
+Run #4 proved Layer 1 was insufficient. The `10 ** 10000` comparison completed, but final report hashing reached Python 3.11's default 4300-digit decimal integer-string conversion limit inside `json.dumps()` and raised `ValueError`.
 
-Repair:
+The project does not change process-global `sys.set_int_max_str_digits()` merely to make the fixture pass.
 
-- booleans and non-numeric values remain rejected;
-- `math.isfinite()` is applied only to `float` values;
-- integers remain exact finite integer values without float coercion;
-- regression uses `10 ** 10000` and proves evaluation completes deterministically and can compare the value.
+Layer 2 repair:
+
+- the returned scientific report keeps the original Python integer value;
+- report-hash projection recursively maps integers to an exact tagged hexadecimal representation before canonical JSON serialization;
+- booleans remain booleans and are not treated as integers;
+- metric envelope validation rejects non-finite floats globally;
+- integer comparison/ranking remains exact;
+- the oversized-integer regression must pass through comparison **and final report hashing**.
+
+The tagged hexadecimal form is an internal scientific-hash projection only; it is not a mutation of the reported score or any inherited canonical Specs 001–003 artifact.
 
 ## Qualification invalidation history
 
 ```text
 19cd7697b6f399af50f9006b7235b3421eb8cc0a
-  -> invalidated by V004-01 carrier failure
+  -> Run 32600079522 failed V004-01
 
 77ee65406d2e7bd0b05737622e45aee81a88ed74
-  -> Run 32600227184 was green (35 focused / 9 hard / 263 full)
-  -> invalidated by R004-01, R004-02, R004-03, S004-03, R004-04
+  -> Run 32600227184 green (35 focused / 9 hard / 263 full)
+  -> invalidated by R004-01/R004-02/R004-03/S004-03/R004-04
 
 66ed1bfc6a80c249f7e78e68a6abf6252afe722b
-  -> Run 32600571207 was green (39 focused / 9 hard / 267 full)
-  -> invalidated by subsequent FR-006/plan/large-integer reconciliation mutations
+  -> Run 32600571207 green (39 focused / 9 hard / 267 full)
+  -> invalidated by later FR-006/plan/large-integer reconciliation mutations
+
+a8e3c197cd7320539b096821266bba7c36902c27
+  -> Run 32600855451 failed focused test V004-02 after 39 tests passed and oversized-int final report hashing raised ValueError
 ```
 
 No predecessor PASS is merge evidence for the current implementation head.
@@ -192,7 +201,7 @@ BOUNDED_PATH_PREFLIGHT=PASS
 INDEPENDENT_EXACT_HEAD_REVIEW=NO_MATERIAL_BLOCKER
 ```
 
-Only after that implementation review is clean may a non-self-referential closeout candidate be added. Adding closeout changes the head and requires another final exact-head qualification/review before guarded merge.
+Only after implementation review is clean may a non-self-referential closeout candidate be added. Closeout changes the head and requires another final exact-head qualification/review before guarded merge.
 
 ## Authority boundary
 
