@@ -16,7 +16,7 @@ class TournamentReportContractHardeningTests(unittest.TestCase):
         self.artifacts = canonical_artifacts()
         self.manifest = manifest()
 
-    def result(self, candidate_id: str, info: float, calibration: float) -> dict:
+    def result(self, candidate_id: str, info, calibration) -> dict:
         return candidate_result(
             candidate_id,
             self.manifest,
@@ -95,6 +95,19 @@ class TournamentReportContractHardeningTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(first["reason_code"], "CANDIDATE_RESULT_SET_INVALID")
         self.assertEqual(first["report_sha256"], second["report_sha256"])
+
+    def test_oversized_integer_score_is_finite_and_does_not_abort(self):
+        huge = 10 ** 10000
+        a = self.result("fixture-model-a", huge, 0.2)
+        b = self.result("fixture-model-b", huge - 1, 0.1)
+
+        report = evaluate_tournament(self.manifest, [a, b], self.artifacts)
+
+        self.assertEqual(report["tournament_state"], "SELECTED")
+        self.assertEqual(report["selected_candidate_id"], "fixture-model-a")
+        by_id = {item["candidate_id"]: item for item in report["candidate_reports"]}
+        self.assertEqual(by_id["fixture-model-a"]["state"], "QUALIFIED")
+        self.assertEqual(by_id["fixture-model-a"]["comparison_vector"][0]["score"], huge)
 
 
 if __name__ == "__main__":
