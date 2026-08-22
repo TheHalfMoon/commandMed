@@ -1,91 +1,39 @@
-# Spec 004 — Tournament Harness Implementation Closeout Candidate
+# Spec 004 — Tournament Harness Canonical Closeout
 
-**Closeout type:** pre-merge implementation closeout candidate
-**Status:** `IMPLEMENTATION_CLOSEOUT_CANDIDATE_EXTERNAL_FINAL_GATES_REQUIRED`
+**Closeout type:** dedicated post-implementation governance closure
+**Status:** `CLOSED_CANONICAL` — effective only after this closure-only PR is merged and resulting canonical `main` is verified
 **Implementation PR:** `#28`
-**Canonical starting base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
-**Historical reviewed predecessor:** `7a04d40030a2aa28b4c2f0d5db6e4d387388c756`
+**Canonical implementation merge:** `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`
+**Canonical implementation tree:** `7e37fa626f825ee25271e0bf21a627a2e64e49da`
+**Final reviewed implementation head:** `cf6158ea4193aa7db895607c6fac5a3a1442f708`
+**Canonical implementation base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
 
-> This document is intentionally non-self-referential. It does not claim the commit SHA, validation run/job, or final review result that contains it. Those are external exact-head evidence produced only after repository content freezes. Mutating this file afterward merely to copy that evidence back into itself would create a new head and invalidate the evidence.
+> This closeout is intentionally non-self-referential. It binds the already-canonical implementation evidence below but does not claim the closure merge SHA containing itself. `SPEC_004=CLOSED_CANONICAL` becomes effective only after this exact closure head is independently reviewed, guarded-merged unchanged, and the resulting canonical `main` plus lifecycle records are verified.
 
-## 1. Bounded implementation completed
+## 1. Canonical implementation binding
 
-Spec 004 establishes the minimum deterministic **fixture/precomputed-results-only** tournament harness required before any later real tournament execution can be authorized separately.
-
-It implements:
-
-- exact V1 tournament manifest validation;
-- exact canonical Specs 001–003 artifact identity pinning;
-- fail-closed canonical artifact validation before identity trust;
-- exact candidate-to-manifest SHA binding;
-- canonical Spec 003 exact-use lineage admission;
-- canonical Spec 002/001 safety hard-gate qualification;
-- explicit `QUALIFIED / DISQUALIFIED / INCOMPLETE` candidate states;
-- tournament-wide no-selection when any declared candidate evidence is incomplete;
-- deterministic predeclared lexicographic comparison of non-hard-gate metrics;
-- no weighted aggregate and no candidate-ID/input-order scientific tie-break;
-- deterministic identity-bound reports that include the exact canonical contract identity map;
-- report hashing that binds lexicographic comparison-vector order;
-- fail-closed recursive execution/payload/credential key rejection;
-- fail-closed mixed-type object-key handling without heterogeneous-key sort exceptions;
-- invalid non-object manifests do not receive a misleading tournament-manifest digest;
-- exact large-integer comparison and report identity without float or decimal-string overflow;
-- synthetic/non-medical fixture regression coverage only.
-
-## 2. Exact canonical identities bound by V1
+Spec 004 implementation was guarded squash-merged through [PR #28](https://github.com/TheHalfMoon/commandMed/pull/28) with expected implementation head:
 
 ```text
-benchmarks_sha256=7f58edba1ac179cbf24cb2d5c902e2ef947024bfd1c6eacdbef1a609b00f64a7
-metrics_sha256=304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a
-gold_protocols_sha256=40c89702469d759f4dc893aff6bc6fdb7e300f9cb2d8f19f2b3e0dbd78200666
-quarantine_sha256=b59fd86a7f63c8de7058a0386f57de1cadc7c817edfa1e9e0aa392ca5219e080
-safety_policy_sha256=79a12414fe68fc08efb43070f3eede36976f2e0dc0ece7f4eed4bbcc5496d14f
-lineage_contract_sha256=2b085339c17c3b8b89e55f53fc62c23bcbcf968cdc744b8ead0549b462bda962
+FINAL_REVIEWED_IMPLEMENTATION_HEAD=cf6158ea4193aa7db895607c6fac5a3a1442f708
+CANONICAL_IMPLEMENTATION_MERGE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
+CANONICAL_IMPLEMENTATION_TREE=7e37fa626f825ee25271e0bf21a627a2e64e49da
+CANONICAL_IMPLEMENTATION_BASE=b13a8a823365f4ba800eab4e63c3169e27ed9dcb
 ```
 
-The harness requires both the recomputed supplied-artifact identities and the manifest-declared identities to equal this exact map. Caller-provided internally consistent alternate policy bundles cannot become canonical by self-assertion.
+Canonical `main` was verified at the implementation merge/tree before this closure branch was created. Temporary exact-head carrier PR #29 was then closed without merge.
 
-## 3. Material reconciliation completed
+## 2. Final exact-head implementation qualification
 
-`specs/004-tournament-harness/review-reconciliation.md` records the full predecessor invalidation chain. Material issues repaired during implementation include:
+The final exact implementation head was qualified by:
 
-- canonical quarantine container validation across both rules and contamination records;
-- alternate-policy self-assertion prevention through immutable V1 identity pinning;
-- incomplete-candidate subset-selection prevention;
-- candidate safety-scope schema reconciliation through exact manifest binding;
-- obsolete `NON_QUALIFYING` plan semantics removal;
-- canonical identity map inclusion in reports;
-- input-order-independent invalid-result-set report identity;
-- large-integer `math.isfinite()` overflow avoidance;
-- Python 3.11 large-integer report-hash decimal conversion avoidance via exact tagged-hex hash projection;
-- recursive prohibited-key separator/whitespace normalization hardening;
-- scientific binding of comparison-vector order in report hashes;
-- explicit bounded-spec `Exclusions` and `Exit Evidence` governance sections;
-- mixed string/non-string object-key fail-closed validation and invalid-manifest report-shell hardening;
-- non-object manifest identity suppression so invalid manifest types cannot carry a valid-looking tournament-manifest digest.
+- [GitHub Actions Run 32603944702](https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702)
+- [GitHub Actions Job 97106155513](https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702/job/97106155513)
 
-Final-review governance bookkeeping was also reconciled so T004-10 does not list creation of an already-present closeout candidate as remaining work.
-
-Every material semantic repair invalidated earlier qualification rather than reusing stale green evidence.
-
-## 4. Historical qualification evidence — not final merge evidence
-
-Temporary GitHub carrier PR #29 produced multiple historical predecessor qualifications. The latest two before this non-self-referential lifecycle freeze were:
+Recorded result:
 
 ```text
-RUN=32603238663
-JOB=97104523630
-EXACT_HEAD=bf57ccd47791ef0cd25ebc478e154a9f28c14be4
-FOCUSED_SPEC004_TESTS=47/47 PASS
-INHERITED_HARD_GATES=9/9 PASS
-FULL_OFFLINE_SUITE=275/275 PASS
-```
-
-That run was invalidated when fresh Qodo review identified R004-09: wholly non-object manifests could still receive a non-`None` tournament-manifest digest.
-
-After R004-09 code/test/reconciliation repair, carrier Run `32603861477` / job `97105962535` passed on predecessor `a7b7ba986227b25080f3d6f25a651db74c5f504e`:
-
-```text
+EXACT_HEAD=cf6158ea4193aa7db895607c6fac5a3a1442f708
 PYTHON_VERSION=3.11.16
 PYTHON_SYNTAX=PASS
 CANONICAL_TOURNAMENT_IDENTITIES=PASS
@@ -97,49 +45,105 @@ GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-That run is historical only because `tasks.md` and this closeout were then changed to remove stale-by-design “pending run” bookkeeping and make the final gate semantics explicitly external/non-self-referential. The resulting frozen content requires one new exact-head qualification; this document will not be mutated afterward merely to copy that external evidence into itself.
+These links are the directly verifiable runtime qualification evidence; this document does not substitute an unlinked assertion for the underlying GitHub evidence.
 
-## 5. Historical independent review and final-review repair
+## 3. Final independent implementation review
 
-Earlier independent reviews successively drove the implementation to stricter fail-closed behavior. The relevant final predecessor findings are:
+Fresh independent exact-head review evidence:
 
-- **R004-08 / MATERIAL:** heterogeneous object keys could raise before fail-closed evaluation completed;
-- **G004-01 / GOVERNANCE:** T004-10 still listed closeout creation as remaining although `closeout.md` already existed;
-- **R004-09 / MATERIAL:** the R004-08 report-shell guard still hashed wholly non-object manifests, producing a misleading manifest digest for invalid input.
+- [Qodo exact-head review result on PR #28](https://github.com/TheHalfMoon/commandMed/pull/28#issuecomment-5383054440)
+- [Qodo review update marker through exact `cf6158ea...`](https://github.com/TheHalfMoon/commandMed/pull/28#issuecomment-5383058920)
 
-R004-08/G004-01 were repaired and requalified on `bf57ccd...`; fresh Qodo review of that exact predecessor discovered R004-09. R004-09 is repaired by requiring a dictionary with all-string top-level keys before `_base_report()` computes `tournament_manifest_sha256`, with direct string/list/`None` regressions through `evaluate_tournament()`.
+The review reported no material correctness, security, scientific-integrity, lifecycle, authorization, deterministic-reporting, or execution-surface blocker on exact `cf6158ea4193aa7db895607c6fac5a3a1442f708` relative to canonical base `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`.
 
-No predecessor review is final merge evidence for the frozen head containing this file. A fresh independent exact-head review is an external merge gate.
+It re-verified the material final boundaries, including mixed/non-string key fail-closed behavior, invalid non-object manifest identity suppression, malformed result-set no-selection behavior, canonical identity pinning, ordered comparison-vector report hashing, exact large-integer identity, recursive execution/payload/credential denylist hardening, fixture/precomputed-results-only scope, and `SPEC_005=BLOCKED`.
 
-## 6. Acceptance status inside repository content
+## 4. Bounded implementation completed
 
-| Area | Repository-content status |
-|---|---|
-| Closed manifest/result schemas | IMPLEMENTED |
-| Exact six canonical upstream identities | IMPLEMENTED / immutable V1 pins |
-| Alternate-protocol self-assertion prevention | IMPLEMENTED |
-| Candidate lineage delegation | IMPLEMENTED |
-| Safety hard-gate delegation | IMPLEMENTED |
-| Incomplete-candidate no-selection semantics | IMPLEMENTED |
-| Decisive disqualification semantics | IMPLEMENTED |
-| Evidence-bound finite comparison metrics | IMPLEMENTED |
-| Large integer stability | IMPLEMENTED |
-| Lexicographic direction-aware ranking | IMPLEMENTED |
-| Scientific tie handling | IMPLEMENTED |
-| Deterministic report identity | IMPLEMENTED |
-| Comparison-vector order binding | IMPLEMENTED |
-| Recursive execution/payload-key hardening | IMPLEMENTED |
-| Malformed result-set fail-closed coverage | IMPLEMENTED |
-| Mixed-type object-key fail-closed coverage | IMPLEMENTED |
-| Non-object manifest identity suppression | IMPLEMENTED |
-| Exact-head executable qualification | EXTERNAL GATE — must pass after content freeze |
-| Fresh independent exact-head review | EXTERNAL GATE — must report no material blocker after content freeze |
-| Guarded implementation merge | EXTERNAL GATE — only after both gates above |
-| Model/provider/benchmark execution | NONE |
+Spec 004 establishes the minimum deterministic **fixture/precomputed-results-only** tournament harness required before any later real tournament execution could be separately authorized.
 
-This table is deliberately timeless with respect to future run IDs and review IDs. The authoritative exact-head evidence lives on PR #28 / carrier PR #29 and is checked immediately before merge.
+It provides:
 
-## 7. Explicit authority boundary
+- exact V1 tournament manifest validation;
+- exact canonical Specs 001–003 artifact identity pinning;
+- fail-closed semantic artifact validation before identity trust;
+- exact candidate-to-manifest SHA binding;
+- canonical Spec 003 exact-use lineage admission;
+- canonical Spec 002/001 safety hard-gate qualification;
+- explicit `QUALIFIED / DISQUALIFIED / INCOMPLETE` candidate states;
+- tournament-wide no-selection when any declared candidate evidence is incomplete;
+- deterministic predeclared lexicographic comparison of non-hard-gate metrics;
+- no weighted aggregate and no candidate-ID/input-order scientific tie-break;
+- deterministic identity-bound reports containing the canonical contract identity map;
+- report hashing that binds lexicographic comparison-vector order;
+- fail-closed recursive execution/payload/credential key rejection;
+- fail-closed mixed-type object-key handling without heterogeneous-key sorting exceptions;
+- invalid non-object manifests without misleading tournament-manifest digests;
+- exact large-integer comparison/report identity without float or decimal-string overflow; and
+- synthetic/non-medical fixture regression coverage only.
+
+## 5. Exact canonical identities bound by V1
+
+```text
+benchmarks_sha256=7f58edba1ac179cbf24cb2d5c902e2ef947024bfd1c6eacdbef1a609b00f64a7
+metrics_sha256=304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a
+gold_protocols_sha256=40c89702469d759f4dc893aff6bc6fdb7e300f9cb2d8f19f2b3e0dbd78200666
+quarantine_sha256=b59fd86a7f63c8de7058a0386f57de1cadc7c817edfa1e9e0aa392ca5219e080
+safety_policy_sha256=79a12414fe68fc08efb43070f3eede36976f2e0dc0ece7f4eed4bbcc5496d14f
+lineage_contract_sha256=2b085339c17c3b8b89e55f53fc62c23bcbcf968cdc744b8ead0549b462bda962
+```
+
+Both recomputed supplied-artifact identities and manifest-declared identities must equal this exact map. A caller-provided internally consistent alternate policy bundle cannot become canonical by self-assertion.
+
+## 6. Implementation-review reconciliation
+
+`specs/004-tournament-harness/review-reconciliation.md` preserves the full implementation invalidation chain. Material repairs completed before the canonical implementation merge include:
+
+- quarantine container validation across both rules and contamination records;
+- immutable V1 upstream identity pinning;
+- incomplete-candidate subset-selection prevention;
+- candidate safety-scope schema reconciliation through manifest digest binding;
+- obsolete `NON_QUALIFYING` plan semantics removal;
+- canonical identity inclusion in reports;
+- input-order-independent invalid-result-set report identity;
+- large-integer comparison and report-hash overflow repairs;
+- recursive prohibited-key separator/whitespace normalization hardening;
+- comparison-vector order binding in report hashes;
+- explicit bounded-spec `Exclusions` and `Exit Evidence` sections;
+- mixed string/non-string object-key fail-closed handling; and
+- non-object manifest identity suppression.
+
+Every material implementation mutation invalidated predecessor qualification rather than reusing stale green evidence.
+
+## 7. Dedicated closure-review reconciliation
+
+The first closure candidate head `45037b988bd716adc1750199df6c6069ff15f5ac` was independently reviewed and rejected as closure authority before merge. Evidence:
+
+- [Qodo closure review on PR #30](https://github.com/TheHalfMoon/commandMed/pull/30#issuecomment-5383104852)
+
+That review found and this repaired closure set reconciles:
+
+```text
+C004-01 NONCANONICAL_CLOSEOUT_STATUS=REPAIRED
+C004-02 STALE_SPEC004_LIFECYCLE_ARTIFACTS=REPAIRED
+C004-03 UNLINKED_CI_REVIEW_EVIDENCE=REPAIRED
+```
+
+C004-01 is repaired by following the established canonical-closeout pattern: `CLOSED_CANONICAL` with an explicit post-merge effectiveness qualifier.
+
+C004-02 is repaired by reconciling the complete Spec 004 lifecycle set in this closure transition:
+
+- `specs/004-tournament-harness/closeout.md`
+- `specs/004-tournament-harness/tasks.md`
+- `specs/004-tournament-harness/review-reconciliation.md`
+- `specs/004-tournament-harness/checklists/requirements.md`
+- `specs/README.md`
+
+C004-03 is repaired by linking the exact GitHub Actions Run/Job, implementation PR, exact-head Qodo review result, review-update marker, and first closure review directly from the lifecycle records.
+
+Because these repairs changed repository content, the first closure review on `45037b...` is historical only. The repaired closure head requires a new fresh independent review before merge.
+
+## 8. Explicit authority boundary
 
 Spec 004 does **not** authorize or perform:
 
@@ -152,7 +156,7 @@ Spec 004 does **not** authorize or perform:
 - PHI or restricted clinical-data access;
 - private-Gold payload access;
 - gated asset access or terms acceptance;
-- real backbone selection;
+- real backbone selection; or
 - Spec 005 start.
 
 ```text
@@ -168,43 +172,41 @@ GATED_ASSET_ACCESS_AUTHORITY=NONE
 SPEC_005=BLOCKED
 ```
 
-## 8. Final implementation merge gate
+## 9. Canonical closure transition
 
-This closeout candidate does not authorize merge by itself. After repository content freezes, the exact head containing this file must externally prove:
+The implementation merge alone did not close Spec 004. This dedicated closure-only transition binds the canonical implementation merge/tree, final reviewed implementation head, directly linked exact-head qualification, directly linked independent review, closure-review reconciliation, and immutable authority boundary.
+
+This closure branch starts from exact canonical implementation merge:
 
 ```text
-PYTHON_SYNTAX=PASS
-CANONICAL_TOURNAMENT_IDENTITIES=PASS
-EXECUTION_SURFACE_PREFLIGHT=PASS
-FOCUSED_SPEC004_TESTS=PASS
-INHERITED_HARD_GATES=PASS
-FULL_OFFLINE_SUITE=PASS
-GIT_DIFF_CHECK=PASS
-BOUNDED_PATH_PREFLIGHT=PASS
-FRESH_INDEPENDENT_EXACT_HEAD_REVIEW=NO_MATERIAL_BLOCKER
+BASE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
 ```
 
-Only an unchanged head satisfying all of those gates may be guarded squash-merged through PR #28. No repository-content mutation may occur between final qualification/review and merge.
+The closure delta must remain exactly lifecycle/governance documentation. Expected changed paths:
 
-## 9. Post-merge canonical closure requirement
+```text
+specs/004-tournament-harness/closeout.md
+specs/004-tournament-harness/tasks.md
+specs/004-tournament-harness/review-reconciliation.md
+specs/004-tournament-harness/checklists/requirements.md
+specs/README.md
+```
 
-Implementation merge alone will **not** make Spec 004 `CLOSED_CANONICAL`.
+Before merge, the exact repaired closure head must prove:
 
-After the qualified implementation merge:
+```text
+LIFECYCLE_DOCS_ONLY=PASS
+RUNTIME_SOURCE_TEST_DATA_DEPENDENCY_WORKFLOW_CHANGES=NONE
+GIT_DIFF_CHECK=PASS
+FRESH_INDEPENDENT_CLOSURE_HEAD_REVIEW=NO_MATERIAL_BLOCKER
+SPEC_005=BLOCKED
+```
 
-1. verify the canonical implementation merge SHA and tree on `main`;
-2. close temporary carrier PR #29 without merge;
-3. create a dedicated closure-only branch from that exact canonical main;
-4. update this closeout record to bind the canonical implementation merge SHA/tree;
-5. update `specs/README.md` to mark Spec 004 closed only through that dedicated transition;
-6. keep Spec 005 `BLOCKED` because its separate founder license/device decisions and explicit start authorization remain unsatisfied;
-7. independently review the exact closure-only head;
-8. guarded squash-merge the closure PR; and
-9. verify resulting canonical `main` SHA/tree and lifecycle files.
-
-Only after those steps may the repository state become:
+Only after that unchanged closure head is independently reviewed, guarded-merged, and resulting canonical `main` plus lifecycle files are verified does the effective repository state become:
 
 ```text
 SPEC_004=CLOSED_CANONICAL
 SPEC_005=BLOCKED
 ```
+
+No Spec 005 implementation or execution is authorized by this closure transition.
