@@ -1,6 +1,6 @@
 # Spec 004 — Tournament Harness Tasks
 
-**Status:** IMPLEMENTATION_COMPLETE_AWAITING_FINAL_CLOSEOUT_QUALIFICATION
+**Status:** IMPLEMENTATION_REPAIRED_AWAITING_FINAL_EXACT_HEAD_QUALIFICATION
 
 ## T004-01 — Freeze manifest and result contracts — COMPLETE
 
@@ -11,6 +11,7 @@ Exit evidence:
 - exact V1 manifest fields enforced;
 - exact V1 candidate-result fields enforced;
 - execution/payload surface denylist enforced recursively, including separator/whitespace hardening;
+- mixed string/non-string object keys fail closed instead of raising during closed-shape validation;
 - candidate IDs unique;
 - ordered comparison metric IDs unique;
 - unknown execution mode/strategy/tie policy rejected.
@@ -84,7 +85,7 @@ Exit evidence:
 - report carries exact canonical artifact identities;
 - report digest binds lexicographic comparison-vector order.
 
-## T004-07 — Focused fixture tests — COMPLETE
+## T004-07 — Focused fixture tests — COMPLETE / FINAL REQUALIFICATION PENDING
 
 Focused synthetic/non-medical regression coverage exists in:
 
@@ -94,7 +95,7 @@ tests/test_tournament_contract_hardening.py
 tests/test_tournament_review_hardening.py
 ```
 
-Latest predecessor exact-head qualification at `7a04d40030a2aa28b4c2f0d5db6e4d387388c756`:
+Historical pre-repair evidence at `7a04d40030a2aa28b4c2f0d5db6e4d387388c756` was:
 
 ```text
 RUN=32601812794
@@ -103,6 +104,8 @@ FOCUSED_SPEC004_TESTS=45/45 PASS
 INHERITED_HARD_GATES=9/9 PASS
 FULL_OFFLINE_SUITE=273/273 PASS
 ```
+
+That predecessor evidence is not merge evidence after the final-review mixed-key repair. Current regression coverage additionally exercises mixed-type manifest and candidate object keys through `evaluate_tournament()` and requires a new exact-head run.
 
 No real benchmark/model/Gold payload, network, subprocess, provider, or runtime dependency is used.
 
@@ -119,38 +122,38 @@ No real benchmark/model/Gold payload, network, subprocess, provider, or runtime 
 - material review reconciliation;
 - Spec 005 boundary and deferred founder decisions.
 
-## T004-09 — Regression and semantic-identity verification — COMPLETE FOR PRE-CLOSEOUT HEAD
+## T004-09 — Regression and semantic-identity verification — REQUALIFICATION REQUIRED
 
-Pre-closeout exact-head evidence at `7a04d40030a2aa28b4c2f0d5db6e4d387388c756`:
+Historical closeout-head Run `32602120618` on `6c1a359f969222dd7868248d1ba12fc114f413d9` passed 45 focused / 9 inherited hard-gate / 273 full tests, exact identities, execution-surface preflight, diff hygiene, and bounded paths, but that qualification is invalidated by final independent finding R004-08 and its semantic repair.
+
+The unchanged final repair head must now independently prove:
 
 ```text
 PYTHON_SYNTAX=PASS
 CANONICAL_TOURNAMENT_IDENTITIES=PASS
 EXECUTION_SURFACE_PREFLIGHT=PASS
-FOCUSED_SPEC004=45/45 PASS
-INHERITED_HARD_GATES=9/9 PASS
-FULL_OFFLINE_SUITE=273/273 PASS
+FOCUSED_SPEC004=PASS
+INHERITED_HARD_GATES=PASS
+FULL_OFFLINE_SUITE=PASS
 GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-A final closeout content mutation still requires a new exact-head run and may not reuse this predecessor PASS as final merge evidence.
-
 ## T004-10 — Independent exact-head review and closeout candidate — IN PROGRESS
 
-Completed before closeout mutation:
+Completed:
 
-- all material implementation/review findings reconciled;
+- material implementation/review findings through R004-08 reconciled in repository content;
 - predecessor qualification invalidated after every semantic repair;
-- exact predecessor `7a04d40030a2aa28b4c2f0d5db6e4d387388c756` received CodeRabbit review Run `5effe806-c304-44a6-a910-95a604c56933` with no actionable comments and Minimal merge risk;
-- malformed candidate-result coverage requested by the prior review is now direct and exact-head green.
+- non-self-referential implementation closeout candidate exists at `specs/004-tournament-harness/closeout.md`;
+- stale task bookkeeping identified during final review has been reconciled;
+- predecessor independent reviews remain historical context only.
 
 Remaining:
 
-- add non-self-referential implementation closeout candidate;
-- requalify exact final closeout head;
-- fresh independent review of exact final head;
-- guarded squash merge only if the head remains unchanged.
+- requalify the exact final repair head;
+- obtain fresh independent review of that exact unchanged head with no material blocker;
+- guarded squash merge PR #28 only if canonical `main` remains unchanged and the exact head remains unchanged.
 
 ## T004-11 — Dedicated canonical closure — BLOCKED ON IMPLEMENTATION MERGE
 
