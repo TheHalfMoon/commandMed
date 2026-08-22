@@ -21,7 +21,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 001 | Evaluation Charter | `CLOSED_CANONICAL` | 000 | Implementation merge `531343f785a6430036cbb2770d0504676514b9a7`; closure merge `cc02b0d99d67e5a720502953c99307c8b991720d`. |
 | 002 | Safety Gates | `CLOSED_CANONICAL` | 001 | Implementation merge `b637382fd9a0d8a02f71c11073a5276d61726bb6`; dedicated closure records final 54/9/157 exact-head qualification. |
 | 003 | Data, License & Provenance | `CLOSED_CANONICAL` | 001 | Qualified implementation merge `a5fef84f9f0cee12dcd2ea6735888faee43db1ec`, tree `d7b2e11a8470ec66f50f1cff77bba4dddff20812`; final exact-head evidence: 71 focused / 9 hard-gate / 228 full tests and independent review with no material blocker. |
-| 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Effective only after this dedicated closure-only transition is reviewed, merged, and canonical `main` is verified. Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; final 48 focused / 9 hard-gate / 276 full tests and fresh independent review with no material blocker. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
+| 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Effective only after this dedicated closure-only transition is independently reviewed, guarded-merged, and resulting canonical `main` is verified. Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
 | 005 | Base Model Tournament | `BLOCKED` | 004 + required founder license/device decisions | Spec 004 closure alone does not authorize start. Baseline-only tournament; no training. Separate founder prerequisites and explicit authorization remain required. |
 | 006 | Patient Safety Scaffold & Deterministic Tools | `BLOCKED` | 002, 005 | Defense-in-depth interaction/tool boundary. |
 | 007 | SFT V1 | `BLOCKED` | 003, 005, 006 | Three-class high-quality SFT. |
@@ -36,9 +36,9 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 016 | Advanced Modality Adapters | `DEFERRED` | separate modality prerequisites | ECG, wearables, imaging volumes, WSI, audio/video etc. |
 | 017 | Release Review & Paper | `BLOCKED` | all claimed capabilities | Independent review and claims package. |
 
-## Current execution frontier — Spec 004 canonical closure
+## Spec 004 canonical closure record
 
-Spec 004 — Tournament Harness — has a qualified fixture/precomputed-results-only implementation canonically merged through PR #28 at:
+Spec 004 has a qualified fixture/precomputed-results-only implementation canonically merged through [PR #28](https://github.com/TheHalfMoon/commandMed/pull/28):
 
 ```text
 IMPLEMENTATION_MERGE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
@@ -51,28 +51,50 @@ INHERITED_HARD_GATES=9/9 PASS
 FULL_OFFLINE_SUITE=276/276 PASS
 ```
 
-Fresh independent exact-head review found no material correctness, security, scientific-integrity, lifecycle, authorization, deterministic-reporting, or execution-surface blocker. All material inline review threads were resolved before the guarded squash merge. Temporary validation carrier PR #29 was closed without merge after canonical implementation evidence was captured.
+Direct implementation evidence:
 
-This dedicated closure-only transition binds that already-canonical implementation evidence. The `CLOSED_CANONICAL` row for Spec 004 becomes effective only after the exact closure head is independently reviewed, guarded-merged, and the resulting canonical `main` plus lifecycle files are verified.
+- [GitHub Actions Run 32603944702](https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702)
+- [GitHub Actions Job 97106155513](https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702/job/97106155513)
+- [Fresh exact-head Qodo review result](https://github.com/TheHalfMoon/commandMed/pull/28#issuecomment-5383054440)
+- [Qodo review update marker through exact `cf6158ea...`](https://github.com/TheHalfMoon/commandMed/pull/28#issuecomment-5383058920)
+
+The fresh exact-head review reported no material correctness, security, scientific-integrity, lifecycle, authorization, deterministic-reporting, or execution-surface blocker. The guarded implementation merge used that exact head, after which canonical `main` was verified at `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d` / tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`. Temporary validation carrier PR #29 was closed without merge after evidence capture.
+
+## Spec 004 dedicated closure transition
+
+The implementation merge alone did not close Spec 004. This dedicated closure-only transition reconciles the complete lifecycle set:
+
+- `specs/004-tournament-harness/closeout.md`
+- `specs/004-tournament-harness/tasks.md`
+- `specs/004-tournament-harness/review-reconciliation.md`
+- `specs/004-tournament-harness/checklists/requirements.md`
+- `specs/README.md`
+
+The first closure candidate head `45037b988bd716adc1750199df6c6069ff15f5ac` was rejected as closure authority after [Qodo closure review](https://github.com/TheHalfMoon/commandMed/pull/30#issuecomment-5383104852) found:
+
+```text
+C004-01 NONCANONICAL_CLOSEOUT_STATUS
+C004-02 STALE_SPEC004_LIFECYCLE_ARTIFACTS
+C004-03 UNLINKED_CI_REVIEW_EVIDENCE
+```
+
+This repaired closure transition:
+
+- uses the canonical `CLOSED_CANONICAL` status pattern with post-merge effectiveness qualifier;
+- reconciles all five lifecycle/governance documents rather than only closeout/registry;
+- links the exact Run, Job, implementation PR, exact-head review result, review update marker, and first closure review directly;
+- introduces no source, test, data, dependency, workflow, runtime, execution, model, provider, credential, or authorization changes; and
+- keeps Spec 005 explicitly `BLOCKED`.
+
+Because the C004 repairs changed repository content, the first closure review is historical only. `CLOSED_CANONICAL` for Spec 004 becomes effective only after the repaired exact closure head receives a new fresh independent review with no material blocker, is guarded-merged unchanged, and the resulting canonical `main` plus lifecycle files are verified.
+
+## Spec 005 boundary
 
 Spec 005 remains `BLOCKED`. Spec 004 closure does not satisfy Spec 005's separate founder license/device decisions and does not constitute explicit Spec 005 start authorization.
 
-## Spec 004 closure rule
-
-The Spec 004 implementation merge alone did not close the spec. The dedicated closure-only transition must contain lifecycle/documentation changes only and must bind:
-
-- canonical implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`;
-- canonical implementation tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`;
-- final reviewed implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`;
-- exact-head GitHub qualification Run `32603944702` / Job `97106155513`;
-- fresh independent exact-head review with no material blocker; and
-- the unchanged authority boundary preserving `SPEC_005=BLOCKED`.
-
-`CLOSED_CANONICAL` for Spec 004 becomes effective only after this closure PR is reviewed, merged, and resulting canonical `main` is verified.
-
 ## Planning rule
 
-Do not generate detailed implementation plans for blocked future specs merely to make the repository look complete. Add detail when the dependency frontier reaches that spec and explicit authorization exists.
+Do not generate detailed implementation plans for blocked future specs merely to make the repository look complete. Add detail only when the dependency frontier reaches that spec and explicit authorization exists.
 
 ## Branch/PR rule
 
@@ -82,4 +104,15 @@ Prefer one bounded spec per implementation branch/PR. A spec's merged closeout e
 
 **No spec currently authorizes training, model execution, model-weight access, benchmark payload execution, or real-model tournament execution.**
 
-Spec 004 is a fixture/precomputed-results-only harness and grants no such authority. Spec 005 remains blocked and may not begin until its separate prerequisites are resolved and explicit bounded authorization is granted.
+```text
+MODEL_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+TOURNAMENT_EXECUTION_AGAINST_MODELS=NONE
+TRAINING_AUTHORITY=NONE
+PROVIDER_API_GENERATION_AUTHORITY=NONE
+PHI_RESTRICTED_DATA_ACCESS_AUTHORITY=NONE
+PRIVATE_GOLD_PAYLOAD_ACCESS_AUTHORITY=NONE
+GATED_ASSET_ACCESS_AUTHORITY=NONE
+SPEC_005=BLOCKED
+```
