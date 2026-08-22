@@ -1,0 +1,103 @@
+name: Spec 004 Exact-Head Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          ref: 19cd7697b6f399af50f9006b7235b3421eb8cc0a
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Prove exact identity and syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "19cd7697b6f399af50f9006b7235b3421eb8cc0a"
+          echo "EXACT_HEAD=$(git rev-parse HEAD)"
+          python --version
+          python -m compileall -q src tests
+          echo "PYTHON_SYNTAX=PASS"
+
+      - name: Validate canonical tournament identity pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from src.commandmed.tournament import (
+              CANONICAL_UPSTREAM_IDENTITIES_V1,
+              compute_canonical_tournament_artifact_identities,
+          )
+
+          artifacts = {
+              'benchmarks': json.loads(Path('data/eval/benchmarks.json').read_text(encoding='utf-8')),
+              'metrics': json.loads(Path('data/eval/metrics.json').read_text(encoding='utf-8')),
+              'gold_protocols': json.loads(Path('data/eval/gold_protocols.json').read_text(encoding='utf-8')),
+              'quarantine': json.loads(Path('data/eval/quarantine.json').read_text(encoding='utf-8')),
+              'safety_policy': json.loads(Path('data/eval/safety_policy.json').read_text(encoding='utf-8')),
+              'lineage_contract': json.loads(Path('data/lineage/lineage_contract.json').read_text(encoding='utf-8')),
+          }
+          identities = compute_canonical_tournament_artifact_identities(artifacts)
+          for key in sorted(identities):
+              print(f'{key}={identities[key]}')
+          if identities != CANONICAL_UPSTREAM_IDENTITIES_V1:
+              raise SystemExit('CANONICAL_TOURNAMENT_IDENTITIES=FAIL')
+          print('CANONICAL_TOURNAMENT_IDENTITIES=PASS')
+          PY
+
+      - name: Prove no execution/runtime import surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -En '^[[:space:]]*(from|import)[[:space:]]+(subprocess|socket|requests|httpx|urllib|openai|anthropic|transformers|torch)([[:space:].]|$)' src/commandmed/tournament.py; then
+            echo "PROHIBITED_RUNTIME_IMPORT=FAIL"
+            exit 1
+          fi
+          if grep -En '(os\.system|subprocess\.|Popen\(|urlopen\(|requests\.|httpx\.|openai\.|anthropic\.)' src/commandmed/tournament.py; then
+            echo "PROHIBITED_EXECUTION_CALL=FAIL"
+            exit 1
+          fi
+          echo "EXECUTION_SURFACE_PREFLIGHT=PASS"
+
+      - name: Run focused Spec 004 tournament tests
+        run: python -m unittest tests.test_tournament -v
+
+      - name: Run inherited hard-gate tests
+        run: python -m unittest tests.eval_contract.test_hard_gates
+
+      - name: Run full offline suite
+        run: python -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Diff hygiene and bounded path preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=b13a8a823365f4ba800eab4e63c3169e27ed9dcb
+          git diff --check "${BASE}...HEAD"
+          echo "GIT_DIFF_CHECK=PASS"
+          changed="$(git diff --name-only "${BASE}...HEAD")"
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -Ev '^(src/commandmed/tournament\.py|tests/test_tournament\.py|docs/evaluation/tournament-harness\.md|specs/004-tournament-harness/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|checklists/requirements\.md))$' | grep -q .; then
+            echo "UNBOUNDED_PATH=FAIL"
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Eq '(^|/)(models?|weights?|checkpoints?)(/|$)|(^|/)secrets?(/|$)|(^|/)credentials?(/|$)'; then
+            echo "PROHIBITED_PATH=FAIL"
+            exit 1
+          fi
+          echo "BOUNDED_PATH_PREFLIGHT=PASS"
