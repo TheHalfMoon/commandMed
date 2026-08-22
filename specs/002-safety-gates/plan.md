@@ -272,11 +272,12 @@ Preferred integration:
 
 1. validate `safety_policy.json`;
 2. evaluate policy/sentinel fixtures into ordinary gate result records with resolved fixture/evidence identities;
-3. route qualification-level safety result records through the existing `evaluate_hard_gates()` implementation;
-4. use focused equivalence/integration assertions only as supplementary tests, never as a substitute aggregation path;
-5. keep aggregate utility metrics unable to override a safety failure.
+3. prequalify the declared scope against `safety_policy.json`: remove known not-applicable gates from the scoped catalog and force every applicable `NO_PASS_UNTIL_FROZEN` gate to non-pass (`INSUFFICIENT_EVIDENCE`) unless a stronger fail-closed result already applies;
+4. route those prequalified safety result records through the existing `evaluate_hard_gates()` implementation;
+5. use focused equivalence/integration assertions only as supplementary tests, never as a substitute aggregation path;
+6. keep aggregate utility metrics unable to override a safety failure.
 
-No second hard-gate aggregator is authorized. Any later runtime/harness consuming Spec 002 results must reuse `evaluate_hard_gates()` (or a separately reviewed successor that explicitly supersedes it) rather than reimplementing its precedence.
+`evaluate_safety_qualification_hard_gates()` is a bounded prequalification adapter, not a second aggregator: it must delegate final hard-gate precedence and overall state to `evaluate_hard_gates()`. Any later runtime/harness consuming Spec 002 qualification results must use this policy-aware prequalification boundary (or a separately reviewed successor) before the canonical Spec 001 aggregator.
 
 ## 10. Canonical identity
 

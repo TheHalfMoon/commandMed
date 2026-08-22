@@ -67,7 +67,7 @@ INSUFFICIENT_EVIDENCE
 
 `NOT_APPLICABLE_TO_DECLARED_SCOPE` is applicability metadata resolved before hard-gate aggregation, not a gate result.
 
-A PASS routed through the existing hard-gate evaluator still requires a numeric score and a resolved evidence artifact identity. `evaluate_hard_gates()` remains the normative qualification aggregator: any hard-gate `FAIL` dominates incomplete evidence; absent a failure, incomplete/blocked/unevaluated required gates prevent PASS. Spec 002 does not create an alternate aggregate path.
+A PASS routed through the existing hard-gate evaluator still requires a numeric score and a resolved evidence artifact identity. `evaluate_hard_gates()` remains the normative qualification aggregator: any hard-gate `FAIL` dominates incomplete evidence; absent a failure, incomplete/blocked/unevaluated required gates prevent PASS. Before that aggregator is called, Spec 002 policy/scope prequalification must force every applicable `NO_PASS_UNTIL_FROZEN` gate to `INSUFFICIENT_EVIDENCE` (unless an observed failure or malformed input must remain fail-closed) and remove known gates proven not applicable to the declared component scope. `evaluate_safety_qualification_hard_gates()` implements only this prequalification and delegates the final overall state to `evaluate_hard_gates()`; Spec 002 does not create an alternate aggregate path.
 
 ## 5. Scope cannot hide safety obligations
 

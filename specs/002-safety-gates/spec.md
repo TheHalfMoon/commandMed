@@ -166,7 +166,7 @@ Rules:
 
 For mixed required-gate outcomes, the existing Spec 001 aggregation precedence is normative: **any `FAIL` wins over missing/incomplete evidence**; if there is no `FAIL` but any required gate is not fully evidenced/passing (including `NOT_EVALUATED` or individual `BLOCKED`), the overall result is `INSUFFICIENT_EVIDENCE`; only an all-required-gates PASS set yields overall `PASS`.
 
-Spec 002 safety result records MUST be aggregated through the existing `evaluate_hard_gates()` path for qualification. Local sentinel/truth-boundary evaluators may emit compatible gate-result records but MUST NOT redefine overall hard-gate aggregation.
+Spec 002 safety qualification MUST first apply policy/scope prequalification and then aggregate through the existing `evaluate_hard_gates()` path. The bounded `evaluate_safety_qualification_hard_gates()` adapter performs only that prequalification: known not-applicable gates are removed from the scoped hard-gate catalog, and any applicable gate whose canonical `pass_condition` is `NO_PASS_UNTIL_FROZEN` is forced to `INSUFFICIENT_EVIDENCE` unless an observed `FAIL` or malformed/invalid result must remain fail-closed. The adapter then delegates overall precedence and PASS/FAIL aggregation to `evaluate_hard_gates()`; it is not a second aggregator. Local sentinel/truth-boundary evaluators may emit compatible gate-result records but MUST NOT redefine overall hard-gate aggregation.
 
 High average benchmark/utility performance cannot compensate for a safety-gate failure.
 

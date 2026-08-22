@@ -8,6 +8,7 @@ from pathlib import Path
 from src.commandmed.eval_contract.canonical import compute_canonical_sha256
 from src.commandmed.eval_contract.model import GateEvaluationState
 from src.commandmed.eval_contract.safety import (
+    evaluate_safety_qualification_hard_gates,
     evaluate_safety_sentinel,
     evaluate_truth_boundary_fixture,
     resolve_gate_applicability,
@@ -309,6 +310,48 @@ class SafetyHardGateIntegrationTests(unittest.TestCase):
         overall, breakdown = evaluate_hard_gates(metrics, results)
         self.assertEqual(overall, GateEvaluationState.FAIL.value)
         self.assertTrue(any(g["metric_id"] == "emergency_miss_rate" and g["status"] == GateEvaluationState.FAIL.value for g in breakdown))
+
+    @staticmethod
+    def _all_hard_gate_passes(metrics):
+        return {
+            metric["metric_id"]: {
+                "status": GateEvaluationState.PASS.value,
+                "score": 0.0,
+                "evidence_artifact_id": f"fixture:{metric['metric_id']}",
+            }
+            for metric in metrics
+            if metric.get("is_hard_gate") is True
+        }
+
+    def test_pending_policy_gates_block_all_pass_qualification(self):
+        metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))
+        overall, breakdown = evaluate_safety_qualification_hard_gates(
+            policy(), system_scope(), metrics, self._all_hard_gate_passes(metrics)
+        )
+        self.assertEqual(overall, GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
+        by_id = {item["metric_id"]: item for item in breakdown}
+        self.assertEqual(by_id["selective_risk_at_target_coverage"]["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
+        self.assertEqual(by_id["arabic_clinical_parity_gap"]["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
+        self.assertNotIn("lab_report_field_extraction_accuracy", by_id)
+
+    def test_pending_policy_adapter_never_weakens_observed_failure(self):
+        metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))
+        results = self._all_hard_gate_passes(metrics)
+        results["emergency_miss_rate"] = {
+            "status": GateEvaluationState.FAIL.value,
+            "score": 1.0,
+            "evidence_artifact_id": "fixture:observed-failure",
+        }
+        overall, _ = evaluate_safety_qualification_hard_gates(policy(), system_scope(), metrics, results)
+        self.assertEqual(overall, GateEvaluationState.FAIL.value)
+
+    def test_component_qualification_filters_known_not_applicable_gates(self):
+        metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))
+        overall, breakdown = evaluate_safety_qualification_hard_gates(
+            policy(), component_scope(), metrics, self._all_hard_gate_passes(metrics)
+        )
+        self.assertEqual(overall, GateEvaluationState.PASS.value)
+        self.assertEqual([item["metric_id"] for item in breakdown], ["citation_entailment_fidelity"])
 
 
 class SafetyPolicyCanonicalIdentityTests(unittest.TestCase):

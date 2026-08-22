@@ -2,6 +2,7 @@
 from __future__ import annotations
 from typing import Any
 from .model import GateEvaluationState, Modality, Role
+from .validate import evaluate_hard_gates
 
 BEHAVIOR_STATES = frozenset("ANSWER ASK_MORE USE_TOOL RETRIEVE_EVIDENCE ABSTAIN ESCALATE EMERGENCY".split())
 SCOPE_KINDS = frozenset({"SYSTEM_QUALIFICATION", "COMPONENT_QUALIFICATION"})
@@ -362,6 +363,86 @@ def resolve_gate_applicability(policy: Any, gate_id: Any, scope: Any) -> tuple[s
             return "INVALID", [f"gate '{gate_id}': required system capability cannot be not-applicable"]
         return "NOT_APPLICABLE_TO_DECLARED_SCOPE", []
     return "INVALID", [f"gate '{gate_id}': applicability unresolved"]
+
+
+def evaluate_safety_qualification_hard_gates(
+    policy: Any,
+    scope: Any,
+    metrics_catalog: Any,
+    evaluation_results: Any,
+) -> tuple[str, list[dict[str, Any]]]:
+    """Apply Spec 002 policy/scope prequalification, then reuse Spec 001 hard-gate aggregation."""
+    scope_errors = validate_evaluation_scope(policy, scope)
+    if scope_errors:
+        return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [{
+            "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,
+            "reason": "Invalid safety qualification policy/scope: " + "; ".join(scope_errors),
+        }]
+    if not isinstance(metrics_catalog, list) or not isinstance(evaluation_results, dict):
+        return evaluate_hard_gates(metrics_catalog, evaluation_results)
+
+    applicable_metric_ids: set[str] = set()
+    prepared_results: dict[Any, Any] = dict(evaluation_results)
+    for gate in policy["gate_contracts"]:
+        applicability, errors = resolve_gate_applicability(policy, gate["gate_id"], scope)
+        if errors or applicability == "INVALID":
+            details = errors or [f"gate '{gate['gate_id']}': invalid applicability"]
+            return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [{
+                "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,
+                "reason": "Safety gate applicability could not be resolved: " + "; ".join(details),
+            }]
+        if applicability != "APPLICABLE":
+            continue
+
+        metric_id = gate["metric_id"]
+        applicable_metric_ids.add(metric_id)
+        if gate["pass_condition"] != "NO_PASS_UNTIL_FROZEN":
+            continue
+
+        original = prepared_results.get(metric_id)
+        if original is not None and not isinstance(original, dict):
+            continue  # Preserve malformed input so the canonical aggregator fails closed.
+        raw_status = original.get("status") if isinstance(original, dict) else None
+        valid_statuses = {state.value for state in GateEvaluationState}
+        if raw_status is not None and raw_status not in valid_statuses:
+            continue  # Preserve invalid status so the canonical aggregator reports FAIL.
+        if raw_status == GateEvaluationState.FAIL.value:
+            continue  # Never weaken an observed failure into incomplete evidence.
+        evidence = original.get("evidence_artifact_id") if isinstance(original, dict) else None
+        prepared_results[metric_id] = {
+            "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,
+            "score": None,
+            "evidence_artifact_id": evidence if isinstance(evidence, str) else None,
+            "reason": (
+                f"Safety policy gate '{gate['gate_id']}' is NO_PASS_UNTIL_FROZEN; "
+                "qualification PASS is prohibited until a reviewed policy revision freezes the threshold"
+            ),
+        }
+
+    catalog_metric_ids = {
+        metric.get("metric_id")
+        for metric in metrics_catalog
+        if isinstance(metric, dict) and metric.get("is_hard_gate") is True
+    }
+    missing_applicable = applicable_metric_ids - catalog_metric_ids
+    if missing_applicable:
+        return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [{
+            "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,
+            "reason": f"Applicable safety hard gates are missing from the metric catalog: {sorted(missing_applicable)}",
+        }]
+
+    scoped_catalog: list[Any] = []
+    for metric in metrics_catalog:
+        if not isinstance(metric, dict):
+            scoped_catalog.append(metric)
+            continue
+        if metric.get("is_hard_gate") is True:
+            metric_id = metric.get("metric_id")
+            if metric_id in HARD_GATE_METRIC_IDS and metric_id not in applicable_metric_ids:
+                continue
+        scoped_catalog.append(metric)
+
+    return evaluate_hard_gates(scoped_catalog, prepared_results)
 
 
 def _result(status: str, score: int | None, evidence: str | None, reason: str) -> dict[str, Any]:
