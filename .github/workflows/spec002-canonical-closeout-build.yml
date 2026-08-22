@@ -1,0 +1,112 @@
+name: Spec 002 Canonical Closeout Build
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build-closeout:
+    if: github.head_ref == 'ci/spec002-canonical-closeout-build'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout closure branch
+        uses: actions/checkout@v4
+        with:
+          ref: docs/spec-002-canonical-closeout
+          fetch-depth: 0
+
+      - name: Assert exact canonical implementation merge
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "b637382fd9a0d8a02f71c11073a5276d61726bb6"
+
+      - name: Apply closure-only documentation transition
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one target, found {count}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          closeout = Path('specs/002-safety-gates/closeout.md')
+          text = closeout.read_text(encoding='utf-8')
+          replace_once(
+              str(closeout),
+              '**Status:** `CLOSEOUT_CANDIDATE_PENDING_EXTERNAL_EXACT_HEAD_QUALIFICATION`',
+              '**Status:** `CLOSED_CANONICAL`',
+          )
+          text = closeout.read_text(encoding='utf-8')
+          marker = '\n## 1. Purpose\n'
+          if text.count(marker) != 1:
+              raise SystemExit('closeout purpose marker mismatch')
+          closure = '''\n## Canonical closure record\n\nSpec 002 implementation was squash-merged through PR #10 to canonical `main`:\n\n```text\nFINAL_REVIEWED_IMPLEMENTATION_HEAD=f75e7d545fa988360aab4b4d00c784d5102d03ab\nCANONICAL_IMPLEMENTATION_MERGE=b637382fd9a0d8a02f71c11073a5276d61726bb6\nCANONICAL_IMPLEMENTATION_TREE=83384c2eec2d15442aee32ccafa86186fcbec553\nFINAL_VALIDATION_RUN=32592848972\nFINAL_VALIDATION_JOB=97079245055\nFOCUSED_SPEC_002_TESTS=54/54_PASS\nHARD_GATE_INTEGRATION_TESTS=9/9_PASS\nFULL_OFFLINE_TESTS=157/157_PASS\nSEMANTIC_IDENTITIES=PASS\nFRESH_EXTERNAL_EXACT_HEAD_REVIEW=PASS_NO_MATERIAL_BLOCKER\n```\n\nThis closure-only transition changes governance/documentation state only. It does not alter source code, tests, canonical evaluation JSON, runtime dependencies, model/benchmark execution surfaces, PHI/Gold access, or training surfaces.\n\nUpon merge of the dedicated closure PR and verification of resulting canonical `main`:\n\n```text\nSPEC_002=CLOSED_CANONICAL\nSPEC_003=AUTHORIZED_TO_START\nSPEC_003_IMPLEMENTATION=NOT_STARTED\nMODEL_EXECUTION_AUTHORITY=NONE\nBENCHMARK_EXECUTION_AUTHORITY=NONE\nTRAINING_AUTHORITY=NONE\n```\n\nAuthorization to start Spec 003 does not itself start implementation and grants no model, benchmark, data-payload, PHI, Gold, or training authority.\n'''
+          closeout.write_text(text.replace(marker, closure + marker, 1), encoding='utf-8')
+
+          replace_once(
+              'specs/002-safety-gates/spec.md',
+              '**State:** ACTIVE (CLOSEOUT_CANDIDATE)',
+              '**State:** CLOSED_CANONICAL',
+          )
+          spec = Path('specs/002-safety-gates/spec.md')
+          spec_text = spec.read_text(encoding='utf-8')
+          spec_append = '''\n\n## Canonical closure\n\nSpec 002 is `CLOSED_CANONICAL` only after the dedicated closure PR based on canonical implementation merge `b637382fd9a0d8a02f71c11073a5276d61726bb6` is itself reviewed, merged, and the resulting `main` is verified. Closure authorizes Spec 003 to start under its own bounded scope; it does not start Spec 003 implementation automatically and does not authorize model execution, benchmark execution, PHI/Gold access, or training.\n'''
+          if '## Canonical closure\n' in spec_text:
+              raise SystemExit('spec canonical closure section already exists')
+          spec.write_text(spec_text.rstrip() + spec_append, encoding='utf-8')
+
+          replace_once(
+              'specs/README.md',
+              '| 002 | Safety Gates | `ACTIVE` | 001 | Fixture-only/offline safety-policy implementation on `spec/002-safety-gates`; no model/benchmark execution, PHI, real Gold, or training authority. |',
+              '| 002 | Safety Gates | `CLOSED_CANONICAL` | 001 | Implementation merge `b637382fd9a0d8a02f71c11073a5276d61726bb6`; dedicated closure records final 54/9/157 exact-head qualification. |',
+          )
+          replace_once(
+              'specs/README.md',
+              '| 003 | Data, License & Provenance | `BLOCKED` | 001 | Dependency is satisfied, but implementation remains unactivated under the one-active-spec discipline. |',
+              '| 003 | Data, License & Provenance | `AUTHORIZED_TO_START` | 001 | Spec 002 canonical closure clears the one-active-spec frontier; implementation remains `NOT_STARTED` until explicitly begun under Spec 003 scope. |',
+          )
+          readme = Path('specs/README.md')
+          r = readme.read_text(encoding='utf-8')
+          start = r.index('## Current execution frontier — Spec 002')
+          end = r.index('\n## Planning rule', start)
+          new_frontier = '''## Current execution frontier — Spec 003 authorization\n\nSpec 002 implementation is canonical at `b637382fd9a0d8a02f71c11073a5276d61726bb6` and its dedicated closure transition marks it `CLOSED_CANONICAL`.\n\nSpec 003 — Data, License & Provenance — is therefore `AUTHORIZED_TO_START`, but implementation is still `NOT_STARTED` until explicitly initiated under its own bounded plan/review lifecycle. This transition does not authorize model execution, benchmark payload execution, PHI/restricted data access, real Gold access, or training.\n\n## Spec 002 closure rule\n\nThe Spec 002 implementation merge alone did not close the spec. This dedicated closure-only change binds the qualified implementation evidence to canonical merge `b637382fd9a0d8a02f71c11073a5276d61726bb6`; `CLOSED_CANONICAL` becomes effective only after this closure PR is reviewed, merged, and resulting canonical `main` is verified.\n'''
+          r = r[:start] + new_frontier + r[end:]
+          r = r.replace('**No spec currently authorizes training or model execution.** Spec 002 is the active bounded authority and is limited to fixture-only/offline Safety Gates governance.', '**No spec currently authorizes training, model execution, or benchmark payload execution.** Spec 003 is only authorized to start its bounded governance work; implementation remains not started until explicitly initiated.')
+          readme.write_text(r, encoding='utf-8')
+          PY
+
+      - name: Prove closure-only diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          mapfile -t paths < <(git diff --name-only)
+          printf '%s\n' "${paths[@]}"
+          test "${#paths[@]}" -eq 3
+          test "${paths[0]}" = "specs/002-safety-gates/closeout.md"
+          test "${paths[1]}" = "specs/002-safety-gates/spec.md"
+          test "${paths[2]}" = "specs/README.md"
+          ! git diff --name-only | grep -Eq '^(src|tests|data|\.github)/'
+          echo CLOSURE_ONLY_DIFF=PASS
+
+      - name: Commit and push closure candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "commandMed closure builder"
+          git config user.email "noreply@github.com"
+          git add specs/002-safety-gates/closeout.md specs/002-safety-gates/spec.md specs/README.md
+          git diff --cached --check
+          git commit -m "docs: close Spec 002 canonical safety gates"
+          git push origin HEAD:docs/spec-002-canonical-closeout
+          echo CLOSURE_HEAD=$(git rev-parse HEAD)
