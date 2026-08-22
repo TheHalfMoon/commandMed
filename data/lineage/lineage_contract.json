@@ -1,196 +1,42 @@
 {
-  "admission_states": [
-    "BLOCKED",
-    "ELIGIBLE",
-    "PROHIBITED",
-    "REFERENCE_ONLY"
-  ],
-  "artifact_binding_states": [
-    "DIRECT_DIGEST",
-    "IMMUTABLE_REVISION_LOCATOR",
-    "NOT_APPLICABLE",
-    "UNBOUND"
-  ],
-  "asset_classes": [
-    "BENCHMARK_OR_EVALUATION_ASSET",
-    "DATASET_OR_CORPUS",
-    "DERIVED_RESEARCH_ARTIFACT",
-    "EVIDENCE_OR_RETRIEVAL_SOURCE",
-    "MODEL_GENERATED_OR_SYNTHETIC_ASSET",
-    "MODEL_OR_CHECKPOINT",
-    "PRIVATE_GOLD_METADATA"
-  ],
-  "clean_contamination_required_uses": [
-    "MODIFICATION_OR_DERIVATION",
-    "TEACHER_OR_SYNTHETIC_GENERATION",
-    "TRAINING_OR_ADAPTATION"
-  ],
-  "contamination_states": [
-    "ASSESSED_CLEAN",
-    "BLOCKED",
-    "NOT_APPLICABLE",
-    "NOT_ASSESSED",
-    "OVERLAP_OR_HIGH_RISK",
-    "PENDING"
-  ],
+  "admission_states": ["BLOCKED", "ELIGIBLE", "PROHIBITED", "REFERENCE_ONLY"],
+  "artifact_binding_states": ["DIRECT_DIGEST", "IMMUTABLE_REVISION_LOCATOR", "NOT_APPLICABLE", "UNBOUND"],
+  "asset_classes": ["BENCHMARK_OR_EVALUATION_ASSET", "DATASET_OR_CORPUS", "DERIVED_RESEARCH_ARTIFACT", "EVIDENCE_OR_RETRIEVAL_SOURCE", "MODEL_GENERATED_OR_SYNTHETIC_ASSET", "MODEL_OR_CHECKPOINT", "PRIVATE_GOLD_METADATA"],
+  "clean_contamination_required_uses": ["MODIFICATION_OR_DERIVATION", "TEACHER_OR_SYNTHETIC_GENERATION", "TRAINING_OR_ADAPTATION"],
+  "contamination_states": ["ASSESSED_CLEAN", "BLOCKED", "NOT_APPLICABLE", "NOT_ASSESSED", "OVERLAP_OR_HIGH_RISK", "PENDING"],
   "contract_id": "commandmed-lineage-contract-v1",
-  "declared_uses": [
-    "DEVELOPMENT_EVALUATION",
-    "MODIFICATION_OR_DERIVATION",
-    "PRIVATE_RELEASE_EVALUATION",
-    "REDISTRIBUTION",
-    "REFERENCE",
-    "RETRIEVAL_OR_EVIDENCE_USE",
-    "TEACHER_OR_SYNTHETIC_GENERATION",
-    "TRAINING_OR_ADAPTATION"
-  ],
-  "exact_binding_required_uses": [
-    "DEVELOPMENT_EVALUATION",
-    "MODIFICATION_OR_DERIVATION",
-    "PRIVATE_RELEASE_EVALUATION",
-    "REDISTRIBUTION",
-    "RETRIEVAL_OR_EVIDENCE_USE",
-    "TEACHER_OR_SYNTHETIC_GENERATION",
-    "TRAINING_OR_ADAPTATION"
-  ],
+  "declared_uses": ["DEVELOPMENT_EVALUATION", "MODIFICATION_OR_DERIVATION", "PRIVATE_RELEASE_EVALUATION", "REDISTRIBUTION", "REFERENCE", "RETRIEVAL_OR_EVIDENCE_USE", "TEACHER_OR_SYNTHETIC_GENERATION", "TRAINING_OR_ADAPTATION"],
+  "exact_binding_required_uses": ["DEVELOPMENT_EVALUATION", "MODIFICATION_OR_DERIVATION", "PRIVATE_RELEASE_EVALUATION", "REDISTRIBUTION", "RETRIEVAL_OR_EVIDENCE_USE", "TEACHER_OR_SYNTHETIC_GENERATION", "TRAINING_OR_ADAPTATION"],
   "invariants": [
-    {
-      "description": "Admission is evaluator-owned output and cannot be trusted from evidence input.",
-      "invariant_id": "ADMISSION_IS_COMPUTED",
-      "required": true
-    },
-    {
-      "description": "The lineage contract validates before record evaluation.",
-      "invariant_id": "CONTRACT_MUST_VALIDATE_FIRST",
-      "required": true
-    },
-    {
-      "description": "Exact artifact locator inside an accepted cryptographic revision can bind content.",
-      "invariant_id": "CRYPTO_REVISION_LOCATOR_BINDING_ALLOWED",
-      "required": true
-    },
-    {
-      "description": "Synthetic and derived assets preserve parent and generator lineage.",
-      "invariant_id": "DERIVED_ASSETS_KEEP_PARENTS",
-      "required": true
-    },
-    {
-      "description": "Direct SHA-256 can bind exact payload bytes.",
-      "invariant_id": "DIRECT_SHA256_BINDING_ALLOWED",
-      "required": true
-    },
-    {
-      "description": "Every referenced parent must resolve and its exact-use restrictions must propagate before a child can be eligible.",
-      "invariant_id": "PARENT_RESTRICTIONS_PROPAGATE",
-      "required": true
-    },
-    {
-      "description": "Private Gold cannot enter prohibited optimization or redistribution uses.",
-      "invariant_id": "PRIVATE_GOLD_QUARANTINED",
-      "required": true
-    },
-    {
-      "description": "Canonical Spec 001 Purpose must be compatible with the requested declared use before eligibility.",
-      "invariant_id": "PURPOSE_USE_COMPATIBILITY_ENFORCED",
-      "required": true
-    },
-    {
-      "description": "Source verification is distinct from exact artifact binding.",
-      "invariant_id": "SOURCE_VERIFIED_NE_ARTIFACT_BOUND",
-      "required": true
-    },
-    {
-      "description": "UNBOUND cannot satisfy a declared use requiring exact bytes.",
-      "invariant_id": "UNBOUND_EXACT_BYTE_USE_BLOCKED",
-      "required": true
-    },
-    {
-      "description": "Unresolved or conditional rights cannot produce ELIGIBLE.",
-      "invariant_id": "UNCLEAR_RIGHTS_BLOCK_USE",
-      "required": true
-    },
-    {
-      "description": "Unknown privacy state blocks relevant executable uses.",
-      "invariant_id": "UNKNOWN_PRIVACY_FAILS_CLOSED",
-      "required": true
-    },
-    {
-      "description": "Unresolved contamination blocks uses requiring clean separation.",
-      "invariant_id": "UNRESOLVED_CONTAMINATION_BLOCKS_CLEAN_USE",
-      "required": true
-    }
+    {"description": "Admission is evaluator-owned output and cannot be trusted from evidence input.", "invariant_id": "ADMISSION_IS_COMPUTED", "required": true},
+    {"description": "The lineage contract validates before record evaluation.", "invariant_id": "CONTRACT_MUST_VALIDATE_FIRST", "required": true},
+    {"description": "Exact artifact locator inside an accepted cryptographic revision can bind content.", "invariant_id": "CRYPTO_REVISION_LOCATOR_BINDING_ALLOWED", "required": true},
+    {"description": "Synthetic and derived assets preserve parent and generator lineage.", "invariant_id": "DERIVED_ASSETS_KEEP_PARENTS", "required": true},
+    {"description": "Direct SHA-256 can bind exact payload bytes.", "invariant_id": "DIRECT_SHA256_BINDING_ALLOWED", "required": true},
+    {"description": "Every referenced parent must resolve and its exact-use restrictions must propagate before a child can be eligible.", "invariant_id": "PARENT_RESTRICTIONS_PROPAGATE", "required": true},
+    {"description": "Private Gold cannot enter prohibited optimization or redistribution uses.", "invariant_id": "PRIVATE_GOLD_QUARANTINED", "required": true},
+    {"description": "Canonical Spec 001 Purpose must be compatible with the requested declared use before eligibility.", "invariant_id": "PURPOSE_USE_COMPATIBILITY_ENFORCED", "required": true},
+    {"description": "Canonical reference-only teacher families cannot become commandMed training lineage without a later explicit policy change.", "invariant_id": "REFERENCE_TEACHER_OUTPUTS_NOT_TRAINING_LINEAGE", "required": true},
+    {"description": "Source verification is distinct from exact artifact binding.", "invariant_id": "SOURCE_VERIFIED_NE_ARTIFACT_BOUND", "required": true},
+    {"description": "UNBOUND cannot satisfy a declared use requiring exact bytes.", "invariant_id": "UNBOUND_EXACT_BYTE_USE_BLOCKED", "required": true},
+    {"description": "Unresolved or conditional rights cannot produce ELIGIBLE.", "invariant_id": "UNCLEAR_RIGHTS_BLOCK_USE", "required": true},
+    {"description": "Unknown privacy state blocks relevant executable uses.", "invariant_id": "UNKNOWN_PRIVACY_FAILS_CLOSED", "required": true},
+    {"description": "Unresolved contamination blocks uses requiring clean separation.", "invariant_id": "UNRESOLVED_CONTAMINATION_BLOCKS_CLEAN_USE", "required": true}
   ],
-  "origin_types": [
-    "DERIVED",
-    "MODEL_GENERATED",
-    "ORIGINAL",
-    "SYNTHETIC"
-  ],
-  "privacy_states": [
-    "DEIDENTIFIED",
-    "NOT_APPLICABLE",
-    "NO_PHI_KNOWN",
-    "RESTRICTED_OR_PHI",
-    "UNRESOLVED"
-  ],
-  "private_gold_prohibited_uses": [
-    "DEVELOPMENT_EVALUATION",
-    "MODIFICATION_OR_DERIVATION",
-    "REDISTRIBUTION",
-    "RETRIEVAL_OR_EVIDENCE_USE",
-    "TEACHER_OR_SYNTHETIC_GENERATION",
-    "TRAINING_OR_ADAPTATION"
-  ],
+  "origin_types": ["DERIVED", "MODEL_GENERATED", "ORIGINAL", "SYNTHETIC"],
+  "privacy_states": ["DEIDENTIFIED", "NOT_APPLICABLE", "NO_PHI_KNOWN", "RESTRICTED_OR_PHI", "UNRESOLVED"],
+  "private_gold_prohibited_uses": ["DEVELOPMENT_EVALUATION", "MODIFICATION_OR_DERIVATION", "REDISTRIBUTION", "RETRIEVAL_OR_EVIDENCE_USE", "TEACHER_OR_SYNTHETIC_GENERATION", "TRAINING_OR_ADAPTATION"],
   "purpose_allowed_declared_uses": {
-    "CALIBRATION": [
-      "DEVELOPMENT_EVALUATION"
-    ],
-    "CHECKPOINT_SELECTION": [
-      "DEVELOPMENT_EVALUATION"
-    ],
-    "DEV": [
-      "DEVELOPMENT_EVALUATION"
-    ],
-    "PRIVATE_GOLD": [
-      "PRIVATE_RELEASE_EVALUATION"
-    ],
-    "PUBLIC_EXTERNAL_EVAL": [
-      "DEVELOPMENT_EVALUATION",
-      "PRIVATE_RELEASE_EVALUATION"
-    ],
-    "TRAIN": [
-      "MODIFICATION_OR_DERIVATION",
-      "TEACHER_OR_SYNTHETIC_GENERATION",
-      "TRAINING_OR_ADAPTATION"
-    ]
+    "CALIBRATION": ["DEVELOPMENT_EVALUATION"],
+    "CHECKPOINT_SELECTION": ["DEVELOPMENT_EVALUATION"],
+    "DEV": ["DEVELOPMENT_EVALUATION"],
+    "PRIVATE_GOLD": ["PRIVATE_RELEASE_EVALUATION"],
+    "PUBLIC_EXTERNAL_EVAL": ["DEVELOPMENT_EVALUATION", "PRIVATE_RELEASE_EVALUATION"],
+    "TRAIN": ["MODIFICATION_OR_DERIVATION", "TEACHER_OR_SYNTHETIC_GENERATION", "TRAINING_OR_ADAPTATION"]
   },
-  "quarantine_states": [
-    "NOT_APPLICABLE",
-    "NOT_QUARANTINED",
-    "PRIVATE_GOLD",
-    "QUARANTINED"
-  ],
-  "rights_states": [
-    "CONDITIONAL",
-    "INCOMPATIBLE",
-    "SUPPORTED",
-    "UNRESOLVED"
-  ],
+  "quarantine_states": ["NOT_APPLICABLE", "NOT_QUARANTINED", "PRIVATE_GOLD", "QUARANTINED"],
+  "rights_states": ["CONDITIONAL", "INCOMPATIBLE", "SUPPORTED", "UNRESOLVED"],
   "schema_version": "1.0",
-  "universal_required_fields": [
-    "access_class",
-    "artifact_binding_state",
-    "asset_class",
-    "asset_id",
-    "canonical_name",
-    "declared_use",
-    "record_version",
-    "rights_evidence_uri",
-    "rights_state",
-    "source_evidence_uri",
-    "source_identifier",
-    "source_revision",
-    "source_uri",
-    "source_verification_status"
-  ]
+  "training_prohibited_generator_markers": ["hai-def", "hai_def", "health-ai-developer-foundations", "medgemma"],
+  "universal_required_fields": ["access_class", "artifact_binding_state", "asset_class", "asset_id", "canonical_name", "declared_use", "record_version", "rights_evidence_uri", "rights_state", "source_evidence_uri", "source_identifier", "source_revision", "source_uri", "source_verification_status"]
 }
