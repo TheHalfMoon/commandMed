@@ -18,42 +18,55 @@ Spec 002 implements declarative/offline mechanics for:
 - policy/sentinel zero-violation semantics;
 - pending population clinical-threshold provenance requirements;
 - deterministic semantic policy identity;
-- fail-closed handling of malformed policy, scope, and synthetic-fixture inputs.
+- fail-closed handling of malformed policy, scope, and synthetic-fixture inputs;
+- qualification-level reuse of the canonical Spec 001 `evaluate_hard_gates()` aggregation path.
 
 It does not implement a clinical red-flag catalogue, medication database, dose engine, clinical calculator, retrieval service, patient advice runtime, model evaluator, or training system.
 
 ## 2. Latest implementation-proven exact-head evidence
 
-GitHub Actions carrier PR #14 validated exact implementation predecessor head:
+GitHub Actions carrier PR #17 independently validated the external-review-repaired implementation predecessor head:
 
 ```text
-VALIDATED_IMPLEMENTATION_HEAD=19e409112ee512367eb675a3150d5ebb1242a752
-RUN_ID=32590890965
-JOB_ID=97074442747
-WORKFLOW=Spec 002 Final Exact-Head Validation
+VALIDATED_IMPLEMENTATION_HEAD=156e7dc0f720d707e55578607c3c0787603e54a7
+RUN_ID=32591311650
+JOB_ID=97075490434
+WORKFLOW=Spec 002 Exact-Head Validation
 CONCLUSION=SUCCESS
 ```
 
-The workflow explicitly checked out detached HEAD `19e409112ee512367eb675a3150d5ebb1242a752` rather than the carrier head.
+The workflow explicitly checked out detached HEAD `156e7dc0f720d707e55578607c3c0787603e54a7` rather than the carrier head.
 
 Observed evidence:
 
 ```text
-EXACT_HEAD=19e409112ee512367eb675a3150d5ebb1242a752
+EXACT_HEAD=156e7dc0f720d707e55578607c3c0787603e54a7
 PYTHON_VERSION=3.11.16
 PYTHON_SYNTAX=PASS
 SAFETY_POLICY_VALIDATION=PASS
-FOCUSED_SPEC_002_TESTS=49/49_PASS
-FULL_OFFLINE_TESTS=151/151_PASS
+FOCUSED_SPEC_002_TESTS=51/51_PASS
+HARD_GATE_INTEGRATION_TESTS=9/9_PASS
+FULL_OFFLINE_TESTS=154/154_PASS
 GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-This run includes the fail-closed malformed-scope and malformed scalar-token repairs added during independent self-review. It supersedes the earlier 41/143 and 43/145 predecessor runs as implementation evidence.
+This run includes the fail-closed malformed-scope/scalar-token hardening plus the external-review repairs described below. It supersedes the earlier 41/143, 43/145, 49/151 predecessor runs as implementation evidence.
 
 Because this closeout evidence file itself creates a newer branch head, the SHA above is intentionally an **implementation predecessor**, not the final PR-head qualification. The final PR head must be rerun after this file's last content mutation.
 
-## 3. Final-head evidence binding without self-reference
+## 3. External review reconciliation
+
+CodeRabbit review identified four material issues on the preceding candidate. All four are repaired in implementation predecessor `156e7dc0f720d707e55578607c3c0787603e54a7` and covered by tests:
+
+1. **Canonical hard-gate aggregation reuse** — qualification-level safety result records must flow through the existing Spec 001 `evaluate_hard_gates()` implementation; focused equivalence assertions are supplementary only and no second aggregator is authorized.
+2. **Forced-state exact equality** — an identity-bound forced `EMERGENCY` or `ESCALATE` sentinel passes only when the observed state exactly equals the required state. A different state fails that exact sentinel; this is a frozen fixture contract, not a universal clinical severity ordering.
+3. **Mixed required-gate precedence** — any hard-gate `FAIL` dominates missing/incomplete evidence. If no failure exists but any required gate is incomplete/blocked/unevaluated, the aggregate cannot pass. A regression test covers one failure plus other missing gates.
+4. **Truth-boundary fixture identity** — a promoted synthetic truth-boundary result requires resolved `fixture_id`, `boundary_id`, `evidence_artifact_id`, and the configured result-identity fields. Missing or `UNRESOLVED` fixture identity yields `INSUFFICIENT_EVIDENCE` with no score.
+
+PR #10 conversation comment `5381980619` records the review-reconciliation evidence. Temporary repair carrier PR #16 and validation carrier PR #17 were both closed without merge.
+
+## 4. Final-head evidence binding without self-reference
 
 This closeout file MUST NOT be mutated merely to embed the SHA produced by its own mutation. That would create an endless self-reference cycle.
 
@@ -66,7 +79,7 @@ Therefore final exact-head qualification is bound through immutable GitHub evide
 
 After this document's final mutation, no further repository-content change is permitted before qualification unless a material defect is discovered.
 
-## 4. Semantic policy identity
+## 5. Semantic policy identity
 
 The latest implementation-proven run computed:
 
@@ -86,7 +99,7 @@ SEMANTIC_IDENTITIES=PASS
 
 The final external exact-head run must re-confirm these identities after this evidence-only mutation.
 
-## 5. Planning/analyze evidence
+## 6. Planning/analyze evidence
 
 Spec 002 planning used the repository Spec Kit lifecycle and recorded `analysis.md` before implementation.
 
@@ -103,26 +116,26 @@ Analyze verdict:
 SPEC_002_ANALYZE=PASS_TO_IMPLEMENT
 ```
 
-## 6. Acceptance matrix
+## 7. Acceptance matrix
 
 | # | Spec 002 acceptance criterion | Candidate evidence | Status |
 |---|---|---|---|
 | 1 | Machine-readable safety-policy contract with stable IDs/closed vocabularies | `data/eval/safety_policy.json` + validator | CANDIDATE_PASS |
 | 2 | Unknown/malformed/duplicate policy objects fail cleanly | malformed scalar/collection/completeness regression matrix | CANDIDATE_PASS |
-| 3 | Required `EMERGENCY`/`ESCALATE` cannot be overridden in sentinels | forced-state tests | CANDIDATE_PASS |
+| 3 | Required `EMERGENCY`/`ESCALATE` exact sentinel states cannot be overridden | exact forced-state tests + repaired SP-001 contract | CANDIDATE_PASS |
 | 4 | Required deterministic/authoritative mechanisms cannot be replaced by guessed prose | truth-boundary validator/evaluator tests | CANDIDATE_PASS |
 | 5 | Valid deterministic safety-critical results cannot be altered silently | exact typed-result comparison tests | CANDIDATE_PASS |
-| 6 | Missing required information/evidence blocks unsupported answer/pass | precedence + unresolved-evidence tests | CANDIDATE_PASS |
+| 6 | Missing required information/evidence/fixture identity blocks unsupported answer/pass | precedence + unresolved-evidence/fixture tests | CANDIDATE_PASS |
 | 7 | Existing gate-result semantics reused; applicability scope cannot hide claimed capability or promote component PASS to system PASS | scope validator/applicability tests | CANDIDATE_PASS |
 | 8 | Sentinel zero violations explicitly separated from population zero-error claim | policy classes + documentation + tests | CANDIDATE_PASS |
 | 9 | Unsupported statistical thresholds remain pending/non-passable; FD-004 over-triage remains pending | threshold requirement validator/tests | CANDIDATE_PASS |
-| 10 | Existing Spec 001 hard-gate identities mapped without weakening | exact metric→capability/class/evidence-kind completeness validation | CANDIDATE_PASS |
-| 11 | Offline fixture-only tests pass and Spec 001 regression suite remains green | 49 focused + 151 full tests on latest implementation predecessor | PENDING_FINAL_PR_HEAD |
+| 10 | Existing Spec 001 hard-gate identities and aggregation semantics reused without weakening | exact metric mapping + `evaluate_hard_gates()` integration + mixed-result regression | CANDIDATE_PASS |
+| 11 | Offline fixture-only tests pass and Spec 001 regression suite remains green | 51 focused + 9 hard-gate + 154 full tests on latest implementation predecessor | PENDING_FINAL_PR_HEAD |
 | 12 | Canonical policy identity and exact-head closeout evidence recorded with no prohibited activity | semantic hashes + external final-head binding protocol | PENDING_FINAL_PR_HEAD |
 
 Spec 002 MUST NOT be described as `12/12 PASS` until rows 11 and 12 are re-proven on the final exact PR head after this file's last mutation.
 
-## 7. Pending clinical/founder thresholds
+## 8. Pending clinical/founder thresholds
 
 The following population/statistical thresholds remain intentionally unresolved and non-passable until required evidence is bound:
 
@@ -136,11 +149,11 @@ The following population/statistical thresholds remain intentionally unresolved 
 
 Spec 002 does not manufacture numeric values for these metrics. Zero-violation policy/sentinel mechanics do not imply zero population clinical error.
 
-## 8. External design-evidence boundary
+## 9. External design-evidence boundary
 
 `research.md` records current WHO, FDA and NIST primary guidance used to inform general safety-governance principles. That research is explicitly not a regulatory-compliance determination and is not used to derive unsupported commandMed clinical thresholds.
 
-## 9. Repository-scope activity/authority attestation
+## 10. Repository-scope activity/authority attestation
 
 For the bounded Spec 002 workflow represented by this branch and its authorized review/validation actions:
 
@@ -161,18 +174,19 @@ SPEC_003_IMPLEMENTATION=NOT_AUTHORIZED
 
 The project record additionally reports no model downloads/weight loading/inference, benchmark payload execution, training, PHI access, restricted clinical-data access, real-Gold access, or external judge/model calls during the authorized Spec 002 workflow. These are bounded workflow attestations, not claims about activity outside this repository/process.
 
-## 10. Final qualification gate
+## 11. Final qualification gate
 
 Before PR #10 may leave Draft, all of the following must be true on one final exact head created by this document's last mutation:
 
 1. `validate_safety_policy` passes on the exact remote artifact;
-2. focused Spec 002 tests pass;
+2. focused Spec 002 and hard-gate integration tests pass;
 3. the complete repository test suite passes;
 4. inherited Spec 001 semantic identities remain unchanged;
 5. safety-policy semantic SHA-256 remains `79a12414fe68fc08efb43070f3eede36976f2e0dc0ece7f4eed4bbcc5496d14f`;
 6. diff hygiene/scope checks pass;
 7. PR body records the exact final candidate head and run/job evidence;
-8. fresh exact-head review finds no material blocker.
+8. all material external-review findings are reconciled;
+9. fresh exact-head independent review finds no material blocker.
 
 Until then:
 
