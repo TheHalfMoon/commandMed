@@ -1,6 +1,6 @@
 # Spec 004 — Tournament Harness
 
-**State:** ACTIVE — planning/analysis only until Analyze=PASS
+**State:** ACTIVE — bounded fixture-only implementation/reconciliation
 **Canonical starting base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
 **Dependencies:** Spec 001, Spec 002, Spec 003 — all `CLOSED_CANONICAL`
 **Training authority:** NONE
@@ -64,15 +64,16 @@ It does not execute the tournament against real model candidates. That remains S
 
 ## Canonical inputs to bind
 
-A tournament manifest must bind the exact semantic identities of the canonical contracts it relies on, including at minimum:
+A tournament manifest must bind the exact semantic identities of the canonical contracts it relies on, including:
 
 - benchmark registry;
 - metric catalog;
-- quarantine contract;
+- Gold protocol metadata;
+- quarantine/contamination contract;
 - safety policy;
 - lineage contract.
 
-The harness must compare the declared identities against identities computed from the supplied canonical artifacts. A caller cannot self-assert a protocol identity that is not recomputed.
+The harness must compare the declared identities against identities computed from the supplied canonical artifacts and against the exact V1 identity map authorized by this spec. A caller cannot self-assert a protocol identity or substitute another internally consistent contract bundle.
 
 ## User stories
 
@@ -150,17 +151,18 @@ Spec 004 fixture IDs are synthetic/neutral. Real candidate admission belongs to 
 
 The harness SHALL recompute and verify required artifact identities from supplied canonical artifacts rather than trusting the manifest alone.
 
-At minimum it SHALL bind:
+V1 SHALL bind exactly:
 
 ```text
 benchmarks_sha256
 metrics_sha256
+gold_protocols_sha256
 quarantine_sha256
 safety_policy_sha256
 lineage_contract_sha256
 ```
 
-Identity mismatch yields a blocked tournament and no selection.
+Both the recomputed supplied-artifact map and the manifest-declared map SHALL equal the exact canonical V1 identity map frozen by Spec 004. Identity mismatch yields a blocked tournament and no selection.
 
 ### FR-005 — Comparison metric freeze
 
@@ -182,8 +184,9 @@ Each precomputed candidate result SHALL contain at least:
 - candidate lineage evidence record;
 - optional lineage registry required by that record's parents;
 - metric results keyed by metric ID;
-- exact evidence artifact IDs for reported metrics;
-- safety scope matching the manifest.
+- exact evidence artifact IDs for reported metrics.
+
+The candidate result SHALL **not** duplicate `safety_scope`. The exact `tournament_manifest_sha256` binds the result to the manifest, and the manifest contains the one canonical safety scope used for all candidate qualification. A digest mismatch is `INCOMPLETE` evidence and cannot be ranked.
 
 The result envelope SHALL not contain model output text, benchmark cases, private Gold, prompts, or executable runtime configuration.
 
@@ -193,15 +196,15 @@ Before comparison, the harness SHALL call the canonical Spec 003 lineage evaluat
 
 Only lineage state `ELIGIBLE` may proceed to tournament qualification.
 
-`BLOCKED`, `PROHIBITED`, or `REFERENCE_ONLY` must remain non-selectable and expose deterministic reason codes.
+`BLOCKED`, `PROHIBITED`, or `REFERENCE_ONLY` must remain non-selectable and expose deterministic reason codes. `PROHIBITED` or `REFERENCE_ONLY` may be decisively `DISQUALIFIED`; blocked/invalid/unresolved evidence is `INCOMPLETE`.
 
 ### FR-008 — Safety/hard-gate qualification
 
-The harness SHALL reuse canonical Spec 002 `evaluate_safety_qualification_hard_gates()` over the supplied canonical safety policy, declared safety scope, canonical metric catalog, and candidate precomputed metric results.
+The harness SHALL reuse canonical Spec 002 `evaluate_safety_qualification_hard_gates()` over the supplied canonical safety policy, manifest-bound safety scope, canonical metric catalog, and candidate precomputed metric results.
 
 Only overall `PASS` may proceed to comparison.
 
-`FAIL`, `INSUFFICIENT_EVIDENCE`, `BLOCKED`, or `NOT_EVALUATED` SHALL not be converted into pass by aggregate scores.
+Observed overall `FAIL` is a decisive `DISQUALIFIED` result. `INSUFFICIENT_EVIDENCE`, `BLOCKED`, or `NOT_EVALUATED` remain `INCOMPLETE` and SHALL not be converted into pass or used to remove a candidate from the frozen comparison set.
 
 ### FR-009 — Required comparison evidence
 
@@ -212,7 +215,7 @@ For every comparison metric, each otherwise-qualified candidate SHALL provide:
 - finite numeric score (boolean is not numeric for this purpose);
 - resolved non-empty `evidence_artifact_id`.
 
-Missing, NaN, positive/negative infinity, malformed, or non-pass comparison evidence fails closed.
+Missing, NaN, positive/negative infinity, malformed, or non-pass comparison evidence fails closed. Arbitrarily large Python/JSON integer values are finite numeric values and SHALL be handled deterministically without float conversion overflow.
 
 ### FR-010 — Deterministic lexicographic comparison
 
@@ -227,26 +230,30 @@ Candidate IDs may be used only for deterministic report ordering, never as a sci
 The harness SHALL return `NO_SELECTION` when:
 
 - no candidate qualifies;
+- any declared candidate is `INCOMPLETE`;
 - the best comparison vector is tied under all frozen comparison metrics;
 - canonical identity binding fails;
 - the manifest is invalid;
+- the candidate result set is malformed, contains duplicate envelopes, or contains undeclared extra candidate IDs;
 - required comparison evidence is incomplete/non-comparable.
 
-It SHALL never silently choose alphabetically or by input order.
+A candidate proven `DISQUALIFIED` by complete decisive evidence does not itself force the other complete candidates to become incomplete.
+
+The harness SHALL never silently choose alphabetically, by input order, or from a subset created by missing evidence.
 
 ### FR-012 — Deterministic tournament report
 
 The report SHALL include at minimum:
 
 - tournament manifest SHA-256;
-- canonical contract identities;
+- exact canonical contract identity map;
 - per-candidate qualification state/reason codes;
 - frozen comparison vector for qualified candidates;
 - selected candidate ID only when exactly one best candidate exists;
 - final state `SELECTED` or `NO_SELECTION`;
 - deterministic report SHA-256 computed over scientific fields.
 
-Runtime timestamps, local paths, machine names, and input iteration order SHALL NOT alter scientific identity.
+Runtime timestamps, local paths, machine names, and input iteration order SHALL NOT alter scientific identity, including invalid-result-set reports.
 
 ### FR-013 — Fixture-only validation
 
@@ -260,9 +267,11 @@ Tests SHALL prove at least:
 - safety hard-gate failure dominates excellent scores;
 - pending/insufficient safety evidence cannot qualify;
 - missing/non-finite/non-pass comparison score fails closed;
+- arbitrarily large integer comparison scores do not abort evaluation;
 - direction-aware lexicographic ordering;
 - tied best candidates produce `NO_SELECTION`;
-- candidate input order does not change report identity/result;
+- candidate input order does not change report identity/result, including malformed/undeclared-result permutations;
+- report carries the exact canonical identity map and semantic mutation changes report identity;
 - manifest semantic mutation changes identity;
 - canonical Spec 001/002/003 identities remain unchanged.
 
@@ -322,14 +331,14 @@ Spec 004 must expose a clean boundary for those later decisions rather than choo
 ## Acceptance criteria
 
 1. Versioned manifest validation exists and rejects execution surfaces.
-2. Manifest identity is deterministic and binds canonical Specs 001–003 artifacts.
-3. Candidate result validation requires the same manifest identity and declared safety scope.
+2. Manifest identity is deterministic and binds the exact canonical Specs 001–003 artifact map.
+3. Candidate result validation requires the exact manifest identity; that digest binds every candidate to the single manifest safety scope without duplicating scope fields.
 4. Candidate lineage uses the canonical Spec 003 evaluator and only `ELIGIBLE` can qualify.
-5. Safety qualification uses the canonical Spec 002 evaluator and hard-gate failure/insufficient evidence cannot be averaged away.
-6. Comparison metrics are pre-registered, canonical, direction-aware, finite, and evidence-bound.
+5. Safety qualification uses the canonical Spec 002 evaluator; observed hard-gate failure disqualifies while insufficient evidence forces no selection.
+6. Comparison metrics are pre-registered, canonical, direction-aware, finite, evidence-bound, and handle large integers without overflow.
 7. Lexicographic comparison is deterministic and has no hidden/alphabetic tie-break selection.
-8. Ties and incomplete/blocked evidence produce `NO_SELECTION`.
-9. Deterministic report identity is stable under candidate input reordering and changes on semantic mutation.
+8. Ties and incomplete/blocked evidence produce `NO_SELECTION`; proven `DISQUALIFIED` candidates remain distinct from incomplete evidence.
+9. Deterministic report identity is stable under semantic input reordering, carries canonical contract identities, and changes on semantic mutation.
 10. Synthetic fixture tests cover positive and negative cases without model/benchmark payload execution.
 11. Canonical Spec 001/002/003 semantic identities remain unchanged.
 12. No new dependency/runtime/provider/model/data execution surface is introduced.
