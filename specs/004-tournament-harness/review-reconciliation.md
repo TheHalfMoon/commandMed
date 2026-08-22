@@ -1,11 +1,11 @@
 # Spec 004 — Tournament Harness Review Reconciliation
 
-**Status:** `CLOSED_CANONICAL` — effective only after the dedicated closure-only PR containing this record is merged and resulting canonical `main` is verified  
-**Canonical implementation base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`  
-**Canonical implementation merge:** `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`  
-**Canonical implementation tree:** `7e37fa626f825ee25271e0bf21a627a2e64e49da`  
-**Final reviewed implementation head:** `cf6158ea4193aa7db895607c6fac5a3a1442f708`  
-**Scope:** fixture/precomputed-results-only harness  
+**Status:** `CLOSED_CANONICAL` — effective only after the dedicated closure-only PR containing this record is merged and resulting canonical `main` is verified
+**Canonical implementation base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
+**Canonical implementation merge:** `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`
+**Canonical implementation tree:** `7e37fa626f825ee25271e0bf21a627a2e64e49da`
+**Final reviewed implementation head:** `cf6158ea4193aa7db895607c6fac5a3a1442f708`
+**Scope:** fixture/precomputed-results-only harness
 **Authority:** no model, weight, benchmark-payload, provider/API, training, PHI/restricted-data, private-Gold payload, gated-asset, or Spec 005 execution authority
 
 ## Reconciliation rule
@@ -18,129 +18,129 @@ This file preserves the material implementation-review history and separately re
 
 ### V004-01 — Canonical quarantine container adapter
 
-**Discovered by:** GitHub exact-head carrier Run `32600079522`  
-**Affected predecessor:** `19cd7697b6f399af50f9006b7235b3421eb8cc0a`  
-**Severity:** MATERIAL / INTEGRATION  
+**Discovered by:** GitHub exact-head carrier Run `32600079522`
+**Affected predecessor:** `19cd7697b6f399af50f9006b7235b3421eb8cc0a`
+**Severity:** MATERIAL / INTEGRATION
 **Status:** REPAIRED
 
 The canonical quarantine artifact is a container with `quarantine_rules` and `contamination_records`. The repair validates each collection with its canonical validator while retaining semantic SHA-256 over the complete canonical container.
 
 ### S004-01 — Caller-supplied alternate protocol bundle
 
-**Discovered by:** analyze self-audit  
-**Severity:** MATERIAL / PROTOCOL INTEGRITY  
+**Discovered by:** analyze self-audit
+**Severity:** MATERIAL / PROTOCOL INTEGRITY
 **Status:** REPAIRED
 
 Internal consistency was insufficient canonical authority. The harness now hard-pins the exact six Specs 001–003 identities; both recomputed supplied-artifact identities and manifest declarations must equal that immutable map.
 
 ### S004-02 — Incomplete candidate subset-selection bypass
 
-**Discovered by:** analyze self-audit  
-**Severity:** MATERIAL / COMPARISON INTEGRITY  
+**Discovered by:** analyze self-audit
+**Severity:** MATERIAL / COMPARISON INTEGRITY
 **Status:** REPAIRED
 
 Candidate states are exactly `QUALIFIED`, `DISQUALIFIED`, and `INCOMPLETE`. Only complete decisive evidence may disqualify. Missing/malformed/wrong-manifest/blocked/insufficient/non-comparable evidence is incomplete. Any declared incomplete candidate forces `NO_SELECTION / CANDIDATE_EVIDENCE_INCOMPLETE` before ranking. Unknown or duplicate candidate envelopes invalidate the result set.
 
 ### R004-01 — FR-006 candidate schema conflict
 
-**Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`  
-**Severity:** MATERIAL / CONTRACT CONSISTENCY  
+**Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
+**Severity:** MATERIAL / CONTRACT CONSISTENCY
 **Status:** REPAIRED
 
 Safety scope exists once in the frozen manifest. Each candidate carries the exact manifest digest that binds it to that scope. Duplicate candidate-level safety scope is prohibited.
 
 ### R004-02 — Plan retained obsolete `NON_QUALIFYING` flow
 
-**Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`  
-**Severity:** MATERIAL / COMPARISON INTEGRITY  
+**Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
+**Severity:** MATERIAL / COMPARISON INTEGRITY
 **Status:** REPAIRED
 
 The plan now uses `QUALIFIED / DISQUALIFIED / INCOMPLETE`; incomplete-candidate gating occurs before ranking.
 
 ### R004-03 — Report omitted canonical artifact identities
 
-**Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`  
-**Severity:** MATERIAL / REPORT INTEGRITY  
+**Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
+**Severity:** MATERIAL / REPORT INTEGRITY
 **Status:** REPAIRED
 
 Every report carries `canonical_artifact_identities == CANONICAL_UPSTREAM_IDENTITIES_V1`, and the map participates in the non-self-referential report digest.
 
 ### S004-03 — Invalid result-set report identity depended on input order
 
-**Discovered by:** post-qualification self-audit  
-**Affected predecessor:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`  
-**Severity:** MATERIAL / DETERMINISTIC IDENTITY  
+**Discovered by:** post-qualification self-audit
+**Affected predecessor:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
+**Severity:** MATERIAL / DETERMINISTIC IDENTITY
 **Status:** REPAIRED
 
 Result-set errors no longer embed caller list indexes; recursive denylist list paths are order-neutral; report error collections are sorted before hashing; regressions prove permutation invariance.
 
 ### R004-04 — Large integer comparison overflow
 
-**Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`  
-**Severity:** MATERIAL / STABILITY  
+**Independent review head:** `77ee65406d2e7bd0b05737622e45aee81a88ed74`
+**Severity:** MATERIAL / STABILITY
 **Status:** REPAIRED IN TWO LAYERS
 
 `math.isfinite()` is applied only to floats; integers remain exact. A later exact-head run exposed Python 3.11's decimal integer-string limit during report hashing, leading to V004-02.
 
 ### V004-02 — Large integer report-hash decimal conversion limit
 
-**Discovered by:** GitHub exact-head carrier Run `32600855451`  
-**Affected predecessor:** `a8e3c197cd7320539b096821266bba7c36902c27`  
-**Severity:** MATERIAL / STABILITY + DETERMINISTIC IDENTITY  
+**Discovered by:** GitHub exact-head carrier Run `32600855451`
+**Affected predecessor:** `a8e3c197cd7320539b096821266bba7c36902c27`
+**Severity:** MATERIAL / STABILITY + DETERMINISTIC IDENTITY
 **Status:** REPAIRED
 
 The returned scientific report retains the original integer. The report-hash projection maps integers to an exact tagged hexadecimal representation before canonical JSON serialization. Booleans remain booleans; no process-global integer-digit setting is modified.
 
 ### R004-05 — Recursive denylist separator/whitespace bypass
 
-**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`  
-**Reviewer:** Qodo  
-**Severity:** MATERIAL / SECURITY  
+**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`
+**Reviewer:** Qodo
+**Severity:** MATERIAL / SECURITY
 **Status:** REPAIRED
 
 Key names are normalized through Unicode NFKC + casefold; non-ASCII-alphanumeric separator sequences collapse to `_`; both normalized and underscore-free compact forms are compared against the prohibited vocabulary. Regressions reject `api\tkey`, `api\u200bkey`, and `provider.endpoint`.
 
 ### R004-06 — Report digest did not bind comparison-vector order
 
-**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`  
-**Reviewer:** Qodo  
-**Severity:** MATERIAL / SCIENTIFIC IDENTITY  
+**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`
+**Reviewer:** Qodo
+**Severity:** MATERIAL / SCIENTIFIC IDENTITY
 **Status:** REPAIRED
 
 The public report remains unchanged. In the report-hash projection each comparison-vector record becomes the ordered positional sequence `[metric_id, direction, score, evidence_artifact_id]`, preventing inherited set-like dictionary-list normalization from erasing lexicographic order.
 
 ### R004-07 — Bounded spec lacked explicit template exit headings
 
-**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`  
-**Reviewer:** Qodo  
-**Severity:** GOVERNANCE / AUDITABILITY  
+**Independent review head:** `8da820fde8974ec382afde7009cd201ee8f59bdf`
+**Reviewer:** Qodo
+**Severity:** GOVERNANCE / AUDITABILITY
 **Status:** REPAIRED
 
 The bounded spec now has explicit `## Exclusions` and `## Exit Evidence` sections while preserving the rule that implementation merge alone does not close Spec 004.
 
 ### R004-08 — Mixed object-key types could abort fail-closed evaluation
 
-**Independent review head:** `6c1a359f969222dd7868248d1ba12fc114f413d9`  
-**Reviewer:** Qodo  
-**Severity:** MATERIAL / RELIABILITY + FAIL-CLOSED INPUT HANDLING  
+**Independent review head:** `6c1a359f969222dd7868248d1ba12fc114f413d9`
+**Reviewer:** Qodo
+**Severity:** MATERIAL / RELIABILITY + FAIL-CLOSED INPUT HANDLING
 **Status:** REPAIRED
 
 `_exact_keys()` isolates string keys before set arithmetic/sorting and deterministically reports non-string object keys. `_base_report()` avoids hashing malformed mixed-key manifests before validation. Regressions drive mixed-key manifests and candidate envelopes through `evaluate_tournament()` and require deterministic no-selection/incomplete outcomes rather than exceptions.
 
 ### G004-01 — Closeout task bookkeeping stale on implementation closeout head
 
-**Independent review head:** `6c1a359f969222dd7868248d1ba12fc114f413d9`  
-**Reviewers:** CodeRabbit and Qodo  
-**Severity:** GOVERNANCE / MAINTAINABILITY  
+**Independent review head:** `6c1a359f969222dd7868248d1ba12fc114f413d9`
+**Reviewers:** CodeRabbit and Qodo
+**Severity:** GOVERNANCE / MAINTAINABILITY
 **Status:** REPAIRED
 
 The implementation closeout already existed but T004-10 still listed its creation as remaining. Task bookkeeping was reconciled before the next qualification.
 
 ### R004-09 — Invalid non-object manifests received a misleading manifest digest
 
-**Independent review head:** `bf57ccd47791ef0cd25ebc478e154a9f28c14be4`  
-**Reviewer:** Qodo  
-**Severity:** MATERIAL / CORRECTNESS + REPORT IDENTITY  
+**Independent review head:** `bf57ccd47791ef0cd25ebc478e154a9f28c14be4`
+**Reviewer:** Qodo
+**Severity:** MATERIAL / CORRECTNESS + REPORT IDENTITY
 **Status:** REPAIRED
 
 `_base_report()` computes `tournament_manifest_sha256` only when the manifest is a dictionary and all top-level keys are strings. String/list/`None` manifests and mixed-key dictionaries retain a null manifest identity and fail closed as `NO_SELECTION / INVALID_MANIFEST_OR_PROTOCOL`.
@@ -234,16 +234,16 @@ Direct review evidence:
 
 ### C004-01 — Noncanonical closeout status
 
-**Affected closure head:** `45037b988bd716adc1750199df6c6069ff15f5ac`  
-**Severity:** HIGH / LIFECYCLE CORRECTNESS  
+**Affected closure head:** `45037b988bd716adc1750199df6c6069ff15f5ac`
+**Severity:** HIGH / LIFECYCLE CORRECTNESS
 **Status:** REPAIRED
 
 The closeout header used the nonstandard token `CLOSURE_CANDIDATE_REVIEW_AND_MERGE_REQUIRED` while the registry used `CLOSED_CANONICAL`. The repair follows the established Spec 003 pattern: `CLOSED_CANONICAL` with an explicit qualifier that effectiveness begins only after this closure-only PR is merged and resulting canonical `main` is verified.
 
 ### C004-02 — Spec 004 lifecycle artifacts remained pre-closeout
 
-**Affected closure head:** `45037b988bd716adc1750199df6c6069ff15f5ac`  
-**Severity:** HIGH / LIFECYCLE CONSISTENCY  
+**Affected closure head:** `45037b988bd716adc1750199df6c6069ff15f5ac`
+**Severity:** HIGH / LIFECYCLE CONSISTENCY
 **Status:** REPAIRED
 
 `tasks.md`, `review-reconciliation.md`, and the requirements checklist retained present-tense implementation/pre-closeout states after the implementation merge. The closure transition now reconciles the complete lifecycle document set:
@@ -256,8 +256,8 @@ The closeout header used the nonstandard token `CLOSURE_CANDIDATE_REVIEW_AND_MER
 
 ### C004-03 — CI/review claims lacked direct evidence links
 
-**Affected closure head:** `45037b988bd716adc1750199df6c6069ff15f5ac`  
-**Severity:** MEDIUM / EVIDENCE QUALITY  
+**Affected closure head:** `45037b988bd716adc1750199df6c6069ff15f5ac`
+**Severity:** MEDIUM / EVIDENCE QUALITY
 **Status:** REPAIRED
 
 Strong implementation qualification/review claims are now accompanied by directly verifiable GitHub links to the exact Run, Job, implementation PR, fresh exact-head Qodo review, and review update marker.
