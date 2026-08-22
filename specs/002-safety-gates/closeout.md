@@ -77,6 +77,8 @@ Therefore final exact-head qualification is bound through immutable GitHub evide
 3. an exact-head review is anchored to the same final SHA;
 4. any head mutation invalidates that qualification and requires a new run/review.
 
+PR #10's Draft/Ready lifecycle state is also **external GitHub metadata** and is intentionally not frozen as a current-state assertion in this repository artifact. Draft/Ready may change during qualification without changing repository content. The invariant frozen here is that Ready state alone never grants merge authority: `MERGE_AUTHORITY=NO` remains true until the external exact-head validation/review gates are satisfied on an unchanged head and guarded merge is explicitly performed.
+
 After this document's final mutation, no further repository-content change is permitted before qualification unless a material defect is discovered.
 
 ## 5. Semantic policy identity
@@ -176,7 +178,7 @@ The project record additionally reports no model downloads/weight loading/infere
 
 ## 11. Final qualification gate
 
-Before PR #10 may leave Draft, all of the following must be true on one final exact head created by this document's last mutation:
+Before guarded merge of PR #10, all of the following must be true on one unchanged final exact head created by this document's last repository-content mutation:
 
 1. `validate_safety_policy` passes on the exact remote artifact;
 2. focused Spec 002 and hard-gate integration tests pass;
@@ -186,13 +188,14 @@ Before PR #10 may leave Draft, all of the following must be true on one final ex
 6. diff hygiene/scope checks pass;
 7. PR body records the exact final candidate head and run/job evidence;
 8. all material external-review findings are reconciled;
-9. fresh exact-head independent review finds no material blocker.
+9. fresh exact-head independent review finds no material blocker;
+10. GitHub PR metadata shows PR #10 Ready on the same exact head immediately before merge.
 
-Until then:
+Until all merge gates are satisfied:
 
 ```text
 SPEC_002=CLOSEOUT_CANDIDATE_PENDING_EXTERNAL_EXACT_HEAD_QUALIFICATION
-PR_10=DRAFT
+PR_10_LIFECYCLE_STATE=EXTERNAL_GITHUB_METADATA
 MERGE_AUTHORITY=NO
 SPEC_003_IMPLEMENTATION=NOT_AUTHORIZED
 MODEL_EXECUTION_AUTHORITY=NONE
