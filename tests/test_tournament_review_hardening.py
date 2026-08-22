@@ -116,6 +116,18 @@ class TournamentReviewHardeningTests(unittest.TestCase):
             msg=f"expected mixed-key validation error: {report}",
         )
 
+    def test_non_object_manifests_fail_closed_without_identity(self):
+        for malformed in ("not-a-manifest", ["not", "a", "manifest"], None):
+            report = evaluate_tournament(malformed, [], self.artifacts)
+
+            self.assertEqual(report["tournament_state"], "NO_SELECTION")
+            self.assertEqual(report["reason_code"], "INVALID_MANIFEST_OR_PROTOCOL")
+            self.assertIsNone(report["tournament_manifest_sha256"])
+            self.assertTrue(
+                any("expected an object" in error for error in report["result_set_errors"]),
+                msg=f"expected object-shape validation error for {malformed!r}: {report}",
+            )
+
     def test_mixed_type_candidate_keys_fail_closed_as_incomplete(self):
         malformed = self.result("fixture-model-a", 2.0, 0.2)
         malformed[7] = "unexpected"
