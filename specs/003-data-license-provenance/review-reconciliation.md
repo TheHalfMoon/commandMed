@@ -7,14 +7,15 @@
 
 ## 1. Predecessor evidence invalidation
 
-Two previously green implementation candidates are predecessor evidence only:
+Three previously green implementation candidates are predecessor evidence only:
 
 ```text
 ab594ad2756b33813d7b69166079849474a290aa
 73048eed01583f13a24dff74748a50e3f33c91fa
+2bd7e453575b01484428a76b34cbe451cdc5f0a1
 ```
 
-`ab594ad...` was invalidated after independent review found two material authorization defects. `73048eed...` repaired those defects and passed exact-head GitHub validation, but a subsequent canonical-policy audit found that the repository's explicit MedGemma/HAI-DEF training-lineage default was documented but not machine-enforced. Therefore run `32596747649` and every earlier carrier result remain predecessor qualification only.
+`ab594ad...` was invalidated after independent review found two material authorization defects. `73048eed...` repaired those defects and passed exact-head GitHub validation, but a subsequent canonical-policy audit found that the explicit MedGemma/HAI-DEF training-lineage default was documented but not machine-enforced. `2bd7e453...` added that policy and passed exact-head validation, but the next exact-head independent review found a classification-laundering bypass through `DERIVED_RESEARCH_ARTIFACT`.
 
 No predecessor PASS is used to qualify the final repaired head.
 
@@ -31,7 +32,7 @@ The evaluator special-cased `PRIVATE_GOLD` but did not enforce canonical Spec 00
 
 ### Repair
 
-The V1 contract now contains and fail-closed validates this exact Purpose/use allowlist:
+The V1 contract contains and fail-closed validates this exact Purpose/use allowlist:
 
 ```text
 TRAIN -> TRAINING_OR_ADAPTATION | TEACHER_OR_SYNTHETIC_GENERATION | MODIFICATION_OR_DERIVATION
@@ -100,7 +101,7 @@ The earlier implementation required generic `output_use_evidence_uri`, parent li
 
 ### Repair
 
-The final V1 contract now requires invariant:
+The V1 contract requires invariant:
 
 ```text
 REFERENCE_TEACHER_OUTPUTS_NOT_TRAINING_LINEAGE
@@ -115,17 +116,51 @@ health-ai-developer-foundations
 medgemma
 ```
 
-`validate_lineage_contract()` treats that set as canonical V1 policy and rejects removal/extension. For `MODEL_GENERATED_OR_SYNTHETIC_ASSET` with declared use `TRAINING_OR_ADAPTATION`, a generator identity matching one of these canonical reference-family markers yields:
+The marker set is itself contract-validated and cannot be removed or extended silently. Training admission for a generated/derived output must separately satisfy exact-use rights evidence, output-use evidence, parent resolution/propagation, privacy, contamination, artifact binding, and all other gates.
+
+## 5. Finding R003-03 — Reference-teacher classification laundering through derived artifacts
+
+**Source:** fresh exact-head CodeRabbit review of `2bd7e453575b01484428a76b34cbe451cdc5f0a1`
+**Severity:** MATERIAL / SECURITY
+**Resolution:** REPAIRED
+
+### Finding
+
+The first reference-teacher repair applied the prohibited-generator marker check only to `MODEL_GENERATED_OR_SYNTHETIC_ASSET`. A caller could instead represent the same model output as:
 
 ```text
-PROHIBITED / GENERATOR_TRAINING_PROHIBITED
+asset_class=DERIVED_RESEARCH_ARTIFACT
+origin_type=DERIVED
+declared_use=TRAINING_OR_ADAPTATION
 ```
 
-A non-prohibited external/provider output still does **not** become training lineage merely from its name: it must separately satisfy exact-use rights evidence, output-use evidence, parent resolution/propagation, privacy, contamination, artifact binding, and all other admission gates.
+omit `generator_identity`, provide a clean parent registry, and potentially reach `ELIGIBLE`.
 
-Regression tests cover contract-invariant removal, marker-set weakening, MedGemma-generated output training denial, HAI-DEF-generated output training denial, and clean non-prohibited-provider parent propagation.
+### Repair
 
-## 5. Adjacent hardening
+The training-lineage producer/generator boundary is now class-agnostic across both derived classes:
+
+```text
+MODEL_GENERATED_OR_SYNTHETIC_ASSET
+DERIVED_RESEARCH_ARTIFACT
+```
+
+For `TRAINING_OR_ADAPTATION`:
+
+- every `DERIVED_RESEARCH_ARTIFACT` must carry a non-empty machine-verifiable `generator_identity` in addition to parent lineage and `output_use_evidence_uri`;
+- prohibited MedGemma/HAI-DEF markers are evaluated for **all** derived/model-generated training outputs, not only the model-generated class;
+- absent generator provenance makes the record invalid/fail-closed;
+- a prohibited reference-family generator produces `PROHIBITED / GENERATOR_TRAINING_PROHIBITED`;
+- a deterministic/non-model derived artifact can still become eligible only when it supplies explicit producer identity and every other exact-use gate passes.
+
+Dedicated `unittest` regression coverage proves:
+
+- training derived artifact without generator provenance -> blocked invalid record;
+- MedGemma output relabeled `DERIVED_RESEARCH_ARTIFACT` -> prohibited;
+- HAI-DEF output relabeled `DERIVED_RESEARCH_ARTIFACT` -> prohibited;
+- deterministic non-prohibited derived artifact with a clean exact-use parent and all gates satisfied -> eligible.
+
+## 6. Adjacent hardening
 
 The reconciliation also makes these fail-closed rules explicit:
 
@@ -134,9 +169,10 @@ The reconciliation also makes these fail-closed rules explicit:
 - Purpose/use policy is an exact allowlist for all non-reference uses;
 - scientific identity and admission remain evaluator-owned rather than caller-asserted;
 - source/family verification remains distinct from exact artifact binding;
-- unresolved or component-specific rights cannot be widened by a child or generated artifact.
+- unresolved or component-specific rights cannot be widened by a child or generated artifact;
+- derived training lineage cannot omit producer/generator provenance.
 
-## 6. Authority boundary
+## 7. Authority boundary
 
 Nothing in these repairs authorizes execution or data access.
 
@@ -153,16 +189,17 @@ SPEC_004=BLOCKED
 
 All tests and records are metadata/fixture-only. No model/provider call, benchmark payload, model weight, PHI, restricted data, or private-Gold payload is required.
 
-## 7. Final qualification status
+## 8. Final qualification status
 
 ```text
 AB594_QUALIFICATION=INVALIDATED_BY_R003_01_AND_R003_02
 73048_QUALIFICATION=INVALIDATED_BY_S003_01
-ALL_REPAIRS_IMPLEMENTED=YES
+2BD7_QUALIFICATION=INVALIDATED_BY_R003_03
+ALL_KNOWN_REPAIRS_IMPLEMENTED=YES
 FOCUSED_REGRESSION_TESTS_ADDED=YES
 CURRENT_FINAL_HEAD_QUALIFICATION=PENDING
 FRESH_INDEPENDENT_FINAL_HEAD_REVIEW=PENDING
 MERGE_AUTHORIZED=NO
 ```
 
-The final repaired head must pass a fresh exact-head GitHub validation carrier, inherited semantic-identity checks, focused tests, full offline regression, diff hygiene, bounded-path preflight, and a fresh independent exact-head review before PR #25 may be considered merge-qualified.
+The final repaired head must pass a fresh exact-head GitHub validation carrier, inherited semantic-identity checks, all focused regression tests, full offline regression, diff hygiene, bounded-path preflight, and a fresh independent exact-head review before PR #25 may be considered merge-qualified.
