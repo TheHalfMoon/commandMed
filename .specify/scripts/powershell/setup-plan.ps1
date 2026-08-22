@@ -20,6 +20,11 @@ if ($Help) {
     exit 0
 }
 
+if ($RemainingArgs -and $RemainingArgs.Count -gt 0) {
+    [Console]::Error.WriteLine("ERROR: Unknown option '$($RemainingArgs[0])'")
+    exit 1
+}
+
 # Load common functions
 . "$PSScriptRoot/common.ps1"
 
@@ -63,8 +68,8 @@ if (Test-Path $paths.IMPL_PLAN -PathType Leaf) {
         } else {
             Write-Output "Warning: Plan template not found"
         }
-        # Create a basic plan file if template doesn't exist
-        New-Item -ItemType File -Path $paths.IMPL_PLAN -Force | Out-Null
+        # Missing templates are a hard prerequisite failure; never create an empty plan.
+        exit 1
     }
 }
 
