@@ -123,8 +123,8 @@
     "verification_status": "VERIFIED"
   },
   {
-    "access_class": "PUBLIC",
-    "artifact_version": "v1.0",
+    "access_class": "MIXED",
+    "artifact_version": "UNBOUND",
     "benchmark_id": "medabstain",
     "canonical_name": "MedAbstain: Knowing When to Abstain (Clinical Uncertainty)",
     "capability_domains": [
@@ -132,24 +132,24 @@
       "UNCERTAINTY_ABSTENTION"
     ],
     "contamination_sensitivity": "MEDIUM",
-    "intended_use": "DEVELOPMENT",
+    "intended_use": "REFERENCE_ONLY",
     "languages": [
       "en"
     ],
-    "license_source_uri": "https://aclanthology.org/2026.eacl-long.291/",
-    "license_status": "CC-BY-NC-4.0",
+    "license_source_uri": "https://github.com/sravanthi6m/MedAbstain/blob/091e5c22111fffeb51c0c2e69b65d0a21a1e4164/LICENSE",
+    "license_status": "COMPONENT_SPECIFIC",
     "modalities": [
       "TEXT"
     ],
-    "notes": "Measures coverage vs selective risk when model is permitted to abstain or refer to clinician.",
-    "primary_source": "EACL 2026 / ACL Anthology 2026.eacl-long.291",
+    "notes": "Family-level fail-closed boundary record bound to official repository github.com/sravanthi6m/MedAbstain at immutable commit 091e5c22111fffeb51c0c2e69b65d0a21a1e4164. Paper: arXiv:2601.12471 'Knowing When to Abstain: Medical LLMs Under Clinical Uncertainty' (EACL 2026; ACL Anthology 2026.eacl-long.291). BOTH license facts preserved: (1) MedAbstain's own released work/code is published under CC-BY-NC-4.0 (top-level LICENSE at the pinned commit); (2) MedAbstain is a benchmark/framework over component datasets — the repository contains MedQA-derived benchmark files and dataset-construction scripts for medqa and amboss components — so executable component datasets retain their own upstream access/license/usage requirements (e.g., MedQA MIT via Google Drive distribution; AMBOSS proprietary) and MUST be registered separately before commandMed may execute them. license_status=COMPONENT_SPECIFIC means the top-level CC-BY-NC-4.0 is NOT proof that every underlying component has the same rights. This family record is REFERENCE_ONLY and NOT an executable benchmark asset; artifact identity is intentionally UNBOUND in Spec 001.",
+    "primary_source": "arXiv:2601.12471 / github.com/sravanthi6m/MedAbstain @ 091e5c22111fffeb51c0c2e69b65d0a21a1e4164 (EACL 2026)",
     "roles": [
       "CLINICAL_PROFESSIONAL"
     ],
-    "source_identifier": "ACL-Anthology-2026.eacl-long.291",
-    "source_revision": "v1.0",
-    "source_uri": "https://aclanthology.org/2026.eacl-long.291/",
-    "verification_date": "2026-08-21",
+    "source_identifier": "arXiv:2601.12471",
+    "source_revision": "091e5c22111fffeb51c0c2e69b65d0a21a1e4164",
+    "source_uri": "https://github.com/sravanthi6m/MedAbstain/tree/091e5c22111fffeb51c0c2e69b65d0a21a1e4164",
+    "verification_date": "2026-08-22",
     "verification_status": "VERIFIED"
   },
   {
@@ -185,37 +185,37 @@
     "verification_status": "VERIFIED"
   },
   {
-    "access_class": "PUBLIC",
-    "artifact_version": "v1.0",
+    "access_class": "MIXED",
+    "artifact_version": "UNBOUND",
     "benchmark_id": "medmcqa",
     "canonical_name": "MedMCQA: Multi-Subject Multi-Choice Medical Entrance Exams",
     "capability_domains": [
       "KNOWLEDGE"
     ],
     "contamination_sensitivity": "HIGH",
-    "intended_use": "DEVELOPMENT",
+    "intended_use": "REFERENCE_ONLY",
     "languages": [
       "en"
     ],
-    "license_source_uri": "https://github.com/medmcqa/medmcqa/blob/main/LICENSE",
-    "license_status": "Apache-2.0",
+    "license_source_uri": "https://github.com/medmcqa/medmcqa/blob/c59ef14ca1990266c4107c7864b45a20fd93e5e0/LICENSE.md",
+    "license_status": "MIT",
     "modalities": [
       "TEXT"
     ],
-    "notes": "Indian medical entrance examination QA across 21 medical subjects.",
-    "primary_source": "Pal et al., CHIL 2022 / arXiv:2203.14381",
+    "notes": "Bound to official repository github.com/medmcqa/medmcqa at immutable commit c59ef14ca1990266c4107c7864b45a20fd93e5e0 (documentation/code identity). Paper: arXiv:2203.14371 'MedMCQA: A Large-scale Multi-Subject Multi-Choice Dataset for Medical domain Question Answering' (Pal et al., CHIL 2022) — the previously recorded arXiv:2203.14381 was incorrect and is removed. License: MIT per LICENSE.md at the pinned commit (previously recorded Apache-2.0 was incorrect). EXECUTABLE DATA BOUNDARY: the dataset is distributed separately from the repository via Google Drive (not downloaded and not identity-bound by commandMed in Spec 001), and the official public test-set ground truth is withheld — predictions are evaluated via the authors' submission process (train 182,822 / valid 6,150 / test 4,183 questions; English). access_class=MIXED represents public train/dev data plus non-public official test ground truth. SOURCE_VERIFIED != EXECUTABLE_ARTIFACT_IMMUTABLY_BOUND: this family record is REFERENCE_ONLY and no executable MedMCQA component may be declared until its exact artifact/split identity is registered in a later authorized spec.",
+    "primary_source": "Pal et al., CHIL 2022 / arXiv:2203.14371 / github.com/medmcqa/medmcqa @ c59ef14ca1990266c4107c7864b45a20fd93e5e0",
     "roles": [
       "LEARNER_RESEARCHER"
     ],
-    "source_identifier": "arXiv:2203.14381",
-    "source_revision": "v1.0",
-    "source_uri": "https://github.com/medmcqa/medmcqa",
-    "verification_date": "2026-08-21",
+    "source_identifier": "arXiv:2203.14371",
+    "source_revision": "c59ef14ca1990266c4107c7864b45a20fd93e5e0",
+    "source_uri": "https://github.com/medmcqa/medmcqa/tree/c59ef14ca1990266c4107c7864b45a20fd93e5e0",
+    "verification_date": "2026-08-22",
     "verification_status": "VERIFIED"
   },
   {
     "access_class": "PUBLIC",
-    "artifact_version": "4-option-USMLE",
+    "artifact_version": "UNBOUND (variant: US 4-option)",
     "benchmark_id": "medqa_usmle",
     "canonical_name": "MedQA (USMLE 4-Option)",
     "capability_domains": [
@@ -223,25 +223,25 @@
       "REASONING"
     ],
     "contamination_sensitivity": "HIGH",
-    "intended_use": "DEVELOPMENT",
+    "intended_use": "REFERENCE_ONLY",
     "languages": [
       "en"
     ],
-    "license_source_uri": "https://github.com/jind11/MedQA/blob/master/LICENSE",
+    "license_source_uri": "https://github.com/jind11/MedQA/blob/27b02f66aac217933c9648a06f82e9f720377925/LICENSE",
     "license_status": "MIT",
     "modalities": [
       "TEXT"
     ],
-    "notes": "Board-style multiple choice questions. Standard development reference; not sufficient for patient safety claims.",
-    "primary_source": "Jin et al., Appl. Sci. 2021 / arXiv:2009.13081",
+    "notes": "Bound to official repository github.com/jind11/MedQA at immutable commit 27b02f66aac217933c9648a06f82e9f720377925 (the commit that introduced the MIT LICENSE file). Paper: Jin et al., 'What Disease does this Patient Have?' arXiv:2009.13081. The official README confirms US QA data including a '4_options' version for US questions; the 4-option-USMLE designation is a VARIANT LABEL recorded here as artifact metadata, NOT a source revision (the previously recorded source_revision='4-option-usmle' masqueraded a subset label as a revision and is corrected to the repository commit). EXECUTABLE DATA BOUNDARY: the QA/textbook data is distributed externally via Google Drive and has NOT been downloaded or cryptographically/immutably bound by commandMed in Spec 001. The MedQA USMLE 4-option family identity is VERIFIED, but executable dataset bytes are not yet identity-bound, so this record is REFERENCE_ONLY until the exact artifact/split identity is registered in a later authorized spec.",
+    "primary_source": "Jin et al., Appl. Sci. 2021 / arXiv:2009.13081 / github.com/jind11/MedQA @ 27b02f66aac217933c9648a06f82e9f720377925",
     "roles": [
       "CLINICAL_PROFESSIONAL",
       "LEARNER_RESEARCHER"
     ],
     "source_identifier": "arXiv:2009.13081",
-    "source_revision": "4-option-usmle",
-    "source_uri": "https://github.com/jind11/MedQA",
-    "verification_date": "2026-08-21",
+    "source_revision": "27b02f66aac217933c9648a06f82e9f720377925",
+    "source_uri": "https://github.com/jind11/MedQA/tree/27b02f66aac217933c9648a06f82e9f720377925",
+    "verification_date": "2026-08-22",
     "verification_status": "VERIFIED"
   },
   {
@@ -277,7 +277,7 @@
   },
   {
     "access_class": "PUBLIC",
-    "artifact_version": "v1.0",
+    "artifact_version": "Text/dev.jsonl;Text/test.jsonl;MM/dev.jsonl;MM/test.jsonl;images.zip",
     "benchmark_id": "medxpertqa",
     "canonical_name": "MedXpertQA: Benchmarking Expert-Level Medical QA & Multimodal Interpretation",
     "capability_domains": [
@@ -290,27 +290,27 @@
     "languages": [
       "en"
     ],
-    "license_source_uri": "https://github.com/TsinghuaC3I/MedXpertQA/blob/main/LICENSE",
+    "license_source_uri": "https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA/blob/7e7c465a68eb2b866926bfa59c8c9d17a8daba65/README.md",
     "license_status": "MIT",
     "modalities": [
       "MULTIMODAL",
       "TEXT"
     ],
-    "notes": "Expert-level medical questions and multimodal case interpretation across images and clinical text.",
-    "primary_source": "arXiv:2501.18362 / TsinghuaC3I / PKU Medical AI",
+    "notes": "Bound to the ACTUAL official dataset source — Hugging Face dataset TsinghuaC3I/MedXpertQA at immutable dataset revision 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 (dataset main HEAD verified 2026-08-22; previously the record referenced only the GitHub evaluation-code repository with an unevidenced source_revision='v1.0'). Revision-pinned dataset-card license evidence: license MIT per README frontmatter at the pinned revision. Dataset: 4,460 expert-level questions across two subsets — MedXpertQA Text (5-option text QA) and MedXpertQA MM (multimodal QA with images) — each with dev and test splits: Text/dev.jsonl, Text/test.jsonl, MM/dev.jsonl, MM/test.jsonl; MM images distributed as images.zip. Not downloaded or inspected in Spec 001; only dataset metadata/card/revision identities were used. QUARANTINE BOUNDARY PRESERVED: PUBLIC_EXTERNAL_EVAL can_select_model=false — public test splits are evaluation-only; if MedXpertQA dev splits are later used for model selection they must enter the correct DEV/CHECKPOINT_SELECTION purpose and must never make the canonical test split selectable. GitHub repo github.com/TsinghuaC3I/MedXpertQA remains the evaluation-code reference (convenience link), and paper identity is arXiv:2501.18362.",
+    "primary_source": "arXiv:2501.18362 / official Hugging Face dataset TsinghuaC3I/MedXpertQA @ 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 / TsinghuaC3I / PKU Medical AI",
     "roles": [
       "CLINICAL_PROFESSIONAL",
       "LEARNER_RESEARCHER"
     ],
-    "source_identifier": "arXiv:2501.18362",
-    "source_revision": "v1.0",
-    "source_uri": "https://github.com/TsinghuaC3I/MedXpertQA",
-    "verification_date": "2026-08-21",
+    "source_identifier": "huggingface:datasets/TsinghuaC3I/MedXpertQA",
+    "source_revision": "7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+    "source_uri": "https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA/tree/7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+    "verification_date": "2026-08-22",
     "verification_status": "VERIFIED"
   },
   {
     "access_class": "PUBLIC",
-    "artifact_version": "pqa_labeled",
+    "artifact_version": "data/ori_pqal.json",
     "benchmark_id": "pubmedqa",
     "canonical_name": "PubMedQA: Biomedical Research Question Answering",
     "capability_domains": [
@@ -322,20 +322,20 @@
     "languages": [
       "en"
     ],
-    "license_source_uri": "https://github.com/pubmedqa/pubmedqa/blob/master/LICENSE",
+    "license_source_uri": "https://github.com/pubmedqa/pubmedqa/blob/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997/LICENSE",
     "license_status": "MIT",
     "modalities": [
       "TEXT"
     ],
-    "notes": "Biomedical research QA with reasoning over PubMed abstracts (yes/no/maybe).",
-    "primary_source": "Jin et al., EMNLP 2019 / arXiv:1909.06146",
+    "notes": "Executable DEVELOPMENT asset: the PQA-L labeled artifact (1,000 labeled examples) is stored INSIDE the official repository at data/ori_pqal.json, so the executable artifact identity is immutably bound — source pinned to repository commit 1cbae8e92f72f20c8d3747cbb3bf5bc53554d997 with artifact git blob identity 38db7750761c78950ed32303e7545bdaa513390c. License MIT per LICENSE at the pinned commit (revision-pinned evidence URIs; mutable master links are not used as identity). Paper: Jin et al., 'PubMedQA: A Dataset for Biomedical Research Question Answering', EMNLP-IJCNLP 2019, arXiv:1909.06146. Biomedical research QA with reasoning over PubMed abstracts (yes/no/maybe). No question payloads were downloaded or inspected for this binding; only repository/file/blob metadata was used.",
+    "primary_source": "Jin et al., EMNLP-IJCNLP 2019 / arXiv:1909.06146 / github.com/pubmedqa/pubmedqa @ 1cbae8e92f72f20c8d3747cbb3bf5bc53554d997",
     "roles": [
       "LEARNER_RESEARCHER"
     ],
     "source_identifier": "arXiv:1909.06146",
-    "source_revision": "pqa_labeled",
-    "source_uri": "https://github.com/pubmedqa/pubmedqa",
-    "verification_date": "2026-08-21",
+    "source_revision": "1cbae8e92f72f20c8d3747cbb3bf5bc53554d997",
+    "source_uri": "https://github.com/pubmedqa/pubmedqa/tree/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997",
+    "verification_date": "2026-08-22",
     "verification_status": "VERIFIED"
   }
 ]

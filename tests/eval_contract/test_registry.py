@@ -437,6 +437,119 @@ class TestBenchmarkRegistry(unittest.TestCase):
         # The /latest/ URL may appear only in notes as a convenience reference.
         self.assertIn("v2.0.0", medhelm["notes"])
 
+    def test_medmcqa_provenance_truth(self) -> None:
+        """Final reconciliation Finding 1: MedMCQA canonical paper is arXiv:2203.14371 (not 2203.14381) and license is MIT."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        rec = next(b for b in data if b["benchmark_id"] == "medmcqa")
+        self.assertEqual(rec["source_identifier"], "arXiv:2203.14371")
+        # The incorrect legacy ID must not survive in any identity-bearing field
+        # (notes may document the correction for governance evidence).
+        for field in ["source_identifier", "primary_source", "source_uri", "source_revision"]:
+            self.assertNotIn("2203.14381", rec[field])
+        self.assertEqual(rec["license_status"], "MIT")
+        self.assertIn("c59ef14ca1990266c4107c7864b45a20fd93e5e0", rec["license_source_uri"])
+        self.assertEqual(rec["source_revision"], "c59ef14ca1990266c4107c7864b45a20fd93e5e0")
+        # MIXED access represents public train/dev data plus non-public official test ground truth.
+        self.assertEqual(rec["access_class"], "MIXED")
+        self.assertIn("Google Drive", rec["notes"])
+        self.assertIn("withheld", rec["notes"])
+
+    def test_medmcqa_not_executable_until_artifact_identity_resolved(self) -> None:
+        """Final reconciliation Finding 1: MedMCQA is not executable until its data artifact identity is resolved."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        rec = next(b for b in data if b["benchmark_id"] == "medmcqa")
+        self.assertEqual(rec["verification_status"], "VERIFIED")
+        self.assertEqual(rec["intended_use"], "REFERENCE_ONLY")
+        self.assertEqual(rec["artifact_version"], "UNBOUND")
+
+    def test_medqa_variant_label_not_source_revision(self) -> None:
+        """Final reconciliation Finding 2: MedQA '4-option' is a variant label, never a source revision; record stays REFERENCE_ONLY."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        rec = next(b for b in data if b["benchmark_id"] == "medqa_usmle")
+        self.assertEqual(rec["source_revision"], "27b02f66aac217933c9648a06f82e9f720377925")
+        self.assertNotEqual(rec["source_revision"], "4-option-usmle")
+        # Variant information preserved as artifact metadata, not revision.
+        self.assertIn("4-option", rec["artifact_version"])
+        self.assertIn("UNBOUND", rec["artifact_version"])
+        self.assertEqual(rec["intended_use"], "REFERENCE_ONLY")
+        self.assertEqual(rec["verification_status"], "VERIFIED")
+        self.assertIn("not yet identity-bound", rec["notes"])
+
+    def test_pubmedqa_pinned_to_commit_and_pqal_blob(self) -> None:
+        """Final reconciliation Finding 3: PubMedQA is pinned to repository commit + PQA-L git blob identity and stays executable DEVELOPMENT."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        rec = next(b for b in data if b["benchmark_id"] == "pubmedqa")
+        self.assertEqual(rec["source_revision"], "1cbae8e92f72f20c8d3747cbb3bf5bc53554d997")
+        self.assertEqual(rec["artifact_version"], "data/ori_pqal.json")
+        self.assertIn("38db7750761c78950ed32303e7545bdaa513390c", rec["notes"])
+        self.assertEqual(rec["intended_use"], "DEVELOPMENT")
+        self.assertEqual(rec["license_status"], "MIT")
+        # Revision-pinned evidence URIs, not mutable master links.
+        self.assertNotIn("/master/", rec["license_source_uri"])
+        self.assertNotIn("/master/", rec["source_uri"])
+        self.assertIn("/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997/", rec["license_source_uri"])
+
+    def test_medxpertqa_pinned_to_hf_dataset_revision(self) -> None:
+        """Final reconciliation Finding 4: MedXpertQA is pinned to the official HF dataset revision, not the GitHub code repo."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        rec = next(b for b in data if b["benchmark_id"] == "medxpertqa")
+        self.assertEqual(rec["source_identifier"], "huggingface:datasets/TsinghuaC3I/MedXpertQA")
+        self.assertEqual(rec["source_revision"], "7e7c465a68eb2b866926bfa59c8c9d17a8daba65")
+        self.assertEqual(
+            rec["source_uri"],
+            "https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA/tree/7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+        )
+        self.assertIn("/7e7c465a68eb2b866926bfa59c8c9d17a8daba65/", rec["license_source_uri"])
+        self.assertNotEqual(rec["source_revision"], "v1.0")
+        self.assertEqual(rec["intended_use"], "DEVELOPMENT")
+        self.assertEqual(rec["license_status"], "MIT")
+        # Split artifacts and quarantine boundary documented.
+        self.assertIn("Text/dev.jsonl", rec["artifact_version"])
+        self.assertIn("MM/test.jsonl", rec["artifact_version"])
+        self.assertIn("can_select_model=false", rec["notes"])
+
+    def test_medabstain_family_component_specific_boundary(self) -> None:
+        """Final reconciliation Finding 5: MedAbstain family is COMPONENT_SPECIFIC + MIXED + REFERENCE_ONLY with both license facts in notes."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+        rec = next(b for b in data if b["benchmark_id"] == "medabstain")
+        self.assertEqual(rec["access_class"], "MIXED")
+        self.assertEqual(rec["license_status"], "COMPONENT_SPECIFIC")
+        self.assertEqual(rec["intended_use"], "REFERENCE_ONLY")
+        self.assertEqual(rec["verification_status"], "VERIFIED")
+        self.assertEqual(rec["source_revision"], "091e5c22111fffeb51c0c2e69b65d0a21a1e4164")
+        # BOTH license facts preserved.
+        self.assertIn("CC-BY-NC-4.0", rec["notes"])
+        self.assertIn("registered separately", rec["notes"])
+
+    def test_source_verified_does_not_imply_development_authority(self) -> None:
+        """Final reconciliation Finding 6: family-level VERIFIED does not imply DEVELOPMENT; only artifact-bound assets are executable."""
+        data = json.loads(self.benchmarks_file.read_text(encoding="utf-8"))
+
+        reference_only = {b["benchmark_id"] for b in data if b["intended_use"] == "REFERENCE_ONLY"}
+        self.assertEqual(
+            reference_only,
+            {"medabstain", "medhelm", "medmcqa", "medqa_usmle", "medqabstain"},
+            "REFERENCE_ONLY set must exactly match the reconciled registry state",
+        )
+
+        # VERIFIED + REFERENCE_ONLY is a valid family state (source truth known, executable identity intentionally gated).
+        for bid in ["medabstain", "medhelm", "medmcqa", "medqa_usmle"]:
+            rec = next(b for b in data if b["benchmark_id"] == bid)
+            self.assertEqual(rec["verification_status"], "VERIFIED", f"{bid} family source truth is verified")
+
+        # Every executable DEVELOPMENT asset must carry a concrete (non-UNBOUND) artifact identity.
+        for rec in data:
+            if rec["intended_use"] == "DEVELOPMENT":
+                self.assertNotIn(
+                    "UNBOUND",
+                    rec["artifact_version"],
+                    f"Executable DEVELOPMENT asset {rec['benchmark_id']} must be artifact-identity-bound",
+                )
+
+        # Whole registry still validates.
+        is_valid, errors = validate_benchmark_registry(data)
+        self.assertTrue(is_valid, f"canonical registry failed validation: {errors}")
+
 
 if __name__ == "__main__":
     unittest.main()
