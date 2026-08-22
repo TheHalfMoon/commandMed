@@ -74,6 +74,9 @@ class TestLineageContract(unittest.TestCase):
         reordered = copy.deepcopy(CONTRACT)
         reordered["asset_classes"] = list(reversed(reordered["asset_classes"]))
         reordered["invariants"] = list(reversed(reordered["invariants"]))
+        reordered["training_prohibited_generator_markers"] = list(
+            reversed(reordered["training_prohibited_generator_markers"])
+        )
         reordered["purpose_allowed_declared_uses"] = dict(
             reversed(list(reordered["purpose_allowed_declared_uses"].items()))
         )
@@ -90,8 +93,7 @@ class TestLineageContract(unittest.TestCase):
         """A contract missing a required invariant cannot govern admission."""
         weakened = copy.deepcopy(CONTRACT)
         weakened["invariants"] = [
-            item for item in weakened["invariants"]
-            if item["invariant_id"] != "ADMISSION_IS_COMPUTED"
+            item for item in weakened["invariants"] if item["invariant_id"] != "ADMISSION_IS_COMPUTED"
         ]
         result = evaluate_lineage_admission(base_record(), weakened)
         self.assertEqual(result["state"], "BLOCKED")
@@ -117,6 +119,18 @@ class TestLineageContract(unittest.TestCase):
         errors = validate_lineage_contract(weakened)
         self.assertTrue(any("PARENT_RESTRICTIONS_PROPAGATE" in error for error in errors))
 
+    def test_contract_requires_reference_teacher_invariant(self):
+        """Removing reference-teacher training prohibition invalidates V1."""
+        weakened = copy.deepcopy(CONTRACT)
+        weakened["invariants"] = [
+            item for item in weakened["invariants"]
+            if item["invariant_id"] != "REFERENCE_TEACHER_OUTPUTS_NOT_TRAINING_LINEAGE"
+        ]
+        errors = validate_lineage_contract(weakened)
+        self.assertTrue(
+            any("REFERENCE_TEACHER_OUTPUTS_NOT_TRAINING_LINEAGE" in error for error in errors)
+        )
+
     def test_contract_rejects_weakened_purpose_matrix(self):
         """Adding training permission to public evaluation invalidates V1."""
         weakened = copy.deepcopy(CONTRACT)
@@ -125,6 +139,13 @@ class TestLineageContract(unittest.TestCase):
         )
         errors = validate_lineage_contract(weakened)
         self.assertTrue(any("purpose matrix 'PUBLIC_EXTERNAL_EVAL'" in error for error in errors))
+
+    def test_contract_rejects_weakened_teacher_markers(self):
+        """Removing MedGemma from the prohibited teacher markers invalidates V1."""
+        weakened = copy.deepcopy(CONTRACT)
+        weakened["training_prohibited_generator_markers"].remove("medgemma")
+        errors = validate_lineage_contract(weakened)
+        self.assertTrue(any("training_prohibited_generator_markers" in error for error in errors))
 
     def test_contract_rejects_duplicate_closed_vocabulary(self):
         """Duplicate closed-vocabulary values fail closed."""
@@ -226,12 +247,16 @@ class TestRecordValidation(unittest.TestCase):
             purpose="PRIVATE_GOLD",
             quarantine_state="NOT_QUARANTINED",
         )
-        self.assertTrue(any("requires quarantine_state='PRIVATE_GOLD'" in e for e in validate_lineage_record(record, CONTRACT)))
+        self.assertTrue(
+            any("requires quarantine_state='PRIVATE_GOLD'" in e for e in validate_lineage_record(record, CONTRACT))
+        )
 
     def test_private_gold_quarantine_requires_private_gold_purpose(self):
         """PRIVATE_GOLD quarantine cannot be attached to another purpose."""
         record = base_record(purpose="TRAIN", quarantine_state="PRIVATE_GOLD")
-        self.assertTrue(any("requires purpose='PRIVATE_GOLD'" in e for e in validate_lineage_record(record, CONTRACT)))
+        self.assertTrue(
+            any("requires purpose='PRIVATE_GOLD'" in e for e in validate_lineage_record(record, CONTRACT))
+        )
 
 
 class TestAdmission(unittest.TestCase):
@@ -309,15 +334,13 @@ class TestAdmission(unittest.TestCase):
 
     def test_public_external_eval_cannot_train(self):
         """Canonical public evaluation purpose cannot enter training."""
-        record = base_record(purpose="PUBLIC_EXTERNAL_EVAL")
-        result = evaluate_lineage_admission(record, CONTRACT)
+        result = evaluate_lineage_admission(base_record(purpose="PUBLIC_EXTERNAL_EVAL"), CONTRACT)
         self.assertEqual(result["state"], "PROHIBITED")
         self.assertIn("PURPOSE_USE_INCOMPATIBLE", result["reason_codes"])
 
     def test_checkpoint_selection_cannot_train(self):
         """Checkpoint-selection purpose cannot enter training."""
-        record = base_record(purpose="CHECKPOINT_SELECTION")
-        result = evaluate_lineage_admission(record, CONTRACT)
+        result = evaluate_lineage_admission(base_record(purpose="CHECKPOINT_SELECTION"), CONTRACT)
         self.assertEqual(result["state"], "PROHIBITED")
         self.assertIn("PURPOSE_USE_INCOMPATIBLE", result["reason_codes"])
 
@@ -341,8 +364,7 @@ class TestAdmission(unittest.TestCase):
             purpose="PUBLIC_EXTERNAL_EVAL",
             contamination_state="NOT_APPLICABLE",
         )
-        result = evaluate_lineage_admission(record, CONTRACT)
-        self.assertEqual(result["state"], "ELIGIBLE")
+        self.assertEqual(evaluate_lineage_admission(record, CONTRACT)["state"], "ELIGIBLE")
 
     def test_private_gold_allows_private_release_evaluation(self):
         """Private Gold remains usable only for its bounded release evaluation."""
@@ -353,8 +375,7 @@ class TestAdmission(unittest.TestCase):
             quarantine_state="PRIVATE_GOLD",
             contamination_state="NOT_APPLICABLE",
         )
-        result = evaluate_lineage_admission(record, CONTRACT)
-        self.assertEqual(result["state"], "ELIGIBLE")
+        self.assertEqual(evaluate_lineage_admission(record, CONTRACT)["state"], "ELIGIBLE")
 
     def test_generic_quarantine_blocks_non_reference_use(self):
         """An explicitly quarantined record cannot become eligible for execution."""
@@ -453,6 +474,22 @@ class TestParentPropagation(unittest.TestCase):
         self.assertEqual(result["state"], "ELIGIBLE")
         self.assertEqual(result["reason_codes"], [])
 
+    def test_medgemma_output_cannot_be_training_lineage(self):
+        """MedGemma output stays reference/evaluation-only despite clean evidence."""
+        parent = self.parent()
+        child = synthetic_record(generator_identity="google/medgemma-4b-it@" + "d" * 40)
+        result = evaluate_lineage_admission(child, CONTRACT, [parent, child])
+        self.assertEqual(result["state"], "PROHIBITED")
+        self.assertIn("GENERATOR_TRAINING_PROHIBITED", result["reason_codes"])
+
+    def test_haidef_output_cannot_be_training_lineage(self):
+        """HAI-DEF-labelled output stays prohibited for commandMed training lineage."""
+        parent = self.parent()
+        child = synthetic_record(generator_identity="google/hai-def/reference@" + "d" * 40)
+        result = evaluate_lineage_admission(child, CONTRACT, [parent, child])
+        self.assertEqual(result["state"], "PROHIBITED")
+        self.assertIn("GENERATOR_TRAINING_PROHIBITED", result["reason_codes"])
+
 
 class TestIdentity(unittest.TestCase):
     """Scientific identity projection tests."""
@@ -492,9 +529,7 @@ class TestSpec001Compatibility(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Load canonical metadata only; no benchmark payload is accessed."""
-        cls.benchmarks = json.loads(
-            (ROOT / "data/eval/benchmarks.json").read_text(encoding="utf-8")
-        )
+        cls.benchmarks = json.loads((ROOT / "data/eval/benchmarks.json").read_text(encoding="utf-8"))
 
     def by_id(self, benchmark_id):
         """Return one canonical benchmark metadata record by stable ID."""
