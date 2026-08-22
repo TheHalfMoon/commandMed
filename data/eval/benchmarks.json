@@ -167,12 +167,12 @@
     "languages": [
       "en"
     ],
-    "license_source_uri": "https://github.com/stanford-crfm/helm/blob/main/LICENSE",
+    "license_source_uri": "https://github.com/stanford-crfm/helm/blob/89001e71b45ff860572bca9fd3f8e28fd1b1c118/LICENSE",
     "license_status": "COMPONENT_SPECIFIC",
     "modalities": [
       "TEXT"
     ],
-    "notes": "Stanford CRFM MedHELM framework, pinned to official release v2.0.0 (versioned identity URI https://crfm.stanford.edu/helm/medhelm/v2.0.0/; the /latest/ leaderboard URL is a convenience reference only and is NOT identity-bearing): clinician-validated taxonomy of 5 categories, 22 subcategories, 121 tasks; 35 benchmarks comprising 14 public, 7 gated, and 14 private components. Paper: arXiv:2505.23802 'MedHELM: Holistic Evaluation of Large Language Models for Medical Tasks' (also Nature Medicine s41591-025-04151-2). LICENSE BOUNDARY: license_status=COMPONENT_SPECIFIC means the Apache-2.0 at license_source_uri covers HELM framework CODE ONLY; it does NOT license MedHELM benchmark data. Component benchmarks have independent access and licensing conditions (public/gated/private). This family record is REFERENCE_ONLY and is NOT an executable benchmark asset. Before commandMed may execute any MedHELM component, that component MUST be registered individually in this registry with exact component identity, access class, license/use rights, revision, and contamination status.",
+    "notes": "Stanford CRFM MedHELM framework, pinned to official release v2.0.0 (versioned identity URI https://crfm.stanford.edu/helm/medhelm/v2.0.0/; the /latest/ leaderboard URL is a convenience reference only and is NOT identity-bearing): clinician-validated taxonomy of 5 categories, 22 subcategories, 121 tasks; 35 benchmarks comprising 14 public, 7 gated, and 14 private components. Paper: arXiv:2505.23802 'MedHELM: Holistic Evaluation of Large Language Models for Medical Tasks' (also Nature Medicine s41591-025-04151-2). LICENSE BOUNDARY: license_status=COMPONENT_SPECIFIC means the Apache-2.0 license evidence for HELM framework code is pinned to the signed official v0.5.7 release commit 89001e71b45ff860572bca9fd3f8e28fd1b1c118; the mutable https://github.com/stanford-crfm/helm/blob/main/LICENSE link is convenience-only and is not identity-bearing. HELM's framework license does NOT license MedHELM benchmark data. Component benchmarks have independent access and licensing conditions (public/gated/private). This family record is REFERENCE_ONLY and is NOT an executable benchmark asset. Before commandMed may execute any MedHELM component, that component MUST be registered individually in this registry with exact component identity, access class, license/use rights, revision, and contamination status.",
     "primary_source": "Stanford CRFM MedHELM v2.0.0 (crfm.stanford.edu/helm/medhelm/v2.0.0) / arXiv:2505.23802",
     "roles": [
       "CLINICAL_PROFESSIONAL",
