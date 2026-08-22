@@ -33,6 +33,9 @@ CONTAMINATION_STATES = frozenset({
 })
 ORIGIN_TYPES = frozenset({"ORIGINAL", "DERIVED", "MODEL_GENERATED", "SYNTHETIC"})
 QUARANTINE_STATES = frozenset({"NOT_QUARANTINED", "QUARANTINED", "PRIVATE_GOLD", "NOT_APPLICABLE"})
+TRAINING_PROHIBITED_GENERATOR_MARKERS = frozenset({
+    "hai-def", "hai_def", "health-ai-developer-foundations", "medgemma",
+})
 
 UNIVERSAL_REQUIRED_FIELDS = frozenset({
     "asset_id", "asset_class", "canonical_name", "record_version", "source_identifier",
@@ -64,7 +67,7 @@ REQUIRED_INVARIANT_IDS = frozenset({
     "UNBOUND_EXACT_BYTE_USE_BLOCKED", "UNCLEAR_RIGHTS_BLOCK_USE", "PRIVATE_GOLD_QUARANTINED",
     "UNKNOWN_PRIVACY_FAILS_CLOSED", "UNRESOLVED_CONTAMINATION_BLOCKS_CLEAN_USE",
     "DERIVED_ASSETS_KEEP_PARENTS", "PURPOSE_USE_COMPATIBILITY_ENFORCED",
-    "PARENT_RESTRICTIONS_PROPAGATE",
+    "PARENT_RESTRICTIONS_PROPAGATE", "REFERENCE_TEACHER_OUTPUTS_NOT_TRAINING_LINEAGE",
 })
 COMPUTED_OUTPUT_FIELDS = frozenset({
     "admission_state", "admission_reasons", "contract_sha256", "record_sha256", "scientific_record_identity",
@@ -90,6 +93,7 @@ _CONTRACT_SET_FIELDS: dict[str, frozenset[str]] = {
     "artifact_binding_states": ARTIFACT_BINDING_STATES, "rights_states": RIGHTS_STATES,
     "privacy_states": PRIVACY_STATES, "contamination_states": CONTAMINATION_STATES,
     "origin_types": ORIGIN_TYPES, "quarantine_states": QUARANTINE_STATES,
+    "training_prohibited_generator_markers": TRAINING_PROHIBITED_GENERATOR_MARKERS,
     "universal_required_fields": UNIVERSAL_REQUIRED_FIELDS,
     "exact_binding_required_uses": EXACT_BINDING_REQUIRED_USES,
     "clean_contamination_required_uses": CLEAN_CONTAMINATION_REQUIRED_USES,
@@ -163,9 +167,7 @@ def _validate_purpose_matrix(contract: dict[str, Any], prefix: str, errors: list
             errors.append(f"{prefix}: purpose matrix '{purpose}' contains duplicate use values")
         actual = set(value)
         if actual != set(expected):
-            errors.append(
-                f"{prefix}: purpose matrix '{purpose}' must equal {sorted(expected)}, got {sorted(actual)}"
-            )
+            errors.append(f"{prefix}: purpose matrix '{purpose}' must equal {sorted(expected)}, got {sorted(actual)}")
 
 
 def _contract_identity_projection(contract: dict[str, Any]) -> dict[str, Any]:
@@ -527,6 +529,15 @@ def _evaluate_base_admission(record: dict[str, Any], contract_sha: str, record_s
     if purpose in PURPOSE_ALLOWED_DECLARED_USES and declared_use != "REFERENCE":
         if declared_use not in PURPOSE_ALLOWED_DECLARED_USES[purpose]:
             reasons.add("PURPOSE_USE_INCOMPATIBLE")
+    if (
+        record.get("asset_class") == "MODEL_GENERATED_OR_SYNTHETIC_ASSET"
+        and declared_use == "TRAINING_OR_ADAPTATION"
+    ):
+        generator_identity = _normalized_string(record.get("generator_identity"))
+        if generator_identity is not None:
+            lowered = generator_identity.casefold()
+            if any(marker in lowered for marker in TRAINING_PROHIBITED_GENERATOR_MARKERS):
+                reasons.add("GENERATOR_TRAINING_PROHIBITED")
     if declared_use in CLEAN_CONTAMINATION_REQUIRED_USES and record.get("contamination_state") == "OVERLAP_OR_HIGH_RISK":
         reasons.add("CONTAMINATION_HIGH_RISK")
     if reasons:
