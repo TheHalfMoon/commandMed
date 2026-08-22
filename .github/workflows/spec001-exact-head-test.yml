@@ -1,0 +1,42 @@
+name: Spec 001 Exact-Head Test
+
+on:
+  push:
+    branches:
+      - repair/spec001-fail-closed-scratch
+
+permissions:
+  contents: read
+
+jobs:
+  test-exact-head:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact Spec 001 candidate
+        uses: actions/checkout@v4
+        with:
+          ref: fa20facab6f8ef29386809acbbf2522839174856
+          persist-credentials: false
+      - name: Verify exact head
+        run: |
+          test "$(git rev-parse HEAD)" = "fa20facab6f8ef29386809acbbf2522839174856"
+          git status --short
+      - name: Run full unittest suite
+        run: python -m unittest discover -s tests -p "test_*.py"
+      - name: Verify canonical artifact hashes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from src.commandmed.eval_contract.canonical import compute_file_canonical_sha256
+          expected = {
+              "benchmarks.json": "7bb4f596f843450252b0d5eb18b85b713c7e3f33b41d9b3efb635b6b773e71f7",
+              "gold_protocols.json": "8e7c8a71e664996e8722adc4a6b32dc712ed59e81fff31053556bf52b465a592",
+              "metrics.json": "304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a",
+              "quarantine.json": "b59fd86a7f63c8de7058a0386f57de1cadc7c817edfa1e9e0aa392ca5219e080",
+          }
+          for name, digest in expected.items():
+              actual = compute_file_canonical_sha256(Path("data/eval") / name)
+              print(f"{name}={actual}")
+              if actual != digest:
+                  raise SystemExit(f"hash mismatch for {name}: {actual} != {digest}")
+          PY
