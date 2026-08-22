@@ -7,15 +7,16 @@
 
 ## 1. Predecessor evidence invalidation
 
-Three previously green implementation candidates are predecessor evidence only:
+Four previously green implementation candidates are predecessor evidence only:
 
 ```text
 ab594ad2756b33813d7b69166079849474a290aa
 73048eed01583f13a24dff74748a50e3f33c91fa
 2bd7e453575b01484428a76b34cbe451cdc5f0a1
+378d30b184a1a60aa68a40a38a96ff686429c9f2
 ```
 
-`ab594ad...` was invalidated after independent review found two material authorization defects. `73048eed...` repaired those defects and passed exact-head GitHub validation, but a subsequent canonical-policy audit found that the explicit MedGemma/HAI-DEF training-lineage default was documented but not machine-enforced. `2bd7e453...` added that policy and passed exact-head validation, but the next exact-head independent review found a classification-laundering bypass through `DERIVED_RESEARCH_ARTIFACT`.
+`ab594ad...` was invalidated after independent review found two material authorization defects. `73048eed...` repaired those defects and passed exact-head GitHub validation, but a subsequent canonical-policy audit found that the explicit MedGemma/HAI-DEF training-lineage default was documented but not machine-enforced. `2bd7e453...` added that policy and passed exact-head validation, but the next exact-head independent review found a classification-laundering bypass through `DERIVED_RESEARCH_ARTIFACT`. `378d30b...` repaired that derived-class bypass and passed exact-head validation, but fresh independent review found that the same prohibited teacher output could still be relabeled as a generic `DATASET_OR_CORPUS` because `asset_class` remained caller-controlled evidence.
 
 No predecessor PASS is used to qualify the final repaired head.
 
@@ -116,7 +117,7 @@ health-ai-developer-foundations
 medgemma
 ```
 
-The marker set is itself contract-validated and cannot be removed or extended silently. Training admission for a generated/derived output must separately satisfy exact-use rights evidence, output-use evidence, parent resolution/propagation, privacy, contamination, artifact binding, and all other gates.
+The marker set is itself contract-validated and cannot be removed or extended silently. Training admission for generated/derived output must separately satisfy exact-use rights evidence, output-use evidence, parent resolution/propagation, privacy, contamination, artifact binding, and all other gates.
 
 ## 5. Finding R003-03 — Reference-teacher classification laundering through derived artifacts
 
@@ -138,29 +139,69 @@ omit `generator_identity`, provide a clean parent registry, and potentially reac
 
 ### Repair
 
-The training-lineage producer/generator boundary is now class-agnostic across both derived classes:
+The training-lineage producer/generator boundary was extended across both derived classes:
 
 ```text
 MODEL_GENERATED_OR_SYNTHETIC_ASSET
 DERIVED_RESEARCH_ARTIFACT
 ```
 
-For `TRAINING_OR_ADAPTATION`:
+For `TRAINING_OR_ADAPTATION`, derived records require explicit producer/generator identity and output-use evidence; prohibited MedGemma/HAI-DEF markers produce `PROHIBITED / GENERATOR_TRAINING_PROHIBITED`.
 
-- every `DERIVED_RESEARCH_ARTIFACT` must carry a non-empty machine-verifiable `generator_identity` in addition to parent lineage and `output_use_evidence_uri`;
-- prohibited MedGemma/HAI-DEF markers are evaluated for **all** derived/model-generated training outputs, not only the model-generated class;
-- absent generator provenance makes the record invalid/fail-closed;
-- a prohibited reference-family generator produces `PROHIBITED / GENERATOR_TRAINING_PROHIBITED`;
-- a deterministic/non-model derived artifact can still become eligible only when it supplies explicit producer identity and every other exact-use gate passes.
+Dedicated regression coverage proves missing producer provenance blocks, MedGemma/HAI-DEF relabeling to `DERIVED_RESEARCH_ARTIFACT` is prohibited, and a deterministic non-prohibited derivation can remain eligible only when every exact-use gate passes.
 
-Dedicated `unittest` regression coverage proves:
+## 6. Finding R003-04 — Reference-teacher laundering through a generic non-derived asset class
 
-- training derived artifact without generator provenance -> blocked invalid record;
-- MedGemma output relabeled `DERIVED_RESEARCH_ARTIFACT` -> prohibited;
-- HAI-DEF output relabeled `DERIVED_RESEARCH_ARTIFACT` -> prohibited;
-- deterministic non-prohibited derived artifact with a clean exact-use parent and all gates satisfied -> eligible.
+**Source:** fresh exact-head CodeRabbit review of `378d30b184a1a60aa68a40a38a96ff686429c9f2`
+**Severity:** MATERIAL / SECURITY
+**Resolution:** REPAIRED_PENDING_REQUALIFICATION
 
-## 6. Adjacent hardening
+### Finding
+
+The R003-03 repair still treated `asset_class` as a practical provenance boundary. Because `asset_class` is caller-controlled evidence, the same MedGemma/HAI-DEF output could be represented as:
+
+```text
+asset_class=DATASET_OR_CORPUS
+declared_use=TRAINING_OR_ADAPTATION
+```
+
+and omit `origin_type`, `parent_asset_ids`, `generator_identity`, and `output_use_evidence_uri`. With otherwise clean-looking training metadata, that generic-class record could reach `ELIGIBLE`.
+
+### Repair
+
+Training-origin enforcement is now independent of `asset_class`.
+
+For every `TRAINING_OR_ADAPTATION` record:
+
+1. `origin_type` is mandatory; omission is an invalid record rather than an implicit `ORIGINAL` default.
+2. Any non-`ORIGINAL` origin requires:
+   - `parent_asset_ids`;
+   - `generator_identity` / producer identity;
+   - resolved `output_use_evidence_uri`;
+   - `generation_config_id` when `origin_type=MODEL_GENERATED`.
+3. `origin_type=ORIGINAL` together with `generator_identity` is contradictory and fails validation.
+4. The prohibited MedGemma/HAI-DEF marker scan runs for **all training records**, not only records whose `asset_class` is derived/model-generated.
+5. The marker scan uses identity-bearing producer/source metadata including `generator_identity`, `source_identifier`, `canonical_name`, `source_uri`, `source_evidence_uri`, and `artifact_locator`.
+6. Non-original generic-class records with parents enter the same registry-resolution and recursive parent-propagation path as explicit derived classes.
+
+The contract now requires:
+
+```text
+TRAINING_ORIGIN_PROVENANCE_REQUIRED
+```
+
+and `validate_lineage_contract()` treats removal of that invariant as a weakened invalid V1 contract.
+
+Dedicated regression coverage proves:
+
+- a training record with omitted `origin_type` is invalid;
+- a non-original `DATASET_OR_CORPUS` cannot omit parent/generator/config/output-use provenance;
+- MedGemma output relabeled as `DATASET_OR_CORPUS` and `ORIGINAL` is still prohibited from training when its source/canonical provenance identifies the reference family;
+- the same is true for HAI-DEF;
+- contradictory `ORIGINAL` plus generator identity is invalid;
+- a non-prohibited model-generated generic dataset can remain eligible only with complete provenance, an eligible exact-use parent, and every other gate satisfied.
+
+## 7. Adjacent hardening
 
 The reconciliation also makes these fail-closed rules explicit:
 
@@ -170,9 +211,11 @@ The reconciliation also makes these fail-closed rules explicit:
 - scientific identity and admission remain evaluator-owned rather than caller-asserted;
 - source/family verification remains distinct from exact artifact binding;
 - unresolved or component-specific rights cannot be widened by a child or generated artifact;
-- derived training lineage cannot omit producer/generator provenance.
+- training provenance cannot be broadened by changing `asset_class`;
+- non-original training lineage cannot omit producer/generator provenance;
+- original training origin is explicit rather than inferred.
 
-## 7. Authority boundary
+## 8. Authority boundary
 
 Nothing in these repairs authorizes execution or data access.
 
@@ -189,12 +232,13 @@ SPEC_004=BLOCKED
 
 All tests and records are metadata/fixture-only. No model/provider call, benchmark payload, model weight, PHI, restricted data, or private-Gold payload is required.
 
-## 8. Final qualification status
+## 9. Final qualification status
 
 ```text
 AB594_QUALIFICATION=INVALIDATED_BY_R003_01_AND_R003_02
 73048_QUALIFICATION=INVALIDATED_BY_S003_01
 2BD7_QUALIFICATION=INVALIDATED_BY_R003_03
+378D_QUALIFICATION=INVALIDATED_BY_R003_04
 ALL_KNOWN_REPAIRS_IMPLEMENTED=YES
 FOCUSED_REGRESSION_TESTS_ADDED=YES
 CURRENT_FINAL_HEAD_QUALIFICATION=PENDING
