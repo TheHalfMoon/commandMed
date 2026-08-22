@@ -1,7 +1,7 @@
 # Spec 004 — Tournament Harness Implementation Plan
 
 **Canonical base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
-**Status:** ACTIVE — Analyze=PASS; bounded implementation/reconciliation in progress
+**Status:** `CLOSED_CANONICAL` — implementation plan completed; effective lifecycle closure only after the dedicated closure-only PR is merged and resulting canonical `main` is verified
 
 ## 1. Implementation objective
 

@@ -1,6 +1,6 @@
 # Spec 004 — Tournament Harness
 
-**State:** ACTIVE — bounded fixture-only implementation/reconciliation
+**State:** `CLOSED_CANONICAL` — effective only after the dedicated closure-only PR is merged and resulting canonical `main` is verified
 **Canonical starting base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
 **Dependencies:** Spec 001, Spec 002, Spec 003 — all `CLOSED_CANONICAL`
 **Training authority:** NONE
