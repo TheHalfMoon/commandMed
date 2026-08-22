@@ -105,7 +105,7 @@ Begin with minimum license-clean teacher strategy; add specialized/multiple teac
 
 **State:** TEST_BEFORE_LOCK
 
-Do not schedule DPO as ceremony. Use it only if a measurable preference/communication/alignment deficit remains.
+Do not schedule DPO as ceremony. Use it only if a measurable preference/alignment deficit remains.
 
 ### T-006 — Quantization floor
 
