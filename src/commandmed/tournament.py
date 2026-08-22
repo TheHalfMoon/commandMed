@@ -247,6 +247,24 @@ def compute_tournament_manifest_sha256(manifest: Any) -> str:
     return compute_canonical_sha256(_manifest_projection(manifest))
 
 
+def _exact_integer_hash_projection(value: Any) -> Any:
+    """Encode report integers as exact tagged hex values before canonical JSON hashing.
+
+    Python 3.11 intentionally limits conversion of extremely large integers to
+    decimal strings. Hex conversion is exact and is not subject to that decimal
+    conversion limit. Booleans remain booleans rather than integers.
+    """
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return {"__commandmed_exact_int_hex__": hex(value)}
+    if isinstance(value, dict):
+        return {key: _exact_integer_hash_projection(nested) for key, nested in value.items()}
+    if isinstance(value, list):
+        return [_exact_integer_hash_projection(nested) for nested in value]
+    return value
+
+
 def _report_projection(report: Any) -> Any:
     """Normalize report collections and remove only the self-referential digest."""
     if not isinstance(report, dict):
@@ -266,7 +284,7 @@ def _report_projection(report: Any) -> Any:
                     candidate[field] = sorted(candidate[field])
     if isinstance(result.get("result_set_errors"), list):
         result["result_set_errors"] = sorted(result["result_set_errors"])
-    return result
+    return _exact_integer_hash_projection(result)
 
 
 def compute_tournament_report_sha256(report: Any) -> str:
@@ -396,8 +414,11 @@ def _metric_shape_errors(metric_results: Any, metrics: Any) -> list[str]:
         if result.get("status") not in VALID_GATE_STATES:
             errors.append(f"metric_results.{metric_id}.status: unsupported state '{result.get('status')}'")
         score = result.get("score")
-        if score is not None and (isinstance(score, bool) or not isinstance(score, (int, float))):
-            errors.append(f"metric_results.{metric_id}.score: numeric or null required")
+        if score is not None:
+            if isinstance(score, bool) or not isinstance(score, (int, float)):
+                errors.append(f"metric_results.{metric_id}.score: numeric or null required")
+            elif isinstance(score, float) and not math.isfinite(score):
+                errors.append(f"metric_results.{metric_id}.score: finite numeric or null required")
         evidence = result.get("evidence_artifact_id")
         if evidence is not None and not isinstance(evidence, str):
             errors.append(f"metric_results.{metric_id}.evidence_artifact_id: string or null required")
