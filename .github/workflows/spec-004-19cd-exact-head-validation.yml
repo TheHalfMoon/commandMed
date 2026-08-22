@@ -14,7 +14,7 @@ jobs:
       - name: Checkout exact candidate
         uses: actions/checkout@v4
         with:
-          ref: 7a04d40030a2aa28b4c2f0d5db6e4d387388c756
+          ref: 6c1a359f969222dd7868248d1ba12fc114f413d9
           fetch-depth: 0
 
       - name: Set up Python 3.11
@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "7a04d40030a2aa28b4c2f0d5db6e4d387388c756"
+          test "$(git rev-parse HEAD)" = "6c1a359f969222dd7868248d1ba12fc114f413d9"
           echo "EXACT_HEAD=$(git rev-parse HEAD)"
           python --version
           python -m compileall -q src tests
@@ -91,7 +91,7 @@ jobs:
           echo "GIT_DIFF_CHECK=PASS"
           changed="$(git diff --name-only "${BASE}...HEAD")"
           printf '%s\n' "$changed"
-          if printf '%s\n' "$changed" | grep -Ev '^(src/commandmed/tournament\.py|tests/test_tournament\.py|tests/test_tournament_contract_hardening\.py|tests/test_tournament_review_hardening\.py|docs/evaluation/tournament-harness\.md|specs/004-tournament-harness/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|review-reconciliation\.md|checklists/requirements\.md))$' | grep -q .; then
+          if printf '%s\n' "$changed" | grep -Ev '^(src/commandmed/tournament\.py|tests/test_tournament\.py|tests/test_tournament_contract_hardening\.py|tests/test_tournament_review_hardening\.py|docs/evaluation/tournament-harness\.md|specs/004-tournament-harness/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|review-reconciliation\.md|closeout\.md|checklists/requirements\.md))$' | grep -q .; then
             echo "UNBOUNDED_PATH=FAIL"
             exit 1
           fi
