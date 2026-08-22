@@ -1,25 +1,40 @@
-# Spec 001 — Evaluation Charter Candidate Evidence
+# Spec 001 — Canonical Closeout Evidence
 
-**Closeout type:** governance / evaluation contract implementation
-**Status:** `CLOSEOUT_CANDIDATE_PENDING_FINAL_EXACT_HEAD_RERUN`
-**Branch:** `spec/001-eval-charter`
-**Canonical base commit:** `30283d7d45c1d257f6c448d3648b25034e8ee5d5`
-**Spec Kit bootstrap commit:** `489a3d51d152fa160d88d86781a924e99c4af832` (`specify` v0.15.1)
-**State transition rule:** `CLOSED_CANONICAL` occurs only through a dedicated closure PR after canonical merge of this implementation PR.
+**Closeout type:** governance/documentation only
+**Implementation PR:** #3 — `feat(eval): implement Spec 001 evaluation charter`
+**Reviewed implementation candidate head:** `153b79e88ed1e7145654c34cb22bda691886d38a`
+**Canonical implementation merge:** `531343f785a6430036cbb2770d0504676514b9a7`
+**Closure branch base:** `531343f785a6430036cbb2770d0504676514b9a7`
+**Closure state transition:** becomes effective only when the closure-only PR containing this file and the two state updates is merged to canonical `main` and the resulting main SHA is verified
 
----
+## 1. Purpose
 
-## 1. Summary
+Prove that the bounded Spec 001 Evaluation Charter implementation is canonically merged, that all twelve Spec 001 acceptance criteria are supported by exact-head evidence, and that Spec 001 can transition to `CLOSED_CANONICAL` without starting Spec 002, Spec 003 implementation, model execution, benchmark execution, PHI access, or training.
 
-Spec 001 ("Evaluation Charter") establishes commandMed's evaluation governance, benchmark registry, metrics catalog, hard-safety-gate semantics, private Gold metadata protocols, quarantine rules, contamination-evidence interface, and semantic canonical serialization.
+This closure operation changes governance/status documentation only. It does not alter evaluation code, benchmark metadata, metric/Gold/quarantine JSON, tests, model/data runtime surfaces, or scientific artifact identities.
 
-The implementation is metadata/governance and fixture-test scoped. It introduces no model runtime, training loop, benchmark downloader, benchmark executor, PHI ingestion path, or real-Gold case payload. Repository-scope activity attestations are recorded in Section 6; they are not claims about activity outside the authorized commandMed Spec 001 workflow.
+## 2. Exact reviewed candidate evidence
 
----
+The implementation candidate was qualified on exact head:
 
-## 2. Canonical Artifact Identities
+```text
+IMPLEMENTATION_CANDIDATE_HEAD=153b79e88ed1e7145654c34cb22bda691886d38a
+```
 
-GitHub Actions run `32551171859`, job `96978051918`, explicitly checked out candidate commit `031c22964a2733c9dce75b0b9895a666aa7212f9` and computed these semantic SHA-256 values with `src.commandmed.eval_contract.canonical.compute_file_canonical_sha256`:
+GitHub Actions run `32551392337`, job `96978621096`, explicitly checked out that detached HEAD and completed successfully.
+
+Observed exact-head evidence:
+
+```text
+EXACT_HEAD=153b79e88ed1e7145654c34cb22bda691886d38a
+POWERSHELL_PARSE=PASS
+SETUP_PLAN_UNKNOWN_ARG_EXIT=1
+Ran 102 tests in 0.019s
+OK
+GIT_DIFF_CHECK=PASS
+```
+
+The same exact-head run computed the semantic canonical SHA-256 identities:
 
 | Artifact Path | Semantic SHA-256 |
 |---|---|
@@ -28,96 +43,84 @@ GitHub Actions run `32551171859`, job `96978051918`, explicitly checked out cand
 | `data/eval/metrics.json` | `304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a` |
 | `data/eval/quarantine.json` | `b59fd86a7f63c8de7058a0386f57de1cadc7c817edfa1e9e0aa392ca5219e080` |
 
-The only source mutation after that run is this closeout evidence update; no canonical JSON artifact is modified by this evidence-only commit. A final exact-head rerun is still required because exact-head qualification binds to the final PR head, not merely to content-equivalent predecessor evidence.
+## 3. Canonical implementation identity
 
----
+PR #3 was guarded by expected exact head `153b79e88ed1e7145654c34cb22bda691886d38a` and squash-merged only after exact-head qualification and Ready-state stability review.
 
-## 3. Validation & Test Execution
-
-Required command:
-
-```bash
-python -m unittest discover -s tests -p "test_*.py"
-```
-
-GitHub Actions validation carrier PR #7 ran workflow `Spec 001 Final Exact-Head Validation` on exact detached HEAD `031c22964a2733c9dce75b0b9895a666aa7212f9`.
-
-Observed result:
+Canonical `main` was immediately verified after merge as:
 
 ```text
-Ran 102 tests in 0.013s
-OK
+IMPLEMENTATION_MERGE_SHA=531343f785a6430036cbb2770d0504676514b9a7
+IMPLEMENTATION_MERGE_TREE=5c34e84439e99f8c97a849eb4de2413ff479862a
 ```
 
-The same job also proved:
+The merge commit itself explicitly states that it does not close Spec 001 canonically and that this dedicated closure-only PR is still required.
 
-```text
-PYTHON_SYNTAX=PASS
-POWERSHELL_PARSE=PASS
-SETUP_PLAN_UNKNOWN_ARG_EXIT=1
-GIT_DIFF_CHECK=PASS
-```
+## 4. Spec 001 acceptance matrix
 
-Run identity:
-
-```text
-RUN_ID=32551171859
-JOB_ID=96978051918
-VALIDATED_HEAD=031c22964a2733c9dce75b0b9895a666aa7212f9
-```
-
-Because this document update creates a new commit, the final PR head still requires one final rerun of the same gates. The 102-test result above is real predecessor evidence and MUST NOT be silently treated as final-head evidence.
-
-### Required coverage before qualification
-
-1. `test_registry.py`: benchmark registry schema, license vocabulary, source truth, executable/reference-only boundaries, and contamination-sensitive metadata.
-2. `test_hard_gates.py`: hard-gate dominance, missing-gate failure, malformed metric rejection, and evidence-bearing PASS semantics.
-3. `test_gold_quarantine.py`: three Gold protocols, non-selection, power analysis, quarantine matrix, and contamination evidence symmetry.
-4. `test_canonical.py`: deterministic semantic serialization and digest invariance/sensitivity.
-5. `test_fail_closed.py`: malformed JSON, impossible dates, empty gates, and quarantine fail-closed behavior.
-6. `test_external_review_reconciliation.py`: executable artifact identity boundary, whitespace-normalized unresolved sentinel rejection, Gold scoring-stage allowlist, and immutable MedHELM license evidence.
-7. `test_speckit_external_review.py`: PowerShell `$PID` collision regression, portable feature path persistence, setup-plan fail-closed behavior, and spec-before-plan prerequisite ordering.
-
----
-
-## 4. Acceptance Criteria Matrix
-
-| # | Spec 001 Acceptance Criterion | Current evidence | Status |
+| # | Acceptance criterion | Canonical evidence | Verdict |
 |---|---|---|---|
-| 1 | Registry schema/contract exists and validates required metadata | validator + registry tests | CANDIDATE_PASS |
-| 2 | Named benchmark families verified or explicitly unresolved with executable boundary enforced | registry + executable-use fail-closed validation | CANDIDATE_PASS |
-| 3 | Metrics catalog distinguishes optimization metrics from hard gates | metrics catalog + governance docs | CANDIDATE_PASS |
-| 4 | Critical hard-gate failure dominates aggregate performance | hard-gate tests; PASS requires score + evidence identifier | CANDIDATE_PASS |
-| 5 | Three Gold protocol records exist without real case content | Gold protocol metadata | CANDIDATE_PASS |
-| 6 | Gold quarantine/prohibited-use validation is enforced | stage allowlist + quarantine validators/tests | CANDIDATE_PASS |
-| 7 | Contamination interface is defined with evidence symmetry | quarantine metadata + validator/tests | CANDIDATE_PASS |
-| 8 | Canonical serialization is semantic/deterministic | canonical serializer + tests | CANDIDATE_PASS |
-| 9 | Fixture-only full suite passes offline | 102/102 PASS on immediate predecessor `031c229...`; final-head rerun required | PENDING_FINAL_HEAD |
-| 10 | No unauthorized runtime dependency introduced | Python 3.11 stdlib-only implementation; syntax gate passed | CANDIDATE_PASS |
-| 11 | Spec 001 repository scope contains no model/training/benchmark execution path | source/diff inspection + Section 6 bounded attestation | CANDIDATE_PASS |
-| 12 | Closeout follows two-layer exact-head evidence protocol | in-tree evidence recorded; final exact-head external evidence still required | PENDING_FINAL_HEAD |
+| 1 | Registry schema/contract exists and validates required metadata | merged validator + registry tests | PASS |
+| 2 | Named benchmark families are verified or explicitly unresolved with executable boundaries enforced | merged benchmark registry + fail-closed intended-use validation | PASS |
+| 3 | Metrics catalog distinguishes optimization metrics from hard gates | merged `metrics.json` + governance docs | PASS |
+| 4 | Critical hard-gate failure dominates aggregate performance | exact-head hard-gate tests; PASS additionally requires score + evidence identity | PASS |
+| 5 | Three Gold protocol records exist without real case content | merged Gold protocol metadata | PASS |
+| 6 | Gold quarantine/prohibited-use validation is enforced | scoring-stage allowlist + quarantine validators/tests | PASS |
+| 7 | Contamination metadata/interface is defined with evidence symmetry | merged quarantine metadata + validator/tests | PASS |
+| 8 | Canonical serialization is deterministic with stable SHA-256 identity | semantic canonicalizer + exact-head tests/hashes | PASS |
+| 9 | Fixture-only full suite passes offline | exact-head GitHub run: 102/102 PASS | PASS |
+| 10 | No unauthorized runtime dependency introduced | Python stdlib implementation; syntax/exact-head suite PASS | PASS |
+| 11 | No prohibited model/data execution occurred within the bounded repository workflow | source/diff review + bounded activity attestations | PASS |
+| 12 | Closeout uses two-layer exact-head evidence | exact candidate identity in PR/reviews + artifact identities in tree + canonical implementation merge verified | PASS |
 
-Spec 001 MUST NOT be described as `12/12 PASS` until rows 9 and 12 are proven on the final exact PR head.
+```text
+SPEC_001_ACCEPTANCE=12/12_PASS
+```
 
----
+## 5. Review and reconciliation evidence
 
-## 5. Unresolved External Facts & Risks
+Spec 001 received repeated exact-head manual and automated review. Material findings were repaired before implementation merge, including:
 
-1. **MedQAbstain licensing:** remains `UNRESOLVED` and `REFERENCE_ONLY`.
-2. **MedMCQA executable artifact:** family identity is verified, but externally distributed bytes and withheld official test ground truth are not identity-bound; the record stays `REFERENCE_ONLY`.
-3. **MedQA executable artifact:** family identity is verified, but externally distributed dataset bytes are not identity-bound; the record stays `REFERENCE_ONLY`.
-4. **MedAbstain component rights:** family is `COMPONENT_SPECIFIC + REFERENCE_ONLY`; each executable component requires separate upstream access/license registration.
-5. **MedHELM components:** family is `REFERENCE_ONLY`; its 35 components (14 public, 7 gated, 14 private) require individual registration before execution. HELM framework license evidence is pinned independently and does not license component data.
-6. **HealthBench language inventory:** `MULTILINGUAL` is a sentinel because primary sources do not enumerate a complete benchmark-language inventory.
-7. **Clinical metric thresholds:** remain `DEFINED_NOT_YET_THRESHOLD_FROZEN`; threshold freezing belongs to later authorized safety-gate work, not this implementation candidate.
-8. **Contamination pipelines:** interface exists, but substantive assessments require separately produced evidence artifacts in later authorized work.
-9. **HealthBench Professional external harness:** executable harness identity remains unresolved before use.
+1. external benchmark source/version/license/access/language/role truth boundaries;
+2. executable-vs-reference-only artifact identity enforcement;
+3. controlled license and Gold scoring-stage vocabularies;
+4. Gold non-selection and quarantine source-transition enforcement;
+5. contamination evidence symmetry and removal of unsupported clean-state claims;
+6. semantic canonical hashing and duplicate set-like handling;
+7. fail-closed empty/malformed hard-gate semantics and evidence-bearing PASS;
+8. real-calendar date validation and malformed JSON type guards;
+9. PowerShell `$PID` collision, portable feature-state paths, setup-plan fail-closed behavior, and spec-before-plan prerequisites;
+10. immutable MedHELM source/license evidence boundaries and legacy benchmark provenance reconciliation.
 
----
+All known material inline review threads were resolved. CodeRabbit's final requested rerun was rate-limited rather than blocked by a finding; exact-head qualification was independently recorded in PR review metadata and backed by the successful GitHub-hosted run above.
 
-## 6. Repository-Scope Activity Attestation
+## 6. Explicit unresolved external facts retained fail-closed
 
-For the bounded Spec 001 repository workflow represented by this PR and the actions explicitly authorized in its review history:
+Closure does not pretend that every future executable evaluation asset is ready. The following remain explicit boundaries:
+
+1. `medqabstain` licensing remains `UNRESOLVED` and `REFERENCE_ONLY`.
+2. MedMCQA externally distributed executable bytes/test ground truth are not identity-bound; family remains `REFERENCE_ONLY`.
+3. MedQA externally distributed executable data are not identity-bound; family remains `REFERENCE_ONLY`.
+4. MedAbstain component rights remain `COMPONENT_SPECIFIC + REFERENCE_ONLY` pending individual component registration.
+5. MedHELM's 35 component benchmarks require individual access/license/identity registration before executable use; HELM framework licensing does not license component data.
+6. HealthBench language metadata intentionally uses a `MULTILINGUAL` sentinel where the exact per-artifact inventory is not source-enumerated.
+7. Clinical thresholds not frozen by Spec 001 remain for later authorized safety-gate work.
+8. The contamination interface is defined, but substantive assessments require separately produced identity-bound evidence.
+9. HealthBench Professional has no official released external evaluation implementation; executable harness identity remains unresolved before use.
+
+These unresolved facts do not weaken Spec 001 because the merged contract represents them explicitly and fails closed at executable-use boundaries.
+
+## 7. Closure-PR identity rule
+
+This file binds the already-known implementation candidate evidence and canonical implementation merge. It cannot truthfully contain the future merge SHA of the closure PR that is still under review.
+
+Therefore the closure PR's own canonical identity is the GitHub merge record produced when this closure-only PR is merged. Immediately after merge, canonical `main` must be verified to equal that GitHub-reported merge SHA. That verification is sufficient closure evidence and does not require a recursive third PR solely to write the closure merge SHA into repository text.
+
+If the closure PR head changes after qualification, it must be re-reviewed before merge.
+
+## 8. Repository-scope activity attestations
+
+For the bounded Spec 001 implementation and this closure operation:
 
 ```text
 MODEL_RUNTIME_OR_DOWNLOADER_ADDED=NO
@@ -128,29 +131,23 @@ PHI_INGESTION_PATH_ADDED=NO
 REAL_GOLD_CASE_PAYLOAD_ADDED=NO
 MODEL_EXECUTION_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
-SPEC_002_PLUS=NOT_STARTED
+SPEC_002_IMPLEMENTATION_STARTED=NO
+SPEC_003_IMPLEMENTATION_STARTED=NO
 ```
 
-The project record additionally reports no model downloads, weight loading, inference, benchmark payload execution, training, PHI access, restricted clinical-data access, real-Gold case access, or external judge calls during the authorized Spec 001 workflow. Those are workflow attestations, not independently observable claims about activity outside this repository/process.
+The project record additionally reports no model downloads, weight loading, inference, benchmark-payload execution, training, PHI access, restricted clinical-data access, real-Gold case access, or external judge/model calls during the authorized Spec 001 workflow. These are bounded workflow attestations, not claims about activity outside this repository/process.
 
----
+## 9. Authority after closure merge
 
-## 7. Final Qualification Gate
-
-Before PR #3 may return to Ready-for-review status, all of the following must be true on one exact head:
-
-1. every material external-review thread is resolved or explicitly reconciled with evidence;
-2. `python -m unittest discover -s tests -p "test_*.py"` passes on that exact head;
-3. PowerShell/Python Spec Kit repairs pass syntax/behavior validation;
-4. all four semantic JSON digests are recomputed or re-confirmed on that exact head;
-5. `git diff --check` passes;
-6. PR body exact-head identity matches the repository head;
-7. fresh exact-head external review finds no material blocker.
-
-Until then:
+If and only if this closure-only PR is merged canonically and exact `main` is verified afterward:
 
 ```text
-SPEC_001=CLOSEOUT_CANDIDATE_PENDING_FINAL_EXACT_HEAD_RERUN
-MERGE_AUTHORITY=NO
-SPEC_002_PLUS=NOT_STARTED
+SPEC_001=CLOSED_CANONICAL
+SPEC_002=AUTHORIZED_TO_START
+SPEC_003=PLANNING_DEPENDENCY_SATISFIED_BUT_IMPLEMENTATION_NOT_AUTHORIZED
+SPEC_004_PLUS=BLOCKED_BY_DECLARED_DEPENDENCIES
+MODEL_EXECUTION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
 ```
+
+Spec 002 may then create its own bounded branch from the exact closed-canonical main and perform only Safety Gates work authorized by its future/current bounded contract. Spec 003 planning may be refined because its Spec 001 dependency is satisfied, but Spec 003 implementation requires a separate explicit activation decision. Nothing in this closure authorizes benchmark/model execution or training.
