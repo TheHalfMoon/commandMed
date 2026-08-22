@@ -701,9 +701,9 @@ def _rank(candidate: dict[str, Any]) -> tuple[float | int, ...]:
 
 
 def _base_report(manifest: Any) -> dict[str, Any]:
-    """Create the report shell without hashing structurally invalid object keys."""
+    """Create the report shell without assigning identity to invalid manifest shapes."""
     manifest_sha256: str | None = None
-    if not isinstance(manifest, dict) or all(isinstance(key, str) for key in manifest):
+    if isinstance(manifest, dict) and all(isinstance(key, str) for key in manifest):
         try:
             manifest_sha256 = compute_tournament_manifest_sha256(manifest)
         except (KeyError, TypeError, ValueError):
