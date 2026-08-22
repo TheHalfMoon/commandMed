@@ -1,8 +1,8 @@
 """Deterministic fixture-only tournament harness for commandMed Spec 004.
 
-The harness consumes canonical governance metadata plus precomputed synthetic
-result envelopes. It deliberately provides no model, benchmark, provider,
-network, subprocess, credential, or training execution surface.
+This module consumes only canonical governance metadata plus precomputed
+synthetic result envelopes. It deliberately exposes no model, benchmark,
+provider, network, subprocess, credential, or training execution surface.
 """
 
 from __future__ import annotations
@@ -65,11 +65,12 @@ CANDIDATE_OPTIONAL_KEYS = frozenset({"lineage_registry"})
 METRIC_RESULT_REQUIRED_KEYS = frozenset({"status", "score", "evidence_artifact_id"})
 METRIC_RESULT_OPTIONAL_KEYS = frozenset({"reason"})
 
+SCHEMA_VERSION = "1.0"
 EXECUTION_MODE = "PRECOMPUTED_RESULTS_ONLY"
 COMPARISON_STRATEGY = "LEXICOGRAPHIC_PREDECLARED"
 TIE_POLICY = "NO_SELECTION_ON_TIE"
-SCHEMA_VERSION = "1.0"
 CANDIDATE_STATES = frozenset({"QUALIFIED", "DISQUALIFIED", "INCOMPLETE"})
+VALID_GATE_STATES = frozenset(state.value for state in GateEvaluationState)
 
 PROHIBITED_NORMALIZED_KEYS = frozenset(
     {
@@ -106,10 +107,10 @@ PROHIBITED_NORMALIZED_KEYS = frozenset(
 UNRESOLVED = frozenset({"", "NONE", "UNRESOLVED", "UNBOUND", "PENDING", "NOT_APPLICABLE"})
 HEX_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 CONTROL_CHAR_RE = re.compile(r"[\x00-\x1f\x7f]")
-VALID_GATE_STATES = frozenset(state.value for state in GateEvaluationState)
 
 
 def _resolved_string(value: Any) -> bool:
+    """Return true only for resolved, printable, non-sentinel strings."""
     return (
         isinstance(value, str)
         and bool(value.strip())
@@ -123,6 +124,7 @@ def _exact_keys(
     required: frozenset[str],
     optional: frozenset[str] = frozenset(),
 ) -> list[str]:
+    """Validate a closed object shape without normalizing unknown fields away."""
     if not isinstance(value, dict):
         return ["expected an object"]
     actual = set(value)
@@ -137,7 +139,7 @@ def _exact_keys(
 
 
 def _scan_prohibited_keys(value: Any, path: str) -> list[str]:
-    """Reject exact normalized execution/payload keys without order-sensitive paths."""
+    """Reject hidden execution/payload keys recursively with order-neutral list paths."""
     errors: list[str] = []
     if isinstance(value, dict):
         for key, nested in value.items():
@@ -168,7 +170,8 @@ def compute_canonical_tournament_artifact_identities(artifacts: dict[str, Any]) 
 
 
 def _validate_artifacts(artifacts: Any) -> tuple[list[str], dict[str, str] | None]:
-    errors = [f"artifacts: {e}" for e in _exact_keys(artifacts, ARTIFACT_KEYS)]
+    """Validate canonical artifact semantics before trusting their identities."""
+    errors = [f"artifacts: {error}" for error in _exact_keys(artifacts, ARTIFACT_KEYS)]
     if errors or not isinstance(artifacts, dict):
         return errors, None
 
@@ -183,12 +186,12 @@ def _validate_artifacts(artifacts: Any) -> tuple[list[str], dict[str, str] | Non
             errors.append(f"artifacts.{name}: canonical validator failed closed: {exc}")
         else:
             if not valid or nested:
-                errors.extend(f"artifacts.{name}: {e}" for e in nested)
+                errors.extend(f"artifacts.{name}: {error}" for error in nested)
 
     quarantine = artifacts.get("quarantine")
-    q_key_errors = _exact_keys(quarantine, QUARANTINE_CONTAINER_KEYS)
-    errors.extend(f"artifacts.quarantine: {e}" for e in q_key_errors)
-    if not q_key_errors and isinstance(quarantine, dict):
+    quarantine_key_errors = _exact_keys(quarantine, QUARANTINE_CONTAINER_KEYS)
+    errors.extend(f"artifacts.quarantine: {error}" for error in quarantine_key_errors)
+    if not quarantine_key_errors and isinstance(quarantine, dict):
         for field, validator in (
             ("quarantine_rules", validate_quarantine_rules),
             ("contamination_records", validate_contamination_records),
@@ -201,22 +204,23 @@ def _validate_artifacts(artifacts: Any) -> tuple[list[str], dict[str, str] | Non
                 )
             else:
                 if not valid or nested:
-                    errors.extend(f"artifacts.quarantine.{field}: {e}" for e in nested)
+                    errors.extend(f"artifacts.quarantine.{field}: {error}" for error in nested)
 
     try:
         safety_errors = validate_safety_policy(artifacts["safety_policy"])
     except (KeyError, TypeError, ValueError) as exc:
         safety_errors = [f"canonical validator failed closed: {exc}"]
-    errors.extend(f"artifacts.safety_policy: {e}" for e in safety_errors)
+    errors.extend(f"artifacts.safety_policy: {error}" for error in safety_errors)
 
     try:
         lineage_errors = validate_lineage_contract(artifacts["lineage_contract"])
     except (KeyError, TypeError, ValueError) as exc:
         lineage_errors = [f"canonical validator failed closed: {exc}"]
-    errors.extend(f"artifacts.lineage_contract: {e}" for e in lineage_errors)
+    errors.extend(f"artifacts.lineage_contract: {error}" for error in lineage_errors)
 
     if errors:
         return errors, None
+
     try:
         identities = compute_canonical_tournament_artifact_identities(artifacts)
     except (KeyError, TypeError, ValueError) as exc:
@@ -229,6 +233,7 @@ def _validate_artifacts(artifacts: Any) -> tuple[list[str], dict[str, str] | Non
 
 
 def _manifest_projection(manifest: Any) -> Any:
+    """Normalize only the manifest fields explicitly defined as set-like."""
     if not isinstance(manifest, dict):
         return copy.deepcopy(manifest)
     result = copy.deepcopy(manifest)
@@ -243,6 +248,7 @@ def compute_tournament_manifest_sha256(manifest: Any) -> str:
 
 
 def _report_projection(report: Any) -> Any:
+    """Normalize report collections and remove only the self-referential digest."""
     if not isinstance(report, dict):
         return copy.deepcopy(report)
     result = copy.deepcopy(report)
@@ -253,22 +259,23 @@ def _report_projection(report: Any) -> Any:
             key=lambda item: str(item.get("candidate_id", "")) if isinstance(item, dict) else str(item),
         )
         for candidate in result["candidate_reports"]:
-            if isinstance(candidate, dict):
-                if isinstance(candidate.get("reason_codes"), list):
-                    candidate["reason_codes"] = sorted(candidate["reason_codes"])
-                if isinstance(candidate.get("validation_errors"), list):
-                    candidate["validation_errors"] = sorted(candidate["validation_errors"])
+            if not isinstance(candidate, dict):
+                continue
+            for field in ("reason_codes", "validation_errors", "lineage_reason_codes"):
+                if isinstance(candidate.get(field), list):
+                    candidate[field] = sorted(candidate[field])
     if isinstance(result.get("result_set_errors"), list):
         result["result_set_errors"] = sorted(result["result_set_errors"])
     return result
 
 
 def compute_tournament_report_sha256(report: Any) -> str:
-    """Hash scientific report fields without self-reference."""
+    """Hash scientific report fields without self-reference or runtime metadata."""
     return compute_canonical_sha256(_report_projection(report))
 
 
 def _metric_index(metrics: Any) -> dict[str, dict[str, Any]]:
+    """Index canonical metric records by exact metric ID."""
     if not isinstance(metrics, list):
         return {}
     return {
@@ -280,7 +287,7 @@ def _metric_index(metrics: Any) -> dict[str, dict[str, Any]]:
 
 def validate_tournament_manifest(manifest: Any, artifacts: Any) -> list[str]:
     """Validate the exact V1 manifest against canonical Specs 001-003 identities."""
-    errors = [f"manifest: {e}" for e in _exact_keys(manifest, MANIFEST_KEYS)]
+    errors = [f"manifest: {error}" for error in _exact_keys(manifest, MANIFEST_KEYS)]
     errors.extend(_scan_prohibited_keys(manifest, "manifest"))
     if errors or not isinstance(manifest, dict):
         return errors
@@ -300,20 +307,20 @@ def validate_tournament_manifest(manifest: Any, artifacts: Any) -> list[str]:
     if not isinstance(candidates, list) or not candidates:
         errors.append("manifest.candidate_ids: non-empty list required")
     else:
-        normalized = []
+        normalized_candidates: list[str] = []
         for candidate_id in candidates:
             if not _resolved_string(candidate_id):
                 errors.append("manifest.candidate_ids: unresolved candidate ID is prohibited")
             else:
-                normalized.append(candidate_id.strip())
-        if len(normalized) != len(set(normalized)):
+                normalized_candidates.append(candidate_id.strip())
+        if len(normalized_candidates) != len(set(normalized_candidates)):
             errors.append("manifest.candidate_ids: duplicate candidate IDs are prohibited")
 
     comparison_ids = manifest.get("comparison_metric_ids")
     if not isinstance(comparison_ids, list) or not comparison_ids:
         errors.append("manifest.comparison_metric_ids: non-empty ordered list required")
     else:
-        normalized_metrics = []
+        normalized_metrics: list[str] = []
         for index, metric_id in enumerate(comparison_ids):
             if not _resolved_string(metric_id):
                 errors.append(f"manifest.comparison_metric_ids[{index}]: resolved string required")
@@ -368,11 +375,12 @@ def validate_tournament_manifest(manifest: Any, artifacts: Any) -> list[str]:
             )
         except (KeyError, TypeError, ValueError) as exc:
             scope_errors = [f"canonical scope validator failed closed: {exc}"]
-        errors.extend(f"manifest.safety_scope: {e}" for e in scope_errors)
+        errors.extend(f"manifest.safety_scope: {error}" for error in scope_errors)
     return errors
 
 
 def _metric_shape_errors(metric_results: Any, metrics: Any) -> list[str]:
+    """Validate exact precomputed metric-result envelope shapes."""
     if not isinstance(metric_results, dict):
         return ["metric_results: expected an object"]
     errors: list[str] = []
@@ -382,7 +390,7 @@ def _metric_shape_errors(metric_results: Any, metrics: Any) -> list[str]:
             errors.append(f"metric_results: unknown canonical metric '{metric_id}'")
             continue
         nested = _exact_keys(result, METRIC_RESULT_REQUIRED_KEYS, METRIC_RESULT_OPTIONAL_KEYS)
-        errors.extend(f"metric_results.{metric_id}: {e}" for e in nested)
+        errors.extend(f"metric_results.{metric_id}: {error}" for error in nested)
         if nested or not isinstance(result, dict):
             continue
         if result.get("status") not in VALID_GATE_STATES:
@@ -403,9 +411,10 @@ def _candidate_structural_errors(
     manifest: dict[str, Any],
     artifacts: dict[str, Any],
 ) -> list[str]:
+    """Validate candidate envelope structure without duplicating lineage/safety policy."""
     errors = [
-        f"candidate: {e}"
-        for e in _exact_keys(result, CANDIDATE_REQUIRED_KEYS, CANDIDATE_OPTIONAL_KEYS)
+        f"candidate: {error}"
+        for error in _exact_keys(result, CANDIDATE_REQUIRED_KEYS, CANDIDATE_OPTIONAL_KEYS)
     ]
     errors.extend(_scan_prohibited_keys(result, "candidate"))
     if errors or not isinstance(result, dict):
@@ -442,6 +451,7 @@ def _comparison_evidence(
     manifest: dict[str, Any],
     artifacts: dict[str, Any],
 ) -> tuple[list[str], list[dict[str, Any]]]:
+    """Build a comparable vector while keeping arbitrary integers out of float conversion."""
     metric_results = result.get("metric_results")
     if not isinstance(metric_results, dict):
         return ["comparison: metric_results object required"], []
@@ -457,7 +467,10 @@ def _comparison_evidence(
             errors.append(f"comparison.{metric_id}: status must be PASS")
             continue
         score = evidence.get("score")
-        if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(score):
+        if isinstance(score, bool) or not isinstance(score, (int, float)):
+            errors.append(f"comparison.{metric_id}: finite numeric score required")
+            continue
+        if isinstance(score, float) and not math.isfinite(score):
             errors.append(f"comparison.{metric_id}: finite numeric score required")
             continue
         evidence_id = evidence.get("evidence_artifact_id")
@@ -479,7 +492,7 @@ def validate_candidate_result(result: Any, manifest: Any, artifacts: Any) -> lis
     """Return deterministic reasons why one precomputed result cannot qualify."""
     manifest_errors = validate_tournament_manifest(manifest, artifacts)
     if manifest_errors:
-        return [f"manifest invalid: {e}" for e in manifest_errors]
+        return [f"manifest invalid: {error}" for error in manifest_errors]
     assert isinstance(manifest, dict) and isinstance(artifacts, dict)
     errors = _candidate_structural_errors(result, manifest, artifacts)
     if errors or not isinstance(result, dict):
@@ -522,6 +535,7 @@ def _candidate_report(
     safety_breakdown: list[dict[str, Any]] | None = None,
     comparison_vector: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
+    """Create one deterministic candidate qualification record."""
     assert state in CANDIDATE_STATES
     return {
         "candidate_id": candidate_id,
@@ -542,6 +556,7 @@ def _evaluate_candidate(
     manifest: dict[str, Any],
     artifacts: dict[str, Any],
 ) -> dict[str, Any]:
+    """Classify a declared candidate as qualified, disqualified, or incomplete."""
     structural = _candidate_structural_errors(result, manifest, artifacts)
     if structural or not isinstance(result, dict):
         reasons = {"MALFORMED_CANDIDATE_RESULT"}
@@ -631,6 +646,7 @@ def _evaluate_candidate(
 
 
 def _rank(candidate: dict[str, Any]) -> tuple[float | int, ...]:
+    """Convert a qualified comparison vector into a direction-normalized rank tuple."""
     return tuple(
         item["score"]
         if item["direction"] == MetricDirection.HIGHER_BETTER.value
@@ -640,6 +656,7 @@ def _rank(candidate: dict[str, Any]) -> tuple[float | int, ...]:
 
 
 def _base_report(manifest: Any) -> dict[str, Any]:
+    """Create the report shell, including the exact canonical upstream identity map."""
     return {
         "tournament_id": manifest.get("tournament_id") if isinstance(manifest, dict) else None,
         "tournament_manifest_sha256": compute_tournament_manifest_sha256(manifest),
@@ -653,6 +670,7 @@ def _base_report(manifest: Any) -> dict[str, Any]:
 
 
 def _finalize(report: dict[str, Any]) -> dict[str, Any]:
+    """Canonicalize report collections and append the non-self-referential report digest."""
     report["candidate_reports"] = sorted(
         report["candidate_reports"], key=lambda item: item["candidate_id"]
     )
@@ -662,7 +680,7 @@ def _finalize(report: dict[str, Any]) -> dict[str, Any]:
 
 
 def evaluate_tournament(manifest: Any, candidate_results: Any, artifacts: Any) -> dict[str, Any]:
-    """Evaluate a frozen fixture tournament without producing any model output."""
+    """Evaluate a frozen fixture tournament without producing or executing model output."""
     report = _base_report(manifest)
     manifest_errors = validate_tournament_manifest(manifest, artifacts)
     if manifest_errors:
@@ -741,6 +759,7 @@ def evaluate_tournament(manifest: Any, candidate_results: Any, artifacts: Any) -
     if not qualified:
         report["reason_code"] = "NO_QUALIFIED_CANDIDATE"
         return _finalize(report)
+
     ranked = [(item, _rank(item)) for item in qualified]
     best_rank = max(rank for _, rank in ranked)
     best = [item for item, rank in ranked if rank == best_rank]
