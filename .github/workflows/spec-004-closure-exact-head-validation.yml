@@ -1,66 +1,96 @@
-name: Spec 004 Closure Guarded Lifecycle Repair
+name: Spec 004 Closure Exact-Head Validation
 
 on:
   pull_request:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
-# one-shot synchronize trigger; carrier is never merged
 jobs:
-  repair:
+  validate:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout exact closure branch
+      - name: Checkout exact closure candidate
         uses: actions/checkout@v4
         with:
-          ref: docs/spec-004-canonical-closeout
+          ref: 4b08cbe02743a101ea258d26ac5245964e063055
           fetch-depth: 0
 
-      - name: Guard exact predecessor and repair lifecycle headers
+      - name: Prove exact identity and canonical base
         shell: bash
         run: |
           set -euo pipefail
-          EXPECTED=81c6ba52702a385c54c531c9eb7ec099b2fd39d1
-          test "$(git rev-parse HEAD)" = "$EXPECTED"
-          python - <<'PY'
-          from pathlib import Path
+          HEAD_EXPECTED=4b08cbe02743a101ea258d26ac5245964e063055
+          BASE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
+          test "$(git rev-parse HEAD)" = "$HEAD_EXPECTED"
+          test "$(git merge-base HEAD "$BASE")" = "$BASE"
+          echo "EXACT_CLOSURE_HEAD=$(git rev-parse HEAD)"
+          echo "EXACT_CLOSURE_BASE=$BASE"
+          echo "EXACT_IDENTITY_AND_BASE=PASS"
 
-          replacements = {
-              Path('specs/004-tournament-harness/spec.md'): (
-                  '**State:** ACTIVE — bounded fixture-only implementation/reconciliation',
-                  '**State:** `CLOSED_CANONICAL` — effective only after the dedicated closure-only PR is merged and resulting canonical `main` is verified',
-              ),
-              Path('specs/004-tournament-harness/plan.md'): (
-                  '**Status:** ACTIVE — Analyze=PASS; bounded implementation/reconciliation in progress',
-                  '**Status:** `CLOSED_CANONICAL` — implementation plan completed; effective lifecycle closure only after the dedicated closure-only PR is merged and resulting canonical `main` is verified',
-              ),
-          }
-          for path, (old, new) in replacements.items():
-              text = path.read_text(encoding='utf-8')
-              if text.count(old) != 1:
-                  raise SystemExit(f'EXPECTED_UNIQUE_HEADER_NOT_FOUND:{path}')
-              path.write_text(text.replace(old, new), encoding='utf-8')
-          PY
-          changed="$(git diff --name-only | LC_ALL=C sort)"
-          expected="$(printf '%s\n' \
-            specs/004-tournament-harness/plan.md \
-            specs/004-tournament-harness/spec.md | LC_ALL=C sort)"
+      - name: Diff hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
+          git diff --check "$BASE...HEAD"
+          echo "GIT_DIFF_CHECK=PASS"
+
+      - name: Prove exact lifecycle-only changed paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
+          changed="$(git diff --name-only "$BASE...HEAD" | LC_ALL=C sort)"
+          expected="$(cat <<'EOF' | LC_ALL=C sort
+          specs/004-tournament-harness/checklists/requirements.md
+          specs/004-tournament-harness/closeout.md
+          specs/004-tournament-harness/plan.md
+          specs/004-tournament-harness/review-reconciliation.md
+          specs/004-tournament-harness/spec.md
+          specs/004-tournament-harness/tasks.md
+          specs/README.md
+          EOF
+          )"
           printf '%s\n' "$changed"
           test "$changed" = "$expected"
-          git diff --check
-          grep -Fq '**State:** `CLOSED_CANONICAL`' specs/004-tournament-harness/spec.md
-          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/plan.md
-          echo 'GUARDED_HEADER_REPAIR=PASS'
+          echo "CHANGED_PATH_COUNT=$(printf '%s\n' "$changed" | sed '/^$/d' | wc -l)"
+          echo "LIFECYCLE_DOCS_ONLY=PASS"
+          echo "RUNTIME_SOURCE_TEST_DATA_DEPENDENCY_WORKFLOW_CHANGES=NONE"
 
-      - name: Commit and fast-forward push closure branch
+      - name: Prove lifecycle consistency, evidence and authority boundary
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add specs/004-tournament-harness/spec.md specs/004-tournament-harness/plan.md
-          git commit -m 'docs(004): reconcile spec and plan closure state'
-          git push origin HEAD:docs/spec-004-canonical-closeout
-          echo "REPAIRED_HEAD=$(git rev-parse HEAD)"
+          grep -Fq '**State:** `CLOSED_CANONICAL`' specs/004-tournament-harness/spec.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/plan.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/tasks.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/review-reconciliation.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/checklists/requirements.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/closeout.md
+          if grep -R -E '^\*\*(State|Status):\*\*.*ACTIVE' specs/004-tournament-harness; then
+            echo 'LIVE_ACTIVE_LIFECYCLE_HEADER=FAIL'
+            exit 1
+          fi
+          if grep -Eq '^- \[ \]' specs/004-tournament-harness/checklists/requirements.md; then
+            echo 'UNCHECKED_CANONICAL_REQUIREMENT=FAIL'
+            exit 1
+          fi
+          grep -Fq '| 004 | Tournament Harness | `CLOSED_CANONICAL` |' specs/README.md
+          grep -Fq '| 005 | Base Model Tournament | `BLOCKED` |' specs/README.md
+          grep -Fq '9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d' specs/004-tournament-harness/closeout.md
+          grep -Fq '7e37fa626f825ee25271e0bf21a627a2e64e49da' specs/004-tournament-harness/closeout.md
+          grep -Fq 'cf6158ea4193aa7db895607c6fac5a3a1442f708' specs/004-tournament-harness/closeout.md
+          grep -Fq 'https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702' specs/004-tournament-harness/closeout.md
+          grep -Fq 'https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702/job/97106155513' specs/004-tournament-harness/closeout.md
+          grep -Fq 'MODEL_EXECUTION_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'MODEL_WEIGHT_ACCESS_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'TOURNAMENT_EXECUTION_AGAINST_MODELS=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'TRAINING_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'SPEC_005=BLOCKED' specs/004-tournament-harness/closeout.md
+          echo 'CANONICAL_LIFECYCLE_RECONCILIATION=PASS'
+          echo 'CANONICAL_EVIDENCE_BINDING=PASS'
+          echo 'AUTHORITY_BOUNDARY=PASS'
+          echo 'SPEC_005=BLOCKED'
