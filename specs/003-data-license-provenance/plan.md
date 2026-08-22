@@ -1,7 +1,7 @@
 # Spec 003 Plan — Data, License & Provenance
 
 **Spec:** `003-data-license-provenance`
-**Plan status:** READY_FOR_CHECKLIST_TASKS_ANALYZE
+**Plan status:** REPAIRED_READY_FOR_ANALYZE_PASS_2
 **Canonical base:** `a57f87e77bbd396332b197342d8129f6805ba452`
 **Implementation style:** metadata-only, fixture-only, offline, deterministic, Python 3.11 standard library; reuse Spec 001 canonicalization and purpose/quarantine semantics
 
@@ -9,13 +9,14 @@
 
 Implement the smallest machine-verifiable lineage layer that can:
 
-1. validate a universal lineage envelope for data, benchmark, Gold metadata, model, synthetic/derived, and evidence-source assets;
-2. distinguish source verification from exact artifact binding;
-3. support both direct-digest and immutable-revision-plus-artifact-locator exact binding;
-4. evaluate one exact declared use against rights, access/privacy, split/quarantine, contamination, and synthetic/derived lineage;
-5. return a closed admission result (`ELIGIBLE`, `REFERENCE_ONLY`, `BLOCKED`, `PROHIBITED`) with machine-readable reasons;
-6. preserve canonical Spec 001 benchmark, purpose, Gold, and quarantine semantics;
-7. produce deterministic canonical lineage/contract identities using the existing canonicalizer.
+1. validate the canonical lineage contract itself before trusting it;
+2. validate a universal lineage evidence record for data, benchmark, Gold metadata, model, synthetic/derived, and evidence-source assets;
+3. distinguish source verification from exact artifact binding;
+4. support direct SHA-256 and cryptographic/content-addressed revision + exact artifact locator binding;
+5. evaluate one exact declared use against rights, access/privacy, split/quarantine, contamination, and synthetic/derived lineage;
+6. compute — never trust from input — one scoped admission result (`ELIGIBLE`, `REFERENCE_ONLY`, `BLOCKED`, `PROHIBITED`) with deterministic reasons;
+7. bind that result to the exact contract canonical identity and lineage scientific-record identity;
+8. preserve canonical Spec 001 benchmark, purpose, Gold, and quarantine semantics.
 
 No dataset/model download, external registry, network call, legal engine, database, service, or third-party dependency is required.
 
@@ -25,18 +26,18 @@ Target only:
 
 ```text
 src/commandmed/eval_contract/
-  lineage.py                    # closed vocabularies + validation/admission helpers
-  canonical.py                  # only add explicit set-like lineage fields if required
-  __init__.py                   # exports only if useful to tests/callers
+  lineage.py                    # contract/record validation + pure admission helpers
+  canonical.py                  # only explicit set-like lineage fields if tests require
+  __init__.py                   # exports only if useful
 
 data/lineage/
-  lineage_contract.json         # canonical machine-readable policy/contract artifact
+  lineage_contract.json         # canonical metadata/policy contract only
 
 tests/eval_contract/
-  test_lineage.py               # fixture-only lineage/admission/identity tests
+  test_lineage.py               # fixture-only contract/lineage/admission tests
 
 docs/governance/
-  data-license-provenance.md    # reviewer-facing contract summary
+  data-license-provenance.md    # reviewer-facing summary
 
 specs/003-data-license-provenance/
   spec.md
@@ -48,11 +49,11 @@ specs/003-data-license-provenance/
   closeout.md                   # only after qualified implementation evidence
 ```
 
-Do not modify `data/eval/benchmarks.json`, Gold payloads, model files, or external assets to make tests pass.
+Do not modify `data/eval/benchmarks.json`, Gold payloads, model files, or external assets merely to satisfy Spec 003.
 
 ## 3. Canonical contract artifact
 
-`data/lineage/lineage_contract.json` is metadata/policy only and contains no external payloads.
+`data/lineage/lineage_contract.json` contains policy metadata only.
 
 Minimum top-level shape:
 
@@ -71,11 +72,60 @@ universal_required_fields[]
 invariants[]
 ```
 
-The policy artifact defines closed vocabularies and invariant identities, not a registry of real datasets/models.
+The contract defines closed vocabularies/invariants, not a real asset registry.
+
+### Required contract invariants
+
+At minimum identify rules equivalent to:
+
+```text
+CONTRACT_MUST_VALIDATE_FIRST
+ADMISSION_IS_COMPUTED
+SOURCE_VERIFIED_NE_ARTIFACT_BOUND
+DIRECT_SHA256_BINDING_ALLOWED
+CRYPTO_REVISION_LOCATOR_BINDING_ALLOWED
+UNBOUND_EXACT_BYTE_USE_BLOCKED
+UNCLEAR_RIGHTS_BLOCK_USE
+PRIVATE_GOLD_QUARANTINED
+UNKNOWN_PRIVACY_FAILS_CLOSED
+UNRESOLVED_CONTAMINATION_BLOCKS_CLEAN_USE
+DERIVED_ASSETS_KEEP_PARENTS
+```
+
+A contract that omits/weakens required invariants is invalid for Spec 003 admission.
+
+## 4. Contract validation
+
+Add a public validator:
+
+```python
+validate_lineage_contract(contract: object) -> list[str]
+```
+
+It must collect errors and never raise for ordinary malformed parsed JSON.
+
+Reject at least:
+
+- non-object top level;
+- missing/non-string `contract_id` or `schema_version`;
+- missing/empty required vocabulary arrays;
+- non-string/duplicate vocabulary values;
+- missing required admission states or extra unknown admission state;
+- missing required binding states;
+- missing/duplicate invariant IDs;
+- missing required invariant IDs;
+- invariant entries with malformed types/fields;
+- contract attempting to allow caller-controlled admission;
+- contract allowing `UNBOUND` exact-byte use;
+- malformed values that would otherwise crash set/sort operations.
+
+Record/admission evaluation first validates the contract. Invalid contract => no `ELIGIBLE` result.
+
+## 5. Closed contract vocabularies
 
 ### Artifact binding states
 
-Use the minimum semantics:
+Exactly:
 
 ```text
 DIRECT_DIGEST
@@ -83,12 +133,6 @@ IMMUTABLE_REVISION_LOCATOR
 UNBOUND
 NOT_APPLICABLE
 ```
-
-`DIRECT_DIGEST` requires a syntactically valid SHA-256 identity.
-
-`IMMUTABLE_REVISION_LOCATOR` requires a non-empty immutable source revision plus exact artifact locator.
-
-`UNBOUND` cannot become `ELIGIBLE` for a declared use that requires exact payload identity.
 
 ### Admission states
 
@@ -101,13 +145,28 @@ BLOCKED
 PROHIBITED
 ```
 
-The validator/evaluator must return reasons separately; admission is not a mega-status replacing lineage dimensions.
+### Declared uses
 
-## 4. Lineage record model
+At minimum:
 
-Prefer plain dictionaries plus small `str, Enum` declarations/frozen sets rather than a large dataclass hierarchy.
+```text
+REFERENCE
+DEVELOPMENT_EVALUATION
+PRIVATE_RELEASE_EVALUATION
+TRAINING_OR_ADAPTATION
+TEACHER_OR_SYNTHETIC_GENERATION
+RETRIEVAL_OR_EVIDENCE_USE
+MODIFICATION_OR_DERIVATION
+REDISTRIBUTION
+```
 
-Universal fields:
+Other small rights/privacy/contamination/origin vocabularies may be frozen in the contract as required by the spec; do not add user-extensible plugin states.
+
+## 6. Lineage evidence record
+
+Prefer plain dictionaries plus small `str, Enum`/frozenset declarations; do not create a class hierarchy.
+
+Universal evidence input fields:
 
 ```text
 asset_id
@@ -124,11 +183,9 @@ access_class
 rights_state
 rights_evidence_uri
 artifact_binding_state
-admission_state
-admission_reasons[]
 ```
 
-Conditional fields are required from asset class + declared use, never by meaningless placeholders:
+Conditional evidence fields:
 
 ```text
 artifact_locator
@@ -143,82 +200,80 @@ quarantine_state
 contamination_state
 contamination_evidence_id
 parent_asset_ids[]
+origin_type
 generator_identity
 generation_config_id
 output_use_evidence_uri
 ```
 
-The exact implementation may use fewer names if equivalent semantics are preserved and tests remain explicit.
+**Do not accept caller-owned `admission_state` / `admission_reasons` as authoritative evidence fields.** In the minimal implementation, reject them in an evidence record to make the trust boundary obvious.
 
-## 5. Validation architecture
+## 7. Record validation
 
-Implement one small public entry point such as:
+Add:
 
 ```python
 validate_lineage_record(record: object, contract: object) -> list[str]
 ```
 
-and one registry helper if needed:
+Behavior:
+
+1. validate contract first;
+2. validate record top-level type before set/hash/sort work;
+3. enforce required strings and closed vocabularies;
+4. reject self-asserted admission fields;
+5. enforce conditional requirements from asset class + declared use;
+6. collect deterministic errors without ordinary malformed-input exceptions.
+
+A registry helper is optional only if duplicate-record testing benefits from it:
 
 ```python
 validate_lineage_registry(records: object, contract: object) -> tuple[bool, list[str]]
 ```
 
-Validation collects actionable errors and does not raise on ordinary malformed parsed JSON.
+No generic JSON Schema framework is required.
 
-Required checks include:
-
-- top-level/object/list type validation before hashing/set/sort operations;
-- required non-empty string fields;
-- closed-vocabulary membership;
-- duplicate stable IDs;
-- admission-reason list type/uniqueness;
-- exact artifact-binding invariants;
-- rights evidence consistency;
-- privacy/PHI fail-closed behavior;
-- purpose/split/quarantine consistency;
-- contamination requirements;
-- parent/generator lineage for derived/synthetic assets;
-- final admission consistency.
-
-Do not add a generic schema framework or JSON Schema dependency.
-
-## 6. Exact artifact binding
-
-A helper such as `validate_artifact_binding(record)` should enforce:
+## 8. Exact artifact binding
 
 ### `DIRECT_DIGEST`
 
-Requires:
+Requires exact payload:
 
 ```text
-content_sha256 = 64 lowercase/uppercase hexadecimal characters
+content_sha256 = exactly 64 hexadecimal characters
 ```
 
-An artifact locator/source revision may also exist, but the digest is the binding proof.
+The validator may normalize case for comparison but should emit one canonical lowercase form when constructing identity.
 
 ### `IMMUTABLE_REVISION_LOCATOR`
 
-Requires:
+Requires all of:
 
 ```text
-source_revision = concrete, non-sentinel string
-artifact_locator = concrete, non-sentinel string
+source_revision = accepted cryptographic/content-addressed revision
+artifact_locator = exact non-sentinel subresource locator
+source_evidence_uri = non-empty evidence reference
 ```
 
-No redundant direct digest is required.
+For V1, conservatively accept canonical Git/Hugging Face commit-style hexadecimal revision identities (40 or 64 hexadecimal characters). Reject mutable labels and arbitrary named versions such as:
+
+```text
+main
+master
+latest
+v1.0
+release-current
+```
+
+A named version may remain reference metadata, but cannot prove this exact executable-binding mode by itself.
 
 ### `UNBOUND`
 
-Permitted for source/family/reference metadata. It blocks any use whose contract requirement says exact payload identity is required.
+Permitted for family/reference metadata. It blocks any use whose contract requires exact payload identity.
 
-This rule is explicitly tested against synthetic records shaped like canonical Spec 001 benchmark semantics.
+## 9. Rights evidence
 
-## 7. Rights model
-
-Do not attempt legal reasoning from arbitrary prose.
-
-Use a small evidence state for the exact declared use, for example:
+Use one exact-declared-use rights state, e.g.:
 
 ```text
 SUPPORTED
@@ -229,18 +284,19 @@ INCOMPATIBLE
 
 Rules:
 
-- `SUPPORTED` requires a rights evidence reference;
-- `CONDITIONAL` and `UNRESOLVED` cannot yield `ELIGIBLE`;
-- `INCOMPATIBLE` yields `PROHIBITED` for that declared use;
-- component-specific/mixed rights cannot be widened to all components;
-- optional `spdx_license_expression` must have conservative syntax validation only; do not implement the full SPDX grammar unless standard-library validation stays small and defensible;
-- custom/non-standard terms use an exact `custom_terms_id`/evidence reference rather than pretending to be a standard license.
+- `SUPPORTED` requires rights evidence reference;
+- `CONDITIONAL` / `UNRESOLVED` cannot yield `ELIGIBLE`;
+- `INCOMPATIBLE` yields `PROHIBITED` for that exact declared use;
+- component-specific/mixed rights cannot be widened to every component;
+- optional `spdx_license_expression` is evidence metadata, not legal adjudication;
+- only type/non-empty/basic-safe-string validation is required for the optional SPDX field in Spec 003 unless a complete bounded parser is separately justified;
+- custom terms use exact `custom_terms_id` + evidence reference.
 
-FD-001-dependent compatibility remains `BLOCKED` when the final product posture is required.
+FD-001-dependent compatibility remains blocked when product posture is necessary.
 
-## 8. Access/privacy boundary
+## 10. Access/privacy boundary
 
-Use minimal privacy states sufficient to fail closed, for example:
+Minimal states may include:
 
 ```text
 NO_PHI_KNOWN
@@ -250,34 +306,38 @@ UNRESOLVED
 NOT_APPLICABLE
 ```
 
-For any repository-payload or training/adaptation eligibility path:
+Rules:
 
-- `RESTRICTED_OR_PHI` => not eligible;
-- `UNRESOLVED` => blocked;
-- no fixture contains real PHI or restricted content.
+- `RESTRICTED_OR_PHI` cannot be repository/training/adaptation eligible under this V1 contract;
+- `UNRESOLVED` blocks such uses;
+- `DEIDENTIFIED` is classification metadata only and does not by itself override access/rights constraints;
+- fixtures contain no real PHI/restricted content.
 
-This is metadata classification, not de-identification software.
+## 11. Purpose, split, and Gold quarantine
 
-## 9. Purpose, split, and Gold quarantine
+Reuse canonical `Purpose` values from Spec 001:
 
-Do not duplicate the Spec 001 purpose engine.
-
-Where `purpose` is present, validate against canonical `Purpose` values.
+```text
+TRAIN
+DEV
+CALIBRATION
+CHECKPOINT_SELECTION
+PUBLIC_EXTERNAL_EVAL
+PRIVATE_GOLD
+```
 
 At minimum prove:
 
 - `PRIVATE_GOLD` cannot be training/adaptation or teacher-generation eligible;
-- a record explicitly marked as test/Gold/quarantined cannot claim a prohibited optimization/selection use;
-- existing `CHECKPOINT_SELECTION` remains distinct from ordinary development;
-- broader Spec 003 declared-use values map to, rather than erase, the Spec 001 purpose dimension.
+- test/Gold/quarantine metadata cannot claim prohibited optimization/selection use;
+- `CHECKPOINT_SELECTION` remains distinct from ordinary development;
+- broader Spec 003 declared uses map to, not erase, the Spec 001 purpose dimension.
 
 Use synthetic metadata only.
 
-## 10. Contamination boundary
+## 12. Contamination boundary
 
-The minimum contract needs only enough semantics to prevent laundering unresolved overlap into clean optimization lineage.
-
-Prefer a closed state such as:
+Use only enough states to prevent laundering unresolved overlap into clean optimization lineage, e.g.:
 
 ```text
 NOT_ASSESSED
@@ -288,49 +348,55 @@ BLOCKED
 NOT_APPLICABLE
 ```
 
-For a declared use requiring clean separation, only `ASSESSED_CLEAN`/explicitly compatible state may contribute to `ELIGIBLE`.
+For a use requiring clean separation, only `ASSESSED_CLEAN` (or explicit `NOT_APPLICABLE` when truly outside the condition) may contribute to `ELIGIBLE`.
 
-Do not implement fuzzy matching, embedding similarity, corpus scanning, or benchmark retrieval in Spec 003.
+Do not implement matching/scanning/retrieval.
 
-## 11. Synthetic / derived lineage
+## 13. Synthetic / derived lineage
 
-For `MODEL_GENERATED_OR_SYNTHETIC_ASSET` and `DERIVED_RESEARCH_ARTIFACT`, require where applicable:
+For synthetic/derived classes require as applicable:
 
 ```text
 parent_asset_ids[]
 origin_type
 generator_identity or derivation identity
-generation_config_id when scientifically relevant
-output_use_evidence_uri when external model/provider terms matter
+generation_config_id
+output_use_evidence_uri when external terms matter
 ```
 
-Tests must prove that missing parent/generator lineage blocks training/adaptation eligibility.
+Missing required parent/generator lineage blocks training/adaptation eligibility.
 
-The contract must encode the canonical default that MedGemma/HAI-DEF outputs and frontier API outputs are not automatically training lineage.
+Encode project defaults so MedGemma/HAI-DEF or frontier API outputs do not become training lineage by omission.
 
-Do not call any model/provider.
+No model/provider call occurs.
 
-## 12. Admission evaluation
+## 14. Computed admission output
 
-Implement a pure function such as:
+Add a pure evaluator:
 
 ```python
 evaluate_lineage_admission(record: object, contract: object) -> dict[str, object]
 ```
 
-The function:
+It:
 
-1. validates first;
-2. never returns `ELIGIBLE` for malformed input;
-3. evaluates only the exact `declared_use` in the record;
-4. returns one admission state and deterministic reason codes;
-5. does not infer permissions outside recorded evidence;
-6. does not treat source verification as sufficient by itself.
+1. validates contract;
+2. validates record;
+3. computes scientific record identity;
+4. evaluates the exact declared use;
+5. returns one admission state + sorted/deterministic reason codes;
+6. returns `contract_sha256` and `record_sha256` bindings;
+7. never trusts input `admission_state`;
+8. never returns `ELIGIBLE` for malformed/invalid contract or record.
 
-Suggested reason codes should be stable and narrow, e.g.:
+Suggested stable reason codes:
 
 ```text
+INVALID_CONTRACT
+INVALID_RECORD
+SOURCE_UNVERIFIED
 ARTIFACT_UNBOUND
+IMMUTABLE_REVISION_INVALID
 RIGHTS_UNRESOLVED
 RIGHTS_INCOMPATIBLE
 PRIVACY_UNRESOLVED
@@ -338,62 +404,55 @@ RESTRICTED_OR_PHI
 QUARANTINE_CONFLICT
 CONTAMINATION_UNRESOLVED
 PARENT_LINEAGE_MISSING
-SOURCE_UNVERIFIED
 ```
 
-Avoid a general rule engine.
+Avoid a generic rule engine.
 
-## 13. Canonical identity
+## 15. Scientific identity projection
 
-Reuse `compute_canonical_sha256()`.
+Reuse `compute_canonical_sha256()` on an explicit identity-bearing projection, not on the raw record indiscriminately.
 
-If new set-like fields need order normalization, add only the explicit fields required by lineage tests, likely:
+Include where applicable:
 
-```text
-admission_reasons
-parent_asset_ids
-```
+- stable asset/class identity;
+- immutable source revision;
+- exact artifact-binding evidence;
+- declared use;
+- rights evidence identity/state;
+- purpose/split/quarantine identity;
+- contamination evidence state/identity;
+- parent/generator/configuration lineage.
 
-Do not globally sort lists whose order may be scientifically meaningful.
+Exclude explicit audit-only fields such as:
 
-Tests must distinguish:
+- retrieval/check timestamps;
+- local paths;
+- reviewer workstation metadata;
+- convenience URLs/notes that do not alter governed facts.
 
-- representation-only reorder => same digest;
-- audit-only timestamp/local-path change => same scientific identity if those fields are explicitly excluded before hashing;
-- source revision/artifact binding/declared use/rights evidence/split/parent change => different digest.
+If `parent_asset_ids` or reason-code arrays are semantically set-like, add only those explicit fields to canonical normalization.
 
-Prefer a small helper that constructs the identity-bearing projection before calling the existing canonicalizer rather than teaching the global canonicalizer to ignore arbitrary fields.
+## 16. Spec 001 compatibility proof
 
-## 14. Compatibility proof
+Do not migrate canonical benchmark JSON.
 
-Do not migrate `data/eval/benchmarks.json`.
+Test mapping behavior:
 
-Add a compatibility adapter/test that proves at least:
+- canonical `DEVELOPMENT` benchmark with 40-hex source revision + concrete artifact maps to immutable-revision locator semantics;
+- canonical `REFERENCE_ONLY` benchmark with `artifact_version=UNBOUND` remains non-executable;
+- component-specific/unresolved rights do not broaden use.
 
-- a canonical `DEVELOPMENT` benchmark with concrete `source_revision` + `artifact_version` can map to `IMMUTABLE_REVISION_LOCATOR` semantics;
-- a canonical `REFERENCE_ONLY` benchmark with `artifact_version=UNBOUND` maps to non-executable/reference-only semantics;
-- `COMPONENT_SPECIFIC`/`UNRESOLVED` rights do not become broader eligible use.
+Compatibility code may stay test-only if no runtime consumer needs an adapter yet.
 
-Compatibility code may be test-only if no runtime consumer needs a permanent adapter yet.
+## 17. Canonical documentation
 
-## 15. Documentation
+Create `docs/governance/data-license-provenance.md` explaining the contract/admission trust boundary and explicit non-legal-advice/no-payload rules.
 
-`docs/governance/data-license-provenance.md` should explain:
+No dataset/model inventory is added.
 
-- source verification vs artifact binding;
-- exact-binding alternatives;
-- declared-use/admission scope;
-- rights and privacy fail-closed semantics;
-- Gold/quarantine and contamination boundaries;
-- synthetic/derived parentage;
-- standards used as design evidence but not dependencies;
-- explicit non-legal-advice boundary.
+## 18. Validation commands
 
-No dataset/model inventory is added in this spec.
-
-## 16. Validation commands
-
-Use existing repository style and standard-library tests. Minimum evidence should include:
+Minimum local evidence:
 
 ```text
 python -m unittest tests.eval_contract.test_lineage -v
@@ -403,41 +462,38 @@ python -m compileall -q src tests
 
 Also compute the canonical SHA-256 of `data/lineage/lineage_contract.json` through the existing canonicalizer.
 
-If the repository's live CI uses a different exact command, live workflow truth overrides this plan.
+Live CI truth overrides the exact local command if repository workflows differ.
 
-## 17. Implementation order
+## 19. Implementation order
 
-1. canonical contract JSON;
-2. `lineage.py` closed vocabularies + structural validator;
-3. artifact-binding + rights/privacy checks;
-4. purpose/quarantine + contamination + derived-lineage checks;
-5. admission evaluator;
-6. canonical identity projection/helper;
-7. focused tests including Spec 001 compatibility;
-8. documentation;
-9. full offline verification;
-10. independent exact-head review and repair;
-11. implementation merge only after every gate passes;
-12. dedicated closure transition afterward.
+1. contract JSON;
+2. contract validator;
+3. evidence-record validator;
+4. cryptographic binding rules;
+5. rights/privacy checks;
+6. purpose/quarantine + contamination + derived-lineage checks;
+7. scientific identity projection;
+8. computed admission evaluator bound to contract/record identities;
+9. focused tests + Spec 001 compatibility tests;
+10. documentation;
+11. full offline verification;
+12. independent exact-head review/repair;
+13. qualified implementation merge;
+14. dedicated post-merge closure transition.
 
-## 18. Risk controls
+## 20. Risk controls
 
 - No network/runtime dependency.
 - No payload download.
 - No PHI/restricted/Gold payload.
 - No model execution/training.
-- No license permission inferred from ambiguity.
+- No rights inferred from ambiguity/SPDX text alone.
+- No self-asserted admission trust.
+- No named-version masquerading as immutable binding.
 - No rewrite of canonical Spec 001 evidence.
 - No Spec 002 repair mixed into this branch.
 - No Spec 004 work.
 
-## 19. Exit from plan
+## 21. Exit from plan
 
-Plan is acceptable only if checklist/tasks/analyze prove:
-
-- every Spec 003 FR has an implementation/test path;
-- the direct-digest vs immutable-container identity rule is internally consistent;
-- canonical Spec 001 semantics are preserved;
-- no founder decision is required yet;
-- no prohibited runtime/data/model action is needed;
-- the implementation remains bounded to the minimal artifact set above.
+The repaired plan is ready for Analyze Pass 2 only if tasks/checklist are synchronized with these repairs. Implementation remains unauthorized until Analyze Pass 2 returns PASS.
