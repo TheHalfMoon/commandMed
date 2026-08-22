@@ -118,7 +118,11 @@ def _resolved_string(value: Any) -> bool:
     )
 
 
-def _exact_keys(value: Any, required: frozenset[str], optional: frozenset[str] = frozenset()) -> list[str]:
+def _exact_keys(
+    value: Any,
+    required: frozenset[str],
+    optional: frozenset[str] = frozenset(),
+) -> list[str]:
     if not isinstance(value, dict):
         return ["expected an object"]
     actual = set(value)
@@ -133,6 +137,7 @@ def _exact_keys(value: Any, required: frozenset[str], optional: frozenset[str] =
 
 
 def _scan_prohibited_keys(value: Any, path: str) -> list[str]:
+    """Reject exact normalized execution/payload keys without order-sensitive paths."""
     errors: list[str] = []
     if isinstance(value, dict):
         for key, nested in value.items():
@@ -145,8 +150,8 @@ def _scan_prohibited_keys(value: Any, path: str) -> list[str]:
                 errors.append(f"{child}: prohibited execution/payload key '{normalized}'")
             errors.extend(_scan_prohibited_keys(nested, child))
     elif isinstance(value, list):
-        for index, nested in enumerate(value):
-            errors.extend(_scan_prohibited_keys(nested, f"{path}[{index}]"))
+        for nested in value:
+            errors.extend(_scan_prohibited_keys(nested, f"{path}[]"))
     return errors
 
 
@@ -296,9 +301,9 @@ def validate_tournament_manifest(manifest: Any, artifacts: Any) -> list[str]:
         errors.append("manifest.candidate_ids: non-empty list required")
     else:
         normalized = []
-        for index, candidate_id in enumerate(candidates):
+        for candidate_id in candidates:
             if not _resolved_string(candidate_id):
-                errors.append(f"manifest.candidate_ids[{index}]: resolved string required")
+                errors.append("manifest.candidate_ids: unresolved candidate ID is prohibited")
             else:
                 normalized.append(candidate_id.strip())
         if len(normalized) != len(set(normalized)):
@@ -394,7 +399,9 @@ def _metric_shape_errors(metric_results: Any, metrics: Any) -> list[str]:
 
 
 def _candidate_structural_errors(
-    result: Any, manifest: dict[str, Any], artifacts: dict[str, Any]
+    result: Any,
+    manifest: dict[str, Any],
+    artifacts: dict[str, Any],
 ) -> list[str]:
     errors = [
         f"candidate: {e}"
@@ -431,7 +438,9 @@ def _candidate_structural_errors(
 
 
 def _comparison_evidence(
-    result: dict[str, Any], manifest: dict[str, Any], artifacts: dict[str, Any]
+    result: dict[str, Any],
+    manifest: dict[str, Any],
+    artifacts: dict[str, Any],
 ) -> tuple[list[str], list[dict[str, Any]]]:
     metric_results = result.get("metric_results")
     if not isinstance(metric_results, dict):
@@ -634,6 +643,7 @@ def _base_report(manifest: Any) -> dict[str, Any]:
     return {
         "tournament_id": manifest.get("tournament_id") if isinstance(manifest, dict) else None,
         "tournament_manifest_sha256": compute_tournament_manifest_sha256(manifest),
+        "canonical_artifact_identities": dict(CANONICAL_UPSTREAM_IDENTITIES_V1),
         "tournament_state": "NO_SELECTION",
         "reason_code": None,
         "selected_candidate_id": None,
@@ -678,18 +688,16 @@ def evaluate_tournament(manifest: Any, candidate_results: Any, artifacts: Any) -
 
     buckets: dict[str, list[Any]] = {candidate_id: [] for candidate_id in declared_ids}
     result_set_errors: list[str] = []
-    for index, result in enumerate(candidate_results):
+    for result in candidate_results:
         if not isinstance(result, dict):
-            result_set_errors.append(f"candidate_results[{index}]: expected an object")
+            result_set_errors.append("candidate_results: non-object result envelope present")
             continue
         candidate_id = result.get("candidate_id")
         if not _resolved_string(candidate_id):
-            result_set_errors.append(f"candidate_results[{index}]: resolved candidate_id required")
+            result_set_errors.append("candidate_results: result envelope has unresolved candidate_id")
             continue
         if candidate_id not in buckets:
-            result_set_errors.append(
-                f"candidate_results[{index}]: undeclared candidate_id '{candidate_id}'"
-            )
+            result_set_errors.append(f"candidate_results: undeclared candidate_id '{candidate_id}'")
             continue
         buckets[candidate_id].append(result)
 
