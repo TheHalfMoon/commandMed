@@ -1,23 +1,23 @@
 # Spec 004 — Tournament Harness Tasks
 
-**Status:** READY_FOR_ANALYZE
+**Status:** IMPLEMENTATION_COMPLETE_AWAITING_FINAL_CLOSEOUT_QUALIFICATION
 
-## T004-01 — Freeze manifest and result contracts
+## T004-01 — Freeze manifest and result contracts — COMPLETE
 
-Implement tournament-specific closed vocabularies and fail-closed structural validation in `src/commandmed/tournament.py`.
+Tournament-specific closed vocabularies and fail-closed structural validation are implemented in `src/commandmed/tournament.py`.
 
 Exit evidence:
 
 - exact V1 manifest fields enforced;
 - exact V1 candidate-result fields enforced;
-- execution/payload surface denylist enforced recursively;
+- execution/payload surface denylist enforced recursively, including separator/whitespace hardening;
 - candidate IDs unique;
 - ordered comparison metric IDs unique;
 - unknown execution mode/strategy/tie policy rejected.
 
-## T004-02 — Bind canonical Specs 001–003 identities
+## T004-02 — Bind canonical Specs 001–003 identities — COMPLETE
 
-Validate canonical artifact bundle and compute six identities:
+Canonical artifact bundle validation and exact six-identity pinning are implemented:
 
 ```text
 benchmarks_sha256
@@ -31,12 +31,10 @@ lineage_contract_sha256
 Exit evidence:
 
 - canonical validators invoked;
-- identity mismatch blocks manifest;
+- supplied artifacts and manifest declaration must both equal the exact V1 canonical identity map;
 - inherited canonical artifact hashes remain unchanged.
 
-## T004-03 — Freeze comparison metric semantics
-
-Resolve ordered comparison metrics against canonical metrics catalog.
+## T004-03 — Freeze comparison metric semantics — COMPLETE
 
 Exit evidence:
 
@@ -46,9 +44,7 @@ Exit evidence:
 - metric order affects manifest identity;
 - candidate order does not affect manifest identity.
 
-## T004-04 — Qualify candidate lineage and safety
-
-Validate each precomputed candidate envelope.
+## T004-04 — Qualify candidate lineage and safety — COMPLETE
 
 Exit evidence:
 
@@ -59,92 +55,113 @@ Exit evidence:
 - canonical Spec 003 admission reused;
 - only `ELIGIBLE` continues;
 - canonical Spec 002 safety hard-gate evaluation reused;
-- only overall `PASS` continues;
+- observed safety `FAIL` is decisively disqualified while insufficient/blocked/not-evaluated evidence remains incomplete;
 - parent registry flows through Spec 003.
 
-## T004-05 — Validate comparison evidence
-
-Require every frozen comparison metric to have valid comparable evidence.
+## T004-05 — Validate comparison evidence — COMPLETE
 
 Exit evidence:
 
-- result status `PASS`;
+- comparison result status `PASS`;
 - score finite numeric, bool excluded;
+- arbitrarily large integers handled exactly without float or decimal-string overflow;
 - evidence artifact ID resolved;
-- missing/non-pass/NaN/infinity/malformed result is non-qualifying.
+- missing/non-pass/NaN/infinity/malformed result is `INCOMPLETE` and cannot be ranked.
 
-## T004-06 — Deterministic tournament comparison/report
-
-Implement lexicographic comparison and deterministic report generation.
+## T004-06 — Deterministic tournament comparison/report — COMPLETE
 
 Exit evidence:
 
-- canonical direction respected;
+- canonical metric direction respected;
 - no weighted average;
 - exactly one best qualified fixture candidate -> `SELECTED`;
 - best-vector tie -> `NO_SELECTION / TOP_TIE`;
 - zero qualified -> `NO_SELECTION / NO_QUALIFIED_CANDIDATE`;
+- any declared incomplete candidate -> `NO_SELECTION / CANDIDATE_EVIDENCE_INCOMPLETE` before ranking;
 - missing declared candidate represented explicitly;
-- duplicate candidate envelope fails closed;
-- input candidate order does not alter result/report identity.
+- duplicate or undeclared candidate envelope fails closed;
+- input candidate order does not alter result/report identity;
+- report carries exact canonical artifact identities;
+- report digest binds lexicographic comparison-vector order.
 
-## T004-07 — Focused fixture tests
+## T004-07 — Focused fixture tests — COMPLETE
 
-Add `tests/test_tournament.py` using synthetic/non-medical metadata only.
+Focused synthetic/non-medical regression coverage exists in:
 
-Exit evidence:
+```text
+tests/test_tournament.py
+tests/test_tournament_contract_hardening.py
+tests/test_tournament_review_hardening.py
+```
 
-- all Spec 004 positive/negative requirements covered;
-- no real benchmark/model/Gold payload in fixtures;
-- no network/subprocess/provider/runtime dependency.
+Latest predecessor exact-head qualification at `7a04d40030a2aa28b4c2f0d5db6e4d387388c756`:
 
-## T004-08 — Governance documentation
+```text
+RUN=32601812794
+JOB=97101112661
+FOCUSED_SPEC004_TESTS=45/45 PASS
+INHERITED_HARD_GATES=9/9 PASS
+FULL_OFFLINE_SUITE=273/273 PASS
+```
 
-Add `docs/evaluation/tournament-harness.md` documenting:
+No real benchmark/model/Gold payload, network, subprocess, provider, or runtime dependency is used.
+
+## T004-08 — Governance documentation — COMPLETE
+
+`docs/evaluation/tournament-harness.md` and the bounded Spec 004 lifecycle documents record:
 
 - precomputed-results-only boundary;
 - manifest/result contracts;
 - safety and lineage delegation;
 - comparison semantics;
 - no-selection semantics;
+- deterministic identity rules;
+- material review reconciliation;
 - Spec 005 boundary and deferred founder decisions.
 
-## T004-09 — Regression and semantic-identity verification
+## T004-09 — Regression and semantic-identity verification — COMPLETE FOR PRE-CLOSEOUT HEAD
 
-Run focused, inherited hard-gate, and full offline tests; confirm inherited canonical identities unchanged.
-
-Exit evidence:
+Pre-closeout exact-head evidence at `7a04d40030a2aa28b4c2f0d5db6e4d387388c756`:
 
 ```text
 PYTHON_SYNTAX=PASS
-FOCUSED_SPEC004=PASS
-INHERITED_HARD_GATES=PASS
-FULL_OFFLINE_SUITE=PASS
-INHERITED_SEMANTIC_IDENTITIES=PASS
+CANONICAL_TOURNAMENT_IDENTITIES=PASS
+EXECUTION_SURFACE_PREFLIGHT=PASS
+FOCUSED_SPEC004=45/45 PASS
+INHERITED_HARD_GATES=9/9 PASS
+FULL_OFFLINE_SUITE=273/273 PASS
 GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-## T004-10 — Independent exact-head review and closeout candidate
+A final closeout content mutation still requires a new exact-head run and may not reuse this predecessor PASS as final merge evidence.
 
-After implementation qualification:
+## T004-10 — Independent exact-head review and closeout candidate — IN PROGRESS
 
-- request fresh independent review of exact current PR head;
-- reconcile every material authorization/comparison-integrity finding;
-- invalidate predecessor qualification after every semantic repair;
-- add a non-self-referential closeout candidate;
-- requalify/review final closeout head;
-- guarded merge only on unchanged exact head.
+Completed before closeout mutation:
 
-## T004-11 — Dedicated canonical closure
+- all material implementation/review findings reconciled;
+- predecessor qualification invalidated after every semantic repair;
+- exact predecessor `7a04d40030a2aa28b4c2f0d5db6e4d387388c756` received CodeRabbit review Run `5effe806-c304-44a6-a910-95a604c56933` with no actionable comments and Minimal merge risk;
+- malformed candidate-result coverage requested by the prior review is now direct and exact-head green.
 
-After qualified implementation merge:
+Remaining:
 
-- verify canonical merge SHA/tree;
+- add non-self-referential implementation closeout candidate;
+- requalify exact final closeout head;
+- fresh independent review of exact final head;
+- guarded squash merge only if the head remains unchanged.
+
+## T004-11 — Dedicated canonical closure — BLOCKED ON IMPLEMENTATION MERGE
+
+After qualified implementation merge only:
+
+- verify canonical implementation merge SHA/tree;
 - create closure-only branch from exact canonical main;
-- update only Spec 004 closeout/lifecycle registry as required;
+- bind implementation merge SHA/tree in Spec 004 closeout;
+- update lifecycle registry only as required;
 - independently review exact closure head;
-- guarded merge;
+- guarded squash merge closure PR;
 - verify resulting canonical main before marking Spec 004 `CLOSED_CANONICAL`.
 
 Spec 005 remains blocked unless its separate founder prerequisites and explicit start authorization are satisfied.
