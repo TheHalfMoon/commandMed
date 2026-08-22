@@ -14,7 +14,7 @@ jobs:
       - name: Checkout exact candidate
         uses: actions/checkout@v4
         with:
-          ref: ab594ad2756b33813d7b69166079849474a290aa
+          ref: 73048eed01583f13a24dff74748a50e3f33c91fa
           fetch-depth: 0
 
       - name: Set up Python 3.11
@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "ab594ad2756b33813d7b69166079849474a290aa"
+          test "$(git rev-parse HEAD)" = "73048eed01583f13a24dff74748a50e3f33c91fa"
           echo "EXACT_HEAD=$(git rev-parse HEAD)"
           python --version
           python -m compileall -q src tests
@@ -53,7 +53,7 @@ jobs:
 
           lineage_sha = compute_lineage_contract_sha256(contract)
           print(f'LINEAGE_CONTRACT_SHA256={lineage_sha}')
-          wanted_lineage = '9c2cb8784012e5bd289ee92c3cf237d73f604365b38966db3b4cd2b2949d5599'
+          wanted_lineage = '7d390e57dd1f5c15dc066bb8540f6f01a351c6b2e6e4da35236914a07d276ea3'
           if lineage_sha != wanted_lineage:
               raise SystemExit(f'LINEAGE_CONTRACT_IDENTITY_DRIFT: expected {wanted_lineage}, got {lineage_sha}')
 
@@ -90,7 +90,7 @@ jobs:
           echo "GIT_DIFF_CHECK=PASS"
           changed="$(git diff --name-only "${BASE}...HEAD")"
           printf '%s\n' "$changed"
-          if printf '%s\n' "$changed" | grep -Ev '^(data/lineage/lineage_contract\.json|docs/governance/data-license-provenance\.md|src/commandmed/eval_contract/lineage\.py|tests/eval_contract/test_lineage\.py|specs/003-data-license-provenance/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|checklists/requirements\.md))$' | grep -q .; then
+          if printf '%s\n' "$changed" | grep -Ev '^(data/lineage/lineage_contract\.json|docs/governance/data-license-provenance\.md|src/commandmed/eval_contract/lineage\.py|tests/eval_contract/test_lineage\.py|specs/003-data-license-provenance/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|review-reconciliation\.md|checklists/requirements\.md))$' | grep -q .; then
             echo "UNBOUNDED_PATH=FAIL"
             exit 1
           fi
