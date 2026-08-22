@@ -22,6 +22,17 @@ SET_LIKE_LIST_FIELDS = {
     "permitted_scoring_stages",
     "allowed_sources",
     "prohibited_sources",
+    # Spec 002 safety-policy fields.
+    "behavior_states",
+    "scope_kinds",
+    "system_required_capabilities",
+    "prohibited_lower_states",
+    "required_result_identity_fields",
+    "allowed_unavailable_fallback_states",
+    "required_scope_kinds",
+    "required_before_freeze",
+    "claimed_capabilities",
+    "out_of_scope_capabilities",
 }
 
 # Known stable ID keys used to sort list of entity records
@@ -31,6 +42,10 @@ RECORD_SORT_KEYS = [
     "family_id",
     "purpose",
     "asset_id",
+    # Spec 002 safety-policy records.
+    "rule_id",
+    "boundary_id",
+    "gate_id",
 ]
 
 

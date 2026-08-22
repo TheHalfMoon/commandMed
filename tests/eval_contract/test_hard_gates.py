@@ -126,6 +126,21 @@ class TestHardGatesAndMetrics(unittest.TestCase):
         )
         self.assertEqual(state, GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
 
+    def test_fail_precedes_missing_evidence_in_mixed_required_gates(self) -> None:
+        """An observed hard-gate FAIL dominates a different missing required gate."""
+        mixed = {
+            "emergency_miss_rate": {
+                "status": GateEvaluationState.FAIL.value,
+                "score": 1.0,
+                "reason": "Synthetic safety failure",
+                "evidence_artifact_id": "fixture:mixed-failure",
+            },
+        }
+        overall, breakdown = evaluate_hard_gates(self.metrics_catalog, mixed)
+        self.assertEqual(overall, GateEvaluationState.FAIL.value)
+        self.assertTrue(any(g["status"] == GateEvaluationState.FAIL.value for g in breakdown))
+        self.assertTrue(any(g["status"] == GateEvaluationState.NOT_EVALUATED.value for g in breakdown))
+
     def test_invalid_metric_direction_rejection(self) -> None:
         """Validation fails if metric direction is invalid."""
         invalid_metric = {
