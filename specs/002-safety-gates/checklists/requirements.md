@@ -23,6 +23,17 @@
 - [x] Required evidence cannot be fabricated or treated as present when unresolved.
 - [x] Malformed/contradictory safety state fails closed.
 
+## Gate results, applicability, and claims
+
+- [x] Existing Spec 001 `GateEvaluationState` vocabulary is reused exactly.
+- [x] `NOT_APPLICABLE` is applicability/threshold metadata, not a new gate-result state.
+- [x] Applicability N/A requires an explicit out-of-scope component/evaluation scope.
+- [x] A capability claim cannot coexist with its required gate being N/A.
+- [x] Component-scoped PASS cannot be promoted to system-level safety PASS.
+- [x] Arabic hard-gate applicability cannot be waived for commandMed system qualification.
+- [x] Patient/caregiver safety claims cannot suppress applicable emergency/medication/missing-info/evidence gates through scope relabeling.
+- [x] Existing Spec 001 hard-gate identities are preserved rather than weakened/relabelled for convenience.
+
 ## Threshold governance
 
 - [x] Policy/sentinel zero-violation invariants are distinguished from population clinical rates.
@@ -31,13 +42,7 @@
 - [x] Frozen statistical thresholds require value/operator/unit/intended use/evidence/rationale/reviewer identity/revision.
 - [x] FD-004 is referenced only for benign over-triage and is not prematurely resolved.
 - [x] No universal clinical numeric threshold is invented from general regulatory/ethics guidance.
-
-## Gate applicability and claims
-
-- [x] Gate result states include controlled `NOT_APPLICABLE`.
-- [x] `NOT_APPLICABLE` requires an explicit out-of-scope capability declaration.
-- [x] A capability claim cannot coexist with its required gate being N/A.
-- [x] Existing Spec 001 hard-gate identities are preserved rather than weakened/relabelled for convenience.
+- [x] Spec 002 threshold-policy classes do not silently replace the existing Spec 001 `ThresholdState` enum.
 
 ## Deterministic truth boundary
 
@@ -55,6 +60,7 @@
 - [x] Fail-closed malformed-input cases are enumerated.
 - [x] Full existing Spec 001 regression suite remains required.
 - [x] Canonical identity reorder/sensitivity tests are required.
+- [x] Sentinel PASS must satisfy the existing hard-gate evaluator's numeric-score + resolved-evidence requirements when routed through that evaluator.
 
 ## Evidence and research integrity
 
