@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - repair/spec001-fail-closed-scratch
+  pull_request:
+    branches:
+      - spec/001-eval-charter
 
 permissions:
   contents: read
