@@ -1,0 +1,101 @@
+name: Spec 003 Exact-Head Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          ref: 7ea0ab42860ff74fadbfc26b88708ae079a4bf86
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Prove exact identity and syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "7ea0ab42860ff74fadbfc26b88708ae079a4bf86"
+          echo "EXACT_HEAD=$(git rev-parse HEAD)"
+          python --version
+          python -m compileall -q src tests
+          echo "PYTHON_SYNTAX=PASS"
+
+      - name: Validate lineage contract and semantic identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from src.commandmed.eval_contract.canonical import compute_file_canonical_sha256
+          from src.commandmed.eval_contract.lineage import (
+              compute_lineage_contract_sha256,
+              validate_lineage_contract,
+          )
+
+          contract = json.loads(Path('data/lineage/lineage_contract.json').read_text(encoding='utf-8'))
+          errors = validate_lineage_contract(contract)
+          if errors:
+              raise SystemExit('LINEAGE_CONTRACT_VALIDATION=FAIL\n' + '\n'.join(errors))
+          print('LINEAGE_CONTRACT_VALIDATION=PASS')
+
+          lineage_sha = compute_lineage_contract_sha256(contract)
+          print(f'LINEAGE_CONTRACT_SHA256={lineage_sha}')
+          wanted_lineage = '9c2cb8784012e5bd289ee92c3cf237d73f604365b38966db3b4cd2b2949d5599'
+          if lineage_sha != wanted_lineage:
+              raise SystemExit(f'LINEAGE_CONTRACT_IDENTITY_DRIFT: expected {wanted_lineage}, got {lineage_sha}')
+
+          expected = {
+              'data/eval/benchmarks.json': '7f58edba1ac179cbf24cb2d5c902e2ef947024bfd1c6eacdbef1a609b00f64a7',
+              'data/eval/gold_protocols.json': '40c89702469d759f4dc893aff6bc6fdb7e300f9cb2d8f19f2b3e0dbd78200666',
+              'data/eval/metrics.json': '304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a',
+              'data/eval/quarantine.json': 'b59fd86a7f63c8de7058a0386f57de1cadc7c817edfa1e9e0aa392ca5219e080',
+              'data/eval/safety_policy.json': '79a12414fe68fc08efb43070f3eede36976f2e0dc0ece7f4eed4bbcc5496d14f',
+          }
+          for path, wanted in expected.items():
+              got = compute_file_canonical_sha256(path)
+              print(f'{path}={got}')
+              if got != wanted:
+                  raise SystemExit(f'INHERITED_SEMANTIC_IDENTITY_DRIFT={path}: expected {wanted}, got {got}')
+          print('INHERITED_SEMANTIC_IDENTITIES=PASS')
+          PY
+
+      - name: Run focused Spec 003 lineage tests
+        run: python -m unittest tests.eval_contract.test_lineage -v
+
+      - name: Run inherited hard-gate tests
+        run: python -m unittest tests.eval_contract.test_hard_gates
+
+      - name: Run full offline suite
+        run: python -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Diff hygiene and bounded path preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=a57f87e77bbd396332b197342d8129f6805ba452
+          git diff --check "${BASE}...HEAD"
+          echo "GIT_DIFF_CHECK=PASS"
+          changed="$(git diff --name-only "${BASE}...HEAD")"
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -Ev '^(data/lineage/lineage_contract\.json|docs/governance/data-license-provenance\.md|src/commandmed/eval_contract/lineage\.py|tests/eval_contract/test_lineage\.py|specs/003-data-license-provenance/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|checklists/requirements\.md))$' | grep -q .; then
+            echo "UNBOUNDED_PATH=FAIL"
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Eq '(^|/)(models?|weights?|checkpoints?)(/|$)|(^|/)secrets?(/|$)|(^|/)credentials?(/|$)'; then
+            echo "PROHIBITED_PATH=FAIL"
+            exit 1
+          fi
+          echo "BOUNDED_PATH_PREFLIGHT=PASS"
