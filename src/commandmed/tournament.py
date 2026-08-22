@@ -10,6 +10,7 @@ from __future__ import annotations
 import copy
 import math
 import re
+import unicodedata
 from typing import Any
 
 from .eval_contract.canonical import compute_canonical_sha256
@@ -104,6 +105,7 @@ PROHIBITED_NORMALIZED_KEYS = frozenset(
         "generated_text",
     }
 )
+PROHIBITED_COMPACT_KEYS = frozenset(key.replace("_", "") for key in PROHIBITED_NORMALIZED_KEYS)
 UNRESOLVED = frozenset({"", "NONE", "UNRESOLVED", "UNBOUND", "PENDING", "NOT_APPLICABLE"})
 HEX_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 CONTROL_CHAR_RE = re.compile(r"[\x00-\x1f\x7f]")
@@ -138,6 +140,12 @@ def _exact_keys(
     return errors
 
 
+def _normalize_prohibited_key(key: str) -> str:
+    """Normalize separators and Unicode compatibility forms for denylist matching."""
+    compatible = unicodedata.normalize("NFKC", key).casefold()
+    return re.sub(r"[^a-z0-9]+", "_", compatible).strip("_")
+
+
 def _scan_prohibited_keys(value: Any, path: str) -> list[str]:
     """Reject hidden execution/payload keys recursively with order-neutral list paths."""
     errors: list[str] = []
@@ -146,9 +154,10 @@ def _scan_prohibited_keys(value: Any, path: str) -> list[str]:
             if not isinstance(key, str):
                 errors.append(f"{path}: object key must be a string")
                 continue
-            normalized = key.strip().casefold().replace("-", "_").replace(" ", "_")
-            child = f"{path}.{key}"
-            if normalized in PROHIBITED_NORMALIZED_KEYS:
+            normalized = _normalize_prohibited_key(key)
+            compact = normalized.replace("_", "")
+            child = f"{path}.{normalized or '<empty-key>'}"
+            if normalized in PROHIBITED_NORMALIZED_KEYS or compact in PROHIBITED_COMPACT_KEYS:
                 errors.append(f"{child}: prohibited execution/payload key '{normalized}'")
             errors.extend(_scan_prohibited_keys(nested, child))
     elif isinstance(value, list):
@@ -266,7 +275,7 @@ def _exact_integer_hash_projection(value: Any) -> Any:
 
 
 def _report_projection(report: Any) -> Any:
-    """Normalize report collections and remove only the self-referential digest."""
+    """Normalize report collections while preserving lexicographic vector order."""
     if not isinstance(report, dict):
         return copy.deepcopy(report)
     result = copy.deepcopy(report)
@@ -282,6 +291,19 @@ def _report_projection(report: Any) -> Any:
             for field in ("reason_codes", "validation_errors", "lineage_reason_codes"):
                 if isinstance(candidate.get(field), list):
                     candidate[field] = sorted(candidate[field])
+            vector = candidate.get("comparison_vector")
+            if isinstance(vector, list):
+                candidate["comparison_vector"] = [
+                    [
+                        item.get("metric_id"),
+                        item.get("direction"),
+                        item.get("score"),
+                        item.get("evidence_artifact_id"),
+                    ]
+                    if isinstance(item, dict)
+                    else item
+                    for item in vector
+                ]
     if isinstance(result.get("result_set_errors"), list):
         result["result_set_errors"] = sorted(result["result_set_errors"])
     return _exact_integer_hash_projection(result)
