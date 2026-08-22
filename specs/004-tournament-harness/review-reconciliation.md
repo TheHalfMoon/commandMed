@@ -218,6 +218,39 @@ Repair:
 - add a non-empty `## Exit Evidence` section enumerating exact-head CI, independent review, closeout, guarded implementation merge, and dedicated closure-only requirements;
 - preserve the rule that Spec 004 is not `CLOSED_CANONICAL` until the separate closure PR is merged and canonical main is verified.
 
+## R004-08 — Mixed object-key types could abort fail-closed evaluation
+
+**Independent review head:** `6c1a359f969222dd7868248d1ba12fc114f413d9`
+**Reviewer:** Qodo
+**Severity:** MATERIAL / RELIABILITY + FAIL-CLOSED INPUT HANDLING
+**Status:** REPAIRED
+
+The closed-shape helper previously constructed one heterogeneous key set and then sorted unknown keys. A malformed object containing both string and non-string keys could therefore raise `TypeError` rather than produce deterministic invalid-input evidence. In addition, `evaluate_tournament()` constructed its report shell by hashing the manifest before validation, so a mixed-key manifest could reach the inherited canonicalizer and abort before the fail-closed validation result was returned.
+
+Repair:
+
+- `_exact_keys()` now isolates only string keys before missing/extra set arithmetic and sorting;
+- any non-string object key adds a deterministic `object keys must be strings` validation error;
+- recursive prohibited-key scanning retains its independent non-string-key rejection;
+- `_base_report()` does not attempt tournament-manifest canonical hashing when top-level manifest keys are non-string, and uses `None` for that invalid manifest identity instead;
+- the inherited Specs 001–003 canonicalizer is not modified;
+- regressions drive mixed-key manifest and candidate envelopes through `evaluate_tournament()` and require deterministic `NO_SELECTION` / invalid-or-incomplete outcomes rather than exceptions.
+
+## G004-01 — Closeout task bookkeeping stale on closeout head
+
+**Independent review head:** `6c1a359f969222dd7868248d1ba12fc114f413d9`
+**Reviewers:** CodeRabbit and Qodo
+**Severity:** GOVERNANCE / MAINTAINABILITY
+**Status:** REPAIRED
+
+The implementation closeout file already existed, but T004-10 still listed creation of that same closeout candidate as remaining work.
+
+Repair:
+
+- remove closeout creation from the remaining list;
+- record the closeout candidate as completed;
+- leave only exact-head requalification, fresh review, and guarded implementation merge as remaining T004-10 work.
+
 ## Qualification invalidation history
 
 ```text
@@ -238,13 +271,28 @@ a8e3c197cd7320539b096821266bba7c36902c27
 8da820fde8974ec382afde7009cd201ee8f59bdf
   -> Run 32600976193 green (40 focused / 9 hard / 268 full)
   -> invalidated by second independent review findings R004-05/R004-06/R004-07
+
+f21d500dd172b1cbe1c9d23a86b9880e4104e64a
+  -> Run 32601489770 green (42 focused / 9 hard / 270 full)
+  -> independent review had no actionable comments but requested direct malformed-result regression coverage before merge-risk reduction
+  -> invalidated by test-only coverage mutation
+
+7a04d40030a2aa28b4c2f0d5db6e4d387388c756
+  -> Run 32601812794 green (45 focused / 9 hard / 273 full)
+  -> CodeRabbit review Run 5effe806-c304-44a6-a910-95a604c56933: no actionable comments / Minimal risk
+  -> invalidated by implementation closeout/task-state content mutation
+
+6c1a359f969222dd7868248d1ba12fc114f413d9
+  -> Run 32602120618 green (45 focused / 9 hard / 273 full)
+  -> final independent review discovered R004-08 mixed-key fail-closed defect and G004-01 stale task state
+  -> qualification invalidated before merge
 ```
 
 No predecessor PASS is merge evidence for the current implementation head.
 
 ## Current required qualification
 
-The next implementation candidate must independently prove on one unchanged exact head:
+The non-self-referential implementation closeout candidate already exists. After R004-08/G004-01 repair, the resulting exact final repair head must independently prove on one unchanged head:
 
 ```text
 PYTHON_SYNTAX=PASS
@@ -258,7 +306,7 @@ BOUNDED_PATH_PREFLIGHT=PASS
 INDEPENDENT_EXACT_HEAD_REVIEW=NO_MATERIAL_BLOCKER
 ```
 
-Only after implementation review is clean may a non-self-referential closeout candidate be added. Closeout changes the head and requires another final exact-head qualification/review before guarded merge.
+No further repository-content mutation may occur between that final qualification/review and guarded PR #28 merge. Implementation merge still does not establish `CLOSED_CANONICAL`; the separate closure-only transition remains required.
 
 ## Authority boundary
 
