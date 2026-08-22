@@ -28,6 +28,7 @@ It implements:
 - report hashing that binds lexicographic comparison-vector order;
 - fail-closed recursive execution/payload/credential key rejection;
 - fail-closed mixed-type object-key handling without heterogeneous-key sort exceptions;
+- invalid non-object manifests do not receive a misleading tournament-manifest digest;
 - exact large-integer comparison and report identity without float or decimal-string overflow;
 - synthetic/non-medical fixture regression coverage only.
 
@@ -60,7 +61,8 @@ The harness requires both the recomputed supplied-artifact identities and the ma
 - recursive prohibited-key separator/whitespace normalization hardening;
 - scientific binding of comparison-vector order in report hashes;
 - explicit bounded-spec `Exclusions` and `Exit Evidence` governance sections;
-- mixed string/non-string object-key fail-closed validation and invalid-manifest report-shell hardening.
+- mixed string/non-string object-key fail-closed validation and invalid-manifest report-shell hardening;
+- non-object manifest identity suppression so invalid manifest types cannot carry a valid-looking tournament-manifest digest.
 
 Final-review governance bookkeeping was also reconciled so T004-10 no longer lists creation of an already-present closeout candidate as remaining work.
 
@@ -68,46 +70,46 @@ Every material semantic repair invalidated earlier qualification rather than reu
 
 ## 4. Historical qualification evidence — not final merge evidence
 
-Temporary GitHub carrier PR #29 previously checked out the historical test-complete predecessor:
+Temporary GitHub carrier PR #29 previously checked out historical predecessors:
 
 ```text
 RUN=32601812794
 JOB=97101112661
 EXACT_HEAD=7a04d40030a2aa28b4c2f0d5db6e4d387388c756
+FOCUSED_SPEC004_TESTS=45/45 PASS
+INHERITED_HARD_GATES=9/9 PASS
+FULL_OFFLINE_SUITE=273/273 PASS
+```
+
+After closeout/task content was added, carrier Run `32602120618` also passed 45 focused / 9 inherited hard-gate / 273 full tests on predecessor `6c1a359f969222dd7868248d1ba12fc114f413d9`, together with exact identity, execution-surface, diff, and bounded-path gates. It was invalidated when final independent review identified R004-08.
+
+After R004-08/G004-01 repair, carrier Run `32603238663` / job `97104523630` passed on predecessor `bf57ccd47791ef0cd25ebc478e154a9f28c14be4`:
+
+```text
 PYTHON_VERSION=3.11.16
 PYTHON_SYNTAX=PASS
 CANONICAL_TOURNAMENT_IDENTITIES=PASS
 EXECUTION_SURFACE_PREFLIGHT=PASS
-FOCUSED_SPEC004_TESTS=45/45 PASS
+FOCUSED_SPEC004_TESTS=47/47 PASS
 INHERITED_HARD_GATES=9/9 PASS
-FULL_OFFLINE_SUITE=273/273 PASS
+FULL_OFFLINE_SUITE=275/275 PASS
 GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-After closeout/task content was added, carrier Run `32602120618` also passed 45 focused / 9 inherited hard-gate / 273 full tests on predecessor `6c1a359f969222dd7868248d1ba12fc114f413d9`, together with exact identity, execution-surface, diff, and bounded-path gates.
-
-That later predecessor qualification was invalidated before merge when final independent review identified R004-08, the mixed-type object-key fail-closed defect. Neither historical run is merge evidence for the repaired final head.
+That qualification was also invalidated before merge when fresh Qodo review identified R004-09: non-object manifests could still receive a non-`None` tournament-manifest digest. No historical run is merge evidence for the repaired final head.
 
 ## 5. Historical independent review and final-review repair
 
-CodeRabbit reviewed the test-complete predecessor delta through review Run:
-
-```text
-REVIEW_RUN=5effe806-c304-44a6-a910-95a604c56933
-REVIEWED_DELTA=f21d500dd172b1cbe1c9d23a86b9880e4104e64a..7a04d40030a2aa28b4c2f0d5db6e4d387388c756
-RESULT=NO_ACTIONABLE_COMMENTS
-MERGE_RISK=MINIMAL
-```
-
-The immediately preceding implementation repair head `f21d500dd172b1cbe1c9d23a86b9880e4104e64a` had also received independent review Run `a3febb8c-5520-43a1-a34e-664152eee42c` with no actionable comments. The only residual Moderate risk reported there was missing dedicated regression coverage for malformed candidate result sets; `7a04d400...` added that coverage and the follow-up review reduced merge risk to Minimal.
-
-A later final review of predecessor `6c1a359f969222dd7868248d1ba12fc114f413d9` identified:
+Earlier independent reviews successively drove the implementation to stricter fail-closed behavior. The relevant final predecessor findings are:
 
 - **R004-08 / MATERIAL:** heterogeneous object keys could raise before fail-closed evaluation completed;
-- **G004-01 / GOVERNANCE:** T004-10 still listed closeout creation as remaining although `closeout.md` already existed.
+- **G004-01 / GOVERNANCE:** T004-10 still listed closeout creation as remaining although `closeout.md` already existed;
+- **R004-09 / MATERIAL:** the R004-08 report-shell guard still hashed wholly non-object manifests, producing a misleading manifest digest for invalid input.
 
-Both are repaired in the current candidate content. The current final repair head therefore requires a new independent review; predecessor reviews remain historical context only.
+R004-08/G004-01 were repaired and requalified on `bf57ccd...`; fresh Qodo review of that exact predecessor discovered R004-09. R004-09 is now repaired by requiring a dictionary with all-string top-level keys before `_base_report()` computes `tournament_manifest_sha256`, with direct string/list/`None` regressions through `evaluate_tournament()`.
+
+The resulting current head therefore requires fresh exact-head qualification and independent review. All predecessor reviews remain historical context only.
 
 ## 6. Acceptance status before final repair qualification
 
@@ -128,7 +130,8 @@ Both are repaired in the current candidate content. The current final repair hea
 | Comparison-vector order binding | implemented |
 | Recursive execution/payload-key hardening | implemented |
 | Malformed result-set fail-closed coverage | implemented |
-| Mixed-type object-key fail-closed coverage | implemented / final exact-head proof pending |
+| Mixed-type object-key fail-closed coverage | implemented |
+| Non-object manifest identity suppression | implemented / final exact-head proof pending |
 | Final focused fixture tests | PENDING fresh exact-head run |
 | Final inherited hard gates | PENDING fresh exact-head run |
 | Final full offline suite | PENDING fresh exact-head run |
