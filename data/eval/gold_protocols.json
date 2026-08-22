@@ -17,7 +17,7 @@
       "MEDICATION_SAFETY"
     ],
     "permitted_scoring_stages": [
-      "FINAL_PRE_RELEASE_SAFETY_AUDIT",
+      "PRE_RELEASE_SAFETY_AUDIT",
       "POST_QUANTIZATION_REGRESSION_AUDIT"
     ],
     "power_analysis_required": true,
@@ -54,7 +54,6 @@
       "SAUDI_GULF_COLLOQUIAL_PATIENT"
     ],
     "permitted_scoring_stages": [
-      "FINAL_ARABIC_PRE_RELEASE_SAFETY_AUDIT",
       "PRE_RELEASE_SAFETY_AUDIT"
     ],
     "power_analysis_required": true,
