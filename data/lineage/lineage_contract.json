@@ -80,8 +80,18 @@
       "required": true
     },
     {
+      "description": "Every referenced parent must resolve and its exact-use restrictions must propagate before a child can be eligible.",
+      "invariant_id": "PARENT_RESTRICTIONS_PROPAGATE",
+      "required": true
+    },
+    {
       "description": "Private Gold cannot enter prohibited optimization or redistribution uses.",
       "invariant_id": "PRIVATE_GOLD_QUARANTINED",
+      "required": true
+    },
+    {
+      "description": "Canonical Spec 001 Purpose must be compatible with the requested declared use before eligibility.",
+      "invariant_id": "PURPOSE_USE_COMPATIBILITY_ENFORCED",
       "required": true
     },
     {
@@ -131,6 +141,29 @@
     "TEACHER_OR_SYNTHETIC_GENERATION",
     "TRAINING_OR_ADAPTATION"
   ],
+  "purpose_allowed_declared_uses": {
+    "CALIBRATION": [
+      "DEVELOPMENT_EVALUATION"
+    ],
+    "CHECKPOINT_SELECTION": [
+      "DEVELOPMENT_EVALUATION"
+    ],
+    "DEV": [
+      "DEVELOPMENT_EVALUATION"
+    ],
+    "PRIVATE_GOLD": [
+      "PRIVATE_RELEASE_EVALUATION"
+    ],
+    "PUBLIC_EXTERNAL_EVAL": [
+      "DEVELOPMENT_EVALUATION",
+      "PRIVATE_RELEASE_EVALUATION"
+    ],
+    "TRAIN": [
+      "MODIFICATION_OR_DERIVATION",
+      "TEACHER_OR_SYNTHETIC_GENERATION",
+      "TRAINING_OR_ADAPTATION"
+    ]
+  },
   "quarantine_states": [
     "NOT_APPLICABLE",
     "NOT_QUARANTINED",
