@@ -41,6 +41,19 @@ PROHIBITED_GOLD_STAGE_SUBSTRINGS = {
     "SELECTION", "ADAPTER_GATE", "BACKBONE_GATE", "CHECKPOINT_GATE",
 }
 
+VALID_GOLD_SCORING_STAGES = {
+    "PRE_RELEASE_SAFETY_AUDIT",
+    "POST_QUANTIZATION_REGRESSION_AUDIT",
+    "MULTIMODAL_PRE_RELEASE_SAFETY_AUDIT",
+}
+
+EXECUTABLE_INTENDED_USES = {
+    IntendedUse.DEVELOPMENT.value,
+    IntendedUse.POSSIBLE_RELEASE_GATE.value,
+}
+
+UNBOUND_IDENTITY_SENTINELS = {"", "NONE", "UNBOUND", "UNRESOLVED"}
+
 GOLD_FAMILY_IDS = {e.value for e in GoldFamilyId}
 
 VALID_QUARANTINE_SOURCES = {
@@ -110,6 +123,12 @@ def _required_string(entry: dict[str, Any], field: str, prefix: str, errors: lis
         errors.append(f"{prefix}: '{field}' must be a non-empty string")
         return None
     return value
+
+
+def _normalized_string(value: Any) -> str | None:
+    if not isinstance(value, str):
+        return None
+    return value.strip()
 
 
 def check_no_payload_markers(obj: Any, path: str = "") -> list[str]:
@@ -227,14 +246,27 @@ def validate_benchmark(entry: Any, index: int = 0) -> list[str]:
 
     if v_stat == VerificationStatus.VERIFIED.value:
         for field in ("primary_source", "source_uri", "source_identifier", "license_source_uri"):
-            value = entry.get(field)
-            if not isinstance(value, str) or not value.strip() or value == "UNRESOLVED":
+            value = _normalized_string(entry.get(field))
+            if not value or value.upper() == "UNRESOLVED":
                 label = "primary_source reference" if field == "primary_source" else field
                 errors.append(f"{prefix}: VERIFIED benchmark must have a resolved {label}")
         if not _is_valid_calendar_date(v_date):
             errors.append(f"{prefix}: VERIFIED benchmark must have a valid verification_date matching a real YYYY-MM-DD calendar date")
         if not lic_stat or lic_stat == LicenseStatus.UNRESOLVED.value:
             errors.append(f"{prefix}: VERIFIED benchmark must have a resolved license_status (cannot be 'UNRESOLVED')")
+
+    if i_use in EXECUTABLE_INTENDED_USES:
+        artifact_version = _normalized_string(entry.get("artifact_version"))
+        source_revision = _normalized_string(entry.get("source_revision"))
+        if artifact_version is None or artifact_version.upper() in UNBOUND_IDENTITY_SENTINELS:
+            errors.append(
+                f"{prefix}: Executable intended_use '{i_use}' requires a concrete artifact_version; "
+                "UNBOUND/UNRESOLVED artifacts are REFERENCE_ONLY until exact executable bytes are registered."
+            )
+        if source_revision is None or source_revision.upper() in UNBOUND_IDENTITY_SENTINELS:
+            errors.append(
+                f"{prefix}: Executable intended_use '{i_use}' requires a concrete immutable source_revision."
+            )
 
     if lic_stat == LicenseStatus.COMPONENT_SPECIFIC.value:
         if i_use not in {IntendedUse.REFERENCE_ONLY.value, IntendedUse.PROHIBITED.value}:
@@ -243,9 +275,7 @@ def validate_benchmark(entry: Any, index: int = 0) -> list[str]:
                 f"Must be '{IntendedUse.REFERENCE_ONLY.value}' or '{IntendedUse.PROHIBITED.value}'. Component benchmarks must be registered individually before execution."
             )
 
-    if v_stat == VerificationStatus.UNRESOLVED.value and i_use in {
-        IntendedUse.DEVELOPMENT.value, IntendedUse.POSSIBLE_RELEASE_GATE.value,
-    }:
+    if v_stat == VerificationStatus.UNRESOLVED.value and i_use in EXECUTABLE_INTENDED_USES:
         errors.append(
             f"{prefix}: UNRESOLVED benchmark cannot have executable intended_use '{i_use}'. "
             f"Must be '{IntendedUse.REFERENCE_ONLY.value}' or '{IntendedUse.PROHIBITED.value}'."
@@ -439,12 +469,17 @@ def validate_gold_protocol(entry: Any, index: int = 0) -> list[str]:
     else:
         errors.extend(check_list_unique(scoring_stages, "permitted_scoring_stages", prefix))
         for stage in scoring_stages:
-            if isinstance(stage, str):
-                for prohibited_sub in PROHIBITED_GOLD_STAGE_SUBSTRINGS:
-                    if prohibited_sub in stage.upper():
-                        errors.append(
-                            f"{prefix}: Contradiction in permitted_scoring_stages: '{stage}' contains prohibited keyword '{prohibited_sub}'. Private Gold cannot perform candidate selection."
-                        )
+            if not isinstance(stage, str):
+                continue
+            for prohibited_sub in PROHIBITED_GOLD_STAGE_SUBSTRINGS:
+                if prohibited_sub in stage.upper():
+                    errors.append(
+                        f"{prefix}: Contradiction in permitted_scoring_stages: '{stage}' contains prohibited keyword '{prohibited_sub}'. Private Gold cannot perform candidate selection."
+                    )
+            if stage not in VALID_GOLD_SCORING_STAGES:
+                errors.append(
+                    f"{prefix}: Unknown permitted_scoring_stage '{stage}'. Allowed: {sorted(VALID_GOLD_SCORING_STAGES)}"
+                )
 
     for field in ("intended_strata", "allowed_access_roles"):
         value = entry.get(field)
@@ -616,7 +651,7 @@ def evaluate_hard_gates(
     metrics_catalog: Any,
     evaluation_results: Any,
 ) -> tuple[str, list[dict[str, Any]]]:
-    """Evaluate hard gates, never allowing an absent gate set to pass."""
+    """Evaluate hard gates, never allowing absent, malformed, or unevidenced gates to pass."""
     if not isinstance(metrics_catalog, list) or not metrics_catalog:
         return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [
             {
@@ -633,13 +668,16 @@ def evaluate_hard_gates(
             continue
         if metric.get("is_hard_gate") is True:
             metric_id = metric.get("metric_id")
-            if isinstance(metric_id, str) and metric_id:
-                hard_gate_metrics[metric_id] = metric
-            else:
+            if not isinstance(metric_id, str) or not metric_id:
                 malformed_catalog = True
+                continue
+            if validate_metric(metric):
+                malformed_catalog = True
+                continue
+            hard_gate_metrics[metric_id] = metric
 
     if not hard_gate_metrics:
-        reason = "No hard-gate metrics are defined; PASS requires at least one required hard gate"
+        reason = "No valid hard-gate metrics are defined; PASS requires at least one required hard gate"
         if malformed_catalog:
             reason += "; malformed metric records were also present"
         return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [
@@ -659,6 +697,7 @@ def evaluate_hard_gates(
     any_incomplete = malformed_catalog
     for metric_id, metric_meta in sorted(hard_gate_metrics.items()):
         result = evaluation_results.get(metric_id)
+        evidence_artifact_id: str | None = None
         if result is None:
             status = GateEvaluationState.NOT_EVALUATED.value
             score = None
@@ -673,6 +712,9 @@ def evaluate_hard_gates(
             raw_status = result.get("status", GateEvaluationState.NOT_EVALUATED.value)
             score = result.get("score")
             reason = result.get("reason", "")
+            evidence_raw = result.get("evidence_artifact_id")
+            if isinstance(evidence_raw, str):
+                evidence_artifact_id = evidence_raw.strip()
             if raw_status not in {e.value for e in GateEvaluationState}:
                 status = GateEvaluationState.FAIL.value
                 reason = f"Invalid evaluation status: {raw_status}"
@@ -681,7 +723,16 @@ def evaluate_hard_gates(
                 status = raw_status
                 if status == GateEvaluationState.FAIL.value:
                     any_fail = True
-                elif status != GateEvaluationState.PASS.value:
+                elif status == GateEvaluationState.PASS.value:
+                    score_is_numeric = isinstance(score, (int, float)) and not isinstance(score, bool)
+                    evidence_is_resolved = bool(evidence_artifact_id) and evidence_artifact_id.upper() not in UNBOUND_IDENTITY_SENTINELS
+                    if not score_is_numeric or not evidence_is_resolved:
+                        status = GateEvaluationState.INSUFFICIENT_EVIDENCE.value
+                        reason = (
+                            "PASS requires a numeric score and resolved evidence_artifact_id matching the metric's required-evidence contract"
+                        )
+                        any_incomplete = True
+                else:
                     any_incomplete = True
         gate_breakdown.append(
             {
@@ -690,6 +741,7 @@ def evaluate_hard_gates(
                 "category": metric_meta.get("category", "UNSPECIFIED"),
                 "status": status,
                 "score": score,
+                "evidence_artifact_id": evidence_artifact_id,
                 "reason": reason,
             }
         )
