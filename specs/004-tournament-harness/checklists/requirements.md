@@ -1,12 +1,13 @@
 # Spec 004 — Requirements Checklist
 
-**Status:** READY_FOR_ANALYZE
+**Status:** `CLOSED_CANONICAL` — effective only after the dedicated closure-only PR containing this record is merged and resulting canonical `main` is verified
 
 ## Authority and scope
 
-- [x] Spec 003 is canonically closed before Spec 004 starts.
-- [x] Spec 004 is explicitly `AUTHORIZED_TO_START` on canonical `main`.
-- [x] Spec 005 remains blocked.
+- [x] Spec 003 was canonically closed before Spec 004 started.
+- [x] Spec 004 had explicit `AUTHORIZED_TO_START` authority before implementation began.
+- [x] Spec 004 implementation is canonically merged and qualified; closure becomes effective only after the dedicated closure-only PR is reviewed, merged, and canonical `main` is verified.
+- [x] Spec 005 remains `BLOCKED` and is not authorized to start by Spec 004 closure.
 - [x] Model execution authority remains NONE.
 - [x] Model-weight access authority remains NONE.
 - [x] Benchmark-payload execution authority remains NONE.
@@ -68,35 +69,65 @@
 - [x] Report SHA-256 is recomputed.
 - [x] Candidate report ordering is normalized.
 - [x] Runtime/audit metadata is excluded from scientific identity.
-- [x] Missing candidate results are explicit non-qualifying records.
+- [x] Missing candidate results are explicit incomplete records that prevent ranking.
 - [x] Duplicate candidate result envelopes fail closed.
 - [x] Zero qualified candidates produce `NO_SELECTION`.
 - [x] Exactly one best candidate is required for `SELECTED`.
+- [x] Report hash binds ordered lexicographic comparison vectors.
+- [x] Mixed-type object keys fail closed without heterogeneous-sort exceptions.
+- [x] Invalid non-object manifests retain `tournament_manifest_sha256=None`.
+- [x] Arbitrarily large integer scores preserve exact ranking/report identity without float or decimal-string overflow.
 
 ## Minimal mechanism
 
-- [x] One source module is planned.
-- [x] One focused test module is planned.
-- [x] One human-readable governance doc is planned.
-- [x] No service/database/plugin/queue/CLI/adapter framework is planned.
-- [x] No new third-party runtime dependency is needed.
+- [x] One source module implements the bounded harness.
+- [x] Focused fixture tests cover the contract and review-hardening boundaries.
+- [x] Human-readable governance documentation records the contract and closure evidence.
+- [x] No service/database/plugin/queue/CLI/adapter framework was introduced.
+- [x] No new third-party runtime dependency was introduced.
 - [x] Existing Spec 001/002/003 policy code is reused.
 
 ## Testability
 
-- [x] Positive fixture selection is testable without real model/data execution.
-- [x] Hard-gate failure path is testable.
-- [x] Lineage failure path is testable.
-- [x] Identity mismatch path is testable.
-- [x] Tie/no-selection path is testable.
-- [x] Missing/non-finite comparison evidence is testable.
-- [x] Input-order invariance is testable.
-- [x] Canonical inherited semantic hashes can be rechecked.
+- [x] Positive fixture selection is tested without real model/data execution.
+- [x] Hard-gate failure path is tested.
+- [x] Lineage failure path is tested.
+- [x] Identity mismatch path is tested.
+- [x] Tie/no-selection path is tested.
+- [x] Missing/non-finite comparison evidence is tested.
+- [x] Input-order invariance is tested.
+- [x] Canonical inherited semantic hashes are rechecked.
+- [x] Malformed result-set and invalid-manifest fail-closed behavior is tested.
+
+## Final implementation evidence
+
+- [x] Final reviewed implementation head is `cf6158ea4193aa7db895607c6fac5a3a1442f708`.
+- [x] [GitHub Actions Run 32603944702](https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702) completed successfully.
+- [x] [GitHub Actions Job 97106155513](https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702/job/97106155513) completed successfully.
+- [x] Focused Spec 004 tests: `48/48 PASS`.
+- [x] Inherited hard gates: `9/9 PASS`.
+- [x] Full offline suite: `276/276 PASS`.
+- [x] [Fresh exact-head Qodo review on PR #28](https://github.com/TheHalfMoon/commandMed/pull/28#issuecomment-5383054440) reported no material blocker.
+- [x] [Qodo review update marker](https://github.com/TheHalfMoon/commandMed/pull/28#issuecomment-5383058920) binds that review to exact `cf6158ea...`.
+- [x] Guarded implementation merge is `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d` with tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`.
+- [x] Temporary carrier PR #29 was closed without merge after canonical implementation evidence was captured.
+
+## Closure evidence
+
+- [x] Dedicated closure branch starts from exact canonical implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`.
+- [x] Closure changes are governance/documentation-only and preserve runtime/source/test/data/dependency/workflow semantics.
+- [x] First closure review findings C004-01 through C004-03 were reconciled before final closure qualification.
+- [ ] Exact final closure head must receive fresh independent review with no material lifecycle/governance/authorization/integrity blocker before merge.
+- [ ] Closure PR must be guarded-merged unchanged.
+- [ ] Resulting canonical `main` and lifecycle files must be verified before `CLOSED_CANONICAL` becomes effective.
+
+The unchecked closure items above are external gates. On the canonical merge that contains this checklist, they become satisfied only by the guarded merge itself plus resulting-main verification; this file does not self-attest its own merge SHA.
 
 ## Founder decisions
 
-- [x] No founder decision is required to implement this harness.
+- [x] No founder decision was required to implement or close this fixture-only harness.
 - [x] FD-001 remains deferred to lineage/release posture need.
-- [x] FD-002 remains deferred to final tournament qualification thresholds.
+- [x] FD-002 remains deferred to final real-tournament qualification thresholds.
 - [x] FD-006 remains deferred to tournament freeze if donor restrictions are desired.
 - [x] Spec 004 does not silently answer those decisions.
+- [x] Spec 005 still requires its separate founder license/device prerequisites and explicit start authorization.
