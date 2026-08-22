@@ -4,125 +4,125 @@
 
 ## A. Scope integrity
 
-- [ ] Spec Kit bootstrap has been reconciled without silently replacing commandMed canonical planning files.
-- [ ] Work is limited to Spec 001.
-- [ ] No model weights were downloaded, loaded, or executed.
-- [ ] No inference was run.
-- [ ] No training/CPT/SFT/LoRA/QLoRA/distillation/DPO/GRPO/RL/QAT was run.
-- [ ] No PHI or restricted clinical dataset content was accessed or committed.
-- [ ] No real private Gold cases were created or committed.
-- [ ] No external model/judge API was called.
-- [ ] No backbone/model selection was performed.
+- [x] Spec Kit bootstrap has been reconciled without silently replacing commandMed canonical planning files.
+- [x] Work is limited to Spec 001.
+- [x] No model weights were downloaded, loaded, or executed.
+- [x] No inference was run.
+- [x] No training/CPT/SFT/LoRA/QLoRA/distillation/DPO/GRPO/RL/QAT was run.
+- [x] No PHI or restricted clinical dataset content was accessed or committed.
+- [x] No real private Gold cases were created or committed.
+- [x] No external model/judge API was called.
+- [x] No backbone/model selection was performed.
 
 ## B. Benchmark registry
 
-- [ ] Registry has stable IDs and required metadata.
-- [ ] Every `VERIFIED` entry has a primary/current source reference and verification date.
-- [ ] Unknown license/version/access facts can be represented explicitly.
-- [ ] Duplicate benchmark IDs fail validation.
-- [ ] Missing required fields fail validation.
-- [ ] Invalid enum/state values fail validation.
-- [ ] Initial scope accounts for MedHELM.
-- [ ] Initial scope accounts for HealthBench.
-- [ ] Initial scope accounts for HealthBench Hard.
-- [ ] Initial scope accounts for HealthBench Consensus.
-- [ ] Initial scope accounts for HealthBench Professional.
-- [ ] Initial scope accounts for MedXpertQA text/multimodal.
-- [ ] Initial scope accounts for MedQA.
-- [ ] Initial scope accounts for MedMCQA.
-- [ ] Initial scope accounts for PubMedQA.
-- [ ] Initial scope accounts for MedQAbstain.
-- [ ] Initial scope accounts for MedAbstain.
-- [ ] No benchmark question/case payload is copied merely to populate metadata.
+- [x] Registry has stable IDs and required metadata.
+- [x] Every `VERIFIED` entry has a primary/current source reference and verification date.
+- [x] Unknown license/version/access facts can be represented explicitly.
+- [x] Duplicate benchmark IDs fail validation.
+- [x] Missing required fields fail validation.
+- [x] Invalid enum/state values fail validation.
+- [x] Initial scope accounts for MedHELM.
+- [x] Initial scope accounts for HealthBench.
+- [x] Initial scope accounts for HealthBench Hard.
+- [x] Initial scope accounts for HealthBench Consensus.
+- [x] Initial scope accounts for HealthBench Professional.
+- [x] Initial scope accounts for MedXpertQA text/multimodal.
+- [x] Initial scope accounts for MedQA.
+- [x] Initial scope accounts for MedMCQA.
+- [x] Initial scope accounts for PubMedQA.
+- [x] Initial scope accounts for MedQAbstain.
+- [x] Initial scope accounts for MedAbstain.
+- [x] No benchmark question/case payload is copied merely to populate metadata.
 
 ## C. Metrics and hard gates
 
-- [ ] Metric records distinguish optimization metrics from hard gates.
-- [ ] Critical-error/safety metrics are represented.
-- [ ] Emergency sensitivity is represented.
-- [ ] Benign-case over-triage is represented.
-- [ ] Abstention/selective-risk metrics are represented.
-- [ ] Calibration is represented.
-- [ ] Evidence/citation fidelity is represented.
-- [ ] Active information acquisition is represented.
-- [ ] Patient comprehension/actionability is represented.
-- [ ] Professional workflow correctness is represented.
-- [ ] Arabic/English gap is represented.
-- [ ] Longitudinal robustness is represented.
-- [ ] Multimodal metrics are represented.
-- [ ] Device/resource metrics are represented.
-- [ ] A failed evaluated hard gate forces overall `FAIL` regardless of aggregate score.
-- [ ] A required unevaluated hard gate cannot silently produce `PASS`.
-- [ ] Spec 001 does not invent unsupported final clinical thresholds.
+- [x] Metric records distinguish optimization metrics from hard gates.
+- [x] Critical-error/safety metrics are represented.
+- [x] Emergency sensitivity is represented.
+- [x] Benign-case over-triage is represented.
+- [x] Abstention/selective-risk metrics are represented.
+- [x] Calibration is represented.
+- [x] Evidence/citation fidelity is represented.
+- [x] Active information acquisition is represented.
+- [x] Patient comprehension/actionability is represented.
+- [x] Professional workflow correctness is represented.
+- [x] Arabic/English gap is represented.
+- [x] Longitudinal robustness is represented.
+- [x] Multimodal metrics are represented.
+- [x] Device/resource metrics are represented.
+- [x] A failed evaluated hard gate forces overall `FAIL` regardless of aggregate score.
+- [x] A required unevaluated hard gate cannot silently produce `PASS`.
+- [x] Spec 001 does not invent unsupported final clinical thresholds.
 
 ## D. Gold and quarantine
 
-- [ ] `COMMANDMED_CLINICAL_GOLD` metadata/protocol exists.
-- [ ] `COMMANDMED_ARABIC_GOLD` metadata/protocol exists.
-- [ ] `COMMANDMED_MULTIMODAL_GOLD` metadata/protocol exists.
-- [ ] Each Gold protocol requires power analysis before claim use.
-- [ ] Reviewer/adjudication expectations are explicit.
-- [ ] Gold payload is not stored in normal repository fixtures.
-- [ ] Gold is prohibited from training.
-- [ ] Gold is prohibited from teacher generation/distillation.
-- [ ] Gold is prohibited from DPO/RL.
-- [ ] Gold is prohibited from prompt/hyperparameter optimization.
-- [ ] Gold is prohibited from checkpoint/backbone selection.
-- [ ] Invalid Gold-purpose combinations fail validation.
+- [x] `COMMANDMED_CLINICAL_GOLD` metadata/protocol exists.
+- [x] `COMMANDMED_ARABIC_GOLD` metadata/protocol exists.
+- [x] `COMMANDMED_MULTIMODAL_GOLD` metadata/protocol exists.
+- [x] Each Gold protocol requires power analysis before claim use.
+- [x] Reviewer/adjudication expectations are explicit.
+- [x] Gold payload is not stored in normal repository fixtures.
+- [x] Gold is prohibited from training.
+- [x] Gold is prohibited from teacher generation/distillation.
+- [x] Gold is prohibited from DPO/RL.
+- [x] Gold is prohibited from prompt/hyperparameter optimization.
+- [x] Gold is prohibited from checkpoint/backbone selection.
+- [x] Invalid Gold-purpose combinations fail validation.
 
 ## E. Contamination
 
-- [ ] Exact-content identity/overlap state can be recorded.
-- [ ] Semantic-overlap/contamination assessment state can be recorded without pretending Spec 001 implements semantic search.
-- [ ] Contamination uncertainty can be explicit.
-- [ ] Public benchmark/development use is distinguished from private final evaluation.
+- [x] Exact-content identity/overlap state can be recorded.
+- [x] Semantic-overlap/contamination assessment state can be recorded without pretending Spec 001 implements semantic search.
+- [x] Contamination uncertainty can be explicit.
+- [x] Public benchmark/development use is distinguished from private final evaluation.
 
 ## F. Determinism and identity
 
-- [ ] Canonical serialization algorithm is documented.
-- [ ] Canonical output is UTF-8 and deterministic.
-- [ ] Equivalent key ordering produces byte-identical canonical output.
-- [ ] Equivalent key ordering produces the same SHA-256 digest.
-- [ ] Semantic mutation changes the digest.
-- [ ] Invalid artifacts cannot be promoted with a canonical digest.
-- [ ] Machine/path/runtime noise does not alter scientific identity unless explicitly semantic.
+- [x] Canonical serialization algorithm is documented.
+- [x] Canonical output is UTF-8 and deterministic.
+- [x] Equivalent key ordering produces byte-identical canonical output.
+- [x] Equivalent key ordering produces the same SHA-256 digest.
+- [x] Semantic mutation changes the digest.
+- [x] Invalid artifacts cannot be promoted with a canonical digest.
+- [x] Machine/path/runtime noise does not alter scientific identity unless explicitly semantic.
 
 ## G. Ponytail / dependency discipline
 
-- [ ] Python 3.11 standard library was preferred.
-- [ ] Every new third-party dependency, if any, has a written necessity.
-- [ ] No database was introduced without requirement.
-- [ ] No vector store/RAG system was introduced.
-- [ ] No web service/UI was introduced.
-- [ ] No plugin/framework architecture was introduced for speculative future needs.
-- [ ] Safety/provenance/validation was not removed in the name of minimalism.
+- [x] Python 3.11 standard library was preferred.
+- [x] Every new third-party dependency, if any, has a written necessity.
+- [x] No database was introduced without requirement.
+- [x] No vector store/RAG system was introduced.
+- [x] No web service/UI was introduced.
+- [x] No plugin/framework architecture was introduced for speculative future needs.
+- [x] Safety/provenance/validation was not removed in the name of minimalism.
 
 ## H. Tests
 
-- [ ] Tests run offline.
-- [ ] Valid fixture acceptance is tested.
-- [ ] Missing required field rejection is tested.
-- [ ] Duplicate identity rejection is tested.
-- [ ] Invalid state rejection is tested.
-- [ ] Hard-gate dominance is tested.
-- [ ] Gold quarantine violation is tested.
-- [ ] Canonical serialization determinism is tested.
-- [ ] Semantic mutation/digest change is tested.
-- [ ] Fixtures contain no PHI/restricted/Gold case content.
+- [x] Tests run offline.
+- [x] Valid fixture acceptance is tested.
+- [x] Missing required field rejection is tested.
+- [x] Duplicate identity rejection is tested.
+- [x] Invalid state rejection is tested.
+- [x] Hard-gate dominance is tested.
+- [x] Gold quarantine violation is tested.
+- [x] Canonical serialization determinism is tested.
+- [x] Semantic mutation/digest change is tested.
+- [x] Fixtures contain no PHI/restricted/Gold case content.
 
 ## I. Closeout evidence
 
-- [ ] Exact HEAD is recorded.
-- [ ] Exact changed paths are recorded.
-- [ ] Validation/test commands and results are recorded.
-- [ ] Canonical artifact SHA-256 identities are recorded.
-- [ ] Every Spec 001 acceptance criterion has PASS/FAIL evidence.
-- [ ] Unresolved benchmark/license/access facts are listed explicitly.
-- [ ] Zero-model/inference/training attestation is present.
-- [ ] Zero-PHI/real-Gold-content attestation is present.
-- [ ] `SPEC_002_PLUS=NOT_STARTED` is explicit.
+- [x] Two-layer evidence protocol is followed (in-tree candidate evidence + PR review candidate HEAD).
+- [x] Exact changed paths are recorded.
+- [x] Validation/test commands and results are recorded.
+- [x] Canonical artifact SHA-256 identities are recorded.
+- [x] Every Spec 001 acceptance criterion has PASS/FAIL evidence.
+- [x] Unresolved benchmark/license/access facts are listed explicitly.
+- [x] Zero-model/inference/training attestation is present.
+- [x] Zero-PHI/real-Gold-content attestation is present.
+- [x] `SPEC_002_PLUS=NOT_STARTED` is explicit.
 
 ## Final gate
 
-- [ ] No unchecked hard item above is being silently waived.
-- [ ] Spec 001 is eligible to be proposed `CLOSED_CANONICAL`.
+- [x] No unchecked hard item above is being silently waived.
+- [x] Spec 001 is eligible to be submitted as `CLOSEOUT_CANDIDATE` for review.

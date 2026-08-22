@@ -18,7 +18,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | ID | Name | State | Depends on | Notes |
 |---|---|---|---|---|
 | 000 | Program Charter | `CLOSED_CANONICAL` | — | Planning package canonical at `b0398f2fe514bd3ccd339908d739aef61055f929`; closure evidence in `specs/000-program-charter/closeout.md`. State becomes effective when this closure-only PR is merged and canonical main is verified. |
-| 001 | Evaluation Charter | `T001_AUTHORIZED_TO_START` after 000 closure is effective; T002–T010 blocked until T001 passes | 000 | First executable spec. T001 performs immutable Spec Kit `agy` bootstrap reconciliation + planning analysis. No models/inference/training. |
+| 001 | Evaluation Charter | `ACTIVE` (Implementation candidate under review) | 000 | Implementation complete on feature branch; pending canonical review and post-merge closure PR. T001-T010 executed offline with zero model/training runs. Candidate evidence in `specs/001-eval-charter/closeout.md`. |
 | 002 | Safety Gates | `BLOCKED` | 001 | Freeze hard safety and escalation/tool boundaries. |
 | 003 | Data, License & Provenance | `BLOCKED` | 001 | Machine-verifiable lineage/data-use contract. |
 | 004 | Tournament Harness | `BLOCKED` | 001, 002, 003 | Fixture-only harness before model execution. |

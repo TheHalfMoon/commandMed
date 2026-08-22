@@ -1,6 +1,6 @@
 # Spec 001 Tasks — Evaluation Charter
 
-**State:** READY_FOR_ANALYZE
+**State:** ACTIVE (IMPLEMENTATION_COMPLETE_CANDIDATE)
 
 Execute in dependency order. Do not start a later task merely because its files are obvious.
 
@@ -183,11 +183,11 @@ No clinical numeric thresholds are invented in this task.
 
 **Depends on:** T008, T009
 
-**Goal:** Prove the bounded spec, not merely code completion.
+**Goal:** Prove the bounded spec candidate, not merely code completion.
 
 **Report must include:**
 
-- exact HEAD;
+- two-layer evidence protocol (in-tree candidate evidence + PR review candidate HEAD);
 - exact changed paths;
 - validation/test commands and output summary;
 - canonical artifact SHA-256 identities;
@@ -196,4 +196,4 @@ No clinical numeric thresholds are invented in this task.
 - explicit zero-model/zero-training/zero-PHI/zero-Gold-content attestations;
 - `SPEC_002_PLUS=NOT_STARTED`.
 
-**Exit:** Spec 001 may be proposed `CLOSED_CANONICAL` only if all hard acceptance criteria pass. Do not start Spec 002.
+**Exit:** Spec 001 may be submitted as `CLOSEOUT_CANDIDATE` for independent review. State becomes `CLOSED_CANONICAL` only via dedicated post-merge closure PR. Do not start Spec 002.

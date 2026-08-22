@@ -1,0 +1,111 @@
+[
+  {
+    "adjudication_policy": "Minimum two board-certified physicians in relevant specialties with blinded adjudication; tied cases escalated to senior consensus referee.",
+    "allowed_access_roles": [
+      "INDEPENDENT_EVALUATION_TRUSTEE",
+      "PRINCIPAL_INVESTIGATOR"
+    ],
+    "audit_requirements": "All evaluation events log immutable timestamp, git commit SHA, model weight hash, evaluator identity, and per-item prediction hash to append-only audit register.",
+    "content_location_policy": "OFFLINE_AIRGAPPED_SECURE_VAULT (Zero case payloads permitted in open repository)",
+    "display_name": "commandMed Clinical Gold Benchmark Protocol",
+    "family_id": "COMMANDMED_CLINICAL_GOLD",
+    "intended_strata": [
+      "CLINICAL_COMMUNICATION",
+      "DIFFERENTIAL_DIAGNOSIS",
+      "EMERGENCY_RECOGNITION",
+      "ETHICAL_ABSTENTION",
+      "MEDICATION_SAFETY"
+    ],
+    "permitted_scoring_stages": [
+      "PRE_RELEASE_SAFETY_AUDIT",
+      "POST_QUANTIZATION_REGRESSION_AUDIT"
+    ],
+    "power_analysis_required": true,
+    "prohibited_optimization_uses": [
+      "BACKBONE_SELECTION",
+      "CHECKPOINT_SELECTION",
+      "CPT",
+      "DISTILLATION",
+      "DPO_RL",
+      "HYPERPARAMETER_SELECTION",
+      "PROMPT_TUNING",
+      "SFT",
+      "TEACHER_GEN",
+      "TRAIN"
+    ],
+    "purpose": "PRIVATE_GOLD",
+    "release_claim_scope": "Required for any claim of clinical reasoning capability, diagnostic triage safety, or medical decision support utility."
+  },
+  {
+    "adjudication_policy": "Native Arabic-speaking clinical professionals with verified regional practice experience; dual independent evaluation of dialectal comprehension and clinical accuracy.",
+    "allowed_access_roles": [
+      "ARABIC_CLINICAL_LEAD",
+      "INDEPENDENT_EVALUATION_TRUSTEE"
+    ],
+    "audit_requirements": "Cryptographic proof of non-exposure in training manifests; per-scoring session audit log with dialect and task stratum breakdown.",
+    "content_location_policy": "OFFLINE_AIRGAPPED_SECURE_VAULT (Zero case payloads permitted in open repository)",
+    "display_name": "commandMed Arabic Medical Gold Benchmark Protocol",
+    "family_id": "COMMANDMED_ARABIC_GOLD",
+    "intended_strata": [
+      "ARABIC_EMERGENCY_TRIAGE",
+      "ARABIC_ENGLISH_CODE_SWITCHING",
+      "LOCAL_MEDICATION_NOMENCLATURE",
+      "MODERN_STANDARD_ARABIC_CLINICAL",
+      "SAUDI_GULF_COLLOQUIAL_PATIENT"
+    ],
+    "permitted_scoring_stages": [
+      "PRE_RELEASE_SAFETY_AUDIT"
+    ],
+    "power_analysis_required": true,
+    "prohibited_optimization_uses": [
+      "BACKBONE_SELECTION",
+      "CHECKPOINT_SELECTION",
+      "CPT",
+      "DISTILLATION",
+      "DPO_RL",
+      "HYPERPARAMETER_SELECTION",
+      "PROMPT_TUNING",
+      "SFT",
+      "TEACHER_GEN",
+      "TRAIN"
+    ],
+    "purpose": "PRIVATE_GOLD",
+    "release_claim_scope": "Required for any claim of Arabic language clinical competence, patient comprehension, or multilingual safety parity."
+  },
+  {
+    "adjudication_policy": "Specialist clinician + laboratory medicine director double-blind evaluation against certified ground-truth report findings and clinical image annotations.",
+    "allowed_access_roles": [
+      "INDEPENDENT_EVALUATION_TRUSTEE",
+      "MULTIMODAL_EVALUATION_LEAD"
+    ],
+    "audit_requirements": "Image/document SHA-256 hash manifest verification; zero-overlap certificate against all vision-language training datasets.",
+    "content_location_policy": "OFFLINE_AIRGAPPED_SECURE_VAULT (Zero case payloads permitted in open repository)",
+    "display_name": "commandMed Multimodal Medical Gold Benchmark Protocol",
+    "family_id": "COMMANDMED_MULTIMODAL_GOLD",
+    "intended_strata": [
+      "CLINICAL_PHOTOGRAPH_TRIAGE",
+      "DISCHARGE_SUMMARY_SYNTHESIS",
+      "LAB_REPORT_DOCUMENT_EXTRACTION",
+      "MULTIMODAL_ADVERSARIAL_ROBUSTNESS"
+    ],
+    "permitted_scoring_stages": [
+      "MULTIMODAL_PRE_RELEASE_SAFETY_AUDIT",
+      "PRE_RELEASE_SAFETY_AUDIT"
+    ],
+    "power_analysis_required": true,
+    "prohibited_optimization_uses": [
+      "BACKBONE_SELECTION",
+      "CHECKPOINT_SELECTION",
+      "CPT",
+      "DISTILLATION",
+      "DPO_RL",
+      "HYPERPARAMETER_SELECTION",
+      "PROMPT_TUNING",
+      "SFT",
+      "TEACHER_GEN",
+      "TRAIN"
+    ],
+    "purpose": "PRIVATE_GOLD",
+    "release_claim_scope": "Required for any claim of multimodal perception, lab report interpretation, or document parsing clinical safety."
+  }
+]

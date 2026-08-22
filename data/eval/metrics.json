@@ -1,0 +1,352 @@
+[
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT",
+      "LAB_REPORT",
+      "PHOTO"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "category": "SAFETY",
+    "description": "Rate of missed emergent clinical presentations or false reassurance in red-flag scenarios.",
+    "direction": "LOWER_BETTER",
+    "is_hard_gate": true,
+    "metric_id": "emergency_miss_rate",
+    "name": "Emergency Presentation Miss Rate",
+    "required_evidence": "Clinical adjudication panel on emergency evaluation suite",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "ratio"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT",
+      "LAB_REPORT"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "category": "SAFETY",
+    "description": "Frequency of critical dosing, drug-drug interaction, pregnancy, or contraindication errors.",
+    "direction": "LOWER_BETTER",
+    "is_hard_gate": true,
+    "metric_id": "medication_critical_error_rate",
+    "name": "Medication and Prescription Critical Error Rate",
+    "required_evidence": "Deterministic drug-interaction lookup and clinical pharmacology review",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "ratio"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER"
+    ],
+    "category": "SAFETY",
+    "description": "Rate of unnecessary emergency department escalation on unambiguously benign, self-limiting presentations.",
+    "direction": "LOWER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "benign_case_over_triage_rate",
+    "name": "Benign Case Over-Triage Rate",
+    "required_evidence": "Adjudicated triage simulation protocol (governed by founder decision FD-004)",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "ratio"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT",
+      "LAB_REPORT",
+      "PHOTO"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "category": "UNCERTAINTY",
+    "description": "Expected loss on accepted predictions when the system has the option to abstain or request information.",
+    "direction": "LOWER_BETTER",
+    "is_hard_gate": true,
+    "metric_id": "selective_risk_at_target_coverage",
+    "name": "Selective Risk at Target Coverage",
+    "required_evidence": "Abstention curve evaluation on calibrated holdout suite",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "score"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT"
+    ],
+    "applicable_roles": [
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "category": "UNCERTAINTY",
+    "description": "Expected calibration error measuring concordance between predicted confidence and observed correctness.",
+    "direction": "LOWER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "expected_calibration_error",
+    "name": "Expected Calibration Error (ECE)",
+    "required_evidence": "Binned reliability diagrams across specialties and languages",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "ece_score"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "category": "EVIDENCE",
+    "description": "Proportion of generated factual clinical claims fully entailed by retrieved or provided source evidence.",
+    "direction": "HIGHER_BETTER",
+    "is_hard_gate": true,
+    "metric_id": "citation_entailment_fidelity",
+    "name": "Citation and Evidence Entailment Fidelity",
+    "required_evidence": "Deterministic verifier + clinician audit on citation-backed responses",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "percentage"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "category": "REASONING",
+    "description": "Information gain per diagnostic inquiry turn when presented with underspecified patient history.",
+    "direction": "HIGHER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "active_info_acquisition_efficiency",
+    "name": "Active Information Acquisition Efficiency",
+    "required_evidence": "Multi-turn clinical dialogue simulation and clinician rating",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "information_bits"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER"
+    ],
+    "category": "COMMUNICATION",
+    "description": "Human patient/caregiver rating of response clarity, absence of jargon, and actionable safety guidance.",
+    "direction": "HIGHER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "patient_comprehension_actionability",
+    "name": "Patient Comprehension and Actionability Score",
+    "required_evidence": "Human patient evaluation study (mandatory for patient-facing claims)",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "likert_score"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT",
+      "LAB_REPORT"
+    ],
+    "applicable_roles": [
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "category": "WORKFLOW",
+    "description": "Adherence to standard clinical documentation formats (SOAP, FHIR, structured problem lists).",
+    "direction": "HIGHER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "clinical_workflow_format_conformance",
+    "name": "Clinical Workflow & Format Conformance",
+    "required_evidence": "Deterministic schema validator + clinical documentation review",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "percentage"
+  },
+  {
+    "applicable_languages": [
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "category": "MULTILINGUAL",
+    "description": "Relative performance gap between Arabic and English across matched clinical reasoning and safety tasks.",
+    "direction": "LOWER_BETTER",
+    "is_hard_gate": true,
+    "metric_id": "arabic_clinical_parity_gap",
+    "name": "Arabic-English Clinical Capability Parity Gap",
+    "required_evidence": "Paired evaluation on COMMANDMED_ARABIC_GOLD",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "relative_gap"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "category": "ROBUSTNESS",
+    "description": "Consistency of clinical recommendations and memory retention across multi-session longitudinal dialogues.",
+    "direction": "HIGHER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "longitudinal_context_stability",
+    "name": "Longitudinal Context Stability",
+    "required_evidence": "Long-context simulated patient trajectory evaluations",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "stability_index"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "DOCUMENT",
+      "LAB_REPORT"
+    ],
+    "applicable_roles": [
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "category": "MULTIMODAL",
+    "description": "Exact match and range correctness of laboratory values, units, and reference ranges extracted from lab sheets.",
+    "direction": "HIGHER_BETTER",
+    "is_hard_gate": true,
+    "metric_id": "lab_report_field_extraction_accuracy",
+    "name": "Lab Report Structured Field Extraction Accuracy",
+    "required_evidence": "Deterministic field comparator against curated lab fixtures",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "f1_score"
+  },
+  {
+    "applicable_languages": [
+      "en"
+    ],
+    "applicable_modalities": [
+      "TEXT"
+    ],
+    "applicable_roles": [
+      "LEARNER_RESEARCHER",
+      "CLINICAL_PROFESSIONAL"
+    ],
+    "category": "KNOWLEDGE",
+    "description": "Standard board-style multiple-choice medical examination accuracy (MedQA USMLE 4-option).",
+    "direction": "HIGHER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "medqa_usmle_accuracy",
+    "name": "MedQA USMLE 4-Option Accuracy",
+    "required_evidence": "Standard deterministic MCQ test harness (development metric only)",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "percentage"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT",
+      "LAB_REPORT",
+      "PHOTO"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "category": "RESOURCE",
+    "description": "Installed application footprint in bytes including model weights and runtime dependencies.",
+    "direction": "LOWER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "installed_package_bytes",
+    "name": "Installed Package Size",
+    "required_evidence": "COMMANDMED_DEVICE_EVIDENCE measurement on target hardware",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "bytes"
+  },
+  {
+    "applicable_languages": [
+      "en",
+      "ar"
+    ],
+    "applicable_modalities": [
+      "TEXT",
+      "DOCUMENT",
+      "LAB_REPORT",
+      "PHOTO"
+    ],
+    "applicable_roles": [
+      "PATIENT_CAREGIVER",
+      "CLINICAL_PROFESSIONAL",
+      "LEARNER_RESEARCHER"
+    ],
+    "category": "RESOURCE",
+    "description": "Peak resident set size memory during active multimodal inference.",
+    "direction": "LOWER_BETTER",
+    "is_hard_gate": false,
+    "metric_id": "peak_inference_ram",
+    "name": "Peak Inference RAM",
+    "required_evidence": "Hardware profiling log on named target devices",
+    "threshold_state": "DEFINED_NOT_YET_THRESHOLD_FROZEN",
+    "unit": "megabytes"
+  }
+]
