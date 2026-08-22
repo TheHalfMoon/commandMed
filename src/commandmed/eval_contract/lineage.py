@@ -57,7 +57,6 @@ PURPOSE_ALLOWED_DECLARED_USES: dict[str, frozenset[str]] = {
     Purpose.PUBLIC_EXTERNAL_EVAL.value: frozenset({"DEVELOPMENT_EVALUATION", "PRIVATE_RELEASE_EVALUATION"}),
     Purpose.PRIVATE_GOLD.value: frozenset({"PRIVATE_RELEASE_EVALUATION"}),
 }
-PURPOSE_SENSITIVE_DECLARED_USES = frozenset().union(*PURPOSE_ALLOWED_DECLARED_USES.values())
 
 REQUIRED_INVARIANT_IDS = frozenset({
     "CONTRACT_MUST_VALIDATE_FIRST", "ADMISSION_IS_COMPUTED", "SOURCE_VERIFIED_NE_ARTIFACT_BOUND",
@@ -525,7 +524,7 @@ def _evaluate_base_admission(record: dict[str, Any], contract_sha: str, record_s
         reasons.add("PRIVATE_GOLD_PROHIBITED_USE")
     if record.get("quarantine_state") == "QUARANTINED" and declared_use != "REFERENCE":
         reasons.add("QUARANTINE_CONFLICT")
-    if purpose in PURPOSE_ALLOWED_DECLARED_USES and declared_use in PURPOSE_SENSITIVE_DECLARED_USES:
+    if purpose in PURPOSE_ALLOWED_DECLARED_USES and declared_use != "REFERENCE":
         if declared_use not in PURPOSE_ALLOWED_DECLARED_USES[purpose]:
             reasons.add("PURPOSE_USE_INCOMPATIBLE")
     if declared_use in CLEAN_CONTAMINATION_REQUIRED_USES and record.get("contamination_state") == "OVERLAP_OR_HIGH_RISK":
