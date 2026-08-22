@@ -1,16 +1,17 @@
 # Spec 001 — Evaluation Charter
 
-**State:** ACTIVE (CLOSEOUT_CANDIDATE)
-**State effectiveness:** becomes CLOSED_CANONICAL only via dedicated post-merge closure PR after canonical merge of this implementation
-**Closeout evidence candidate:** `specs/001-eval-charter/closeout.md`
+**State:** CLOSED_CANONICAL
+**State effectiveness:** effective only when the dedicated closure-only PR containing this state transition is merged into canonical `main` and that resulting main SHA is verified
+**Canonical implementation merge:** `531343f785a6430036cbb2770d0504676514b9a7`
+**Closeout evidence:** `specs/001-eval-charter/closeout.md`
 **Training authority:** NONE
 **Model execution authority:** NONE
 
 ## Authority boundary
 
-After Spec 000 is `CLOSED_CANONICAL`, only **T001 — Reconcile Spec Kit bootstrap** is authorized. T001 owns the safe `agy` initialization/reconciliation and planning-consistency analysis. T002–T010 do not become executable until T001 passes its acceptance criteria on the active branch.
+Spec 001 implementation is complete and carries no further execution authority after this closure becomes effective, except separately reviewed corrective maintenance.
 
-This avoids a circular prerequisite: Spec Kit reconciliation is the first bounded action inside Spec 001, not a prerequisite that must somehow occur outside Spec 001 authority.
+This closure authorizes Spec 002 alone to start under its bounded Safety Gates scope. Spec 003's planning dependency on Spec 001 is satisfied, but Spec 003 implementation remains unactivated pending a separate explicit decision. Spec 004+ remain blocked by declared dependencies. No model execution, benchmark execution, PHI access, or training authority is created by closing Spec 001.
 
 ## Problem
 
