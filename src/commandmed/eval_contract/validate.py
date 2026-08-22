@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from datetime import date
 from typing import Any
 
 from .model import (
@@ -23,42 +24,92 @@ from .model import (
     VerificationStatus,
 )
 
-# Date format regex YYYY-MM-DD
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
-# Disallowed payload keys that must never appear in metadata artifacts
 PROHIBITED_PAYLOAD_KEYS = {
-    "patient_name",
-    "mrn",
-    "raw_phi",
-    "case_payload",
-    "case_text",
-    "question_text",
-    "gold_label_answers",
-    "real_cases",
+    "patient_name", "mrn", "raw_phi", "case_payload", "case_text",
+    "question_text", "gold_label_answers", "real_cases",
 }
 
-# Required prohibited uses for any private Gold protocol
 MANDATORY_GOLD_PROHIBITIONS = {
-    "TRAIN",
-    "CPT",
-    "SFT",
-    "TEACHER_GEN",
-    "DISTILLATION",
-    "DPO_RL",
-    "PROMPT_TUNING",
-    "HYPERPARAMETER_SELECTION",
-    "CHECKPOINT_SELECTION",
+    "TRAIN", "CPT", "SFT", "TEACHER_GEN", "DISTILLATION", "DPO_RL",
+    "PROMPT_TUNING", "HYPERPARAMETER_SELECTION", "CHECKPOINT_SELECTION",
     "BACKBONE_SELECTION",
 }
 
-# Prohibited substrings in Gold permitted scoring stages (cannot choose among candidates)
 PROHIBITED_GOLD_STAGE_SUBSTRINGS = {
-    "SELECTION",
-    "ADAPTER_GATE",
-    "BACKBONE_GATE",
-    "CHECKPOINT_GATE",
+    "SELECTION", "ADAPTER_GATE", "BACKBONE_GATE", "CHECKPOINT_GATE",
 }
+
+GOLD_FAMILY_IDS = {e.value for e in GoldFamilyId}
+
+VALID_QUARANTINE_SOURCES = {
+    "CALIBRATION_HOLD_OUT_SPLIT",
+    "MODEL_SELECTION_DEV_SET",
+    "PUBLIC_BENCHMARK_DEV_SPLITS",
+    "HELD_OUT_SYNTHETIC_PILOT_CASES",
+    "VERIFIED_DEV_SPLIT",
+    "COMMANDMED_ARABIC_GOLD",
+    "COMMANDMED_CLINICAL_GOLD",
+    "COMMANDMED_MULTIMODAL_GOLD",
+    "DEVELOPMENT_SPLITS",
+    "PUBLIC_SCRAPED_DATA",
+    "TRAINING_CORPORA",
+    "PUBLIC_BENCHMARK_CANONICAL_TEST_SPLITS",
+    "VERIFIED_PERMISSIVE_PRETRAINING_CORPUS",
+    "VERIFIED_SFT_CURRICULUM_DATA",
+    "VERIFIED_SYNTHETIC_DERIVED_EXAMPLES",
+    "PUBLIC_EXTERNAL_EVAL",
+}
+
+EXPECTED_ALLOWED_SOURCES = {
+    Purpose.TRAIN.value: {
+        "VERIFIED_PERMISSIVE_PRETRAINING_CORPUS",
+        "VERIFIED_SFT_CURRICULUM_DATA",
+        "VERIFIED_SYNTHETIC_DERIVED_EXAMPLES",
+    },
+    Purpose.DEV.value: {"HELD_OUT_SYNTHETIC_PILOT_CASES", "VERIFIED_DEV_SPLIT"},
+    Purpose.CALIBRATION.value: {"CALIBRATION_HOLD_OUT_SPLIT"},
+    Purpose.CHECKPOINT_SELECTION.value: {"MODEL_SELECTION_DEV_SET", "PUBLIC_BENCHMARK_DEV_SPLITS"},
+    Purpose.PUBLIC_EXTERNAL_EVAL.value: {"PUBLIC_BENCHMARK_CANONICAL_TEST_SPLITS"},
+    Purpose.PRIVATE_GOLD.value: GOLD_FAMILY_IDS,
+}
+
+EXPECTED_PROHIBITED_SOURCES = {
+    Purpose.TRAIN.value: GOLD_FAMILY_IDS | {"PUBLIC_EXTERNAL_EVAL"},
+    Purpose.DEV.value: GOLD_FAMILY_IDS,
+    Purpose.CALIBRATION.value: GOLD_FAMILY_IDS,
+    Purpose.CHECKPOINT_SELECTION.value: GOLD_FAMILY_IDS,
+    Purpose.PUBLIC_EXTERNAL_EVAL.value: GOLD_FAMILY_IDS,
+    Purpose.PRIVATE_GOLD.value: {"DEVELOPMENT_SPLITS", "PUBLIC_SCRAPED_DATA", "TRAINING_CORPORA"},
+}
+
+EXPECTED_PURPOSE_FLAGS = {
+    Purpose.TRAIN.value: (True, False),
+    Purpose.DEV.value: (False, True),
+    Purpose.CALIBRATION.value: (False, True),
+    Purpose.CHECKPOINT_SELECTION.value: (False, True),
+    Purpose.PUBLIC_EXTERNAL_EVAL.value: (False, False),
+    Purpose.PRIVATE_GOLD.value: (False, False),
+}
+
+
+def _is_valid_calendar_date(value: Any) -> bool:
+    if not isinstance(value, str) or not DATE_PATTERN.fullmatch(value):
+        return False
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
+def _required_string(entry: dict[str, Any], field: str, prefix: str, errors: list[str]) -> str | None:
+    value = entry.get(field)
+    if not isinstance(value, str) or not value.strip():
+        errors.append(f"{prefix}: '{field}' must be a non-empty string")
+        return None
+    return value
 
 
 def check_no_payload_markers(obj: Any, path: str = "") -> list[str]:
@@ -67,7 +118,7 @@ def check_no_payload_markers(obj: Any, path: str = "") -> list[str]:
     if isinstance(obj, dict):
         for k, v in obj.items():
             current_path = f"{path}.{k}" if path else str(k)
-            if k.lower() in PROHIBITED_PAYLOAD_KEYS:
+            if isinstance(k, str) and k.lower() in PROHIBITED_PAYLOAD_KEYS:
                 errors.append(
                     f"Prohibited payload key '{k}' found at '{current_path}'. "
                     "Case content/PHI must not be stored in evaluation governance metadata."
@@ -81,586 +132,562 @@ def check_no_payload_markers(obj: Any, path: str = "") -> list[str]:
 
 
 def check_list_unique(items: list[Any], field_name: str, prefix: str) -> list[str]:
-    """Reject duplicate elements in set-like list fields rather than silently tolerating them."""
+    """Reject non-string or duplicate elements in set-like metadata lists without raising."""
     errors: list[str] = []
-    if len(items) != len(set(items)):
-        duplicates = [x for x in items if items.count(x) > 1]
+    if not isinstance(items, list):
+        return [f"{prefix}: '{field_name}' must be a list"]
+
+    valid_items: list[str] = []
+    for idx, item in enumerate(items):
+        if not isinstance(item, str):
+            errors.append(
+                f"{prefix}: Item {idx} in set-like field '{field_name}' must be a string, got {type(item).__name__}"
+            )
+        else:
+            valid_items.append(item)
+
+    seen: set[str] = set()
+    duplicates: set[str] = set()
+    for item in valid_items:
+        if item in seen:
+            duplicates.add(item)
+        seen.add(item)
+    if duplicates:
         errors.append(
-            f"{prefix}: Duplicate values found in set-like field '{field_name}': {sorted(set(duplicates))}"
+            f"{prefix}: Duplicate values found in set-like field '{field_name}': {sorted(duplicates)}"
         )
     return errors
 
 
-def validate_benchmark(entry: dict[str, Any], index: int = 0) -> list[str]:
+def validate_benchmark(entry: Any, index: int = 0) -> list[str]:
     """Validate a single benchmark metadata entry with evidence-bound rules."""
-    errors: list[str] = []
     prefix = f"Benchmark[{index}]"
+    if not isinstance(entry, dict):
+        return [f"{prefix}: Benchmark record must be a JSON object"]
 
-    # Required fields
+    errors: list[str] = []
     required_fields = [
-        "benchmark_id",
-        "canonical_name",
-        "primary_source",
-        "source_uri",
-        "source_identifier",
-        "source_revision",
-        "verification_date",
-        "artifact_version",
-        "access_class",
-        "license_status",
-        "license_source_uri",
-        "languages",
-        "roles",
-        "modalities",
-        "capability_domains",
-        "contamination_sensitivity",
-        "intended_use",
-        "verification_status",
-        "notes",
+        "benchmark_id", "canonical_name", "primary_source", "source_uri",
+        "source_identifier", "source_revision", "verification_date",
+        "artifact_version", "access_class", "license_status",
+        "license_source_uri", "languages", "roles", "modalities",
+        "capability_domains", "contamination_sensitivity", "intended_use",
+        "verification_status", "notes",
     ]
-
-    for f in required_fields:
-        if f not in entry:
-            errors.append(f"{prefix}: Missing required field '{f}'")
-        elif entry[f] is None:
-            errors.append(f"{prefix}: Field '{f}' cannot be null")
-
+    for field in required_fields:
+        if field not in entry:
+            errors.append(f"{prefix}: Missing required field '{field}'")
+        elif entry[field] is None:
+            errors.append(f"{prefix}: Field '{field}' cannot be null")
     if errors:
         return errors
 
-    b_id = entry.get("benchmark_id", "")
+    b_id = entry.get("benchmark_id")
     if not isinstance(b_id, str) or not b_id.strip():
         errors.append(f"{prefix}: 'benchmark_id' must be a non-empty string")
-    prefix = f"Benchmark({b_id or index})"
+        display_id = str(index)
+    else:
+        display_id = b_id
+    prefix = f"Benchmark({display_id})"
 
-    # Date format
-    v_date = entry.get("verification_date", "")
-    if v_date != "UNRESOLVED" and not DATE_PATTERN.match(str(v_date)):
+    scalar_string_fields = [
+        "canonical_name", "primary_source", "source_uri", "source_identifier",
+        "source_revision", "artifact_version", "license_status",
+        "license_source_uri", "notes",
+    ]
+    for field in scalar_string_fields:
+        _required_string(entry, field, prefix, errors)
+
+    v_date = entry.get("verification_date")
+    if v_date != "UNRESOLVED" and not _is_valid_calendar_date(v_date):
         errors.append(
-            f"{prefix}: 'verification_date' must be 'YYYY-MM-DD' or 'UNRESOLVED', got '{v_date}'"
+            f"{prefix}: 'verification_date' must be a real calendar date in YYYY-MM-DD format or 'UNRESOLVED', got '{v_date}'"
         )
 
-    # Access class
     acc = entry.get("access_class")
     if acc not in {e.value for e in AccessClass}:
-        errors.append(
-            f"{prefix}: Invalid access_class '{acc}'. Must be one of {[e.value for e in AccessClass]}"
-        )
+        errors.append(f"{prefix}: Invalid access_class '{acc}'. Must be one of {[e.value for e in AccessClass]}")
 
-    # Verification status
     v_stat = entry.get("verification_status")
     if v_stat not in {e.value for e in VerificationStatus}:
         errors.append(
             f"{prefix}: Invalid verification_status '{v_stat}'. Must be one of {[e.value for e in VerificationStatus]}"
         )
 
-    # Intended use
     i_use = entry.get("intended_use")
     if i_use not in {e.value for e in IntendedUse}:
-        errors.append(
-            f"{prefix}: Invalid intended_use '{i_use}'. Must be one of {[e.value for e in IntendedUse]}"
-        )
+        errors.append(f"{prefix}: Invalid intended_use '{i_use}'. Must be one of {[e.value for e in IntendedUse]}")
 
-    # License status (controlled vocabulary - fail closed on arbitrary strings)
-    lic_stat = str(entry.get("license_status", "")).strip()
+    lic_raw = entry.get("license_status")
+    lic_stat = lic_raw.strip() if isinstance(lic_raw, str) else None
     if lic_stat not in {e.value for e in LicenseStatus}:
         errors.append(
-            f"{prefix}: Invalid license_status '{lic_stat}'. "
-            f"Must be one of the controlled vocabulary: {[e.value for e in LicenseStatus]}"
+            f"{prefix}: Invalid license_status '{lic_raw}'. Must be one of the controlled vocabulary: {[e.value for e in LicenseStatus]}"
         )
 
-    # Invariant: VERIFIED requires resolved source references, license status, and valid date
     if v_stat == VerificationStatus.VERIFIED.value:
-        src = entry.get("primary_source", "").strip()
-        if not src or src == "UNRESOLVED":
-            errors.append(
-                f"{prefix}: VERIFIED benchmark must have a non-empty, resolved primary_source reference"
-            )
-        src_uri = entry.get("source_uri", "").strip()
-        if not src_uri or src_uri == "UNRESOLVED":
-            errors.append(
-                f"{prefix}: VERIFIED benchmark must have a resolved source_uri"
-            )
-        src_id = entry.get("source_identifier", "").strip()
-        if not src_id or src_id == "UNRESOLVED":
-            errors.append(
-                f"{prefix}: VERIFIED benchmark must have a resolved source_identifier"
-            )
-        if not DATE_PATTERN.match(str(v_date)):
-            errors.append(
-                f"{prefix}: VERIFIED benchmark must have a valid verification_date matching YYYY-MM-DD"
-            )
-        if not lic_stat or lic_stat == "UNRESOLVED":
-            errors.append(
-                f"{prefix}: VERIFIED benchmark must have a resolved license_status (cannot be 'UNRESOLVED')"
-            )
-        lic_uri = entry.get("license_source_uri", "").strip()
-        if not lic_uri or lic_uri == "UNRESOLVED":
-            errors.append(
-                f"{prefix}: VERIFIED benchmark must have a resolved license_source_uri"
-            )
+        for field in ("primary_source", "source_uri", "source_identifier", "license_source_uri"):
+            value = entry.get(field)
+            if not isinstance(value, str) or not value.strip() or value == "UNRESOLVED":
+                label = "primary_source reference" if field == "primary_source" else field
+                errors.append(f"{prefix}: VERIFIED benchmark must have a resolved {label}")
+        if not _is_valid_calendar_date(v_date):
+            errors.append(f"{prefix}: VERIFIED benchmark must have a valid verification_date matching a real YYYY-MM-DD calendar date")
+        if not lic_stat or lic_stat == LicenseStatus.UNRESOLVED.value:
+            errors.append(f"{prefix}: VERIFIED benchmark must have a resolved license_status (cannot be 'UNRESOLVED')")
 
-    # Invariant: COMPONENT_SPECIFIC license boundary is permitted only for REFERENCE_ONLY framework/family records
-    if lic_stat == "COMPONENT_SPECIFIC":
+    if lic_stat == LicenseStatus.COMPONENT_SPECIFIC.value:
         if i_use not in {IntendedUse.REFERENCE_ONLY.value, IntendedUse.PROHIBITED.value}:
             errors.append(
                 f"{prefix}: Benchmark with license_status='COMPONENT_SPECIFIC' cannot have executable intended_use '{i_use}'. "
-                f"Must be '{IntendedUse.REFERENCE_ONLY.value}' or '{IntendedUse.PROHIBITED.value}'. "
-                "Component benchmarks must be registered individually before execution."
+                f"Must be '{IntendedUse.REFERENCE_ONLY.value}' or '{IntendedUse.PROHIBITED.value}'. Component benchmarks must be registered individually before execution."
             )
 
-    # Invariant: UNRESOLVED verification status cannot be executable for DEVELOPMENT / RELEASE
-    if v_stat == VerificationStatus.UNRESOLVED.value:
-        if i_use in {IntendedUse.DEVELOPMENT.value, IntendedUse.POSSIBLE_RELEASE_GATE.value}:
-            errors.append(
-                f"{prefix}: UNRESOLVED benchmark cannot have executable intended_use '{i_use}'. "
-                f"Must be '{IntendedUse.REFERENCE_ONLY.value}' or '{IntendedUse.PROHIBITED.value}'."
-            )
-
-    # Invariant: license_status == UNRESOLVED cannot be VERIFIED
-    if lic_stat == "UNRESOLVED" and v_stat == VerificationStatus.VERIFIED.value:
+    if v_stat == VerificationStatus.UNRESOLVED.value and i_use in {
+        IntendedUse.DEVELOPMENT.value, IntendedUse.POSSIBLE_RELEASE_GATE.value,
+    }:
         errors.append(
-            f"{prefix}: Benchmark with license_status='UNRESOLVED' cannot have verification_status='VERIFIED'."
+            f"{prefix}: UNRESOLVED benchmark cannot have executable intended_use '{i_use}'. "
+            f"Must be '{IntendedUse.REFERENCE_ONLY.value}' or '{IntendedUse.PROHIBITED.value}'."
         )
 
-    # Contamination sensitivity
+    if lic_stat == LicenseStatus.UNRESOLVED.value and v_stat == VerificationStatus.VERIFIED.value:
+        errors.append(f"{prefix}: Benchmark with license_status='UNRESOLVED' cannot have verification_status='VERIFIED'.")
+
     c_sens = entry.get("contamination_sensitivity")
     if c_sens not in {e.value for e in ContaminationSensitivity}:
         errors.append(
             f"{prefix}: Invalid contamination_sensitivity '{c_sens}'. Must be one of {[e.value for e in ContaminationSensitivity]}"
         )
 
-    # Arrays validation
     for arr_field, allowed_enum, enum_name in [
         ("roles", Role, "Role"),
         ("modalities", Modality, "Modality"),
         ("capability_domains", CapabilityDomain, "CapabilityDomain"),
     ]:
-        val = entry.get(arr_field)
-        if not isinstance(val, list) or len(val) == 0:
+        value = entry.get(arr_field)
+        if not isinstance(value, list) or not value:
             errors.append(f"{prefix}: '{arr_field}' must be a non-empty list")
-        else:
-            errors.extend(check_list_unique(val, arr_field, prefix))
-            allowed_vals = {e.value for e in allowed_enum}
-            for item in val:
-                if item not in allowed_vals:
-                    errors.append(
-                        f"{prefix}: Invalid item '{item}' in '{arr_field}'. Allowed {enum_name} values: {sorted(allowed_vals)}"
-                    )
+            continue
+        errors.extend(check_list_unique(value, arr_field, prefix))
+        allowed_values = {e.value for e in allowed_enum}
+        for item in value:
+            if isinstance(item, str) and item not in allowed_values:
+                errors.append(
+                    f"{prefix}: Invalid item '{item}' in '{arr_field}'. Allowed {enum_name} values: {sorted(allowed_values)}"
+                )
 
-    # Languages
-    langs = entry.get("languages")
-    if not isinstance(langs, list) or len(langs) == 0:
+    languages = entry.get("languages")
+    if not isinstance(languages, list) or not languages:
         errors.append(f"{prefix}: 'languages' must be a non-empty list of language codes")
     else:
-        errors.extend(check_list_unique(langs, "languages", prefix))
+        errors.extend(check_list_unique(languages, "languages", prefix))
 
     return errors
 
 
-def validate_benchmark_registry(entries: list[dict[str, Any]]) -> tuple[bool, list[str]]:
-    """Validate entire benchmark registry collection for schema correctness and duplicates."""
+def validate_benchmark_registry(entries: Any) -> tuple[bool, list[str]]:
     errors: list[str] = []
-    if not isinstance(entries, list) or len(entries) == 0:
+    if not isinstance(entries, list) or not entries:
         return False, ["Benchmark registry must be a non-empty list of benchmark records"]
-
-    # Check payload markers
     errors.extend(check_no_payload_markers(entries, "benchmarks"))
-
     seen_ids: set[str] = set()
     for idx, entry in enumerate(entries):
         entry_errors = validate_benchmark(entry, idx)
         errors.extend(entry_errors)
-        if not entry_errors:
-            b_id = entry["benchmark_id"]
-            if b_id in seen_ids:
-                errors.append(f"Duplicate benchmark_id '{b_id}' found in registry")
-            seen_ids.add(b_id)
-
+        if isinstance(entry, dict):
+            b_id = entry.get("benchmark_id")
+            if isinstance(b_id, str) and b_id.strip():
+                if b_id in seen_ids:
+                    errors.append(f"Duplicate benchmark_id '{b_id}' found in registry")
+                seen_ids.add(b_id)
     return len(errors) == 0, errors
 
 
-def validate_metric(entry: dict[str, Any], index: int = 0) -> list[str]:
-    """Validate a single metric / hard gate definition."""
-    errors: list[str] = []
+def validate_metric(entry: Any, index: int = 0) -> list[str]:
     prefix = f"Metric[{index}]"
-
+    if not isinstance(entry, dict):
+        return [f"{prefix}: Metric record must be a JSON object"]
+    errors: list[str] = []
     required_fields = [
-        "metric_id",
-        "name",
-        "category",
-        "description",
-        "direction",
-        "unit",
-        "is_hard_gate",
-        "threshold_state",
-        "applicable_roles",
-        "applicable_modalities",
-        "applicable_languages",
-        "required_evidence",
+        "metric_id", "name", "category", "description", "direction", "unit",
+        "is_hard_gate", "threshold_state", "applicable_roles",
+        "applicable_modalities", "applicable_languages", "required_evidence",
     ]
-
-    for f in required_fields:
-        if f not in entry:
-            errors.append(f"{prefix}: Missing required field '{f}'")
-        elif entry[f] is None:
-            errors.append(f"{prefix}: Field '{f}' cannot be null")
-
+    for field in required_fields:
+        if field not in entry:
+            errors.append(f"{prefix}: Missing required field '{field}'")
+        elif entry[field] is None:
+            errors.append(f"{prefix}: Field '{field}' cannot be null")
     if errors:
         return errors
 
-    m_id = entry.get("metric_id", "")
+    m_id = entry.get("metric_id")
     if not isinstance(m_id, str) or not m_id.strip():
         errors.append(f"{prefix}: 'metric_id' must be a non-empty string")
-    prefix = f"Metric({m_id or index})"
+        display_id = str(index)
+    else:
+        display_id = m_id
+    prefix = f"Metric({display_id})"
 
-    # Direction
+    for field in ("name", "category", "description", "unit", "required_evidence"):
+        _required_string(entry, field, prefix, errors)
+
     direction = entry.get("direction")
     if direction not in {e.value for e in MetricDirection}:
-        errors.append(
-            f"{prefix}: Invalid direction '{direction}'. Must be one of {[e.value for e in MetricDirection]}"
-        )
-
-    # is_hard_gate
+        errors.append(f"{prefix}: Invalid direction '{direction}'. Must be one of {[e.value for e in MetricDirection]}")
     if not isinstance(entry.get("is_hard_gate"), bool):
         errors.append(f"{prefix}: 'is_hard_gate' must be a boolean")
-
-    # threshold_state
-    t_state = entry.get("threshold_state")
-    if t_state not in {e.value for e in ThresholdState}:
+    threshold_state = entry.get("threshold_state")
+    if threshold_state not in {e.value for e in ThresholdState}:
         errors.append(
-            f"{prefix}: Invalid threshold_state '{t_state}'. Must be one of {[e.value for e in ThresholdState]}"
+            f"{prefix}: Invalid threshold_state '{threshold_state}'. Must be one of {[e.value for e in ThresholdState]}"
         )
 
-    # Lists
     for arr_field, allowed_enum, enum_name in [
         ("applicable_roles", Role, "Role"),
         ("applicable_modalities", Modality, "Modality"),
     ]:
-        val = entry.get(arr_field)
-        if not isinstance(val, list) or len(val) == 0:
+        value = entry.get(arr_field)
+        if not isinstance(value, list) or not value:
             errors.append(f"{prefix}: '{arr_field}' must be a non-empty list")
-        else:
-            errors.extend(check_list_unique(val, arr_field, prefix))
-            allowed_vals = {e.value for e in allowed_enum}
-            for item in val:
-                if item not in allowed_vals:
-                    errors.append(
-                        f"{prefix}: Invalid item '{item}' in '{arr_field}'. Allowed {enum_name} values: {sorted(allowed_vals)}"
-                    )
+            continue
+        errors.extend(check_list_unique(value, arr_field, prefix))
+        allowed_values = {e.value for e in allowed_enum}
+        for item in value:
+            if isinstance(item, str) and item not in allowed_values:
+                errors.append(
+                    f"{prefix}: Invalid item '{item}' in '{arr_field}'. Allowed {enum_name} values: {sorted(allowed_values)}"
+                )
 
-    langs = entry.get("applicable_languages")
-    if not isinstance(langs, list) or len(langs) == 0:
+    languages = entry.get("applicable_languages")
+    if not isinstance(languages, list) or not languages:
         errors.append(f"{prefix}: 'applicable_languages' must be a non-empty list")
     else:
-        errors.extend(check_list_unique(langs, "applicable_languages", prefix))
-
+        errors.extend(check_list_unique(languages, "applicable_languages", prefix))
     return errors
 
 
-def validate_metrics_catalog(entries: list[dict[str, Any]]) -> tuple[bool, list[str]]:
-    """Validate full metrics catalog."""
-    errors: list[str] = []
-    if not isinstance(entries, list) or len(entries) == 0:
+def validate_metrics_catalog(entries: Any) -> tuple[bool, list[str]]:
+    if not isinstance(entries, list) or not entries:
         return False, ["Metrics catalog must be a non-empty list"]
-
-    errors.extend(check_no_payload_markers(entries, "metrics"))
-
+    errors = check_no_payload_markers(entries, "metrics")
     seen_ids: set[str] = set()
     for idx, entry in enumerate(entries):
         entry_errors = validate_metric(entry, idx)
         errors.extend(entry_errors)
-        if not entry_errors:
-            m_id = entry["metric_id"]
-            if m_id in seen_ids:
-                errors.append(f"Duplicate metric_id '{m_id}' found in catalog")
-            seen_ids.add(m_id)
-
+        if isinstance(entry, dict):
+            m_id = entry.get("metric_id")
+            if isinstance(m_id, str) and m_id.strip():
+                if m_id in seen_ids:
+                    errors.append(f"Duplicate metric_id '{m_id}' found in catalog")
+                seen_ids.add(m_id)
     return len(errors) == 0, errors
 
 
-def validate_gold_protocol(entry: dict[str, Any], index: int = 0) -> list[str]:
-    """Validate a single Gold family protocol."""
-    errors: list[str] = []
+def validate_gold_protocol(entry: Any, index: int = 0) -> list[str]:
     prefix = f"GoldProtocol[{index}]"
-
+    if not isinstance(entry, dict):
+        return [f"{prefix}: Gold protocol record must be a JSON object"]
+    errors: list[str] = []
     required_fields = [
-        "family_id",
-        "display_name",
-        "purpose",
-        "intended_strata",
-        "content_location_policy",
-        "allowed_access_roles",
-        "adjudication_policy",
-        "power_analysis_required",
-        "prohibited_optimization_uses",
-        "permitted_scoring_stages",
-        "release_claim_scope",
-        "audit_requirements",
+        "family_id", "display_name", "purpose", "intended_strata",
+        "content_location_policy", "allowed_access_roles", "adjudication_policy",
+        "power_analysis_required", "prohibited_optimization_uses",
+        "permitted_scoring_stages", "release_claim_scope", "audit_requirements",
     ]
-
-    for f in required_fields:
-        if f not in entry:
-            errors.append(f"{prefix}: Missing required field '{f}'")
-        elif entry[f] is None:
-            errors.append(f"{prefix}: Field '{f}' cannot be null")
-
+    for field in required_fields:
+        if field not in entry:
+            errors.append(f"{prefix}: Missing required field '{field}'")
+        elif entry[field] is None:
+            errors.append(f"{prefix}: Field '{field}' cannot be null")
     if errors:
         return errors
 
-    fam_id = entry.get("family_id", "")
-    prefix = f"GoldProtocol({fam_id or index})"
-
-    if fam_id not in {e.value for e in GoldFamilyId}:
-        errors.append(
-            f"{prefix}: Invalid family_id '{fam_id}'. Must be one of {[e.value for e in GoldFamilyId]}"
-        )
-
+    family_id = entry.get("family_id")
+    display_id = family_id if isinstance(family_id, str) and family_id else str(index)
+    prefix = f"GoldProtocol({display_id})"
+    if family_id not in GOLD_FAMILY_IDS:
+        errors.append(f"{prefix}: Invalid family_id '{family_id}'. Must be one of {sorted(GOLD_FAMILY_IDS)}")
     if entry.get("purpose") != Purpose.PRIVATE_GOLD.value:
-        errors.append(
-            f"{prefix}: 'purpose' must be '{Purpose.PRIVATE_GOLD.value}', got '{entry.get('purpose')}'"
-        )
-
-    # power_analysis_required MUST be True
+        errors.append(f"{prefix}: 'purpose' must be '{Purpose.PRIVATE_GOLD.value}', got '{entry.get('purpose')}'")
+    for field in (
+        "display_name", "content_location_policy", "adjudication_policy",
+        "release_claim_scope", "audit_requirements",
+    ):
+        _required_string(entry, field, prefix, errors)
     if entry.get("power_analysis_required") is not True:
         errors.append(
             f"{prefix}: 'power_analysis_required' must be strictly True. Private Gold claims require pre-run power analysis."
         )
 
-    # prohibited_optimization_uses must cover all mandatory prohibitions
     prohibitions = entry.get("prohibited_optimization_uses")
     if not isinstance(prohibitions, list):
         errors.append(f"{prefix}: 'prohibited_optimization_uses' must be a list")
     else:
         errors.extend(check_list_unique(prohibitions, "prohibited_optimization_uses", prefix))
-        proh_set = set(prohibitions)
-        missing = MANDATORY_GOLD_PROHIBITIONS - proh_set
+        valid_prohibitions = {x for x in prohibitions if isinstance(x, str)}
+        missing = MANDATORY_GOLD_PROHIBITIONS - valid_prohibitions
         if missing:
             errors.append(
                 f"{prefix}: 'prohibited_optimization_uses' is missing mandatory prohibitions: {sorted(missing)}"
             )
 
-    # Permitted scoring stages must NOT contain selection stages
     scoring_stages = entry.get("permitted_scoring_stages")
-    if not isinstance(scoring_stages, list) or len(scoring_stages) == 0:
+    if not isinstance(scoring_stages, list) or not scoring_stages:
         errors.append(f"{prefix}: 'permitted_scoring_stages' must be a non-empty list")
     else:
         errors.extend(check_list_unique(scoring_stages, "permitted_scoring_stages", prefix))
         for stage in scoring_stages:
-            if not isinstance(stage, str):
-                errors.append(f"{prefix}: Scoring stage must be a string, got '{stage}'")
-            else:
+            if isinstance(stage, str):
                 for prohibited_sub in PROHIBITED_GOLD_STAGE_SUBSTRINGS:
                     if prohibited_sub in stage.upper():
                         errors.append(
-                            f"{prefix}: Contradiction in permitted_scoring_stages: '{stage}' contains "
-                            f"prohibited keyword '{prohibited_sub}'. Private Gold cannot perform candidate selection."
+                            f"{prefix}: Contradiction in permitted_scoring_stages: '{stage}' contains prohibited keyword '{prohibited_sub}'. Private Gold cannot perform candidate selection."
                         )
 
-    # Array checks
-    for f in ["intended_strata", "allowed_access_roles"]:
-        val = entry.get(f)
-        if not isinstance(val, list) or len(val) == 0:
-            errors.append(f"{prefix}: '{f}' must be a non-empty list")
+    for field in ("intended_strata", "allowed_access_roles"):
+        value = entry.get(field)
+        if not isinstance(value, list) or not value:
+            errors.append(f"{prefix}: '{field}' must be a non-empty list")
         else:
-            errors.extend(check_list_unique(val, f, prefix))
-
+            errors.extend(check_list_unique(value, field, prefix))
     return errors
 
 
-def validate_gold_protocols(entries: list[dict[str, Any]]) -> tuple[bool, list[str]]:
-    """Validate the 3 canonical Gold family protocols."""
-    errors: list[str] = []
-    if not isinstance(entries, list) or len(entries) == 0:
+def validate_gold_protocols(entries: Any) -> tuple[bool, list[str]]:
+    if not isinstance(entries, list) or not entries:
         return False, ["Gold protocols must be a list"]
-
-    errors.extend(check_no_payload_markers(entries, "gold_protocols"))
-
+    errors = check_no_payload_markers(entries, "gold_protocols")
     seen_ids: set[str] = set()
     for idx, entry in enumerate(entries):
         entry_errors = validate_gold_protocol(entry, idx)
         errors.extend(entry_errors)
-        if not entry_errors:
-            f_id = entry["family_id"]
-            if f_id in seen_ids:
-                errors.append(f"Duplicate Gold family_id '{f_id}'")
-            seen_ids.add(f_id)
-
-    required_families = {e.value for e in GoldFamilyId}
-    missing_families = required_families - seen_ids
+        if isinstance(entry, dict):
+            family_id = entry.get("family_id")
+            if isinstance(family_id, str) and family_id:
+                if family_id in seen_ids:
+                    errors.append(f"Duplicate Gold family_id '{family_id}'")
+                seen_ids.add(family_id)
+    missing_families = GOLD_FAMILY_IDS - seen_ids
     if missing_families:
         errors.append(f"Missing required canonical Gold families: {sorted(missing_families)}")
-
     return len(errors) == 0, errors
 
 
-def validate_quarantine_rules(entries: list[dict[str, Any]]) -> tuple[bool, list[str]]:
-    """Validate data purpose quarantine rules."""
-    errors: list[str] = []
-    if not isinstance(entries, list) or len(entries) == 0:
+def validate_quarantine_rules(entries: Any) -> tuple[bool, list[str]]:
+    """Validate the canonical purpose/source quarantine matrix fail-closed."""
+    if not isinstance(entries, list) or not entries:
         return False, ["Quarantine rules must be a non-empty list"]
-
+    errors: list[str] = []
     allowed_purposes = {e.value for e in Purpose}
     seen_purposes: set[str] = set()
 
-    for idx, r in enumerate(entries):
-        p = r.get("purpose")
-        prefix = f"QuarantineRule({p or idx})"
-        if p not in allowed_purposes:
-            errors.append(f"{prefix}: Invalid purpose '{p}'. Allowed: {sorted(allowed_purposes)}")
-        if p in seen_purposes:
-            errors.append(f"Duplicate quarantine rule for purpose '{p}'")
-        seen_purposes.add(p)
+    for idx, rule in enumerate(entries):
+        if not isinstance(rule, dict):
+            errors.append(f"QuarantineRule[{idx}]: Quarantine rule must be a JSON object")
+            continue
+        purpose = rule.get("purpose")
+        display_purpose = purpose if isinstance(purpose, str) and purpose else str(idx)
+        prefix = f"QuarantineRule({display_purpose})"
+        if purpose not in allowed_purposes:
+            errors.append(f"{prefix}: Invalid purpose '{purpose}'. Allowed: {sorted(allowed_purposes)}")
+            continue
+        if purpose in seen_purposes:
+            errors.append(f"Duplicate quarantine rule for purpose '{purpose}'")
+        seen_purposes.add(purpose)
 
-        can_train = r.get("can_train")
-        can_select = r.get("can_select_model")
+        can_train = rule.get("can_train")
+        can_select = rule.get("can_select_model")
         if not isinstance(can_train, bool) or not isinstance(can_select, bool):
             errors.append(f"{prefix}: 'can_train' and 'can_select_model' must be boolean")
-
-        # Invariant: PRIVATE_GOLD and PUBLIC_EXTERNAL_EVAL can NEVER train
-        if p in {Purpose.PRIVATE_GOLD.value, Purpose.PUBLIC_EXTERNAL_EVAL.value}:
-            if can_train is True:
-                errors.append(f"{prefix}: Quarantine violation: purpose '{p}' must have can_train=False")
-
-        # Invariant: PRIVATE_GOLD and PUBLIC_EXTERNAL_EVAL can NEVER select models
-        if p in {Purpose.PRIVATE_GOLD.value, Purpose.PUBLIC_EXTERNAL_EVAL.value}:
-            if can_select is True:
-                errors.append(
-                    f"{prefix}: Quarantine violation: purpose '{p}' must have can_select_model=False. "
-                    "Canonical evaluation test sets must not be used for model/checkpoint selection."
-                )
-
-        if not isinstance(r.get("allowed_sources"), list):
-            errors.append(f"{prefix}: 'allowed_sources' must be a list")
         else:
-            errors.extend(check_list_unique(r.get("allowed_sources"), "allowed_sources", prefix))
+            expected_train, expected_select = EXPECTED_PURPOSE_FLAGS[purpose]
+            if can_train != expected_train:
+                errors.append(f"{prefix}: Quarantine violation: purpose '{purpose}' must have can_train={expected_train}")
+            if can_select != expected_select:
+                errors.append(f"{prefix}: Quarantine violation: purpose '{purpose}' must have can_select_model={expected_select}")
 
-        if not isinstance(r.get("prohibited_sources"), list):
-            errors.append(f"{prefix}: 'prohibited_sources' must be a list")
-        else:
-            errors.extend(check_list_unique(r.get("prohibited_sources"), "prohibited_sources", prefix))
+        parsed_sources: dict[str, set[str]] = {}
+        for field in ("allowed_sources", "prohibited_sources"):
+            value = rule.get(field)
+            if not isinstance(value, list):
+                errors.append(f"{prefix}: '{field}' must be a list")
+                parsed_sources[field] = set()
+                continue
+            errors.extend(check_list_unique(value, field, prefix))
+            source_set: set[str] = set()
+            for source in value:
+                if not isinstance(source, str):
+                    continue
+                if source not in VALID_QUARANTINE_SOURCES:
+                    errors.append(f"{prefix}: Invalid quarantine source token '{source}' in '{field}'")
+                source_set.add(source)
+            parsed_sources[field] = source_set
+
+        allowed_sources = parsed_sources.get("allowed_sources", set())
+        prohibited_sources = parsed_sources.get("prohibited_sources", set())
+        overlap = allowed_sources & prohibited_sources
+        if overlap:
+            errors.append(f"{prefix}: Source tokens cannot appear in both allowed_sources and prohibited_sources: {sorted(overlap)}")
+
+        expected_allowed = EXPECTED_ALLOWED_SOURCES[purpose]
+        if allowed_sources != expected_allowed:
+            errors.append(
+                f"{prefix}: allowed_sources must exactly match canonical matrix for purpose '{purpose}': {sorted(expected_allowed)}"
+            )
+        expected_prohibited = EXPECTED_PROHIBITED_SOURCES[purpose]
+        if prohibited_sources != expected_prohibited:
+            errors.append(
+                f"{prefix}: prohibited_sources must exactly match canonical matrix for purpose '{purpose}': {sorted(expected_prohibited)}"
+            )
+
+        if purpose != Purpose.PRIVATE_GOLD.value and not GOLD_FAMILY_IDS.issubset(prohibited_sources):
+            errors.append(f"{prefix}: All CommandMed private Gold families must be prohibited outside PRIVATE_GOLD")
+        if purpose == Purpose.PRIVATE_GOLD.value and allowed_sources != GOLD_FAMILY_IDS:
+            errors.append(f"{prefix}: PRIVATE_GOLD may allow only the three canonical Gold families")
 
     missing = allowed_purposes - seen_purposes
     if missing:
         errors.append(f"Missing quarantine definitions for purposes: {sorted(missing)}")
-
     return len(errors) == 0, errors
 
 
-def validate_contamination_records(entries: list[dict[str, Any]]) -> tuple[bool, list[str]]:
+def validate_contamination_records(entries: Any) -> tuple[bool, list[str]]:
     """Validate benchmark contamination metadata interface with evidence symmetry."""
-    errors: list[str] = []
-    if not isinstance(entries, list) or len(entries) == 0:
+    if not isinstance(entries, list) or not entries:
         return False, ["Contamination records must be a non-empty list"]
-
+    errors: list[str] = []
     seen_ids: set[str] = set()
     for idx, item in enumerate(entries):
-        asset_id = item.get("asset_id", "")
-        prefix = f"ContaminationRecord({asset_id or idx})"
-        if not asset_id or not isinstance(asset_id, str):
+        if not isinstance(item, dict):
+            errors.append(f"ContaminationRecord[{idx}]: Contamination record must be a JSON object")
+            continue
+        asset_id = item.get("asset_id")
+        display_id = asset_id if isinstance(asset_id, str) and asset_id else str(idx)
+        prefix = f"ContaminationRecord({display_id})"
+        if not isinstance(asset_id, str) or not asset_id:
             errors.append(f"{prefix}: 'asset_id' must be a non-empty string")
-        if asset_id in seen_ids:
+        elif asset_id in seen_ids:
             errors.append(f"Duplicate asset_id '{asset_id}' in contamination records")
-        seen_ids.add(asset_id)
+        if isinstance(asset_id, str) and asset_id:
+            seen_ids.add(asset_id)
 
-        for f in [
-            "exact_match_status",
-            "semantic_overlap_status",
-            "evidence_artifact_id",
-            "methodology_interface",
-            "notes",
-        ]:
-            if f not in item or not isinstance(item[f], str):
-                errors.append(f"{prefix}: Missing or non-string field '{f}'")
+        for field in (
+            "exact_match_status", "semantic_overlap_status", "evidence_artifact_id",
+            "methodology_interface", "notes",
+        ):
+            if field not in item or not isinstance(item[field], str):
+                errors.append(f"{prefix}: Missing or non-string field '{field}'")
 
-        em_stat = item.get("exact_match_status")
-        if em_stat not in {e.value for e in ExactMatchStatus}:
+        exact_status = item.get("exact_match_status")
+        if exact_status not in {e.value for e in ExactMatchStatus}:
+            errors.append(f"{prefix}: Invalid exact_match_status '{exact_status}'. Allowed: {[e.value for e in ExactMatchStatus]}")
+        semantic_status = item.get("semantic_overlap_status")
+        if semantic_status not in {e.value for e in SemanticOverlapStatus}:
             errors.append(
-                f"{prefix}: Invalid exact_match_status '{em_stat}'. Allowed: {[e.value for e in ExactMatchStatus]}"
+                f"{prefix}: Invalid semantic_overlap_status '{semantic_status}'. Allowed: {[e.value for e in SemanticOverlapStatus]}"
             )
 
-        so_stat = item.get("semantic_overlap_status")
-        if so_stat not in {e.value for e in SemanticOverlapStatus}:
-            errors.append(
-                f"{prefix}: Invalid semantic_overlap_status '{so_stat}'. Allowed: {[e.value for e in SemanticOverlapStatus]}"
-            )
-
-        ev_id = item.get("evidence_artifact_id", "").strip()
-
-        # Invariant (Finding 6 - Evidence Symmetry): Any substantive assessment state requires a resolved evidence_artifact_id
+        evidence_raw = item.get("evidence_artifact_id")
+        evidence_id = evidence_raw.strip() if isinstance(evidence_raw, str) else ""
         substantive_exact_states = {
             ExactMatchStatus.CHECKED_CLEAN.value,
             ExactMatchStatus.OVERLAP_FOUND.value,
             ExactMatchStatus.BLOCKED.value,
         }
-        if em_stat in substantive_exact_states:
-            if not ev_id or ev_id in {"NONE", "UNRESOLVED"}:
-                errors.append(
-                    f"{prefix}: exact_match_status='{em_stat}' requires a resolved evidence_artifact_id (cannot be '{ev_id}')"
-                )
-
+        if exact_status in substantive_exact_states and evidence_id in {"", "NONE", "UNRESOLVED"}:
+            errors.append(
+                f"{prefix}: exact_match_status='{exact_status}' requires a resolved evidence_artifact_id (cannot be '{evidence_id}')"
+            )
         substantive_semantic_states = {
             SemanticOverlapStatus.ASSESSED_LOW_RISK.value,
             SemanticOverlapStatus.ASSESSED_HIGH_RISK.value,
             SemanticOverlapStatus.BLOCKED.value,
         }
-        if so_stat in substantive_semantic_states:
-            if not ev_id or ev_id in {"NONE", "UNRESOLVED"}:
-                errors.append(
-                    f"{prefix}: semantic_overlap_status='{so_stat}' requires a resolved evidence_artifact_id (cannot be '{ev_id}')"
-                )
-
+        if semantic_status in substantive_semantic_states and evidence_id in {"", "NONE", "UNRESOLVED"}:
+            errors.append(
+                f"{prefix}: semantic_overlap_status='{semantic_status}' requires a resolved evidence_artifact_id (cannot be '{evidence_id}')"
+            )
     return len(errors) == 0, errors
 
 
 def evaluate_hard_gates(
-    metrics_catalog: list[dict[str, Any]],
-    evaluation_results: dict[str, dict[str, Any]],
+    metrics_catalog: Any,
+    evaluation_results: Any,
 ) -> tuple[str, list[dict[str, Any]]]:
-    """
-    Evaluate hard gates against evaluation results.
+    """Evaluate hard gates, never allowing an absent gate set to pass."""
+    if not isinstance(metrics_catalog, list) or not metrics_catalog:
+        return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [
+            {
+                "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,
+                "reason": "Hard-gate catalog is empty or unavailable; PASS requires at least one defined hard gate",
+            }
+        ]
 
-    Rules:
-    - Any evaluated hard gate that fails forces overall result to FAIL.
-    - An aggregate score, no matter how high, CANNOT compensate for a hard gate failure.
-    - If a required hard gate is NOT_EVALUATED or INSUFFICIENT_EVIDENCE or BLOCKED,
-      the overall state cannot be PASS.
-    - Returns (overall_state, gate_breakdown).
-    """
-    hard_gate_metrics = {
-        m["metric_id"]: m for m in metrics_catalog if m.get("is_hard_gate") is True
-    }
+    hard_gate_metrics: dict[str, dict[str, Any]] = {}
+    malformed_catalog = False
+    for metric in metrics_catalog:
+        if not isinstance(metric, dict):
+            malformed_catalog = True
+            continue
+        if metric.get("is_hard_gate") is True:
+            metric_id = metric.get("metric_id")
+            if isinstance(metric_id, str) and metric_id:
+                hard_gate_metrics[metric_id] = metric
+            else:
+                malformed_catalog = True
+
+    if not hard_gate_metrics:
+        reason = "No hard-gate metrics are defined; PASS requires at least one required hard gate"
+        if malformed_catalog:
+            reason += "; malformed metric records were also present"
+        return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [
+            {"status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value, "reason": reason}
+        ]
+
+    if not isinstance(evaluation_results, dict):
+        return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [
+            {
+                "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,
+                "reason": "Evaluation results must be a mapping keyed by hard-gate metric_id",
+            }
+        ]
 
     gate_breakdown: list[dict[str, Any]] = []
     any_fail = False
-    any_incomplete = False
-
-    for m_id, m_meta in sorted(hard_gate_metrics.items()):
-        res = evaluation_results.get(m_id)
-        if res is None:
+    any_incomplete = malformed_catalog
+    for metric_id, metric_meta in sorted(hard_gate_metrics.items()):
+        result = evaluation_results.get(metric_id)
+        if result is None:
             status = GateEvaluationState.NOT_EVALUATED.value
             score = None
             reason = "Hard gate metric was not evaluated in this run"
             any_incomplete = True
+        elif not isinstance(result, dict):
+            status = GateEvaluationState.FAIL.value
+            score = None
+            reason = "Malformed hard-gate evaluation result; expected an object"
+            any_fail = True
         else:
-            status = res.get("status", GateEvaluationState.NOT_EVALUATED.value)
-            score = res.get("score")
-            reason = res.get("reason", "")
-
-            if status not in {e.value for e in GateEvaluationState}:
+            raw_status = result.get("status", GateEvaluationState.NOT_EVALUATED.value)
+            score = result.get("score")
+            reason = result.get("reason", "")
+            if raw_status not in {e.value for e in GateEvaluationState}:
                 status = GateEvaluationState.FAIL.value
-                reason = f"Invalid evaluation status: {res.get('status')}"
-
-            if status == GateEvaluationState.FAIL.value:
+                reason = f"Invalid evaluation status: {raw_status}"
                 any_fail = True
-            elif status != GateEvaluationState.PASS.value:
-                any_incomplete = True
-
+            else:
+                status = raw_status
+                if status == GateEvaluationState.FAIL.value:
+                    any_fail = True
+                elif status != GateEvaluationState.PASS.value:
+                    any_incomplete = True
         gate_breakdown.append(
             {
-                "metric_id": m_id,
-                "name": m_meta["name"],
-                "category": m_meta["category"],
+                "metric_id": metric_id,
+                "name": metric_meta.get("name", metric_id),
+                "category": metric_meta.get("category", "UNSPECIFIED"),
                 "status": status,
                 "score": score,
                 "reason": reason,
@@ -673,5 +700,4 @@ def evaluate_hard_gates(
         overall_state = GateEvaluationState.INSUFFICIENT_EVIDENCE.value
     else:
         overall_state = GateEvaluationState.PASS.value
-
     return overall_state, gate_breakdown
