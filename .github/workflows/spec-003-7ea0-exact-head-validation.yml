@@ -14,7 +14,7 @@ jobs:
       - name: Checkout exact candidate
         uses: actions/checkout@v4
         with:
-          ref: 378d30b184a1a60aa68a40a38a96ff686429c9f2
+          ref: a251ef1ac8e519dff94048e779678c50d2be8d83
           fetch-depth: 0
 
       - name: Set up Python 3.11
@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "378d30b184a1a60aa68a40a38a96ff686429c9f2"
+          test "$(git rev-parse HEAD)" = "a251ef1ac8e519dff94048e779678c50d2be8d83"
           echo "EXACT_HEAD=$(git rev-parse HEAD)"
           python --version
           python -m compileall -q src tests
@@ -53,7 +53,7 @@ jobs:
 
           lineage_sha = compute_lineage_contract_sha256(contract)
           print(f'LINEAGE_CONTRACT_SHA256={lineage_sha}')
-          wanted_lineage = 'a4706df0da80812512e01e2cf13050b21a2e3eb8393e199f1b3eb9032920345a'
+          wanted_lineage = '2b085339c17c3b8b89e55f53fc62c23bcbcf968cdc744b8ead0549b462bda962'
           if lineage_sha != wanted_lineage:
               raise SystemExit(f'LINEAGE_CONTRACT_IDENTITY_DRIFT: expected {wanted_lineage}, got {lineage_sha}')
 
