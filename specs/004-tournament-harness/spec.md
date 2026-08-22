@@ -253,7 +253,7 @@ The report SHALL include at minimum:
 - final state `SELECTED` or `NO_SELECTION`;
 - deterministic report SHA-256 computed over scientific fields.
 
-Runtime timestamps, local paths, machine names, and input iteration order SHALL NOT alter scientific identity, including invalid-result-set reports.
+Runtime timestamps, local paths, machine names, and input iteration order SHALL NOT alter scientific identity, including invalid-result-set reports. The report digest SHALL preserve the manifest-declared lexicographic order of each `comparison_vector`; reordering that vector is a scientific mutation and must change `report_sha256`.
 
 ### FR-013 — Fixture-only validation
 
@@ -262,7 +262,7 @@ Tests SHALL prove at least:
 - valid manifest acceptance;
 - duplicate candidate/metric rejection;
 - protocol identity mismatch rejection;
-- payload/execution-surface rejection;
+- payload/execution-surface rejection, including internal-whitespace/separator variants of prohibited key names;
 - lineage blocked/prohibited/reference-only candidate cannot qualify;
 - safety hard-gate failure dominates excellent scores;
 - pending/insufficient safety evidence cannot qualify;
@@ -272,6 +272,7 @@ Tests SHALL prove at least:
 - tied best candidates produce `NO_SELECTION`;
 - candidate input order does not change report identity/result, including malformed/undeclared-result permutations;
 - report carries the exact canonical identity map and semantic mutation changes report identity;
+- reordering a candidate comparison vector changes report identity;
 - manifest semantic mutation changes identity;
 - canonical Spec 001/002/003 identities remain unchanged.
 
@@ -301,7 +302,7 @@ Use existing Spec 001 canonicalization/hard-gate code, Spec 002 safety qualifica
 
 The implementation is a pure validation/aggregation mechanism over in-memory metadata/results. It does not discover or execute model/benchmark tooling.
 
-## Explicit exclusions
+## Exclusions
 
 Spec 004 SHALL NOT:
 
@@ -338,12 +339,32 @@ Spec 004 must expose a clean boundary for those later decisions rather than choo
 6. Comparison metrics are pre-registered, canonical, direction-aware, finite, evidence-bound, and handle large integers without overflow.
 7. Lexicographic comparison is deterministic and has no hidden/alphabetic tie-break selection.
 8. Ties and incomplete/blocked evidence produce `NO_SELECTION`; proven `DISQUALIFIED` candidates remain distinct from incomplete evidence.
-9. Deterministic report identity is stable under semantic input reordering, carries canonical contract identities, and changes on semantic mutation.
+9. Deterministic report identity is stable under semantic input reordering, carries canonical contract identities, binds comparison-vector order, and changes on scientific mutation.
 10. Synthetic fixture tests cover positive and negative cases without model/benchmark payload execution.
 11. Canonical Spec 001/002/003 semantic identities remain unchanged.
 12. No new dependency/runtime/provider/model/data execution surface is introduced.
-13. Independent review reports no unresolved material authorization, comparison-integrity, or governance blocker.
+13. Independent review reports no unresolved material authorization, comparison-integrity, security, or governance blocker.
 14. Exact-head GitHub validation passes before guarded merge.
+
+## Exit Evidence
+
+Spec 004 is eligible for implementation merge only when one unchanged exact PR head proves all of the following:
+
+```text
+PYTHON_SYNTAX=PASS
+CANONICAL_TOURNAMENT_IDENTITIES=PASS
+EXECUTION_SURFACE_PREFLIGHT=PASS
+FOCUSED_SPEC004_TESTS=PASS
+INHERITED_HARD_GATES=PASS
+FULL_OFFLINE_SUITE=PASS
+GIT_DIFF_CHECK=PASS
+BOUNDED_PATH_PREFLIGHT=PASS
+INDEPENDENT_EXACT_HEAD_REVIEW=NO_MATERIAL_BLOCKER
+```
+
+The final implementation head must also contain a non-self-referential closeout record that cites predecessor validation/review evidence without claiming its own commit SHA. Adding that closeout changes the head and therefore requires a fresh exact-head validation and independent review before guarded merge.
+
+After implementation merge, a separate closure-only PR must bind the canonical implementation merge SHA/tree and update lifecycle state. Only the verified merge of that closure-only PR may establish `SPEC_004=CLOSED_CANONICAL`.
 
 ## Exit state
 
