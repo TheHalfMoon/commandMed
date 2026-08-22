@@ -146,6 +146,16 @@ class SafetyScopeTests(unittest.TestCase):
         scope = component_scope(); scope["claimed_capabilities"].append("LAB_DOCUMENT")
         self.assertTrue(any("both claimed and out-of-scope" in e for e in validate_evaluation_scope(policy(), scope)))
 
+    def test_malformed_claimed_capability_collection_fails_without_exception(self):
+        scope = component_scope(); scope["claimed_capabilities"] = [{}]
+        errors = validate_evaluation_scope(policy(), scope)
+        self.assertTrue(errors); self.assertTrue(any("claimed_capabilities[0]" in e for e in errors))
+
+    def test_malformed_excluded_capability_collection_fails_without_exception(self):
+        scope = component_scope(); scope["out_of_scope_capabilities"] = [["LAB_DOCUMENT"]]
+        errors = validate_evaluation_scope(policy(), scope)
+        self.assertTrue(errors); self.assertTrue(any("out_of_scope_capabilities[0]" in e for e in errors))
+
 
 class SafetySentinelTests(unittest.TestCase):
     def fixture(self, rule_id: str, observed_state: str) -> dict:
