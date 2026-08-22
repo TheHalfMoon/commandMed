@@ -1,10 +1,10 @@
 # Spec 001 — Evaluation Charter Candidate Evidence
 
-**Closeout type:** governance / evaluation contract implementation  
-**Status:** `CLOSEOUT_CANDIDATE_PENDING_EXACT_HEAD_VALIDATION`  
-**Branch:** `spec/001-eval-charter`  
-**Canonical base commit:** `30283d7d45c1d257f6c448d3648b25034e8ee5d5`  
-**Spec Kit bootstrap commit:** `489a3d51d152fa160d88d86781a924e99c4af832` (`specify` v0.15.1)  
+**Closeout type:** governance / evaluation contract implementation
+**Status:** `CLOSEOUT_CANDIDATE_PENDING_EXACT_HEAD_VALIDATION`
+**Branch:** `spec/001-eval-charter`
+**Canonical base commit:** `30283d7d45c1d257f6c448d3648b25034e8ee5d5`
+**Spec Kit bootstrap commit:** `489a3d51d152fa160d88d86781a924e99c4af832` (`specify` v0.15.1)
 **State transition rule:** `CLOSED_CANONICAL` occurs only through a dedicated closure PR after canonical merge of this implementation PR.
 
 ---
