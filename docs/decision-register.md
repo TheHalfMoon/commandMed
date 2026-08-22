@@ -105,7 +105,7 @@ Begin with minimum license-clean teacher strategy; add specialized/multiple teac
 
 **State:** TEST_BEFORE_LOCK
 
-Do not schedule DPO as ceremony. Use it only if a measurable preference/alignment deficit remains.
+Do not schedule DPO as ceremony. Use it only if a measurable preference/communication/alignment deficit remains.
 
 ### T-006 — Quantization floor
 
@@ -119,34 +119,40 @@ Q4 is not automatically final and Q2/Q3 are not automatically acceptable. Medica
 
 Choose the minimum runtime set needed by the winning architecture and named device matrix.
 
-## Founder decisions required
+## Founder decisions
 
 ### FD-001 — Release/licensing posture
 
-**State:** FOUNDER_REQUIRED
+**State:** LOCKED
+**Founder decision:** `OPEN_WEIGHTS_PERMISSIVE_DOWNSTREAM_USE`
+**Decision date:** 2026-08-23
 **Needed before:** final candidate lineage selection / any incompatible training data use
 
-Choose intended posture among possibilities such as:
+Intent:
 
-- open weights with permissive downstream use;
-- open weights under a responsible-use/custom license;
-- research weights only;
-- commercial product with or without public weights.
+- prefer an Apache-2.0-compatible release lineage where legally supportable;
+- preserve commercial downstream use where the complete base/data/teacher lineage permits it;
+- preserve public weight redistribution where the complete lineage permits it;
+- keep custom/restrictive-license candidates research-only or conditional until exact intended-use compatibility is proven;
+- do not select a final release lineage whose obligations conflict with this posture without a separate explicit founder override.
 
-This decision controls acceptable base-model/data/teacher licenses.
+This decision sets the intended release posture. Exact base-model, dataset, teacher, and derivative-license compatibility remains an evidence-gated provenance question and must be proven before irreversible use or final selection.
 
 ### FD-002 — Target device tier
 
-**State:** FOUNDER_REQUIRED
+**State:** LOCKED
+**Founder decision:** `FLAGSHIP_PLUS_MODERN_MIDRANGE`
+**Decision date:** 2026-08-23
 **Needed before:** final tournament qualification thresholds
 
-Choose whether V1 must support:
+Intent:
 
-- flagship phones only;
-- flagship + modern midrange phones;
-- broader constrained/mobile baseline.
+- V1 tournament qualification must cover both flagship and modern midrange phones;
+- Spec 005 must freeze exact named-device/resource classes and package, peak-RAM, latency, energy, and thermal thresholds before any live tournament execution;
+- do not prematurely require a broader constrained/mobile baseline;
+- parameter count alone is not evidence of device fit.
 
-The decision sets package/peak-RAM/latency/thermal budgets.
+This decision fixes the target device tier but does not itself define numeric qualification thresholds; those thresholds remain a Spec 005 specification/clarification task and require evidence before execution.
 
 ### FD-003 — Human/clinician evaluation budget
 
@@ -176,10 +182,30 @@ No hidden downgrade is allowed.
 
 ### FD-006 — Donor-origin restrictions
 
-**State:** FOUNDER_REQUIRED
+**State:** LOCKED
+**Founder decision:** `NOT_INVOKED`
+**Decision date:** 2026-08-23
 **Needed before:** tournament freeze if restrictions are desired
 
-Decide whether commandMed inherits any model-origin restrictions from related research programs. Do not infer them automatically.
+commandMed does not automatically inherit model-origin restrictions from related research programs. Candidate eligibility is governed by commandMed's own frozen evaluation, provenance, safety, licensing, device, and authorization contracts. Any future donor-origin restriction requires a separate explicit founder decision.
+
+## Spec 005 entry consequence
+
+The founder prerequisites needed to begin Spec 005 specification are satisfied by `FD-001`, `FD-002`, and `FD-006` above.
+
+This permits **specification-stage work only** after these decisions are merged to canonical `main` and canonical state is verified. It does not by itself authorize live tournament execution or any asset access.
+
+```text
+SPEC_005_ENTRY_AFTER_CANONICAL_DECISION_MERGE=AUTHORIZED_TO_SPECIFY
+TRAINING_AUTHORITY=NONE
+MODEL_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+PROVIDER_GENERATION_AUTHORITY=NONE
+PHI_ACCESS_AUTHORITY=NONE
+GATED_ASSET_ACCESS_AUTHORITY=NONE
+```
 
 ## Deferred decisions
 
