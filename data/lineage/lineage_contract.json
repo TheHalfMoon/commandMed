@@ -17,6 +17,7 @@
     {"description": "Private Gold cannot enter prohibited optimization or redistribution uses.", "invariant_id": "PRIVATE_GOLD_QUARANTINED", "required": true},
     {"description": "Canonical Spec 001 Purpose must be compatible with the requested declared use before eligibility.", "invariant_id": "PURPOSE_USE_COMPATIBILITY_ENFORCED", "required": true},
     {"description": "Canonical reference-only teacher families cannot become commandMed training lineage without a later explicit policy change.", "invariant_id": "REFERENCE_TEACHER_OUTPUTS_NOT_TRAINING_LINEAGE", "required": true},
+    {"description": "Every training/adaptation record declares origin provenance; non-original training lineage requires parent, producer/generator, and output-use evidence.", "invariant_id": "TRAINING_ORIGIN_PROVENANCE_REQUIRED", "required": true},
     {"description": "Source verification is distinct from exact artifact binding.", "invariant_id": "SOURCE_VERIFIED_NE_ARTIFACT_BOUND", "required": true},
     {"description": "UNBOUND cannot satisfy a declared use requiring exact bytes.", "invariant_id": "UNBOUND_EXACT_BYTE_USE_BLOCKED", "required": true},
     {"description": "Unresolved or conditional rights cannot produce ELIGIBLE.", "invariant_id": "UNCLEAR_RIGHTS_BLOCK_USE", "required": true},
