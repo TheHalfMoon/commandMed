@@ -1,12 +1,12 @@
 # Spec 004 — Tournament Harness Implementation Closeout Candidate
 
 **Closeout type:** pre-merge implementation closeout candidate
-**Status:** `READY_FOR_FINAL_EXACT_HEAD_QUALIFICATION_AND_REVIEW`
+**Status:** `REPAIRED_AWAITING_FINAL_EXACT_HEAD_QUALIFICATION_AND_REVIEW`
 **Implementation PR:** `#28`
 **Canonical starting base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
-**Reviewed predecessor implementation head:** `7a04d40030a2aa28b4c2f0d5db6e4d387388c756`
+**Historical reviewed predecessor:** `7a04d40030a2aa28b4c2f0d5db6e4d387388c756`
 
-> This document is intentionally non-self-referential. It does not claim the commit SHA that contains itself. Adding this document and the accompanying task-state reconciliation changes the PR head, so the resulting final implementation head must receive fresh exact-head GitHub qualification and independent review before merge.
+> This document is intentionally non-self-referential. It does not claim the commit SHA that contains itself. The final repair and reconciliation content containing this document must receive fresh exact-head GitHub qualification and independent review before merge. No predecessor run or review is final merge evidence after a later material finding.
 
 ## 1. Bounded implementation completed
 
@@ -27,6 +27,7 @@ It implements:
 - deterministic identity-bound reports that include the exact canonical contract identity map;
 - report hashing that binds lexicographic comparison-vector order;
 - fail-closed recursive execution/payload/credential key rejection;
+- fail-closed mixed-type object-key handling without heterogeneous-key sort exceptions;
 - exact large-integer comparison and report identity without float or decimal-string overflow;
 - synthetic/non-medical fixture regression coverage only.
 
@@ -58,13 +59,16 @@ The harness requires both the recomputed supplied-artifact identities and the ma
 - Python 3.11 large-integer report-hash decimal conversion avoidance via exact tagged-hex hash projection;
 - recursive prohibited-key separator/whitespace normalization hardening;
 - scientific binding of comparison-vector order in report hashes;
-- explicit bounded-spec `Exclusions` and `Exit Evidence` governance sections.
+- explicit bounded-spec `Exclusions` and `Exit Evidence` governance sections;
+- mixed string/non-string object-key fail-closed validation and invalid-manifest report-shell hardening.
+
+Final-review governance bookkeeping was also reconciled so T004-10 no longer lists creation of an already-present closeout candidate as remaining work.
 
 Every material semantic repair invalidated earlier qualification rather than reusing stale green evidence.
 
-## 4. Pre-closeout exact-head qualification
+## 4. Historical qualification evidence — not final merge evidence
 
-Temporary GitHub carrier PR #29 explicitly checked out reviewed predecessor head:
+Temporary GitHub carrier PR #29 previously checked out the historical test-complete predecessor:
 
 ```text
 RUN=32601812794
@@ -81,11 +85,13 @@ GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-This evidence is predecessor evidence only after this closeout mutation. It establishes the implementation basis for closeout but is **not** final merge evidence for the head containing this file.
+After closeout/task content was added, carrier Run `32602120618` also passed 45 focused / 9 inherited hard-gate / 273 full tests on predecessor `6c1a359f969222dd7868248d1ba12fc114f413d9`, together with exact identity, execution-surface, diff, and bounded-path gates.
 
-## 5. Pre-closeout independent review
+That later predecessor qualification was invalidated before merge when final independent review identified R004-08, the mixed-type object-key fail-closed defect. Neither historical run is merge evidence for the repaired final head.
 
-CodeRabbit reviewed the exact test-complete predecessor delta through review Run:
+## 5. Historical independent review and final-review repair
+
+CodeRabbit reviewed the test-complete predecessor delta through review Run:
 
 ```text
 REVIEW_RUN=5effe806-c304-44a6-a910-95a604c56933
@@ -96,29 +102,37 @@ MERGE_RISK=MINIMAL
 
 The immediately preceding implementation repair head `f21d500dd172b1cbe1c9d23a86b9880e4104e64a` had also received independent review Run `a3febb8c-5520-43a1-a34e-664152eee42c` with no actionable comments. The only residual Moderate risk reported there was missing dedicated regression coverage for malformed candidate result sets; `7a04d400...` added that coverage and the follow-up review reduced merge risk to Minimal.
 
-## 6. Acceptance status before final closeout qualification
+A later final review of predecessor `6c1a359f969222dd7868248d1ba12fc114f413d9` identified:
 
-| Area | Pre-closeout result |
+- **R004-08 / MATERIAL:** heterogeneous object keys could raise before fail-closed evaluation completed;
+- **G004-01 / GOVERNANCE:** T004-10 still listed closeout creation as remaining although `closeout.md` already existed.
+
+Both are repaired in the current candidate content. The current final repair head therefore requires a new independent review; predecessor reviews remain historical context only.
+
+## 6. Acceptance status before final repair qualification
+
+| Area | Current implementation status |
 |---|---|
-| Closed manifest/result schemas | PASS |
-| Exact six canonical upstream identities | PASS |
-| Alternate-protocol self-assertion prevention | PASS |
-| Candidate lineage delegation | PASS |
-| Safety hard-gate delegation | PASS |
-| Incomplete-candidate no-selection semantics | PASS |
-| Decisive disqualification semantics | PASS |
-| Evidence-bound finite comparison metrics | PASS |
-| Large integer stability | PASS |
-| Lexicographic direction-aware ranking | PASS |
-| Scientific tie handling | PASS |
-| Deterministic report identity | PASS |
-| Comparison-vector order binding | PASS |
-| Recursive execution/payload-key hardening | PASS |
-| Malformed result-set fail-closed coverage | PASS |
-| Focused fixture tests | 45/45 PASS |
-| Inherited hard gates | 9/9 PASS |
-| Full offline suite | 273/273 PASS |
-| Pre-closeout independent review | PASS — no actionable comments / Minimal risk |
+| Closed manifest/result schemas | REPAIRED / final exact-head proof pending |
+| Exact six canonical upstream identities | unchanged / final exact-head proof pending |
+| Alternate-protocol self-assertion prevention | implemented |
+| Candidate lineage delegation | implemented |
+| Safety hard-gate delegation | implemented |
+| Incomplete-candidate no-selection semantics | implemented |
+| Decisive disqualification semantics | implemented |
+| Evidence-bound finite comparison metrics | implemented |
+| Large integer stability | implemented |
+| Lexicographic direction-aware ranking | implemented |
+| Scientific tie handling | implemented |
+| Deterministic report identity | implemented |
+| Comparison-vector order binding | implemented |
+| Recursive execution/payload-key hardening | implemented |
+| Malformed result-set fail-closed coverage | implemented |
+| Mixed-type object-key fail-closed coverage | implemented / final exact-head proof pending |
+| Final focused fixture tests | PENDING fresh exact-head run |
+| Final inherited hard gates | PENDING fresh exact-head run |
+| Final full offline suite | PENDING fresh exact-head run |
+| Final independent review | PENDING fresh exact-head review |
 | Model/provider/benchmark execution | NONE |
 
 ## 7. Explicit authority boundary
@@ -152,7 +166,7 @@ SPEC_005=BLOCKED
 
 ## 8. Final implementation merge gate
 
-This closeout candidate does not authorize merge by itself. The exact final PR head containing this file must independently prove:
+This closeout candidate does not authorize merge by itself. The exact final repaired PR head containing this file must independently prove:
 
 ```text
 PYTHON_SYNTAX=PASS
@@ -166,7 +180,7 @@ BOUNDED_PATH_PREFLIGHT=PASS
 FRESH_INDEPENDENT_EXACT_HEAD_REVIEW=NO_MATERIAL_BLOCKER
 ```
 
-Only an unchanged head satisfying all of those gates may be guarded squash-merged through PR #28.
+Only an unchanged head satisfying all of those gates may be guarded squash-merged through PR #28. No repository-content mutation may occur between final qualification/review and merge.
 
 ## 9. Post-merge canonical closure requirement
 
