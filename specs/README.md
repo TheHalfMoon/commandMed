@@ -7,6 +7,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 ## State legend
 
 - `CANONICAL_PLANNING` — definition is frozen enough to govern later work; not necessarily executable.
+- `AUTHORIZED_TO_SPECIFY` — specification-stage work may begin; does not authorize clarification, planning, implementation, execution, model/weight/data access, or later lifecycle stages.
 - `AUTHORIZED_TO_START` — may be implemented under its bounded scope.
 - `ACTIVE` — implementation/reconciliation in progress.
 - `CLOSED_CANONICAL` — acceptance evidence is complete and merged canonically.
@@ -22,7 +23,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 002 | Safety Gates | `CLOSED_CANONICAL` | 001 | Implementation merge `b637382fd9a0d8a02f71c11073a5276d61726bb6`; dedicated closure records final 54/9/157 exact-head qualification. |
 | 003 | Data, License & Provenance | `CLOSED_CANONICAL` | 001 | Qualified implementation merge `a5fef84f9f0cee12dcd2ea6735888faee43db1ec`, tree `d7b2e11a8470ec66f50f1cff77bba4dddff20812`; final exact-head evidence: 71 focused / 9 hard-gate / 228 full tests and independent review with no material blocker. |
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Effective only after this dedicated closure-only transition is independently reviewed, guarded-merged, and resulting canonical `main` is verified. Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
-| 005 | Base Model Tournament | `BLOCKED` | 004 + required founder license/device decisions | Spec 004 closure alone does not authorize start. Baseline-only tournament; no training. Separate founder prerequisites and explicit authorization remain required. |
+| 005 | Base Model Tournament | `AUTHORIZED_TO_SPECIFY` | 004 `CLOSED_CANONICAL` + `FD-001`/`FD-002`/`FD-006` `LOCKED` | Founder decisions canonical at `a68d37acd713049694106e81dc134ccf4d51feb9`. Specification-stage only; baseline-only/no training. No model execution, weight access, benchmark-payload execution, private-Gold access, provider generation, PHI access, or gated-asset access. |
 | 006 | Patient Safety Scaffold & Deterministic Tools | `BLOCKED` | 002, 005 | Defense-in-depth interaction/tool boundary. |
 | 007 | SFT V1 | `BLOCKED` | 003, 005, 006 | Three-class high-quality SFT. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
@@ -88,9 +89,13 @@ This repaired closure transition:
 
 Because the C004 repairs changed repository content, the first closure review is historical only. `CLOSED_CANONICAL` for Spec 004 becomes effective only after the repaired exact closure head receives a new fresh independent review with no material blocker, is guarded-merged unchanged, and the resulting canonical `main` plus lifecycle files are verified.
 
-## Spec 005 boundary
+## Spec 005 specification boundary
 
-Spec 005 remains `BLOCKED`. Spec 004 closure does not satisfy Spec 005's separate founder license/device decisions and does not constitute explicit Spec 005 start authorization.
+Founder decisions `FD-001`, `FD-002`, and `FD-006` were canonically locked by PR #32 / merge `a68d37acd713049694106e81dc134ccf4d51feb9`. The dependency and founder-decision prerequisites for the **specify stage** are therefore satisfied.
+
+Spec 005 is `AUTHORIZED_TO_SPECIFY` only. Its specification may define the tournament problem, inherited contracts, admission/comparability rules, fail-closed behavior, and questions that clarification must resolve. It must not freeze or execute a live tournament merely by naming candidate families.
+
+Successful canonical definition of `specs/005-base-model-tournament/spec.md` advances only to a separately authorized clarification step.
 
 ## Planning rule
 
@@ -105,6 +110,8 @@ Prefer one bounded spec per implementation branch/PR. A spec's merged closeout e
 **No spec currently authorizes training, model execution, model-weight access, benchmark payload execution, or real-model tournament execution.**
 
 ```text
+SPEC_005=AUTHORIZED_TO_SPECIFY
+SPEC_005_LIFECYCLE_AUTHORITY=SPECIFY_ONLY
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
@@ -114,5 +121,4 @@ PROVIDER_API_GENERATION_AUTHORITY=NONE
 PHI_RESTRICTED_DATA_ACCESS_AUTHORITY=NONE
 PRIVATE_GOLD_PAYLOAD_ACCESS_AUTHORITY=NONE
 GATED_ASSET_ACCESS_AUTHORITY=NONE
-SPEC_005=BLOCKED
 ```
