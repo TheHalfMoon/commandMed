@@ -28,6 +28,8 @@ There are three distinct objects:
 
 An invalid/weakened contract or malformed record fails closed and cannot produce `ELIGIBLE`.
 
+`asset_class` is evidence metadata, not a trust boundary. In particular, a caller cannot make generated/derived training material safer by relabeling it as `DATASET_OR_CORPUS` or another generic class.
+
 ## Source verification is not artifact binding
 
 A source or benchmark family may be `VERIFIED` while its executable payload is still `UNBOUND`.
@@ -133,11 +135,19 @@ Spec 003 records and validates contamination/overlap state; it does not scan cor
 
 For uses that require clean optimization separation, unresolved/pending overlap blocks admission and established high-risk overlap prohibits that optimization use.
 
-## Synthetic and derived lineage
+## Training-origin, synthetic, and derived lineage
 
-Generated and derived assets retain parentage.
+Generated and derived assets retain parentage, and training-origin enforcement is deliberately independent of `asset_class`.
 
-Where applicable, records carry:
+For every `TRAINING_OR_ADAPTATION` record:
+
+- `origin_type` is required and must be one of the closed V1 origin states;
+- `ORIGINAL` is an explicit claim, not an implicit fallback;
+- non-original training lineage requires parent asset IDs, producer/generator identity, and resolved output-use evidence;
+- model-generated origin additionally requires generation/configuration identity;
+- contradictory `origin_type=ORIGINAL` plus `generator_identity` fails validation.
+
+For generated or derived assets more generally, records carry where applicable:
 
 - parent asset IDs;
 - origin type;
@@ -145,7 +155,9 @@ Where applicable, records carry:
 - generation/configuration identity; and
 - output-use evidence.
 
-Model-generated output does not become training lineage by omission. A training/adaptation use of generated or derived output requires explicit output-use evidence in addition to the other rights/privacy/contamination gates.
+The reference-teacher prohibition is also class-independent. For training admission, the evaluator checks prohibited MedGemma/HAI-DEF markers across producer and source/canonical metadata, not only on records using a model-generated asset class. Relabeling the same output as `DERIVED_RESEARCH_ARTIFACT`, `DATASET_OR_CORPUS`, or another generic class does not erase that policy.
+
+Model-generated output therefore does not become training lineage by omission or relabeling. A training/adaptation use of non-original output requires explicit provenance and output-use evidence in addition to the other rights/privacy/contamination gates.
 
 This preserves the project default that MedGemma/HAI-DEF and frontier-provider outputs are not automatically training data.
 
@@ -184,7 +196,7 @@ Identity-bearing examples include:
 - rights evidence/state;
 - split/purpose/quarantine identity;
 - contamination evidence/state;
-- parent/generator/configuration lineage.
+- origin/parent/generator/configuration lineage.
 
 Audit-only examples include:
 
@@ -219,6 +231,6 @@ commandMed does not adopt their full runtime stacks in Spec 003. The implementat
 
 ## Verification boundary
 
-The implementation is intentionally testable with synthetic metadata only. The focused suite must prove contract weakening, self-asserted admission/identity, mutable revision labels, unresolved rights/privacy/contamination, Gold misuse, generated-output laundering, malformed inputs, and Spec 001 compatibility all fail closed.
+The implementation is intentionally testable with synthetic metadata only. The focused suite must prove contract weakening, self-asserted admission/identity, mutable revision labels, unresolved rights/privacy/contamination, Gold misuse, generated-output laundering across asset classes, malformed inputs, and Spec 001 compatibility all fail closed.
 
 No external payload access is necessary to verify the contract.
