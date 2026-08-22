@@ -1,11 +1,11 @@
 # Spec 004 — Tournament Harness Canonical Closeout
 
-**Closeout type:** dedicated post-implementation governance closure  
-**Status:** `CLOSED_CANONICAL` — effective only after this closure-only PR is merged and resulting canonical `main` is verified  
-**Implementation PR:** `#28`  
-**Canonical implementation merge:** `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`  
-**Canonical implementation tree:** `7e37fa626f825ee25271e0bf21a627a2e64e49da`  
-**Final reviewed implementation head:** `cf6158ea4193aa7db895607c6fac5a3a1442f708`  
+**Closeout type:** dedicated post-implementation governance closure
+**Status:** `CLOSED_CANONICAL` — effective only after this closure-only PR is merged and resulting canonical `main` is verified
+**Implementation PR:** `#28`
+**Canonical implementation merge:** `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`
+**Canonical implementation tree:** `7e37fa626f825ee25271e0bf21a627a2e64e49da`
+**Final reviewed implementation head:** `cf6158ea4193aa7db895607c6fac5a3a1442f708`
 **Canonical implementation base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
 
 > This closeout is intentionally non-self-referential. It binds the already-canonical implementation evidence below but does not claim the closure merge SHA containing itself. `SPEC_004=CLOSED_CANONICAL` becomes effective only after this exact closure head is independently reviewed, guarded-merged unchanged, and the resulting canonical `main` plus lifecycle records are verified.
