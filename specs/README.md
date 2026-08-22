@@ -19,8 +19,8 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 |---|---|---|---|---|
 | 000 | Program Charter | `CLOSED_CANONICAL` | — | Planning package canonical at `b0398f2fe514bd3ccd339908d739aef61055f929`; closure evidence in `specs/000-program-charter/closeout.md`. |
 | 001 | Evaluation Charter | `CLOSED_CANONICAL` | 000 | Implementation merge `531343f785a6430036cbb2770d0504676514b9a7`; closure merge `cc02b0d99d67e5a720502953c99307c8b991720d`. |
-| 002 | Safety Gates | `ACTIVE` | 001 | Fixture-only/offline safety-policy implementation on `spec/002-safety-gates`; no model/benchmark execution, PHI, real Gold, or training authority. |
-| 003 | Data, License & Provenance | `BLOCKED` | 001 | Dependency is satisfied, but implementation remains unactivated under the one-active-spec discipline. |
+| 002 | Safety Gates | `CLOSED_CANONICAL` | 001 | Implementation merge `b637382fd9a0d8a02f71c11073a5276d61726bb6`; dedicated closure records final 54/9/157 exact-head qualification. |
+| 003 | Data, License & Provenance | `AUTHORIZED_TO_START` | 001 | Spec 002 canonical closure clears the one-active-spec frontier; implementation remains `NOT_STARTED` until explicitly begun under Spec 003 scope. |
 | 004 | Tournament Harness | `BLOCKED` | 001, 002, 003 | Fixture-only harness before any separately authorized model execution. |
 | 005 | Base Model Tournament | `BLOCKED` | 004 + required founder license/device decisions | Baseline-only tournament; no training. |
 | 006 | Patient Safety Scaffold & Deterministic Tools | `BLOCKED` | 002, 005 | Defense-in-depth interaction/tool boundary. |
@@ -36,32 +36,15 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 016 | Advanced Modality Adapters | `DEFERRED` | separate modality prerequisites | ECG, wearables, imaging volumes, WSI, audio/video etc. |
 | 017 | Release Review & Paper | `BLOCKED` | all claimed capabilities | Independent review and claims package. |
 
-## Current execution frontier — Spec 002
+## Current execution frontier — Spec 003 authorization
 
-Spec 002 starts from canonical main:
+Spec 002 implementation is canonical at `b637382fd9a0d8a02f71c11073a5276d61726bb6` and its dedicated closure transition marks it `CLOSED_CANONICAL`.
 
-```text
-cc02b0d99d67e5a720502953c99307c8b991720d
-```
+Spec 003 — Data, License & Provenance — is therefore `AUTHORIZED_TO_START`, but implementation is still `NOT_STARTED` until explicitly initiated under its own bounded plan/review lifecycle. This transition does not authorize model execution, benchmark payload execution, PHI/restricted data access, real Gold access, or training.
 
-Its bounded authority is safety-governance implementation only:
+## Spec 002 closure rule
 
-- machine-readable safety policy;
-- forced emergency/escalation and missing-information/evidence mechanics;
-- deterministic/authoritative truth-boundary contracts;
-- scope/applicability rules;
-- threshold-freeze governance;
-- fixture-only validation and deterministic policy identity.
-
-Spec 002 explicitly does **not** authorize a clinical red-flag catalogue, drug database, clinical calculator implementation, patient medical-advice runtime, model/benchmark execution, PHI/restricted data, real Gold, or training.
-
-Spec 002 planning analysis found and repaired two material design contradictions before implementation: `NOT_APPLICABLE` is kept out of the existing gate-result enum, and component-scoped N/A cannot be promoted into system-level safety evidence or used to suppress mandatory system Arabic/patient safety obligations.
-
-## Spec 002 exit rule
-
-Spec 002 may become an implementation closeout candidate only after exact-head fixture/full-suite validation, canonical safety-policy hashing, and fresh exact-head review.
-
-An implementation merge still does not make Spec 002 `CLOSED_CANONICAL`; the established dedicated closure-only PR pattern remains required.
+The Spec 002 implementation merge alone did not close the spec. This dedicated closure-only change binds the qualified implementation evidence to canonical merge `b637382fd9a0d8a02f71c11073a5276d61726bb6`; `CLOSED_CANONICAL` becomes effective only after this closure PR is reviewed, merged, and resulting canonical `main` is verified.
 
 ## Planning rule
 
@@ -73,4 +56,4 @@ Prefer one bounded spec per implementation branch/PR. A spec's merged closeout e
 
 ## Training authority
 
-**No spec currently authorizes training or model execution.** Spec 002 is the active bounded authority and is limited to fixture-only/offline Safety Gates governance.
+**No spec currently authorizes training, model execution, or benchmark payload execution.** Spec 003 is only authorized to start its bounded governance work; implementation remains not started until explicitly initiated.

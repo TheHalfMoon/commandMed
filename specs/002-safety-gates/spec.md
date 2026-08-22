@@ -2,7 +2,7 @@
 
 **Feature Branch:** `spec/002-safety-gates`
 **Created:** 2026-08-22
-**State:** ACTIVE (CLOSEOUT_CANDIDATE)
+**State:** CLOSED_CANONICAL
 **Canonical starting base:** `cc02b0d99d67e5a720502953c99307c8b991720d`
 **Dependency:** Spec 001 — `CLOSED_CANONICAL`
 **Training authority:** NONE
@@ -386,3 +386,7 @@ Spec 002 MUST NOT:
 Spec 002 reaches `CLOSED_CANONICAL` only after its implementation candidate is exact-head validated/reviewed, merged canonically, and a dedicated closure-only state transition is independently qualified and merged, following the established repository pattern.
 
 Closing Spec 002 does **not** authorize model execution or training. It satisfies the Safety Gates dependency for later bounded specs only.
+
+## Canonical closure
+
+Spec 002 is `CLOSED_CANONICAL` only after the dedicated closure PR based on canonical implementation merge `b637382fd9a0d8a02f71c11073a5276d61726bb6` is itself reviewed, merged, and the resulting `main` is verified. Closure authorizes Spec 003 to start under its own bounded scope; it does not start Spec 003 implementation automatically and does not authorize model execution, benchmark execution, PHI/Gold access, or training.

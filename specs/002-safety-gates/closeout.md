@@ -1,10 +1,42 @@
 # Spec 002 — Safety Gates Candidate Closeout Evidence
 
 **Closeout type:** fixture-only safety-governance implementation
-**Status:** `CLOSEOUT_CANDIDATE_PENDING_EXTERNAL_EXACT_HEAD_QUALIFICATION`
+**Status:** `CLOSED_CANONICAL`
 **Canonical starting base:** `cc02b0d99d67e5a720502953c99307c8b991720d`
 **Implementation branch:** `spec/002-safety-gates`
 **State transition rule:** implementation merge does not make Spec 002 `CLOSED_CANONICAL`; a dedicated post-merge closure-only PR remains required.
+
+## Canonical closure record
+
+Spec 002 implementation was squash-merged through PR #10 to canonical `main`:
+
+```text
+FINAL_REVIEWED_IMPLEMENTATION_HEAD=f75e7d545fa988360aab4b4d00c784d5102d03ab
+CANONICAL_IMPLEMENTATION_MERGE=b637382fd9a0d8a02f71c11073a5276d61726bb6
+CANONICAL_IMPLEMENTATION_TREE=83384c2eec2d15442aee32ccafa86186fcbec553
+FINAL_VALIDATION_RUN=32592848972
+FINAL_VALIDATION_JOB=97079245055
+FOCUSED_SPEC_002_TESTS=54/54_PASS
+HARD_GATE_INTEGRATION_TESTS=9/9_PASS
+FULL_OFFLINE_TESTS=157/157_PASS
+SEMANTIC_IDENTITIES=PASS
+FRESH_EXTERNAL_EXACT_HEAD_REVIEW=PASS_NO_MATERIAL_BLOCKER
+```
+
+This closure-only transition changes governance/documentation state only. It does not alter source code, tests, canonical evaluation JSON, runtime dependencies, model/benchmark execution surfaces, PHI/Gold access, or training surfaces.
+
+Upon merge of the dedicated closure PR and verification of resulting canonical `main`:
+
+```text
+SPEC_002=CLOSED_CANONICAL
+SPEC_003=AUTHORIZED_TO_START
+SPEC_003_IMPLEMENTATION=NOT_STARTED
+MODEL_EXECUTION_AUTHORITY=NONE
+BENCHMARK_EXECUTION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+```
+
+Authorization to start Spec 003 does not itself start implementation and grants no model, benchmark, data-payload, PHI, Gold, or training authority.
 
 ## 1. Purpose
 
