@@ -96,6 +96,16 @@ class SafetyPolicyValidationTests(unittest.TestCase):
         p = policy(); p["gate_contracts"][0]["required_scope_kinds"] = ["COMPONENT_QUALIFICATION"]
         self.assertTrue(any("must apply to SYSTEM_QUALIFICATION" in e for e in validate_safety_policy(p)))
 
+    def test_pending_gate_contract_is_fully_fail_closed(self):
+        p = policy(); gate = next(g for g in p["gate_contracts"] if g["metric_id"] == "selective_risk_at_target_coverage")
+        gate["fail_condition"] = "IGNORE_PENDING"
+        self.assertTrue(any("NO_PASS_UNTIL_FROZEN/PENDING_OR_UNSUPPORTED" in e for e in validate_safety_policy(p)))
+
+    def test_gate_evidence_kind_matches_threshold_class(self):
+        p = policy(); gate = next(g for g in p["gate_contracts"] if g["metric_id"] == "emergency_miss_rate")
+        gate["required_evidence_kind"] = "IDENTITY_BOUND_CLINICAL_EVIDENCE"
+        self.assertTrue(any("requires IDENTITY_BOUND_SENTINEL_EVIDENCE" in e for e in validate_safety_policy(p)))
+
     def test_pending_threshold_cannot_be_passable(self):
         p = policy(); p["statistical_threshold_requirements"][0]["pass_allowed"] = True
         self.assertTrue(validate_safety_policy(p))
@@ -120,6 +130,28 @@ class SafetyPolicyValidationTests(unittest.TestCase):
         p = policy(); req = next(r for r in p["statistical_threshold_requirements"] if r["metric_id"] == "benign_case_over_triage_rate")
         req["founder_decision_id"] = "FD-999"
         self.assertTrue(any("must remain bound to FD-004" in e for e in validate_safety_policy(p)))
+
+    def test_malformed_scalar_tokens_and_freeze_lists_fail_without_exception(self):
+        mutations = []
+        for label, section, field, bad in (
+            ("trigger", "precedence_rules", "trigger_class", []),
+            ("required_state", "precedence_rules", "required_state", {}),
+            ("rule_evidence", "precedence_rules", "evidence_requirement", 7),
+            ("task_class", "truth_boundaries", "task_class", []),
+            ("mechanism_class", "truth_boundaries", "mechanism_class", {}),
+            ("metric_id", "gate_contracts", "metric_id", []),
+            ("threshold_class", "gate_contracts", "threshold_class", {}),
+            ("capability_claim", "gate_contracts", "capability_claim_id", []),
+            ("gate_evidence", "gate_contracts", "required_evidence_kind", {}),
+            ("threshold_state", "statistical_threshold_requirements", "state", []),
+        ):
+            mutations.append((label, section, field, bad))
+        for label, section, field, bad in mutations:
+            with self.subTest(label=label):
+                p = policy(); p[section][0][field] = bad
+                self.assertTrue(validate_safety_policy(p))
+        p = policy(); p["statistical_threshold_requirements"][0]["required_before_freeze"] = [{}]
+        self.assertTrue(validate_safety_policy(p))
 
 
 class SafetyScopeTests(unittest.TestCase):
@@ -156,6 +188,10 @@ class SafetyScopeTests(unittest.TestCase):
         errors = validate_evaluation_scope(policy(), scope)
         self.assertTrue(errors); self.assertTrue(any("out_of_scope_capabilities[0]" in e for e in errors))
 
+    def test_malformed_scope_kind_fails_without_exception(self):
+        scope = component_scope(); scope["scope_kind"] = []
+        self.assertTrue(validate_evaluation_scope(policy(), scope))
+
 
 class SafetySentinelTests(unittest.TestCase):
     def fixture(self, rule_id: str, observed_state: str) -> dict:
@@ -185,6 +221,10 @@ class SafetySentinelTests(unittest.TestCase):
     def test_unknown_rule_cannot_pass(self):
         result = evaluate_safety_sentinel(policy(), self.fixture("unknown-rule", "EMERGENCY"))
         self.assertEqual(result["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
+
+    def test_malformed_observed_state_fails_without_exception(self):
+        fixture = self.fixture("forced-emergency-non-override-v1", "EMERGENCY"); fixture["observed_state"] = []
+        self.assertEqual(evaluate_safety_sentinel(policy(), fixture)["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
 
 
 class TruthBoundaryFixtureTests(unittest.TestCase):
@@ -225,6 +265,10 @@ class TruthBoundaryFixtureTests(unittest.TestCase):
     def test_unavailable_mechanism_with_answer_fails(self):
         fixture = self.base_fixture(); fixture["mechanism_available"] = False; fixture["observed_state"] = "ANSWER"
         self.assertEqual(evaluate_truth_boundary_fixture(policy(), fixture)["status"], GateEvaluationState.FAIL.value)
+
+    def test_malformed_observed_state_fails_without_exception(self):
+        fixture = self.base_fixture(); fixture["observed_state"] = {}
+        self.assertEqual(evaluate_truth_boundary_fixture(policy(), fixture)["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
 
 
 class SafetyPolicyCanonicalIdentityTests(unittest.TestCase):
