@@ -1,12 +1,12 @@
 # Spec 004 — Tournament Harness Implementation Closeout Candidate
 
 **Closeout type:** pre-merge implementation closeout candidate
-**Status:** `REPAIRED_AWAITING_FINAL_EXACT_HEAD_QUALIFICATION_AND_REVIEW`
+**Status:** `IMPLEMENTATION_CLOSEOUT_CANDIDATE_EXTERNAL_FINAL_GATES_REQUIRED`
 **Implementation PR:** `#28`
 **Canonical starting base:** `b13a8a823365f4ba800eab4e63c3169e27ed9dcb`
 **Historical reviewed predecessor:** `7a04d40030a2aa28b4c2f0d5db6e4d387388c756`
 
-> This document is intentionally non-self-referential. It does not claim the commit SHA that contains itself. The final repair and reconciliation content containing this document must receive fresh exact-head GitHub qualification and independent review before merge. No predecessor run or review is final merge evidence after a later material finding.
+> This document is intentionally non-self-referential. It does not claim the commit SHA, validation run/job, or final review result that contains it. Those are external exact-head evidence produced only after repository content freezes. Mutating this file afterward merely to copy that evidence back into itself would create a new head and invalidate the evidence.
 
 ## 1. Bounded implementation completed
 
@@ -64,40 +64,40 @@ The harness requires both the recomputed supplied-artifact identities and the ma
 - mixed string/non-string object-key fail-closed validation and invalid-manifest report-shell hardening;
 - non-object manifest identity suppression so invalid manifest types cannot carry a valid-looking tournament-manifest digest.
 
-Final-review governance bookkeeping was also reconciled so T004-10 no longer lists creation of an already-present closeout candidate as remaining work.
+Final-review governance bookkeeping was also reconciled so T004-10 does not list creation of an already-present closeout candidate as remaining work.
 
 Every material semantic repair invalidated earlier qualification rather than reusing stale green evidence.
 
 ## 4. Historical qualification evidence — not final merge evidence
 
-Temporary GitHub carrier PR #29 previously checked out historical predecessors:
+Temporary GitHub carrier PR #29 produced multiple historical predecessor qualifications. The latest two before this non-self-referential lifecycle freeze were:
 
 ```text
-RUN=32601812794
-JOB=97101112661
-EXACT_HEAD=7a04d40030a2aa28b4c2f0d5db6e4d387388c756
-FOCUSED_SPEC004_TESTS=45/45 PASS
+RUN=32603238663
+JOB=97104523630
+EXACT_HEAD=bf57ccd47791ef0cd25ebc478e154a9f28c14be4
+FOCUSED_SPEC004_TESTS=47/47 PASS
 INHERITED_HARD_GATES=9/9 PASS
-FULL_OFFLINE_SUITE=273/273 PASS
+FULL_OFFLINE_SUITE=275/275 PASS
 ```
 
-After closeout/task content was added, carrier Run `32602120618` also passed 45 focused / 9 inherited hard-gate / 273 full tests on predecessor `6c1a359f969222dd7868248d1ba12fc114f413d9`, together with exact identity, execution-surface, diff, and bounded-path gates. It was invalidated when final independent review identified R004-08.
+That run was invalidated when fresh Qodo review identified R004-09: wholly non-object manifests could still receive a non-`None` tournament-manifest digest.
 
-After R004-08/G004-01 repair, carrier Run `32603238663` / job `97104523630` passed on predecessor `bf57ccd47791ef0cd25ebc478e154a9f28c14be4`:
+After R004-09 code/test/reconciliation repair, carrier Run `32603861477` / job `97105962535` passed on predecessor `a7b7ba986227b25080f3d6f25a651db74c5f504e`:
 
 ```text
 PYTHON_VERSION=3.11.16
 PYTHON_SYNTAX=PASS
 CANONICAL_TOURNAMENT_IDENTITIES=PASS
 EXECUTION_SURFACE_PREFLIGHT=PASS
-FOCUSED_SPEC004_TESTS=47/47 PASS
+FOCUSED_SPEC004_TESTS=48/48 PASS
 INHERITED_HARD_GATES=9/9 PASS
-FULL_OFFLINE_SUITE=275/275 PASS
+FULL_OFFLINE_SUITE=276/276 PASS
 GIT_DIFF_CHECK=PASS
 BOUNDED_PATH_PREFLIGHT=PASS
 ```
 
-That qualification was also invalidated before merge when fresh Qodo review identified R004-09: non-object manifests could still receive a non-`None` tournament-manifest digest. No historical run is merge evidence for the repaired final head.
+That run is historical only because `tasks.md` and this closeout were then changed to remove stale-by-design “pending run” bookkeeping and make the final gate semantics explicitly external/non-self-referential. The resulting frozen content requires one new exact-head qualification; this document will not be mutated afterward merely to copy that external evidence into itself.
 
 ## 5. Historical independent review and final-review repair
 
@@ -107,36 +107,37 @@ Earlier independent reviews successively drove the implementation to stricter fa
 - **G004-01 / GOVERNANCE:** T004-10 still listed closeout creation as remaining although `closeout.md` already existed;
 - **R004-09 / MATERIAL:** the R004-08 report-shell guard still hashed wholly non-object manifests, producing a misleading manifest digest for invalid input.
 
-R004-08/G004-01 were repaired and requalified on `bf57ccd...`; fresh Qodo review of that exact predecessor discovered R004-09. R004-09 is now repaired by requiring a dictionary with all-string top-level keys before `_base_report()` computes `tournament_manifest_sha256`, with direct string/list/`None` regressions through `evaluate_tournament()`.
+R004-08/G004-01 were repaired and requalified on `bf57ccd...`; fresh Qodo review of that exact predecessor discovered R004-09. R004-09 is repaired by requiring a dictionary with all-string top-level keys before `_base_report()` computes `tournament_manifest_sha256`, with direct string/list/`None` regressions through `evaluate_tournament()`.
 
-The resulting current head therefore requires fresh exact-head qualification and independent review. All predecessor reviews remain historical context only.
+No predecessor review is final merge evidence for the frozen head containing this file. A fresh independent exact-head review is an external merge gate.
 
-## 6. Acceptance status before final repair qualification
+## 6. Acceptance status inside repository content
 
-| Area | Current implementation status |
+| Area | Repository-content status |
 |---|---|
-| Closed manifest/result schemas | REPAIRED / final exact-head proof pending |
-| Exact six canonical upstream identities | unchanged / final exact-head proof pending |
-| Alternate-protocol self-assertion prevention | implemented |
-| Candidate lineage delegation | implemented |
-| Safety hard-gate delegation | implemented |
-| Incomplete-candidate no-selection semantics | implemented |
-| Decisive disqualification semantics | implemented |
-| Evidence-bound finite comparison metrics | implemented |
-| Large integer stability | implemented |
-| Lexicographic direction-aware ranking | implemented |
-| Scientific tie handling | implemented |
-| Deterministic report identity | implemented |
-| Comparison-vector order binding | implemented |
-| Recursive execution/payload-key hardening | implemented |
-| Malformed result-set fail-closed coverage | implemented |
-| Mixed-type object-key fail-closed coverage | implemented |
-| Non-object manifest identity suppression | implemented / final exact-head proof pending |
-| Final focused fixture tests | PENDING fresh exact-head run |
-| Final inherited hard gates | PENDING fresh exact-head run |
-| Final full offline suite | PENDING fresh exact-head run |
-| Final independent review | PENDING fresh exact-head review |
+| Closed manifest/result schemas | IMPLEMENTED |
+| Exact six canonical upstream identities | IMPLEMENTED / immutable V1 pins |
+| Alternate-protocol self-assertion prevention | IMPLEMENTED |
+| Candidate lineage delegation | IMPLEMENTED |
+| Safety hard-gate delegation | IMPLEMENTED |
+| Incomplete-candidate no-selection semantics | IMPLEMENTED |
+| Decisive disqualification semantics | IMPLEMENTED |
+| Evidence-bound finite comparison metrics | IMPLEMENTED |
+| Large integer stability | IMPLEMENTED |
+| Lexicographic direction-aware ranking | IMPLEMENTED |
+| Scientific tie handling | IMPLEMENTED |
+| Deterministic report identity | IMPLEMENTED |
+| Comparison-vector order binding | IMPLEMENTED |
+| Recursive execution/payload-key hardening | IMPLEMENTED |
+| Malformed result-set fail-closed coverage | IMPLEMENTED |
+| Mixed-type object-key fail-closed coverage | IMPLEMENTED |
+| Non-object manifest identity suppression | IMPLEMENTED |
+| Exact-head executable qualification | EXTERNAL GATE — must pass after content freeze |
+| Fresh independent exact-head review | EXTERNAL GATE — must report no material blocker after content freeze |
+| Guarded implementation merge | EXTERNAL GATE — only after both gates above |
 | Model/provider/benchmark execution | NONE |
+
+This table is deliberately timeless with respect to future run IDs and review IDs. The authoritative exact-head evidence lives on PR #28 / carrier PR #29 and is checked immediately before merge.
 
 ## 7. Explicit authority boundary
 
@@ -169,7 +170,7 @@ SPEC_005=BLOCKED
 
 ## 8. Final implementation merge gate
 
-This closeout candidate does not authorize merge by itself. The exact final repaired PR head containing this file must independently prove:
+This closeout candidate does not authorize merge by itself. After repository content freezes, the exact head containing this file must externally prove:
 
 ```text
 PYTHON_SYNTAX=PASS
