@@ -126,13 +126,15 @@ def _exact_keys(
     required: frozenset[str],
     optional: frozenset[str] = frozenset(),
 ) -> list[str]:
-    """Validate a closed object shape without normalizing unknown fields away."""
+    """Validate a closed object shape without sorting heterogeneous key types."""
     if not isinstance(value, dict):
         return ["expected an object"]
-    actual = set(value)
+    string_keys = {key for key in value if isinstance(key, str)}
     errors: list[str] = []
-    missing = sorted(required - actual)
-    extra = sorted(actual - required - optional)
+    if len(string_keys) != len(value):
+        errors.append("object keys must be strings")
+    missing = sorted(required - string_keys)
+    extra = sorted(string_keys - required - optional)
     if missing:
         errors.append(f"missing required fields {missing}")
     if extra:
@@ -699,10 +701,16 @@ def _rank(candidate: dict[str, Any]) -> tuple[float | int, ...]:
 
 
 def _base_report(manifest: Any) -> dict[str, Any]:
-    """Create the report shell, including the exact canonical upstream identity map."""
+    """Create the report shell without hashing structurally invalid object keys."""
+    manifest_sha256: str | None = None
+    if not isinstance(manifest, dict) or all(isinstance(key, str) for key in manifest):
+        try:
+            manifest_sha256 = compute_tournament_manifest_sha256(manifest)
+        except (KeyError, TypeError, ValueError):
+            manifest_sha256 = None
     return {
         "tournament_id": manifest.get("tournament_id") if isinstance(manifest, dict) else None,
-        "tournament_manifest_sha256": compute_tournament_manifest_sha256(manifest),
+        "tournament_manifest_sha256": manifest_sha256,
         "canonical_artifact_identities": dict(CANONICAL_UPSTREAM_IDENTITIES_V1),
         "tournament_state": "NO_SELECTION",
         "reason_code": None,
