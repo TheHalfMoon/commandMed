@@ -14,7 +14,7 @@ jobs:
       - name: Checkout exact candidate
         uses: actions/checkout@v4
         with:
-          ref: a8e3c197cd7320539b096821266bba7c36902c27
+          ref: 8da820fde8974ec382afde7009cd201ee8f59bdf
           fetch-depth: 0
 
       - name: Set up Python 3.11
@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "a8e3c197cd7320539b096821266bba7c36902c27"
+          test "$(git rev-parse HEAD)" = "8da820fde8974ec382afde7009cd201ee8f59bdf"
           echo "EXACT_HEAD=$(git rev-parse HEAD)"
           python --version
           python -m compileall -q src tests
