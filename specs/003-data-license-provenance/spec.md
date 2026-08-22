@@ -2,14 +2,14 @@
 
 **Feature Branch:** `spec/003-data-license-provenance`
 **Created:** 2026-08-22
-**State:** SPECIFICATION_CANDIDATE
 **Canonical starting base:** `a57f87e77bbd396332b197342d8129f6805ba452`
 **Normative dependency:** Spec 001 — `CLOSED_CANONICAL`
 **Execution-frontier predecessor:** Spec 002 — `CLOSED_CANONICAL`
+**Lifecycle:** `specify=COMPLETE_CANDIDATE`, `clarify=COMPLETE_CANDIDATE`, `plan=NOT_STARTED`
 **Training authority:** NONE
 **Model execution authority:** NONE
 **Benchmark payload execution authority:** NONE
-**Data/model download authority:** NONE
+**Data/model payload download authority:** NONE
 **PHI/restricted-data access authority:** NONE
 
 ## 1. Purpose
@@ -18,11 +18,13 @@ Define the minimum machine-verifiable lineage contract that every commandMed dat
 
 Spec 003 turns the constitutional provenance rule into one reusable, fail-closed contract. It must make asset identity, source lineage, rights evidence, privacy/access status, split/quarantine state, contamination status, synthetic/teacher provenance, and verification state explicit enough that later specs cannot silently infer permission or scientific identity.
 
-The core exit of this spec is a **machine-verifiable lineage contract**, not a corpus, data lake, model registry service, or ingestion pipeline.
+The core exit is a **machine-verifiable lineage contract**, not a corpus, model registry service, ingestion pipeline, data lake, or legal-compliance engine.
+
+The bounded clarification record is `specs/003-data-license-provenance/research.md`.
 
 ## 2. Dependency and authority evidence
 
-Canonical `main` at Spec 003 start is:
+Canonical `main` at Spec 003 start:
 
 ```text
 MAIN=a57f87e77bbd396332b197342d8129f6805ba452
@@ -39,34 +41,34 @@ PHI_RESTRICTED_DATA_ACCESS_AUTHORITY=NONE
 
 Spec 001 already provides mechanisms that Spec 003 must reuse rather than replace:
 
-- deterministic semantic canonicalization;
+- semantic canonical JSON normalization and SHA-256 identity;
 - a machine-readable benchmark registry;
-- source verification and immutable-revision binding rules;
-- controlled license/access/use vocabularies for evaluation assets;
-- fail-closed validation behavior;
+- source verification and immutable-revision binding;
+- controlled access/use/license semantics for evaluation assets;
+- fail-closed validation;
 - Gold/quarantine purpose separation;
-- contamination-sensitive benchmark metadata.
+- contamination-sensitive metadata.
 
-Spec 003 generalizes those proven concepts across asset classes. It does not create a second canonicalization framework or duplicate the Evaluation Charter.
+Spec 003 generalizes those concepts across asset classes. It does not create a second canonicalization framework or rewrite the Evaluation Charter for aesthetic uniformity.
 
 ## 3. Governing invariants
 
-The following are normative:
-
-1. **Unclear rights block use.** Missing, ambiguous, conflicting, mutable-only, or unsupported rights evidence may never be interpreted as permission.
-2. **Source verification is not executable-asset binding.** A source/family may be verified while an exact payload remains unbound and therefore non-executable/reference-only.
-3. **Identity precedes use.** An asset admitted for execution, optimization, scoring, or promotion must be bound to an immutable source revision and exact artifact/content identity appropriate to that asset class.
-4. **Declared use is explicit.** Evaluation, training, teacher generation, retrieval/evidence use, redistribution, modification, and commercial implications must not be conflated.
-5. **Private Gold remains quarantined.** Metadata may describe Gold identities and controls; Gold payloads do not become training, teacher, prompt-tuning, checkpoint-selection, or model-selection material.
-6. **No PHI in V1 repository artifacts.** Restricted or PHI-bearing material cannot be admitted into repository fixtures merely to exercise the contract.
-7. **Contamination uncertainty is fail-closed.** Unknown or unresolved benchmark/holdout overlap cannot silently become clean lineage for an optimization use that requires separation.
-8. **Synthetic/model-generated material keeps its parents.** Derived or model-generated assets must retain generator/teacher/source lineage and use-rights evidence; generated text is not provenance-free.
-9. **Mutable operational metadata must not silently change scientific identity.** Retrieval/check timestamps are audit evidence, while scientific identity must remain bound to immutable source/content/configuration fields.
-10. **A broader claim cannot inherit a narrower authorization.** Reference-only, component-specific, evaluation-only, non-commercial, or otherwise bounded rights cannot be promoted to a broader use by relabeling the asset.
+1. **Unclear rights block the declared use.** Missing, ambiguous, conflicting, or unsupported rights evidence is never interpreted as permission.
+2. **Source verification is not executable-artifact binding.** A source/family may be verified while an exact payload remains unbound and therefore non-executable/reference-only.
+3. **Exact artifact identity precedes executable use.** Exact identity may be established either by a direct cryptographic digest of the payload or by an exact artifact locator inside a cryptographically immutable source revision whose identity binds the content.
+4. **If neither exact-binding form exists, the artifact is `UNBOUND`.** An `UNBOUND` artifact cannot be admitted for a use requiring exact executable bytes.
+5. **Declared uses remain distinct.** Evaluation, optimization, teacher generation, retrieval/evidence use, modification, redistribution, and commercial constraints are not interchangeable.
+6. **Private Gold remains quarantined.** Gold metadata may be represented; Gold payloads do not enter training, teacher generation, prompt tuning, hyperparameter tuning, checkpoint selection, backbone/model selection, or other optimization.
+7. **No PHI in V1 repository artifacts.** Unknown privacy state cannot be upgraded to public/non-PHI by assumption.
+8. **Contamination uncertainty is fail-closed.** Unresolved benchmark/holdout overlap cannot become clean lineage for an optimization or leakage-sensitive use.
+9. **Generated/derived assets keep their parents.** Synthetic/model-generated material must retain parent, generator/teacher, configuration, and output-use lineage where applicable.
+10. **Audit metadata is not scientific identity by accident.** Retrieval/check timestamps, local paths, display ordering, and convenience URLs must not silently change scientific identity.
+11. **Narrow rights never expand by relabeling.** Reference-only, component-specific, evaluation-only, non-commercial, or otherwise bounded evidence cannot authorize a broader use without new evidence.
+12. **Admission remains explainable.** A final admission state cannot hide which underlying dimension allowed or blocked the use.
 
 ## 4. Asset classes
 
-The lineage contract must support at least these classes without requiring separate frameworks:
+One common lineage envelope must support at least:
 
 - `DATASET_OR_CORPUS`
 - `BENCHMARK_OR_EVALUATION_ASSET`
@@ -76,125 +78,138 @@ The lineage contract must support at least these classes without requiring separ
 - `EVIDENCE_OR_RETRIEVAL_SOURCE`
 - `DERIVED_RESEARCH_ARTIFACT`
 
-These are lineage classes, not authorization to download or execute any corresponding payload.
-
-An implementation may use one common envelope with class-specific required fields rather than unrelated schemas.
+These are metadata/lineage classes, not authority to access, download, or execute the corresponding payloads.
 
 ## 5. Minimum lineage envelope
 
-Every record must carry enough information to answer the following questions deterministically where applicable.
+### 5.1 Universal fields
 
-### 5.1 Stable record identity
+Every lineage record must carry:
 
 - stable `asset_id`;
 - controlled asset class;
-- human-readable canonical name;
-- record/schema version;
-- semantic/canonical record identity using the repository's existing canonicalization mechanism.
-
-Duplicate stable identities or ambiguous identity-bearing fields fail validation.
-
-### 5.2 Source and artifact identity
-
+- canonical human-readable name;
+- schema/record version;
 - canonical source identifier;
 - canonical source location;
-- immutable source revision/version when one exists;
-- exact artifact locator/subresource where applicable;
-- cryptographic content identity for any payload that is to become executable/admissible;
-- explicit `UNBOUND`/equivalent state when exact executable bytes are not yet identity-bound;
-- retrieval or verification time as audit metadata, not a substitute for immutable identity.
+- immutable source revision/version when available, otherwise an explicit unresolved/unbound state;
+- source verification state and evidence reference;
+- declared use;
+- access classification;
+- rights/license state and evidence reference;
+- artifact-binding state;
+- final admission state plus machine-readable reasons;
+- semantic/canonical lineage-record identity using the existing repository canonicalization mechanism.
 
-Mutable `main`, `master`, `latest`, landing-page, or convenience URLs may aid discovery but must not be the sole identity-bearing evidence when an immutable revision is required.
+Duplicate stable IDs, malformed identity fields, unknown controlled states, or contradictory universal fields fail validation rather than raising an uncontrolled exception.
+
+### 5.2 Conditional exact-artifact fields
+
+When the declared use requires exact payload identity, the record must establish one of:
+
+**Direct binding**
+
+- direct cryptographic digest of exact payload bytes; or
+
+**Immutable-container binding**
+
+- cryptographically immutable source revision; and
+- exact artifact locator/subresource inside that revision.
+
+A direct SHA-256 is preferred where the exact bytes are available, but it is not universally mandatory when the immutable-container binding already establishes exact content identity.
+
+Mutable `main`, `master`, `latest`, landing-page, or convenience URLs may aid discovery but cannot be the sole identity-bearing evidence when immutable binding is required.
 
 ### 5.3 Rights and license evidence
 
-The record must distinguish factual evidence from downstream policy decisions. At minimum record:
+Where applicable record:
 
-- license/status vocabulary;
-- immutable or revision-bound license/terms evidence when available;
-- declared use under review;
+- license/status classification;
+- normalized SPDX License Expression when it truthfully represents the terms;
+- `LicenseRef-*` or exact custom/component-specific terms identity when a standard SPDX identifier is insufficient;
+- immutable/revision-bound license or terms evidence when available;
 - research/evaluation implications;
 - training/teacher-generation implications;
 - modification/derivative implications;
 - redistribution implications;
-- commercial implications where the source terms make them explicit;
-- component-specific or mixed-rights boundaries;
-- unresolved/conflicting rights state with a reason.
+- commercial constraints stated by the source terms;
+- unresolved/conflicting/component-specific rights with reason.
 
-A top-level code/framework license does not automatically license bundled, linked, gated, private, or separately distributed data.
+A framework or repository code license does not automatically license bundled, linked, gated, private, or separately distributed data/components.
 
-FD-001 is not silently resolved by Spec 003. Where final product posture is required to decide compatibility, the lineage record remains conditional or blocked until that founder decision is actually due.
+FD-001 remains unresolved. If final product posture is necessary to decide compatibility, admission is blocked/conditional rather than silently resolving the founder decision.
 
 ### 5.4 Access, privacy, and PHI
 
-At minimum record:
-
-- access classification;
-- privacy/PHI classification;
-- de-identification status where relevant;
-- access/gating restrictions;
-- whether payload presence in the repository is permitted.
-
-Unknown privacy state cannot be upgraded to public/non-PHI by assumption.
-
-### 5.5 Split and quarantine identity
-
 Where applicable record:
 
-- split identity or purpose;
-- whether the split may participate in training, development, checkpoint selection, model selection, public evaluation, or private release evaluation;
-- quarantine/holdout relation;
-- any prohibited cross-use.
+- access class;
+- PHI/privacy classification;
+- de-identification status;
+- gating/restriction evidence;
+- whether repository payload presence is permitted.
 
-A test, private Gold, or quarantined asset cannot inherit the permissions of a training/development split from the same source family.
+Unknown privacy state cannot produce a repository-safe or training-eligible result.
 
-### 5.6 Contamination / benchmark-overlap state
+### 5.5 Split, purpose, and quarantine
+
+Spec 003 must preserve the canonical Spec 001 `Purpose` semantics:
+
+- `TRAIN`
+- `DEV`
+- `CALIBRATION`
+- `CHECKPOINT_SELECTION`
+- `PUBLIC_EXTERNAL_EVAL`
+- `PRIVATE_GOLD`
+
+Where applicable record exact split/purpose identity, quarantine relation, allowed/prohibited cross-use, and any selection restrictions.
+
+A test, private Gold, or quarantined asset cannot inherit train/dev permissions from another split in the same source family.
+
+### 5.6 Contamination / benchmark overlap
 
 Where applicable record:
 
 - contamination sensitivity;
-- overlap-check state;
-- identity of compared benchmark/holdout set when known;
-- evidence or rationale for the state;
+- exact-match and/or semantic-overlap assessment state as appropriate;
+- identity of the compared benchmark/holdout set when known;
+- evidence/rationale identity;
 - unresolved/suspected overlap state.
 
-A contamination-sensitive asset with unresolved overlap cannot be represented as cleared for an optimization use that depends on clean separation.
+Unresolved contamination blocks a declared use that requires clean optimization/evaluation separation.
 
 ### 5.7 Synthetic, teacher, and derived lineage
 
-For generated or derived assets, record enough parentage to reconstruct the lineage boundary:
+For generated or derived assets, record where applicable:
 
 - origin type;
-- parent/source asset identities;
-- generator/teacher/provider identity and immutable revision where applicable;
-- generation/configuration identity where scientifically relevant;
+- parent/source `asset_id` values;
+- generator/teacher/provider identity and immutable revision;
+- generation/configuration identity when scientifically relevant;
 - output-use/license/terms evidence;
 - verification/truth-boundary status;
-- whether the output is permitted for the declared downstream use.
+- downstream-use admission.
 
-Canonical defaults remain in force: MedGemma/HAI-DEF outputs are reference/evaluation-only for training lineage unless explicitly overridden, and frontier API outputs do not become training data merely because they can be generated.
+Canonical defaults remain in force: MedGemma/HAI-DEF outputs do not become commandMed training lineage without an explicit override, and frontier API outputs do not become training data merely because generation is technically available.
 
-## 6. Verification and admission semantics
+## 6. Admission semantics
 
-Spec 003 must preserve the distinction between evidence collection and use admission.
+Do not create one ambiguous `verified=true` mega-status.
 
-At minimum, the implementation must be able to represent these outcomes without ambiguity:
+The underlying dimensions remain independently represented. The final admission result uses the smallest closed vocabulary:
 
-- source/family verified but executable artifact unbound;
-- artifact identity bound but rights unresolved;
-- rights evidenced but privacy/access blocks payload use;
-- rights/privacy resolved but contamination or split use unresolved;
-- reference-only use permitted;
-- declared use eligible only after all required dimensions pass;
-- explicitly prohibited use.
+- `ELIGIBLE` — all evidence required for the exact declared use is satisfied;
+- `REFERENCE_ONLY` — source/metadata reference is permitted but the exact requested executable/optimization use is not;
+- `BLOCKED` — required evidence, identity, compatibility, or prerequisite remains unresolved/conditional;
+- `PROHIBITED` — recorded source constraints or commandMed policy establish that the declared use is disallowed.
 
-The exact machine vocabulary is finalized during `clarify`/`plan`, but it must be closed, validated, and fail-closed. Unknown states or missing required dimensions may not default to an allowed state.
+Every result must carry machine-readable blocking/decision reasons. Unknown admission values fail validation.
 
-No single boolean named `verified`, `licensed`, or `safe` may collapse source verification, exact artifact identity, rights compatibility, privacy, contamination, split purpose, and downstream-use admission into one ambiguous flag.
+`ELIGIBLE` is scoped to the exact declared use and does not imply release readiness, clinical safety, legal advice, or permission for another use.
 
-## 7. Intended declared-use dimensions
+## 7. Declared-use dimensions
 
-The contract must be able to evaluate or record at least these distinct use dimensions without assuming they are equivalent:
+The lineage contract must distinguish at least:
 
 - `REFERENCE`
 - `DEVELOPMENT_EVALUATION`
@@ -205,147 +220,153 @@ The contract must be able to evaluate or record at least these distinct use dime
 - `MODIFICATION_OR_DERIVATION`
 - `REDISTRIBUTION`
 
-Commercial compatibility is recorded as a rights constraint/evidence dimension until FD-001 becomes necessary; Spec 003 does not choose the final release posture.
+These broader declared uses map to, but do not erase, canonical data/evaluation `Purpose` values such as `CHECKPOINT_SELECTION` and `PRIVATE_GOLD`.
 
-## 8. Existing benchmark-registry compatibility
+Commercial compatibility remains a rights-constraint dimension until FD-001 is actually required.
 
-The Spec 001 benchmark registry is canonical prior art and must remain valid.
+## 8. Existing Spec 001 compatibility
 
-Spec 003 must preserve these established semantics:
+The canonical benchmark registry remains valid prior art.
+
+Spec 003 must preserve:
 
 - `VERIFIED` source/family status does not imply executable artifact binding;
-- `REFERENCE_ONLY` is compatible with a verified family record;
+- `REFERENCE_ONLY` may coexist with verified source/family evidence;
+- executable benchmark identity may use exact artifact + immutable source revision without a separate file digest;
 - mixed/component-specific licenses do not inherit a framework license;
-- unresolved license state cannot become executable development use;
-- identity-bearing links should be immutable/pinned where possible;
+- unresolved license/source state cannot become executable development use;
 - metadata registries contain zero benchmark case payloads;
-- validation is offline and deterministic.
+- validation remains offline and deterministic;
+- existing `Purpose`, Gold, and quarantine semantics remain authoritative for evaluation/data partitioning.
 
-Spec 003 may define a common lineage envelope that existing benchmark records can map into, but it must not require needless migration or rewrite of canonical Spec 001 evidence merely for aesthetic uniformity.
+No canonical Spec 001 record must be rewritten merely to fit a new aesthetic schema if a compatibility mapping is sufficient.
 
-## 9. User scenarios and independent tests
+## 9. External standards boundary
 
-### US1 — Data steward rejects ambiguous rights
+The clarification record uses primary public standards only as design evidence:
 
-A metadata-only fixture with a canonical source but unresolved license/use evidence is rejected for training or executable development admission and remains blocked/reference-only as appropriate.
+- SPDX 3.0.1 license-expression semantics;
+- MLCommons Croissant 1.1 version/resource/checksum concepts;
+- W3C PROV entity/derivation concepts;
+- DataCite 4.6 persistent-identifier/relationship concepts.
 
-**Independent test:** pure local fixture; no external payload or network access.
+Spec 003 does not adopt `mlcroissant`, RDF/PROV tooling, DataCite infrastructure, or another runtime dependency. Standard-library JSON plus existing commandMed canonicalization is the default unless `plan` proves otherwise.
 
-### US2 — Researcher distinguishes verified family from executable payload
+## 10. User scenarios and independent tests
 
-A family-level record may be source-verified while its separately distributed payload is `UNBOUND`. The validator proves that source verification alone cannot authorize execution.
+### US1 — Ambiguous rights fail closed
 
-### US3 — Gold custodian preserves quarantine
+A metadata-only fixture with a canonical source but unresolved rights cannot become training or executable-development `ELIGIBLE`.
 
-A `PRIVATE_GOLD_METADATA` fixture can represent identity, split purpose, and audit controls without storing case payloads. Any attempt to mark it training/checkpoint/model-selection eligible fails closed.
+### US2 — Verified family remains non-executable when artifact is unbound
 
-### US4 — Lineage reviewer blocks teacher-output laundering
+A source/family may be verified while its separately distributed payload is `UNBOUND`; admission remains reference-only/blocked for executable use.
 
-A synthetic fixture without generator identity, parent/source lineage, or output-use evidence cannot become training/adaptation eligible. Reference/evaluation-only defaults remain enforceable for restricted teacher sources.
+### US3 — Immutable-container identity is accepted
 
-### US5 — Contamination reviewer blocks unresolved overlap
+An exact artifact locator inside a cryptographically immutable source revision qualifies as exact artifact binding even without a redundant direct file digest. Representation remains compatible with canonical Spec 001 benchmark records.
 
-A contamination-sensitive asset whose overlap state is unresolved cannot become clean optimization input merely because its source and license are verified.
+### US4 — Private Gold stays quarantined
 
-### US6 — Identity reviewer proves semantic stability
+A `PRIVATE_GOLD_METADATA` fixture can carry identity/control metadata without case payloads. Any prohibited optimization/selection use fails closed.
 
-Representation-only ordering changes do not change the canonical lineage-record identity, while changing identity-bearing source revision, artifact identity, declared use, split, or rights evidence does.
+### US5 — Teacher-output laundering is blocked
 
-### US7 — Model candidate remains license-neutral
+Synthetic/model-generated data without parent/generator/configuration/use-rights lineage cannot become training/adaptation eligible.
 
-A model/checkpoint record can capture exact upstream license and redistribution/commercial constraints without selecting the tournament winner or resolving FD-001 prematurely.
+### US6 — Contamination uncertainty blocks optimization
 
-## 10. Edge cases
+A contamination-sensitive asset with unresolved overlap cannot be represented as clean optimization input merely because source and rights evidence are verified.
 
-The contract/validator must fail closed for at least:
+### US7 — Semantic identity is stable
 
-- duplicate `asset_id`;
-- unknown asset class or use state;
-- missing canonical source identifier;
-- mutable-only source identity where immutable binding is required;
-- executable/admissible payload with missing or malformed content hash;
-- `UNBOUND` artifact marked executable;
-- unresolved/conflicting license marked allowed;
-- component-specific family license promoted to all components;
-- missing license evidence URI/reference when required;
-- unknown privacy/PHI state represented as repository-safe;
-- PHI/restricted payload represented as a V1 repository fixture;
-- private Gold/test/quarantine split marked training/checkpoint/model-selection eligible;
-- contamination-sensitive optimization asset with unresolved overlap represented as clean;
-- synthetic/teacher asset with missing parent/generator provenance;
-- reference/evaluation-only teacher output marked training eligible;
-- contradictory rights fields;
-- malformed/non-string identity fields that would otherwise crash set/map operations;
-- timestamps or local paths silently substituted for scientific identity;
-- a narrower-use record promoted to a broader use without new evidence.
+Representation-only ordering or audit timestamp changes do not alter the governed scientific identity; identity-bearing source/artifact/rights/split/parent changes do.
+
+### US8 — Model lineage remains license-neutral
+
+A model/checkpoint record captures exact source, terms, redistribution/commercial constraints, and declared-use compatibility without selecting a winner or resolving FD-001 prematurely.
 
 ## 11. Functional requirements
 
-- **FR-001:** Define one minimal machine-readable lineage envelope with controlled asset classes and stable identities.
-- **FR-002:** Bind source/family verification separately from exact executable artifact identity.
-- **FR-003:** Require immutable source revision and cryptographic payload identity before any use that requires exact executable bytes.
-- **FR-004:** Record rights/license evidence and distinct downstream-use constraints without inferring permission from ambiguity.
-- **FR-005:** Represent access, privacy/PHI, and de-identification boundaries fail-closed; prohibit PHI/restricted payload fixtures in V1 repository artifacts.
-- **FR-006:** Bind split purpose and quarantine controls so Gold/test/holdout assets cannot be silently used for optimization or selection.
-- **FR-007:** Represent contamination/benchmark-overlap state and block unresolved contamination where clean separation is required.
-- **FR-008:** Require parent/generator/teacher lineage and output-use evidence for synthetic/model-generated/derived assets.
-- **FR-009:** Preserve the existing Spec 001 benchmark registry semantics and reuse existing semantic canonicalization rather than introducing a new identity framework.
-- **FR-010:** Separate audit metadata such as retrieval/verification timestamps from scientific identity-bearing fields.
-- **FR-011:** Use a closed, machine-validated admission/use vocabulary; unknown or incomplete state must not default to allowed.
-- **FR-012:** Keep all validation offline and deterministic using the standard library and already-approved repository mechanisms unless `plan` proves another dependency necessary.
-- **FR-013:** Emit actionable validation reasons that identify the blocked lineage dimension without exposing restricted payload content.
-- **FR-014:** Treat a material change to identity-bearing lineage or rights evidence as a new scientific record identity requiring re-verification.
-- **FR-015:** Keep FD-001 unresolved until the dependency requires the founder's product/licensing posture; conditional compatibility must remain explicitly conditional meanwhile.
+- **FR-001:** Define one minimal machine-readable lineage envelope with controlled asset classes and stable IDs.
+- **FR-002:** Keep source verification separate from exact executable-artifact binding.
+- **FR-003:** Support both direct-digest and immutable-revision-plus-artifact-locator exact binding; otherwise mark the executable artifact unbound.
+- **FR-004:** Record rights/license evidence and declared-use constraints fail-closed; support standard SPDX expressions and custom/component-specific evidence without mistaking them for universal permission.
+- **FR-005:** Represent access, PHI/privacy, and de-identification boundaries fail-closed and prohibit PHI/restricted payload fixtures in V1 repository artifacts.
+- **FR-006:** Preserve canonical Spec 001 purpose/quarantine semantics so Gold/test/holdout data cannot silently enter prohibited optimization or selection uses.
+- **FR-007:** Represent contamination/overlap state and block unresolved contamination where clean separation is required.
+- **FR-008:** Require parent/generator/configuration/output-use lineage for synthetic/model-generated/derived assets where applicable.
+- **FR-009:** Reuse `eval_contract.canonical` and existing enums/semantics where suitable instead of introducing a second identity framework.
+- **FR-010:** Separate audit-only metadata from identity-bearing lineage.
+- **FR-011:** Use closed admission semantics `ELIGIBLE | REFERENCE_ONLY | BLOCKED | PROHIBITED` with machine-readable reasons.
+- **FR-012:** Keep validation offline, deterministic, fail-closed, and non-throwing for malformed fixtures.
+- **FR-013:** Add no new third-party runtime dependency unless the plan proves it necessary; default is standard library only.
+- **FR-014:** Material changes to identity-bearing lineage or rights evidence require a new canonical lineage-record identity and re-verification.
+- **FR-015:** Keep FD-001 unresolved until its actual dependency point; conditional compatibility remains explicit meanwhile.
+- **FR-016:** Preserve canonical Spec 001 benchmark records by compatibility mapping unless a scientifically necessary migration is proven.
 
-## 12. Clarifications required before plan
+## 12. Edge cases
 
-These are evidence/design questions for the Spec 003 `clarify` stage, not founder decisions unless evidence proves otherwise:
+The validator must fail closed for at least:
 
-1. What is the smallest closed admission-state vocabulary that preserves independent source, artifact, rights, privacy, split, contamination, and synthetic-lineage dimensions without an ambiguous mega-status?
-2. Which fields are universal versus required only for a given asset class or declared use?
-3. Which existing Spec 001 validation/canonicalization functions can be reused directly, and where is a narrow additive validator required?
-4. How should an external gated/reference-only asset record exact identity when payload bytes are intentionally inaccessible, while still preventing execution claims?
-5. Which fields belong in semantic identity versus audit-only metadata so verification timestamps and local paths do not cause scientific identity drift?
-
-No model, dataset, benchmark payload, gated asset, or private Gold content needs to be accessed to answer these questions.
+- duplicate/non-string `asset_id`;
+- unknown asset class, declared use, or admission state;
+- missing canonical source identity;
+- mutable-only identity where immutable binding is required;
+- `UNBOUND` artifact marked executable/eligible;
+- neither direct digest nor immutable-container binding for an exact-byte use;
+- malformed direct digest;
+- unresolved/conflicting rights marked eligible;
+- component-specific family rights promoted to every component;
+- unknown PHI/privacy state marked repository-safe;
+- PHI/restricted payload represented as a V1 fixture;
+- Gold/test/quarantine data marked for prohibited training/selection use;
+- contamination-sensitive optimization asset with unresolved overlap marked clean;
+- synthetic/derived asset missing required parent/generator lineage;
+- reference/evaluation-only teacher output marked training eligible;
+- contradictory rights/use fields;
+- malformed list/identity values that would otherwise crash set/map/sort operations;
+- audit timestamps or local paths substituted for scientific identity;
+- narrow authorization promoted to broader use without new evidence.
 
 ## Exclusions
 
-Spec 003 explicitly does **not** authorize or implement:
+Spec 003 does **not** authorize or implement:
 
-- downloading, cloning, materializing, or inspecting dataset payloads merely for Spec 003;
+- downloading, cloning, materializing, or inspecting dataset payloads merely to finish this spec;
 - downloading, loading, or executing model weights;
 - benchmark payload execution or scoring;
 - training, CPT, SFT, LoRA/QLoRA, distillation, DPO, RL/RLVR/GRPO, or QAT;
 - teacher/API generation;
-- access to PHI, restricted clinical datasets, private Gold payloads, credentials, or gated model/data assets;
+- PHI, restricted clinical data, private Gold payloads, credentials, or gated model/data access;
 - data cleaning, deduplication, tokenization, sampling, mixing, curriculum construction, or ingestion pipelines;
 - a data lake, database, object store, service, queue, plugin framework, or remote registry;
+- a full SPDX/Croissant/PROV/DataCite implementation;
 - final model/tournament admission or winner selection;
-- resolution of FD-001 before it is actually required;
-- legal advice or an assertion that commandMed has legal authority beyond the recorded primary-source evidence;
-- changes to Spec 002 safety-policy implementation or reconciliation of any later-discovered Spec 002 defect inside the Spec 003 branch;
+- resolution of FD-001 before it is required;
+- legal advice or a claim of legal authority beyond recorded primary-source evidence;
+- Spec 002 repair inside the Spec 003 branch;
 - Spec 004 Tournament Harness implementation.
 
 ## 14. Acceptance criteria
 
-Before Spec 003 implementation can become a closeout candidate, evidence must prove all of the following:
+Before Spec 003 implementation can become a closeout candidate:
 
-1. the bounded specification, clarification, plan, checklist, tasks, and analyze stages contain no unresolved material contradiction;
-2. one minimal machine-readable lineage contract exists and covers the required asset/use dimensions;
+1. specification, clarification, plan, checklist, tasks, and analyze contain no unresolved material contradiction;
+2. one minimal machine-readable lineage contract covers the required classes/dimensions;
 3. validation is deterministic, offline, fail-closed, and non-throwing on malformed fixtures;
-4. existing Spec 001 benchmark-registry semantics remain valid or have an explicitly justified compatibility mapping;
-5. exact source verification cannot substitute for exact executable artifact binding;
-6. ambiguous/unresolved rights cannot produce an allowed use;
-7. privacy/PHI and access restrictions cannot be silently weakened;
-8. split/quarantine controls prevent Gold/test/holdout leakage into prohibited uses;
-9. contamination uncertainty blocks uses that require clean separation;
-10. synthetic/model-generated assets cannot lose parent/generator/use-rights lineage;
-11. canonical identity is stable under representation-only changes and changes under identity-bearing mutations;
-12. no model, benchmark payload, training, PHI/restricted-data, real-Gold, or gated-asset execution occurred;
-13. no unnecessary third-party dependency, service, or persistence layer was introduced;
-14. exact-head tests and diff hygiene pass;
-15. a fresh independent exact-head review finds no unresolved material blocker.
+4. canonical Spec 001 benchmark-registry semantics remain valid through direct reuse or explicit compatibility mapping;
+5. source verification cannot substitute for executable-artifact binding;
+6. both approved exact-binding forms are tested, and `UNBOUND` cannot become executable;
+7. unresolved/contradictory rights cannot produce `ELIGIBLE`;
+8. PHI/privacy/access restrictions cannot be silently weakened;
+9. purpose/split/quarantine controls prevent Gold/test/holdout leakage into prohibited uses;
+10. contamination uncertainty blocks uses requiring clean separation;
+11. synthetic/model-generated assets cannot lose required parent/generator/use-rights lineage;
+12. canonical identity is stable under representation-only/audit-only changes and changes under identity-bearing mutations;
+13. no prohibited payload/model/training/PHI/Gold/gated execution or access occurred;
+14. no unnecessary dependency/service/persistence layer was introduced;
+15. exact-head focused tests, full offline regression tests, diff hygiene, and independent review pass with no unresolved material blocker.
 
 ## Exit Evidence
 
@@ -353,21 +374,22 @@ Spec 003 may transition toward `CLOSED_CANONICAL` only with identity-bound evide
 
 - canonical starting base and final reviewed implementation head;
 - exact changed-path inventory;
-- machine-readable lineage-contract identity/hash;
-- focused validator/fixture test results;
-- full offline regression-suite results;
+- machine-readable lineage-contract canonical identity/hash;
+- focused validator/fixture tests;
+- full offline regression suite;
 - compatibility evidence for existing Spec 001 benchmark records;
+- direct-digest and immutable-container binding tests;
 - semantic-identity stability tests;
-- fail-closed malformed-input tests;
+- malformed-input/non-throwing tests;
 - proof that prohibited payload/model/training/PHI/Gold/gated access did not occur;
 - independent exact-head review and finding reconciliation;
 - canonical implementation merge identity;
-- a dedicated post-merge closure transition verified on resulting `main`.
+- dedicated post-merge closure transition verified on resulting `main`.
 
-A green implementation merge alone does not make Spec 003 `CLOSED_CANONICAL`. Spec 004 remains blocked until Spec 003 has completed its own qualified implementation and canonical closure lifecycle.
+A green implementation merge alone does not make Spec 003 `CLOSED_CANONICAL`. Spec 004 remains blocked until Spec 003 completes qualified implementation and canonical closure.
 
 ## 16. Immediate next lifecycle step
 
-`clarify` only.
+`plan` only.
 
-The next work may inspect existing repository contracts and public primary-source standards/documentation as needed to resolve Section 12. It may not implement the lineage validator or ingest any external asset until clarification and planning are complete and analyzed.
+Planning may inspect canonical repository code/tests and public standards documentation. It may not ingest external data/model payloads or begin implementation before the plan/checklist/tasks/analyze stages are complete.
