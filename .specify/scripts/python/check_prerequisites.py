@@ -31,10 +31,10 @@ OPTIONS:
   --help, -h          Show this help message
 
 EXAMPLES:
-  # Check task prerequisites (plan.md required)
+  # Check task prerequisites (spec.md + plan.md required)
   ./check_prerequisites.py --json
 
-  # Check implementation prerequisites (plan.md + tasks.md required)
+  # Check implementation prerequisites (spec.md + plan.md + tasks.md required)
   ./check_prerequisites.py --json --require-tasks --include-tasks
 
   # Get feature paths only (no validation)
@@ -173,6 +173,14 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: Feature directory not found: {paths.feature_dir}", file=sys.stderr)
         print(
             f"Run {format_speckit_command('specify', paths.repo_root)} first to create the feature structure.",
+            file=sys.stderr,
+        )
+        return 1
+
+    if not paths.feature_spec.is_file():
+        print(f"ERROR: spec.md not found in {paths.feature_dir}", file=sys.stderr)
+        print(
+            f"Run {format_speckit_command('specify', paths.repo_root)} first to create the feature specification.",
             file=sys.stderr,
         )
         return 1
