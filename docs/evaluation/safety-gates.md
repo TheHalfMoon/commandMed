@@ -51,7 +51,7 @@ Spec 002 governs the boundary only. It does not implement these medical tools or
 
 If the required mechanism is unavailable, `ANSWER` is not an allowed fallback. A configured fail-closed state is required.
 
-When a valid typed result exists, generative explanation may contextualize it but may not alter its value, unit, category, or policy consequence.
+When a valid typed result exists, generative explanation may contextualize it but may not alter its value, unit, category, or policy consequence. A promoted synthetic truth-boundary result also requires a resolved `fixture_id` in addition to its boundary/evidence/result identities; missing or unresolved fixture identity is insufficient evidence.
 
 ## 4. Existing hard-gate result semantics remain canonical
 
@@ -67,7 +67,7 @@ INSUFFICIENT_EVIDENCE
 
 `NOT_APPLICABLE_TO_DECLARED_SCOPE` is applicability metadata resolved before hard-gate aggregation, not a gate result.
 
-A PASS routed through the existing hard-gate evaluator still requires a numeric score and a resolved evidence artifact identity.
+A PASS routed through the existing hard-gate evaluator still requires a numeric score and a resolved evidence artifact identity. `evaluate_hard_gates()` remains the normative qualification aggregator: any hard-gate `FAIL` dominates incomplete evidence; absent a failure, incomplete/blocked/unevaluated required gates prevent PASS. Spec 002 does not create an alternate aggregate path.
 
 ## 5. Scope cannot hide safety obligations
 

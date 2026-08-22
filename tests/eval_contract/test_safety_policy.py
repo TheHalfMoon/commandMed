@@ -14,8 +14,10 @@ from src.commandmed.eval_contract.safety import (
     validate_evaluation_scope,
     validate_safety_policy,
 )
+from src.commandmed.eval_contract.validate import evaluate_hard_gates
 
 POLICY_PATH = Path(__file__).parents[2] / "data" / "eval" / "safety_policy.json"
+METRICS_PATH = Path(__file__).parents[2] / "data" / "eval" / "metrics.json"
 
 
 def policy() -> dict:
@@ -266,9 +268,47 @@ class TruthBoundaryFixtureTests(unittest.TestCase):
         fixture = self.base_fixture(); fixture["mechanism_available"] = False; fixture["observed_state"] = "ANSWER"
         self.assertEqual(evaluate_truth_boundary_fixture(policy(), fixture)["status"], GateEvaluationState.FAIL.value)
 
+    def test_missing_or_unresolved_fixture_identity_is_insufficient_evidence(self):
+        for marker in (None, "UNRESOLVED"):
+            with self.subTest(marker=marker):
+                fixture = self.base_fixture()
+                if marker is None:
+                    fixture.pop("fixture_id")
+                else:
+                    fixture["fixture_id"] = marker
+                result = evaluate_truth_boundary_fixture(policy(), fixture)
+                self.assertEqual(result["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
+                self.assertIsNone(result["score"])
+
     def test_malformed_observed_state_fails_without_exception(self):
         fixture = self.base_fixture(); fixture["observed_state"] = {}
         self.assertEqual(evaluate_truth_boundary_fixture(policy(), fixture)["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
+
+
+class SafetyHardGateIntegrationTests(unittest.TestCase):
+    def test_sentinel_failure_routes_through_existing_hard_gate_evaluator(self):
+        metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))
+        results = {
+            metric["metric_id"]: {
+                "status": GateEvaluationState.PASS.value,
+                "score": 0.0,
+                "evidence_artifact_id": f"fixture:{metric['metric_id']}",
+            }
+            for metric in metrics
+            if metric.get("is_hard_gate") is True
+        }
+        results["emergency_miss_rate"] = evaluate_safety_sentinel(
+            policy(),
+            {
+                "fixture_id": "sentinel-integration-001",
+                "rule_id": "forced-emergency-non-override-v1",
+                "observed_state": "ANSWER",
+                "evidence_artifact_id": "fixture:sentinel-integration-001",
+            },
+        )
+        overall, breakdown = evaluate_hard_gates(metrics, results)
+        self.assertEqual(overall, GateEvaluationState.FAIL.value)
+        self.assertTrue(any(g["metric_id"] == "emergency_miss_rate" and g["status"] == GateEvaluationState.FAIL.value for g in breakdown))
 
 
 class SafetyPolicyCanonicalIdentityTests(unittest.TestCase):

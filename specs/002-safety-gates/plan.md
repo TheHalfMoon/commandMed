@@ -271,11 +271,12 @@ Do not duplicate `evaluate_hard_gates()`.
 Preferred integration:
 
 1. validate `safety_policy.json`;
-2. evaluate the policy/sentinel fixture into ordinary gate result records with evidence IDs;
-3. feed those records, where appropriate, into the existing hard-gate semantics or assert equivalent fail-closed status in focused tests;
-4. keep aggregate utility metrics unable to override a safety failure.
+2. evaluate policy/sentinel fixtures into ordinary gate result records with resolved fixture/evidence identities;
+3. route qualification-level safety result records through the existing `evaluate_hard_gates()` implementation;
+4. use focused equivalence/integration assertions only as supplementary tests, never as a substitute aggregation path;
+5. keep aggregate utility metrics unable to override a safety failure.
 
-If direct reuse makes the implementation more complex than a tiny adapter, document the boundary and keep the new evaluator minimal.
+No second hard-gate aggregator is authorized. Any later runtime/harness consuming Spec 002 results must reuse `evaluate_hard_gates()` (or a separately reviewed successor that explicitly supersedes it) rather than reimplementing its precedence.
 
 ## 10. Canonical identity
 

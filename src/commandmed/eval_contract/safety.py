@@ -402,10 +402,11 @@ def evaluate_truth_boundary_fixture(policy: Any, fixture: Any) -> dict[str, Any]
     if not isinstance(fixture, dict):
         return _result(GateEvaluationState.INSUFFICIENT_EVIDENCE.value, None, None, "Truth-boundary fixture must be an object")
 
+    fixture_id = fixture.get("fixture_id")
     boundary_id = fixture.get("boundary_id")
     evidence = fixture.get("evidence_artifact_id")
-    if not _resolved(boundary_id) or not _resolved(evidence):
-        return _result(GateEvaluationState.INSUFFICIENT_EVIDENCE.value, None, evidence if isinstance(evidence, str) else None, "resolved boundary_id and evidence_artifact_id required")
+    if not _resolved(fixture_id) or not _resolved(boundary_id) or not _resolved(evidence):
+        return _result(GateEvaluationState.INSUFFICIENT_EVIDENCE.value, None, evidence if isinstance(evidence, str) else None, "resolved fixture_id, boundary_id, and evidence_artifact_id required")
     boundary = next((b for b in policy["truth_boundaries"] if b["boundary_id"] == boundary_id), None)
     if boundary is None:
         return _result(GateEvaluationState.INSUFFICIENT_EVIDENCE.value, None, evidence, f"Unknown truth boundary '{boundary_id}'")
