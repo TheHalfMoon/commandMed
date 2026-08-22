@@ -5,7 +5,7 @@
 **Canonical starting base:** `a57f87e77bbd396332b197342d8129f6805ba452`
 **Normative dependency:** Spec 001 — `CLOSED_CANONICAL`
 **Execution-frontier predecessor:** Spec 002 — `CLOSED_CANONICAL`
-**Lifecycle:** `specify=COMPLETE_CANDIDATE`, `clarify=COMPLETE_CANDIDATE`, `plan=REPAIRING_AFTER_ANALYZE_PASS_1`
+**Lifecycle:** `specify=COMPLETE_CANDIDATE`, `clarify=COMPLETE_CANDIDATE`, `plan=REPAIRED_READY_FOR_ANALYZE_PASS_2`
 **Training authority:** NONE
 **Model execution authority:** NONE
 **Benchmark payload execution authority:** NONE
@@ -99,10 +99,11 @@ Every input lineage record must carry:
 - declared use;
 - access classification;
 - rights/license state and evidence reference;
-- artifact-binding state;
-- semantic/canonical scientific-record identity using the existing repository canonicalization mechanism.
+- artifact-binding state.
 
 The evidence record does **not** trust caller-provided admission state/reasons. If such fields are supplied to the minimal validator, they must be rejected as computed-output fields or ignored only under an explicit persisted-result verification path.
+
+Scientific record identity is evaluator-computed from the validated identity-bearing projection. A caller-provided `record_sha256`, scientific-record digest, or equivalent identity assertion is non-authoritative and must not bypass recomputation; the minimal V1 evidence validator rejects such computed-output fields.
 
 Duplicate stable IDs, malformed identity fields, unknown controlled states, or contradictory universal fields fail validation rather than raising an uncontrolled exception.
 
@@ -301,9 +302,9 @@ A source/family may be verified while its separately distributed payload is `UNB
 
 An exact artifact locator plus accepted content-addressed/cryptographic source revision qualifies as exact binding. A mutable label such as `latest` does not.
 
-### US5 — Caller cannot self-assert eligibility
+### US5 — Caller cannot self-assert eligibility or scientific identity
 
-An input record containing `admission_state=ELIGIBLE` cannot bypass recomputation and must be rejected/treated as non-authoritative input.
+An input record containing `admission_state=ELIGIBLE`, `record_sha256`, or an equivalent computed scientific identity cannot bypass recomputation and must be rejected/treated as non-authoritative input.
 
 ### US6 — Private Gold stays quarantined
 
@@ -338,7 +339,7 @@ A model/checkpoint record captures exact source, terms, redistribution/commercia
 - **FR-009:** Require parent/generator/configuration/output-use lineage for synthetic/model-generated/derived assets where applicable.
 - **FR-010:** Reuse `eval_contract.canonical` and existing enums/semantics where suitable instead of introducing a second identity framework.
 - **FR-011:** Separate audit-only metadata from identity-bearing lineage through an explicit scientific-identity projection.
-- **FR-012:** Compute admission as evaluator-owned output `ELIGIBLE | REFERENCE_ONLY | BLOCKED | PROHIBITED`; never trust self-asserted admission input.
+- **FR-012:** Compute scientific record identity and admission as evaluator-owned outputs; never trust self-asserted record identity or admission input.
 - **FR-013:** Bind computed admission output to both contract identity and scientific record identity, with deterministic reason codes.
 - **FR-014:** Keep validation offline, deterministic, fail-closed, and non-throwing for malformed fixtures.
 - **FR-015:** Add no new third-party runtime dependency unless later evidence proves it necessary; default is standard library only.
@@ -359,6 +360,7 @@ The implementation must fail closed for at least:
 - `UNBOUND` artifact evaluated as executable/eligible;
 - malformed direct SHA-256;
 - caller-provided `admission_state` attempting to bypass computation;
+- caller-provided `record_sha256`/scientific identity attempting to bypass recomputation;
 - unresolved/conflicting rights evaluated as eligible;
 - component-specific family rights promoted to every component;
 - unknown PHI/privacy state evaluated as repository-safe;
@@ -398,7 +400,7 @@ Before Spec 003 implementation can become a closeout candidate:
 1. specification, clarification, plan, checklist, tasks, and final analyze contain no unresolved material contradiction;
 2. the canonical lineage contract itself is fail-closed validated;
 3. one minimal lineage evidence record covers the required classes/dimensions;
-4. computed admission is evaluator-owned and bound to exact contract + scientific record identities;
+4. scientific record identity and admission are evaluator-owned and bound to exact contract + validated evidence identities;
 5. validation is deterministic, offline, fail-closed, and non-throwing on malformed fixtures;
 6. canonical Spec 001 benchmark-registry semantics remain valid through direct reuse or explicit compatibility mapping;
 7. source verification cannot substitute for executable-artifact binding;
@@ -424,7 +426,7 @@ Spec 003 may transition toward `CLOSED_CANONICAL` only with identity-bound evide
 - full offline regression suite;
 - compatibility evidence for existing Spec 001 benchmark records;
 - direct-digest and cryptographic immutable-container binding tests;
-- self-asserted-admission bypass tests;
+- self-asserted-admission and self-asserted-record-identity bypass tests;
 - scientific-identity stability tests;
 - malformed-input/non-throwing tests;
 - proof that prohibited payload/model/training/PHI/Gold/gated access did not occur;
@@ -436,6 +438,6 @@ A green implementation merge alone does not make Spec 003 `CLOSED_CANONICAL`. Sp
 
 ## Immediate next lifecycle step
 
-Repair `plan.md`, `tasks.md`, and checklist against Analysis Pass 1, then rerun `analyze`.
+Run Analyze Pass 2 across the repaired specification, clarification, plan, checklist, and tasks.
 
 Implementation remains unauthorized until analysis passes.
