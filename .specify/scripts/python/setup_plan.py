@@ -35,7 +35,9 @@ def main(argv: list[str] | None = None) -> int:
         elif arg in {"--help", "-h"}:
             sys.stdout.write(_help_text(sys.argv[0]))
             return 0
-        # Other arguments are accepted and silently ignored, matching setup-plan.sh.
+        else:
+            print(f"ERROR: Unknown option '{arg}'", file=sys.stderr)
+            return 1
 
     try:
         paths = get_feature_paths(script_file=Path(__file__))
@@ -61,7 +63,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Copied plan template to {paths.impl_plan}", file=status_stream)
         else:
             print("Warning: Plan template not found", file=status_stream)
-            paths.impl_plan.touch()
+            return 1
 
     if json_mode:
         sys.stdout.write(
