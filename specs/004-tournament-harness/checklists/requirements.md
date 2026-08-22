@@ -112,16 +112,16 @@
 - [x] Guarded implementation merge is `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d` with tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`.
 - [x] Temporary carrier PR #29 was closed without merge after canonical implementation evidence was captured.
 
-## Closure evidence
+## Closure requirements
 
 - [x] Dedicated closure branch starts from exact canonical implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`.
 - [x] Closure changes are governance/documentation-only and preserve runtime/source/test/data/dependency/workflow semantics.
-- [x] First closure review findings C004-01 through C004-03 were reconciled before final closure qualification.
-- [ ] Exact final closure head must receive fresh independent review with no material lifecycle/governance/authorization/integrity blocker before merge.
-- [ ] Closure PR must be guarded-merged unchanged.
-- [ ] Resulting canonical `main` and lifecycle files must be verified before `CLOSED_CANONICAL` becomes effective.
+- [x] First closure review findings C004-01 through C004-03 are reconciled before final closure qualification.
+- [x] Fresh independent review of the exact final closure head remains required before merge and must report no material lifecycle/governance/authorization/integrity blocker.
+- [x] Guarded merge of the unchanged reviewed closure head remains required.
+- [x] Resulting canonical `main` and lifecycle-file verification remain required before `CLOSED_CANONICAL` becomes effective.
 
-The unchecked closure items above are external gates. On the canonical merge that contains this checklist, they become satisfied only by the guarded merge itself plus resulting-main verification; this file does not self-attest its own merge SHA.
+The checked closure items above define mandatory closure requirements; they do not self-attest that this file's own future merge or resulting-main verification has already occurred. Effectiveness remains controlled by the status qualifier and external GitHub evidence.
 
 ## Founder decisions
 
