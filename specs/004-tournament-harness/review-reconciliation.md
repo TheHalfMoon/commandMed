@@ -251,6 +251,22 @@ Repair:
 - record the closeout candidate as completed;
 - leave only exact-head requalification, fresh review, and guarded implementation merge as remaining T004-10 work.
 
+## R004-09 — Invalid non-object manifests received a misleading manifest digest
+
+**Independent review head:** `bf57ccd47791ef0cd25ebc478e154a9f28c14be4`
+**Reviewer:** Qodo
+**Severity:** MATERIAL / CORRECTNESS + REPORT IDENTITY
+**Status:** REPAIRED
+
+The R004-08 report-shell guard correctly stopped hashing mixed-key dictionaries but used `not isinstance(manifest, dict) or ...`, so a wholly non-object manifest such as a string, list, or `None` could still be canonical-hashed even though `validate_tournament_manifest()` correctly rejected it as not an object. The resulting `NO_SELECTION / INVALID_MANIFEST_OR_PROTOCOL` report therefore carried a non-`None` manifest digest for an input that was not a valid tournament manifest.
+
+Repair:
+
+- `_base_report()` computes `tournament_manifest_sha256` only when the manifest is a dictionary **and** all top-level keys are strings;
+- non-object manifests and mixed-key dictionaries both keep `tournament_manifest_sha256=None`;
+- valid dictionary manifests retain the existing deterministic digest behavior;
+- regression drives string, list, and `None` manifests through `evaluate_tournament()` and requires `NO_SELECTION / INVALID_MANIFEST_OR_PROTOCOL`, object-shape validation evidence, and a null manifest identity.
+
 ## Qualification invalidation history
 
 ```text
@@ -286,13 +302,18 @@ f21d500dd172b1cbe1c9d23a86b9880e4104e64a
   -> Run 32602120618 green (45 focused / 9 hard / 273 full)
   -> final independent review discovered R004-08 mixed-key fail-closed defect and G004-01 stale task state
   -> qualification invalidated before merge
+
+bf57ccd47791ef0cd25ebc478e154a9f28c14be4
+  -> Run 32603238663 green (47 focused / 9 hard / 275 full)
+  -> fresh Qodo review discovered R004-09 non-object-manifest identity defect
+  -> qualification invalidated before merge
 ```
 
 No predecessor PASS is merge evidence for the current implementation head.
 
 ## Current required qualification
 
-The non-self-referential implementation closeout candidate already exists. After R004-08/G004-01 repair, the resulting exact final repair head must independently prove on one unchanged head:
+The non-self-referential implementation closeout candidate already exists. After R004-09 repair, the resulting exact final repair head must independently prove on one unchanged head:
 
 ```text
 PYTHON_SYNTAX=PASS
