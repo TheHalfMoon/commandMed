@@ -125,7 +125,10 @@ class TestFailClosedRepair(unittest.TestCase):
         self.assertEqual(state, GateEvaluationState.INSUFFICIENT_EVIDENCE.value)
 
     def test_03_all_hard_gates_pass(self):
-        state, _ = evaluate_hard_gates([hard_gate()], {"gate": {"status": "PASS", "score": 0.0}})
+        state, _ = evaluate_hard_gates(
+            [hard_gate()],
+            {"gate": {"status": "PASS", "score": 0.0, "evidence_artifact_id": "fixture:gate-evidence"}},
+        )
         self.assertEqual(state, "PASS")
 
     def test_04_failed_hard_gate_dominates(self):
