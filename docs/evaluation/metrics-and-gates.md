@@ -1,7 +1,8 @@
 # commandMed Metrics Catalog & Hard Gates
 
-**Status:** SPEC_001_CLOSEOUT_CANDIDATE — BECOMES CANONICAL ONLY AFTER SPEC 001 CLOSURE
-**Spec:** `specs/001-eval-charter`
+**Status:** SPEC_001_CANONICAL / SPEC_002_SAFETY_POLICY_ACTIVE
+**Metric-definition authority:** `specs/001-eval-charter`
+**Safety-threshold governance:** `specs/002-safety-gates`
 
 ## 1. Safety Hard-Gate Principle
 
@@ -14,7 +15,7 @@ EVALUATION OUTCOME SEMANTICS:
 - If and only if ALL required hard gates pass (PASS) -> OVERALL EVALUATION STATUS = PASS
 ```
 
-Aggregate development metrics (e.g., MedQA USMLE accuracy) can never override or compensate for a failure in a safety-critical hard gate.
+Aggregate development metrics can never override or compensate for a failure in a safety-critical hard gate.
 
 ## 2. Hard Safety Gates
 
@@ -26,6 +27,8 @@ Aggregate development metrics (e.g., MedQA USMLE accuracy) can never override or
 | `citation_entailment_fidelity` | `EVIDENCE` | `HIGHER_BETTER` | Proportion of generated factual clinical claims fully entailed by retrieved or provided source evidence. | `percentage` | Deterministic verifier + clinician audit on citation-backed responses |
 | `arabic_clinical_parity_gap` | `MULTILINGUAL` | `LOWER_BETTER` | Relative performance gap between Arabic and English across matched reasoning and safety tasks. | `relative_gap` | Paired evaluation on `COMMANDMED_ARABIC_GOLD` |
 | `lab_report_field_extraction_accuracy` | `MULTIMODAL` | `HIGHER_BETTER` | Exact match and range correctness of laboratory values, units, and ranges extracted from lab sheets. | `f1_score` | Deterministic field comparator against curated lab fixtures |
+
+Spec 002 preserves these metric identities and their hard-gate status. It does not reclassify a gate merely to make qualification easier.
 
 ## 3. Development and Resource Metrics
 
@@ -41,6 +44,26 @@ Aggregate development metrics (e.g., MedQA USMLE accuracy) can never override or
 | `installed_package_bytes` | `RESOURCE` | `LOWER_BETTER` | Installed application footprint in bytes including model weights and runtime dependencies. | `bytes` | `COMMANDMED_DEVICE_EVIDENCE` measurement on target hardware |
 | `peak_inference_ram` | `RESOURCE` | `LOWER_BETTER` | Peak resident set size memory during active multimodal inference. | `megabytes` | Hardware profiling log on named target devices |
 
-## 4. Threshold Governance
+## 4. Spec 002 Threshold Governance
 
-In Spec 001, metric definitions are established while numerical thresholds remain `DEFINED_NOT_YET_THRESHOLD_FROZEN`. Exact clinical and statistical thresholds will be formally frozen in dedicated downstream specs (e.g. Spec 002 *Safety Gates*) prior to candidate evaluation runs.
+Spec 002 separates two concepts that must not be conflated.
+
+### Policy/sentinel invariants
+
+Identity-bound, deliberately unambiguous safety mechanics may use a zero-violation rule. Examples include overriding a required emergency/escalation state, replacing a required deterministic mechanism with guessed prose, or altering an identity-bound deterministic result.
+
+A sentinel score of `0` means zero observed violations on that exact frozen fixture/evidence set. It is **not** a population clinical error-rate estimate.
+
+### Population/statistical clinical thresholds
+
+The population-level thresholds for the six hard-gate metrics remain pending until the required intended-use, clinical, statistical and evidence provenance exists. Pending statistical thresholds are non-passable; they are not silently treated as zero or as satisfied by sentinel mechanics.
+
+`benign_case_over_triage_rate` additionally remains bound to `FD-004`, which is not resolved by Spec 002.
+
+## 5. Applicability and scope
+
+Gate applicability is resolved before aggregation and does not add `NOT_APPLICABLE` to the existing gate-result vocabulary.
+
+A component evaluation may explicitly exclude a capability it does not perform, but the result remains component-scoped and cannot be promoted to system qualification. A system qualification cannot mark a canonical required system capability—such as Arabic clinical safety—as not applicable merely to obtain a pass.
+
+See `docs/evaluation/safety-gates.md` and `data/eval/safety_policy.json` for the Spec 002 policy contract.
