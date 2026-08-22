@@ -14,14 +14,14 @@ jobs:
       - name: Checkout exact closure candidate
         uses: actions/checkout@v4
         with:
-          ref: b9a711787042249a54e8a3e94f8fa9fc77e9864a
+          ref: 81c6ba52702a385c54c531c9eb7ec099b2fd39d1
           fetch-depth: 0
 
       - name: Prove exact closure identity and base
         shell: bash
         run: |
           set -euo pipefail
-          HEAD_EXPECTED=b9a711787042249a54e8a3e94f8fa9fc77e9864a
+          HEAD_EXPECTED=81c6ba52702a385c54c531c9eb7ec099b2fd39d1
           BASE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
           test "$(git rev-parse HEAD)" = "$HEAD_EXPECTED"
           test "$(git merge-base HEAD "$BASE")" = "$BASE"
@@ -57,7 +57,7 @@ jobs:
           echo "LIFECYCLE_DOCS_ONLY=PASS"
           echo "RUNTIME_SOURCE_TEST_DATA_DEPENDENCY_WORKFLOW_CHANGES=NONE"
 
-      - name: Prove canonical evidence and authority boundary
+      - name: Prove lifecycle reconciliation and authority boundary
         shell: bash
         run: |
           set -euo pipefail
@@ -69,6 +69,14 @@ jobs:
           grep -Fq 'C004-01 NONCANONICAL_CLOSEOUT_STATUS=REPAIRED' specs/004-tournament-harness/closeout.md
           grep -Fq 'C004-02 STALE_SPEC004_LIFECYCLE_ARTIFACTS=REPAIRED' specs/004-tournament-harness/closeout.md
           grep -Fq 'C004-03 UNLINKED_CI_REVIEW_EVIDENCE=REPAIRED' specs/004-tournament-harness/closeout.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/closeout.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/tasks.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/review-reconciliation.md
+          grep -Fq '**Status:** `CLOSED_CANONICAL`' specs/004-tournament-harness/checklists/requirements.md
+          if grep -Eq '^- \[ \]' specs/004-tournament-harness/checklists/requirements.md; then
+            echo "UNCHECKED_CANONICAL_REQUIREMENT=FAIL"
+            exit 1
+          fi
           grep -Fq '| 004 | Tournament Harness | `CLOSED_CANONICAL` |' specs/README.md
           grep -Fq '| 005 | Base Model Tournament | `BLOCKED` |' specs/README.md
           grep -Fq 'MODEL_EXECUTION_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
@@ -77,6 +85,7 @@ jobs:
           grep -Fq 'TOURNAMENT_EXECUTION_AGAINST_MODELS=NONE' specs/004-tournament-harness/closeout.md
           grep -Fq 'TRAINING_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
           grep -Fq 'SPEC_005=BLOCKED' specs/004-tournament-harness/closeout.md
+          echo "CANONICAL_LIFECYCLE_RECONCILIATION=PASS"
           echo "CANONICAL_EVIDENCE_BINDING=PASS"
           echo "AUTHORITY_BOUNDARY=PASS"
           echo "SPEC_005=BLOCKED"
