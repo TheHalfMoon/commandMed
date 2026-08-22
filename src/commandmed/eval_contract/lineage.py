@@ -393,6 +393,8 @@ def validate_lineage_record(record: Any, contract: Any) -> list[str]:
         if asset_class == "DERIVED_RESEARCH_ARTIFACT" and origin_type not in {None, "DERIVED"}:
             errors.append(f"{prefix}: DERIVED_RESEARCH_ARTIFACT requires origin_type='DERIVED'")
         if declared_use == "TRAINING_OR_ADAPTATION":
+            if asset_class == "DERIVED_RESEARCH_ARTIFACT":
+                _append_required_string_error(record, "generator_identity", prefix, errors)
             output_evidence = _normalized_string(record.get("output_use_evidence_uri"))
             if output_evidence is None or output_evidence.upper() in UNBOUND_SENTINELS:
                 errors.append(f"{prefix}: training/adaptation of generated or derived output requires resolved 'output_use_evidence_uri'")
@@ -529,10 +531,7 @@ def _evaluate_base_admission(record: dict[str, Any], contract_sha: str, record_s
     if purpose in PURPOSE_ALLOWED_DECLARED_USES and declared_use != "REFERENCE":
         if declared_use not in PURPOSE_ALLOWED_DECLARED_USES[purpose]:
             reasons.add("PURPOSE_USE_INCOMPATIBLE")
-    if (
-        record.get("asset_class") == "MODEL_GENERATED_OR_SYNTHETIC_ASSET"
-        and declared_use == "TRAINING_OR_ADAPTATION"
-    ):
+    if record.get("asset_class") in DERIVED_CLASSES and declared_use == "TRAINING_OR_ADAPTATION":
         generator_identity = _normalized_string(record.get("generator_identity"))
         if generator_identity is not None:
             lowered = generator_identity.casefold()
