@@ -52,6 +52,14 @@ class TestExternalReviewReconciliation(unittest.TestCase):
             errors = validate_gold_protocol(record)
             self.assertEqual(errors, [], f"{record['family_id']}: {errors}")
 
+    def test_medhelm_license_evidence_is_immutable(self) -> None:
+        record = next(x for x in self.benchmarks if x["benchmark_id"] == "medhelm")
+        uri = record["license_source_uri"]
+        self.assertIn("89001e71b45ff860572bca9fd3f8e28fd1b1c118", uri)
+        self.assertNotIn("/blob/main/", uri)
+        self.assertEqual(record["intended_use"], "REFERENCE_ONLY")
+        self.assertEqual(record["license_status"], "COMPONENT_SPECIFIC")
+
 
 if __name__ == "__main__":
     unittest.main()
