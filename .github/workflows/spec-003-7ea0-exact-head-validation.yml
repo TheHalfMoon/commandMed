@@ -14,7 +14,7 @@ jobs:
       - name: Checkout exact candidate
         uses: actions/checkout@v4
         with:
-          ref: 2bd7e453575b01484428a76b34cbe451cdc5f0a1
+          ref: 378d30b184a1a60aa68a40a38a96ff686429c9f2
           fetch-depth: 0
 
       - name: Set up Python 3.11
@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "2bd7e453575b01484428a76b34cbe451cdc5f0a1"
+          test "$(git rev-parse HEAD)" = "378d30b184a1a60aa68a40a38a96ff686429c9f2"
           echo "EXACT_HEAD=$(git rev-parse HEAD)"
           python --version
           python -m compileall -q src tests
@@ -73,7 +73,7 @@ jobs:
           PY
 
       - name: Run focused Spec 003 lineage tests
-        run: python -m unittest tests.eval_contract.test_lineage -v
+        run: python -m unittest discover -s tests/eval_contract -p 'test_lineage*.py' -v
 
       - name: Run inherited hard-gate tests
         run: python -m unittest tests.eval_contract.test_hard_gates
@@ -90,7 +90,7 @@ jobs:
           echo "GIT_DIFF_CHECK=PASS"
           changed="$(git diff --name-only "${BASE}...HEAD")"
           printf '%s\n' "$changed"
-          if printf '%s\n' "$changed" | grep -Ev '^(data/lineage/lineage_contract\.json|docs/governance/data-license-provenance\.md|src/commandmed/eval_contract/lineage\.py|tests/eval_contract/test_lineage\.py|specs/003-data-license-provenance/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|review-reconciliation\.md|checklists/requirements\.md))$' | grep -q .; then
+          if printf '%s\n' "$changed" | grep -Ev '^(data/lineage/lineage_contract\.json|docs/governance/data-license-provenance\.md|src/commandmed/eval_contract/lineage\.py|tests/eval_contract/test_lineage\.py|tests/eval_contract/test_lineage_derived_teacher\.py|specs/003-data-license-provenance/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|review-reconciliation\.md|checklists/requirements\.md))$' | grep -q .; then
             echo "UNBOUNDED_PATH=FAIL"
             exit 1
           fi
