@@ -14,7 +14,7 @@ jobs:
       - name: Checkout exact candidate
         uses: actions/checkout@v4
         with:
-          ref: 8da820fde8974ec382afde7009cd201ee8f59bdf
+          ref: f21d500dd172b1cbe1c9d23a86b9880e4104e64a
           fetch-depth: 0
 
       - name: Set up Python 3.11
@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "8da820fde8974ec382afde7009cd201ee8f59bdf"
+          test "$(git rev-parse HEAD)" = "f21d500dd172b1cbe1c9d23a86b9880e4104e64a"
           echo "EXACT_HEAD=$(git rev-parse HEAD)"
           python --version
           python -m compileall -q src tests
@@ -74,7 +74,7 @@ jobs:
           echo "EXECUTION_SURFACE_PREFLIGHT=PASS"
 
       - name: Run focused Spec 004 tournament tests
-        run: python -m unittest tests.test_tournament tests.test_tournament_contract_hardening -v
+        run: python -m unittest tests.test_tournament tests.test_tournament_contract_hardening tests.test_tournament_review_hardening -v
 
       - name: Run inherited hard-gate tests
         run: python -m unittest tests.eval_contract.test_hard_gates
@@ -91,7 +91,7 @@ jobs:
           echo "GIT_DIFF_CHECK=PASS"
           changed="$(git diff --name-only "${BASE}...HEAD")"
           printf '%s\n' "$changed"
-          if printf '%s\n' "$changed" | grep -Ev '^(src/commandmed/tournament\.py|tests/test_tournament\.py|tests/test_tournament_contract_hardening\.py|docs/evaluation/tournament-harness\.md|specs/004-tournament-harness/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|review-reconciliation\.md|checklists/requirements\.md))$' | grep -q .; then
+          if printf '%s\n' "$changed" | grep -Ev '^(src/commandmed/tournament\.py|tests/test_tournament\.py|tests/test_tournament_contract_hardening\.py|tests/test_tournament_review_hardening\.py|docs/evaluation/tournament-harness\.md|specs/004-tournament-harness/(spec\.md|research\.md|plan\.md|tasks\.md|analysis\.md|review-reconciliation\.md|checklists/requirements\.md))$' | grep -q .; then
             echo "UNBOUNDED_PATH=FAIL"
             exit 1
           fi
