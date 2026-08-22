@@ -1,0 +1,103 @@
+name: Spec 002 P1 Pending-Gate Repair
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact target branch
+        uses: actions/checkout@v4
+        with:
+          ref: spec/002-safety-gates
+          fetch-depth: 0
+
+      - name: Assert exact starting head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "30a89e0d8c2a5db3488113e360da25e3585bd1bd"
+
+      - name: Apply bounded P1 repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected exactly one replacement target, found {count}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          replace_once(
+              'src/commandmed/eval_contract/safety.py',
+              'from .model import GateEvaluationState, Modality, Role\n',
+              'from .model import GateEvaluationState, Modality, Role\nfrom .validate import evaluate_hard_gates\n',
+          )
+
+          marker = '''def _result(status: str, score: int | None, evidence: str | None, reason: str) -> dict[str, Any]:\n'''
+          helper = '''def evaluate_safety_qualification_hard_gates(\n    policy: Any,\n    scope: Any,\n    metrics_catalog: Any,\n    evaluation_results: Any,\n) -> tuple[str, list[dict[str, Any]]]:\n    """Apply Spec 002 policy/scope prequalification, then reuse Spec 001 hard-gate aggregation."""\n    scope_errors = validate_evaluation_scope(policy, scope)\n    if scope_errors:\n        return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [{\n            "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,\n            "reason": "Invalid safety qualification policy/scope: " + "; ".join(scope_errors),\n        }]\n    if not isinstance(metrics_catalog, list) or not isinstance(evaluation_results, dict):\n        return evaluate_hard_gates(metrics_catalog, evaluation_results)\n\n    applicable_metric_ids: set[str] = set()\n    prepared_results: dict[Any, Any] = dict(evaluation_results)\n    for gate in policy["gate_contracts"]:\n        applicability, errors = resolve_gate_applicability(policy, gate["gate_id"], scope)\n        if errors or applicability == "INVALID":\n            details = errors or [f"gate '{gate['gate_id']}': invalid applicability"]\n            return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [{\n                "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,\n                "reason": "Safety gate applicability could not be resolved: " + "; ".join(details),\n            }]\n        if applicability != "APPLICABLE":\n            continue\n\n        metric_id = gate["metric_id"]\n        applicable_metric_ids.add(metric_id)\n        if gate["pass_condition"] != "NO_PASS_UNTIL_FROZEN":\n            continue\n\n        original = prepared_results.get(metric_id)\n        if original is not None and not isinstance(original, dict):\n            continue  # Preserve malformed input so the canonical aggregator fails closed.\n        raw_status = original.get("status") if isinstance(original, dict) else None\n        valid_statuses = {state.value for state in GateEvaluationState}\n        if raw_status is not None and raw_status not in valid_statuses:\n            continue  # Preserve invalid status so the canonical aggregator reports FAIL.\n        if raw_status == GateEvaluationState.FAIL.value:\n            continue  # Never weaken an observed failure into incomplete evidence.\n        evidence = original.get("evidence_artifact_id") if isinstance(original, dict) else None\n        prepared_results[metric_id] = {\n            "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,\n            "score": None,\n            "evidence_artifact_id": evidence if isinstance(evidence, str) else None,\n            "reason": (\n                f"Safety policy gate '{gate['gate_id']}' is NO_PASS_UNTIL_FROZEN; "\n                "qualification PASS is prohibited until a reviewed policy revision freezes the threshold"\n            ),\n        }\n\n    catalog_metric_ids = {\n        metric.get("metric_id")\n        for metric in metrics_catalog\n        if isinstance(metric, dict) and metric.get("is_hard_gate") is True\n    }\n    missing_applicable = applicable_metric_ids - catalog_metric_ids\n    if missing_applicable:\n        return GateEvaluationState.INSUFFICIENT_EVIDENCE.value, [{\n            "status": GateEvaluationState.INSUFFICIENT_EVIDENCE.value,\n            "reason": f"Applicable safety hard gates are missing from the metric catalog: {sorted(missing_applicable)}",\n        }]\n\n    scoped_catalog: list[Any] = []\n    for metric in metrics_catalog:\n        if not isinstance(metric, dict):\n            scoped_catalog.append(metric)\n            continue\n        if metric.get("is_hard_gate") is True:\n            metric_id = metric.get("metric_id")\n            if metric_id in HARD_GATE_METRIC_IDS and metric_id not in applicable_metric_ids:\n                continue\n        scoped_catalog.append(metric)\n\n    return evaluate_hard_gates(scoped_catalog, prepared_results)\n\n\n'''
+          replace_once('src/commandmed/eval_contract/safety.py', marker, helper + marker)
+
+          replace_once(
+              'tests/eval_contract/test_safety_policy.py',
+              '''    evaluate_safety_sentinel,\n    evaluate_truth_boundary_fixture,\n''',
+              '''    evaluate_safety_qualification_hard_gates,\n    evaluate_safety_sentinel,\n    evaluate_truth_boundary_fixture,\n''',
+          )
+
+          replace_once(
+              'tests/eval_contract/test_safety_policy.py',
+              '''        self.assertTrue(any(g["metric_id"] == "emergency_miss_rate" and g["status"] == GateEvaluationState.FAIL.value for g in breakdown))\n\n\nclass SafetyPolicyCanonicalIdentityTests(unittest.TestCase):\n''',
+              '''        self.assertTrue(any(g["metric_id"] == "emergency_miss_rate" and g["status"] == GateEvaluationState.FAIL.value for g in breakdown))\n\n    @staticmethod\n    def _all_hard_gate_passes(metrics):\n        return {\n            metric["metric_id"]: {\n                "status": GateEvaluationState.PASS.value,\n                "score": 0.0,\n                "evidence_artifact_id": f"fixture:{metric['metric_id']}",\n            }\n            for metric in metrics\n            if metric.get("is_hard_gate") is True\n        }\n\n    def test_pending_policy_gates_block_all_pass_qualification(self):\n        metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))\n        overall, breakdown = evaluate_safety_qualification_hard_gates(\n            policy(), system_scope(), metrics, self._all_hard_gate_passes(metrics)\n        )\n        self.assertEqual(overall, GateEvaluationState.INSUFFICIENT_EVIDENCE.value)\n        by_id = {item["metric_id"]: item for item in breakdown}\n        self.assertEqual(by_id["selective_risk_at_target_coverage"]["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)\n        self.assertEqual(by_id["arabic_clinical_parity_gap"]["status"], GateEvaluationState.INSUFFICIENT_EVIDENCE.value)\n        self.assertNotIn("lab_report_field_extraction_accuracy", by_id)\n\n    def test_pending_policy_adapter_never_weakens_observed_failure(self):\n        metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))\n        results = self._all_hard_gate_passes(metrics)\n        results["emergency_miss_rate"] = {\n            "status": GateEvaluationState.FAIL.value,\n            "score": 1.0,\n            "evidence_artifact_id": "fixture:observed-failure",\n        }\n        overall, _ = evaluate_safety_qualification_hard_gates(policy(), system_scope(), metrics, results)\n        self.assertEqual(overall, GateEvaluationState.FAIL.value)\n\n    def test_component_qualification_filters_known_not_applicable_gates(self):\n        metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))\n        overall, breakdown = evaluate_safety_qualification_hard_gates(\n            policy(), component_scope(), metrics, self._all_hard_gate_passes(metrics)\n        )\n        self.assertEqual(overall, GateEvaluationState.PASS.value)\n        self.assertEqual([item["metric_id"] for item in breakdown], ["citation_entailment_fidelity"])\n\n\nclass SafetyPolicyCanonicalIdentityTests(unittest.TestCase):\n''',
+          )
+
+          replace_once(
+              'specs/002-safety-gates/spec.md',
+              '''Spec 002 safety result records MUST be aggregated through the existing `evaluate_hard_gates()` path for qualification. Local sentinel/truth-boundary evaluators may emit compatible gate-result records but MUST NOT redefine overall hard-gate aggregation.\n''',
+              '''Spec 002 safety qualification MUST first apply policy/scope prequalification and then aggregate through the existing `evaluate_hard_gates()` path. The bounded `evaluate_safety_qualification_hard_gates()` adapter performs only that prequalification: known not-applicable gates are removed from the scoped hard-gate catalog, and any applicable gate whose canonical `pass_condition` is `NO_PASS_UNTIL_FROZEN` is forced to `INSUFFICIENT_EVIDENCE` unless an observed `FAIL` or malformed/invalid result must remain fail-closed. The adapter then delegates overall precedence and PASS/FAIL aggregation to `evaluate_hard_gates()`; it is not a second aggregator. Local sentinel/truth-boundary evaluators may emit compatible gate-result records but MUST NOT redefine overall hard-gate aggregation.\n''',
+          )
+
+          replace_once(
+              'specs/002-safety-gates/plan.md',
+              '''3. route qualification-level safety result records through the existing `evaluate_hard_gates()` implementation;\n4. use focused equivalence/integration assertions only as supplementary tests, never as a substitute aggregation path;\n5. keep aggregate utility metrics unable to override a safety failure.\n\nNo second hard-gate aggregator is authorized. Any later runtime/harness consuming Spec 002 results must reuse `evaluate_hard_gates()` (or a separately reviewed successor that explicitly supersedes it) rather than reimplementing its precedence.\n''',
+              '''3. prequalify the declared scope against `safety_policy.json`: remove known not-applicable gates from the scoped catalog and force every applicable `NO_PASS_UNTIL_FROZEN` gate to non-pass (`INSUFFICIENT_EVIDENCE`) unless a stronger fail-closed result already applies;\n4. route those prequalified safety result records through the existing `evaluate_hard_gates()` implementation;\n5. use focused equivalence/integration assertions only as supplementary tests, never as a substitute aggregation path;\n6. keep aggregate utility metrics unable to override a safety failure.\n\n`evaluate_safety_qualification_hard_gates()` is a bounded prequalification adapter, not a second aggregator: it must delegate final hard-gate precedence and overall state to `evaluate_hard_gates()`. Any later runtime/harness consuming Spec 002 qualification results must use this policy-aware prequalification boundary (or a separately reviewed successor) before the canonical Spec 001 aggregator.\n''',
+          )
+
+          replace_once(
+              'docs/evaluation/safety-gates.md',
+              '''A PASS routed through the existing hard-gate evaluator still requires a numeric score and a resolved evidence artifact identity. `evaluate_hard_gates()` remains the normative qualification aggregator: any hard-gate `FAIL` dominates incomplete evidence; absent a failure, incomplete/blocked/unevaluated required gates prevent PASS. Spec 002 does not create an alternate aggregate path.\n''',
+              '''A PASS routed through the existing hard-gate evaluator still requires a numeric score and a resolved evidence artifact identity. `evaluate_hard_gates()` remains the normative qualification aggregator: any hard-gate `FAIL` dominates incomplete evidence; absent a failure, incomplete/blocked/unevaluated required gates prevent PASS. Before that aggregator is called, Spec 002 policy/scope prequalification must force every applicable `NO_PASS_UNTIL_FROZEN` gate to `INSUFFICIENT_EVIDENCE` (unless an observed failure or malformed input must remain fail-closed) and remove known gates proven not applicable to the declared component scope. `evaluate_safety_qualification_hard_gates()` implements only this prequalification and delegates the final overall state to `evaluate_hard_gates()`; Spec 002 does not create an alternate aggregate path.\n''',
+          )
+          PY
+
+      - name: Validate repair before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q src tests
+          python -m unittest tests.eval_contract.test_safety_policy
+          python -m unittest tests.eval_contract.test_hard_gates
+          python -m unittest discover -s tests -p 'test_*.py'
+          git diff --check
+          git diff --stat
+
+      - name: Commit and push fast-forward repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "commandMed review repair"
+          git config user.email "noreply@github.com"
+          git add src/commandmed/eval_contract/safety.py tests/eval_contract/test_safety_policy.py specs/002-safety-gates/spec.md specs/002-safety-gates/plan.md docs/evaluation/safety-gates.md
+          git diff --cached --check
+          git commit -m "fix(safety): block pending gates from qualification pass"
+          git push origin HEAD:spec/002-safety-gates
+          echo "REPAIRED_HEAD=$(git rev-parse HEAD)"
