@@ -40,6 +40,7 @@ def base_record(**overrides):
         "purpose": "TRAIN",
         "quarantine_state": "NOT_QUARANTINED",
         "contamination_state": "ASSESSED_CLEAN",
+        "origin_type": "ORIGINAL",
     }
     record.update(overrides)
     return record
