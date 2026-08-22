@@ -5,7 +5,7 @@ import json
 import unittest
 from pathlib import Path
 
-from commandmed.eval_contract.lineage import (
+from src.commandmed.eval_contract.lineage import (
     compute_lineage_contract_sha256,
     compute_lineage_record_sha256,
     evaluate_lineage_admission,
