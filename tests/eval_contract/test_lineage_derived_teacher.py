@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import unittest
+
 from src.commandmed.eval_contract.lineage import (
     evaluate_lineage_admission,
     validate_lineage_record,
@@ -30,7 +32,7 @@ def parent_record(**overrides):
     return base_record(asset_id="parent-001", **overrides)
 
 
-class TestDerivedTeacherLaundering:
+class TestDerivedTeacherLaundering(unittest.TestCase):
     """Fail-closed tests for derived artifacts entering training lineage."""
 
     def test_training_derived_artifact_requires_generator_provenance(self):
@@ -38,10 +40,10 @@ class TestDerivedTeacherLaundering:
         child = derived_training_record()
         child.pop("generator_identity")
         errors = validate_lineage_record(child, CONTRACT)
-        assert any("generator_identity" in error for error in errors)
+        self.assertTrue(any("generator_identity" in error for error in errors))
         result = evaluate_lineage_admission(child, CONTRACT, [parent_record(), child])
-        assert result["state"] == "BLOCKED"
-        assert result["reason_codes"] == ["INVALID_RECORD"]
+        self.assertEqual(result["state"], "BLOCKED")
+        self.assertEqual(result["reason_codes"], ["INVALID_RECORD"])
 
     def test_medgemma_derived_artifact_cannot_train(self):
         """Changing MedGemma output to DERIVED_RESEARCH_ARTIFACT does not bypass policy."""
@@ -50,8 +52,8 @@ class TestDerivedTeacherLaundering:
             generator_identity="google/medgemma-4b-it@" + "d" * 40,
         )
         result = evaluate_lineage_admission(child, CONTRACT, [parent, child])
-        assert result["state"] == "PROHIBITED"
-        assert "GENERATOR_TRAINING_PROHIBITED" in result["reason_codes"]
+        self.assertEqual(result["state"], "PROHIBITED")
+        self.assertIn("GENERATOR_TRAINING_PROHIBITED", result["reason_codes"])
 
     def test_haidef_derived_artifact_cannot_train(self):
         """Changing HAI-DEF output to DERIVED_RESEARCH_ARTIFACT does not bypass policy."""
@@ -60,13 +62,17 @@ class TestDerivedTeacherLaundering:
             generator_identity="google/hai-def/reference@" + "e" * 40,
         )
         result = evaluate_lineage_admission(child, CONTRACT, [parent, child])
-        assert result["state"] == "PROHIBITED"
-        assert "GENERATOR_TRAINING_PROHIBITED" in result["reason_codes"]
+        self.assertEqual(result["state"], "PROHIBITED")
+        self.assertIn("GENERATOR_TRAINING_PROHIBITED", result["reason_codes"])
 
     def test_non_model_derived_artifact_can_train_when_all_gates_pass(self):
         """A deterministic non-prohibited derivation remains eligible with complete evidence."""
         parent = parent_record()
         child = derived_training_record(generator_identity="deterministic:transform-v1")
         result = evaluate_lineage_admission(child, CONTRACT, [parent, child])
-        assert result["state"] == "ELIGIBLE"
-        assert result["reason_codes"] == []
+        self.assertEqual(result["state"], "ELIGIBLE")
+        self.assertEqual(result["reason_codes"], [])
+
+
+if __name__ == "__main__":
+    unittest.main()
