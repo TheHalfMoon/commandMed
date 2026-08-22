@@ -1,0 +1,82 @@
+name: Spec 004 Closure Exact-Head Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact closure candidate
+        uses: actions/checkout@v4
+        with:
+          ref: b9a711787042249a54e8a3e94f8fa9fc77e9864a
+          fetch-depth: 0
+
+      - name: Prove exact closure identity and base
+        shell: bash
+        run: |
+          set -euo pipefail
+          HEAD_EXPECTED=b9a711787042249a54e8a3e94f8fa9fc77e9864a
+          BASE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
+          test "$(git rev-parse HEAD)" = "$HEAD_EXPECTED"
+          test "$(git merge-base HEAD "$BASE")" = "$BASE"
+          echo "EXACT_CLOSURE_HEAD=$(git rev-parse HEAD)"
+          echo "EXACT_CLOSURE_BASE=$BASE"
+          echo "EXACT_IDENTITY_AND_BASE=PASS"
+
+      - name: Diff hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
+          git diff --check "$BASE...HEAD"
+          echo "GIT_DIFF_CHECK=PASS"
+
+      - name: Prove exact lifecycle-only changed paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d
+          changed="$(git diff --name-only "$BASE...HEAD" | LC_ALL=C sort)"
+          expected="$(cat <<'EOF' | LC_ALL=C sort
+          specs/004-tournament-harness/checklists/requirements.md
+          specs/004-tournament-harness/closeout.md
+          specs/004-tournament-harness/review-reconciliation.md
+          specs/004-tournament-harness/tasks.md
+          specs/README.md
+          EOF
+          )"
+          printf '%s\n' "$changed"
+          test "$changed" = "$expected"
+          echo "CHANGED_PATH_COUNT=$(printf '%s\n' "$changed" | sed '/^$/d' | wc -l)"
+          echo "LIFECYCLE_DOCS_ONLY=PASS"
+          echo "RUNTIME_SOURCE_TEST_DATA_DEPENDENCY_WORKFLOW_CHANGES=NONE"
+
+      - name: Prove canonical evidence and authority boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq '9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d' specs/004-tournament-harness/closeout.md
+          grep -Fq '7e37fa626f825ee25271e0bf21a627a2e64e49da' specs/004-tournament-harness/closeout.md
+          grep -Fq 'cf6158ea4193aa7db895607c6fac5a3a1442f708' specs/004-tournament-harness/closeout.md
+          grep -Fq 'https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702' specs/004-tournament-harness/closeout.md
+          grep -Fq 'https://github.com/TheHalfMoon/commandMed/actions/runs/32603944702/job/97106155513' specs/004-tournament-harness/closeout.md
+          grep -Fq 'C004-01 NONCANONICAL_CLOSEOUT_STATUS=REPAIRED' specs/004-tournament-harness/closeout.md
+          grep -Fq 'C004-02 STALE_SPEC004_LIFECYCLE_ARTIFACTS=REPAIRED' specs/004-tournament-harness/closeout.md
+          grep -Fq 'C004-03 UNLINKED_CI_REVIEW_EVIDENCE=REPAIRED' specs/004-tournament-harness/closeout.md
+          grep -Fq '| 004 | Tournament Harness | `CLOSED_CANONICAL` |' specs/README.md
+          grep -Fq '| 005 | Base Model Tournament | `BLOCKED` |' specs/README.md
+          grep -Fq 'MODEL_EXECUTION_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'MODEL_WEIGHT_ACCESS_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'TOURNAMENT_EXECUTION_AGAINST_MODELS=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'TRAINING_AUTHORITY=NONE' specs/004-tournament-harness/closeout.md
+          grep -Fq 'SPEC_005=BLOCKED' specs/004-tournament-harness/closeout.md
+          echo "CANONICAL_EVIDENCE_BINDING=PASS"
+          echo "AUTHORITY_BOUNDARY=PASS"
+          echo "SPEC_005=BLOCKED"
