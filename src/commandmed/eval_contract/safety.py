@@ -195,13 +195,17 @@ def validate_evaluation_scope(policy: Any, scope: Any) -> list[str]:
     claimed, excluded = scope.get("claimed_capabilities"), scope.get("out_of_scope_capabilities")
     errors += _strings(claimed, "claimed_capabilities", CAPABILITY_CLAIMS, nonempty=False)
     errors += _strings(excluded, "out_of_scope_capabilities", CAPABILITY_CLAIMS, nonempty=False)
-    if isinstance(claimed, list) and isinstance(excluded, list):
-        overlap = set(claimed) & set(excluded)
+    claimed_is_string_list = isinstance(claimed, list) and all(isinstance(x, str) and bool(x.strip()) for x in claimed)
+    excluded_is_string_list = isinstance(excluded, list) and all(isinstance(x, str) and bool(x.strip()) for x in excluded)
+    if claimed_is_string_list and excluded_is_string_list:
+        claimed_set = {x.strip() for x in claimed}
+        excluded_set = {x.strip() for x in excluded}
+        overlap = claimed_set & excluded_set
         if overlap: errors.append(f"scope: capability cannot be both claimed and out-of-scope: {sorted(overlap)}")
-        missing = CAPABILITY_CLAIMS - (set(claimed) | set(excluded))
+        missing = CAPABILITY_CLAIMS - (claimed_set | excluded_set)
         if missing: errors.append(f"scope: every capability must be explicitly claimed or out-of-scope: {sorted(missing)}")
         if kind == "SYSTEM_QUALIFICATION":
-            missing = REQUIRED_SYSTEM_CAPABILITIES - set(claimed)
+            missing = REQUIRED_SYSTEM_CAPABILITIES - claimed_set
             if missing: errors.append(f"scope: SYSTEM_QUALIFICATION must claim canonical system capabilities {sorted(missing)}")
     return errors
 
