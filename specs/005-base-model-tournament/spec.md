@@ -232,7 +232,7 @@ The following exact upstream artifact names are carried forward for admission re
 3. `google/gemma-4-E2B`
 4. `HuggingFaceTB/SmolLM3-3B-Base`
 
-Current public primary-source metadata indicates that these artifacts are base/pretrained candidates and report Apache-2.0 licensing at the family/artifact level. That observation is **discovery evidence only**. It does not satisfy the exact Spec 003 lineage contract, immutable-revision requirement, tokenizer/processor identity binding, access-status proof, contamination/quarantine proof, runtime compatibility proof, or device qualification required for `PRIMARY` admission.
+Current public primary-source metadata reports Apache-2.0 licensing for these artifacts and identifies them as base/pretrained candidates. That observation is **discovery evidence only**. It does not satisfy the exact Spec 003 lineage contract, immutable-revision requirement, tokenizer/processor identity binding, access-status proof, contamination/quarantine proof, runtime compatibility proof, or device qualification required for `PRIMARY` admission.
 
 Therefore:
 
@@ -244,7 +244,7 @@ Therefore:
 
 ### Conditional discovery outside the primary shortlist
 
-The LFM2.5 family, including `LiquidAI/LFM2.5-2.6B-Base`, remains `CONDITIONAL` discovery outside the primary-admission shortlist under canonical decision `D-007` until exact license and intended-use compatibility with `FD-001` are proven.
+The LFM2.5 family, including `LiquidAI/LFM2.5-2.6B-Base`, remains `CONDITIONAL` discovery outside the primary-admission shortlist under canonical decision `D-007`. Its current public model metadata reports the custom `lfm1.0` license, so exact intended-use and downstream-release compatibility with `FD-001` must be proven before any promotion.
 
 Other prior discovery items remain non-primary unless separately reconciled:
 
