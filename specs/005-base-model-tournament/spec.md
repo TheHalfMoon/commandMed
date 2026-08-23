@@ -66,6 +66,10 @@ Popularity, download counts, likes, social discussion, stars, or vendor reputati
 - Q: How must the frozen 8K and 16K context budgets be divided between serialized prompt/input and generated output? → A: `7K_PROMPT_1K_GENERATION` — cap the 8K hard condition at `7168` serialized-prompt tokens plus `1024` generation tokens, and the 16K stress condition at `15360` serialized-prompt tokens plus the same `1024` generation tokens. The serialized-prompt budget includes system text and prompt/chat-template tokens as well as benchmark/context/user material; unused generation allowance does not expand the prompt ceiling. Generation budget is identical across candidates. Exact tokenizer/template/runtime identities and the reproducible token-accounting implementation remain pre-execution gates, along with batch/ubatch, cache reuse, RAM/performance measurement, thermals, energy, OS/runtime revisions, and target-specific hard-failure semantics.
 - Q: What prompt-processing batch and cache-reuse profile must measured device qualification use? → A: `B512_U128_COLD_NO_REUSE` — use logical batch `512` and physical ubatch `128` for measured qualification and required stress runs; prohibit prompt-cache, session-state, prefix-cache, or equivalent cross-run/precomputed prompt-state reuse; apply the same batch profile across comparable candidates and all frozen device targets. This freezes a comparability profile, not a measured performance claim. Exact runtime/backend identities, peak-RAM methodology, latency/throughput thresholds, thermal/energy protocol, OS/runtime revisions, repetition/warm-up/aggregation rules, and target-specific hard-failure semantics remain unresolved.
 
+**Bounded session 4 — in progress (1/5)**
+
+- Q: How must the canonical llama.cpp runtime identity be bound across iOS, Android, and x86-64 device qualification? → A: `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` — require one exact immutable llama.cpp core commit across all comparable candidates and all five frozen targets; prohibit mutable `master`/`main`/`latest` identities and candidate-specific or post-result runtime revision substitution; require a platform build manifest that binds the shared core commit, compiler/toolchain, relevant build flags/backend choices, target architecture/ABI, wrapper/application identity where applicable, and produced runtime/build artifact identity when available. This freezes the identity method only; the exact core commit SHA and concrete platform build values remain unresolved pre-execution evidence requirements.
+
 **Founder clarification directives — do not consume additional clarification questions**
 
 - `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`: optimize the eventual release for extremely small download footprint and practical local use across iPhone, Android, and low-end laptops. The text/core package should be independently downloadable; optional multimodal/vision assets should not be required for the smallest common-core package when the chosen runtime permits separation. Safety, provenance, licensing, and minimum medical-quality requirements remain hard gates.
@@ -121,9 +125,9 @@ Therefore:
 
 ### 4.2 Target device tier and distribution reach
 
-`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`, and bounded clarification session 3 freezes `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, and `B512_U128_COLD_NO_REUSE`.
+`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`, bounded clarification session 3 freezes `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, and `B512_U128_COLD_NO_REUSE`, and bounded clarification session 4 freezes `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` as the runtime identity policy.
 
-The frozen mass-reach package, target, context, KV, token-budget, and prompt-processing policy is:
+The frozen mass-reach package, target, context, KV, token-budget, prompt-processing, and runtime-identity policy is:
 
 ```text
 MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
@@ -166,15 +170,26 @@ SESSION_STATE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
 PREFIX_CACHE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
 BATCH_PROFILE_IDENTICAL_ACROSS_CANDIDATES=YES
 BATCH_PROFILE_IDENTICAL_ACROSS_DEVICE_TARGETS=YES
+RUNTIME_IDENTITY_POLICY=PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST
+LLAMA_CPP_CORE_REVISION=IMMUTABLE_COMMIT_REQUIRED
+MUTABLE_MASTER_OR_LATEST=PROHIBITED
+SAME_CORE_REVISION_ACROSS_ALL_TARGETS=REQUIRED
+PLATFORM_BUILD_MANIFEST=REQUIRED
+COMPILER_AND_BUILD_FLAGS_PINNED=REQUIRED
+PLATFORM_WRAPPER_IDENTITY_PINNED=REQUIRED
+CANDIDATE_SPECIFIC_RUNTIME_REVISION=PROHIBITED
+POST_RESULT_RUNTIME_SUBSTITUTION=PROHIBITED
 ```
 
 Spec 005 must eventually bind execution evidence for every frozen target without silently weakening the resource class after candidate results are observed. A physical-device substitution is permissible only through a separately reviewed pre-result clarification that preserves the same or stricter resource class and records the reason and new exact identity.
 
 Every candidate must eventually qualify at the same `8192`-token hard context on all five frozen targets using symmetric `Q8_0` K/V cache, the same `7168` serialized-prompt / `1024` generation ceiling, and the same cold `512/128` prompt-processing profile with no cross-run or precomputed prompt-state reuse. The `16384`-token tier is required secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it and uses the same symmetric Q8_0 policy, `15360` serialized-prompt / `1024` generation ceiling, and cold `512/128` prompt-processing profile. The serialized-prompt budget includes system and template tokens; unused generation allowance cannot expand the prompt ceiling. The stress-result consequence remains separate from the hard 8K qualification condition until target-specific hard-failure semantics are frozen pre-execution.
 
+All comparable device evidence must use one exact immutable llama.cpp core commit. Platform-specific builds may differ only where required by iOS, Android, or x86-64 toolchains, and every such path must carry a reproducible exact build manifest. The exact core SHA and concrete platform build values are not selected by this policy and remain unresolved pre-execution evidence requirements.
+
 The `700 MiB` package ceiling is a hard qualification boundary. The `<=600 MiB` and `<=500 MiB` values are engineering and stretch targets, not substitutes for the hard safety/medical-quality gates. The `<=2 GiB` peak working RAM value remains an engineering target; exact measurement methodology and any hard RAM threshold are unresolved and must not be misreported as proven runtime guarantees before execution evidence exists.
 
-The target set, common context policy, primary KV-cache type policy, prompt/generation budget policy, and prompt-processing batch/cache-reuse policy are now frozen, but exact OS/build versions, the llama.cpp revision, platform wrapper/application identities, tokenizer/template identities and token-accounting implementation, latency/TTFT/throughput thresholds, peak-RAM hard threshold and measurement method, energy/battery and thermal protocol, repetition/warm-up/aggregation methodology, and target-specific hard-failure semantics remain intentionally unresolved. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
+The target set, common context policy, primary KV-cache type policy, prompt/generation budget policy, prompt-processing batch/cache-reuse policy, and runtime identity method are now frozen, but the exact llama.cpp commit value, exact OS/build versions, compiler/toolchain versions, build flags/backends, platform wrapper/application identities, produced runtime artifact identities, tokenizer/template identities and token-accounting implementation, latency/TTFT/throughput thresholds, peak-RAM hard threshold and measurement method, energy/battery and thermal protocol, repetition/warm-up/aggregation methodology, and target-specific hard-failure semantics remain intentionally unresolved. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
 
 ### 4.3 Donor-origin restrictions
 
@@ -420,7 +435,7 @@ This clarification-stage document does not authorize opening or executing the be
 
 ## 14. Device, package, runtime, quantization, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, `B512_U128_COLD_NO_REUSE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, `B512_U128_COLD_NO_REUSE`, `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
 
 The minimum text/core package and device envelope is:
 
@@ -469,6 +484,15 @@ SESSION_STATE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
 PREFIX_CACHE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
 BATCH_PROFILE_IDENTICAL_ACROSS_CANDIDATES=YES
 BATCH_PROFILE_IDENTICAL_ACROSS_DEVICE_TARGETS=YES
+RUNTIME_IDENTITY_POLICY=PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST
+LLAMA_CPP_CORE_REVISION=IMMUTABLE_COMMIT_REQUIRED
+MUTABLE_MASTER_OR_LATEST=PROHIBITED
+SAME_CORE_REVISION_ACROSS_ALL_TARGETS=REQUIRED
+PLATFORM_BUILD_MANIFEST=REQUIRED
+COMPILER_AND_BUILD_FLAGS_PINNED=REQUIRED
+PLATFORM_WRAPPER_IDENTITY_PINNED=REQUIRED
+CANDIDATE_SPECIFIC_RUNTIME_REVISION=PROHIBITED
+POST_RESULT_RUNTIME_SUBSTITUTION=PROHIBITED
 ```
 
 ### 14.1 Canonical mass-distribution artifact/runtime
@@ -494,11 +518,23 @@ BATCH_PROFILE_IDENTICAL_ACROSS_DEVICE_TARGETS=YES
 - Q3/IQ3/Q2 and other sub-4-bit variants are not eligible as the V1 `PRIMARY` canonical release, even if they are useful experimental artifacts later;
 - the exact order, tool flags, imatrix/calibration policy if any, metadata, and architecture-specific equivalence mapping must be frozen before execution and applied without post-result candidate-specific tuning.
 
+### 14.3 Immutable runtime identity policy
+
+`PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` means:
+
+- one exact immutable llama.cpp core commit SHA must be selected and reviewed before any runtime/device execution authorization;
+- that same core commit must govern every comparable candidate and all five frozen target paths;
+- mutable `master`, `main`, `latest`, unpinned package versions, or unbound marketplace/application builds are not sufficient execution identity;
+- platform-specific compilation is allowed only through exact build manifests that bind the shared core commit, compiler/toolchain identity, relevant build flags/options, backend/acceleration selection, target architecture/ABI, wrapper/application identity where applicable, and produced runtime/build artifact identity when available;
+- candidate-specific or target-specific core revision substitution is prohibited, including a substitution intended to rescue compatibility or performance after results are known;
+- the exact selected core SHA and concrete build-manifest values remain unresolved until separately reviewed pre-execution evidence is captured;
+- the previously inspected llama.cpp revision `70adb1b4cea5ee39f867792c78dc59320921eda7` is interface evidence only and is not canonicalized by this policy.
+
 The complete minimum bundle measurement must include model weights plus every tokenizer, config, model-side runtime metadata, and other artifact required for the advertised minimum text/core installation. A general-purpose application/runtime binary may be reported separately only under a single frozen accounting rule applied identically to every candidate. Optional vision or other modality assets may be excluded from the minimum package only when they are genuinely optional and separately downloadable under the same policy for all candidates.
 
 Every frozen target must be represented by named physical-device evidence where the target is a named device and by its corresponding reproducible resource description. The weak-laptop target is intentionally an exact CPU/RAM/ISA envelope; a retail laptop SKU may be added pre-execution if required without weakening that envelope.
 
-The future evidence plan must cover all five frozen targets: iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64. Every target must use the common `8192`-token hard qualification context with symmetric `Q8_0` K/V cache, the fixed `7168` serialized-prompt / `1024` generation ceiling, logical batch `512`, physical ubatch `128`, and no prompt/session/prefix cache reuse for the measured run. The `16384`-token secondary stress tier is required on the iPhone 17 Pro 12 GB, Galaxy A56 5G 8 GB, and Intel N100 + 8 GB x86-64 targets where the pinned runtime supports that context, and must use the same symmetric `Q8_0` K/V cache, `15360` serialized-prompt / `1024` generation ceiling, `512/128` prompt-processing profile, and cold/no-reuse semantics. It may be collected on lower-resource targets where safe and comparable, but no candidate may receive a reduced 8K hard context, a different KV-cache type, a different prompt/generation allocation, a different batch profile, or reused prompt state because its memory scaling, tokenizer, template overhead, or observed prefill performance is less favorable. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
+The future evidence plan must cover all five frozen targets: iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64. Every target must use the common `8192`-token hard qualification context with symmetric `Q8_0` K/V cache, the fixed `7168` serialized-prompt / `1024` generation ceiling, logical batch `512`, physical ubatch `128`, no prompt/session/prefix cache reuse for the measured run, and the same immutable llama.cpp core revision under its platform build manifest. The `16384`-token secondary stress tier is required on the iPhone 17 Pro 12 GB, Galaxy A56 5G 8 GB, and Intel N100 + 8 GB x86-64 targets where the pinned runtime supports that context, and must use the same symmetric `Q8_0` K/V cache, `15360` serialized-prompt / `1024` generation ceiling, `512/128` prompt-processing profile, cold/no-reuse semantics, and same shared core revision. It may be collected on lower-resource targets where safe and comparable, but no candidate may receive a reduced 8K hard context, a different KV-cache type, a different prompt/generation allocation, a different batch profile, reused prompt state, or a different core runtime revision because its memory scaling, tokenizer, template overhead, compatibility, or observed prefill performance is less favorable. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
 
 Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
 
@@ -507,12 +543,13 @@ Each admitted `PRIMARY` candidate must also have two predeclared build roles whe
 
 The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the canonical deployable GGUF build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
 
-The exact reference precision, conversion toolchain revision, llama.cpp revision, build flags, architecture-specific equivalence rules, tokenizer/template identities and token-accounting implementation, latency/throughput/energy/thermal thresholds, peak-RAM hard threshold/measurement method, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+The exact reference precision, conversion toolchain revision, selected llama.cpp core commit SHA, concrete platform build manifests, architecture-specific equivalence rules, tokenizer/template identities and token-accounting implementation, latency/throughput/energy/thermal thresholds, peak-RAM hard threshold/measurement method, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
 - exact package-byte measurement procedure and exclusions;
-- exact immutable llama.cpp and GGUF conversion-toolchain identities;
+- exact immutable llama.cpp core commit and GGUF conversion-toolchain identities;
+- exact platform build manifests for every required execution path, including compiler/toolchain, relevant flags/backend choices, target ABI, wrapper/application identity where applicable, and produced runtime artifact identity when available;
 - exact final Q5/Q4 ladder order, conversion flags, and any calibration/imatrix inputs and quarantine rules;
 - verification that the pinned runtime/backend implements the frozen symmetric `Q8_0` K/V cache semantics consistently across all required platform paths;
 - exact tokenizer/template identities and a reproducible token-accounting implementation that counts all system/template/context/input tokens inside the frozen serialized-prompt ceilings;
@@ -521,12 +558,12 @@ Before execution authorization, clarification/planning must additionally define:
 - TTFT/prefill/decode/sustained-throughput measurement method and thresholds;
 - energy and thermal measurement method or explicit bounded proxy if direct measurement is not feasible;
 - repetition count, warm-up, aggregation, and failure handling, with any warm-up prohibited from preloading or reusing measured prompt state;
-- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling, `8192`-token common hard context, symmetric Q8_0 primary KV policy, frozen prompt/generation ceilings, and frozen cold `512/128` prompt-processing profile;
+- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling, `8192`-token common hard context, symmetric Q8_0 primary KV policy, frozen prompt/generation ceilings, cold `512/128` prompt-processing profile, and immutable shared-core runtime identity policy;
 - how mandatory 16K stress evidence is interpreted where in scope without retroactively changing the 8K hard qualification rule;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
 - the secondary metric order used only after complete deployable package bytes tie.
 
-Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, batch/ubatch substitution, prompt-state reuse, remaining envelope boundary, runtime revision, quantization rule, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, batch/ubatch substitution, prompt-state reuse, runtime-core substitution, remaining envelope boundary, quantization rule, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -537,7 +574,8 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact canonical upstream identities;
 - exact reference-build identity;
 - exact canonical GGUF deployable artifact identity and quantization type;
-- exact conversion-toolchain and llama.cpp revision/configuration;
+- exact conversion-toolchain identity and shared llama.cpp core commit SHA;
+- exact per-platform runtime build manifest and produced runtime/build artifact identity where available;
 - exact benchmark/metric/safety/lineage contracts;
 - exact device/resource identity where device evidence is claimed;
 - exact context/KV/token-budget configuration used for each device result, including symmetric Q8_0 K/V identity and serialized-prompt/generation ceilings for primary qualification;
@@ -547,7 +585,7 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact result-set evidence artifact IDs;
 - deterministic tournament report identity.
 
-A mutable tag, model family name, `latest`, branch name, marketplace label, or unpinned runtime version is not sufficient identity.
+A mutable tag, model family name, `latest`, branch name, mutable runtime branch, marketplace label, or unpinned runtime version is not sufficient identity.
 
 ## 16. Fail-closed rules
 
@@ -581,8 +619,13 @@ Examples include:
 - failure to use logical batch `512` and physical ubatch `128` for measured primary qualification or required stress evidence;
 - prompt-cache, session-state, prefix-cache, or equivalent cross-run/precomputed prompt-state reuse in a measured qualification run;
 - candidate- or target-specific batch/ubatch tuning after results are observed;
+- use of mutable `master`/`main`/`latest` or another non-immutable runtime identity for measured evidence;
+- different llama.cpp core revisions across comparable candidates or frozen target paths;
+- missing or insufficient platform build manifest for a measured target path;
+- candidate-specific or post-result runtime core substitution intended to rescue compatibility/performance;
+- pooling evidence from different runtime-core revisions as if it shared one exact runtime identity;
 - missing required `16384`-token stress evidence on an 8-GB-class-or-higher target where the pinned runtime supports it;
-- post-result reduction or candidate-specific adjustment of the frozen 8K hard context, Q8_0 KV policy, prompt/generation budget, or cold `512/128` prompt-processing profile;
+- post-result reduction or candidate-specific adjustment of the frozen 8K hard context, Q8_0 KV policy, prompt/generation budget, cold `512/128` prompt-processing profile, or shared runtime identity policy;
 - post-result substitution of a frozen named device/resource target or weakening of its resource class;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
@@ -607,10 +650,10 @@ The clarification lifecycle must answer, at minimum:
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
 7. **PARTIALLY RESOLVED / CANONICAL FLOOR PRESERVED:** zero-violation sentinel rules apply where already frozen by Spec 002, while selective risk, Arabic clinical parity, and lab extraction remain `NO_PASS_UNTIL_FROZEN` pending the canonical clinical/statistical evidence requirements. Exact statistical thresholds remain unresolved and must not be invented from candidate results.
-8. **RESOLVED TARGET SET + CONTEXT + KV + TOKEN-BUDGET + PROMPT-PROCESSING POLICY / DETAILS PENDING:** `MASS_REACH_FIVE_TARGET_SET` freezes iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 as required evidence targets. `8K_CORE_16K_STRESS` freezes `8192` tokens as the hard qualification context on all five, with required `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it. `Q8_0_SYMMETRIC_KV_CORE` freezes symmetric `Q8_0` K/V cache for both tiers and prohibits asymmetric primary KV. `7K_PROMPT_1K_GENERATION` freezes `7168+1024` for core and `15360+1024` for stress, counts system/template tokens inside the serialized-prompt budget, and preserves the same generation allowance across candidates. `B512_U128_COLD_NO_REUSE` freezes logical batch `512`, physical ubatch `128`, and prohibits prompt/session/prefix state reuse for measured runs across all comparable candidates and frozen targets. OS/runtime identities, tokenizer/template accounting implementation, performance/thermal/energy thresholds, peak-memory measurement, repetition/warm-up/aggregation rules, and target-specific hard-failure semantics remain unresolved.
+8. **RESOLVED TARGET SET + CONTEXT + KV + TOKEN-BUDGET + PROMPT-PROCESSING + RUNTIME-IDENTITY POLICY / DETAILS PENDING:** `MASS_REACH_FIVE_TARGET_SET` freezes iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 as required evidence targets. `8K_CORE_16K_STRESS` freezes `8192` tokens as the hard qualification context on all five, with required `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it. `Q8_0_SYMMETRIC_KV_CORE` freezes symmetric `Q8_0` K/V cache for both tiers and prohibits asymmetric primary KV. `7K_PROMPT_1K_GENERATION` freezes `7168+1024` for core and `15360+1024` for stress, counts system/template tokens inside the serialized-prompt budget, and preserves the same generation allowance across candidates. `B512_U128_COLD_NO_REUSE` freezes logical batch `512`, physical ubatch `128`, and prohibits prompt/session/prefix state reuse for measured runs across all comparable candidates and frozen targets. `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` freezes one immutable llama.cpp core revision across all target paths and requires exact per-platform build manifests while prohibiting mutable/candidate-specific/post-result runtime substitution. The exact selected core SHA, concrete build manifests, tokenizer/template accounting implementation, performance/thermal/energy thresholds, peak-memory measurement, repetition/warm-up/aggregation rules, and target-specific hard-failure semantics remain unresolved.
 9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at the now-frozen common 8K/Q8_0/7K+1K/512+128 cold condition, and 4-GB-class phone/resource evidence. Exact RAM hard gate/measurement method, latency, throughput, energy, and thermal rules remain unresolved.
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` plus `Q4_FLOOR_SMALLEST_PASSING`; primary capability comparison uses a frozen reference build, while the canonical deployable GGUF is the smallest allowed Q5/Q4-class artifact that passes every hard gate. Sub-4-bit artifacts are excluded from the V1 `PRIMARY` canonical release. Exact reference precision and frozen conversion/calibration details remain pending.
-11. **RESOLVED POLICY / DETAILS PENDING:** `GGUF_LLAMA_CPP_CANONICAL`; GGUF + pinned llama.cpp is the canonical mass-distribution artifact/runtime family, while MLX/MLC/Core ML/native builds are optional derivatives. Exact immutable runtime/conversion revisions, build flags, and mobile wrappers remain to be frozen before execution.
+11. **RESOLVED RUNTIME IDENTITY POLICY / VALUES PENDING:** `GGUF_LLAMA_CPP_CANONICAL` plus `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`; GGUF + llama.cpp is the canonical mass-distribution artifact/runtime family, one immutable core commit must be shared across all target paths, and platform-specific builds must be exact-manifest-bound. MLX/MLC/Core ML/native builds remain optional derivatives. The exact core commit SHA, conversion revision, compiler/toolchain versions, build/backend flags, wrapper/application identities, and produced runtime artifact identities remain to be frozen before execution.
 12. What contamination/quarantine proof is required for every candidate/result path, including whether `MODIFICATION_OR_DERIVATION` contamination state may legitimately be `NOT_APPLICABLE` for exact model-weight quantization under the Spec 003 contract?
 13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
 14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
@@ -618,7 +661,7 @@ The clarification lifecycle must answer, at minimum:
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is complete at five accepted questions. The unresolved factual/evidence requirements above remain active and prevent the overall clarification lifecycle from being declared complete or advancing to `PLAN`.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is complete at five accepted questions. Bounded clarification session 4 is in progress at one accepted question. The unresolved factual/evidence requirements above remain active and prevent the overall clarification lifecycle from being declared complete or advancing to `PLAN`.
 
 ## 18. Specification acceptance criteria
 
@@ -639,6 +682,7 @@ A future complete clarification artifact is acceptable only when independent rev
 - freezes `Q8_0_SYMMETRIC_KV_CORE`, requiring symmetric `Q8_0` K/V cache for primary hard qualification and required stress evidence, prohibiting asymmetric primary KV, while keeping runtime/backend identity and measured memory/performance effects separately unresolved until pre-execution qualification;
 - freezes `7K_PROMPT_1K_GENERATION`, requiring `7168` serialized-prompt + `1024` generation tokens for the 8K hard condition and `15360` + `1024` for the 16K stress condition, with system/template tokens counted inside the prompt ceiling and no candidate-specific reallocation;
 - freezes `B512_U128_COLD_NO_REUSE`, requiring logical batch `512`, physical ubatch `128`, and no prompt/session/prefix cache reuse for measured qualification/stress runs, identically across comparable candidates and frozen targets;
+- freezes `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`, requiring one immutable llama.cpp core commit across all comparable candidates/targets, exact platform build manifests, and no mutable/candidate-specific/post-result runtime substitution while keeping the exact core SHA/build values unresolved until separately reviewed pre-execution binding;
 - enforces the `700 MiB` complete minimum text/core bundle ceiling under one honest, candidate-neutral accounting rule;
 - treats `<=600 MiB`, `<=500 MiB`, and `<=2 GiB` as engineering/stretch targets exactly as frozen, without converting them into retrospective hard gates;
 - uses canonical GGUF + immutable llama.cpp compatibility as the minimum mass-distribution path, with optional optimized derivatives kept semantically and evidentially separate;
@@ -654,7 +698,7 @@ No bounded clarification session is a declaration that the full clarification li
 
 ## 19. Exit and next lifecycle step
 
-Current working state after `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, and `B512_U128_COLD_NO_REUSE` acceptance plus candidate-frontier reconciliation:
+Current working state after bounded session 3 completion and `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` acceptance in bounded session 4 question 1:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
@@ -663,6 +707,8 @@ CLARIFICATION_SESSION_2=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2_STATUS=COMPLETE_BOUNDED_SESSION
 CLARIFICATION_SESSION_3=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_3_STATUS=COMPLETE_BOUNDED_SESSION
+CLARIFICATION_SESSION_4=1_QUESTION_ACCEPTED
+CLARIFICATION_SESSION_4_STATUS=IN_PROGRESS
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
 GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP=PRODUCT_AMBITION
 PRIMARY_ADMISSION_FRONTIER=Qwen/Qwen3-0.6B-Base,Qwen/Qwen3.5-0.8B-Base
@@ -711,6 +757,16 @@ SESSION_STATE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
 PREFIX_CACHE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
 BATCH_PROFILE_IDENTICAL_ACROSS_CANDIDATES=YES
 BATCH_PROFILE_IDENTICAL_ACROSS_DEVICE_TARGETS=YES
+RUNTIME_IDENTITY_POLICY=PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST
+LLAMA_CPP_CORE_REVISION=IMMUTABLE_COMMIT_REQUIRED
+EXACT_LLAMA_CPP_CORE_SHA=UNRESOLVED_VALUE
+MUTABLE_MASTER_OR_LATEST=PROHIBITED
+SAME_CORE_REVISION_ACROSS_ALL_TARGETS=REQUIRED
+PLATFORM_BUILD_MANIFEST=REQUIRED
+COMPILER_AND_BUILD_FLAGS_PINNED=REQUIRED
+PLATFORM_WRAPPER_IDENTITY_PINNED=REQUIRED
+CANDIDATE_SPECIFIC_RUNTIME_REVISION=PROHIBITED
+POST_RESULT_RUNTIME_SUBSTITUTION=PROHIBITED
 PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
@@ -724,6 +780,6 @@ CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 ```
 
-Completion of these accepted device-target, context, KV-cache, token-budget, and prompt-processing clarifications completes bounded session 3 only; it does **not** mean the full clarification lifecycle is complete. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
+Acceptance of the runtime-identity method does **not** select a concrete llama.cpp execution commit and does **not** complete the full clarification lifecycle. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
 
 Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
