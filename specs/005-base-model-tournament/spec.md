@@ -48,9 +48,10 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 - Q: Should the frozen primary tournament manifest include only `PRIMARY` candidates whose admission gates are complete before manifest freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved candidates remain discovery/conditional outside that manifest.
 - Q: What precision/quantization policy should Spec 005 use to separate fair backbone comparison from real-device deployability evidence? → A: `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` — use a frozen reference build for primary capability comparison and a separately frozen deployable quantized build for device qualification; quantify compression regression separately.
 
-**Bounded session 2 — in progress (1/5)**
+**Bounded session 2 — in progress (2/5)**
 
 - Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: the original `FOUR_PERMISSIVE_BASE_SHORTLIST` is superseded before manifest freeze by the founder's `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`. Admission reconciliation must add `Qwen/Qwen3.5-0.8B-Base` as the lead ultra-compact candidate while retaining the prior four artifacts as quality/device comparators until pre-execution gates can exclude them without post-result substitution.
+- Q: After hard safety, provenance, licensing, and minimum medical-quality gates pass, where should deployable package size appear in the frozen ranking order? → A: `QUALITY_FLOOR_THEN_SIZE_FIRST` — all hard gates and the frozen minimum medical-quality floor are evaluated first; among candidates that pass them, complete deployable package bytes are the first ranking metric (`LOWER_BETTER`), followed only by predeclared secondary capability/performance/resource metrics.
 
 **Founder clarification directive — does not consume an additional clarification question**
 
@@ -162,9 +163,10 @@ At minimum:
 - lineage `PROHIBITED` is disqualifying;
 - prohibited/reference-only use under the exact lineage contract is disqualifying for final selection;
 - safety hard-gate failure is disqualifying;
+- failure of the frozen minimum medical-quality floor is disqualifying for size-first ranking eligibility;
 - missing, malformed, wrong-manifest, blocked, insufficient, or non-comparable evidence is `INCOMPLETE` rather than silently favorable;
 - any declared candidate with incomplete required evidence forces `NO_SELECTION` before ranking;
-- an exact top tie forces `NO_SELECTION`;
+- an exact top tie under the complete predeclared ranking vector forces `NO_SELECTION`;
 - no candidate ID, input order, popularity, or ad hoc tie-break may select a winner.
 
 ## 7. Comparison strategy
@@ -176,17 +178,24 @@ Spec 005 inherits the Spec 004 strategy:
 ```text
 COMPARISON_STRATEGY=LEXICOGRAPHIC_PREDECLARED
 TIE_POLICY=NO_SELECTION_ON_TIE
+SIZE_PRIORITY=QUALITY_FLOOR_THEN_SIZE_FIRST
 ```
+
+`QUALITY_FLOOR_THEN_SIZE_FIRST` means ranking occurs in two logically separate phases:
+
+1. **qualification phase** — provenance/lineage, licensing, safety, minimum medical-quality, candidate identity, comparability, and all frozen device/package hard gates must pass; a smaller model cannot compensate for failure of any hard gate;
+2. **ranking phase** — among fully qualified candidates only, complete deployable package bytes are the first comparison metric with direction `LOWER_BETTER`; only then are the remaining predeclared secondary metrics compared lexicographically.
 
 Requirements:
 
 - only canonical non-hard-gate metrics eligible for comparison may enter the ranking vector;
 - metric direction must be explicit (`HIGHER_BETTER` or `LOWER_BETTER`);
 - ranking metric order must be frozen before live evaluation;
+- the first ranking metric after qualification is complete deployable package bytes, measured under one frozen package-accounting rule;
 - weighted sums are prohibited unless a future separately reviewed canonical contract explicitly replaces this rule;
-- safety and lineage hard gates are not compensable by higher capability scores;
+- safety, lineage, licensing, and minimum medical-quality hard gates are not compensable by a smaller package or higher capability score;
 - device/resource criteria that become hard qualification gates must be frozen before execution and must not be retrofitted after results are seen;
-- clarification must still decide how minimum medical-quality gates and deployable package size interact in the lexicographic ranking; the founder's distribution priority does not silently rewrite the canonical ranking order.
+- the package metric must include every artifact required for the advertised minimum common-core installation; optional modality assets may be excluded only when they are genuinely optional and separately downloadable for every candidate under the frozen rule.
 
 ## 8. Candidate admission contract
 
@@ -323,7 +332,7 @@ This clarification-stage document does not authorize opening or executing the be
 
 ## 14. Device, package, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, and `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, and `QUALITY_FLOOR_THEN_SIZE_FIRST` are frozen as Spec 005 evidence strategies.
 
 Each target tier must be represented by both:
 
@@ -337,15 +346,15 @@ Each admitted `PRIMARY` candidate must also have two predeclared build roles whe
 1. a **reference build** governed by a common, frozen high-precision policy for primary common-core capability comparison; and
 2. a **deployable build** governed by a common, frozen quantization/deployment policy for device qualification on the named devices and resource envelopes.
 
-Primary capability comparison uses the reference-build evidence. Device/package qualification uses the deployable-build evidence. The deployable build must not replace the reference build in the primary capability vector, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule.
+The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the deployable build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
 
 For mass distribution, the smallest common-core artifact should default to text-only when the selected architecture/runtime allows optional vision assets to be packaged separately. A larger optional multimodal artifact must not inflate the claimed minimum download size.
 
-The exact reference precision, quantization format/level, conversion toolchain, runtime, build flags, architecture-specific equivalence rules, package-size ceiling, and RAM ceiling remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+The exact reference precision, quantization format/level, conversion toolchain, runtime, build flags, architecture-specific equivalence rules, package-size ceiling, RAM ceiling, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
-- package-byte measurement method, including tokenizer/config/runtime assets that are required for the advertised minimum installation;
+- package-byte measurement method, including tokenizer/config/runtime/model-side assets that are required for the advertised minimum installation;
 - peak-memory measurement method;
 - TTFT/prefill/decode/sustained-throughput measurement method;
 - energy and thermal measurement method or explicit bounded proxy if a direct method is not yet feasible;
@@ -353,9 +362,9 @@ Before execution authorization, clarification/planning must additionally define:
 - repetition count, warm-up, aggregation, and failure handling;
 - what constitutes a hard device/package-qualification failure versus a reported non-ranking metric;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
-- the exact ranking position of deployable package size after all hard gates pass.
+- the secondary metric order used only after complete deployable package bytes tie.
 
-Parameter count and upstream marketing claims remain descriptive only. No named representative, envelope boundary, build policy, package threshold, RAM threshold, or ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No named representative, envelope boundary, build policy, package threshold, RAM threshold, medical-quality threshold, or ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -385,17 +394,19 @@ Examples include:
 - candidate not being an exact eligible base/pretrained checkpoint under `BASE_ONLY_PRIMARY`;
 - candidate entering the frozen primary ranking manifest before all admission fields are resolved under `FULLY_ADMITTED_PRIMARY_ONLY`;
 - incomplete safety evidence;
+- failure of the frozen minimum medical-quality floor;
 - benchmark or Gold quarantine violation;
 - non-comparable metric vectors;
 - missing required device evidence under `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
 - failure to satisfy a frozen universal-low-resource package/RAM hard gate;
+- incomplete or candidate-specific package accounting that would make the size metric non-comparable;
 - claiming the optional vision package as part of the minimum footprint only when advantageous to a candidate, or omitting required assets from the measured package;
-- device representative, envelope boundary, build policy, package threshold, RAM threshold, or ranking-rule changes after results are observed;
+- device representative, envelope boundary, build policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
-- exact top tie.
+- exact top tie under the complete predeclared ranking vector.
 
 The correct outcome in these cases is not a guessed winner; it is refusal, disqualification where canonical rules require it, or `NO_SELECTION`.
 
@@ -419,9 +430,9 @@ The clarification lifecycle must answer, at minimum:
 14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
-17. After hard safety/provenance/license/minimum-quality gates pass, where exactly does deployable package size appear in the `LEXICOGRAPHIC_PREDECLARED` ranking order?
+17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with one accepted question plus one explicit founder directive. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with two accepted questions plus one explicit founder directive. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
 
 ## 18. Specification acceptance criteria
 
@@ -435,6 +446,7 @@ A future complete clarification artifact is acceptable only when independent rev
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
 - preserves named-device evidence while explicitly covering iPhone, modern-midrange Android, and low-resource laptops;
 - measures the complete minimum downloadable package honestly and separates optional modality assets only when technically valid;
+- applies `QUALITY_FLOOR_THEN_SIZE_FIRST` only after all non-compensable safety/provenance/license/minimum-medical-quality gates pass;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
 - records accepted clarification decisions without contradicting unresolved gates;
 - resolves all clarification requirements that materially affect candidate admission, comparability, device qualification, execution planning, and exact-head review before advancing to `PLAN`;
@@ -444,15 +456,16 @@ Neither clarification session is a declaration that the full clarification lifec
 
 ## 19. Exit and next lifecycle step
 
-Current working state after the founder distribution directive in bounded clarification session 2:
+Current working state after two accepted decisions in bounded clarification session 2:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
 CLARIFICATION_SESSION_1=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2=IN_PROGRESS
-CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=1
+CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=2
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
 LEAD_ULTRA_COMPACT_ADMISSION_CANDIDATE=Qwen/Qwen3.5-0.8B-Base
+SIZE_PRIORITY=QUALITY_FLOOR_THEN_SIZE_FIRST
 CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 PLAN_AUTHORITY=NONE
