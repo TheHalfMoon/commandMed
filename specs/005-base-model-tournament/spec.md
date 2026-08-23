@@ -52,7 +52,7 @@ Popularity, download counts, likes, social discussion, stars, or vendor reputati
 
 **Bounded session 2 — complete (5/5)**
 
-- Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: the original `FOUR_PERMISSIVE_BASE_SHORTLIST` is superseded before manifest freeze by the founder's `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`. Admission reconciliation must include ultra-compact base candidates rather than assuming 2B/3B is sufficiently small; read-only reconciliation now includes both `swiss-ai/Apertus-v1.1-0.5B` and `Qwen/Qwen3.5-0.8B-Base` as the leading sub-1B candidates, with larger artifacts retained only as quality/device comparators until frozen pre-execution gates determine eligibility.
+- Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: the original `FOUR_PERMISSIVE_BASE_SHORTLIST` is superseded before manifest freeze by the founder's `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`. Read-only reconciliation carries `Qwen/Qwen3.5-0.8B-Base` as the current cleanest ultra-compact `PRIMARY` admission lead and `swiss-ai/Apertus-v1.1-0.5B` as a `CONDITIONAL` ultra-compact size comparator because its official model-card metadata includes an additional gated Acceptable Use Policy/terms-acceptance flow. Larger artifacts remain quality/device comparators until frozen pre-execution gates determine eligibility.
 - Q: After hard safety, provenance, licensing, and minimum medical-quality gates pass, where should deployable package size appear in the frozen ranking order? → A: `QUALITY_FLOOR_THEN_SIZE_FIRST` — all hard gates and the frozen minimum medical-quality floor are evaluated first; among candidates that pass them, complete deployable package bytes are the first ranking metric (`LOWER_BETTER`), followed only by predeclared secondary capability/performance/resource metrics.
 - Q: What mass-distribution envelope should the smallest commandMed Core release target? → A: `SUB_700MB_MASS_REACH` — the complete minimum text/core Hugging Face bundle has a hard ceiling of `700 MiB`; the engineering target is `<=600 MiB`; `<=500 MiB` is a stretch target only if the same safety and minimum medical-quality gates still pass. Peak working RAM has an engineering target of `<=2 GiB` at the later-frozen short-context condition, and qualification evidence must include a 4-GB-class phone/resource envelope rather than relying only on flagship devices.
 - Q: What runtime/artifact strategy should be canonical for the smallest mass-distribution release across phones and weak laptops? → A: `GGUF_LLAMA_CPP_CANONICAL` — the minimum-distribution artifact is canonical GGUF with compatibility bound to an immutable reviewed llama.cpp revision/toolchain before execution; MLX, MLC, Core ML, or other native/accelerated derivatives may be published as optional optimized derivatives but do not replace the canonical minimum GGUF artifact or alter its package-size ranking evidence.
@@ -107,7 +107,8 @@ Therefore:
 - permissive licensing is an admission and final-selection concern, not a cosmetic metadata field;
 - exact base-model, dataset, tokenizer, code, adapter, teacher/output, and derivative obligations must be proven before irreversible use or final selection;
 - custom or restrictive candidates may remain research/conditional candidates only when their exact intended-use compatibility is unresolved;
-- a conditional candidate must not be promoted to the final release lineage merely because it scores well;
+- a candidate whose model card combines permissive license metadata with additional gated/AUP terms remains `CONDITIONAL` until the exact intended-use rights and access posture are reconciled; license metadata alone must not be widened into `SUPPORTED` rights;
+- a conditional candidate must not be promoted to the final release lineage merely because it scores well or is smaller;
 - this specification does not itself declare any named candidate fully license-compatible merely because its current public model card reports a permissive license.
 
 ### 4.2 Target device tier and distribution reach
@@ -246,6 +247,8 @@ Before a candidate can enter a future frozen execution manifest, clarification/p
 
 If any required admission field is unresolved, the candidate remains discovery-only or `CONDITIONAL` outside the frozen primary ranking manifest. It must not be inserted merely to produce `INCOMPLETE`, and it must not be removed after results are observed to rescue a selection. Candidate-set freeze occurs only after admission reconciliation is complete.
 
+Under the canonical Spec 003 lineage contract, `rights_state=CONDITIONAL` or `UNRESOLVED` cannot yield `ELIGIBLE`. An exact-use model record may become eligible only after source verification, exact artifact binding for non-reference use, supported rights with evidence, privacy resolution where required, and any use-specific contamination requirements are satisfied. Spec 005 does not self-assert those evaluator-owned outputs.
+
 ## 9. Candidate roles
 
 Candidate roles are semantically distinct:
@@ -268,12 +271,12 @@ May inform scientific context where the canonical lineage/evaluation rules permi
 
 ## 10. Ultra-compact-first candidate admission shortlist
 
-`ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` is an admission-reconciliation set, not the final frozen primary ranking manifest. Read-only factual reconciliation may add a newly discovered candidate before manifest freeze; no post-result candidate substitution is permitted.
+`ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` is an admission-reconciliation set, not the final frozen primary ranking manifest. Read-only factual reconciliation may add or reclassify a candidate before manifest freeze; no post-result candidate substitution is permitted.
 
-### Tier A — ultra-compact primary-admission candidates
+### Tier A — ultra-compact admission candidates
 
-1. `swiss-ai/Apertus-v1.1-0.5B` — **current package-size leader for admission research**;
-2. `Qwen/Qwen3.5-0.8B-Base` — **current capability/ecosystem lead candidate for admission research**.
+1. `Qwen/Qwen3.5-0.8B-Base` — **current cleanest `PRIMARY` admission lead**, pending completion of all remaining admission gates;
+2. `swiss-ai/Apertus-v1.1-0.5B` — **`CONDITIONAL` ultra-compact package-size comparator**, excluded from the future frozen `PRIMARY` manifest unless its additional gated Acceptable Use Policy/terms and exact intended-use rights are separately reconciled and authorized.
 
 ### Tier B — larger quality/device comparators
 
@@ -284,12 +287,11 @@ May inform scientific context where the canonical lineage/evaluation rules permi
 
 Read-only public-source verification performed during clarification observed:
 
-- `swiss-ai/Apertus-v1.1-0.5B` is an official base text-generation artifact under Apache-2.0; its model card describes the v1.1 family as highly efficient 0.5–4B models designed for highly constrained hardware, built with pre-training distillation from Apertus-8B and a fully open/compliant data lineage;
-- a current community conversion of `swiss-ai/Apertus-v1.1-0.5B` demonstrates a llama.cpp-compatible `Q4_K_M` GGUF of approximately `306 MB`; this is **size/runtime-feasibility evidence only**, not commandMed medical-quality evidence;
-- Apertus 0.5B is not a medical-specialized model, so its small size cannot substitute for the same frozen medical-quality and safety gates applied to every `PRIMARY` candidate;
-- `Qwen/Qwen3.5-0.8B-Base` is an official pre-trained-only base artifact with a 0.8B language model and Apache-2.0 metadata;
-- current community GGUF conversions of the corresponding Qwen 0.8B family demonstrate approximately 0.55–0.58 GB Q4-class text-model artifacts, with lower-bit artifacts below 0.5 GB; these are **size-feasibility evidence only**, not commandMed quality evidence;
-- the Qwen3.5 vision projector is distributed separately in current GGUF packaging, supporting a plausible text-only smallest-package path while preserving optional multimodal expansion;
+- `swiss-ai/Apertus-v1.1-0.5B` is an official base text-generation artifact whose metadata reports Apache-2.0 and whose model card describes a highly efficient 0.5–4B family for constrained hardware, but the official metadata also contains an `extra_gated_prompt` for the Apertus LLM Acceptable Use Policy plus an explicit terms-acceptance field; therefore Apache-2.0 metadata alone does not establish supported rights or ungated access for commandMed's intended uses;
+- a current community conversion of `swiss-ai/Apertus-v1.1-0.5B` demonstrates a llama.cpp-compatible `Q4_K_M` GGUF of approximately `306 MB`; this is **size/runtime-feasibility evidence only** and does not remove upstream access/rights conditions;
+- Apertus 0.5B is not a medical-specialized model, so its small size cannot substitute for the same frozen medical-quality and safety gates that would apply if it ever became fully admitted;
+- `Qwen/Qwen3.5-0.8B-Base` is an official pre-trained-only base artifact with a 0.8B language model and Apache-2.0 metadata; current read-only public inspection has not identified an equivalent gated terms-acceptance flow for this repository;
+- an exact-base `ggml-org/Qwen3.5-0.8B-Base-GGUF` conversion exposes `Qwen3.5-0.8B-Base-Q4_0.gguf` at approximately `563 MB` with a published SHA-256, demonstrating exact-base GGUF size feasibility below the 700 MiB ceiling; this is not commandMed quality/device evidence and is not the future canonical commandMed conversion;
 - `Qwen/Qwen3.5-2B-Base` currently reports Apache-2.0 and 2B language-model parameters, but representative Q4 GGUF artifacts are materially larger than the frozen 700 MiB ceiling;
 - `mistralai/Ministral-3-3B-Base-2512` is identified by its official model card as a base pre-trained Apache-2.0 variant;
 - `google/gemma-4-E2B` currently reports Apache-2.0 metadata;
@@ -300,10 +302,11 @@ Those observations are **discovery evidence only**. They do not satisfy the exac
 
 Therefore:
 
-- Apertus 0.5B and Qwen3.5 0.8B must both proceed through the same exact admission and later tournament rules; neither is selected merely from size, architecture, vendor, or ecosystem claims;
+- Qwen3.5 0.8B is the current ultra-compact `PRIMARY` admission lead but is not yet fully admitted or selected;
+- Apertus 0.5B remains useful as the strongest current package-size feasibility comparator, but its gated AUP/terms make its exact intended-use rights `CONDITIONAL` for commandMed until separately reconciled; it must stay outside the future frozen `PRIMARY` manifest under `FULLY_ADMITTED_PRIMARY_ONLY` while conditional;
 - none of the six is yet declared fully admitted;
 - none is yet present in a frozen execution manifest;
-- immutable revisions/digests and neutral `candidate_id` values remain unresolved;
+- immutable revisions/digests and neutral `candidate_id` values remain unresolved as final frozen identities;
 - exact license texts, notices, upstream code/runtime obligations, tokenizer/processor licensing, and intended-use compatibility must be bound before admission;
 - pre-execution package/RAM/runtime evidence may legitimately exclude a larger or incompatible candidate before live tournament execution once the universal-low-resource envelope and runtime contract are frozen;
 - no candidate may be added after results merely because the frozen candidate set failed.
@@ -325,6 +328,7 @@ The LFM2.5 family, including `LiquidAI/LFM2.5-2.6B-Base`, remains `CONDITIONAL` 
 
 Other prior discovery items remain non-primary unless separately reconciled:
 
+- Apertus v1.1 0.5B — conditional ultra-compact size comparator while its additional gated AUP/terms remain unresolved for commandMed's intended uses;
 - Phi-4-mini family — control/reference consideration only where exact checkpoint status and purpose justify it;
 - MedGemma family — explicit medical reference/control, reference/evaluation-only by default under `D-006`;
 - frontier closed, restricted, or gated medical models — reference-only unless a later canonical decision and lineage disposition explicitly authorize more.
@@ -470,6 +474,7 @@ Spec 005 must fail closed whenever evidence needed for a defensible selection is
 Examples include:
 
 - unresolved license or lineage disposition;
+- model-card license metadata accompanied by additional gated/AUP terms whose intended-use compatibility has not been resolved;
 - required gated access not separately authorized;
 - missing exact artifact identity;
 - candidate not being an exact eligible base/pretrained checkpoint under `BASE_ONLY_PRIMARY`;
@@ -499,10 +504,10 @@ The correct outcome in these cases is not a guessed winner; it is refusal, disqu
 
 The clarification lifecycle must answer, at minimum:
 
-1. **PARTIALLY RESOLVED / RECONCILED SHORTLIST:** `ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` now carries six exact upstream artifact names, with `swiss-ai/Apertus-v1.1-0.5B` as the current package-size leader and `Qwen/Qwen3.5-0.8B-Base` as the current capability/ecosystem lead for admission research. Immutable revisions/digests, neutral candidate IDs, and the final fully admitted `PRIMARY` set remain unresolved.
+1. **PARTIALLY RESOLVED / RECONCILED SHORTLIST:** `Qwen/Qwen3.5-0.8B-Base` is the current ultra-compact `PRIMARY` admission lead. `swiss-ai/Apertus-v1.1-0.5B` remains the current package-size leader but is `CONDITIONAL` because official metadata includes an additional gated Acceptable Use Policy/terms-acceptance flow. Immutable frozen candidate IDs and the final fully admitted `PRIMARY` set remain unresolved.
 2. **RESOLVED:** `BASE_ONLY_PRIMARY`; only exact base/pretrained checkpoints may be `PRIMARY`. Instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
-3. What exact primary license evidence and Spec 003 lineage disposition applies to each intended use?
-4. Which candidates require gated terms or access, and can they remain discovery/reference-only without accepting those terms?
+3. **PARTIALLY RESOLVED:** Qwen currently presents the cleaner public Apache-2.0/base path, but exact component-level rights evidence and Spec 003 dispositions for development evaluation, modification/derivation, redistribution, and any later training use remain to be computed from exact records. Apertus rights remain `CONDITIONAL` pending reconciliation of its gated AUP/terms with `FD-001` and the intended uses.
+4. **PARTIALLY RESOLVED:** Apertus and MedGemma require gated terms/access; no acceptance is authorized. Qwen3.5-0.8B-Base has no equivalent gate identified in current read-only inspection. Any newly discovered gating changes must fail closed.
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
 7. What exact safety and minimum medical-quality gates are evaluated before ranking, and how are blocked/incomplete states represented?
@@ -510,7 +515,7 @@ The clarification lifecycle must answer, at minimum:
 9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at a later-frozen short context, and 4-GB-class phone/resource evidence. Exact short context, RAM hard gate, latency, throughput, energy, thermal, and KV rules remain unresolved.
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` plus `Q4_FLOOR_SMALLEST_PASSING`; primary capability comparison uses a frozen reference build, while the canonical deployable GGUF is the smallest allowed Q5/Q4-class artifact that passes every hard gate. Sub-4-bit artifacts are excluded from the V1 `PRIMARY` canonical release. Exact reference precision and frozen conversion/calibration details remain pending.
 11. **RESOLVED POLICY / DETAILS PENDING:** `GGUF_LLAMA_CPP_CANONICAL`; GGUF + pinned llama.cpp is the canonical mass-distribution artifact/runtime family, while MLX/MLC/Core ML/native builds are optional derivatives. Exact immutable runtime/conversion revisions, build flags, and mobile wrappers remain to be frozen before execution.
-12. What contamination/quarantine proof is required for every candidate/result path?
+12. What contamination/quarantine proof is required for every candidate/result path, including whether `MODIFICATION_OR_DERIVATION` contamination state may legitimately be `NOT_APPLICABLE` for exact model-weight quantization under the Spec 003 contract?
 13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
 14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
@@ -527,7 +532,7 @@ A future complete clarification artifact is acceptable only when independent rev
 - binds the canonical predecessor identities and founder decisions;
 - preserves baseline-only/no-training scope;
 - distinguishes admission shortlisting from frozen admission and execution manifest membership;
-- carries genuine sub-1B base candidates through admission reconciliation, including Apertus 0.5B and Qwen3.5 0.8B, rather than assuming 2B/3B is small enough;
+- carries Qwen3.5 0.8B as the current ultra-compact primary-admission lead while preserving Apertus 0.5B as a conditional size comparator rather than laundering its gated AUP/terms into permissive eligibility;
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
 - preserves MedGemma 4B PT as a medical reference/control rather than incorrectly forcing it into a V1 mass-distribution role it cannot satisfy under the current package/access contract;
 - preserves named-device evidence while explicitly covering iPhone, modern-midrange Android, 4-GB-class phone/resource evidence, and low-resource laptops;
@@ -546,7 +551,7 @@ Neither clarification session is a declaration that the full clarification lifec
 
 ## 19. Exit and next lifecycle step
 
-Current working state after completion of bounded clarification session 2:
+Current working state after the Apertus access/rights reconciliation repair:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
@@ -555,8 +560,9 @@ CLARIFICATION_SESSION_2=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2_STATUS=COMPLETE_BOUNDED_SESSION
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
 GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP=PRODUCT_AMBITION
-ULTRA_COMPACT_SIZE_LEADER_ADMISSION_CANDIDATE=swiss-ai/Apertus-v1.1-0.5B
-ULTRA_COMPACT_CAPABILITY_ECOSYSTEM_ADMISSION_CANDIDATE=Qwen/Qwen3.5-0.8B-Base
+ULTRA_COMPACT_PRIMARY_ADMISSION_LEAD=Qwen/Qwen3.5-0.8B-Base
+ULTRA_COMPACT_SIZE_LEADER_CONDITIONAL_CANDIDATE=swiss-ai/Apertus-v1.1-0.5B
+APERTUS_GATED_AUP_TERMS=UNRESOLVED_CONDITIONAL
 MEDICAL_REFERENCE_CONTROL=google/medgemma-4b-pt
 SIZE_PRIORITY=QUALITY_FLOOR_THEN_SIZE_FIRST
 MASS_REACH_PACKAGE_POLICY=SUB_700MB_MASS_REACH
