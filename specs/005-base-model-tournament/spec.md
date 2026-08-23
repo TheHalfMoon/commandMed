@@ -43,6 +43,10 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 - Q: Should the frozen primary tournament manifest include only `PRIMARY` candidates whose admission gates are complete before manifest freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved candidates remain discovery/conditional outside that manifest.
 - Q: What precision/quantization policy should Spec 005 use to separate fair backbone comparison from real-device deployability evidence? → A: `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` — use a frozen reference build for primary capability comparison and a separately frozen deployable quantized build for device qualification; quantify compression regression separately.
 
+**Bounded clarification session 2**
+
+- Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: `FOUR_PERMISSIVE_BASE_SHORTLIST` — carry forward `Qwen/Qwen3.5-2B-Base`, `mistralai/Ministral-3-3B-Base-2512`, `google/gemma-4-E2B`, and `HuggingFaceTB/SmolLM3-3B-Base` for admission reconciliation; keep LFM2.5 candidates `CONDITIONAL` outside the primary shortlist until exact license compatibility is resolved.
+
 ## 3. Canonical authority and inherited identities
 
 This specification inherits the following canonical identities without redefining their semantics:
@@ -88,7 +92,7 @@ Therefore:
 - exact base-model, dataset, tokenizer, code, adapter, teacher/output, and derivative obligations must be proven before irreversible use or final selection;
 - custom or restrictive candidates may remain research/conditional candidates only when their exact intended-use compatibility is unresolved;
 - a conditional candidate must not be promoted to the final release lineage merely because it scores well;
-- this specification does not itself declare any named candidate license-compatible.
+- this specification does not itself declare any named candidate fully license-compatible merely because its current public model card reports a permissive license.
 
 ### 4.2 Target device tier
 
@@ -127,7 +131,7 @@ The following are outside this clarification-stage authority:
 - installing or changing runtime/model dependencies merely to prepare execution;
 - creating hidden caches, credentials, secrets, tokens, provider sessions, or model-serving endpoints;
 - choosing a winner from vendor claims, model-card claims, parameter count, reputation, or preference;
-- treating this document's candidate-discovery set as an execution manifest.
+- treating this document's candidate-admission shortlist as an execution manifest.
 
 ## 6. Tournament outcome contract
 
@@ -176,7 +180,7 @@ Requirements:
 
 `FULLY_ADMITTED_PRIMARY_ONLY` is frozen for the future primary ranking manifest.
 
-Naming a candidate in planning does **not** authorize access or execution. A candidate may enter the frozen primary ranking manifest only after every required admission field is resolved and the candidate is classified `PRIMARY` under the frozen rules.
+Naming a candidate in clarification or planning does **not** authorize access or execution. A candidate may enter the frozen primary ranking manifest only after every required admission field is resolved and the candidate is classified `PRIMARY` under the frozen rules.
 
 Before a candidate can enter a future frozen execution manifest, clarification/planning must bind all of the following:
 
@@ -217,32 +221,38 @@ A technically relevant candidate whose exact license, intended-use, device-fit, 
 
 May inform scientific context where the canonical lineage/evaluation rules permit, but cannot be selected as the release backbone under the current contract. Instruction-tuned models may be reference-only where scientifically useful and otherwise authorized.
 
-## 10. Planning/discovery candidate set
+## 10. Candidate admission shortlist and discovery continuity
 
-The existing Grand Master Plan provides the following **discovery set only**. This section records planning continuity; it is not a freeze, recommendation, admission result, or execution authority.
+`FOUR_PERMISSIVE_BASE_SHORTLIST` is frozen as the **clarification-stage admission shortlist**, not as the final frozen primary ranking manifest.
 
-### Track U — compact unified/multimodal discovery
+The following exact upstream artifact names are carried forward for admission reconciliation:
 
-- Qwen3.5-2B Base
-- Ministral 3 3B Base
-- Gemma 4 E2B planning candidate, exact variant/status to be verified
+1. `Qwen/Qwen3.5-2B-Base`
+2. `mistralai/Ministral-3-3B-Base-2512`
+3. `google/gemma-4-E2B`
+4. `HuggingFaceTB/SmolLM3-3B-Base`
 
-### Track M — efficiency-first/modular discovery
+Current public primary-source metadata indicates that these artifacts are base/pretrained candidates and report Apache-2.0 licensing at the family/artifact level. That observation is **discovery evidence only**. It does not satisfy the exact Spec 003 lineage contract, immutable-revision requirement, tokenizer/processor identity binding, access-status proof, contamination/quarantine proof, runtime compatibility proof, or device qualification required for `PRIMARY` admission.
 
-- LFM2.5-1.2B Base
-- LFM2.5-2.6B Base
-- LFM2.5-VL-3B
+Therefore:
 
-The LFM family remains conditional under canonical decision `D-007` until exact intended-use/license compatibility is proven.
+- none of the four is yet declared fully admitted;
+- none is yet present in a frozen execution manifest;
+- immutable revisions/digests and neutral `candidate_id` values remain unresolved;
+- exact license texts, notices, upstream code/runtime obligations, tokenizer/processor licensing, and intended-use compatibility must be bound before admission;
+- a later admission reconciliation may exclude any shortlisted artifact that fails a frozen gate without substituting a new candidate post-result.
 
-### Controls / reference discovery
+### Conditional discovery outside the primary shortlist
 
-- SmolLM3-3B Base
-- Phi-4-mini family
-- MedGemma family as reference/evaluation-only by default under `D-006`
-- frontier closed or otherwise restricted/gated medical models as reference-only unless a later canonical decision and lineage disposition explicitly authorize more
+The LFM2.5 family, including `LiquidAI/LFM2.5-2.6B-Base`, remains `CONDITIONAL` discovery outside the primary-admission shortlist under canonical decision `D-007` until exact license and intended-use compatibility with `FD-001` are proven.
 
-Clarification must independently verify whether each named family still exists in the intended exact variant, whether it is base or instruct, its current primary license, access status, artifact identity, and whether it belongs in the final frozen candidate set. Any instruct-only member of a named family cannot become `PRIMARY` under `BASE_ONLY_PRIMARY`.
+Other prior discovery items remain non-primary unless separately reconciled:
+
+- Phi-4-mini family — control/reference consideration only where exact checkpoint status and purpose justify it;
+- MedGemma family — reference/evaluation-only by default under `D-006`;
+- frontier closed, restricted, or gated medical models — reference-only unless a later canonical decision and lineage disposition explicitly authorize more.
+
+No shortlist decision authorizes model access, gated-term acceptance, weight retrieval, benchmark execution, or winner selection.
 
 ## 11. Base vs instruction-tuned comparability
 
@@ -357,7 +367,7 @@ The correct outcome in these cases is not a guessed winner; it is refusal, disqu
 
 The clarification lifecycle must answer, at minimum:
 
-1. What is the exact primary candidate set, with immutable upstream revisions and neutral candidate IDs?
+1. **PARTIALLY RESOLVED:** `FOUR_PERMISSIVE_BASE_SHORTLIST` carries forward four exact upstream artifact names for admission reconciliation. Immutable revisions/digests, neutral candidate IDs, and final fully admitted `PRIMARY` set remain unresolved.
 2. **RESOLVED:** `BASE_ONLY_PRIMARY`; only exact base/pretrained checkpoints may be `PRIMARY`. Instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
 3. What exact primary license evidence and Spec 003 lineage disposition applies to each intended use?
 4. Which candidates require gated terms or access, and can they remain discovery/reference-only without accepting those terms?
@@ -374,7 +384,7 @@ The clarification lifecycle must answer, at minimum:
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 
-The five-question clarification session on 2026-08-23 has reached its workflow limit. The unresolved questions above remain active requirements; they are not implicitly answered by this session and prevent the clarification lifecycle from being declared complete.
+The first bounded five-question clarification session on 2026-08-23 is complete. Bounded clarification session 2 is now in progress. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
 
 ## 18. Specification acceptance criteria
 
@@ -383,7 +393,7 @@ A future complete clarification artifact is acceptable only when independent rev
 - defines the tournament problem without selecting a winner;
 - binds the canonical predecessor identities and founder decisions;
 - preserves baseline-only/no-training scope;
-- distinguishes planning discovery from frozen admission;
+- distinguishes admission shortlisting from frozen admission and execution manifest membership;
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
 - preserves flagship + modern-midrange device intent without inventing unsupported numeric thresholds;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
@@ -391,15 +401,17 @@ A future complete clarification artifact is acceptable only when independent rev
 - resolves all clarification requirements that materially affect candidate admission, comparability, device qualification, execution planning, and exact-head review before advancing to `PLAN`;
 - grants no model, weight, benchmark payload, private Gold, provider, PHI, gated-asset, or execution authority.
 
-This five-question session is **not** a declaration that the full clarification lifecycle is complete.
+Neither clarification session is a declaration that the full clarification lifecycle is complete until every material unresolved requirement is reconciled and independently reviewed.
 
 ## 19. Exit and next lifecycle step
 
-Current working state after this clarification session:
+Current working state after the first accepted decision in bounded clarification session 2:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
-CLARIFICATION_SESSION_2026_08_23=5_QUESTIONS_ACCEPTED
+CLARIFICATION_SESSION_1=5_QUESTIONS_ACCEPTED
+CLARIFICATION_SESSION_2=IN_PROGRESS
+CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=1
 CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 PLAN_AUTHORITY=NONE
