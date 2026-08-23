@@ -82,11 +82,12 @@ Popularity, download counts, likes, social discussion, stars, or vendor reputati
 - Q: What candidate-neutral device/runtime failure semantics must be frozen before numeric performance thresholds so five-run aggregation cannot be retrofitted after failures are observed? → A: `UNIVERSAL_FATAL_FAILURES_AND_FAIL_CLOSED_EVIDENCE` — classify runtime initialization failure, canonical artifact load failure, inability of a correctly configured candidate/runtime to execute the required Core condition, process crash/abnormal termination, OS non-memory forced termination, measured-request noncompletion, and known unauthorized runtime/backend/artifact fallback as `HARD_FAIL`. Missing or malformed required measurement evidence, an unprovable runtime/artifact identity, or a wrong/unprovable run configuration is `INCOMPLETE` rather than a candidate failure. Mid-run thermal throttling is recorded but is not an automatic hard failure unless it produces an independently frozen fatal event. Any hard-fail run makes its candidate/target/condition `HARD_FAIL`; any incomplete run makes the condition `INCOMPLETE`; a valid median-of-five requires five complete numeric runs and partial-median substitution is prohibited. Failure-signal identities and the noncompletion watchdog must be pinned before execution, while the exact watchdog timeout and numeric performance hard thresholds remain unresolved. Candidate-specific failure exceptions and post-result failure-rule changes are prohibited.
 - Q: What performance-threshold policy must be frozen before execution without inventing candidate-result-derived latency or throughput numbers? → A: `PREDECLARED_TARGET_USABILITY_PERFORMANCE_GATES` — performance hard gates are required before execution, but exact numeric values remain unresolved until supported by documented candidate-independent usability evidence. Cold-start-to-first-token, ready-state TTFT, and decode tokens/second must receive hard gates; prefill throughput, model-load time, and end-to-end response time remain recorded/secondary unless separately frozen as hard gates. Thresholds are identical across candidates on the same target; target-specific thresholds are allowed only when predeclared and justified before candidate results. Candidate-specific thresholds, candidate-result-derived thresholds, post-result threshold changes, and post-result target-specific relaxation are prohibited. Median-of-five is the primary threshold aggregate, worst-case evidence remains mandatory, and `HARD_FAIL`/`INCOMPLETE` runs cannot be inserted into or removed from a numeric aggregate to rescue qualification.
 
-**Bounded session 6 — in progress (3/5)**
+**Bounded session 6 — in progress (4/5)**
 
 - Q: What benchmark/metric scope may be carried forward toward the future baseline tournament without silently turning public or reference assets into selectable execution data? → A: `CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY` — only canonical Spec 001 benchmark records that are verified, public, development-scoped, and sufficiently artifact-bound may be considered for a future executable baseline slice manifest. The current public-development registry scope is `healthbench_core`, `healthbench_consensus`, `healthbench_hard`, `healthbench_professional`, `medxpertqa`, and `pubmedqa`; this is a metadata scope, not payload-access or execution authorization and not by itself a selectable ranking manifest. Any future executable manifest must bind exact benchmark ID, artifact/split identity, quarantine purpose, allowed metric IDs/directions, and selection eligibility before execution. Public canonical test splits remain external-evaluation-only and cannot select a model. `medxpertqa` multimodal slices remain secondary non-ranking evidence under `COMMON_CORE_PRIMARY_RANKING`; its text dev split may become selectable only through an explicit pre-execution `DEV`/`CHECKPOINT_SELECTION` mapping. HealthBench and PubMedQA do not become selectable merely because their registry records are `PUBLIC` + `DEVELOPMENT`; their exact selection-purpose mapping remains unresolved. `REFERENCE_ONLY`, mixed/unbound, unresolved-license, gated, private, and private-Gold assets remain outside executable selection scope unless separately reconciled and authorized. Candidate-specific slice selection and post-result slice addition/removal are prohibited. This clarification authorizes read-only registry/metadata inspection only; benchmark payload access/execution remains unauthorized.
 - Q: What quarantine-purpose semantics must each future benchmark slice satisfy so development, model-selection, and external-evaluation evidence cannot be relabeled after candidate results? → A: `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE` — every executable slice must have exactly one canonical purpose frozen before payload access or execution. Baseline purposes are `DEV`, `CHECKPOINT_SELECTION`, and `PUBLIC_EXTERNAL_EVAL`; selection use requires the canonical source class to permit it and `can_select_model=true`. Public canonical test splits remain `PUBLIC_EXTERNAL_EVAL` and cannot select a model. Private Gold remains `PRIVATE_GOLD_ONLY`, cannot select or train, and is not authorized here. `REFERENCE_ONLY`, unbound, or unresolved-purpose assets are not executable. The same slice-purpose mapping must apply across candidates; candidate-specific mapping, post-result remapping, or promotion of external-evaluation evidence into selection evidence is prohibited. Exact purpose mappings for MedXpertQA text dev, HealthBench, and PubMedQA remain unresolved. Benchmark payload access/execution remains unauthorized.
 - Q: What access preconditions must a future public benchmark payload satisfy before any payload bytes may be obtained, cached, or executed? → A: `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS` — read-only public-source metadata inspection remains allowed, but payload access requires separate explicit authorization plus an exact artifact/split identity, immutable source revision or equivalent immutable digest, resolved license/access class, a frozen canonical quarantine purpose, and a contamination disposition. Mutable `latest`/unpinned or otherwise unbound payload access is prohibited. Gated, private, and Private Gold payloads remain inaccessible without separate authority; external-submission-only ground truth does not become local Gold. Local payload cache/copy creation is not authorized by this clarification. Any later access mechanism must preserve canonical artifact identity, must not substitute a post-access artifact or candidate-specific payload version, and an access failure or identity mismatch fails closed as `INCOMPLETE`. Benchmark payload access and execution authorities remain `NONE`.
+- Q: What contamination proof must govern clean-required uses, including whether exact model-weight quantization may use `NOT_APPLICABLE` under Spec 003? → A: `USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING` — preserve the canonical Spec 003 rule that `MODIFICATION_OR_DERIVATION`, `TEACHER_OR_SYNTHETIC_GENERATION`, and `TRAINING_OR_ADAPTATION` are clean-contamination-required uses. For such uses, only `ASSESSED_CLEAN` or evidence-backed `NOT_APPLICABLE` can satisfy the contamination gate; `NOT_APPLICABLE` is valid only when the exact path is proven truly outside the contamination condition and cannot be self-asserted. Exact model-weight quantization may use `NOT_APPLICABLE` only for a proven weight-only, data-free transform bound to exact source-weight identity, exact transform/toolchain identity, and frozen transform flags, with no calibration/imatrix, benchmark/Gold, training/dev, teacher, or provider-output payload input. Any quantization using calibration, imatrix, or other data requires contamination assessment instead. Pending/not-assessed contamination blocks clean-required use; known overlap/high-risk contamination prohibits it. Candidate-specific contamination exceptions and post-result reclassification are prohibited. Exact per-candidate/per-slice dispositions remain pending; no weight, conversion, benchmark-payload, or Gold authority is granted.
 
 **Founder clarification directives — do not consume additional clarification questions**
 
@@ -732,6 +733,50 @@ Read-only metadata inspection may identify repositories, filenames, revisions, d
 
 The eventual access mechanism may differ by benchmark, but it must preserve the frozen canonical artifact identity and cannot silently follow a mutable `latest`, branch head, changing remote object, or candidate-specific version. Gated/private assets require their own separate authority; Private Gold remains prohibited. Where evaluation uses an external submission service whose ground truth is not distributed, that service does not create local Gold access. Any access failure, missing immutable identity, or identity mismatch is `INCOMPLETE` and cannot be repaired by substituting a different payload after results are observed. This policy does not select concrete per-benchmark transport URLs or authorize any benchmark bytes to be obtained.
 
+### 13.4 Use-class-specific fail-closed contamination binding
+
+`USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING` freezes the Spec 005 interpretation of the canonical Spec 003 contamination gate without self-asserting any candidate-specific result:
+
+```text
+CONTAMINATION_PROOF_POLICY=USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING
+CONTAMINATION_DISPOSITION_REQUIRED_BEFORE_PAYLOAD_ACCESS=YES
+CONTAMINATION_DISPOSITION_REQUIRED_BEFORE_CANDIDATE_EXECUTION=YES
+SPEC003_CLEAN_CONTAMINATION_REQUIRED_USES=MODIFICATION_OR_DERIVATION,TEACHER_OR_SYNTHETIC_GENERATION,TRAINING_OR_ADAPTATION
+MODIFICATION_OR_DERIVATION_REQUIRES_CLEAN_CONTAMINATION=YES
+CLEAN_CONTAMINATION_ELIGIBLE_STATES=ASSESSED_CLEAN,NOT_APPLICABLE
+NOT_APPLICABLE_REQUIRES_EXPLICIT_EVIDENCE=YES
+NOT_APPLICABLE_REQUIRES_TRULY_OUTSIDE_CONTAMINATION_CONDITION=YES
+SELF_ASSERTED_NOT_APPLICABLE=PROHIBITED
+EXACT_MODEL_WEIGHT_QUANTIZATION_NOT_APPLICABLE=CONDITIONALLY_ALLOWED_ONLY_FOR_WEIGHT_ONLY_DATA_FREE_TRANSFORM
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_EXACT_SOURCE_WEIGHT_IDENTITY=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_EXACT_TRANSFORM_TOOLCHAIN_IDENTITY=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_FROZEN_TRANSFORM_FLAGS=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_CALIBRATION_DATA=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_IMATRIX_DATA=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_BENCHMARK_OR_GOLD_INPUT=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_TRAINING_OR_DEV_PAYLOAD_INPUT=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_TEACHER_OR_PROVIDER_OUTPUT=YES
+QUANTIZATION_WITH_CALIBRATION_OR_IMATRIX_OR_DATA=CONTAMINATION_ASSESSMENT_REQUIRED
+QUANTIZATION_WITH_UNRESOLVED_INPUT_PROVENANCE=NOT_ELIGIBLE_FAIL_CLOSED
+EVALUATION_PAYLOAD_CONTAMINATION_DISPOSITION_REQUIRED=YES
+CANDIDATE_DERIVATION_CONTAMINATION_DISPOSITION_REQUIRED=YES
+CONTAMINATION_EVIDENCE_OR_RATIONALE_IDENTITY_REQUIRED=YES
+KNOWN_OVERLAP_OR_HIGH_RISK=PROHIBITED_FOR_CLEAN_REQUIRED_USE
+PENDING_OR_NOT_ASSESSED=BLOCKED_FOR_CLEAN_REQUIRED_USE
+PUBLIC_EXTERNAL_EVAL_TO_SELECTION_REUSE=PROHIBITED
+PRIVATE_GOLD_CONTAMINATION_BOUNDARY=PRESERVED
+CANDIDATE_SPECIFIC_CONTAMINATION_EXCEPTION=PROHIBITED
+POST_RESULT_CONTAMINATION_RECLASSIFICATION=PROHIBITED
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+```
+
+The canonical Spec 003 evaluator treats `MODIFICATION_OR_DERIVATION` as a clean-contamination-required use and accepts only `ASSESSED_CLEAN` or `NOT_APPLICABLE` at that gate. Its planning contract restricts `NOT_APPLICABLE` to an explicit case that is truly outside the contamination condition. Spec 005 therefore does not equate quantization with `NOT_APPLICABLE` automatically.
+
+For a future exact model-weight quantization, `NOT_APPLICABLE` may be proposed only when evidence proves a weight-only/data-free transform: exact source weights, exact transform/toolchain, and frozen flags are bound, and no calibration set, imatrix data, benchmark/Gold payload, training/dev payload, teacher output, provider output, or equivalent external data influences the transform. If any such data participates, the path requires an exact contamination assessment and cannot use the data-free `NOT_APPLICABLE` route. Missing provenance, `PENDING`, `NOT_ASSESSED`, or contradictory contamination evidence fails closed. Known overlap/high risk prohibits a clean-required use. This policy freezes semantics only; it computes no candidate-specific contamination disposition and authorizes no model weights, conversion, benchmark payload, Private Gold, or execution.
+
 ## 14. Device, package, runtime, quantization, and resource evidence
 
 `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, `B512_U128_COLD_NO_REUSE`, `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`, `PLATFORM_NATIVE_PEAK_MEMORY`, `2G_CORE_HARD_CAP`, `COMPONENT_TIMING_COLD_AND_READY`, `FIVE_FRESH_RUNS_MEDIAN_WITH_WORST_CASE`, `PLATFORM_NATIVE_THERMAL_READY_GATE`, `PLATFORM_NATIVE_ENERGY_PER_RUN`, `ENERGY_REQUIRED_EVIDENCE_NO_V1_ABSOLUTE_HARD_GATE`, `UNIVERSAL_FATAL_FAILURES_AND_FAIL_CLOSED_EVIDENCE`, `PREDECLARED_TARGET_USABILITY_PERFORMANCE_GATES`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
@@ -1189,11 +1234,12 @@ Before execution authorization, clarification/planning must additionally define:
 - exact target-native failure-signal identities and the exact candidate-neutral noncompletion watchdog timeout/evidence format consistent with `UNIVERSAL_FATAL_FAILURES_AND_FAIL_CLOSED_EVIDENCE`;
 - exact per-slice canonical quarantine purpose and selection eligibility, including proof that the mapping is frozen before payload access/execution and identical across comparable candidates, consistent with `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE`;
 - exact per-benchmark payload access route/transport identity, immutable source revision or digest, license/access-class proof, contamination disposition, and any later separate payload-access authorization identity, consistent with `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS`;
+- exact contamination evidence/disposition for every clean-required candidate derivation and future benchmark payload, including proof for any `NOT_APPLICABLE` claim that the path is truly outside the contamination condition; for quantization, proof that any `NOT_APPLICABLE` path is weight-only/data-free with exact source-weight/toolchain/flags and no calibration/imatrix/benchmark/Gold/training/dev/teacher/provider payload input, consistent with `USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING`;
 - how mandatory 16K stress evidence is interpreted where in scope without retroactively changing the 8K hard qualification rule;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
 - the secondary metric order used only after complete deployable package bytes tie, including whether energy is included under its same-target/same-method restriction.
 
-Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, batch/ubatch substitution, prompt-state reuse, runtime-core substitution, memory-accounting substitution, 8K Core RAM-ceiling increase, candidate-specific timing-boundary substitution, measured-run-count substitution, failed-run replacement, post-hoc run exclusion, partial-median substitution, thermal-readiness exception, fixed-sleep substitution for thermal proof, post-result thermal-rule change, candidate-specific energy-method substitution, post-result energy-method change, candidate-specific energy-threshold creation, post-result energy-threshold creation, cross-platform raw-energy ranking substitution, raw-energy hard disqualification in V1, candidate-specific failure exception, post-result failure-rule change, candidate-specific performance threshold, candidate-result-derived performance threshold, post-result performance-threshold change, post-result target-specific performance-threshold relaxation, benchmark-purpose remapping, candidate-specific benchmark-purpose mapping, external-evaluation-to-selection promotion, mutable/unpinned benchmark-payload substitution, post-access payload substitution, candidate-specific payload-version substitution, remaining envelope boundary, quantization rule, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, batch/ubatch substitution, prompt-state reuse, runtime-core substitution, memory-accounting substitution, 8K Core RAM-ceiling increase, candidate-specific timing-boundary substitution, measured-run-count substitution, failed-run replacement, post-hoc run exclusion, partial-median substitution, thermal-readiness exception, fixed-sleep substitution for thermal proof, post-result thermal-rule change, candidate-specific energy-method substitution, post-result energy-method change, candidate-specific energy-threshold creation, post-result energy-threshold creation, cross-platform raw-energy ranking substitution, raw-energy hard disqualification in V1, candidate-specific failure exception, post-result failure-rule change, candidate-specific performance threshold, candidate-result-derived performance threshold, post-result performance-threshold change, post-result target-specific performance-threshold relaxation, benchmark-purpose remapping, candidate-specific benchmark-purpose mapping, external-evaluation-to-selection promotion, mutable/unpinned benchmark-payload substitution, post-access payload substitution, candidate-specific payload-version substitution, self-asserted contamination `NOT_APPLICABLE`, candidate-specific contamination exception, post-result contamination reclassification, data-assisted quantization presented as data-free `NOT_APPLICABLE`, remaining envelope boundary, quantization rule, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -1210,6 +1256,8 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact frozen benchmark slice manifest identity, per-slice canonical quarantine purpose/selection eligibility, proof that every purpose was frozen before payload access/execution, and proof that every comparable primary candidate used the identical authorized slice set and purpose mapping;
 - exact benchmark payload artifact/split identity, immutable source revision or digest, resolved license/access class, contamination disposition, payload-access authorization identity, access route/transport identity, and proof that the accessed bytes preserve the canonical artifact identity;
 - proof that no candidate-specific payload version or post-access artifact substitution was used;
+- exact contamination evidence/rationale identity for every required disposition, including proof of `ASSESSED_CLEAN` or evidence-backed `NOT_APPLICABLE` where a clean-required use applies;
+- for any quantization/derivation using `NOT_APPLICABLE`, exact proof of weight-only/data-free transformation: exact source-weight identity, transform/toolchain identity, frozen flags, and absence of calibration/imatrix/benchmark/Gold/training/dev/teacher/provider payload inputs;
 - exact device/resource identity where device evidence is claimed;
 - exact context/KV/token-budget configuration used for each device result, including symmetric Q8_0 K/V identity and serialized-prompt/generation ceilings for primary qualification;
 - exact tokenizer/template identities and serialized-token accounting record;
@@ -1267,6 +1315,13 @@ Examples include:
 - using a candidate-specific benchmark payload version;
 - substituting a different benchmark artifact after access or after candidate results are observed;
 - treating an access failure or benchmark identity mismatch as permission to use a substitute rather than `INCOMPLETE`;
+- missing a required contamination disposition before benchmark-payload access or candidate execution;
+- treating `PENDING`, `NOT_ASSESSED`, `OVERLAP_OR_HIGH_RISK`, or contradictory contamination evidence as clean for a Spec 003 clean-required use;
+- self-asserting `NOT_APPLICABLE` without evidence that the exact path is truly outside the contamination condition;
+- assigning `NOT_APPLICABLE` to model-weight quantization that uses calibration, imatrix, benchmark/Gold, training/dev, teacher/provider output, or any other external data input;
+- claiming data-free quantization `NOT_APPLICABLE` without exact source-weight identity, exact transform/toolchain identity, frozen transform flags, and evidence of absent external data inputs;
+- granting a candidate-specific contamination exception;
+- reclassifying contamination after candidate results are observed;
 - non-comparable metric vectors;
 - complete minimum text/core bundle exceeding `700 MiB` under the frozen accounting rule;
 - absolute platform-native peak memory exceeding `2147483648` bytes during any frozen 8K Core target qualification run;
@@ -1353,7 +1408,7 @@ Examples include:
 - incomplete or candidate-specific package accounting that would make the size metric non-comparable;
 - omitting required assets from the measured minimum package or inconsistently excluding optional modality assets;
 - substituting an MLX/MLC/Core ML/native derivative for the canonical GGUF evidence without a separately frozen equivalence contract;
-- envelope boundary, runtime, build policy, KV policy, token-budget policy, prompt-processing policy, memory-measurement policy, timing policy, repetition/aggregation policy, thermal-readiness policy, energy-measurement policy, V1 energy-qualification policy, universal device/runtime failure policy, performance-threshold policy, quantization policy, package threshold, Core RAM threshold, medical-quality threshold, benchmark-slice policy, benchmark-purpose policy, benchmark-access policy, or ranking-rule changes after results are observed;
+- envelope boundary, runtime, build policy, KV policy, token-budget policy, prompt-processing policy, memory-measurement policy, timing policy, repetition/aggregation policy, thermal-readiness policy, energy-measurement policy, V1 energy-qualification policy, universal device/runtime failure policy, performance-threshold policy, quantization policy, package threshold, Core RAM threshold, medical-quality threshold, benchmark-slice policy, benchmark-purpose policy, benchmark-access policy, contamination-proof policy, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie under the complete predeclared ranking vector.
@@ -1375,14 +1430,14 @@ The clarification lifecycle must answer, at minimum:
 9. **RESOLVED CORE RAM GATE + PERFORMANCE/REPETITION/THERMAL/ENERGY + UNIVERSAL FAILURE + PERFORMANCE-THRESHOLD POLICY / NUMERIC VALUES PENDING:** `SUB_700MB_MASS_REACH` freezes the `700 MiB` hard package ceiling and `2G_CORE_HARD_CAP` turns the prior `<=2 GiB` 8K engineering target into an absolute platform-native hard qualification ceiling on all five Core target runs. `PLATFORM_NATIVE_PEAK_MEMORY` defines how peak memory is measured. `COMPONENT_TIMING_COLD_AND_READY` defines how cold-start and ready-state performance components are recorded, `FIVE_FRESH_RUNS_MEDIAN_WITH_WORST_CASE` defines repeated-run and aggregation semantics, `PLATFORM_NATIVE_THERMAL_READY_GATE` requires each measured run to begin from a frozen platform-native thermal-ready state, `PLATFORM_NATIVE_ENERGY_PER_RUN` requires energy evidence for every measured run under one candidate-neutral method per target, `ENERGY_REQUIRED_EVIDENCE_NO_V1_ABSOLUTE_HARD_GATE` establishes that V1 does not use an absolute raw-energy hard ceiling, `UNIVERSAL_FATAL_FAILURES_AND_FAIL_CLOSED_EVIDENCE` freezes what makes a measured run fatal versus merely evidentially incomplete, and `PREDECLARED_TARGET_USABILITY_PERFORMANCE_GATES` freezes how candidate-independent performance hard gates must be selected before execution. The required 16K stress tier records peak memory and fails on OS memory termination but has no separately frozen absolute RAM ceiling. Exact sampling/tool invocation, timing instrumentation, numeric performance values, thermal signal mappings/thresholds, energy tool/meter identities, calibration/uncertainty details, target-native failure-signal identities, and watchdog timeout remain unresolved.
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` plus `Q4_FLOOR_SMALLEST_PASSING`; primary capability comparison uses a frozen reference build, while the canonical deployable GGUF is the smallest allowed Q5/Q4-class artifact that passes every hard gate. Sub-4-bit artifacts are excluded from the V1 `PRIMARY` canonical release. Exact reference precision and frozen conversion/calibration details remain pending.
 11. **RESOLVED RUNTIME IDENTITY POLICY / VALUES PENDING:** `GGUF_LLAMA_CPP_CANONICAL` plus `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`; GGUF + llama.cpp is the canonical mass-distribution artifact/runtime family, one immutable core commit must be shared across all target paths, and platform-specific builds must be exact-manifest-bound. MLX/MLC/Core ML/native builds remain optional derivatives. The exact core commit SHA, conversion revision, compiler/toolchain versions, build/backend flags, wrapper/application identities, and produced runtime artifact identities remain to be frozen before execution.
-12. What contamination/quarantine proof is required for every candidate/result path, including whether `MODIFICATION_OR_DERIVATION` contamination state may legitimately be `NOT_APPLICABLE` for exact model-weight quantization under the Spec 003 contract?
+12. **RESOLVED POLICY / EXACT PER-ASSET DISPOSITIONS PENDING:** `USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING` preserves the canonical Spec 003 rule that `MODIFICATION_OR_DERIVATION`, `TEACHER_OR_SYNTHETIC_GENERATION`, and `TRAINING_OR_ADAPTATION` are clean-contamination-required uses. For such a use, only `ASSESSED_CLEAN` or explicit evidence-backed `NOT_APPLICABLE` may contribute to eligibility; `NOT_APPLICABLE` is permitted only when the asset/path is truly outside the contamination condition and cannot be self-asserted. Exact model-weight quantization may use `NOT_APPLICABLE` only for a proven weight-only/data-free transform bound to exact source-weight identity, transform/toolchain identity, and frozen flags, with no calibration/imatrix/benchmark/Gold/training/dev/teacher/provider payload input. A quantization using any such data requires contamination assessment instead. Pending/not-assessed contamination blocks clean-required use; known overlap/high risk prohibits it. Candidate-specific exceptions and post-result contamination reclassification are prohibited. Exact candidate/slice records and dispositions remain to be computed from exact evidence before access/execution; no payload/weight/conversion authority is granted.
 13. **PARTIALLY RESOLVED / ACCESS PRECONDITIONS FROZEN / EXACT PER-BENCHMARK ROUTES + ACCESS AUTHORITY PENDING:** `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS` allows read-only public metadata inspection but requires separate explicit authorization before any benchmark payload bytes are obtained, cached, copied, or executed. Any future access must bind exact artifact/split identity, immutable revision/digest, resolved license/access class, frozen quarantine purpose, contamination disposition, and an identity-preserving access route. Mutable/unpinned payloads, candidate-specific payload versions, post-access substitution, unauthorized gated/private access, and local Private Gold are prohibited. External-submission-only ground truth does not become local Gold. Access failures or identity mismatches fail closed as `INCOMPLETE`. Exact artifact-specific transport routes and any payload-access authorization remain unresolved; current benchmark payload access/execution authorities remain `NONE`.
 14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is complete at five accepted questions. Bounded clarification session 4 is complete at five accepted questions. Bounded clarification session 5 is complete at five accepted questions. Bounded clarification session 6 is in progress at three accepted questions. Completion of any bounded session does **not** complete the overall clarification lifecycle. The unresolved factual/evidence requirements above remain active and prevent the overall clarification lifecycle from being declared complete or advancing to `PLAN`.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is complete at five accepted questions. Bounded clarification session 4 is complete at five accepted questions. Bounded clarification session 5 is complete at five accepted questions. Bounded clarification session 6 is in progress at four accepted questions. Completion of any bounded session does **not** complete the overall clarification lifecycle. The unresolved factual/evidence requirements above remain active and prevent the overall clarification lifecycle from being declared complete or advancing to `PLAN`.
 
 ## 18. Specification acceptance criteria
 
@@ -1400,6 +1455,7 @@ A future complete clarification artifact is acceptable only when independent rev
 - freezes `CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY` as the future benchmark-source boundary, preserves the six current `PUBLIC` + `DEVELOPMENT` registry IDs as a metadata eligibility envelope without pretending they are already a selectable execution manifest, forbids public canonical test splits from selecting the winner, keeps reference/mixed-unbound/gated/private/Gold assets fail-closed, and keeps exact primary-selection purpose/slice mapping separately unresolved until pre-execution binding;
 - freezes `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE`, requiring one candidate-neutral canonical purpose per executable slice before payload access/execution, requiring `can_select_model=true` for selection use, keeping public canonical test splits external-eval-only, prohibiting candidate-specific/post-result purpose remapping or promotion, and keeping unresolved-purpose assets non-executable while exact MedXpertQA text-dev/HealthBench/PubMedQA mappings remain pending;
 - freezes `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS`, permitting metadata-only inspection while requiring separate authorization plus exact immutable artifact identity, resolved license/access class, frozen purpose, contamination disposition, and identity-preserving access before any payload bytes may be obtained; prohibits mutable/unbound, candidate-specific, substituted, unauthorized gated/private, or local Private Gold payload access while keeping concrete per-benchmark routes and access authority unresolved;
+- freezes `USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING`, preserving Spec 003 clean-required uses and allowing `NOT_APPLICABLE` only with explicit evidence that the path is truly outside the contamination condition; permits it for model-weight quantization only when the transform is proven weight-only/data-free with exact source/toolchain/flags and no calibration/imatrix/benchmark/Gold/training/dev/teacher/provider payload input, otherwise requiring contamination assessment; prohibits self-asserted N/A, candidate-specific exceptions, and post-result reclassification while keeping exact per-asset dispositions pending;
 - freezes `MASS_REACH_FIVE_TARGET_SET` while keeping exact execution/performance threshold values separately unresolved until supported by candidate-independent pre-execution evidence;
 - requires evidence for iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 without post-result target weakening;
 - freezes `8K_CORE_16K_STRESS`, requiring an `8192`-token hard qualification context on all five targets and `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it;
@@ -1431,7 +1487,7 @@ No bounded clarification session is a declaration that the full clarification li
 
 ## 19. Exit and next lifecycle step
 
-Current working state after bounded session 5 completion and bounded session 6 questions 1–3 acceptance of `CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY`, `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE`, and `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS`:
+Current working state after bounded session 5 completion and bounded session 6 questions 1–4 acceptance of `CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY`, `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE`, `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS`, and `USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING`:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
@@ -1444,7 +1500,7 @@ CLARIFICATION_SESSION_4=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_4_STATUS=COMPLETE_BOUNDED_SESSION
 CLARIFICATION_SESSION_5=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_5_STATUS=COMPLETE_BOUNDED_SESSION
-CLARIFICATION_SESSION_6=3_QUESTIONS_ACCEPTED
+CLARIFICATION_SESSION_6=4_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_6_STATUS=IN_PROGRESS
 BASELINE_EVALUATION_SCOPE_POLICY=CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY
 PUBLIC_DEVELOPMENT_SCOPE_IDS=healthbench_core,healthbench_consensus,healthbench_hard,healthbench_professional,medxpertqa,pubmedqa
@@ -1482,6 +1538,24 @@ ACCESS_MECHANISM_MUST_PRESERVE_CANONICAL_ARTIFACT_IDENTITY=YES
 POST_ACCESS_ARTIFACT_SUBSTITUTION=PROHIBITED
 CANDIDATE_SPECIFIC_PAYLOAD_VERSION=PROHIBITED
 ACCESS_FAILURE_OR_IDENTITY_MISMATCH=FAIL_CLOSED_INCOMPLETE
+CONTAMINATION_PROOF_POLICY=USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING
+CONTAMINATION_DISPOSITION_REQUIRED_BEFORE_PAYLOAD_ACCESS=YES
+CONTAMINATION_DISPOSITION_REQUIRED_BEFORE_CANDIDATE_EXECUTION=YES
+SPEC003_CLEAN_CONTAMINATION_REQUIRED_USES=MODIFICATION_OR_DERIVATION,TEACHER_OR_SYNTHETIC_GENERATION,TRAINING_OR_ADAPTATION
+MODIFICATION_OR_DERIVATION_REQUIRES_CLEAN_CONTAMINATION=YES
+CLEAN_CONTAMINATION_ELIGIBLE_STATES=ASSESSED_CLEAN,NOT_APPLICABLE
+NOT_APPLICABLE_REQUIRES_EXPLICIT_EVIDENCE=YES
+NOT_APPLICABLE_REQUIRES_TRULY_OUTSIDE_CONTAMINATION_CONDITION=YES
+SELF_ASSERTED_NOT_APPLICABLE=PROHIBITED
+EXACT_MODEL_WEIGHT_QUANTIZATION_NOT_APPLICABLE=CONDITIONALLY_ALLOWED_ONLY_FOR_WEIGHT_ONLY_DATA_FREE_TRANSFORM
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_CALIBRATION_DATA=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_IMATRIX_DATA=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_BENCHMARK_OR_GOLD_INPUT=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_TRAINING_OR_DEV_PAYLOAD_INPUT=YES
+WEIGHT_ONLY_DATA_FREE_QUANTIZATION_REQUIRES_NO_TEACHER_OR_PROVIDER_OUTPUT=YES
+QUANTIZATION_WITH_CALIBRATION_OR_IMATRIX_OR_DATA=CONTAMINATION_ASSESSMENT_REQUIRED
+CANDIDATE_SPECIFIC_CONTAMINATION_EXCEPTION=PROHIBITED
+POST_RESULT_CONTAMINATION_RECLASSIFICATION=PROHIBITED
 PUBLIC_BENCHMARK_PAYLOAD_ACCESS=NOT_AUTHORIZED_YET
 PUBLIC_BENCHMARK_PAYLOAD_EXECUTION=NOT_AUTHORIZED_YET
 PRIVATE_GOLD_ACCESS=PROHIBITED
@@ -1680,7 +1754,7 @@ PERFORMANCE_HARD_GATES_REQUIRED_BEFORE_EXECUTION=YES
 EXACT_NUMERIC_PERFORMANCE_THRESHOLDS=NOT_YET_FROZEN
 PERFORMANCE_HARD_THRESHOLDS=NOT_YET_FROZEN
 THRESHOLDS_MUST_BE_FROZEN_BEFORE_CANDIDATE_RESULTS=YES
-THRESHOLD_EVIDENCE_BASIS_MUST_BE_DOCUMENTED=YES
+THRESHOLD_EVIDENCE_BASIS_MUST_BE_DOCUMENTED
 SAME_TARGET_THRESHOLDS_IDENTICAL_ACROSS_CANDIDATES=YES
 CANDIDATE_SPECIFIC_PERFORMANCE_THRESHOLD=PROHIBITED
 POST_RESULT_PERFORMANCE_THRESHOLD_CHANGE=PROHIBITED
@@ -1706,6 +1780,7 @@ PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
 PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
@@ -1716,6 +1791,6 @@ CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 ```
 
-Acceptance of `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS` advances bounded clarification session 6 to three accepted questions but does **not** freeze the exact primary-selection slice manifest, does **not** freeze the unresolved purpose mappings for MedXpertQA text dev, HealthBench, or PubMedQA, does **not** authorize benchmark payload access, local cache/copy creation, or execution, does **not** authorize Private Gold or gated/private benchmark access, does **not** select exact artifact-specific access routes, does **not** resolve the contamination proof required by Q12, does **not** freeze the remaining clinical/statistical thresholds, and does **not** complete the full clarification lifecycle. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
+Acceptance of `USE_CLASS_SPECIFIC_FAIL_CLOSED_CONTAMINATION_BINDING` advances bounded clarification session 6 to four accepted questions but does **not** compute or freeze exact per-candidate/per-slice contamination records, does **not** authorize model-weight access or conversion, does **not** authorize benchmark payload access, local cache/copy creation, or execution, does **not** authorize Private Gold or gated/private benchmark access, does **not** freeze the exact primary-selection slice manifest or unresolved purpose mappings, does **not** freeze the remaining clinical/statistical thresholds, and does **not** complete the full clarification lifecycle. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
 
-Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
+Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, model conversion, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
