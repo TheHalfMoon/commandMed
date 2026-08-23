@@ -66,10 +66,11 @@ Popularity, download counts, likes, social discussion, stars, or vendor reputati
 - Q: How must the frozen 8K and 16K context budgets be divided between serialized prompt/input and generated output? → A: `7K_PROMPT_1K_GENERATION` — cap the 8K hard condition at `7168` serialized-prompt tokens plus `1024` generation tokens, and the 16K stress condition at `15360` serialized-prompt tokens plus the same `1024` generation tokens. The serialized-prompt budget includes system text and prompt/chat-template tokens as well as benchmark/context/user material; unused generation allowance does not expand the prompt ceiling. Generation budget is identical across candidates. Exact tokenizer/template/runtime identities and the reproducible token-accounting implementation remain pre-execution gates, along with batch/ubatch, cache reuse, RAM/performance measurement, thermals, energy, OS/runtime revisions, and target-specific hard-failure semantics.
 - Q: What prompt-processing batch and cache-reuse profile must measured device qualification use? → A: `B512_U128_COLD_NO_REUSE` — use logical batch `512` and physical ubatch `128` for measured qualification and required stress runs; prohibit prompt-cache, session-state, prefix-cache, or equivalent cross-run/precomputed prompt-state reuse; apply the same batch profile across comparable candidates and all frozen device targets. This freezes a comparability profile, not a measured performance claim. Exact runtime/backend identities, peak-RAM methodology, latency/throughput thresholds, thermal/energy protocol, OS/runtime revisions, repetition/warm-up/aggregation rules, and target-specific hard-failure semantics remain unresolved.
 
-**Bounded session 4 — in progress (2/5)**
+**Bounded session 4 — in progress (3/5)**
 
 - Q: How must the canonical llama.cpp runtime identity be bound across iOS, Android, and x86-64 device qualification? → A: `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` — require one exact immutable llama.cpp core commit across all comparable candidates and all five frozen targets; prohibit mutable `master`/`main`/`latest` identities and candidate-specific or post-result runtime revision substitution; require a platform build manifest that binds the shared core commit, compiler/toolchain, relevant build flags/backend choices, target architecture/ABI, wrapper/application identity where applicable, and produced runtime/build artifact identity when available. This freezes the identity method only; the exact core commit SHA and concrete platform build values remain unresolved pre-execution evidence requirements.
-- Q: How must peak memory be measured across the frozen iOS, Android, and x86-64 qualification paths? → A: `PLATFORM_NATIVE_PEAK_MEMORY` — use iOS physical-footprint peak, Android time-resolved RSS peak with total PSS as secondary context, and Linux cgroup-v2 `memory.peak` for the full required qualification process set. Record pre-model-load baseline, absolute peak bytes, and peak delta; treat OS memory termination as a hard failure; prohibit mixing the unlike raw platform-native memory metrics into a cross-platform ranking metric. `<=2 GiB` remains an engineering target only and `RAM_HARD_CEILING=NOT_YET_FROZEN`.
+- Q: How must peak memory be measured across the frozen iOS, Android, and x86-64 qualification paths? → A: `PLATFORM_NATIVE_PEAK_MEMORY` — use iOS physical-footprint peak, Android time-resolved RSS peak with total PSS as secondary context, and Linux cgroup-v2 `memory.peak` for the full required qualification process set. Record pre-model-load baseline, absolute peak bytes, and peak delta; treat OS memory termination as a hard failure; prohibit mixing the unlike raw platform-native memory metrics into a cross-platform ranking metric.
+- Q: What absolute RAM hard ceiling must the common 8K Core qualification satisfy? → A: `2G_CORE_HARD_CAP` — every frozen target must remain at or below an absolute platform-native peak of `2 GiB` (`2147483648` bytes) for the full required qualification process set under the common 8K condition. Absolute peak is the hard-gate input; baseline delta is diagnostic only; OS/LMK/OOM memory termination is a hard failure. Required 16K stress evidence still records peak memory and fails on OS memory termination, but no additional absolute 16K RAM ceiling is frozen by this question.
 
 **Founder clarification directives — do not consume additional clarification questions**
 
@@ -126,16 +127,28 @@ Therefore:
 
 ### 4.2 Target device tier and distribution reach
 
-`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`, bounded clarification session 3 freezes `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, and `B512_U128_COLD_NO_REUSE`, and bounded clarification session 4 freezes `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` plus `PLATFORM_NATIVE_PEAK_MEMORY` as runtime/resource evidence policies.
+`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`, bounded clarification session 3 freezes `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, and `B512_U128_COLD_NO_REUSE`, and bounded clarification session 4 freezes `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`, `PLATFORM_NATIVE_PEAK_MEMORY`, and `2G_CORE_HARD_CAP` as runtime/resource qualification policies.
 
-The frozen mass-reach package, target, context, KV, token-budget, prompt-processing, runtime-identity, and memory-measurement policy is:
+The frozen mass-reach package, target, context, KV, token-budget, prompt-processing, runtime-identity, memory-measurement, and 8K Core memory-gate policy is:
 
 ```text
 MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
 MINIMUM_TEXT_CORE_BUNDLE_ENGINEERING_TARGET=600_MiB_OR_LESS
 MINIMUM_TEXT_CORE_BUNDLE_STRETCH_TARGET=500_MiB_OR_LESS_IF_ALL_HARD_GATES_STILL_PASS
 PEAK_WORKING_RAM_ENGINEERING_TARGET=2_GiB_OR_LESS_AT_FROZEN_SHORT_CONTEXT
-RAM_HARD_CEILING=NOT_YET_FROZEN
+CORE_8K_MEMORY_GATE=2G_CORE_HARD_CAP
+CORE_8K_PEAK_MEMORY_HARD_CEILING=2_GiB
+CORE_8K_PEAK_MEMORY_HARD_CEILING_BYTES=2147483648
+CORE_8K_HARD_CEILING_APPLIES_TO_ALL_FIVE_TARGETS=YES
+CORE_8K_HARD_CEILING_USES_PLATFORM_NATIVE_PRIMARY_METRIC=YES
+CORE_8K_MEMORY_TERMINATION=HARD_FAIL
+CORE_8K_PEAK_DELTA=DIAGNOSTIC_ONLY
+CORE_8K_ABSOLUTE_PEAK=HARD_GATE_INPUT
+STRESS_16K_PEAK_MEMORY=RECORDED
+STRESS_16K_OS_MEMORY_TERMINATION=HARD_FAIL
+STRESS_16K_ABSOLUTE_RAM_HARD_CEILING=NOT_FROZEN
+CANDIDATE_SPECIFIC_RAM_EXCEPTION=PROHIBITED
+POST_RESULT_RAM_CEILING_CHANGE=PROHIBITED
 LOW_RESOURCE_PHONE_EVIDENCE=4_GB_CLASS_REQUIRED
 DEVICE_EVIDENCE_POLICY=MASS_REACH_FIVE_TARGET_SET
 FLAGSHIP_REPRESENTATIVE=Apple_iPhone_17_Pro_12GB
@@ -199,15 +212,15 @@ CROSS_PLATFORM_RAW_METRIC_RANKING=PROHIBITED
 
 Spec 005 must eventually bind execution evidence for every frozen target without silently weakening the resource class after candidate results are observed. A physical-device substitution is permissible only through a separately reviewed pre-result clarification that preserves the same or stricter resource class and records the reason and new exact identity.
 
-Every candidate must eventually qualify at the same `8192`-token hard context on all five frozen targets using symmetric `Q8_0` K/V cache, the same `7168` serialized-prompt / `1024` generation ceiling, and the same cold `512/128` prompt-processing profile with no cross-run or precomputed prompt-state reuse. The `16384`-token tier is required secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it and uses the same symmetric Q8_0 policy, `15360` serialized-prompt / `1024` generation ceiling, and cold `512/128` prompt-processing profile. The serialized-prompt budget includes system and template tokens; unused generation allowance cannot expand the prompt ceiling. The stress-result consequence remains separate from the hard 8K qualification condition until target-specific hard-failure semantics are frozen pre-execution.
+Every candidate must eventually qualify at the same `8192`-token hard context on all five frozen targets using symmetric `Q8_0` K/V cache, the same `7168` serialized-prompt / `1024` generation ceiling, and the same cold `512/128` prompt-processing profile with no cross-run or precomputed prompt-state reuse. The absolute platform-native peak for the full required qualification process set must not exceed `2 GiB` on any of those five 8K Core target runs. The `16384`-token tier is required secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it and uses the same symmetric Q8_0 policy, `15360` serialized-prompt / `1024` generation ceiling, and cold `512/128` prompt-processing profile. The 16K tier records peak memory and fails on OS memory termination, but no absolute 16K RAM ceiling is frozen here. The serialized-prompt budget includes system and template tokens; unused generation allowance cannot expand the prompt ceiling.
 
 All comparable device evidence must use one exact immutable llama.cpp core commit. Platform-specific builds may differ only where required by iOS, Android, or x86-64 toolchains, and every such path must carry a reproducible exact build manifest. The exact core SHA and concrete platform build values are not selected by this policy and remain unresolved pre-execution evidence requirements.
 
 Peak-memory evidence must use the frozen platform-native method across the full required qualification process set: iOS physical-footprint peak, Android time-resolved RSS peak with total PSS as secondary context, and Linux cgroup-v2 `memory.peak`. The pre-load baseline, absolute peak, and delta are all recorded. OS memory termination is a hard failure. A Windows weak-laptop path requires a separately reviewed Windows-native measurement binding before execution; Linux cgroup evidence must not be silently reused as Windows evidence.
 
-The `700 MiB` package ceiling is a hard qualification boundary. The `<=600 MiB` and `<=500 MiB` values are engineering and stretch targets, not substitutes for the hard safety/medical-quality gates. The `<=2 GiB` peak working RAM value remains an engineering target only. No RAM hard ceiling is created by `PLATFORM_NATIVE_PEAK_MEMORY`; `RAM_HARD_CEILING=NOT_YET_FROZEN` remains explicit.
+The `700 MiB` package ceiling and `2 GiB` absolute peak ceiling for the common 8K Core qualification condition are hard qualification boundaries. The `<=600 MiB` and `<=500 MiB` package values remain engineering and stretch targets. The 16K stress tier does not inherit the 2 GiB absolute ceiling; its memory peak is recorded and OS memory termination remains a hard failure.
 
-The target set, common context policy, primary KV-cache type policy, prompt/generation budget policy, prompt-processing batch/cache-reuse policy, runtime identity method, and memory measurement method are now frozen, but the exact llama.cpp commit value, exact OS/build versions, compiler/toolchain versions, build flags/backends, platform wrapper/application identities, produced runtime artifact identities, tokenizer/template identities and token-accounting implementation, exact memory instrumentation/tool invocation and sampling cadence where applicable, any RAM hard ceiling, latency/TTFT/throughput thresholds, energy/battery and thermal protocol, repetition/warm-up/aggregation methodology, and target-specific non-memory hard-failure semantics remain intentionally unresolved. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
+The target set, common context policy, primary KV-cache type policy, prompt/generation budget policy, prompt-processing batch/cache-reuse policy, runtime identity method, memory measurement method, and 8K Core `2 GiB` hard memory gate are now frozen. The exact llama.cpp commit value, exact OS/build versions, compiler/toolchain versions, build flags/backends, platform wrapper/application identities, produced runtime artifact identities, tokenizer/template identities and token-accounting implementation, exact memory instrumentation/tool invocation and sampling cadence where applicable, any 16K stress absolute RAM ceiling, latency/TTFT/throughput thresholds, energy/battery and thermal protocol, repetition/warm-up/aggregation methodology, and target-specific non-memory hard-failure semantics remain intentionally unresolved. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
 
 ### 4.3 Donor-origin restrictions
 
@@ -252,6 +265,7 @@ At minimum:
 - safety hard-gate failure is disqualifying;
 - failure of the frozen minimum medical-quality floor is disqualifying for size-first ranking eligibility;
 - failure of the `700 MiB` complete minimum text/core bundle ceiling is disqualifying for `PRIMARY` size-first ranking eligibility;
+- failure of the `2 GiB` absolute platform-native peak-memory hard ceiling on any frozen 8K Core target is disqualifying for `PRIMARY` mass-reach qualification;
 - missing, malformed, wrong-manifest, blocked, insufficient, or non-comparable evidence is `INCOMPLETE` rather than silently favorable;
 - any declared candidate with incomplete required evidence forces `NO_SELECTION` before ranking;
 - an exact top tie under the complete predeclared ranking vector forces `NO_SELECTION`;
@@ -271,7 +285,7 @@ SIZE_PRIORITY=QUALITY_FLOOR_THEN_SIZE_FIRST
 
 `QUALITY_FLOOR_THEN_SIZE_FIRST` means ranking occurs in two logically separate phases:
 
-1. **qualification phase** — provenance/lineage, licensing, safety, minimum medical-quality, candidate identity, comparability, the `700 MiB` minimum-package ceiling, and all other frozen device/package hard gates must pass; a smaller model cannot compensate for failure of any hard gate;
+1. **qualification phase** — provenance/lineage, licensing, safety, minimum medical-quality, candidate identity, comparability, the `700 MiB` minimum-package ceiling, the `2 GiB` 8K Core memory ceiling, and all other frozen device/package hard gates must pass; a smaller model cannot compensate for failure of any hard gate;
 2. **ranking phase** — among fully qualified candidates only, complete deployable package bytes are the first comparison metric with direction `LOWER_BETTER`; only then are the remaining predeclared secondary metrics compared lexicographically.
 
 Requirements:
@@ -281,7 +295,7 @@ Requirements:
 - ranking metric order must be frozen before live evaluation;
 - the first ranking metric after qualification is complete deployable package bytes, measured under one frozen package-accounting rule;
 - weighted sums are prohibited unless a future separately reviewed canonical contract explicitly replaces this rule;
-- safety, lineage, licensing, and minimum medical-quality hard gates are not compensable by a smaller package or higher capability score;
+- safety, lineage, licensing, minimum medical-quality, package, and frozen 8K Core memory hard gates are not compensable by a smaller package or higher capability score;
 - device/resource criteria that become hard qualification gates must be frozen before execution and must not be retrofitted after results are seen;
 - the package metric must include every artifact required for the advertised minimum common-core installation; optional modality assets may be excluded only when they are genuinely optional and separately downloadable for every candidate under the frozen rule;
 - adoption metrics such as Hugging Face downloads, likes, trends, social mentions, stars, or community buzz are product KPIs only and cannot enter the tournament ranking vector.
@@ -308,7 +322,7 @@ Before a candidate can enter a future frozen execution manifest, clarification/p
 12. expected device/resource evidence class;
 13. contamination/quarantine disposition where applicable;
 14. whether the candidate is `PRIMARY`, `CONTROL`, `CONDITIONAL`, or `REFERENCE_ONLY`;
-15. pre-execution evidence that the candidate has a plausible path to the frozen `700 MiB` package ceiling and low-resource RAM/device envelope without candidate-specific post-result threshold changes;
+15. pre-execution evidence that the candidate has a plausible path to the frozen `700 MiB` package ceiling and `2 GiB` 8K Core memory/device envelope without candidate-specific post-result threshold changes;
 16. whether the exact candidate architecture can produce a canonical GGUF artifact compatible with the future pinned llama.cpp toolchain without candidate-specific exceptions that destroy comparability;
 17. whether the candidate has at least one allowed Q5/Q4-class deployable quantization path under `Q4_FLOOR_SMALLEST_PASSING`; sub-4-bit-only feasibility is insufficient for V1 `PRIMARY` admission.
 
@@ -453,7 +467,7 @@ This clarification-stage document does not authorize opening or executing the be
 
 ## 14. Device, package, runtime, quantization, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, `B512_U128_COLD_NO_REUSE`, `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`, `PLATFORM_NATIVE_PEAK_MEMORY`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, `B512_U128_COLD_NO_REUSE`, `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`, `PLATFORM_NATIVE_PEAK_MEMORY`, `2G_CORE_HARD_CAP`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
 
 The minimum text/core package and device envelope is:
 
@@ -462,7 +476,19 @@ COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
 COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_ENGINEERING_TARGET=600_MiB_OR_LESS
 COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_STRETCH_TARGET=500_MiB_OR_LESS_IF_HARD_GATES_PASS
 PEAK_WORKING_RAM_ENGINEERING_TARGET=2_GiB_OR_LESS_AT_FROZEN_SHORT_CONTEXT
-RAM_HARD_CEILING=NOT_YET_FROZEN
+CORE_8K_MEMORY_GATE=2G_CORE_HARD_CAP
+CORE_8K_PEAK_MEMORY_HARD_CEILING=2_GiB
+CORE_8K_PEAK_MEMORY_HARD_CEILING_BYTES=2147483648
+CORE_8K_HARD_CEILING_APPLIES_TO_ALL_FIVE_TARGETS=YES
+CORE_8K_HARD_CEILING_USES_PLATFORM_NATIVE_PRIMARY_METRIC=YES
+CORE_8K_MEMORY_TERMINATION=HARD_FAIL
+CORE_8K_PEAK_DELTA=DIAGNOSTIC_ONLY
+CORE_8K_ABSOLUTE_PEAK=HARD_GATE_INPUT
+STRESS_16K_PEAK_MEMORY=RECORDED
+STRESS_16K_OS_MEMORY_TERMINATION=HARD_FAIL
+STRESS_16K_ABSOLUTE_RAM_HARD_CEILING=NOT_FROZEN
+CANDIDATE_SPECIFIC_RAM_EXCEPTION=PROHIBITED
+POST_RESULT_RAM_CEILING_CHANGE=PROHIBITED
 LOW_RESOURCE_PHONE_TEST_ENVELOPE=4_GB_CLASS
 CANONICAL_MINIMUM_DISTRIBUTION_ARTIFACT=GGUF
 CANONICAL_RUNTIME_FAMILY=LLAMA_CPP
@@ -546,7 +572,7 @@ CROSS_PLATFORM_RAW_METRIC_RANKING=PROHIBITED
 
 - the future deployable quantization ladder must be frozen before any candidate results are observed;
 - the intended ladder begins with Q5/Q4-class GGUF variants such as `Q5_K_M`, `Q4_K_M`, `Q4_K_S`, and `IQ4_XS`, or exact architecture-equivalent variants proven comparable and frozen before execution;
-- each candidate's canonical deployable artifact is the **smallest allowed ladder member** that passes every frozen safety, minimum medical-quality, compression-regression, `700 MiB` package, RAM, runtime, and device gate;
+- each candidate's canonical deployable artifact is the **smallest allowed ladder member** that passes every frozen safety, minimum medical-quality, compression-regression, `700 MiB` package, `2 GiB` 8K Core memory, runtime, and device gate;
 - a candidate does not gain an exception merely because a lower-bit representation is the only way it can satisfy the size ceiling;
 - Q3/IQ3/Q2 and other sub-4-bit variants are not eligible as the V1 `PRIMARY` canonical release, even if they are useful experimental artifacts later;
 - the exact order, tool flags, imatrix/calibration policy if any, metadata, and architecture-specific equivalence mapping must be frozen before execution and applied without post-result candidate-specific tuning.
@@ -573,16 +599,28 @@ CROSS_PLATFORM_RAW_METRIC_RANKING=PROHIBITED
 - if the weak-laptop path executes on Windows instead of Linux, a separately reviewed pre-execution Windows-native peak-working-set/accounting method must be bound rather than reusing Linux cgroup semantics;
 - the measurement window is the full cold qualification run and records a pre-model-load baseline, absolute peak bytes, and peak delta from baseline;
 - helper/runtime/wrapper processes required to deliver the tested local inference path must be included in the accounted process set and cannot be omitted to improve the reported number;
-- platform-native raw memory numbers are qualification/resource evidence and may not be mixed into a cross-platform scientific ranking metric because their accounting semantics differ;
-- `<=2 GiB` remains an engineering target only; `RAM_HARD_CEILING=NOT_YET_FROZEN` remains explicit until a later pre-result clarification freezes a disqualifying RAM threshold.
+- platform-native raw memory numbers are qualification/resource evidence and may not be mixed into a cross-platform scientific ranking metric because their accounting semantics differ.
 
-This policy freezes the measurement family and required records, not the exact sampling cadence/tool invocation, concrete OS/runtime build, or a hard RAM ceiling.
+This policy freezes the measurement family and required records, not the exact sampling cadence/tool invocation or concrete OS/runtime build.
+
+### 14.5 8K Core RAM hard gate
+
+`2G_CORE_HARD_CAP` means:
+
+- every measured common 8K Core qualification run on every frozen target must have an absolute platform-native peak of no more than `2 GiB` (`2147483648` bytes) for the full required qualification process set;
+- the absolute platform-native peak is the hard-gate input; the recorded peak delta from baseline is diagnostic only and cannot rescue a run above the absolute ceiling;
+- OS/LMK/OOM memory termination is a hard failure even when the last captured sample is below the numerical ceiling;
+- the same `2 GiB` ceiling applies to all five targets, including 8 GB and 12 GB devices. A target with more installed RAM does not receive a higher Core ceiling;
+- candidate-specific or target-specific RAM exceptions are prohibited, and the ceiling cannot be raised after candidate outcomes are known;
+- the required 16K stress tier records platform-native peak memory and fails on OS memory termination, but `STRESS_16K_ABSOLUTE_RAM_HARD_CEILING=NOT_FROZEN` remains explicit.
+
+This hard gate is specific to the mass-reach 8K Core condition and does not authorize execution.
 
 The complete minimum bundle measurement must include model weights plus every tokenizer, config, model-side runtime metadata, and other artifact required for the advertised minimum text/core installation. A general-purpose application/runtime binary may be reported separately only under a single frozen accounting rule applied identically to every candidate. Optional vision or other modality assets may be excluded from the minimum package only when they are genuinely optional and separately downloadable under the same policy for all candidates.
 
 Every frozen target must be represented by named physical-device evidence where the target is a named device and by its corresponding reproducible resource description. The weak-laptop target is intentionally an exact CPU/RAM/ISA envelope; a retail laptop SKU may be added pre-execution if required without weakening that envelope.
 
-The future evidence plan must cover all five frozen targets: iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64. Every target must use the common `8192`-token hard qualification context with symmetric `Q8_0` K/V cache, the fixed `7168` serialized-prompt / `1024` generation ceiling, logical batch `512`, physical ubatch `128`, no prompt/session/prefix cache reuse for the measured run, the same immutable llama.cpp core revision under its platform build manifest, and the frozen platform-native peak-memory method. The `16384`-token secondary stress tier is required on the iPhone 17 Pro 12 GB, Galaxy A56 5G 8 GB, and Intel N100 + 8 GB x86-64 targets where the pinned runtime supports that context, and must use the same symmetric `Q8_0` K/V cache, `15360` serialized-prompt / `1024` generation ceiling, `512/128` prompt-processing profile, cold/no-reuse semantics, shared core revision, and memory measurement policy. It may be collected on lower-resource targets where safe and comparable, but no candidate may receive a reduced 8K hard context, a different KV-cache type, a different prompt/generation allocation, a different batch profile, reused prompt state, a different core runtime revision, or a different memory-accounting method because its memory scaling, tokenizer, template overhead, compatibility, or observed prefill performance is less favorable. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
+The future evidence plan must cover all five frozen targets: iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64. Every target must use the common `8192`-token hard qualification context with symmetric `Q8_0` K/V cache, the fixed `7168` serialized-prompt / `1024` generation ceiling, logical batch `512`, physical ubatch `128`, no prompt/session/prefix cache reuse for the measured run, the same immutable llama.cpp core revision under its platform build manifest, the frozen platform-native peak-memory method, and the `2 GiB` absolute Core peak ceiling. The `16384`-token secondary stress tier is required on the iPhone 17 Pro 12 GB, Galaxy A56 5G 8 GB, and Intel N100 + 8 GB x86-64 targets where the pinned runtime supports that context, and must use the same symmetric `Q8_0` K/V cache, `15360` serialized-prompt / `1024` generation ceiling, `512/128` prompt-processing profile, cold/no-reuse semantics, shared core revision, and memory measurement policy. The 16K tier records peak memory and fails on OS memory termination but has no separately frozen absolute RAM ceiling. It may be collected on lower-resource targets where safe and comparable, but no candidate may receive a reduced 8K hard context, a different KV-cache type, a different prompt/generation allocation, a different batch profile, reused prompt state, a different core runtime revision, a different memory-accounting method, or a higher 8K Core RAM ceiling because its memory scaling, tokenizer, template overhead, compatibility, or observed prefill performance is less favorable. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
 
 Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
 
@@ -591,7 +629,7 @@ Each admitted `PRIMARY` candidate must also have two predeclared build roles whe
 
 The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the canonical deployable GGUF build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
 
-The exact reference precision, conversion toolchain revision, selected llama.cpp core commit SHA, concrete platform build manifests, architecture-specific equivalence rules, tokenizer/template identities and token-accounting implementation, exact memory instrumentation/tool invocation and sampling cadence where applicable, any RAM hard ceiling, latency/throughput/energy/thermal thresholds, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+The exact reference precision, conversion toolchain revision, selected llama.cpp core commit SHA, concrete platform build manifests, architecture-specific equivalence rules, tokenizer/template identities and token-accounting implementation, exact memory instrumentation/tool invocation and sampling cadence where applicable, any 16K stress absolute RAM ceiling, latency/throughput/energy/thermal thresholds, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
@@ -602,17 +640,17 @@ Before execution authorization, clarification/planning must additionally define:
 - verification that the pinned runtime/backend implements the frozen symmetric `Q8_0` K/V cache semantics consistently across all required platform paths;
 - exact tokenizer/template identities and a reproducible token-accounting implementation that counts all system/template/context/input tokens inside the frozen serialized-prompt ceilings;
 - verification that the pinned runtime/backend implements logical batch `512`, physical ubatch `128`, and the cold/no-reuse prompt-processing semantics consistently across all required platform paths;
-- exact platform memory instrumentation/tool invocation and sampling cadence where applicable, consistent with `PLATFORM_NATIVE_PEAK_MEMORY`;
-- any hard RAM threshold, with `<=2 GiB` remaining an engineering target until separately frozen otherwise;
+- exact platform memory instrumentation/tool invocation and sampling cadence where applicable, consistent with `PLATFORM_NATIVE_PEAK_MEMORY` and the absolute `2 GiB` 8K Core gate;
+- whether the required 16K stress tier should receive an additional absolute RAM ceiling or remain governed only by peak recording and OS-termination failure semantics;
 - TTFT/prefill/decode/sustained-throughput measurement method and thresholds;
 - energy and thermal measurement method or explicit bounded proxy if direct measurement is not feasible;
 - repetition count, warm-up, aggregation, and failure handling, with any warm-up prohibited from preloading or reusing measured prompt state;
-- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling, `8192`-token common hard context, symmetric Q8_0 primary KV policy, frozen prompt/generation ceilings, cold `512/128` prompt-processing profile, immutable shared-core runtime identity policy, and OS memory-termination failure rule;
+- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling, `8192`-token common hard context, symmetric Q8_0 primary KV policy, frozen prompt/generation ceilings, cold `512/128` prompt-processing profile, immutable shared-core runtime identity policy, platform-native memory policy, `2 GiB` absolute Core peak ceiling, and OS memory-termination failure rule;
 - how mandatory 16K stress evidence is interpreted where in scope without retroactively changing the 8K hard qualification rule;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
 - the secondary metric order used only after complete deployable package bytes tie.
 
-Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, batch/ubatch substitution, prompt-state reuse, runtime-core substitution, memory-accounting substitution, remaining envelope boundary, quantization rule, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, batch/ubatch substitution, prompt-state reuse, runtime-core substitution, memory-accounting substitution, 8K Core RAM-ceiling increase, remaining envelope boundary, quantization rule, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -631,6 +669,7 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact tokenizer/template identities and serialized-token accounting record;
 - exact logical batch `512`, physical ubatch `128`, and evidence that no prohibited prompt/session/prefix state was reused in the measured run;
 - exact platform-native memory measurement identity/configuration, accounted process set, pre-load baseline, absolute peak bytes, peak delta, and any OS memory-termination event;
+- explicit proof that each 8K Core result is at or below `2147483648` absolute peak bytes under its frozen platform-native primary metric;
 - exact packaged artifact identity and byte size where distribution evidence is claimed;
 - exact result-set evidence artifact IDs;
 - deterministic tournament report identity.
@@ -654,6 +693,9 @@ Examples include:
 - benchmark or Gold quarantine violation;
 - non-comparable metric vectors;
 - complete minimum text/core bundle exceeding `700 MiB` under the frozen accounting rule;
+- absolute platform-native peak memory exceeding `2147483648` bytes during any frozen 8K Core target qualification run;
+- using baseline-subtracted peak delta instead of absolute peak to evade the `2 GiB` 8K Core hard gate;
+- candidate-specific, target-specific, or post-result increase of the frozen `2 GiB` Core ceiling;
 - inability to construct a canonical comparable GGUF artifact under the frozen toolchain/runtime contract;
 - inability to satisfy V1 gates using an allowed Q5/Q4-class artifact under `Q4_FLOOR_SMALLEST_PASSING`;
 - using Q3/IQ3/Q2 or another sub-4-bit artifact as the V1 `PRIMARY` canonical release;
@@ -677,18 +719,18 @@ Examples include:
 - failure to use the frozen platform-native memory metric family for a measured target path;
 - omission of required helper/runtime/wrapper processes from the memory-accounted qualification process set;
 - missing pre-load baseline, absolute peak, or peak-delta record where the frozen memory policy requires them;
-- iOS memory-pressure termination, Android LMK/OOM termination, or Linux cgroup OOM termination during a measured qualification run;
+- iOS memory-pressure termination, Android LMK/OOM termination, or Linux cgroup OOM termination during a measured qualification or required stress run;
 - substituting a lower-looking platform memory metric or baseline-subtracted value as if it were the frozen absolute peak evidence;
 - mixing unlike iOS/Android/Linux raw memory values into a cross-platform ranking metric;
 - missing required `16384`-token stress evidence on an 8-GB-class-or-higher target where the pinned runtime supports it;
-- post-result reduction or candidate-specific adjustment of the frozen 8K hard context, Q8_0 KV policy, prompt/generation budget, cold `512/128` prompt-processing profile, shared runtime identity policy, or platform-native memory measurement policy;
+- post-result reduction or candidate-specific adjustment of the frozen 8K hard context, Q8_0 KV policy, prompt/generation budget, cold `512/128` prompt-processing profile, shared runtime identity policy, platform-native memory measurement policy, or `2 GiB` 8K Core memory ceiling;
 - post-result substitution of a frozen named device/resource target or weakening of its resource class;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
 - incomplete or candidate-specific package accounting that would make the size metric non-comparable;
 - omitting required assets from the measured minimum package or inconsistently excluding optional modality assets;
 - substituting an MLX/MLC/Core ML/native derivative for the canonical GGUF evidence without a separately frozen equivalence contract;
-- envelope boundary, runtime, build policy, KV policy, token-budget policy, prompt-processing policy, memory-measurement policy, quantization policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
+- envelope boundary, runtime, build policy, KV policy, token-budget policy, prompt-processing policy, memory-measurement policy, quantization policy, package threshold, Core RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie under the complete predeclared ranking vector.
@@ -706,8 +748,8 @@ The clarification lifecycle must answer, at minimum:
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
 7. **PARTIALLY RESOLVED / CANONICAL FLOOR PRESERVED:** zero-violation sentinel rules apply where already frozen by Spec 002, while selective risk, Arabic clinical parity, and lab extraction remain `NO_PASS_UNTIL_FROZEN` pending the canonical clinical/statistical evidence requirements. Exact statistical thresholds remain unresolved and must not be invented from candidate results.
-8. **RESOLVED TARGET SET + CONTEXT + KV + TOKEN-BUDGET + PROMPT-PROCESSING + RUNTIME-IDENTITY + MEMORY-MEASUREMENT POLICY / DETAILS PENDING:** `MASS_REACH_FIVE_TARGET_SET` freezes iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 as required evidence targets. `8K_CORE_16K_STRESS` freezes `8192` tokens as the hard qualification context on all five, with required `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it. `Q8_0_SYMMETRIC_KV_CORE` freezes symmetric `Q8_0` K/V cache for both tiers and prohibits asymmetric primary KV. `7K_PROMPT_1K_GENERATION` freezes `7168+1024` for core and `15360+1024` for stress, counts system/template tokens inside the serialized-prompt budget, and preserves the same generation allowance across candidates. `B512_U128_COLD_NO_REUSE` freezes logical batch `512`, physical ubatch `128`, and prohibits prompt/session/prefix state reuse for measured runs across all comparable candidates and frozen targets. `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` freezes one immutable llama.cpp core revision across all target paths and requires exact per-platform build manifests while prohibiting mutable/candidate-specific/post-result runtime substitution. `PLATFORM_NATIVE_PEAK_MEMORY` freezes the platform-native peak-memory metric family, full-process-set accounting, baseline/absolute/delta records, OS memory-termination hard failures, and prohibits cross-platform raw-memory ranking. The exact selected core SHA, concrete build manifests, tokenizer/template accounting implementation, memory instrumentation/sampling details, RAM hard ceiling, performance/thermal/energy thresholds, repetition/warm-up/aggregation rules, and target-specific non-memory hard-failure semantics remain unresolved.
-9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at the now-frozen common 8K/Q8_0/7K+1K/512+128 cold condition, and 4-GB-class phone/resource evidence. `PLATFORM_NATIVE_PEAK_MEMORY` now freezes how peak memory is measured, but `RAM_HARD_CEILING=NOT_YET_FROZEN`; exact sampling/tool invocation, latency, throughput, energy, and thermal rules remain unresolved.
+8. **RESOLVED TARGET SET + CONTEXT + KV + TOKEN-BUDGET + PROMPT-PROCESSING + RUNTIME-IDENTITY + MEMORY POLICY / DETAILS PENDING:** `MASS_REACH_FIVE_TARGET_SET` freezes iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 as required evidence targets. `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, and `B512_U128_COLD_NO_REUSE` freeze the common Core/stress comparability condition. `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` freezes one immutable llama.cpp core revision across target paths. `PLATFORM_NATIVE_PEAK_MEMORY` freezes the platform-native memory measurement family and full-process-set accounting. `2G_CORE_HARD_CAP` freezes an absolute `2 GiB` peak-memory hard ceiling for the common 8K Core condition on all five targets. The exact selected core SHA, concrete build manifests, tokenizer/template accounting implementation, exact memory instrumentation/sampling details, performance/thermal/energy thresholds, repetition/warm-up/aggregation rules, any separate 16K absolute RAM ceiling, and target-specific non-memory hard-failure semantics remain unresolved.
+9. **RESOLVED CORE RAM GATE / STRESS DETAILS PENDING:** `SUB_700MB_MASS_REACH` freezes the `700 MiB` hard package ceiling and `2G_CORE_HARD_CAP` now turns the prior `<=2 GiB` 8K engineering target into an absolute platform-native hard qualification ceiling on all five Core target runs. `PLATFORM_NATIVE_PEAK_MEMORY` defines how the peak is measured. The required 16K stress tier records peak memory and fails on OS memory termination but has no separately frozen absolute RAM ceiling. Exact sampling/tool invocation, latency, throughput, energy, and thermal rules remain unresolved.
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` plus `Q4_FLOOR_SMALLEST_PASSING`; primary capability comparison uses a frozen reference build, while the canonical deployable GGUF is the smallest allowed Q5/Q4-class artifact that passes every hard gate. Sub-4-bit artifacts are excluded from the V1 `PRIMARY` canonical release. Exact reference precision and frozen conversion/calibration details remain pending.
 11. **RESOLVED RUNTIME IDENTITY POLICY / VALUES PENDING:** `GGUF_LLAMA_CPP_CANONICAL` plus `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`; GGUF + llama.cpp is the canonical mass-distribution artifact/runtime family, one immutable core commit must be shared across all target paths, and platform-specific builds must be exact-manifest-bound. MLX/MLC/Core ML/native builds remain optional derivatives. The exact core commit SHA, conversion revision, compiler/toolchain versions, build/backend flags, wrapper/application identities, and produced runtime artifact identities remain to be frozen before execution.
 12. What contamination/quarantine proof is required for every candidate/result path, including whether `MODIFICATION_OR_DERIVATION` contamination state may legitimately be `NOT_APPLICABLE` for exact model-weight quantization under the Spec 003 contract?
@@ -717,7 +759,7 @@ The clarification lifecycle must answer, at minimum:
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is complete at five accepted questions. Bounded clarification session 4 is in progress at two accepted questions. The unresolved factual/evidence requirements above remain active and prevent the overall clarification lifecycle from being declared complete or advancing to `PLAN`.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is complete at five accepted questions. Bounded clarification session 4 is in progress at three accepted questions. The unresolved factual/evidence requirements above remain active and prevent the overall clarification lifecycle from being declared complete or advancing to `PLAN`.
 
 ## 18. Specification acceptance criteria
 
@@ -739,12 +781,13 @@ A future complete clarification artifact is acceptable only when independent rev
 - freezes `7K_PROMPT_1K_GENERATION`, requiring `7168` serialized-prompt + `1024` generation tokens for the 8K hard condition and `15360` + `1024` for the 16K stress condition, with system/template tokens counted inside the prompt ceiling and no candidate-specific reallocation;
 - freezes `B512_U128_COLD_NO_REUSE`, requiring logical batch `512`, physical ubatch `128`, and no prompt/session/prefix cache reuse for measured qualification/stress runs, identically across comparable candidates and frozen targets;
 - freezes `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`, requiring one immutable llama.cpp core commit across all comparable candidates/targets, exact platform build manifests, and no mutable/candidate-specific/post-result runtime substitution while keeping the exact core SHA/build values unresolved until separately reviewed pre-execution binding;
-- freezes `PLATFORM_NATIVE_PEAK_MEMORY`, requiring platform-native peak metrics, full qualification-process-set accounting, baseline/absolute/delta records, OS memory-termination hard failures, and no cross-platform raw-memory ranking, while keeping `RAM_HARD_CEILING=NOT_YET_FROZEN`;
+- freezes `PLATFORM_NATIVE_PEAK_MEMORY`, requiring platform-native peak metrics, full qualification-process-set accounting, baseline/absolute/delta records, OS memory-termination hard failures, and no cross-platform raw-memory ranking;
+- freezes `2G_CORE_HARD_CAP`, requiring absolute platform-native peak memory `<=2 GiB` on every frozen 8K Core target, using absolute peak rather than baseline delta as the hard-gate input, while keeping any separate 16K absolute ceiling unresolved;
 - enforces the `700 MiB` complete minimum text/core bundle ceiling under one honest, candidate-neutral accounting rule;
-- treats `<=600 MiB`, `<=500 MiB`, and `<=2 GiB` as engineering/stretch targets exactly as frozen, without converting them into retrospective hard gates;
+- treats `<=600 MiB` and `<=500 MiB` as engineering/stretch package targets while treating the previously targeted `<=2 GiB` value as a now-frozen hard gate only for the common 8K Core condition;
 - uses canonical GGUF + immutable llama.cpp compatibility as the minimum mass-distribution path, with optional optimized derivatives kept semantically and evidentially separate;
 - enforces `Q4_FLOOR_SMALLEST_PASSING` and prohibits a sub-4-bit V1 primary release from winning merely because it is smaller;
-- applies `QUALITY_FLOOR_THEN_SIZE_FIRST` only after all non-compensable safety/provenance/license/minimum-medical-quality gates pass;
+- applies `QUALITY_FLOOR_THEN_SIZE_FIRST` only after all non-compensable safety/provenance/license/minimum-medical-quality/package/Core-memory gates pass;
 - keeps Hugging Face adoption/category-leadership KPIs outside the scientific ranking and claims boundary;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
 - records accepted clarification decisions without contradicting unresolved gates;
@@ -755,7 +798,7 @@ No bounded clarification session is a declaration that the full clarification li
 
 ## 19. Exit and next lifecycle step
 
-Current working state after bounded session 3 completion and `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST` plus `PLATFORM_NATIVE_PEAK_MEMORY` acceptance in bounded session 4 questions 1–2:
+Current working state after bounded session 3 completion and `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`, `PLATFORM_NATIVE_PEAK_MEMORY`, and `2G_CORE_HARD_CAP` acceptance in bounded session 4 questions 1–3:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
@@ -764,7 +807,7 @@ CLARIFICATION_SESSION_2=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2_STATUS=COMPLETE_BOUNDED_SESSION
 CLARIFICATION_SESSION_3=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_3_STATUS=COMPLETE_BOUNDED_SESSION
-CLARIFICATION_SESSION_4=2_QUESTIONS_ACCEPTED
+CLARIFICATION_SESSION_4=3_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_4_STATUS=IN_PROGRESS
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
 GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP=PRODUCT_AMBITION
@@ -837,8 +880,19 @@ MEASUREMENT_WINDOW=FULL_COLD_QUALIFICATION_RUN
 BASELINE_BEFORE_MODEL_LOAD=RECORDED
 PEAK_ABSOLUTE_BYTES=RECORDED
 PEAK_DELTA_FROM_BASELINE=RECORDED
-PEAK_WORKING_RAM_ENGINEERING_TARGET=2_GiB_OR_LESS
-RAM_HARD_CEILING=NOT_YET_FROZEN
+CORE_8K_MEMORY_GATE=2G_CORE_HARD_CAP
+CORE_8K_PEAK_MEMORY_HARD_CEILING=2_GiB
+CORE_8K_PEAK_MEMORY_HARD_CEILING_BYTES=2147483648
+CORE_8K_HARD_CEILING_APPLIES_TO_ALL_FIVE_TARGETS=YES
+CORE_8K_HARD_CEILING_USES_PLATFORM_NATIVE_PRIMARY_METRIC=YES
+CORE_8K_MEMORY_TERMINATION=HARD_FAIL
+CORE_8K_PEAK_DELTA=DIAGNOSTIC_ONLY
+CORE_8K_ABSOLUTE_PEAK=HARD_GATE_INPUT
+STRESS_16K_PEAK_MEMORY=RECORDED
+STRESS_16K_OS_MEMORY_TERMINATION=HARD_FAIL
+STRESS_16K_ABSOLUTE_RAM_HARD_CEILING=NOT_FROZEN
+CANDIDATE_SPECIFIC_RAM_EXCEPTION=PROHIBITED
+POST_RESULT_RAM_CEILING_CHANGE=PROHIBITED
 CROSS_PLATFORM_RAW_METRIC_RANKING=PROHIBITED
 PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
@@ -853,6 +907,6 @@ CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 ```
 
-Acceptance of the runtime-identity and memory-measurement methods does **not** select a concrete llama.cpp execution commit, does **not** freeze a RAM hard ceiling, and does **not** complete the full clarification lifecycle. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
+Acceptance of the runtime-identity, memory-measurement, and 8K Core memory-gate policies does **not** select a concrete llama.cpp execution commit, does **not** freeze an absolute 16K stress RAM ceiling, and does **not** complete the full clarification lifecycle. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
 
 Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
