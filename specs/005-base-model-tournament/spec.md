@@ -40,6 +40,7 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 - Q: How should Spec 005 handle the primary comparison between text-only and multimodal candidates when selecting the base backbone? → A: `COMMON_CORE_PRIMARY_RANKING` — all `PRIMARY` candidates rank only on the common text/core protocol; modality-specific capability is secondary non-ranking evidence in Spec 005.
 - Q: Should all `PRIMARY` candidates in Spec 005 be base/pretrained checkpoints only, excluding instruction-tuned models from primary ranking? → A: `BASE_ONLY_PRIMARY` — only base/pretrained checkpoints may be `PRIMARY`; instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
 - Q: How should Spec 005 define the `FLAGSHIP_PLUS_MODERN_MIDRANGE` device evidence boundary? → A: `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` — use one named physical representative per tier plus a reproducible resource envelope for that tier; exact device models and numeric thresholds remain to be frozen before execution.
+- Q: Should the frozen primary tournament manifest contain only fully admitted `PRIMARY` candidates whose admission gates are complete before freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved or `CONDITIONAL` candidates remain outside it until their admission conditions are resolved before freeze.
 
 ## 3. Canonical authority and inherited identities
 
@@ -191,7 +192,9 @@ Before a candidate can enter a future frozen execution manifest, clarification/p
 13. contamination/quarantine disposition where applicable;
 14. whether the candidate is `PRIMARY`, `CONTROL`, `CONDITIONAL`, or `REFERENCE_ONLY`.
 
-If any required admission field is unresolved, the candidate remains discovery-only and cannot enter a live manifest.
+`FULLY_ADMITTED_PRIMARY_ONLY` is frozen for Spec 005. The frozen primary ranking manifest may contain only candidates whose role is `PRIMARY` and whose required admission fields and pre-execution gates are fully resolved before manifest freeze.
+
+If any required admission field or pre-execution condition is unresolved, the candidate remains discovery-only or `CONDITIONAL` and must remain outside the frozen primary ranking manifest. It cannot be inserted merely to produce an expected `INCOMPLETE` result, and it cannot be added or removed after results are observed.
 
 ## 9. Candidate roles
 
@@ -199,7 +202,7 @@ Candidate roles are semantically distinct:
 
 ### `PRIMARY`
 
-A release-lineage candidate that is eligible, in principle, to win once exact provenance, safety, comparability, device, and execution gates are satisfied. Under `BASE_ONLY_PRIMARY`, the candidate must be an exact base/pretrained checkpoint; instruction-tuned checkpoints are not eligible for this role.
+A release-lineage candidate that is eligible, in principle, to win once exact provenance, safety, comparability, device, and execution gates are satisfied. Under `BASE_ONLY_PRIMARY`, the candidate must be an exact base/pretrained checkpoint; instruction-tuned checkpoints are not eligible for this role. Under `FULLY_ADMITTED_PRIMARY_ONLY`, it may enter the frozen primary ranking manifest only after all required admission conditions are resolved.
 
 ### `CONTROL`
 
@@ -207,7 +210,7 @@ A comparison anchor used to measure whether the primary candidate set actually o
 
 ### `CONDITIONAL`
 
-A technically relevant candidate whose exact license, intended-use, device-fit, access, or other admission condition is unresolved. It cannot become the final selected release lineage until the condition is explicitly resolved.
+A technically relevant candidate whose exact license, intended-use, device-fit, access, or other admission condition is unresolved. It cannot become the final selected release lineage until the condition is explicitly resolved, and it cannot enter the frozen primary ranking manifest while conditional.
 
 ### `REFERENCE_ONLY`
 
@@ -238,7 +241,7 @@ The LFM family remains conditional under canonical decision `D-007` until exact 
 - MedGemma family as reference/evaluation-only by default under `D-006`
 - frontier closed or otherwise restricted/gated medical models as reference-only unless a later canonical decision and lineage disposition explicitly authorize more
 
-Clarification must independently verify whether each named family still exists in the intended exact variant, whether it is base or instruct, its current primary license, access status, artifact identity, and whether it belongs in the final frozen candidate set. Any instruct-only member of a named family cannot become `PRIMARY` under `BASE_ONLY_PRIMARY`.
+Clarification must independently verify whether each named family still exists in the intended exact variant, whether it is base or instruct, its current primary license, access status, artifact identity, and whether it belongs in the final frozen candidate set. Any instruct-only member of a named family cannot become `PRIMARY` under `BASE_ONLY_PRIMARY`, and any unresolved candidate must remain outside the frozen primary ranking manifest under `FULLY_ADMITTED_PRIMARY_ONLY`.
 
 ## 11. Base vs instruction-tuned comparability
 
@@ -328,6 +331,7 @@ Examples include:
 - required gated access not separately authorized;
 - missing exact artifact identity;
 - candidate not being an exact eligible base/pretrained checkpoint under `BASE_ONLY_PRIMARY`;
+- unresolved or `CONDITIONAL` candidate appearing in the frozen primary ranking manifest contrary to `FULLY_ADMITTED_PRIMARY_ONLY`;
 - incomplete safety evidence;
 - benchmark or Gold quarantine violation;
 - non-comparable metric vectors;
@@ -356,7 +360,7 @@ The clarification lifecycle must answer, at minimum:
 11. What runtime/adapters are permitted, and what dependency changes would require separate review before execution?
 12. What contamination/quarantine proof is required for every candidate/result path?
 13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
-14. What exact criteria exclude a candidate before live execution rather than producing an incomplete result later?
+14. **RESOLVED:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved or `CONDITIONAL` candidates are excluded before the frozen primary ranking manifest and may not be added or removed post-result.
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 
@@ -368,6 +372,7 @@ This clarification-stage artifact is complete only when independent review confi
 - binds the canonical predecessor identities and founder decisions;
 - preserves baseline-only/no-training scope;
 - distinguishes planning discovery from frozen admission;
+- requires `FULLY_ADMITTED_PRIMARY_ONLY` before freezing the primary ranking manifest;
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
 - preserves flagship + modern-midrange device intent without inventing unsupported numeric thresholds;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
