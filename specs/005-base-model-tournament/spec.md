@@ -58,11 +58,12 @@ Popularity, download counts, likes, social discussion, stars, or vendor reputati
 - Q: What runtime/artifact strategy should be canonical for the smallest mass-distribution release across phones and weak laptops? → A: `GGUF_LLAMA_CPP_CANONICAL` — the minimum-distribution artifact is canonical GGUF with compatibility bound to an immutable reviewed llama.cpp revision/toolchain before execution; MLX, MLC, Core ML, or other native/accelerated derivatives may be published as optional optimized derivatives but do not replace the canonical minimum GGUF artifact or alter its package-size ranking evidence.
 - Q: What quantization policy should be canonical for commandMed Core V1? → A: `Q4_FLOOR_SMALLEST_PASSING` — evaluate a frozen deployable ladder from higher-quality Q5/Q4-class candidates down through Q4-class (`Q5_K_M`, `Q4_K_M`, `Q4_K_S`, `IQ4_XS`, or exact architecture-equivalent variants frozen before execution). For each backbone, the canonical deployable release is the smallest allowed artifact that still passes every safety, minimum medical-quality, compression-regression, package/RAM, runtime, and device hard gate. Sub-4-bit Q3/IQ3/Q2 artifacts are excluded from the V1 `PRIMARY` canonical release even if smaller.
 
-**Bounded session 3 — in progress (3/5)**
+**Bounded session 3 — in progress (4/5)**
 
 - Q: Which named device/resource targets must Spec 005 represent before any live tournament can be authorized? → A: `MASS_REACH_FIVE_TARGET_SET` — require Apple iPhone 17 Pro 12 GB as the flagship Apple anchor, Apple iPhone 13 4 GB as the Apple low-resource anchor, Samsung Galaxy A56 5G 8 GB as the modern-midrange Android anchor, Samsung Galaxy A16 5G 4 GB as the low-resource Android anchor, and an Intel Processor N100 + 8 GB x86-64 weak-laptop envelope. This freezes the target set only; OS/runtime revisions, context/KV conditions, performance thresholds, thermal/energy protocol, and hard-failure semantics remain unresolved and must be frozen pre-execution.
 - Q: What context length must be the common hard qualification condition on all five mass-reach targets? → A: `8K_CORE_16K_STRESS` — require `8192` tokens as the candidate-neutral hard context on all five frozen targets; require `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports that context. Exact KV cache types/quantization, batch/ubatch settings, prompt/generation split, cache policy, peak-RAM measurement, latency/throughput thresholds, thermals, energy, OS/runtime revisions, and target-specific hard-failure semantics remain unresolved and must be frozen before execution.
 - Q: What KV-cache representation must be canonical for primary device qualification and required stress evidence? → A: `Q8_0_SYMMETRIC_KV_CORE` — use `Q8_0` for both K and V cache in the common 8K hard qualification condition and required 16K stress tier. Asymmetric K/V cache types are prohibited for primary qualification, and Q4-class KV is not frozen as a primary qualification path. Exact runtime revision/backend identities, batch/ubatch settings, prompt/generation split, cache reuse policy, measured peak-RAM method, performance thresholds, thermals, energy, and target-specific hard-failure semantics remain unresolved.
+- Q: How must the frozen 8K and 16K context budgets be divided between serialized prompt/input and generated output? → A: `7K_PROMPT_1K_GENERATION` — cap the 8K hard condition at `7168` serialized-prompt tokens plus `1024` generation tokens, and the 16K stress condition at `15360` serialized-prompt tokens plus the same `1024` generation tokens. The serialized-prompt budget includes system text and prompt/chat-template tokens as well as benchmark/context/user material; unused generation allowance does not expand the prompt ceiling. Generation budget is identical across candidates. Exact tokenizer/template/runtime identities and the reproducible token-accounting implementation remain pre-execution gates, along with batch/ubatch, cache reuse, RAM/performance measurement, thermals, energy, OS/runtime revisions, and target-specific hard-failure semantics.
 
 **Founder clarification directives — do not consume additional clarification questions**
 
@@ -119,9 +120,9 @@ Therefore:
 
 ### 4.2 Target device tier and distribution reach
 
-`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`, and bounded clarification session 3 freezes `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, and `Q8_0_SYMMETRIC_KV_CORE`.
+`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`, and bounded clarification session 3 freezes `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, and `7K_PROMPT_1K_GENERATION`.
 
-The frozen mass-reach package, target, context, and KV policy is:
+The frozen mass-reach package, target, context, KV, and token-budget policy is:
 
 ```text
 MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
@@ -147,15 +148,24 @@ STRESS_K_CACHE_TYPE=Q8_0
 STRESS_V_CACHE_TYPE=Q8_0
 ASYMMETRIC_KV_PRIMARY_QUALIFICATION=PROHIBITED
 Q4_KV_PRIMARY_QUALIFICATION=NOT_FROZEN
+CONTEXT_BUDGET_POLICY=7K_PROMPT_1K_GENERATION
+CORE_TOTAL_CONTEXT_BUDGET=8192_TOKENS
+CORE_MAX_SERIALIZED_PROMPT_BUDGET=7168_TOKENS
+CORE_MAX_GENERATION_BUDGET=1024_TOKENS
+STRESS_TOTAL_CONTEXT_BUDGET=16384_TOKENS
+STRESS_MAX_SERIALIZED_PROMPT_BUDGET=15360_TOKENS
+STRESS_MAX_GENERATION_BUDGET=1024_TOKENS
+SERIALIZED_PROMPT_INCLUDES_SYSTEM_AND_TEMPLATE=YES
+GENERATION_BUDGET_IDENTICAL_ACROSS_CANDIDATES=YES
 ```
 
 Spec 005 must eventually bind execution evidence for every frozen target without silently weakening the resource class after candidate results are observed. A physical-device substitution is permissible only through a separately reviewed pre-result clarification that preserves the same or stricter resource class and records the reason and new exact identity.
 
-Every candidate must eventually qualify at the same `8192`-token hard context on all five frozen targets using symmetric `Q8_0` K/V cache. The `16384`-token tier is required secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it and uses the same symmetric Q8_0 policy; the stress-result consequence remains separate from the hard 8K qualification condition until target-specific hard-failure semantics are frozen pre-execution.
+Every candidate must eventually qualify at the same `8192`-token hard context on all five frozen targets using symmetric `Q8_0` K/V cache and the same `7168` serialized-prompt / `1024` generation ceiling. The `16384`-token tier is required secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it and uses the same symmetric Q8_0 policy plus `15360` serialized-prompt / `1024` generation ceiling. The serialized-prompt budget includes system and template tokens; unused generation allowance cannot expand the prompt ceiling. The stress-result consequence remains separate from the hard 8K qualification condition until target-specific hard-failure semantics are frozen pre-execution.
 
 The `700 MiB` package ceiling is a hard qualification boundary. The `<=600 MiB` and `<=500 MiB` values are engineering and stretch targets, not substitutes for the hard safety/medical-quality gates. The `<=2 GiB` peak working RAM value remains an engineering target; exact measurement methodology and any hard RAM threshold are unresolved and must not be misreported as proven runtime guarantees before execution evidence exists.
 
-The target set, common context policy, and primary KV-cache type policy are now frozen, but exact OS/build versions, the llama.cpp revision, platform wrapper/application identities, batch/ubatch settings, prompt/generation split, cache reuse policy, latency/TTFT/throughput thresholds, peak-RAM hard threshold and measurement method, energy/battery and thermal protocol, repetition/warm-up/aggregation methodology, and target-specific hard-failure semantics remain intentionally unresolved. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
+The target set, common context policy, primary KV-cache type policy, and prompt/generation budget policy are now frozen, but exact OS/build versions, the llama.cpp revision, platform wrapper/application identities, tokenizer/template identities and token-accounting implementation, batch/ubatch settings, cache reuse policy, latency/TTFT/throughput thresholds, peak-RAM hard threshold and measurement method, energy/battery and thermal protocol, repetition/warm-up/aggregation methodology, and target-specific hard-failure semantics remain intentionally unresolved. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
 
 ### 4.3 Donor-origin restrictions
 
@@ -401,7 +411,7 @@ This clarification-stage document does not authorize opening or executing the be
 
 ## 14. Device, package, runtime, quantization, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
 
 The minimum text/core package and device envelope is:
 
@@ -433,6 +443,15 @@ STRESS_K_CACHE_TYPE=Q8_0
 STRESS_V_CACHE_TYPE=Q8_0
 ASYMMETRIC_KV_PRIMARY_QUALIFICATION=PROHIBITED
 Q4_KV_PRIMARY_QUALIFICATION=NOT_FROZEN
+CONTEXT_BUDGET_POLICY=7K_PROMPT_1K_GENERATION
+CORE_TOTAL_CONTEXT_BUDGET=8192_TOKENS
+CORE_MAX_SERIALIZED_PROMPT_BUDGET=7168_TOKENS
+CORE_MAX_GENERATION_BUDGET=1024_TOKENS
+STRESS_TOTAL_CONTEXT_BUDGET=16384_TOKENS
+STRESS_MAX_SERIALIZED_PROMPT_BUDGET=15360_TOKENS
+STRESS_MAX_GENERATION_BUDGET=1024_TOKENS
+SERIALIZED_PROMPT_INCLUDES_SYSTEM_AND_TEMPLATE=YES
+GENERATION_BUDGET_IDENTICAL_ACROSS_CANDIDATES=YES
 ```
 
 ### 14.1 Canonical mass-distribution artifact/runtime
@@ -462,7 +481,7 @@ The complete minimum bundle measurement must include model weights plus every to
 
 Every frozen target must be represented by named physical-device evidence where the target is a named device and by its corresponding reproducible resource description. The weak-laptop target is intentionally an exact CPU/RAM/ISA envelope; a retail laptop SKU may be added pre-execution if required without weakening that envelope.
 
-The future evidence plan must cover all five frozen targets: iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64. Every target must use the common `8192`-token hard qualification context with symmetric `Q8_0` K/V cache. The `16384`-token secondary stress tier is required on the iPhone 17 Pro 12 GB, Galaxy A56 5G 8 GB, and Intel N100 + 8 GB x86-64 targets where the pinned runtime supports that context, and must use the same symmetric `Q8_0` K/V cache. It may be collected on lower-resource targets where safe and comparable, but no candidate may receive a reduced 8K hard context or a different KV-cache type because its memory scaling is less favorable. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
+The future evidence plan must cover all five frozen targets: iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64. Every target must use the common `8192`-token hard qualification context with symmetric `Q8_0` K/V cache and the fixed `7168` serialized-prompt / `1024` generation ceiling. The `16384`-token secondary stress tier is required on the iPhone 17 Pro 12 GB, Galaxy A56 5G 8 GB, and Intel N100 + 8 GB x86-64 targets where the pinned runtime supports that context, and must use the same symmetric `Q8_0` K/V cache plus `15360` serialized-prompt / `1024` generation ceiling. It may be collected on lower-resource targets where safe and comparable, but no candidate may receive a reduced 8K hard context, a different KV-cache type, or a different prompt/generation allocation because its memory scaling, tokenizer, or template overhead is less favorable. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
 
 Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
 
@@ -471,7 +490,7 @@ Each admitted `PRIMARY` candidate must also have two predeclared build roles whe
 
 The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the canonical deployable GGUF build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
 
-The exact reference precision, conversion toolchain revision, llama.cpp revision, build flags, architecture-specific equivalence rules, batch/ubatch settings, prompt/generation split, cache reuse policy, latency/throughput/energy/thermal thresholds, peak-RAM hard threshold/measurement method, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+The exact reference precision, conversion toolchain revision, llama.cpp revision, build flags, architecture-specific equivalence rules, tokenizer/template identities and token-accounting implementation, batch/ubatch settings, cache reuse policy, latency/throughput/energy/thermal thresholds, peak-RAM hard threshold/measurement method, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
@@ -479,18 +498,19 @@ Before execution authorization, clarification/planning must additionally define:
 - exact immutable llama.cpp and GGUF conversion-toolchain identities;
 - exact final Q5/Q4 ladder order, conversion flags, and any calibration/imatrix inputs and quarantine rules;
 - verification that the pinned runtime/backend implements the frozen symmetric `Q8_0` K/V cache semantics consistently across all required platform paths;
-- exact batch/ubatch settings and prompt/generation split inside the 8K condition;
+- exact tokenizer/template identities and a reproducible token-accounting implementation that counts all system/template/context/input tokens inside the frozen serialized-prompt ceilings;
+- exact batch/ubatch settings;
 - cache reuse/prompt-cache policy;
 - peak-memory measurement method and any hard RAM threshold;
 - TTFT/prefill/decode/sustained-throughput measurement method and thresholds;
 - energy and thermal measurement method or explicit bounded proxy if direct measurement is not feasible;
 - repetition count, warm-up, aggregation, and failure handling;
-- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling, `8192`-token common hard context, and symmetric Q8_0 primary KV policy;
+- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling, `8192`-token common hard context, symmetric Q8_0 primary KV policy, and frozen prompt/generation ceilings;
 - how mandatory 16K stress evidence is interpreted where in scope without retroactively changing the 8K hard qualification rule;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
 - the secondary metric order used only after complete deployable package bytes tie.
 
-Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, remaining envelope boundary, runtime revision, quantization rule, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, remaining envelope boundary, runtime revision, quantization rule, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -504,7 +524,8 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact conversion-toolchain and llama.cpp revision/configuration;
 - exact benchmark/metric/safety/lineage contracts;
 - exact device/resource identity where device evidence is claimed;
-- exact context/KV configuration used for each device result, including symmetric Q8_0 K/V identity for primary qualification;
+- exact context/KV/token-budget configuration used for each device result, including symmetric Q8_0 K/V identity and serialized-prompt/generation ceilings for primary qualification;
+- exact tokenizer/template identities and serialized-token accounting record;
 - exact packaged artifact identity and byte size where distribution evidence is claimed;
 - exact result-set evidence artifact IDs;
 - deterministic tournament report identity.
@@ -536,15 +557,19 @@ Examples include:
 - failure to use symmetric `Q8_0` K/V cache for primary qualification or required stress evidence;
 - use of asymmetric K/V cache types in the primary qualification protocol;
 - use of Q4-class or candidate-specific KV cache as a retrospective rescue path for primary qualification;
+- exceeding the frozen `7168` serialized-prompt or `1024` generation ceiling in the 8K hard condition;
+- exceeding the frozen `15360` serialized-prompt or `1024` generation ceiling in the 16K stress condition;
+- excluding system/template tokens or other model-visible non-generated tokens from serialized-prompt accounting;
+- candidate-specific prompt/generation reallocation or allowing unused generation headroom to expand the prompt ceiling;
 - missing required `16384`-token stress evidence on an 8-GB-class-or-higher target where the pinned runtime supports it;
-- post-result reduction or candidate-specific adjustment of the frozen 8K hard context or Q8_0 KV policy;
+- post-result reduction or candidate-specific adjustment of the frozen 8K hard context, Q8_0 KV policy, or prompt/generation budget;
 - post-result substitution of a frozen named device/resource target or weakening of its resource class;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
 - incomplete or candidate-specific package accounting that would make the size metric non-comparable;
 - omitting required assets from the measured minimum package or inconsistently excluding optional modality assets;
 - substituting an MLX/MLC/Core ML/native derivative for the canonical GGUF evidence without a separately frozen equivalence contract;
-- envelope boundary, runtime, build policy, KV policy, quantization policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
+- envelope boundary, runtime, build policy, KV policy, token-budget policy, quantization policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie under the complete predeclared ranking vector.
@@ -562,8 +587,8 @@ The clarification lifecycle must answer, at minimum:
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
 7. **PARTIALLY RESOLVED / CANONICAL FLOOR PRESERVED:** zero-violation sentinel rules apply where already frozen by Spec 002, while selective risk, Arabic clinical parity, and lab extraction remain `NO_PASS_UNTIL_FROZEN` pending the canonical clinical/statistical evidence requirements. Exact statistical thresholds remain unresolved and must not be invented from candidate results.
-8. **RESOLVED TARGET SET + CONTEXT + KV POLICY / DETAILS PENDING:** `MASS_REACH_FIVE_TARGET_SET` freezes iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 as required evidence targets. `8K_CORE_16K_STRESS` freezes `8192` tokens as the hard qualification context on all five, with required `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it. `Q8_0_SYMMETRIC_KV_CORE` freezes symmetric `Q8_0` K/V cache for both tiers and prohibits asymmetric primary KV. OS/runtime identities, batch/prompt-generation/cache-reuse settings, performance/thermal/energy thresholds, peak-memory measurement, and target-specific hard-failure semantics remain unresolved.
-9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at the now-frozen common 8K/Q8_0 condition, and 4-GB-class phone/resource evidence. Exact RAM hard gate/measurement method, latency, throughput, energy, and thermal rules remain unresolved.
+8. **RESOLVED TARGET SET + CONTEXT + KV + TOKEN-BUDGET POLICY / DETAILS PENDING:** `MASS_REACH_FIVE_TARGET_SET` freezes iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 as required evidence targets. `8K_CORE_16K_STRESS` freezes `8192` tokens as the hard qualification context on all five, with required `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it. `Q8_0_SYMMETRIC_KV_CORE` freezes symmetric `Q8_0` K/V cache for both tiers and prohibits asymmetric primary KV. `7K_PROMPT_1K_GENERATION` freezes `7168+1024` for core and `15360+1024` for stress, counts system/template tokens inside the serialized-prompt budget, and preserves the same generation allowance across candidates. OS/runtime identities, tokenizer/template accounting implementation, batch/cache-reuse settings, performance/thermal/energy thresholds, peak-memory measurement, and target-specific hard-failure semantics remain unresolved.
+9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at the now-frozen common 8K/Q8_0/7K+1K condition, and 4-GB-class phone/resource evidence. Exact RAM hard gate/measurement method, latency, throughput, energy, and thermal rules remain unresolved.
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` plus `Q4_FLOOR_SMALLEST_PASSING`; primary capability comparison uses a frozen reference build, while the canonical deployable GGUF is the smallest allowed Q5/Q4-class artifact that passes every hard gate. Sub-4-bit artifacts are excluded from the V1 `PRIMARY` canonical release. Exact reference precision and frozen conversion/calibration details remain pending.
 11. **RESOLVED POLICY / DETAILS PENDING:** `GGUF_LLAMA_CPP_CANONICAL`; GGUF + pinned llama.cpp is the canonical mass-distribution artifact/runtime family, while MLX/MLC/Core ML/native builds are optional derivatives. Exact immutable runtime/conversion revisions, build flags, and mobile wrappers remain to be frozen before execution.
 12. What contamination/quarantine proof is required for every candidate/result path, including whether `MODIFICATION_OR_DERIVATION` contamination state may legitimately be `NOT_APPLICABLE` for exact model-weight quantization under the Spec 003 contract?
@@ -573,7 +598,7 @@ The clarification lifecycle must answer, at minimum:
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is in progress at three accepted questions. The unresolved factual/evidence requirements above remain active and prevent the clarification lifecycle from being declared complete or advancing to `PLAN`.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is in progress at four accepted questions. The unresolved factual/evidence requirements above remain active and prevent the clarification lifecycle from being declared complete or advancing to `PLAN`.
 
 ## 18. Specification acceptance criteria
 
@@ -592,6 +617,7 @@ A future complete clarification artifact is acceptable only when independent rev
 - requires evidence for iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 without post-result target weakening;
 - freezes `8K_CORE_16K_STRESS`, requiring an `8192`-token hard qualification context on all five targets and `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it;
 - freezes `Q8_0_SYMMETRIC_KV_CORE`, requiring symmetric `Q8_0` K/V cache for primary hard qualification and required stress evidence, prohibiting asymmetric primary KV, while keeping runtime/backend identity and measured memory/performance effects separately unresolved until pre-execution qualification;
+- freezes `7K_PROMPT_1K_GENERATION`, requiring `7168` serialized-prompt + `1024` generation tokens for the 8K hard condition and `15360` + `1024` for the 16K stress condition, with system/template tokens counted inside the prompt ceiling and no candidate-specific reallocation;
 - enforces the `700 MiB` complete minimum text/core bundle ceiling under one honest, candidate-neutral accounting rule;
 - treats `<=600 MiB`, `<=500 MiB`, and `<=2 GiB` as engineering/stretch targets exactly as frozen, without converting them into retrospective hard gates;
 - uses canonical GGUF + immutable llama.cpp compatibility as the minimum mass-distribution path, with optional optimized derivatives kept semantically and evidentially separate;
@@ -607,14 +633,14 @@ No bounded clarification session is a declaration that the full clarification li
 
 ## 19. Exit and next lifecycle step
 
-Current working state after `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, and `Q8_0_SYMMETRIC_KV_CORE` acceptance plus candidate-frontier reconciliation:
+Current working state after `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, and `7K_PROMPT_1K_GENERATION` acceptance plus candidate-frontier reconciliation:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
 CLARIFICATION_SESSION_1=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2_STATUS=COMPLETE_BOUNDED_SESSION
-CLARIFICATION_SESSION_3=3_QUESTIONS_ACCEPTED
+CLARIFICATION_SESSION_3=4_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_3_STATUS=IN_PROGRESS
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
 GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP=PRODUCT_AMBITION
@@ -647,6 +673,15 @@ STRESS_K_CACHE_TYPE=Q8_0
 STRESS_V_CACHE_TYPE=Q8_0
 ASYMMETRIC_KV_PRIMARY_QUALIFICATION=PROHIBITED
 Q4_KV_PRIMARY_QUALIFICATION=NOT_FROZEN
+CONTEXT_BUDGET_POLICY=7K_PROMPT_1K_GENERATION
+CORE_TOTAL_CONTEXT_BUDGET=8192_TOKENS
+CORE_MAX_SERIALIZED_PROMPT_BUDGET=7168_TOKENS
+CORE_MAX_GENERATION_BUDGET=1024_TOKENS
+STRESS_TOTAL_CONTEXT_BUDGET=16384_TOKENS
+STRESS_MAX_SERIALIZED_PROMPT_BUDGET=15360_TOKENS
+STRESS_MAX_GENERATION_BUDGET=1024_TOKENS
+SERIALIZED_PROMPT_INCLUDES_SYSTEM_AND_TEMPLATE=YES
+GENERATION_BUDGET_IDENTICAL_ACROSS_CANDIDATES=YES
 PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
@@ -660,6 +695,6 @@ CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 ```
 
-Completion of these accepted device-target, context, and KV-cache clarifications does **not** mean the full clarification lifecycle is complete. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
+Completion of these accepted device-target, context, KV-cache, and token-budget clarifications does **not** mean the full clarification lifecycle is complete. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
 
 Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
