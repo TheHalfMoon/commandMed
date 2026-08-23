@@ -3,7 +3,7 @@
 **Lifecycle:** CLARIFY ONLY
 **Evidence capture date:** 2026-08-23
 **Canonical commandMed base:** `19aa95bbd122f3e01421ba2618dc1efe2f088289`
-**Purpose:** read-only architecture/resource reasoning for the next bounded clarification decision.
+**Purpose:** read-only architecture/resource reasoning plus the founder-accepted context policy for bounded clarification session 3 question 2.
 
 > This document contains public-config inspection and deterministic arithmetic only. No model weights were downloaded, no runtime was installed, no model was executed, and no benchmark payload was opened. Memory figures below are theoretical architecture-level KV estimates, not measured runtime claims.
 
@@ -88,7 +88,7 @@ A `16K` hard context on every frozen 4-GB device would make Qwen3-0.6B's unquant
 
 A `4K` hard context is easier but undershoots the intended usefulness of a local longitudinal medical assistant and provides little stress differentiation.
 
-The balanced pre-execution recommendation is therefore:
+The founder-accepted pre-execution policy is therefore:
 
 ```text
 CONTEXT_EVIDENCE_POLICY=8K_CORE_16K_STRESS
@@ -100,13 +100,13 @@ SECONDARY_STRESS_SCOPE=8GB_CLASS_OR_HIGHER_AND_WHERE_RUNTIME_SUPPORTS
 
 Interpretation:
 
-1. every candidate must eventually qualify at the same `8192`-token context on all five frozen mass-reach targets;
-2. `16384` tokens is secondary stress evidence on the 8-GB-class or higher targets and on any lower-resource target where it can be measured safely without changing the canonical artifact;
-3. failure of the optional 16K stress run on a 4-GB target does not by itself disqualify a candidate unless a later pre-execution policy explicitly makes 16K mandatory there;
+1. every candidate must eventually qualify at the same `8192`-token hard context on all five frozen mass-reach targets;
+2. `16384`-token stress evidence is mandatory on the frozen 8-GB-class-or-higher targets where the pinned runtime supports that context; it may also be collected on lower-resource targets where it can be measured safely without changing the canonical artifact;
+3. the 16K stress tier is required evidence where in scope, but its pass/fail consequence is not invented here because target-specific hard-failure semantics remain a separate pre-execution freeze;
 4. no candidate receives a smaller hard context merely because its architecture uses more KV memory;
 5. exact KV cache type remains a separate pre-execution freeze and must be identical or scientifically justified across candidates; candidate-specific post-result KV tuning is prohibited.
 
-## 5. Why 8K is the recommended common hard context
+## 5. Why 8K is the frozen common hard context
 
 - It is materially more useful than 4K for multi-turn patient history, evidence snippets, and structured clinical context.
 - It keeps the conventional Qwen3-0.6B theoretical FP16/BF16 KV baseline below 1 GiB, leaving a plausible path to the current `<=2 GiB` peak-working-RAM engineering target once deployable KV compression and actual runtime evidence are considered.
@@ -116,7 +116,7 @@ Interpretation:
 
 ## 6. Still unresolved after context acceptance
 
-Even if `8K_CORE_16K_STRESS` is accepted, the following remain unresolved:
+With `8K_CORE_16K_STRESS` accepted, the following remain unresolved:
 
 - exact llama.cpp revision;
 - exact KV cache type(s) and quantization;
@@ -141,7 +141,8 @@ These must be frozen before execution and may not be optimized per candidate aft
 ## 8. Authority boundary
 
 ```text
-CONTEXT_POLICY_STATUS=RESEARCH_RECOMMENDATION_PENDING_FOUNDER_CLARIFICATION
+CONTEXT_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
+CLARIFICATION_SESSION_3_QUESTION_2=ACCEPTED
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 MODEL_CONVERSION_AUTHORITY=NONE
