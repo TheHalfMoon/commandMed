@@ -3,15 +3,17 @@
 **Lifecycle:** CLARIFY ONLY
 **Evidence capture date:** 2026-08-23
 **Canonical commandMed base:** `19aa95bbd122f3e01421ba2618dc1efe2f088289`
-**Purpose:** read-only architecture/resource reasoning plus the founder-accepted context policy for bounded clarification session 3 question 2.
+**Purpose:** read-only architecture/resource reasoning plus founder-accepted context and KV-cache policies for bounded clarification session 3 questions 2–3.
 
 > This document contains public-config inspection and deterministic arithmetic only. No model weights were downloaded, no runtime was installed, no model was executed, and no benchmark payload was opened. Memory figures below are theoretical architecture-level KV estimates, not measured runtime claims.
 
-## 1. Why context must be frozen before device qualification
+## 1. Why context and KV policy must be frozen before device qualification
 
 Context length directly changes memory use and latency. A candidate that appears to fit a 4-GB phone at 2K context may fail at 16K, while a hybrid-attention candidate can scale very differently from a conventional full-attention model.
 
-Spec 005 therefore needs one candidate-neutral common context condition before device evidence is allowed. The condition must be demanding enough to represent a useful local medical assistant but conservative enough not to turn the low-resource target into an architecture-specific memory contest unrelated to the frozen medical/safety floor.
+KV-cache representation also materially changes memory pressure and can interact with runtime/backend behavior. Candidate-specific post-result KV tuning would therefore destroy comparability.
+
+Spec 005 needs one candidate-neutral common context condition and one candidate-neutral primary KV-cache policy before device evidence is allowed. The conditions must be demanding enough to represent a useful local medical assistant while remaining conservative enough not to turn the low-resource target into an architecture-specific memory contest unrelated to the frozen medical/safety floor.
 
 ## 2. Qwen3-0.6B-Base architecture observation
 
@@ -45,7 +47,7 @@ Theoretical FP16/BF16 KV-only baselines:
 32K_CONTEXT ~= 3584 MiB
 ```
 
-These values exclude model weights, allocator overhead, compute buffers, runtime/application memory, tokenizer/config memory, and platform overhead. Quantized KV can reduce the cache materially, but the exact block format and runtime overhead must be measured later under the pinned llama.cpp build; this document does not convert a theoretical bit-width ratio into a runtime guarantee.
+These values exclude model weights, allocator overhead, compute buffers, runtime/application memory, tokenizer/config memory, and platform overhead. Quantized KV can reduce the cache materially, but exact Q8_0 block overhead and runtime allocation behavior must be measured later under the pinned llama.cpp build; this document does not convert a nominal bit-width ratio into a runtime-memory guarantee.
 
 ## 3. Qwen3.5-0.8B-Base architecture observation
 
@@ -82,13 +84,13 @@ Theoretical full-attention KV-only baselines:
 
 This does **not** mean total Qwen3.5 runtime memory is only those values. Its Gated DeltaNet/linear-attention recurrent state, MTP-related state, compute buffers, model weights, allocator behavior, and platform/runtime overhead remain additional memory. The calculation exists only to demonstrate why the two frontier architectures have materially different context-memory scaling.
 
-## 4. Clarification consequence
+## 4. Frozen context clarification
 
-A `16K` hard context on every frozen 4-GB device would make Qwen3-0.6B's unquantized KV cache alone approach `1.75 GiB` before weights or runtime overhead. That would force the tournament to depend immediately on aggressive KV quantization and platform-specific memory behavior.
+A `16K` hard context on every frozen 4-GB device would make Qwen3-0.6B's unquantized KV cache alone approach `1.75 GiB` before weights or runtime overhead. That would force the tournament to depend immediately on aggressive KV compression and platform-specific memory behavior.
 
 A `4K` hard context is easier but undershoots the intended usefulness of a local longitudinal medical assistant and provides little stress differentiation.
 
-The founder-accepted pre-execution policy is therefore:
+The founder-accepted context policy is:
 
 ```text
 CONTEXT_EVIDENCE_POLICY=8K_CORE_16K_STRESS
@@ -103,46 +105,73 @@ Interpretation:
 1. every candidate must eventually qualify at the same `8192`-token hard context on all five frozen mass-reach targets;
 2. `16384`-token stress evidence is mandatory on the frozen 8-GB-class-or-higher targets where the pinned runtime supports that context; it may also be collected on lower-resource targets where it can be measured safely without changing the canonical artifact;
 3. the 16K stress tier is required evidence where in scope, but its pass/fail consequence is not invented here because target-specific hard-failure semantics remain a separate pre-execution freeze;
-4. no candidate receives a smaller hard context merely because its architecture uses more KV memory;
-5. exact KV cache type remains a separate pre-execution freeze and must be identical or scientifically justified across candidates; candidate-specific post-result KV tuning is prohibited.
+4. no candidate receives a smaller hard context merely because its architecture uses more KV memory.
 
-## 5. Why 8K is the frozen common hard context
+## 5. Frozen KV-cache clarification
 
-- It is materially more useful than 4K for multi-turn patient history, evidence snippets, and structured clinical context.
-- It keeps the conventional Qwen3-0.6B theoretical FP16/BF16 KV baseline below 1 GiB, leaving a plausible path to the current `<=2 GiB` peak-working-RAM engineering target once deployable KV compression and actual runtime evidence are considered.
-- It does not grant Qwen3.5 an architecture-specific advantage by choosing an arbitrarily huge context solely because its hybrid attention scales more cheaply.
-- It remains far below the upstream maximum context of either frontier model, so the tournament measures commandMed's mass-reach operating point rather than vendor maximum-context claims.
-- It supports a clean 16K secondary stress tier without changing the hard qualification contract after results are observed.
+For bounded clarification session 3 question 3, the founder accepted a conservative symmetric Q8 KV policy for primary device qualification and the mandatory stress tier:
 
-## 6. Still unresolved after context acceptance
+```text
+KV_CACHE_POLICY=Q8_0_SYMMETRIC_KV_CORE
+HARD_QUALIFICATION_K_CACHE_TYPE=Q8_0
+HARD_QUALIFICATION_V_CACHE_TYPE=Q8_0
+STRESS_K_CACHE_TYPE=Q8_0
+STRESS_V_CACHE_TYPE=Q8_0
+ASYMMETRIC_KV_PRIMARY_QUALIFICATION=PROHIBITED
+Q4_KV_PRIMARY_QUALIFICATION=NOT_FROZEN
+```
 
-With `8K_CORE_16K_STRESS` accepted, the following remain unresolved:
+Interpretation:
 
-- exact llama.cpp revision;
-- exact KV cache type(s) and quantization;
-- whether K and V cache use identical types;
+1. K and V cache use the same `Q8_0` type for the common 8K hard qualification condition;
+2. the same symmetric `Q8_0` K/V policy applies to required 16K stress evidence where that tier is in scope;
+3. a candidate may not receive F16/BF16, Q4, mixed K/V, or another KV type merely because that representation improves its observed result;
+4. asymmetric K/V cache types are prohibited for the primary qualification protocol unless a future separately reviewed pre-result clarification replaces this policy for all comparable candidates;
+5. Q4-class KV remains outside the frozen primary qualification protocol. It may be studied later only under separate authorization/evidence and cannot retrospectively rescue a candidate that fails the canonical Q8_0 qualification condition;
+6. this policy freezes the requested cache *type semantics*, not the exact llama.cpp revision, backend implementation, allocation footprint, or measured RAM consequence. Those identities and measurements remain pre-execution gates.
+
+## 6. Why Q8_0 symmetric KV is the frozen primary policy
+
+- It materially reduces KV storage pressure relative to FP16/BF16 while avoiding immediate dependence on a more aggressive 4-bit cache for the mass-reach qualification contract.
+- It keeps K and V symmetric, reducing an avoidable source of backend/runtime asymmetry in the primary evidence path.
+- It applies one candidate-neutral rule to both frontier architectures despite their very different KV scaling.
+- It preserves Q4 KV as a separately testable future optimization rather than silently making aggressive cache compression necessary for a candidate to qualify.
+- It prevents post-result KV tuning from becoming an unreported candidate-specific optimization.
+
+No exact MiB saving or runtime-quality claim is frozen from nominal datatype arithmetic. Actual cache bytes, peak working memory, backend offload behavior, performance, and quality/safety effects must be measured later under the exact pinned runtime and frozen protocol.
+
+## 7. Still unresolved after context and KV acceptance
+
+With `8K_CORE_16K_STRESS` and `Q8_0_SYMMETRIC_KV_CORE` accepted, the following remain unresolved:
+
+- exact immutable llama.cpp revision and build configuration;
+- exact backend/platform wrapper identities;
 - exact batch/ubatch settings;
 - prompt and generation token split inside the 8K condition;
 - cache reuse/prompt-cache policy;
-- measured peak RSS/working-set methodology per platform;
+- measured peak RSS/working-set methodology per platform and any hard RAM threshold;
 - TTFT/prefill/decode/sustained-throughput thresholds;
 - thermal/energy protocol;
 - OS and mobile wrapper/application versions;
-- hard failure semantics beyond the frozen package ceiling.
+- repetition, warm-up, and aggregation methodology;
+- hard failure semantics beyond already frozen package/context/KV evidence requirements.
 
 These must be frozen before execution and may not be optimized per candidate after observing results.
 
-## 7. Public sources
+## 8. Public sources
 
 - https://huggingface.co/Qwen/Qwen3-0.6B-Base/blob/main/config.json
 - https://huggingface.co/Qwen/Qwen3.5-0.8B-Base/blob/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/config.json
 - https://huggingface.co/Qwen/Qwen3.5-0.8B-Base
+- https://github.com/ggml-org/llama.cpp/tree/master
 
-## 8. Authority boundary
+## 9. Authority boundary
 
 ```text
 CONTEXT_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
+KV_CACHE_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
 CLARIFICATION_SESSION_3_QUESTION_2=ACCEPTED
+CLARIFICATION_SESSION_3_QUESTION_3=ACCEPTED
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 MODEL_CONVERSION_AUTHORITY=NONE
