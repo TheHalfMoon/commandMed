@@ -3,17 +3,19 @@
 **Lifecycle:** CLARIFY ONLY
 **Evidence capture date:** 2026-08-23
 **Canonical commandMed base:** `19aa95bbd122f3e01421ba2618dc1efe2f088289`
-**Purpose:** read-only architecture/resource reasoning plus founder-accepted context and KV-cache policies for bounded clarification session 3 questions 2–3.
+**Purpose:** read-only architecture/resource reasoning plus founder-accepted context, KV-cache, and prompt/generation budget policies for bounded clarification session 3 questions 2–4.
 
 > This document contains public-config inspection and deterministic arithmetic only. No model weights were downloaded, no runtime was installed, no model was executed, and no benchmark payload was opened. Memory figures below are theoretical architecture-level KV estimates, not measured runtime claims.
 
-## 1. Why context and KV policy must be frozen before device qualification
+## 1. Why context, KV, and token-budget policy must be frozen before device qualification
 
 Context length directly changes memory use and latency. A candidate that appears to fit a 4-GB phone at 2K context may fail at 16K, while a hybrid-attention candidate can scale very differently from a conventional full-attention model.
 
 KV-cache representation also materially changes memory pressure and can interact with runtime/backend behavior. Candidate-specific post-result KV tuning would therefore destroy comparability.
 
-Spec 005 needs one candidate-neutral common context condition and one candidate-neutral primary KV-cache policy before device evidence is allowed. The conditions must be demanding enough to represent a useful local medical assistant while remaining conservative enough not to turn the low-resource target into an architecture-specific memory contest unrelated to the frozen medical/safety floor.
+Prompt/generation allocation is likewise part of the context contract. A nominal 8K run is not comparable if one candidate receives substantially more input context while another receives more generation headroom, or if template/system tokens are silently excluded from the counted prompt budget.
+
+Spec 005 therefore needs one candidate-neutral common context condition, one candidate-neutral primary KV-cache policy, and one candidate-neutral serialized-prompt/generation split before device evidence is allowed. The conditions must be demanding enough to represent a useful local medical assistant while remaining conservative enough not to turn the low-resource target into an architecture-specific memory contest unrelated to the frozen medical/safety floor.
 
 ## 2. Qwen3-0.6B-Base architecture observation
 
@@ -130,48 +132,77 @@ Interpretation:
 5. Q4-class KV remains outside the frozen primary qualification protocol. It may be studied later only under separate authorization/evidence and cannot retrospectively rescue a candidate that fails the canonical Q8_0 qualification condition;
 6. this policy freezes the requested cache *type semantics*, not the exact llama.cpp revision, backend implementation, allocation footprint, or measured RAM consequence. Those identities and measurements remain pre-execution gates.
 
-## 6. Why Q8_0 symmetric KV is the frozen primary policy
+## 6. Frozen prompt/generation budget clarification
 
-- It materially reduces KV storage pressure relative to FP16/BF16 while avoiding immediate dependence on a more aggressive 4-bit cache for the mass-reach qualification contract.
-- It keeps K and V symmetric, reducing an avoidable source of backend/runtime asymmetry in the primary evidence path.
-- It applies one candidate-neutral rule to both frontier architectures despite their very different KV scaling.
-- It preserves Q4 KV as a separately testable future optimization rather than silently making aggressive cache compression necessary for a candidate to qualify.
-- It prevents post-result KV tuning from becoming an unreported candidate-specific optimization.
+For bounded clarification session 3 question 4, the founder accepted a fixed `7K` serialized-prompt / `1K` generation split for the 8K core condition while retaining the same `1K` generation allowance in the 16K stress tier:
 
-No exact MiB saving or runtime-quality claim is frozen from nominal datatype arithmetic. Actual cache bytes, peak working memory, backend offload behavior, performance, and quality/safety effects must be measured later under the exact pinned runtime and frozen protocol.
+```text
+CONTEXT_BUDGET_POLICY=7K_PROMPT_1K_GENERATION
+CORE_TOTAL_CONTEXT_BUDGET=8192_TOKENS
+CORE_MAX_SERIALIZED_PROMPT_BUDGET=7168_TOKENS
+CORE_MAX_GENERATION_BUDGET=1024_TOKENS
+STRESS_TOTAL_CONTEXT_BUDGET=16384_TOKENS
+STRESS_MAX_SERIALIZED_PROMPT_BUDGET=15360_TOKENS
+STRESS_MAX_GENERATION_BUDGET=1024_TOKENS
+SERIALIZED_PROMPT_INCLUDES_SYSTEM_AND_TEMPLATE=YES
+GENERATION_BUDGET_IDENTICAL_ACROSS_CANDIDATES=YES
+```
 
-## 7. Still unresolved after context and KV acceptance
+Interpretation:
 
-With `8K_CORE_16K_STRESS` and `Q8_0_SYMMETRIC_KV_CORE` accepted, the following remain unresolved:
+1. the 8K hard qualification condition reserves at most `7168` tokens for the complete serialized input and at most `1024` tokens for generated output;
+2. the 16K stress condition reserves at most `15360` tokens for the complete serialized input and the same `1024`-token generation allowance;
+3. the serialized-prompt budget includes every non-generated token presented to the model under the frozen protocol, including system text, prompt/chat template material, benchmark/context material, and user/input content; no hidden template or system-token allowance exists outside the stated budget;
+4. the generation allowance is identical across candidates and devices for a given tier. Early stop/EOS may produce fewer generated tokens, but unused generation allowance does not expand the serialized-prompt ceiling;
+5. a candidate may not receive a different prompt/generation split merely because its tokenizer, prompt template, architecture, or observed performance makes the canonical split less favorable;
+6. token accounting must later be bound to the exact tokenizer/template/runtime identities before execution so that the declared serialized-token counts are reproducible and candidate-neutral.
+
+This freezes budget ceilings and accounting semantics only. It does not authorize benchmark access or execution and does not yet freeze batch/ubatch, cache-reuse behavior, exact runtime identities, measurement methods, or performance thresholds.
+
+## 7. Why the frozen policies are conservative for mass reach
+
+- `8192` hard context is materially more useful than 4K for multi-turn patient history, evidence snippets, and structured clinical context while avoiding a universal 16K hard requirement on 4-GB devices.
+- Symmetric `Q8_0` KV materially reduces cache pressure relative to FP16/BF16 without making primary qualification immediately depend on more aggressive Q4 cache compression.
+- A `7168`-token serialized prompt leaves substantial room for longitudinal medical context while a `1024`-token generation ceiling remains large enough for a structured, safety-conscious response without allowing output length to dominate the memory/latency condition.
+- Keeping the generation allowance at `1024` in both 8K and 16K tiers makes the stress tier primarily a longer-input-context test rather than changing two variables simultaneously.
+- Counting system/template tokens inside the prompt budget prevents candidate-specific serialization overhead from being hidden outside the qualification envelope.
+
+No exact MiB saving, runtime-quality claim, or latency claim is frozen from nominal datatype or token-budget arithmetic. Actual cache bytes, peak working memory, backend offload behavior, performance, and quality/safety effects must be measured later under the exact pinned runtime and frozen protocol.
+
+## 8. Still unresolved after context, KV, and token-budget acceptance
+
+With `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, and `7K_PROMPT_1K_GENERATION` accepted, the following remain unresolved:
 
 - exact immutable llama.cpp revision and build configuration;
 - exact backend/platform wrapper identities;
+- exact tokenizer/template identities and the pre-execution token-accounting implementation that enforces the frozen serialized-prompt ceilings;
 - exact batch/ubatch settings;
-- prompt and generation token split inside the 8K condition;
 - cache reuse/prompt-cache policy;
 - measured peak RSS/working-set methodology per platform and any hard RAM threshold;
 - TTFT/prefill/decode/sustained-throughput thresholds;
 - thermal/energy protocol;
 - OS and mobile wrapper/application versions;
 - repetition, warm-up, and aggregation methodology;
-- hard failure semantics beyond already frozen package/context/KV evidence requirements.
+- hard failure semantics beyond already frozen package/context/KV/token-budget evidence requirements.
 
 These must be frozen before execution and may not be optimized per candidate after observing results.
 
-## 8. Public sources
+## 9. Public sources
 
 - https://huggingface.co/Qwen/Qwen3-0.6B-Base/blob/main/config.json
 - https://huggingface.co/Qwen/Qwen3.5-0.8B-Base/blob/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/config.json
 - https://huggingface.co/Qwen/Qwen3.5-0.8B-Base
 - https://github.com/ggml-org/llama.cpp/tree/master
 
-## 9. Authority boundary
+## 10. Authority boundary
 
 ```text
 CONTEXT_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
 KV_CACHE_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
+CONTEXT_BUDGET_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
 CLARIFICATION_SESSION_3_QUESTION_2=ACCEPTED
 CLARIFICATION_SESSION_3_QUESTION_3=ACCEPTED
+CLARIFICATION_SESSION_3_QUESTION_4=ACCEPTED
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 MODEL_CONVERSION_AUTHORITY=NONE
