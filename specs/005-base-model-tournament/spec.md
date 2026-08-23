@@ -39,6 +39,7 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 
 - Q: How should Spec 005 handle the primary comparison between text-only and multimodal candidates when selecting the base backbone? → A: `COMMON_CORE_PRIMARY_RANKING` — all `PRIMARY` candidates rank only on the common text/core protocol; modality-specific capability is secondary non-ranking evidence in Spec 005.
 - Q: Should all `PRIMARY` candidates in Spec 005 be base/pretrained checkpoints only, excluding instruction-tuned models from primary ranking? → A: `BASE_ONLY_PRIMARY` — only base/pretrained checkpoints may be `PRIMARY`; instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
+- Q: How should Spec 005 define the `FLAGSHIP_PLUS_MODERN_MIDRANGE` device evidence boundary? → A: `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` — use one named physical representative per tier plus a reproducible resource envelope for that tier; exact device models and numeric thresholds remain to be frozen before execution.
 
 ## 3. Canonical authority and inherited identities
 
@@ -89,19 +90,19 @@ Therefore:
 
 ### 4.2 Target device tier
 
-`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier.
+`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, and clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy.
 
 Therefore Spec 005 must eventually freeze:
 
-- named device/resource classes representing flagship phones;
-- named device/resource classes representing modern midrange phones;
+- one named physical flagship representative plus a reproducible flagship resource envelope;
+- one named physical modern-midrange representative plus a reproducible modern-midrange resource envelope;
 - package/storage budget;
 - peak RAM budget;
 - latency/TTFT and sustained-throughput expectations appropriate to the tournament;
 - energy/battery and thermal evidence requirements;
 - context/KV behavior relevant to the selected comparison protocol.
 
-Those numeric thresholds are intentionally **not frozen in the specify stage**. They must be resolved before any live execution authorization.
+The named device models, envelope values, and numeric qualification thresholds are intentionally **not frozen in clarification yet**. They must be fixed before any live execution authorization and cannot be chosen after candidate results are observed.
 
 ### 4.3 Donor-origin restrictions
 
@@ -279,13 +280,17 @@ This clarification-stage document does not authorize opening or executing the be
 
 ## 14. Device and resource evidence
 
-Parameter count and upstream marketing claims are descriptive only.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` is frozen for Spec 005.
 
-The future tournament must use commandMed-owned evidence on named device/resource classes and exact model builds.
+Each target tier must be represented by both:
 
-Before execution authorization, clarification/planning must define:
+1. one named physical device representative used for real device-specific evidence such as latency, sustained behavior, battery/energy, and thermals; and
+2. one reproducible resource envelope describing the relevant hardware/resource boundary so conclusions are not tied solely to a single retail handset.
 
-- device representatives or reproducible resource classes;
+The flagship and modern-midrange envelopes must be defined before execution using reproducible properties such as available memory, storage/package constraints, compute/runtime capability, operating conditions, and context/KV conditions. The exact named devices and envelope values remain unresolved until later clarification/planning evidence is sufficient to freeze them without vendor-claim bias.
+
+Before execution authorization, clarification/planning must additionally define:
+
 - precision/quantization policy for baseline comparison;
 - whether an unquantized reference is required in addition to deployable builds;
 - package-byte measurement method;
@@ -296,7 +301,7 @@ Before execution authorization, clarification/planning must define:
 - repetition count, warm-up, aggregation, and failure handling;
 - what constitutes a hard device-qualification failure versus a reported non-ranking metric.
 
-No threshold may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No named representative, envelope boundary, or threshold may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -326,8 +331,8 @@ Examples include:
 - incomplete safety evidence;
 - benchmark or Gold quarantine violation;
 - non-comparable metric vectors;
-- missing required device evidence;
-- threshold changes after results are observed;
+- missing required device evidence under `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`;
+- device representative, envelope boundary, or threshold changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie.
@@ -345,7 +350,7 @@ The clarification lifecycle must answer, at minimum:
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
 7. What exact safety gates are evaluated before ranking, and how are blocked/incomplete states represented?
-8. What exact flagship and modern-midrange device/resource representatives define `FD-002`?
+8. **RESOLVED:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires one named physical representative plus a reproducible resource envelope. Exact devices, envelope values, and numeric thresholds remain to be frozen before execution.
 9. What package, peak-RAM, latency, throughput, energy, thermal, context, and KV thresholds or evidence rules apply?
 10. What precision/quantization/build policy is fair across candidates while preserving a baseline-only scientific question?
 11. What runtime/adapters are permitted, and what dependency changes would require separate review before execution?
