@@ -3,11 +3,11 @@
 **Lifecycle:** CLARIFY ONLY
 **Evidence capture date:** 2026-08-23
 **Canonical commandMed base:** `19aa95bbd122f3e01421ba2618dc1efe2f088289`
-**Purpose:** read-only architecture/resource reasoning plus founder-accepted context, KV-cache, and prompt/generation budget policies for bounded clarification session 3 questions 2–4.
+**Purpose:** read-only architecture/resource reasoning plus founder-accepted context, KV-cache, prompt/generation budget, and prompt-processing policies for bounded clarification session 3 questions 2–5.
 
-> This document contains public-config inspection and deterministic arithmetic only. No model weights were downloaded, no runtime was installed, no model was executed, and no benchmark payload was opened. Memory figures below are theoretical architecture-level KV estimates, not measured runtime claims.
+> This document contains public-config inspection, public runtime-interface inspection, and deterministic arithmetic only. No model weights were downloaded, no runtime was installed, no model was executed, and no benchmark payload was opened. Memory figures below are theoretical architecture-level KV estimates, not measured runtime claims.
 
-## 1. Why context, KV, and token-budget policy must be frozen before device qualification
+## 1. Why context, KV, token-budget, and prompt-processing policy must be frozen before device qualification
 
 Context length directly changes memory use and latency. A candidate that appears to fit a 4-GB phone at 2K context may fail at 16K, while a hybrid-attention candidate can scale very differently from a conventional full-attention model.
 
@@ -15,7 +15,9 @@ KV-cache representation also materially changes memory pressure and can interact
 
 Prompt/generation allocation is likewise part of the context contract. A nominal 8K run is not comparable if one candidate receives substantially more input context while another receives more generation headroom, or if template/system tokens are silently excluded from the counted prompt budget.
 
-Spec 005 therefore needs one candidate-neutral common context condition, one candidate-neutral primary KV-cache policy, and one candidate-neutral serialized-prompt/generation split before device evidence is allowed. The conditions must be demanding enough to represent a useful local medical assistant while remaining conservative enough not to turn the low-resource target into an architecture-specific memory contest unrelated to the frozen medical/safety floor.
+Prompt-processing batch size and cache reuse can also change memory pressure and measured prefill performance. A candidate or device must not receive a larger batch, smaller physical micro-batch, or warm/reused prompt state after results are observed merely to improve its qualification outcome.
+
+Spec 005 therefore needs one candidate-neutral common context condition, one candidate-neutral primary KV-cache policy, one candidate-neutral serialized-prompt/generation split, and one candidate-neutral cold prompt-processing profile before device evidence is allowed. The conditions must be demanding enough to represent a useful local medical assistant while remaining conservative enough not to turn the low-resource target into an architecture-specific memory contest unrelated to the frozen medical/safety floor.
 
 ## 2. Qwen3-0.6B-Base architecture observation
 
@@ -157,52 +159,85 @@ Interpretation:
 5. a candidate may not receive a different prompt/generation split merely because its tokenizer, prompt template, architecture, or observed performance makes the canonical split less favorable;
 6. token accounting must later be bound to the exact tokenizer/template/runtime identities before execution so that the declared serialized-token counts are reproducible and candidate-neutral.
 
-This freezes budget ceilings and accounting semantics only. It does not authorize benchmark access or execution and does not yet freeze batch/ubatch, cache-reuse behavior, exact runtime identities, measurement methods, or performance thresholds.
+This freezes budget ceilings and accounting semantics only. It does not authorize benchmark access or execution and does not yet freeze exact runtime identities, measurement methods, or performance thresholds.
 
-## 7. Why the frozen policies are conservative for mass reach
+## 7. Frozen prompt-processing execution profile
+
+For bounded clarification session 3 question 5, the founder accepted a conservative, candidate-neutral prompt-processing profile for measured device qualification:
+
+```text
+PROMPT_PROCESSING_POLICY=B512_U128_COLD_NO_REUSE
+LOGICAL_BATCH_SIZE=512
+PHYSICAL_UBATCH_SIZE=128
+PROMPT_CACHE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
+SESSION_STATE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
+PREFIX_CACHE_REUSE_FOR_MEASURED_RUNS=PROHIBITED
+BATCH_PROFILE_IDENTICAL_ACROSS_CANDIDATES=YES
+BATCH_PROFILE_IDENTICAL_ACROSS_DEVICE_TARGETS=YES
+```
+
+Current read-only llama.cpp source inspection confirms that the runtime exposes independent logical `--batch-size` and physical `--ubatch-size` controls. The observed source defaults at inspection time are `n_batch=2048` and `n_ubatch=512`; those defaults are **not** adopted as commandMed qualification values. The inspected llama.cpp source revision is evidence only and is not the future canonical pinned runtime revision.
+
+Interpretation:
+
+1. every measured primary device-qualification and required stress run uses logical batch `512` and physical ubatch `128` unless a future separately reviewed pre-result clarification replaces the profile universally;
+2. the same `512/128` profile applies to every comparable candidate and every frozen device target rather than being tuned per architecture or device after results are observed;
+3. measured qualification runs must not reuse prompt cache, session state, prefix cache, or equivalent previously computed prompt state that would reduce the cost of the frozen serialized input;
+4. a run may still use ordinary within-run KV state required for autoregressive generation; `COLD_NO_REUSE` prohibits cross-run or precomputed prompt-state reuse, not the model's normal in-run cache semantics;
+5. implementation-specific warm-up needed to initialize a runtime/backend may later be defined separately, but warm-up data must not preload or reuse the measured prompt state and cannot be counted as the measured run;
+6. this policy is a predeclared comparability condition, not evidence that `512/128` is performance-optimal or that it satisfies any unmeasured RAM, latency, thermal, or energy threshold on any target.
+
+If the future pinned runtime/backend cannot implement this profile consistently on a required target, qualification must fail closed or the policy must be reconciled through a separately reviewed pre-result clarification. Candidate- or target-specific silent tuning is prohibited.
+
+## 8. Why the frozen policies are conservative for mass reach
 
 - `8192` hard context is materially more useful than 4K for multi-turn patient history, evidence snippets, and structured clinical context while avoiding a universal 16K hard requirement on 4-GB devices.
 - Symmetric `Q8_0` KV materially reduces cache pressure relative to FP16/BF16 without making primary qualification immediately depend on more aggressive Q4 cache compression.
 - A `7168`-token serialized prompt leaves substantial room for longitudinal medical context while a `1024`-token generation ceiling remains large enough for a structured, safety-conscious response without allowing output length to dominate the memory/latency condition.
 - Keeping the generation allowance at `1024` in both 8K and 16K tiers makes the stress tier primarily a longer-input-context test rather than changing two variables simultaneously.
 - Counting system/template tokens inside the prompt budget prevents candidate-specific serialization overhead from being hidden outside the qualification envelope.
+- `512/128` fixes prompt-processing chunking at values materially below the inspected llama.cpp defaults, while cold/no-reuse measurement prevents cache warmth from hiding prefill cost. This is a protocol choice, not a measured device-performance claim.
 
-No exact MiB saving, runtime-quality claim, or latency claim is frozen from nominal datatype or token-budget arithmetic. Actual cache bytes, peak working memory, backend offload behavior, performance, and quality/safety effects must be measured later under the exact pinned runtime and frozen protocol.
+No exact MiB saving, runtime-quality claim, or latency claim is frozen from nominal datatype, token-budget, or batch arithmetic. Actual cache bytes, peak working memory, backend offload behavior, performance, and quality/safety effects must be measured later under the exact pinned runtime and frozen protocol.
 
-## 8. Still unresolved after context, KV, and token-budget acceptance
+## 9. Still unresolved after bounded session 3 acceptance
 
-With `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, and `7K_PROMPT_1K_GENERATION` accepted, the following remain unresolved:
+With `8K_CORE_16K_STRESS`, `Q8_0_SYMMETRIC_KV_CORE`, `7K_PROMPT_1K_GENERATION`, and `B512_U128_COLD_NO_REUSE` accepted, the following remain unresolved:
 
 - exact immutable llama.cpp revision and build configuration;
 - exact backend/platform wrapper identities;
 - exact tokenizer/template identities and the pre-execution token-accounting implementation that enforces the frozen serialized-prompt ceilings;
-- exact batch/ubatch settings;
-- cache reuse/prompt-cache policy;
 - measured peak RSS/working-set methodology per platform and any hard RAM threshold;
 - TTFT/prefill/decode/sustained-throughput thresholds;
 - thermal/energy protocol;
 - OS and mobile wrapper/application versions;
-- repetition, warm-up, and aggregation methodology;
-- hard failure semantics beyond already frozen package/context/KV/token-budget evidence requirements.
+- repetition, warm-up, and aggregation methodology, subject to the cold/no-reuse rule above;
+- hard failure semantics beyond already frozen package/context/KV/token-budget/batch/cache-reuse evidence requirements.
 
-These must be frozen before execution and may not be optimized per candidate after observing results.
+These must be frozen before execution and may not be optimized per candidate after observing results. Completion of bounded clarification session 3 does **not** complete the overall Spec 005 clarification lifecycle.
 
-## 9. Public sources
+## 10. Public sources
 
 - https://huggingface.co/Qwen/Qwen3-0.6B-Base/blob/main/config.json
 - https://huggingface.co/Qwen/Qwen3.5-0.8B-Base/blob/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/config.json
 - https://huggingface.co/Qwen/Qwen3.5-0.8B-Base
-- https://github.com/ggml-org/llama.cpp/tree/master
+- https://github.com/ggml-org/llama.cpp/blob/70adb1b4cea5ee39f867792c78dc59320921eda7/common/common.h
+- https://github.com/ggml-org/llama.cpp/blob/70adb1b4cea5ee39f867792c78dc59320921eda7/common/arg.cpp
 
-## 10. Authority boundary
+The observed llama.cpp revision above supports the read-only interface evidence in this clarification only. It is not the frozen execution runtime identity.
+
+## 11. Authority boundary
 
 ```text
 CONTEXT_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
 KV_CACHE_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
 CONTEXT_BUDGET_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
+PROMPT_PROCESSING_POLICY_STATUS=FOUNDER_ACCEPTED_FROZEN_CLARIFICATION
 CLARIFICATION_SESSION_3_QUESTION_2=ACCEPTED
 CLARIFICATION_SESSION_3_QUESTION_3=ACCEPTED
 CLARIFICATION_SESSION_3_QUESTION_4=ACCEPTED
+CLARIFICATION_SESSION_3_QUESTION_5=ACCEPTED
+CLARIFICATION_SESSION_3_STATUS=COMPLETE_BOUNDED_SESSION
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 MODEL_CONVERSION_AUTHORITY=NONE
