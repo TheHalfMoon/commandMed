@@ -38,6 +38,7 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 ### Session 2026-08-23
 
 - Q: How should Spec 005 handle the primary comparison between text-only and multimodal candidates when selecting the base backbone? → A: `COMMON_CORE_PRIMARY_RANKING` — all `PRIMARY` candidates rank only on the common text/core protocol; modality-specific capability is secondary non-ranking evidence in Spec 005.
+- Q: Should all `PRIMARY` candidates in Spec 005 be base/pretrained checkpoints only, excluding instruction-tuned models from primary ranking? → A: `BASE_ONLY_PRIMARY` — only base/pretrained checkpoints may be `PRIMARY`; instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
 
 ## 3. Canonical authority and inherited identities
 
@@ -197,11 +198,11 @@ Candidate roles are semantically distinct:
 
 ### `PRIMARY`
 
-A release-lineage candidate that is eligible, in principle, to win once exact provenance, safety, comparability, device, and execution gates are satisfied.
+A release-lineage candidate that is eligible, in principle, to win once exact provenance, safety, comparability, device, and execution gates are satisfied. Under `BASE_ONLY_PRIMARY`, the candidate must be an exact base/pretrained checkpoint; instruction-tuned checkpoints are not eligible for this role.
 
 ### `CONTROL`
 
-A comparison anchor used to measure whether the primary candidate set actually offers value. A control is not automatically eligible to become the release backbone.
+A comparison anchor used to measure whether the primary candidate set actually offers value. A control is not automatically eligible to become the release backbone. An instruction-tuned model may be used as a control only under a separately frozen, scientifically valid non-primary protocol.
 
 ### `CONDITIONAL`
 
@@ -209,7 +210,7 @@ A technically relevant candidate whose exact license, intended-use, device-fit, 
 
 ### `REFERENCE_ONLY`
 
-May inform scientific context where the canonical lineage/evaluation rules permit, but cannot be selected as the release backbone under the current contract.
+May inform scientific context where the canonical lineage/evaluation rules permit, but cannot be selected as the release backbone under the current contract. Instruction-tuned models may be reference-only where scientifically useful and otherwise authorized.
 
 ## 10. Planning/discovery candidate set
 
@@ -236,15 +237,17 @@ The LFM family remains conditional under canonical decision `D-007` until exact 
 - MedGemma family as reference/evaluation-only by default under `D-006`
 - frontier closed or otherwise restricted/gated medical models as reference-only unless a later canonical decision and lineage disposition explicitly authorize more
 
-Clarification must independently verify whether each named family still exists in the intended exact variant, whether it is base or instruct, its current primary license, access status, artifact identity, and whether it belongs in the final frozen candidate set.
+Clarification must independently verify whether each named family still exists in the intended exact variant, whether it is base or instruct, its current primary license, access status, artifact identity, and whether it belongs in the final frozen candidate set. Any instruct-only member of a named family cannot become `PRIMARY` under `BASE_ONLY_PRIMARY`.
 
 ## 11. Base vs instruction-tuned comparability
 
-The primary scientific question is backbone selection for later commandMed adaptation. Therefore the default presumption is that `PRIMARY` candidates should be comparable base/pretrained checkpoints.
+`BASE_ONLY_PRIMARY` is frozen for Spec 005.
 
-Instruction-tuned models may be useful controls or references, but must not be silently ranked as equivalent primary backbones unless clarification establishes a defensible common protocol and the scientific question explicitly permits it.
+Only exact base/pretrained checkpoints are eligible for the `PRIMARY` role and the primary ranking vector. Instruction-tuned, chat, aligned, or other post-pretraining checkpoints cannot enter the primary ranking and cannot be selected as the Spec 005 backbone winner.
 
-The exact rule must be frozen before execution.
+Instruction-tuned models may be admitted only as `CONTROL` or `REFERENCE_ONLY` where their separate scientific purpose, evidence contract, and access are explicitly authorized. Their scores cannot be mixed into the `PRIMARY` ranking vector, break a primary tie, compensate for weaker base-model evidence, or create an exception to the base-only rule.
+
+If a model family has no exact eligible base/pretrained checkpoint that satisfies the frozen admission contract, that family remains outside the `PRIMARY` candidate set rather than substituting an instruction-tuned checkpoint.
 
 ## 12. Modality comparability
 
@@ -319,7 +322,7 @@ Examples include:
 - unresolved license or lineage disposition;
 - required gated access not separately authorized;
 - missing exact artifact identity;
-- incompatible candidate type under the frozen base-vs-instruct rule;
+- candidate not being an exact eligible base/pretrained checkpoint under `BASE_ONLY_PRIMARY`;
 - incomplete safety evidence;
 - benchmark or Gold quarantine violation;
 - non-comparable metric vectors;
@@ -336,7 +339,7 @@ The correct outcome in these cases is not a guessed winner; it is refusal, disqu
 The clarification lifecycle must answer, at minimum:
 
 1. What is the exact primary candidate set, with immutable upstream revisions and neutral candidate IDs?
-2. Which named items are base/pretrained, instruct, control, conditional, or reference-only?
+2. **RESOLVED:** `BASE_ONLY_PRIMARY`; only exact base/pretrained checkpoints may be `PRIMARY`. Instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
 3. What exact primary license evidence and Spec 003 lineage disposition applies to each intended use?
 4. Which candidates require gated terms or access, and can they remain discovery/reference-only without accepting those terms?
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
@@ -354,7 +357,7 @@ The clarification lifecycle must answer, at minimum:
 
 ## 18. Specification acceptance criteria
 
-This specify-stage artifact is complete only when independent review confirms that it:
+This clarification-stage artifact is complete only when independent review confirms that it:
 
 - defines the tournament problem without selecting a winner;
 - binds the canonical predecessor identities and founder decisions;
@@ -363,7 +366,7 @@ This specify-stage artifact is complete only when independent review confirms th
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
 - preserves flagship + modern-midrange device intent without inventing unsupported numeric thresholds;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
-- enumerates the unresolved questions that clarification must resolve;
+- records the accepted clarification decisions without contradicting unresolved gates;
 - grants no model, weight, benchmark payload, private Gold, provider, PHI, gated-asset, or execution authority.
 
 ## 19. Exit and next lifecycle step
