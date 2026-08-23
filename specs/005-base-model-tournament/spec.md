@@ -48,10 +48,11 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 - Q: Should the frozen primary tournament manifest include only `PRIMARY` candidates whose admission gates are complete before manifest freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved candidates remain discovery/conditional outside that manifest.
 - Q: What precision/quantization policy should Spec 005 use to separate fair backbone comparison from real-device deployability evidence? → A: `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` — use a frozen reference build for primary capability comparison and a separately frozen deployable quantized build for device qualification; quantify compression regression separately.
 
-**Bounded session 2 — in progress (2/5)**
+**Bounded session 2 — in progress (3/5)**
 
 - Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: the original `FOUR_PERMISSIVE_BASE_SHORTLIST` is superseded before manifest freeze by the founder's `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`. Admission reconciliation must add `Qwen/Qwen3.5-0.8B-Base` as the lead ultra-compact candidate while retaining the prior four artifacts as quality/device comparators until pre-execution gates can exclude them without post-result substitution.
 - Q: After hard safety, provenance, licensing, and minimum medical-quality gates pass, where should deployable package size appear in the frozen ranking order? → A: `QUALITY_FLOOR_THEN_SIZE_FIRST` — all hard gates and the frozen minimum medical-quality floor are evaluated first; among candidates that pass them, complete deployable package bytes are the first ranking metric (`LOWER_BETTER`), followed only by predeclared secondary capability/performance/resource metrics.
+- Q: What mass-distribution envelope should the smallest commandMed Core release target? → A: `SUB_700MB_MASS_REACH` — the complete minimum text/core Hugging Face bundle has a hard ceiling of `700 MiB`; the engineering target is `<=600 MiB`; `<=500 MiB` is a stretch target only if the same safety and minimum medical-quality gates still pass. Peak working RAM has an engineering target of `<=2 GiB` at the later-frozen short-context condition, and qualification evidence must include a 4-GB-class phone/resource envelope rather than relying only on flagship devices.
 
 **Founder clarification directive — does not consume an additional clarification question**
 
@@ -106,21 +107,34 @@ Therefore:
 
 ### 4.2 Target device tier and distribution reach
 
-`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, and the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`.
+`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, and the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`.
 
-Therefore Spec 005 must eventually freeze:
+The frozen mass-reach package policy is:
+
+```text
+MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
+MINIMUM_TEXT_CORE_BUNDLE_ENGINEERING_TARGET=600_MiB_OR_LESS
+MINIMUM_TEXT_CORE_BUNDLE_STRETCH_TARGET=500_MiB_OR_LESS_IF_ALL_HARD_GATES_STILL_PASS
+PEAK_WORKING_RAM_ENGINEERING_TARGET=2_GiB_OR_LESS_AT_FROZEN_SHORT_CONTEXT
+LOW_RESOURCE_PHONE_EVIDENCE=4_GB_CLASS_REQUIRED
+```
+
+Therefore Spec 005 must eventually bind:
 
 - one named physical flagship representative plus a reproducible flagship resource envelope;
 - one named physical modern-midrange representative plus a reproducible modern-midrange resource envelope;
+- an explicit 4-GB-class phone/resource envelope for low-resource qualification evidence;
 - an additional low-resource laptop envelope representative of ordinary weak CPU/RAM hardware;
-- package/download-size budget for the smallest common-core release artifact;
-- peak RAM budget;
+- the exact package-accounting method for the complete minimum text/core release artifact;
+- peak RAM evidence under a frozen short-context condition;
 - latency/TTFT and sustained-throughput expectations appropriate to the tournament;
 - energy/battery and thermal evidence requirements on phones;
 - context/KV behavior relevant to the selected comparison protocol;
 - whether optional modality assets are separately downloadable from the common text/core package.
 
-The named devices, envelope values, and numeric qualification thresholds are intentionally **not frozen in clarification yet**. They must be fixed before any live execution authorization and cannot be chosen after candidate results are observed.
+The `700 MiB` package ceiling is a hard qualification boundary. The `<=600 MiB` and `<=500 MiB` values are engineering and stretch targets, not substitutes for the hard safety/medical-quality gates. The `<=2 GiB` peak working RAM value is an engineering target until the exact context/runtime measurement contract is frozen; it must not be misreported as a proven runtime guarantee before execution evidence exists.
+
+Named device models, the exact short-context value, latency/throughput/energy/thermal thresholds, and remaining envelope details are intentionally **not frozen yet**. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
 
 ### 4.3 Donor-origin restrictions
 
@@ -164,6 +178,7 @@ At minimum:
 - prohibited/reference-only use under the exact lineage contract is disqualifying for final selection;
 - safety hard-gate failure is disqualifying;
 - failure of the frozen minimum medical-quality floor is disqualifying for size-first ranking eligibility;
+- failure of the `700 MiB` complete minimum text/core bundle ceiling is disqualifying for `PRIMARY` size-first ranking eligibility;
 - missing, malformed, wrong-manifest, blocked, insufficient, or non-comparable evidence is `INCOMPLETE` rather than silently favorable;
 - any declared candidate with incomplete required evidence forces `NO_SELECTION` before ranking;
 - an exact top tie under the complete predeclared ranking vector forces `NO_SELECTION`;
@@ -183,7 +198,7 @@ SIZE_PRIORITY=QUALITY_FLOOR_THEN_SIZE_FIRST
 
 `QUALITY_FLOOR_THEN_SIZE_FIRST` means ranking occurs in two logically separate phases:
 
-1. **qualification phase** — provenance/lineage, licensing, safety, minimum medical-quality, candidate identity, comparability, and all frozen device/package hard gates must pass; a smaller model cannot compensate for failure of any hard gate;
+1. **qualification phase** — provenance/lineage, licensing, safety, minimum medical-quality, candidate identity, comparability, the `700 MiB` minimum-package ceiling, and all other frozen device/package hard gates must pass; a smaller model cannot compensate for failure of any hard gate;
 2. **ranking phase** — among fully qualified candidates only, complete deployable package bytes are the first comparison metric with direction `LOWER_BETTER`; only then are the remaining predeclared secondary metrics compared lexicographically.
 
 Requirements:
@@ -219,7 +234,7 @@ Before a candidate can enter a future frozen execution manifest, clarification/p
 12. expected device/resource evidence class;
 13. contamination/quarantine disposition where applicable;
 14. whether the candidate is `PRIMARY`, `CONTROL`, `CONDITIONAL`, or `REFERENCE_ONLY`;
-15. pre-execution evidence that the candidate has a plausible path to the frozen universal-low-resource package/RAM envelope without candidate-specific post-result threshold changes.
+15. pre-execution evidence that the candidate has a plausible path to the frozen `700 MiB` package ceiling and low-resource RAM/device envelope without candidate-specific post-result threshold changes.
 
 If any required admission field is unresolved, the candidate remains discovery-only or `CONDITIONAL` outside the frozen primary ranking manifest. It must not be inserted merely to produce `INCOMPLETE`, and it must not be removed after results are observed to rescue a selection. Candidate-set freeze occurs only after admission reconciliation is complete.
 
@@ -332,14 +347,26 @@ This clarification-stage document does not authorize opening or executing the be
 
 ## 14. Device, package, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, and `QUALITY_FLOOR_THEN_SIZE_FIRST` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, and `SUB_700MB_MASS_REACH` are frozen as Spec 005 evidence strategies.
+
+The minimum text/core package envelope is:
+
+```text
+COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
+COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_ENGINEERING_TARGET=600_MiB_OR_LESS
+COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_STRETCH_TARGET=500_MiB_OR_LESS_IF_HARD_GATES_PASS
+PEAK_WORKING_RAM_ENGINEERING_TARGET=2_GiB_OR_LESS_AT_FROZEN_SHORT_CONTEXT
+LOW_RESOURCE_PHONE_TEST_ENVELOPE=4_GB_CLASS
+```
+
+The complete minimum bundle measurement must include model weights plus every tokenizer, config, model-side runtime metadata, and other artifact required for the advertised minimum text/core installation. A general-purpose application/runtime binary may be reported separately only under a single frozen accounting rule applied identically to every candidate. Optional vision or other modality assets may be excluded from the minimum package only when they are genuinely optional and separately downloadable under the same policy for all candidates.
 
 Each target tier must be represented by both:
 
-1. one named physical device representative used for real device-specific evidence such as latency, sustained behavior, battery/energy, and thermals; and
-2. one reproducible resource envelope describing the relevant hardware/resource boundary so conclusions are not tied solely to a single retail handset.
+1. named physical-device evidence where feasible for latency, sustained behavior, battery/energy, and thermals; and
+2. a reproducible resource envelope describing the hardware/resource boundary so conclusions are not tied solely to one retail handset.
 
-The future evidence plan must cover at least flagship phone, modern-midrange Android, and low-resource ordinary laptop deployment. iPhone coverage must be demonstrated through an Apple-compatible runtime/build path rather than inferred from desktop Apple Silicon results.
+The future evidence plan must cover flagship phone, modern-midrange Android, a 4-GB-class low-resource phone/resource envelope, and a low-resource ordinary laptop. iPhone coverage must be demonstrated through an Apple-compatible runtime/build path rather than inferred from desktop Apple Silicon results.
 
 Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
 
@@ -348,23 +375,21 @@ Each admitted `PRIMARY` candidate must also have two predeclared build roles whe
 
 The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the deployable build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
 
-For mass distribution, the smallest common-core artifact should default to text-only when the selected architecture/runtime allows optional vision assets to be packaged separately. A larger optional multimodal artifact must not inflate the claimed minimum download size.
-
-The exact reference precision, quantization format/level, conversion toolchain, runtime, build flags, architecture-specific equivalence rules, package-size ceiling, RAM ceiling, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+The exact reference precision, quantization format/level, conversion toolchain, runtime, build flags, architecture-specific equivalence rules, exact short-context value, latency/throughput/energy/thermal thresholds, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
-- package-byte measurement method, including tokenizer/config/runtime/model-side assets that are required for the advertised minimum installation;
+- exact package-byte measurement procedure and exclusions;
 - peak-memory measurement method;
 - TTFT/prefill/decode/sustained-throughput measurement method;
-- energy and thermal measurement method or explicit bounded proxy if a direct method is not yet feasible;
+- energy and thermal measurement method or explicit bounded proxy if direct measurement is not feasible;
 - context length and KV-cache conditions;
 - repetition count, warm-up, aggregation, and failure handling;
-- what constitutes a hard device/package-qualification failure versus a reported non-ranking metric;
+- what constitutes a hard device-qualification failure beyond the already frozen `700 MiB` package ceiling;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
 - the secondary metric order used only after complete deployable package bytes tie.
 
-Parameter count and upstream marketing claims remain descriptive only. No named representative, envelope boundary, build policy, package threshold, RAM threshold, medical-quality threshold, or ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No named representative, remaining envelope boundary, build policy, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -397,12 +422,12 @@ Examples include:
 - failure of the frozen minimum medical-quality floor;
 - benchmark or Gold quarantine violation;
 - non-comparable metric vectors;
+- complete minimum text/core bundle exceeding `700 MiB` under the frozen accounting rule;
 - missing required device evidence under `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
-- failure to satisfy a frozen universal-low-resource package/RAM hard gate;
 - incomplete or candidate-specific package accounting that would make the size metric non-comparable;
-- claiming the optional vision package as part of the minimum footprint only when advantageous to a candidate, or omitting required assets from the measured package;
+- omitting required assets from the measured minimum package or inconsistently excluding optional modality assets;
 - device representative, envelope boundary, build policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
@@ -421,8 +446,8 @@ The clarification lifecycle must answer, at minimum:
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
 7. What exact safety and minimum medical-quality gates are evaluated before ranking, and how are blocked/incomplete states represented?
-8. **RESOLVED POLICY:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires named-device evidence plus a reproducible resource envelope, now including a low-resource laptop envelope. Exact devices, envelope values, and numeric thresholds remain to be frozen before execution.
-9. What exact package, peak-RAM, latency, throughput, energy, thermal, context, and KV thresholds or evidence rules implement `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`?
+8. **RESOLVED POLICY:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires named-device evidence plus a reproducible resource envelope, now including a low-resource laptop and explicit 4-GB-class phone/resource envelope. Exact named devices and remaining numeric thresholds remain to be frozen before execution.
+9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at a later-frozen short context, and 4-GB-class phone/resource evidence. Exact short context, RAM hard gate, latency, throughput, energy, thermal, and KV rules remain unresolved.
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`; primary capability comparison uses a frozen reference build, device qualification uses a frozen deployable quantized build, and compression regression is reported separately. Exact precision/quantization/runtime details remain to be frozen before execution.
 11. What runtime/adapters are permitted on iOS, Android, and low-resource laptops, and what dependency changes would require separate review before execution?
 12. What contamination/quarantine proof is required for every candidate/result path?
@@ -432,7 +457,7 @@ The clarification lifecycle must answer, at minimum:
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with two accepted questions plus one explicit founder directive. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with three accepted questions plus one explicit founder directive. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
 
 ## 18. Specification acceptance criteria
 
@@ -444,8 +469,9 @@ A future complete clarification artifact is acceptable only when independent rev
 - distinguishes admission shortlisting from frozen admission and execution manifest membership;
 - carries a genuine sub-1B base candidate through admission reconciliation rather than assuming 2B/3B is small enough;
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
-- preserves named-device evidence while explicitly covering iPhone, modern-midrange Android, and low-resource laptops;
-- measures the complete minimum downloadable package honestly and separates optional modality assets only when technically valid;
+- preserves named-device evidence while explicitly covering iPhone, modern-midrange Android, 4-GB-class phone/resource evidence, and low-resource laptops;
+- enforces the `700 MiB` complete minimum text/core bundle ceiling under one honest, candidate-neutral accounting rule;
+- treats `<=600 MiB`, `<=500 MiB`, and `<=2 GiB` as engineering/stretch targets exactly as frozen, without converting them into retrospective hard gates;
 - applies `QUALITY_FLOOR_THEN_SIZE_FIRST` only after all non-compensable safety/provenance/license/minimum-medical-quality gates pass;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
 - records accepted clarification decisions without contradicting unresolved gates;
@@ -456,18 +482,18 @@ Neither clarification session is a declaration that the full clarification lifec
 
 ## 19. Exit and next lifecycle step
 
-Current working state after two accepted decisions in bounded clarification session 2:
+Current working state after three accepted decisions in bounded clarification session 2:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
 CLARIFICATION_SESSION_1=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2=IN_PROGRESS
-CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=2
+CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=3
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
 LEAD_ULTRA_COMPACT_ADMISSION_CANDIDATE=Qwen/Qwen3.5-0.8B-Base
 SIZE_PRIORITY=QUALITY_FLOOR_THEN_SIZE_FIRST
-CLARIFICATION_LIFECYCLE=IN_PROGRESS
-NEXT_LIFECYCLE_STEP=CLARIFY
+MASS_REACH_PACKAGE_POLICY=SUB_700MB_MASS_REACH
+COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
 PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
@@ -477,6 +503,8 @@ PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
 PROVIDER_GENERATION_AUTHORITY=NONE
 PHI_ACCESS_AUTHORITY=NONE
 GATED_ASSET_ACCESS_AUTHORITY=NONE
+CLARIFICATION_LIFECYCLE=IN_PROGRESS
+NEXT_LIFECYCLE_STEP=CLARIFY
 ```
 
 Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, winner selection, or any other later lifecycle stage.
