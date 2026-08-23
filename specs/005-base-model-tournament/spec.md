@@ -1,9 +1,9 @@
 # Spec 005 — Base Model Tournament
 
-**State:** `AUTHORIZED_TO_SPECIFY`
+**Canonical state at branch base:** `AUTHORIZED_TO_SPECIFY`
 **Canonical starting base:** `a68d37acd713049694106e81dc134ccf4d51feb9`
 **Depends on:** Spec 004 `CLOSED_CANONICAL` + canonical founder decisions `FD-001`, `FD-002`, `FD-006`
-**Lifecycle authority:** CLARIFY ONLY — explicitly authorized by founder on 2026-08-23
+**Working lifecycle:** CLARIFY — explicitly authorized by founder on 2026-08-23
 **Training authority:** NONE
 **Model execution authority:** NONE
 **Model-weight access authority:** NONE
@@ -40,7 +40,8 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 - Q: How should Spec 005 handle the primary comparison between text-only and multimodal candidates when selecting the base backbone? → A: `COMMON_CORE_PRIMARY_RANKING` — all `PRIMARY` candidates rank only on the common text/core protocol; modality-specific capability is secondary non-ranking evidence in Spec 005.
 - Q: Should all `PRIMARY` candidates in Spec 005 be base/pretrained checkpoints only, excluding instruction-tuned models from primary ranking? → A: `BASE_ONLY_PRIMARY` — only base/pretrained checkpoints may be `PRIMARY`; instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
 - Q: How should Spec 005 define the `FLAGSHIP_PLUS_MODERN_MIDRANGE` device evidence boundary? → A: `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` — use one named physical representative per tier plus a reproducible resource envelope for that tier; exact device models and numeric thresholds remain to be frozen before execution.
-- Q: Should the frozen primary tournament manifest contain only fully admitted `PRIMARY` candidates whose admission gates are complete before freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved or `CONDITIONAL` candidates remain outside it until their admission conditions are resolved before freeze.
+- Q: Should the frozen primary tournament manifest include only `PRIMARY` candidates whose admission gates are complete before manifest freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved candidates remain discovery/conditional outside that manifest.
+- Q: What precision/quantization policy should Spec 005 use to separate fair backbone comparison from real-device deployability evidence? → A: `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` — use a frozen reference build for primary capability comparison and a separately frozen deployable quantized build for device qualification; quantify compression regression separately.
 
 ## 3. Canonical authority and inherited identities
 
@@ -173,7 +174,9 @@ Requirements:
 
 ## 8. Candidate admission contract
 
-Naming a candidate in planning does **not** authorize access or execution.
+`FULLY_ADMITTED_PRIMARY_ONLY` is frozen for the future primary ranking manifest.
+
+Naming a candidate in planning does **not** authorize access or execution. A candidate may enter the frozen primary ranking manifest only after every required admission field is resolved and the candidate is classified `PRIMARY` under the frozen rules.
 
 Before a candidate can enter a future frozen execution manifest, clarification/planning must bind all of the following:
 
@@ -192,9 +195,7 @@ Before a candidate can enter a future frozen execution manifest, clarification/p
 13. contamination/quarantine disposition where applicable;
 14. whether the candidate is `PRIMARY`, `CONTROL`, `CONDITIONAL`, or `REFERENCE_ONLY`.
 
-`FULLY_ADMITTED_PRIMARY_ONLY` is frozen for Spec 005. The frozen primary ranking manifest may contain only candidates whose role is `PRIMARY` and whose required admission fields and pre-execution gates are fully resolved before manifest freeze.
-
-If any required admission field or pre-execution condition is unresolved, the candidate remains discovery-only or `CONDITIONAL` and must remain outside the frozen primary ranking manifest. It cannot be inserted merely to produce an expected `INCOMPLETE` result, and it cannot be added or removed after results are observed.
+If any required admission field is unresolved, the candidate remains discovery-only or `CONDITIONAL` outside the frozen primary ranking manifest. It must not be inserted merely to produce `INCOMPLETE`, and it must not be removed after results are observed to rescue a selection. Candidate-set freeze occurs only after admission reconciliation is complete.
 
 ## 9. Candidate roles
 
@@ -202,7 +203,7 @@ Candidate roles are semantically distinct:
 
 ### `PRIMARY`
 
-A release-lineage candidate that is eligible, in principle, to win once exact provenance, safety, comparability, device, and execution gates are satisfied. Under `BASE_ONLY_PRIMARY`, the candidate must be an exact base/pretrained checkpoint; instruction-tuned checkpoints are not eligible for this role. Under `FULLY_ADMITTED_PRIMARY_ONLY`, it may enter the frozen primary ranking manifest only after all required admission conditions are resolved.
+A release-lineage candidate that is eligible, in principle, to win once exact provenance, safety, comparability, device, and execution gates are satisfied. Under `BASE_ONLY_PRIMARY`, the candidate must be an exact base/pretrained checkpoint; instruction-tuned checkpoints are not eligible for this role. Under `FULLY_ADMITTED_PRIMARY_ONLY`, all admission fields must be resolved before it can enter the frozen primary ranking manifest.
 
 ### `CONTROL`
 
@@ -241,7 +242,7 @@ The LFM family remains conditional under canonical decision `D-007` until exact 
 - MedGemma family as reference/evaluation-only by default under `D-006`
 - frontier closed or otherwise restricted/gated medical models as reference-only unless a later canonical decision and lineage disposition explicitly authorize more
 
-Clarification must independently verify whether each named family still exists in the intended exact variant, whether it is base or instruct, its current primary license, access status, artifact identity, and whether it belongs in the final frozen candidate set. Any instruct-only member of a named family cannot become `PRIMARY` under `BASE_ONLY_PRIMARY`, and any unresolved candidate must remain outside the frozen primary ranking manifest under `FULLY_ADMITTED_PRIMARY_ONLY`.
+Clarification must independently verify whether each named family still exists in the intended exact variant, whether it is base or instruct, its current primary license, access status, artifact identity, and whether it belongs in the final frozen candidate set. Any instruct-only member of a named family cannot become `PRIMARY` under `BASE_ONLY_PRIMARY`.
 
 ## 11. Base vs instruction-tuned comparability
 
@@ -283,19 +284,26 @@ This clarification-stage document does not authorize opening or executing the be
 
 ## 14. Device and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` is frozen for Spec 005.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` and `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` are frozen as Spec 005 evidence strategies.
 
 Each target tier must be represented by both:
 
 1. one named physical device representative used for real device-specific evidence such as latency, sustained behavior, battery/energy, and thermals; and
 2. one reproducible resource envelope describing the relevant hardware/resource boundary so conclusions are not tied solely to a single retail handset.
 
+Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
+
+1. a **reference build** governed by a common, frozen high-precision policy for primary common-core capability comparison; and
+2. a **deployable build** governed by a common, frozen quantization/deployment policy for device qualification on the named devices and resource envelopes.
+
+Primary capability ranking uses the reference-build evidence. Device qualification uses the deployable-build evidence. The deployable build must not replace the reference build in the primary capability vector, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule.
+
+The exact reference precision, quantization format/level, conversion toolchain, runtime, build flags, and any architecture-specific equivalence rules remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+
 The flagship and modern-midrange envelopes must be defined before execution using reproducible properties such as available memory, storage/package constraints, compute/runtime capability, operating conditions, and context/KV conditions. The exact named devices and envelope values remain unresolved until later clarification/planning evidence is sufficient to freeze them without vendor-claim bias.
 
 Before execution authorization, clarification/planning must additionally define:
 
-- precision/quantization policy for baseline comparison;
-- whether an unquantized reference is required in addition to deployable builds;
 - package-byte measurement method;
 - peak-memory measurement method;
 - TTFT/prefill/decode/sustained-throughput measurement method;
@@ -304,7 +312,7 @@ Before execution authorization, clarification/planning must additionally define:
 - repetition count, warm-up, aggregation, and failure handling;
 - what constitutes a hard device-qualification failure versus a reported non-ranking metric.
 
-Parameter count and upstream marketing claims remain descriptive only. No named representative, envelope boundary, or threshold may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No named representative, envelope boundary, build policy, or threshold may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -331,12 +339,14 @@ Examples include:
 - required gated access not separately authorized;
 - missing exact artifact identity;
 - candidate not being an exact eligible base/pretrained checkpoint under `BASE_ONLY_PRIMARY`;
-- unresolved or `CONDITIONAL` candidate appearing in the frozen primary ranking manifest contrary to `FULLY_ADMITTED_PRIMARY_ONLY`;
+- candidate entering the frozen primary ranking manifest before all admission fields are resolved under `FULLY_ADMITTED_PRIMARY_ONLY`;
 - incomplete safety evidence;
 - benchmark or Gold quarantine violation;
 - non-comparable metric vectors;
 - missing required device evidence under `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`;
-- device representative, envelope boundary, or threshold changes after results are observed;
+- missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
+- unmeasured required compression regression;
+- device representative, envelope boundary, build policy, or threshold changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie.
@@ -354,38 +364,45 @@ The clarification lifecycle must answer, at minimum:
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
 7. What exact safety gates are evaluated before ranking, and how are blocked/incomplete states represented?
-8. **RESOLVED:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires one named physical representative plus a reproducible resource envelope. Exact devices, envelope values, and numeric thresholds remain to be frozen before execution.
+8. **RESOLVED POLICY:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires one named physical representative plus a reproducible resource envelope. Exact devices, envelope values, and numeric thresholds remain to be frozen before execution.
 9. What package, peak-RAM, latency, throughput, energy, thermal, context, and KV thresholds or evidence rules apply?
-10. What precision/quantization/build policy is fair across candidates while preserving a baseline-only scientific question?
+10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`; primary capability comparison uses a frozen reference build, device qualification uses a frozen deployable quantized build, and compression regression is reported separately. Exact precision/quantization/runtime details remain to be frozen before execution.
 11. What runtime/adapters are permitted, and what dependency changes would require separate review before execution?
 12. What contamination/quarantine proof is required for every candidate/result path?
 13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
-14. **RESOLVED:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved or `CONDITIONAL` candidates are excluded before the frozen primary ranking manifest and may not be added or removed post-result.
+14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 
+The five-question clarification session on 2026-08-23 has reached its workflow limit. The unresolved questions above remain active requirements; they are not implicitly answered by this session and prevent the clarification lifecycle from being declared complete.
+
 ## 18. Specification acceptance criteria
 
-This clarification-stage artifact is complete only when independent review confirms that it:
+A future complete clarification artifact is acceptable only when independent review confirms that it:
 
 - defines the tournament problem without selecting a winner;
 - binds the canonical predecessor identities and founder decisions;
 - preserves baseline-only/no-training scope;
 - distinguishes planning discovery from frozen admission;
-- requires `FULLY_ADMITTED_PRIMARY_ONLY` before freezing the primary ranking manifest;
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
 - preserves flagship + modern-midrange device intent without inventing unsupported numeric thresholds;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
-- records the accepted clarification decisions without contradicting unresolved gates;
+- records accepted clarification decisions without contradicting unresolved gates;
+- resolves all clarification requirements that materially affect candidate admission, comparability, device qualification, execution planning, and exact-head review before advancing to `PLAN`;
 - grants no model, weight, benchmark payload, private Gold, provider, PHI, gated-asset, or execution authority.
+
+This five-question session is **not** a declaration that the full clarification lifecycle is complete.
 
 ## 19. Exit and next lifecycle step
 
-Successful canonical merge of this specification means only:
+Current working state after this clarification session:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
+CLARIFICATION_SESSION_2026_08_23=5_QUESTIONS_ACCEPTED
+CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
+PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
@@ -396,4 +413,4 @@ PHI_ACCESS_AUTHORITY=NONE
 GATED_ASSET_ACCESS_AUTHORITY=NONE
 ```
 
-Clarification is now explicitly authorized by the founder for this bounded session. This does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, or winner selection.
+Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, winner selection, or any other later lifecycle stage.
