@@ -82,10 +82,11 @@ Popularity, download counts, likes, social discussion, stars, or vendor reputati
 - Q: What candidate-neutral device/runtime failure semantics must be frozen before numeric performance thresholds so five-run aggregation cannot be retrofitted after failures are observed? → A: `UNIVERSAL_FATAL_FAILURES_AND_FAIL_CLOSED_EVIDENCE` — classify runtime initialization failure, canonical artifact load failure, inability of a correctly configured candidate/runtime to execute the required Core condition, process crash/abnormal termination, OS non-memory forced termination, measured-request noncompletion, and known unauthorized runtime/backend/artifact fallback as `HARD_FAIL`. Missing or malformed required measurement evidence, an unprovable runtime/artifact identity, or a wrong/unprovable run configuration is `INCOMPLETE` rather than a candidate failure. Mid-run thermal throttling is recorded but is not an automatic hard failure unless it produces an independently frozen fatal event. Any hard-fail run makes its candidate/target/condition `HARD_FAIL`; any incomplete run makes the condition `INCOMPLETE`; a valid median-of-five requires five complete numeric runs and partial-median substitution is prohibited. Failure-signal identities and the noncompletion watchdog must be pinned before execution, while the exact watchdog timeout and numeric performance hard thresholds remain unresolved. Candidate-specific failure exceptions and post-result failure-rule changes are prohibited.
 - Q: What performance-threshold policy must be frozen before execution without inventing candidate-result-derived latency or throughput numbers? → A: `PREDECLARED_TARGET_USABILITY_PERFORMANCE_GATES` — performance hard gates are required before execution, but exact numeric values remain unresolved until supported by documented candidate-independent usability evidence. Cold-start-to-first-token, ready-state TTFT, and decode tokens/second must receive hard gates; prefill throughput, model-load time, and end-to-end response time remain recorded/secondary unless separately frozen as hard gates. Thresholds are identical across candidates on the same target; target-specific thresholds are allowed only when predeclared and justified before candidate results. Candidate-specific thresholds, candidate-result-derived thresholds, post-result threshold changes, and post-result target-specific relaxation are prohibited. Median-of-five is the primary threshold aggregate, worst-case evidence remains mandatory, and `HARD_FAIL`/`INCOMPLETE` runs cannot be inserted into or removed from a numeric aggregate to rescue qualification.
 
-**Bounded session 6 — in progress (2/5)**
+**Bounded session 6 — in progress (3/5)**
 
 - Q: What benchmark/metric scope may be carried forward toward the future baseline tournament without silently turning public or reference assets into selectable execution data? → A: `CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY` — only canonical Spec 001 benchmark records that are verified, public, development-scoped, and sufficiently artifact-bound may be considered for a future executable baseline slice manifest. The current public-development registry scope is `healthbench_core`, `healthbench_consensus`, `healthbench_hard`, `healthbench_professional`, `medxpertqa`, and `pubmedqa`; this is a metadata scope, not payload-access or execution authorization and not by itself a selectable ranking manifest. Any future executable manifest must bind exact benchmark ID, artifact/split identity, quarantine purpose, allowed metric IDs/directions, and selection eligibility before execution. Public canonical test splits remain external-evaluation-only and cannot select a model. `medxpertqa` multimodal slices remain secondary non-ranking evidence under `COMMON_CORE_PRIMARY_RANKING`; its text dev split may become selectable only through an explicit pre-execution `DEV`/`CHECKPOINT_SELECTION` mapping. HealthBench and PubMedQA do not become selectable merely because their registry records are `PUBLIC` + `DEVELOPMENT`; their exact selection-purpose mapping remains unresolved. `REFERENCE_ONLY`, mixed/unbound, unresolved-license, gated, private, and private-Gold assets remain outside executable selection scope unless separately reconciled and authorized. Candidate-specific slice selection and post-result slice addition/removal are prohibited. This clarification authorizes read-only registry/metadata inspection only; benchmark payload access/execution remains unauthorized.
 - Q: What quarantine-purpose semantics must each future benchmark slice satisfy so development, model-selection, and external-evaluation evidence cannot be relabeled after candidate results? → A: `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE` — every executable slice must have exactly one canonical purpose frozen before payload access or execution. Baseline purposes are `DEV`, `CHECKPOINT_SELECTION`, and `PUBLIC_EXTERNAL_EVAL`; selection use requires the canonical source class to permit it and `can_select_model=true`. Public canonical test splits remain `PUBLIC_EXTERNAL_EVAL` and cannot select a model. Private Gold remains `PRIVATE_GOLD_ONLY`, cannot select or train, and is not authorized here. `REFERENCE_ONLY`, unbound, or unresolved-purpose assets are not executable. The same slice-purpose mapping must apply across candidates; candidate-specific mapping, post-result remapping, or promotion of external-evaluation evidence into selection evidence is prohibited. Exact purpose mappings for MedXpertQA text dev, HealthBench, and PubMedQA remain unresolved. Benchmark payload access/execution remains unauthorized.
+- Q: What access preconditions must a future public benchmark payload satisfy before any payload bytes may be obtained, cached, or executed? → A: `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS` — read-only public-source metadata inspection remains allowed, but payload access requires separate explicit authorization plus an exact artifact/split identity, immutable source revision or equivalent immutable digest, resolved license/access class, a frozen canonical quarantine purpose, and a contamination disposition. Mutable `latest`/unpinned or otherwise unbound payload access is prohibited. Gated, private, and Private Gold payloads remain inaccessible without separate authority; external-submission-only ground truth does not become local Gold. Local payload cache/copy creation is not authorized by this clarification. Any later access mechanism must preserve canonical artifact identity, must not substitute a post-access artifact or candidate-specific payload version, and an access failure or identity mismatch fails closed as `INCOMPLETE`. Benchmark payload access and execution authorities remain `NONE`.
 
 **Founder clarification directives — do not consume additional clarification questions**
 
@@ -386,7 +387,7 @@ The following are outside this clarification-stage authority:
 - accepting gated model terms, gated dataset terms, or access requests;
 - logging in to model providers or model hubs for gated access;
 - running inference, generation, embeddings, reranking, scoring, or model-backed preprocessing;
-- reading or executing benchmark payloads for tournament measurement;
+- reading, downloading, caching, copying, or executing benchmark payloads for tournament measurement;
 - reading private Gold payloads;
 - sending prompts or samples to provider APIs;
 - training, SFT, LoRA/QLoRA, CPT, distillation, DPO, RLVR, QAT, or any other optimization;
@@ -617,7 +618,7 @@ At minimum, the eventual plan must preserve evidence across relevant dimensions 
 - package/download footprint and runtime reach across the frozen low-resource envelopes;
 - license/lineage fit.
 
-This clarification-stage document does not authorize opening or executing the benchmark payloads needed to obtain those results.
+This clarification-stage document does not authorize opening, downloading, caching, copying, or executing the benchmark payloads needed to obtain those results.
 
 ### 13.1 Canonical public slice manifest policy
 
@@ -698,6 +699,38 @@ BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
 A future executable slice must have one and only one canonical quarantine purpose in the execution manifest. `CHECKPOINT_SELECTION` is permitted only where the inherited quarantine contract explicitly allows the source class to select and `can_select_model=true`; a public label or development label alone is insufficient. Public canonical test splits remain `PUBLIC_EXTERNAL_EVAL`, so their results cannot select a candidate or be promoted into selection evidence. Private Gold remains governed by its separate `PRIVATE_GOLD` purpose, cannot select or train, and remains inaccessible under this clarification authority. `REFERENCE_ONLY`, unbound, and unresolved-purpose assets remain non-executable.
 
 Purpose mapping is a candidate-neutral property of the slice, not a per-candidate tuning knob. The same exact slice must retain the same canonical purpose across every comparable candidate. Candidate-specific mapping, post-result remapping, or promoting an external-evaluation result into selection evidence after observing candidate performance is prohibited. MedXpertQA `Text/test.jsonl` is frozen as `PUBLIC_EXTERNAL_EVAL`; its multimodal assets remain secondary non-ranking if separately authorized. MedXpertQA text dev, HealthBench, and PubMedQA exact purpose mappings remain unresolved rather than being inferred. This policy grants no benchmark payload access or execution authority.
+
+### 13.3 Metadata-first exact-artifact access gate
+
+`METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS` freezes the preconditions that must be satisfied before any future benchmark payload bytes may be obtained, cached, copied, or executed:
+
+```text
+PUBLIC_BENCHMARK_ACCESS_POLICY=METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS
+PUBLIC_SOURCE_METADATA_INSPECTION=ALLOWED_READ_ONLY
+PAYLOAD_ACCESS_REQUIRES_EXPLICIT_SEPARATE_AUTHORIZATION=YES
+PAYLOAD_ACCESS_REQUIRES_EXACT_ARTIFACT_IDENTITY=YES
+PAYLOAD_ACCESS_REQUIRES_IMMUTABLE_SOURCE_REVISION=YES
+PAYLOAD_ACCESS_REQUIRES_LICENSE_AND_ACCESS_CLASS_RESOLVED=YES
+PAYLOAD_ACCESS_REQUIRES_QUARANTINE_PURPOSE_FROZEN=YES
+PAYLOAD_ACCESS_REQUIRES_CONTAMINATION_DISPOSITION=YES
+MUTABLE_LATEST_OR_UNPINNED_PAYLOAD=PROHIBITED
+UNBOUND_PAYLOAD_ACCESS=PROHIBITED
+GATED_PAYLOAD_ACCESS=PROHIBITED_WITHOUT_SEPARATE_AUTHORIZATION
+PRIVATE_PAYLOAD_ACCESS=PROHIBITED_WITHOUT_SEPARATE_AUTHORIZATION
+PRIVATE_GOLD_ACCESS=PROHIBITED
+EXTERNAL_SUBMISSION_ONLY_GROUND_TRUTH=NO_LOCAL_GOLD_ACCESS
+LOCAL_PAYLOAD_CACHE_OR_COPY_CREATION=NOT_AUTHORIZED_YET
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+ACCESS_MECHANISM_MUST_PRESERVE_CANONICAL_ARTIFACT_IDENTITY=YES
+POST_ACCESS_ARTIFACT_SUBSTITUTION=PROHIBITED
+CANDIDATE_SPECIFIC_PAYLOAD_VERSION=PROHIBITED
+ACCESS_FAILURE_OR_IDENTITY_MISMATCH=FAIL_CLOSED_INCOMPLETE
+```
+
+Read-only metadata inspection may identify repositories, filenames, revisions, digests, licenses, access classes, split roles, or transport mechanisms without obtaining benchmark payload bytes. That metadata inspection does not itself authorize download, cloning, local copy/cache creation, API retrieval of payload contents, or execution. A future payload-access authorization may be proposed only after the exact artifact/split identity, immutable source revision or equivalent digest, license/access class, canonical quarantine purpose, and contamination disposition are all bound.
+
+The eventual access mechanism may differ by benchmark, but it must preserve the frozen canonical artifact identity and cannot silently follow a mutable `latest`, branch head, changing remote object, or candidate-specific version. Gated/private assets require their own separate authority; Private Gold remains prohibited. Where evaluation uses an external submission service whose ground truth is not distributed, that service does not create local Gold access. Any access failure, missing immutable identity, or identity mismatch is `INCOMPLETE` and cannot be repaired by substituting a different payload after results are observed. This policy does not select concrete per-benchmark transport URLs or authorize any benchmark bytes to be obtained.
 
 ## 14. Device, package, runtime, quantization, and resource evidence
 
@@ -1155,11 +1188,12 @@ Before execution authorization, clarification/planning must additionally define:
 - exact energy signal/tool/meter identities, calibration/uncertainty procedure, raw-unit semantics, and evidence format consistent with `PLATFORM_NATIVE_ENERGY_PER_RUN`; V1 has no absolute raw-energy hard ceiling, and any future energy hard-gate proposal requires a separate canonical evidence basis and decision before results;
 - exact target-native failure-signal identities and the exact candidate-neutral noncompletion watchdog timeout/evidence format consistent with `UNIVERSAL_FATAL_FAILURES_AND_FAIL_CLOSED_EVIDENCE`;
 - exact per-slice canonical quarantine purpose and selection eligibility, including proof that the mapping is frozen before payload access/execution and identical across comparable candidates, consistent with `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE`;
+- exact per-benchmark payload access route/transport identity, immutable source revision or digest, license/access-class proof, contamination disposition, and any later separate payload-access authorization identity, consistent with `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS`;
 - how mandatory 16K stress evidence is interpreted where in scope without retroactively changing the 8K hard qualification rule;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
 - the secondary metric order used only after complete deployable package bytes tie, including whether energy is included under its same-target/same-method restriction.
 
-Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, batch/ubatch substitution, prompt-state reuse, runtime-core substitution, memory-accounting substitution, 8K Core RAM-ceiling increase, candidate-specific timing-boundary substitution, measured-run-count substitution, failed-run replacement, post-hoc run exclusion, partial-median substitution, thermal-readiness exception, fixed-sleep substitution for thermal proof, post-result thermal-rule change, candidate-specific energy-method substitution, post-result energy-method change, candidate-specific energy-threshold creation, post-result energy-threshold creation, cross-platform raw-energy ranking substitution, raw-energy hard disqualification in V1, candidate-specific failure exception, post-result failure-rule change, candidate-specific performance threshold, candidate-result-derived performance threshold, post-result performance-threshold change, post-result target-specific performance-threshold relaxation, benchmark-purpose remapping, candidate-specific benchmark-purpose mapping, external-evaluation-to-selection promotion, remaining envelope boundary, quantization rule, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, KV-cache substitution, prompt/generation reallocation, batch/ubatch substitution, prompt-state reuse, runtime-core substitution, memory-accounting substitution, 8K Core RAM-ceiling increase, candidate-specific timing-boundary substitution, measured-run-count substitution, failed-run replacement, post-hoc run exclusion, partial-median substitution, thermal-readiness exception, fixed-sleep substitution for thermal proof, post-result thermal-rule change, candidate-specific energy-method substitution, post-result energy-method change, candidate-specific energy-threshold creation, post-result energy-threshold creation, cross-platform raw-energy ranking substitution, raw-energy hard disqualification in V1, candidate-specific failure exception, post-result failure-rule change, candidate-specific performance threshold, candidate-result-derived performance threshold, post-result performance-threshold change, post-result target-specific performance-threshold relaxation, benchmark-purpose remapping, candidate-specific benchmark-purpose mapping, external-evaluation-to-selection promotion, mutable/unpinned benchmark-payload substitution, post-access payload substitution, candidate-specific payload-version substitution, remaining envelope boundary, quantization rule, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -1174,6 +1208,8 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact per-platform runtime build manifest and produced runtime/build artifact identity where available;
 - exact benchmark/metric/safety/lineage contracts;
 - exact frozen benchmark slice manifest identity, per-slice canonical quarantine purpose/selection eligibility, proof that every purpose was frozen before payload access/execution, and proof that every comparable primary candidate used the identical authorized slice set and purpose mapping;
+- exact benchmark payload artifact/split identity, immutable source revision or digest, resolved license/access class, contamination disposition, payload-access authorization identity, access route/transport identity, and proof that the accessed bytes preserve the canonical artifact identity;
+- proof that no candidate-specific payload version or post-access artifact substitution was used;
 - exact device/resource identity where device evidence is claimed;
 - exact context/KV/token-budget configuration used for each device result, including symmetric Q8_0 K/V identity and serialized-prompt/generation ceilings for primary qualification;
 - exact tokenizer/template identities and serialized-token accounting record;
@@ -1191,7 +1227,7 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact result-set evidence artifact IDs;
 - deterministic tournament report identity.
 
-A mutable tag, model family name, `latest`, branch name, mutable runtime branch, marketplace label, or unpinned runtime version is not sufficient identity.
+A mutable tag, model family name, `latest`, branch name, mutable runtime branch, mutable benchmark revision, marketplace label, or unpinned runtime/payload version is not sufficient identity.
 
 ## 16. Fail-closed rules
 
@@ -1222,6 +1258,15 @@ Examples include:
 - remapping a slice purpose after candidate results are observed;
 - promoting a `PUBLIC_EXTERNAL_EVAL` slice or result into model-selection evidence after results are observed;
 - relabeling `DEV`, `CHECKPOINT_SELECTION`, or `PUBLIC_EXTERNAL_EVAL` after results to rescue a selection;
+- obtaining, downloading, copying, caching, or API-retrieving benchmark payload bytes before a separate explicit payload-access authorization;
+- accessing a payload without exact artifact/split identity, immutable source revision or digest, resolved license/access class, frozen quarantine purpose, and contamination disposition;
+- accessing a mutable `latest`, unpinned branch head, changing remote object, or otherwise unbound payload;
+- accessing gated/private payload bytes without separate authorization or accessing Private Gold under this clarification authority;
+- treating external-submission-only ground truth as locally accessible Gold;
+- creating a local payload cache or copy under the current no-access authority;
+- using a candidate-specific benchmark payload version;
+- substituting a different benchmark artifact after access or after candidate results are observed;
+- treating an access failure or benchmark identity mismatch as permission to use a substitute rather than `INCOMPLETE`;
 - non-comparable metric vectors;
 - complete minimum text/core bundle exceeding `700 MiB` under the frozen accounting rule;
 - absolute platform-native peak memory exceeding `2147483648` bytes during any frozen 8K Core target qualification run;
@@ -1308,7 +1353,7 @@ Examples include:
 - incomplete or candidate-specific package accounting that would make the size metric non-comparable;
 - omitting required assets from the measured minimum package or inconsistently excluding optional modality assets;
 - substituting an MLX/MLC/Core ML/native derivative for the canonical GGUF evidence without a separately frozen equivalence contract;
-- envelope boundary, runtime, build policy, KV policy, token-budget policy, prompt-processing policy, memory-measurement policy, timing policy, repetition/aggregation policy, thermal-readiness policy, energy-measurement policy, V1 energy-qualification policy, universal device/runtime failure policy, performance-threshold policy, quantization policy, package threshold, Core RAM threshold, medical-quality threshold, benchmark-slice policy, benchmark-purpose policy, or ranking-rule changes after results are observed;
+- envelope boundary, runtime, build policy, KV policy, token-budget policy, prompt-processing policy, memory-measurement policy, timing policy, repetition/aggregation policy, thermal-readiness policy, energy-measurement policy, V1 energy-qualification policy, universal device/runtime failure policy, performance-threshold policy, quantization policy, package threshold, Core RAM threshold, medical-quality threshold, benchmark-slice policy, benchmark-purpose policy, benchmark-access policy, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie under the complete predeclared ranking vector.
@@ -1331,13 +1376,13 @@ The clarification lifecycle must answer, at minimum:
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` plus `Q4_FLOOR_SMALLEST_PASSING`; primary capability comparison uses a frozen reference build, while the canonical deployable GGUF is the smallest allowed Q5/Q4-class artifact that passes every hard gate. Sub-4-bit artifacts are excluded from the V1 `PRIMARY` canonical release. Exact reference precision and frozen conversion/calibration details remain pending.
 11. **RESOLVED RUNTIME IDENTITY POLICY / VALUES PENDING:** `GGUF_LLAMA_CPP_CANONICAL` plus `PINNED_CORE_COMMIT_PLATFORM_BUILD_MANIFEST`; GGUF + llama.cpp is the canonical mass-distribution artifact/runtime family, one immutable core commit must be shared across all target paths, and platform-specific builds must be exact-manifest-bound. MLX/MLC/Core ML/native builds remain optional derivatives. The exact core commit SHA, conversion revision, compiler/toolchain versions, build/backend flags, wrapper/application identities, and produced runtime artifact identities remain to be frozen before execution.
 12. What contamination/quarantine proof is required for every candidate/result path, including whether `MODIFICATION_OR_DERIVATION` contamination state may legitimately be `NOT_APPLICABLE` for exact model-weight quantization under the Spec 003 contract?
-13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
+13. **PARTIALLY RESOLVED / ACCESS PRECONDITIONS FROZEN / EXACT PER-BENCHMARK ROUTES + ACCESS AUTHORITY PENDING:** `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS` allows read-only public metadata inspection but requires separate explicit authorization before any benchmark payload bytes are obtained, cached, copied, or executed. Any future access must bind exact artifact/split identity, immutable revision/digest, resolved license/access class, frozen quarantine purpose, contamination disposition, and an identity-preserving access route. Mutable/unpinned payloads, candidate-specific payload versions, post-access substitution, unauthorized gated/private access, and local Private Gold are prohibited. External-submission-only ground truth does not become local Gold. Access failures or identity mismatches fail closed as `INCOMPLETE`. Exact artifact-specific transport routes and any payload-access authorization remain unresolved; current benchmark payload access/execution authorities remain `NONE`.
 14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is complete at five accepted questions. Bounded clarification session 4 is complete at five accepted questions. Bounded clarification session 5 is complete at five accepted questions. Bounded clarification session 6 is in progress at two accepted questions. Completion of any bounded session does **not** complete the overall clarification lifecycle. The unresolved factual/evidence requirements above remain active and prevent the overall clarification lifecycle from being declared complete or advancing to `PLAN`.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is complete at five accepted questions. Bounded clarification session 4 is complete at five accepted questions. Bounded clarification session 5 is complete at five accepted questions. Bounded clarification session 6 is in progress at three accepted questions. Completion of any bounded session does **not** complete the overall clarification lifecycle. The unresolved factual/evidence requirements above remain active and prevent the overall clarification lifecycle from being declared complete or advancing to `PLAN`.
 
 ## 18. Specification acceptance criteria
 
@@ -1354,6 +1399,7 @@ A future complete clarification artifact is acceptable only when independent rev
 - preserves MedGemma 4B PT as a medical reference/control rather than incorrectly forcing it into a V1 mass-distribution role it cannot satisfy under the current package/access contract;
 - freezes `CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY` as the future benchmark-source boundary, preserves the six current `PUBLIC` + `DEVELOPMENT` registry IDs as a metadata eligibility envelope without pretending they are already a selectable execution manifest, forbids public canonical test splits from selecting the winner, keeps reference/mixed-unbound/gated/private/Gold assets fail-closed, and keeps exact primary-selection purpose/slice mapping separately unresolved until pre-execution binding;
 - freezes `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE`, requiring one candidate-neutral canonical purpose per executable slice before payload access/execution, requiring `can_select_model=true` for selection use, keeping public canonical test splits external-eval-only, prohibiting candidate-specific/post-result purpose remapping or promotion, and keeping unresolved-purpose assets non-executable while exact MedXpertQA text-dev/HealthBench/PubMedQA mappings remain pending;
+- freezes `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS`, permitting metadata-only inspection while requiring separate authorization plus exact immutable artifact identity, resolved license/access class, frozen purpose, contamination disposition, and identity-preserving access before any payload bytes may be obtained; prohibits mutable/unbound, candidate-specific, substituted, unauthorized gated/private, or local Private Gold payload access while keeping concrete per-benchmark routes and access authority unresolved;
 - freezes `MASS_REACH_FIVE_TARGET_SET` while keeping exact execution/performance threshold values separately unresolved until supported by candidate-independent pre-execution evidence;
 - requires evidence for iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 without post-result target weakening;
 - freezes `8K_CORE_16K_STRESS`, requiring an `8192`-token hard qualification context on all five targets and `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it;
@@ -1385,7 +1431,7 @@ No bounded clarification session is a declaration that the full clarification li
 
 ## 19. Exit and next lifecycle step
 
-Current working state after bounded session 5 completion and bounded session 6 questions 1–2 acceptance of `CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY` and `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE`:
+Current working state after bounded session 5 completion and bounded session 6 questions 1–3 acceptance of `CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY`, `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE`, and `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS`:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
@@ -1398,7 +1444,7 @@ CLARIFICATION_SESSION_4=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_4_STATUS=COMPLETE_BOUNDED_SESSION
 CLARIFICATION_SESSION_5=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_5_STATUS=COMPLETE_BOUNDED_SESSION
-CLARIFICATION_SESSION_6=2_QUESTIONS_ACCEPTED
+CLARIFICATION_SESSION_6=3_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_6_STATUS=IN_PROGRESS
 BASELINE_EVALUATION_SCOPE_POLICY=CANONICAL_PUBLIC_SLICE_MANIFEST_ONLY
 PUBLIC_DEVELOPMENT_SCOPE_IDS=healthbench_core,healthbench_consensus,healthbench_hard,healthbench_professional,medxpertqa,pubmedqa
@@ -1418,7 +1464,24 @@ MEDXPERTQA_TEXT_DEV_PURPOSE=NOT_YET_FROZEN
 HEALTHBENCH_PURPOSE_MAPPING=NOT_YET_FROZEN
 PUBMEDQA_PURPOSE_MAPPING=NOT_YET_FROZEN
 PURPOSE_AMBIGUITY=FAIL_CLOSED_NOT_EXECUTABLE
-PUBLIC_BENCHMARK_METADATA_INSPECTION=ALLOWED_READ_ONLY
+PUBLIC_BENCHMARK_ACCESS_POLICY=METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS
+PUBLIC_SOURCE_METADATA_INSPECTION=ALLOWED_READ_ONLY
+PAYLOAD_ACCESS_REQUIRES_EXPLICIT_SEPARATE_AUTHORIZATION=YES
+PAYLOAD_ACCESS_REQUIRES_EXACT_ARTIFACT_IDENTITY=YES
+PAYLOAD_ACCESS_REQUIRES_IMMUTABLE_SOURCE_REVISION=YES
+PAYLOAD_ACCESS_REQUIRES_LICENSE_AND_ACCESS_CLASS_RESOLVED=YES
+PAYLOAD_ACCESS_REQUIRES_QUARANTINE_PURPOSE_FROZEN=YES
+PAYLOAD_ACCESS_REQUIRES_CONTAMINATION_DISPOSITION=YES
+MUTABLE_LATEST_OR_UNPINNED_PAYLOAD=PROHIBITED
+UNBOUND_PAYLOAD_ACCESS=PROHIBITED
+GATED_PAYLOAD_ACCESS=PROHIBITED_WITHOUT_SEPARATE_AUTHORIZATION
+PRIVATE_PAYLOAD_ACCESS=PROHIBITED_WITHOUT_SEPARATE_AUTHORIZATION
+EXTERNAL_SUBMISSION_ONLY_GROUND_TRUTH=NO_LOCAL_GOLD_ACCESS
+LOCAL_PAYLOAD_CACHE_OR_COPY_CREATION=NOT_AUTHORIZED_YET
+ACCESS_MECHANISM_MUST_PRESERVE_CANONICAL_ARTIFACT_IDENTITY=YES
+POST_ACCESS_ARTIFACT_SUBSTITUTION=PROHIBITED
+CANDIDATE_SPECIFIC_PAYLOAD_VERSION=PROHIBITED
+ACCESS_FAILURE_OR_IDENTITY_MISMATCH=FAIL_CLOSED_INCOMPLETE
 PUBLIC_BENCHMARK_PAYLOAD_ACCESS=NOT_AUTHORIZED_YET
 PUBLIC_BENCHMARK_PAYLOAD_EXECUTION=NOT_AUTHORIZED_YET
 PRIVATE_GOLD_ACCESS=PROHIBITED
@@ -1643,6 +1706,7 @@ PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
 PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
 PROVIDER_GENERATION_AUTHORITY=NONE
@@ -1652,6 +1716,6 @@ CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 ```
 
-Acceptance of `PREDECLARED_QUARANTINE_PURPOSE_PER_SLICE` advances bounded clarification session 6 to two accepted questions but does **not** freeze the exact primary-selection slice manifest, does **not** freeze the unresolved purpose mappings for MedXpertQA text dev, HealthBench, or PubMedQA, does **not** authorize benchmark payload access or execution, does **not** authorize Private Gold or gated benchmark access, does **not** resolve the exact public-benchmark access mechanism, does **not** freeze the remaining clinical/statistical thresholds, and does **not** complete the full clarification lifecycle. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
+Acceptance of `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS` advances bounded clarification session 6 to three accepted questions but does **not** freeze the exact primary-selection slice manifest, does **not** freeze the unresolved purpose mappings for MedXpertQA text dev, HealthBench, or PubMedQA, does **not** authorize benchmark payload access, local cache/copy creation, or execution, does **not** authorize Private Gold or gated/private benchmark access, does **not** select exact artifact-specific access routes, does **not** resolve the contamination proof required by Q12, does **not** freeze the remaining clinical/statistical thresholds, and does **not** complete the full clarification lifecycle. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
 
 Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
