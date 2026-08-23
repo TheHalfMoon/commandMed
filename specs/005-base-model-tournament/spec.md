@@ -3,7 +3,7 @@
 **State:** `AUTHORIZED_TO_SPECIFY`
 **Canonical starting base:** `a68d37acd713049694106e81dc134ccf4d51feb9`
 **Depends on:** Spec 004 `CLOSED_CANONICAL` + canonical founder decisions `FD-001`, `FD-002`, `FD-006`
-**Lifecycle authority:** SPECIFY ONLY
+**Lifecycle authority:** CLARIFY ONLY — explicitly authorized by founder on 2026-08-23
 **Training authority:** NONE
 **Model execution authority:** NONE
 **Model-weight access authority:** NONE
@@ -32,6 +32,12 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 1. medical and safety quality cannot be traded away merely for a smaller parameter count;
 2. a technically strong candidate is not release-eligible if its lineage or license posture is incompatible with the canonical founder decision;
 3. claimed device fit must be demonstrated on named device/resource classes rather than inferred from model size or vendor claims.
+
+## Clarifications
+
+### Session 2026-08-23
+
+- Q: How should Spec 005 handle the primary comparison between text-only and multimodal candidates when selecting the base backbone? → A: `COMMON_CORE_PRIMARY_RANKING` — all `PRIMARY` candidates rank only on the common text/core protocol; modality-specific capability is secondary non-ranking evidence in Spec 005.
 
 ## 3. Canonical authority and inherited identities
 
@@ -104,7 +110,7 @@ Candidate eligibility is governed only by commandMed's own canonical evaluation,
 
 ## 5. Non-goals and prohibited actions
 
-The following are outside this specification-stage authority:
+The following are outside this clarification-stage authority:
 
 - downloading, cloning, pulling, caching, or otherwise obtaining model weights;
 - accepting gated model terms, gated dataset terms, or access requests;
@@ -242,14 +248,13 @@ The exact rule must be frozen before execution.
 
 ## 12. Modality comparability
 
-Candidates may differ in native modality support. A multimodal candidate must not receive an unfair ranking advantage or penalty simply because a text-only candidate lacks a modality that is not part of the common primary comparison.
+`COMMON_CORE_PRIMARY_RANKING` is frozen for Spec 005.
 
-Clarification must freeze one of the following or another explicitly justified strategy:
+All `PRIMARY` candidates rank only on a common text/core protocol whose dimensions are valid across every admitted primary candidate. Native multimodal capability must not alter the primary ranking vector in Spec 005.
 
-- a common-core primary tournament using only dimensions valid across all primary candidates, with modality-specific evidence reported separately; or
-- separate predeclared tracks whose winners are not collapsed into one ranking without a defined cross-track decision rule.
+Modality-specific evidence may be collected only if separately authorized and scientifically comparable, and must be reported as **secondary non-ranking evidence** for this spec. It cannot break a tie, compensate for a weaker common-core score, or create a cross-track winner.
 
-No post-result comparability rule may be invented to favor a candidate.
+A later multimodal spec may evaluate modality-specific capabilities under its own frozen contract. No post-result comparability rule may be invented to favor a candidate.
 
 ## 13. Evaluation evidence requirements
 
@@ -263,11 +268,11 @@ At minimum, the eventual plan must preserve evidence across relevant dimensions 
 - safety hard gates;
 - Arabic and English capability;
 - general-capability preservation potential where measurable without training;
-- document/multimodal evidence where comparable and authorized;
+- document/multimodal evidence as secondary non-ranking evidence only where separately authorized and comparable;
 - resource/device evidence;
 - license/lineage fit.
 
-This specify-stage document does not authorize opening or executing the benchmark payloads needed to obtain those results.
+This clarification-stage document does not authorize opening or executing the benchmark payloads needed to obtain those results.
 
 ## 14. Device and resource evidence
 
@@ -328,25 +333,24 @@ The correct outcome in these cases is not a guessed winner; it is refusal, disqu
 
 ## 17. Required clarification questions
 
-The next lifecycle stage must answer, at minimum:
+The clarification lifecycle must answer, at minimum:
 
 1. What is the exact primary candidate set, with immutable upstream revisions and neutral candidate IDs?
 2. Which named items are base/pretrained, instruct, control, conditional, or reference-only?
 3. What exact primary license evidence and Spec 003 lineage disposition applies to each intended use?
 4. Which candidates require gated terms or access, and can they remain discovery/reference-only without accepting those terms?
-5. What exact common comparison protocol makes candidates scientifically comparable despite architecture/modality differences?
-6. Are primary rankings common-core only, track-specific, or both, and what cross-track rule applies?
-7. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
-8. What exact safety gates are evaluated before ranking, and how are blocked/incomplete states represented?
-9. What exact flagship and modern-midrange device/resource representatives define `FD-002`?
-10. What package, peak-RAM, latency, throughput, energy, thermal, context, and KV thresholds or evidence rules apply?
-11. What precision/quantization/build policy is fair across candidates while preserving a baseline-only scientific question?
-12. What runtime/adapters are permitted, and what dependency changes would require separate review before execution?
-13. What contamination/quarantine proof is required for every candidate/result path?
-14. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
-15. What exact criteria exclude a candidate before live execution rather than producing an incomplete result later?
-16. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
-17. What independent review and exact-head evidence must be present before any execution activation can be proposed?
+5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
+6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
+7. What exact safety gates are evaluated before ranking, and how are blocked/incomplete states represented?
+8. What exact flagship and modern-midrange device/resource representatives define `FD-002`?
+9. What package, peak-RAM, latency, throughput, energy, thermal, context, and KV thresholds or evidence rules apply?
+10. What precision/quantization/build policy is fair across candidates while preserving a baseline-only scientific question?
+11. What runtime/adapters are permitted, and what dependency changes would require separate review before execution?
+12. What contamination/quarantine proof is required for every candidate/result path?
+13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
+14. What exact criteria exclude a candidate before live execution rather than producing an incomplete result later?
+15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
+16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 
 ## 18. Specification acceptance criteria
 
@@ -379,4 +383,4 @@ PHI_ACCESS_AUTHORITY=NONE
 GATED_ASSET_ACCESS_AUTHORITY=NONE
 ```
 
-It does **not** authorize clarification automatically, and it does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, or winner selection.
+Clarification is now explicitly authorized by the founder for this bounded session. This does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, or winner selection.
