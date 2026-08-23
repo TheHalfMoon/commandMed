@@ -50,12 +50,13 @@ Popularity, download counts, likes, social discussion, stars, or vendor reputati
 - Q: Should the frozen primary tournament manifest include only `PRIMARY` candidates whose admission gates are complete before manifest freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved candidates remain discovery/conditional outside that manifest.
 - Q: What precision/quantization policy should Spec 005 use to separate fair backbone comparison from real-device deployability evidence? → A: `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` — use a frozen reference build for primary capability comparison and a separately frozen deployable quantized build for device qualification; quantify compression regression separately.
 
-**Bounded session 2 — in progress (4/5)**
+**Bounded session 2 — complete (5/5)**
 
-- Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: the original `FOUR_PERMISSIVE_BASE_SHORTLIST` is superseded before manifest freeze by the founder's `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`. Admission reconciliation must add `Qwen/Qwen3.5-0.8B-Base` as the lead ultra-compact candidate while retaining the prior four artifacts as quality/device comparators until pre-execution gates can exclude them without post-result substitution.
+- Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: the original `FOUR_PERMISSIVE_BASE_SHORTLIST` is superseded before manifest freeze by the founder's `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`. Admission reconciliation must include ultra-compact base candidates rather than assuming 2B/3B is sufficiently small; read-only reconciliation now includes both `swiss-ai/Apertus-v1.1-0.5B` and `Qwen/Qwen3.5-0.8B-Base` as the leading sub-1B candidates, with larger artifacts retained only as quality/device comparators until frozen pre-execution gates determine eligibility.
 - Q: After hard safety, provenance, licensing, and minimum medical-quality gates pass, where should deployable package size appear in the frozen ranking order? → A: `QUALITY_FLOOR_THEN_SIZE_FIRST` — all hard gates and the frozen minimum medical-quality floor are evaluated first; among candidates that pass them, complete deployable package bytes are the first ranking metric (`LOWER_BETTER`), followed only by predeclared secondary capability/performance/resource metrics.
 - Q: What mass-distribution envelope should the smallest commandMed Core release target? → A: `SUB_700MB_MASS_REACH` — the complete minimum text/core Hugging Face bundle has a hard ceiling of `700 MiB`; the engineering target is `<=600 MiB`; `<=500 MiB` is a stretch target only if the same safety and minimum medical-quality gates still pass. Peak working RAM has an engineering target of `<=2 GiB` at the later-frozen short-context condition, and qualification evidence must include a 4-GB-class phone/resource envelope rather than relying only on flagship devices.
 - Q: What runtime/artifact strategy should be canonical for the smallest mass-distribution release across phones and weak laptops? → A: `GGUF_LLAMA_CPP_CANONICAL` — the minimum-distribution artifact is canonical GGUF with compatibility bound to an immutable reviewed llama.cpp revision/toolchain before execution; MLX, MLC, Core ML, or other native/accelerated derivatives may be published as optional optimized derivatives but do not replace the canonical minimum GGUF artifact or alter its package-size ranking evidence.
+- Q: What quantization policy should be canonical for commandMed Core V1? → A: `Q4_FLOOR_SMALLEST_PASSING` — evaluate a frozen deployable ladder from higher-quality Q5/Q4-class candidates down through Q4-class (`Q5_K_M`, `Q4_K_M`, `Q4_K_S`, `IQ4_XS`, or exact architecture-equivalent variants frozen before execution). For each backbone, the canonical deployable release is the smallest allowed artifact that still passes every safety, minimum medical-quality, compression-regression, package/RAM, runtime, and device hard gate. Sub-4-bit Q3/IQ3/Q2 artifacts are excluded from the V1 `PRIMARY` canonical release even if smaller.
 
 **Founder clarification directives — do not consume additional clarification questions**
 
@@ -240,7 +241,8 @@ Before a candidate can enter a future frozen execution manifest, clarification/p
 13. contamination/quarantine disposition where applicable;
 14. whether the candidate is `PRIMARY`, `CONTROL`, `CONDITIONAL`, or `REFERENCE_ONLY`;
 15. pre-execution evidence that the candidate has a plausible path to the frozen `700 MiB` package ceiling and low-resource RAM/device envelope without candidate-specific post-result threshold changes;
-16. whether the exact candidate architecture can produce a canonical GGUF artifact compatible with the future pinned llama.cpp toolchain without candidate-specific exceptions that destroy comparability.
+16. whether the exact candidate architecture can produce a canonical GGUF artifact compatible with the future pinned llama.cpp toolchain without candidate-specific exceptions that destroy comparability;
+17. whether the candidate has at least one allowed Q5/Q4-class deployable quantization path under `Q4_FLOOR_SMALLEST_PASSING`; sub-4-bit-only feasibility is insufficient for V1 `PRIMARY` admission.
 
 If any required admission field is unresolved, the candidate remains discovery-only or `CONDITIONAL` outside the frozen primary ranking manifest. It must not be inserted merely to produce `INCOMPLETE`, and it must not be removed after results are observed to rescue a selection. Candidate-set freeze occurs only after admission reconciliation is complete.
 
@@ -266,23 +268,29 @@ May inform scientific context where the canonical lineage/evaluation rules permi
 
 ## 10. Ultra-compact-first candidate admission shortlist
 
-`ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` supersedes the earlier four-candidate clarification shortlist before manifest freeze. This is an admission-reconciliation set, not the final frozen primary ranking manifest.
+`ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` is an admission-reconciliation set, not the final frozen primary ranking manifest. Read-only factual reconciliation may add a newly discovered candidate before manifest freeze; no post-result candidate substitution is permitted.
 
-The following exact upstream artifact names are carried forward:
+### Tier A — ultra-compact primary-admission candidates
 
-1. `Qwen/Qwen3.5-0.8B-Base` — **lead ultra-compact admission candidate**;
-2. `Qwen/Qwen3.5-2B-Base` — compact quality comparator;
-3. `mistralai/Ministral-3-3B-Base-2512` — upper-size quality/device comparator;
-4. `google/gemma-4-E2B` — architecture/modality comparator subject to footprint proof;
-5. `HuggingFaceTB/SmolLM3-3B-Base` — text-base quality/control comparator.
+1. `swiss-ai/Apertus-v1.1-0.5B` — **current package-size leader for admission research**;
+2. `Qwen/Qwen3.5-0.8B-Base` — **current capability/ecosystem lead candidate for admission research**.
+
+### Tier B — larger quality/device comparators
+
+3. `Qwen/Qwen3.5-2B-Base` — compact quality comparator;
+4. `mistralai/Ministral-3-3B-Base-2512` — upper-size quality/device comparator;
+5. `google/gemma-4-E2B` — architecture/modality comparator subject to footprint proof;
+6. `HuggingFaceTB/SmolLM3-3B-Base` — text-base quality/control comparator.
 
 Read-only public-source verification performed during clarification observed:
 
+- `swiss-ai/Apertus-v1.1-0.5B` is an official base text-generation artifact under Apache-2.0; its model card describes the v1.1 family as highly efficient 0.5–4B models designed for highly constrained hardware, built with pre-training distillation from Apertus-8B and a fully open/compliant data lineage;
+- a current community conversion of `swiss-ai/Apertus-v1.1-0.5B` demonstrates a llama.cpp-compatible `Q4_K_M` GGUF of approximately `306 MB`; this is **size/runtime-feasibility evidence only**, not commandMed medical-quality evidence;
+- Apertus 0.5B is not a medical-specialized model, so its small size cannot substitute for the same frozen medical-quality and safety gates applied to every `PRIMARY` candidate;
 - `Qwen/Qwen3.5-0.8B-Base` is an official pre-trained-only base artifact with a 0.8B language model and Apache-2.0 metadata;
-- current community GGUF conversions of the corresponding 0.8B family demonstrate approximately 0.55–0.58 GB Q4-class text-model artifacts, with lower-bit artifacts below 0.5 GB; these are **size-feasibility evidence only**, not commandMed quality evidence;
-- the Qwen3.5 vision projector is distributed as a separate artifact in current GGUF packaging, supporting a plausible text-only smallest-package path while preserving optional multimodal expansion;
-- current Apple MLX/Swift tooling includes Qwen3.5 model support, and current MLC LLM sources include Qwen3.5 plus iOS/Android deployment paths; exact runtime qualification remains unresolved;
-- `Qwen/Qwen3.5-2B-Base` currently reports Apache-2.0 and 2B language-model parameters, but representative Q4 GGUF artifacts are around 1.3–1.4 GB, materially larger than the 0.8B path;
+- current community GGUF conversions of the corresponding Qwen 0.8B family demonstrate approximately 0.55–0.58 GB Q4-class text-model artifacts, with lower-bit artifacts below 0.5 GB; these are **size-feasibility evidence only**, not commandMed quality evidence;
+- the Qwen3.5 vision projector is distributed separately in current GGUF packaging, supporting a plausible text-only smallest-package path while preserving optional multimodal expansion;
+- `Qwen/Qwen3.5-2B-Base` currently reports Apache-2.0 and 2B language-model parameters, but representative Q4 GGUF artifacts are materially larger than the frozen 700 MiB ceiling;
 - `mistralai/Ministral-3-3B-Base-2512` is identified by its official model card as a base pre-trained Apache-2.0 variant;
 - `google/gemma-4-E2B` currently reports Apache-2.0 metadata;
 - `HuggingFaceTB/SmolLM3-3B-Base` is identified by its official model card as a base model after pretraining and Apache 2.0;
@@ -292,13 +300,24 @@ Those observations are **discovery evidence only**. They do not satisfy the exac
 
 Therefore:
 
-- `Qwen/Qwen3.5-0.8B-Base` is the current **lead candidate to test for the smallest mass-distribution path**, not a selected winner;
-- none of the five is yet declared fully admitted;
+- Apertus 0.5B and Qwen3.5 0.8B must both proceed through the same exact admission and later tournament rules; neither is selected merely from size, architecture, vendor, or ecosystem claims;
+- none of the six is yet declared fully admitted;
 - none is yet present in a frozen execution manifest;
 - immutable revisions/digests and neutral `candidate_id` values remain unresolved;
 - exact license texts, notices, upstream code/runtime obligations, tokenizer/processor licensing, and intended-use compatibility must be bound before admission;
 - pre-execution package/RAM/runtime evidence may legitimately exclude a larger or incompatible candidate before live tournament execution once the universal-low-resource envelope and runtime contract are frozen;
-- no candidate may be added after results merely because the original shortlist failed.
+- no candidate may be added after results merely because the frozen candidate set failed.
+
+### Medical reference/control continuity — MedGemma
+
+MedGemma remains scientifically important but is not a current V1 `PRIMARY` mass-distribution candidate under this contract:
+
+- `google/medgemma-1.5-4b-it` is currently available only as a 4B multimodal instruction-tuned variant and therefore is ineligible under `BASE_ONLY_PRIMARY`;
+- `google/medgemma-4b-pt` is a genuine pretrained medical base checkpoint, but access requires acceptance of Health AI Developer Foundations terms and therefore is not equivalent to the intended Apache-2.0-style permissive admission posture;
+- current community GGUF evidence for MedGemma 4B places Q4-class text-model artifacts at roughly 2.4–2.6 GB and even Q2 around 1.8 GB, before optional multimodal projector assets, so the 4B base cannot satisfy the frozen `700 MiB` V1 primary package ceiling;
+- canonical decision `D-006` already places the MedGemma family in reference/evaluation-only status by default.
+
+Accordingly, `google/medgemma-4b-pt` should be carried forward as an explicit **medical quality reference/control candidate** when its access and evaluation are separately authorized. It is a model commandMed should aim to meet or exceed on relevant medical dimensions, but it cannot win the current V1 mass-distribution backbone tournament unless a later canonical decision changes the frozen role/device/license contract.
 
 ### Conditional discovery outside the primary shortlist
 
@@ -307,7 +326,7 @@ The LFM2.5 family, including `LiquidAI/LFM2.5-2.6B-Base`, remains `CONDITIONAL` 
 Other prior discovery items remain non-primary unless separately reconciled:
 
 - Phi-4-mini family — control/reference consideration only where exact checkpoint status and purpose justify it;
-- MedGemma family — reference/evaluation-only by default under `D-006`;
+- MedGemma family — explicit medical reference/control, reference/evaluation-only by default under `D-006`;
 - frontier closed, restricted, or gated medical models — reference-only unless a later canonical decision and lineage disposition explicitly authorize more.
 
 No shortlist decision authorizes model access, gated-term acceptance, weight retrieval, benchmark execution, or winner selection.
@@ -351,9 +370,9 @@ At minimum, the eventual plan must preserve evidence across relevant dimensions 
 
 This clarification-stage document does not authorize opening or executing the benchmark payloads needed to obtain those results.
 
-## 14. Device, package, runtime, and resource evidence
+## 14. Device, package, runtime, quantization, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, and `GGUF_LLAMA_CPP_CANONICAL` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
 
 The minimum text/core package envelope is:
 
@@ -365,6 +384,8 @@ PEAK_WORKING_RAM_ENGINEERING_TARGET=2_GiB_OR_LESS_AT_FROZEN_SHORT_CONTEXT
 LOW_RESOURCE_PHONE_TEST_ENVELOPE=4_GB_CLASS
 CANONICAL_MINIMUM_DISTRIBUTION_ARTIFACT=GGUF
 CANONICAL_RUNTIME_FAMILY=LLAMA_CPP
+V1_PRIMARY_QUANTIZATION_POLICY=Q4_FLOOR_SMALLEST_PASSING
+SUB4BIT_PRIMARY_CANONICAL_RELEASE=PROHIBITED
 ```
 
 ### 14.1 Canonical mass-distribution artifact/runtime
@@ -379,6 +400,17 @@ CANONICAL_RUNTIME_FAMILY=LLAMA_CPP
 - an optional derivative that materially changes weights, quantization, tokenizer behavior, prompt semantics, or evaluation-relevant outputs requires its own exact identity and evidence and cannot inherit canonical GGUF claims automatically;
 - no llama.cpp installation, dependency mutation, model conversion, runtime execution, mobile build, or weight access is authorized by this clarification decision.
 
+### 14.2 V1 canonical quantization policy
+
+`Q4_FLOOR_SMALLEST_PASSING` means:
+
+- the future deployable quantization ladder must be frozen before any candidate results are observed;
+- the intended ladder begins with Q5/Q4-class GGUF variants such as `Q5_K_M`, `Q4_K_M`, `Q4_K_S`, and `IQ4_XS`, or exact architecture-equivalent variants proven comparable and frozen before execution;
+- each candidate's canonical deployable artifact is the **smallest allowed ladder member** that passes every frozen safety, minimum medical-quality, compression-regression, `700 MiB` package, RAM, runtime, and device gate;
+- a candidate does not gain an exception merely because a lower-bit representation is the only way it can satisfy the size ceiling;
+- Q3/IQ3/Q2 and other sub-4-bit variants are not eligible as the V1 `PRIMARY` canonical release, even if they are useful experimental artifacts later;
+- the exact order, tool flags, imatrix/calibration policy if any, metadata, and architecture-specific equivalence mapping must be frozen before execution and applied without post-result candidate-specific tuning.
+
 The complete minimum bundle measurement must include model weights plus every tokenizer, config, model-side runtime metadata, and other artifact required for the advertised minimum text/core installation. A general-purpose application/runtime binary may be reported separately only under a single frozen accounting rule applied identically to every candidate. Optional vision or other modality assets may be excluded from the minimum package only when they are genuinely optional and separately downloadable under the same policy for all candidates.
 
 Each target tier must be represented by both:
@@ -391,16 +423,17 @@ The future evidence plan must cover flagship phone, modern-midrange Android, a 4
 Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
 
 1. a **reference build** governed by a common, frozen high-precision policy for primary common-core capability comparison; and
-2. a **deployable build** governed by the canonical GGUF quantization/deployment policy for device qualification on the named devices and resource envelopes.
+2. a **deployable build** governed by the canonical GGUF and `Q4_FLOOR_SMALLEST_PASSING` policy for device qualification on the named devices and resource envelopes.
 
 The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the canonical deployable GGUF build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
 
-The exact reference precision, GGUF quantization ladder, conversion toolchain revision, llama.cpp revision, build flags, architecture-specific equivalence rules, exact short-context value, latency/throughput/energy/thermal thresholds, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+The exact reference precision, conversion toolchain revision, llama.cpp revision, build flags, architecture-specific equivalence rules, exact short-context value, latency/throughput/energy/thermal thresholds, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
 - exact package-byte measurement procedure and exclusions;
 - exact immutable llama.cpp and GGUF conversion-toolchain identities;
+- exact final Q5/Q4 ladder order, conversion flags, and any calibration/imatrix inputs and quarantine rules;
 - peak-memory measurement method;
 - TTFT/prefill/decode/sustained-throughput measurement method;
 - energy and thermal measurement method or explicit bounded proxy if direct measurement is not feasible;
@@ -420,7 +453,7 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact tournament manifest digest;
 - exact canonical upstream identities;
 - exact reference-build identity;
-- exact canonical GGUF deployable artifact identity;
+- exact canonical GGUF deployable artifact identity and quantization type;
 - exact conversion-toolchain and llama.cpp revision/configuration;
 - exact benchmark/metric/safety/lineage contracts;
 - exact device/resource identity where device evidence is claimed;
@@ -447,13 +480,15 @@ Examples include:
 - non-comparable metric vectors;
 - complete minimum text/core bundle exceeding `700 MiB` under the frozen accounting rule;
 - inability to construct a canonical comparable GGUF artifact under the frozen toolchain/runtime contract;
+- inability to satisfy V1 gates using an allowed Q5/Q4-class artifact under `Q4_FLOOR_SMALLEST_PASSING`;
+- using Q3/IQ3/Q2 or another sub-4-bit artifact as the V1 `PRIMARY` canonical release;
 - missing required device evidence under `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
 - incomplete or candidate-specific package accounting that would make the size metric non-comparable;
 - omitting required assets from the measured minimum package or inconsistently excluding optional modality assets;
 - substituting an MLX/MLC/Core ML/native derivative for the canonical GGUF evidence without a separately frozen equivalence contract;
-- device representative, envelope boundary, runtime, build policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
+- device representative, envelope boundary, runtime, build policy, quantization policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie under the complete predeclared ranking vector.
@@ -464,7 +499,7 @@ The correct outcome in these cases is not a guessed winner; it is refusal, disqu
 
 The clarification lifecycle must answer, at minimum:
 
-1. **PARTIALLY RESOLVED / SUPERSEDED SHORTLIST:** `ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` now carries five exact upstream artifact names, led by `Qwen/Qwen3.5-0.8B-Base`. Immutable revisions/digests, neutral candidate IDs, and the final fully admitted `PRIMARY` set remain unresolved.
+1. **PARTIALLY RESOLVED / RECONCILED SHORTLIST:** `ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` now carries six exact upstream artifact names, with `swiss-ai/Apertus-v1.1-0.5B` as the current package-size leader and `Qwen/Qwen3.5-0.8B-Base` as the current capability/ecosystem lead for admission research. Immutable revisions/digests, neutral candidate IDs, and the final fully admitted `PRIMARY` set remain unresolved.
 2. **RESOLVED:** `BASE_ONLY_PRIMARY`; only exact base/pretrained checkpoints may be `PRIMARY`. Instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
 3. What exact primary license evidence and Spec 003 lineage disposition applies to each intended use?
 4. Which candidates require gated terms or access, and can they remain discovery/reference-only without accepting those terms?
@@ -473,8 +508,8 @@ The clarification lifecycle must answer, at minimum:
 7. What exact safety and minimum medical-quality gates are evaluated before ranking, and how are blocked/incomplete states represented?
 8. **RESOLVED POLICY:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires named-device evidence plus a reproducible resource envelope, now including a low-resource laptop and explicit 4-GB-class phone/resource envelope. Exact named devices and remaining numeric thresholds remain to be frozen before execution.
 9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at a later-frozen short context, and 4-GB-class phone/resource evidence. Exact short context, RAM hard gate, latency, throughput, energy, thermal, and KV rules remain unresolved.
-10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`; primary capability comparison uses a frozen reference build, device qualification uses a frozen deployable quantized build, and compression regression is reported separately. Exact reference precision and quantization details remain to be frozen before execution.
-11. **RESOLVED POLICY / DETAILS PENDING:** `GGUF_LLAMA_CPP_CANONICAL`; GGUF + pinned llama.cpp is the canonical mass-distribution artifact/runtime family, while MLX/MLC/Core ML/native builds are optional derivatives. Exact immutable runtime/conversion revisions, build flags, mobile wrappers, and quantization ladder remain to be frozen before execution.
+10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` plus `Q4_FLOOR_SMALLEST_PASSING`; primary capability comparison uses a frozen reference build, while the canonical deployable GGUF is the smallest allowed Q5/Q4-class artifact that passes every hard gate. Sub-4-bit artifacts are excluded from the V1 `PRIMARY` canonical release. Exact reference precision and frozen conversion/calibration details remain pending.
+11. **RESOLVED POLICY / DETAILS PENDING:** `GGUF_LLAMA_CPP_CANONICAL`; GGUF + pinned llama.cpp is the canonical mass-distribution artifact/runtime family, while MLX/MLC/Core ML/native builds are optional derivatives. Exact immutable runtime/conversion revisions, build flags, and mobile wrappers remain to be frozen before execution.
 12. What contamination/quarantine proof is required for every candidate/result path?
 13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
 14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
@@ -482,7 +517,7 @@ The clarification lifecycle must answer, at minimum:
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with four accepted questions plus two explicit founder directives. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. The unresolved factual/evidence requirements above remain active and prevent the clarification lifecycle from being declared complete or advancing to `PLAN`.
 
 ## 18. Specification acceptance criteria
 
@@ -492,12 +527,14 @@ A future complete clarification artifact is acceptable only when independent rev
 - binds the canonical predecessor identities and founder decisions;
 - preserves baseline-only/no-training scope;
 - distinguishes admission shortlisting from frozen admission and execution manifest membership;
-- carries a genuine sub-1B base candidate through admission reconciliation rather than assuming 2B/3B is small enough;
+- carries genuine sub-1B base candidates through admission reconciliation, including Apertus 0.5B and Qwen3.5 0.8B, rather than assuming 2B/3B is small enough;
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
+- preserves MedGemma 4B PT as a medical reference/control rather than incorrectly forcing it into a V1 mass-distribution role it cannot satisfy under the current package/access contract;
 - preserves named-device evidence while explicitly covering iPhone, modern-midrange Android, 4-GB-class phone/resource evidence, and low-resource laptops;
 - enforces the `700 MiB` complete minimum text/core bundle ceiling under one honest, candidate-neutral accounting rule;
 - treats `<=600 MiB`, `<=500 MiB`, and `<=2 GiB` as engineering/stretch targets exactly as frozen, without converting them into retrospective hard gates;
 - uses canonical GGUF + immutable llama.cpp compatibility as the minimum mass-distribution path, with optional optimized derivatives kept semantically and evidentially separate;
+- enforces `Q4_FLOOR_SMALLEST_PASSING` and prohibits a sub-4-bit V1 primary release from winning merely because it is smaller;
 - applies `QUALITY_FLOOR_THEN_SIZE_FIRST` only after all non-compensable safety/provenance/license/minimum-medical-quality gates pass;
 - keeps Hugging Face adoption/category-leadership KPIs outside the scientific ranking and claims boundary;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
@@ -509,21 +546,25 @@ Neither clarification session is a declaration that the full clarification lifec
 
 ## 19. Exit and next lifecycle step
 
-Current working state after four accepted decisions in bounded clarification session 2:
+Current working state after completion of bounded clarification session 2:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
 CLARIFICATION_SESSION_1=5_QUESTIONS_ACCEPTED
-CLARIFICATION_SESSION_2=IN_PROGRESS
-CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=4
+CLARIFICATION_SESSION_2=5_QUESTIONS_ACCEPTED
+CLARIFICATION_SESSION_2_STATUS=COMPLETE_BOUNDED_SESSION
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
 GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP=PRODUCT_AMBITION
-LEAD_ULTRA_COMPACT_ADMISSION_CANDIDATE=Qwen/Qwen3.5-0.8B-Base
+ULTRA_COMPACT_SIZE_LEADER_ADMISSION_CANDIDATE=swiss-ai/Apertus-v1.1-0.5B
+ULTRA_COMPACT_CAPABILITY_ECOSYSTEM_ADMISSION_CANDIDATE=Qwen/Qwen3.5-0.8B-Base
+MEDICAL_REFERENCE_CONTROL=google/medgemma-4b-pt
 SIZE_PRIORITY=QUALITY_FLOOR_THEN_SIZE_FIRST
 MASS_REACH_PACKAGE_POLICY=SUB_700MB_MASS_REACH
 COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
 CANONICAL_MINIMUM_DISTRIBUTION_ARTIFACT=GGUF
 CANONICAL_RUNTIME_FAMILY=LLAMA_CPP
+V1_PRIMARY_QUANTIZATION_POLICY=Q4_FLOOR_SMALLEST_PASSING
+SUB4BIT_PRIMARY_CANONICAL_RELEASE=PROHIBITED
 PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
@@ -536,5 +577,7 @@ GATED_ASSET_ACCESS_AUTHORITY=NONE
 CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 ```
+
+Completion of this bounded five-question session does **not** mean the full clarification lifecycle is complete. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
 
 Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
