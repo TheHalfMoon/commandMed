@@ -19,6 +19,8 @@
 
 Select the strongest release-compatible **base/backbone candidate evidence** for commandMed under a frozen, safety-capped, provenance-aware, resource-aware tournament.
 
+A founder clarification on 2026-08-23 establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`: the eventual commandMed release should be small enough to make installation practical on iPhones, Android phones, and low-end ordinary laptops, with the explicit product ambition of maximizing broad Hugging Face adoption. This distribution goal does not override clinical safety, provenance, licensing, or minimum-quality gates.
+
 Spec 005 is a **baseline-only tournament**. It does not train, fine-tune, distill, align, quantization-aware-train, or otherwise optimize a candidate.
 
 The tournament must compare candidates using the canonical evaluation, safety, provenance, and tournament contracts inherited from Specs 001–004. A winner may be selected only when the evidence is complete, comparable, license-compatible with the intended release posture, and uniquely best under the predeclared comparison strategy.
@@ -27,11 +29,12 @@ A valid outcome may be `NO_SELECTION`.
 
 ## 2. Why this spec exists
 
-The Grand Master Plan deliberately does not preselect a backbone. Spec 005 converts that principle into a bounded evidence decision while preserving three hard truths:
+The Grand Master Plan deliberately does not preselect a backbone. Spec 005 converts that principle into a bounded evidence decision while preserving four hard truths:
 
 1. medical and safety quality cannot be traded away merely for a smaller parameter count;
 2. a technically strong candidate is not release-eligible if its lineage or license posture is incompatible with the canonical founder decision;
-3. claimed device fit must be demonstrated on named device/resource classes rather than inferred from model size or vendor claims.
+3. claimed device fit must be demonstrated on named device/resource classes rather than inferred from model size or vendor claims;
+4. once safety, provenance, licensing, and minimum-quality gates are satisfied, deployable package size and low-resource reach are first-class product constraints rather than secondary marketing claims.
 
 ## Clarifications
 
@@ -47,7 +50,11 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 
 **Bounded session 2 — in progress (1/5)**
 
-- Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: `FOUR_PERMISSIVE_BASE_SHORTLIST` — carry forward `Qwen/Qwen3.5-2B-Base`, `mistralai/Ministral-3-3B-Base-2512`, `google/gemma-4-E2B`, and `HuggingFaceTB/SmolLM3-3B-Base` for admission reconciliation; keep LFM2.5 candidates `CONDITIONAL` outside the primary shortlist until exact license compatibility is resolved.
+- Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: the original `FOUR_PERMISSIVE_BASE_SHORTLIST` is superseded before manifest freeze by the founder's `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`. Admission reconciliation must add `Qwen/Qwen3.5-0.8B-Base` as the lead ultra-compact candidate while retaining the prior four artifacts as quality/device comparators until pre-execution gates can exclude them without post-result substitution.
+
+**Founder clarification directive — does not consume an additional clarification question**
+
+- `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`: optimize the eventual release for extremely small download footprint and practical local use across iPhone, Android, and low-end laptops. The text/core package should be independently downloadable; optional multimodal/vision assets should not be required for the smallest common-core package when the chosen runtime permits separation. Safety, provenance, licensing, and minimum medical-quality requirements remain hard gates.
 
 ## 3. Canonical authority and inherited identities
 
@@ -96,21 +103,23 @@ Therefore:
 - a conditional candidate must not be promoted to the final release lineage merely because it scores well;
 - this specification does not itself declare any named candidate fully license-compatible merely because its current public model card reports a permissive license.
 
-### 4.2 Target device tier
+### 4.2 Target device tier and distribution reach
 
-`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, and clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy.
+`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, and the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`.
 
 Therefore Spec 005 must eventually freeze:
 
 - one named physical flagship representative plus a reproducible flagship resource envelope;
 - one named physical modern-midrange representative plus a reproducible modern-midrange resource envelope;
-- package/storage budget;
+- an additional low-resource laptop envelope representative of ordinary weak CPU/RAM hardware;
+- package/download-size budget for the smallest common-core release artifact;
 - peak RAM budget;
 - latency/TTFT and sustained-throughput expectations appropriate to the tournament;
-- energy/battery and thermal evidence requirements;
-- context/KV behavior relevant to the selected comparison protocol.
+- energy/battery and thermal evidence requirements on phones;
+- context/KV behavior relevant to the selected comparison protocol;
+- whether optional modality assets are separately downloadable from the common text/core package.
 
-The named device models, envelope values, and numeric qualification thresholds are intentionally **not frozen in clarification yet**. They must be fixed before any live execution authorization and cannot be chosen after candidate results are observed.
+The named devices, envelope values, and numeric qualification thresholds are intentionally **not frozen in clarification yet**. They must be fixed before any live execution authorization and cannot be chosen after candidate results are observed.
 
 ### 4.3 Donor-origin restrictions
 
@@ -176,7 +185,8 @@ Requirements:
 - ranking metric order must be frozen before live evaluation;
 - weighted sums are prohibited unless a future separately reviewed canonical contract explicitly replaces this rule;
 - safety and lineage hard gates are not compensable by higher capability scores;
-- device/resource criteria that become hard qualification gates must be frozen before execution and must not be retrofitted after results are seen.
+- device/resource criteria that become hard qualification gates must be frozen before execution and must not be retrofitted after results are seen;
+- clarification must still decide how minimum medical-quality gates and deployable package size interact in the lexicographic ranking; the founder's distribution priority does not silently rewrite the canonical ranking order.
 
 ## 8. Candidate admission contract
 
@@ -199,7 +209,8 @@ Before a candidate can enter a future frozen execution manifest, clarification/p
 11. runtime compatibility evidence required to construct an authorized execution plan;
 12. expected device/resource evidence class;
 13. contamination/quarantine disposition where applicable;
-14. whether the candidate is `PRIMARY`, `CONTROL`, `CONDITIONAL`, or `REFERENCE_ONLY`.
+14. whether the candidate is `PRIMARY`, `CONTROL`, `CONDITIONAL`, or `REFERENCE_ONLY`;
+15. pre-execution evidence that the candidate has a plausible path to the frozen universal-low-resource package/RAM envelope without candidate-specific post-result threshold changes.
 
 If any required admission field is unresolved, the candidate remains discovery-only or `CONDITIONAL` outside the frozen primary ranking manifest. It must not be inserted merely to produce `INCOMPLETE`, and it must not be removed after results are observed to rescue a selection. Candidate-set freeze occurs only after admission reconciliation is complete.
 
@@ -223,34 +234,41 @@ A technically relevant candidate whose exact license, intended-use, device-fit, 
 
 May inform scientific context where the canonical lineage/evaluation rules permit, but cannot be selected as the release backbone under the current contract. Instruction-tuned models may be reference-only where scientifically useful and otherwise authorized.
 
-## 10. Candidate admission shortlist and discovery continuity
+## 10. Ultra-compact-first candidate admission shortlist
 
-`FOUR_PERMISSIVE_BASE_SHORTLIST` is frozen as the **clarification-stage admission shortlist**, not as the final frozen primary ranking manifest.
+`ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` supersedes the earlier four-candidate clarification shortlist before manifest freeze. This is an admission-reconciliation set, not the final frozen primary ranking manifest.
 
-The following exact upstream artifact names are carried forward for admission reconciliation:
+The following exact upstream artifact names are carried forward:
 
-1. `Qwen/Qwen3.5-2B-Base`
-2. `mistralai/Ministral-3-3B-Base-2512`
-3. `google/gemma-4-E2B`
-4. `HuggingFaceTB/SmolLM3-3B-Base`
+1. `Qwen/Qwen3.5-0.8B-Base` — **lead ultra-compact admission candidate**;
+2. `Qwen/Qwen3.5-2B-Base` — compact quality comparator;
+3. `mistralai/Ministral-3-3B-Base-2512` — upper-size quality/device comparator;
+4. `google/gemma-4-E2B` — architecture/modality comparator subject to footprint proof;
+5. `HuggingFaceTB/SmolLM3-3B-Base` — text-base quality/control comparator.
 
 Read-only public-source verification performed during clarification observed:
 
-- `Qwen/Qwen3.5-2B-Base` — current public Hugging Face metadata reports `apache-2.0`;
-- `mistralai/Ministral-3-3B-Base-2512` — official model card identifies it as the base pre-trained variant and Apache 2.0;
-- `google/gemma-4-E2B` — current public Hugging Face metadata reports `apache-2.0`;
-- `HuggingFaceTB/SmolLM3-3B-Base` — official model card identifies it as the base model after pretraining and Apache 2.0;
-- `LiquidAI/LFM2.5-2.6B-Base` — current public metadata identifies it as a pre-trained base checkpoint under custom license `lfm1.0`.
+- `Qwen/Qwen3.5-0.8B-Base` is an official pre-trained-only base artifact with a 0.8B language model and Apache-2.0 metadata;
+- current community GGUF conversions of the corresponding 0.8B family demonstrate approximately 0.55–0.58 GB Q4-class text-model artifacts, with lower-bit artifacts below 0.5 GB; these are **size-feasibility evidence only**, not commandMed quality evidence;
+- the Qwen3.5 vision projector is distributed as a separate artifact in current GGUF packaging, supporting a plausible text-only smallest-package path while preserving optional multimodal expansion;
+- current Apple MLX/Swift tooling includes Qwen3.5 model support, and current MLC LLM sources include Qwen3.5 plus iOS/Android deployment paths; exact runtime qualification remains unresolved;
+- `Qwen/Qwen3.5-2B-Base` currently reports Apache-2.0 and 2B language-model parameters, but representative Q4 GGUF artifacts are around 1.3–1.4 GB, materially larger than the 0.8B path;
+- `mistralai/Ministral-3-3B-Base-2512` is identified by its official model card as a base pre-trained Apache-2.0 variant;
+- `google/gemma-4-E2B` currently reports Apache-2.0 metadata;
+- `HuggingFaceTB/SmolLM3-3B-Base` is identified by its official model card as a base model after pretraining and Apache 2.0;
+- `LiquidAI/LFM2.5-2.6B-Base` remains under custom `lfm1.0` metadata and is not promoted into this shortlist.
 
-Those observations are **discovery evidence only**. They do not satisfy the exact Spec 003 lineage contract, immutable-revision requirement, tokenizer/processor identity binding, access-status proof, contamination/quarantine proof, runtime compatibility proof, or device qualification required for `PRIMARY` admission.
+Those observations are **discovery evidence only**. They do not satisfy the exact Spec 003 lineage contract, immutable-revision requirement, tokenizer/processor identity binding, access-status proof, contamination/quarantine proof, runtime compatibility proof, medical-quality proof, or device qualification required for `PRIMARY` admission.
 
 Therefore:
 
-- none of the four is yet declared fully admitted;
+- `Qwen/Qwen3.5-0.8B-Base` is the current **lead candidate to test for the smallest mass-distribution path**, not a selected winner;
+- none of the five is yet declared fully admitted;
 - none is yet present in a frozen execution manifest;
 - immutable revisions/digests and neutral `candidate_id` values remain unresolved;
 - exact license texts, notices, upstream code/runtime obligations, tokenizer/processor licensing, and intended-use compatibility must be bound before admission;
-- a later admission reconciliation may exclude any shortlisted artifact that fails a frozen gate without substituting a new candidate post-result.
+- pre-execution package/RAM evidence may legitimately exclude a larger candidate before live tournament execution once the universal-low-resource envelope is frozen;
+- no candidate may be added after results merely because the original shortlist failed.
 
 ### Conditional discovery outside the primary shortlist
 
@@ -298,41 +316,46 @@ At minimum, the eventual plan must preserve evidence across relevant dimensions 
 - general-capability preservation potential where measurable without training;
 - document/multimodal evidence as secondary non-ranking evidence only where separately authorized and comparable;
 - resource/device evidence;
+- package/download footprint and runtime reach across the frozen low-resource envelopes;
 - license/lineage fit.
 
 This clarification-stage document does not authorize opening or executing the benchmark payloads needed to obtain those results.
 
-## 14. Device and resource evidence
+## 14. Device, package, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` and `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, and `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` are frozen as Spec 005 evidence strategies.
 
 Each target tier must be represented by both:
 
 1. one named physical device representative used for real device-specific evidence such as latency, sustained behavior, battery/energy, and thermals; and
 2. one reproducible resource envelope describing the relevant hardware/resource boundary so conclusions are not tied solely to a single retail handset.
 
+The future evidence plan must cover at least flagship phone, modern-midrange Android, and low-resource ordinary laptop deployment. iPhone coverage must be demonstrated through an Apple-compatible runtime/build path rather than inferred from desktop Apple Silicon results.
+
 Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
 
 1. a **reference build** governed by a common, frozen high-precision policy for primary common-core capability comparison; and
 2. a **deployable build** governed by a common, frozen quantization/deployment policy for device qualification on the named devices and resource envelopes.
 
-Primary capability ranking uses the reference-build evidence. Device qualification uses the deployable-build evidence. The deployable build must not replace the reference build in the primary capability vector, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule.
+Primary capability comparison uses the reference-build evidence. Device/package qualification uses the deployable-build evidence. The deployable build must not replace the reference build in the primary capability vector, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule.
 
-The exact reference precision, quantization format/level, conversion toolchain, runtime, build flags, and any architecture-specific equivalence rules remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+For mass distribution, the smallest common-core artifact should default to text-only when the selected architecture/runtime allows optional vision assets to be packaged separately. A larger optional multimodal artifact must not inflate the claimed minimum download size.
 
-The flagship and modern-midrange envelopes must be defined before execution using reproducible properties such as available memory, storage/package constraints, compute/runtime capability, operating conditions, and context/KV conditions. The exact named devices and envelope values remain unresolved until later clarification/planning evidence is sufficient to freeze them without vendor-claim bias.
+The exact reference precision, quantization format/level, conversion toolchain, runtime, build flags, architecture-specific equivalence rules, package-size ceiling, and RAM ceiling remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
-- package-byte measurement method;
+- package-byte measurement method, including tokenizer/config/runtime assets that are required for the advertised minimum installation;
 - peak-memory measurement method;
 - TTFT/prefill/decode/sustained-throughput measurement method;
 - energy and thermal measurement method or explicit bounded proxy if a direct method is not yet feasible;
 - context length and KV-cache conditions;
 - repetition count, warm-up, aggregation, and failure handling;
-- what constitutes a hard device-qualification failure versus a reported non-ranking metric.
+- what constitutes a hard device/package-qualification failure versus a reported non-ranking metric;
+- the minimum medical-quality floor below which a smaller artifact cannot qualify;
+- the exact ranking position of deployable package size after all hard gates pass.
 
-Parameter count and upstream marketing claims remain descriptive only. No named representative, envelope boundary, build policy, or threshold may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No named representative, envelope boundary, build policy, package threshold, RAM threshold, or ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -344,6 +367,7 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact runtime/build configuration;
 - exact benchmark/metric/safety/lineage contracts;
 - exact device/resource identity where device evidence is claimed;
+- exact packaged artifact identity and byte size where distribution evidence is claimed;
 - exact result-set evidence artifact IDs;
 - deterministic tournament report identity.
 
@@ -366,7 +390,9 @@ Examples include:
 - missing required device evidence under `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
-- device representative, envelope boundary, build policy, or threshold changes after results are observed;
+- failure to satisfy a frozen universal-low-resource package/RAM hard gate;
+- claiming the optional vision package as part of the minimum footprint only when advantageous to a candidate, or omitting required assets from the measured package;
+- device representative, envelope boundary, build policy, package threshold, RAM threshold, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie.
@@ -377,24 +403,25 @@ The correct outcome in these cases is not a guessed winner; it is refusal, disqu
 
 The clarification lifecycle must answer, at minimum:
 
-1. **PARTIALLY RESOLVED:** `FOUR_PERMISSIVE_BASE_SHORTLIST` carries forward four exact upstream artifact names for admission reconciliation. Immutable revisions/digests, neutral candidate IDs, and final fully admitted `PRIMARY` set remain unresolved.
+1. **PARTIALLY RESOLVED / SUPERSEDED SHORTLIST:** `ULTRA_COMPACT_FIRST_ADMISSION_SHORTLIST` now carries five exact upstream artifact names, led by `Qwen/Qwen3.5-0.8B-Base`. Immutable revisions/digests, neutral candidate IDs, and the final fully admitted `PRIMARY` set remain unresolved.
 2. **RESOLVED:** `BASE_ONLY_PRIMARY`; only exact base/pretrained checkpoints may be `PRIMARY`. Instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
 3. What exact primary license evidence and Spec 003 lineage disposition applies to each intended use?
 4. Which candidates require gated terms or access, and can they remain discovery/reference-only without accepting those terms?
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
-7. What exact safety gates are evaluated before ranking, and how are blocked/incomplete states represented?
-8. **RESOLVED POLICY:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires one named physical representative plus a reproducible resource envelope. Exact devices, envelope values, and numeric thresholds remain to be frozen before execution.
-9. What package, peak-RAM, latency, throughput, energy, thermal, context, and KV thresholds or evidence rules apply?
+7. What exact safety and minimum medical-quality gates are evaluated before ranking, and how are blocked/incomplete states represented?
+8. **RESOLVED POLICY:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires named-device evidence plus a reproducible resource envelope, now including a low-resource laptop envelope. Exact devices, envelope values, and numeric thresholds remain to be frozen before execution.
+9. What exact package, peak-RAM, latency, throughput, energy, thermal, context, and KV thresholds or evidence rules implement `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`?
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`; primary capability comparison uses a frozen reference build, device qualification uses a frozen deployable quantized build, and compression regression is reported separately. Exact precision/quantization/runtime details remain to be frozen before execution.
-11. What runtime/adapters are permitted, and what dependency changes would require separate review before execution?
+11. What runtime/adapters are permitted on iOS, Android, and low-resource laptops, and what dependency changes would require separate review before execution?
 12. What contamination/quarantine proof is required for every candidate/result path?
 13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
 14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
+17. After hard safety/provenance/license/minimum-quality gates pass, where exactly does deployable package size appear in the `LEXICOGRAPHIC_PREDECLARED` ranking order?
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with one accepted question. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with one accepted question plus one explicit founder directive. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
 
 ## 18. Specification acceptance criteria
 
@@ -404,8 +431,10 @@ A future complete clarification artifact is acceptable only when independent rev
 - binds the canonical predecessor identities and founder decisions;
 - preserves baseline-only/no-training scope;
 - distinguishes admission shortlisting from frozen admission and execution manifest membership;
+- carries a genuine sub-1B base candidate through admission reconciliation rather than assuming 2B/3B is small enough;
 - makes permissive release-lineage compatibility an explicit gate without asserting unverified license compatibility;
-- preserves flagship + modern-midrange device intent without inventing unsupported numeric thresholds;
+- preserves named-device evidence while explicitly covering iPhone, modern-midrange Android, and low-resource laptops;
+- measures the complete minimum downloadable package honestly and separates optional modality assets only when technically valid;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
 - records accepted clarification decisions without contradicting unresolved gates;
 - resolves all clarification requirements that materially affect candidate admission, comparability, device qualification, execution planning, and exact-head review before advancing to `PLAN`;
@@ -415,13 +444,15 @@ Neither clarification session is a declaration that the full clarification lifec
 
 ## 19. Exit and next lifecycle step
 
-Current working state after the first accepted decision in bounded clarification session 2:
+Current working state after the founder distribution directive in bounded clarification session 2:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
 CLARIFICATION_SESSION_1=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2=IN_PROGRESS
 CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=1
+UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
+LEAD_ULTRA_COMPACT_ADMISSION_CANDIDATE=Qwen/Qwen3.5-0.8B-Base
 CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 PLAN_AUTHORITY=NONE
