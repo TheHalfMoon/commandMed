@@ -58,9 +58,10 @@ Popularity, download counts, likes, social discussion, stars, or vendor reputati
 - Q: What runtime/artifact strategy should be canonical for the smallest mass-distribution release across phones and weak laptops? → A: `GGUF_LLAMA_CPP_CANONICAL` — the minimum-distribution artifact is canonical GGUF with compatibility bound to an immutable reviewed llama.cpp revision/toolchain before execution; MLX, MLC, Core ML, or other native/accelerated derivatives may be published as optional optimized derivatives but do not replace the canonical minimum GGUF artifact or alter its package-size ranking evidence.
 - Q: What quantization policy should be canonical for commandMed Core V1? → A: `Q4_FLOOR_SMALLEST_PASSING` — evaluate a frozen deployable ladder from higher-quality Q5/Q4-class candidates down through Q4-class (`Q5_K_M`, `Q4_K_M`, `Q4_K_S`, `IQ4_XS`, or exact architecture-equivalent variants frozen before execution). For each backbone, the canonical deployable release is the smallest allowed artifact that still passes every safety, minimum medical-quality, compression-regression, package/RAM, runtime, and device hard gate. Sub-4-bit Q3/IQ3/Q2 artifacts are excluded from the V1 `PRIMARY` canonical release even if smaller.
 
-**Bounded session 3 — in progress (1/5)**
+**Bounded session 3 — in progress (2/5)**
 
 - Q: Which named device/resource targets must Spec 005 represent before any live tournament can be authorized? → A: `MASS_REACH_FIVE_TARGET_SET` — require Apple iPhone 17 Pro 12 GB as the flagship Apple anchor, Apple iPhone 13 4 GB as the Apple low-resource anchor, Samsung Galaxy A56 5G 8 GB as the modern-midrange Android anchor, Samsung Galaxy A16 5G 4 GB as the low-resource Android anchor, and an Intel Processor N100 + 8 GB x86-64 weak-laptop envelope. This freezes the target set only; OS/runtime revisions, context/KV conditions, performance thresholds, thermal/energy protocol, and hard-failure semantics remain unresolved and must be frozen pre-execution.
+- Q: What context length must be the common hard qualification condition on all five mass-reach targets? → A: `8K_CORE_16K_STRESS` — require `8192` tokens as the candidate-neutral hard context on all five frozen targets; require `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports that context. Exact KV cache types/quantization, batch/ubatch settings, prompt/generation split, cache policy, peak-RAM measurement, latency/throughput thresholds, thermals, energy, OS/runtime revisions, and target-specific hard-failure semantics remain unresolved and must be frozen before execution.
 
 **Founder clarification directives — do not consume additional clarification questions**
 
@@ -117,9 +118,9 @@ Therefore:
 
 ### 4.2 Target device tier and distribution reach
 
-`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`, and bounded clarification session 3 freezes `MASS_REACH_FIVE_TARGET_SET` as the required device/resource target set.
+`FD-002=FLAGSHIP_PLUS_MODERN_MIDRANGE` establishes the V1 target tier, clarification freezes `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` as the evidence strategy, the founder further establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY` plus `SUB_700MB_MASS_REACH`, and bounded clarification session 3 freezes both `MASS_REACH_FIVE_TARGET_SET` and `8K_CORE_16K_STRESS`.
 
-The frozen mass-reach package and target policy is:
+The frozen mass-reach package, target, and context policy is:
 
 ```text
 MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
@@ -133,13 +134,20 @@ APPLE_LOW_RESOURCE_REPRESENTATIVE=Apple_iPhone_13_4GB
 MODERN_MIDRANGE_ANDROID_REPRESENTATIVE=Samsung_Galaxy_A56_5G_8GB
 LOW_RESOURCE_ANDROID_REPRESENTATIVE=Samsung_Galaxy_A16_5G_4GB
 LOW_RESOURCE_LAPTOP_ENVELOPE=Intel_N100_8GB_x86_64
+CONTEXT_EVIDENCE_POLICY=8K_CORE_16K_STRESS
+COMMON_CORE_DEVICE_CONTEXT=8192_TOKENS
+LOW_RESOURCE_HARD_CONTEXT=8192_TOKENS
+SECONDARY_STRESS_CONTEXT=16384_TOKENS
+SECONDARY_STRESS_SCOPE=8GB_CLASS_OR_HIGHER_AND_WHERE_RUNTIME_SUPPORTS
 ```
 
 Spec 005 must eventually bind execution evidence for every frozen target without silently weakening the resource class after candidate results are observed. A physical-device substitution is permissible only through a separately reviewed pre-result clarification that preserves the same or stricter resource class and records the reason and new exact identity.
 
-The `700 MiB` package ceiling is a hard qualification boundary. The `<=600 MiB` and `<=500 MiB` values are engineering and stretch targets, not substitutes for the hard safety/medical-quality gates. The `<=2 GiB` peak working RAM value is an engineering target until the exact context/runtime measurement contract is frozen; it must not be misreported as a proven runtime guarantee before execution evidence exists.
+Every candidate must eventually qualify at the same `8192`-token hard context on all five frozen targets. The `16384`-token tier is required secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it; the stress-result consequence remains separate from the hard 8K qualification condition until target-specific hard-failure semantics are frozen pre-execution.
 
-The target set is now frozen, but exact OS/build versions, the llama.cpp revision, platform wrapper/application identities, short-context value, KV conditions, latency/TTFT/throughput thresholds, peak-RAM hard threshold, energy/battery and thermal protocol, repetition/warm-up/aggregation methodology, and target-specific hard-failure semantics remain intentionally unresolved. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
+The `700 MiB` package ceiling is a hard qualification boundary. The `<=600 MiB` and `<=500 MiB` values are engineering and stretch targets, not substitutes for the hard safety/medical-quality gates. The `<=2 GiB` peak working RAM value remains an engineering target; exact measurement methodology and any hard RAM threshold are unresolved and must not be misreported as proven runtime guarantees before execution evidence exists.
+
+The target set and common context policy are now frozen, but exact OS/build versions, the llama.cpp revision, platform wrapper/application identities, KV cache type/quantization, batch/ubatch settings, prompt/generation split, cache reuse policy, latency/TTFT/throughput thresholds, peak-RAM hard threshold and measurement method, energy/battery and thermal protocol, repetition/warm-up/aggregation methodology, and target-specific hard-failure semantics remain intentionally unresolved. They must be fixed before live execution authorization and cannot be chosen after candidate results are observed.
 
 ### 4.3 Donor-origin restrictions
 
@@ -385,7 +393,7 @@ This clarification-stage document does not authorize opening or executing the be
 
 ## 14. Device, package, runtime, quantization, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `MASS_REACH_FIVE_TARGET_SET`, `8K_CORE_16K_STRESS`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, `GGUF_LLAMA_CPP_CANONICAL`, and `Q4_FLOOR_SMALLEST_PASSING` are frozen as Spec 005 evidence strategies.
 
 The minimum text/core package and device envelope is:
 
@@ -405,6 +413,11 @@ APPLE_LOW_RESOURCE_REPRESENTATIVE=Apple_iPhone_13_4GB
 MODERN_MIDRANGE_ANDROID_REPRESENTATIVE=Samsung_Galaxy_A56_5G_8GB
 LOW_RESOURCE_ANDROID_REPRESENTATIVE=Samsung_Galaxy_A16_5G_4GB
 LOW_RESOURCE_LAPTOP_ENVELOPE=Intel_N100_8GB_x86_64
+CONTEXT_EVIDENCE_POLICY=8K_CORE_16K_STRESS
+COMMON_CORE_DEVICE_CONTEXT=8192_TOKENS
+LOW_RESOURCE_HARD_CONTEXT=8192_TOKENS
+SECONDARY_STRESS_CONTEXT=16384_TOKENS
+SECONDARY_STRESS_SCOPE=8GB_CLASS_OR_HIGHER_AND_WHERE_RUNTIME_SUPPORTS
 ```
 
 ### 14.1 Canonical mass-distribution artifact/runtime
@@ -434,7 +447,7 @@ The complete minimum bundle measurement must include model weights plus every to
 
 Every frozen target must be represented by named physical-device evidence where the target is a named device and by its corresponding reproducible resource description. The weak-laptop target is intentionally an exact CPU/RAM/ISA envelope; a retail laptop SKU may be added pre-execution if required without weakening that envelope.
 
-The future evidence plan must cover all five frozen targets: iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
+The future evidence plan must cover all five frozen targets: iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64. Every target must use the common `8192`-token hard qualification context. The `16384`-token secondary stress tier is required on the iPhone 17 Pro 12 GB, Galaxy A56 5G 8 GB, and Intel N100 + 8 GB x86-64 targets where the pinned runtime supports that context. It may be collected on lower-resource targets where safe and comparable, but no candidate may receive a reduced 8K hard context because its KV scaling is less favorable. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
 
 Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
 
@@ -443,23 +456,26 @@ Each admitted `PRIMARY` candidate must also have two predeclared build roles whe
 
 The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the canonical deployable GGUF build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
 
-The exact reference precision, conversion toolchain revision, llama.cpp revision, build flags, architecture-specific equivalence rules, exact short-context value, latency/throughput/energy/thermal thresholds, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+The exact reference precision, conversion toolchain revision, llama.cpp revision, build flags, architecture-specific equivalence rules, KV cache type/quantization, batch/ubatch settings, prompt/generation split, cache policy, latency/throughput/energy/thermal thresholds, peak-RAM hard threshold/measurement method, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
 - exact package-byte measurement procedure and exclusions;
 - exact immutable llama.cpp and GGUF conversion-toolchain identities;
 - exact final Q5/Q4 ladder order, conversion flags, and any calibration/imatrix inputs and quarantine rules;
-- peak-memory measurement method;
-- TTFT/prefill/decode/sustained-throughput measurement method;
+- exact KV cache type(s), K/V-type policy, and quantization;
+- exact batch/ubatch settings and prompt/generation split inside the 8K condition;
+- cache reuse/prompt-cache policy;
+- peak-memory measurement method and any hard RAM threshold;
+- TTFT/prefill/decode/sustained-throughput measurement method and thresholds;
 - energy and thermal measurement method or explicit bounded proxy if direct measurement is not feasible;
-- context length and KV-cache conditions;
 - repetition count, warm-up, aggregation, and failure handling;
-- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling;
+- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling and `8192`-token common hard context;
+- how mandatory 16K stress evidence is interpreted where in scope without retroactively changing the 8K hard qualification rule;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
 - the secondary metric order used only after complete deployable package bytes tie.
 
-Parameter count and upstream marketing claims remain descriptive only. No target substitution, remaining envelope boundary, runtime revision, quantization rule, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No target substitution, context reduction, remaining envelope boundary, runtime revision, KV policy, quantization rule, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -473,6 +489,7 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact conversion-toolchain and llama.cpp revision/configuration;
 - exact benchmark/metric/safety/lineage contracts;
 - exact device/resource identity where device evidence is claimed;
+- exact context/KV configuration used for each device result;
 - exact packaged artifact identity and byte size where distribution evidence is claimed;
 - exact result-set evidence artifact IDs;
 - deterministic tournament report identity.
@@ -500,13 +517,16 @@ Examples include:
 - inability to satisfy V1 gates using an allowed Q5/Q4-class artifact under `Q4_FLOOR_SMALLEST_PASSING`;
 - using Q3/IQ3/Q2 or another sub-4-bit artifact as the V1 `PRIMARY` canonical release;
 - missing required evidence for any target in `MASS_REACH_FIVE_TARGET_SET` once device execution is separately authorized;
+- failure to apply the same `8192`-token hard qualification context to every frozen mass-reach target;
+- missing required `16384`-token stress evidence on an 8-GB-class-or-higher target where the pinned runtime supports it;
+- post-result reduction or candidate-specific adjustment of the frozen 8K hard context;
 - post-result substitution of a frozen named device/resource target or weakening of its resource class;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
 - incomplete or candidate-specific package accounting that would make the size metric non-comparable;
 - omitting required assets from the measured minimum package or inconsistently excluding optional modality assets;
 - substituting an MLX/MLC/Core ML/native derivative for the canonical GGUF evidence without a separately frozen equivalence contract;
-- envelope boundary, runtime, build policy, quantization policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
+- envelope boundary, runtime, build policy, KV policy, quantization policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie under the complete predeclared ranking vector.
@@ -524,8 +544,8 @@ The clarification lifecycle must answer, at minimum:
 5. **RESOLVED:** primary ranking uses `COMMON_CORE_PRIMARY_RANKING`; modality-specific evidence is secondary and non-ranking, with no cross-track winner in Spec 005.
 6. What exact canonical benchmark/metric slices are authorized for the baseline tournament?
 7. **PARTIALLY RESOLVED / CANONICAL FLOOR PRESERVED:** zero-violation sentinel rules apply where already frozen by Spec 002, while selective risk, Arabic clinical parity, and lab extraction remain `NO_PASS_UNTIL_FROZEN` pending the canonical clinical/statistical evidence requirements. Exact statistical thresholds remain unresolved and must not be invented from candidate results.
-8. **RESOLVED TARGET SET / DETAILS PENDING:** `MASS_REACH_FIVE_TARGET_SET` freezes iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 as required evidence targets. OS/runtime identities, context/KV conditions, performance/thermal/energy thresholds, and target-specific hard-failure semantics remain to be frozen before execution.
-9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at a later-frozen short context, and 4-GB-class phone/resource evidence. Exact short context, RAM hard gate, latency, throughput, energy, thermal, and KV rules remain unresolved.
+8. **RESOLVED TARGET SET + CONTEXT POLICY / DETAILS PENDING:** `MASS_REACH_FIVE_TARGET_SET` freezes iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 as required evidence targets. `8K_CORE_16K_STRESS` freezes `8192` tokens as the hard qualification context on all five, with required `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it. OS/runtime identities, KV types, batch/prompt-generation/cache settings, performance/thermal/energy thresholds, peak-memory measurement, and target-specific hard-failure semantics remain unresolved.
+9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at the now-frozen common 8K context, and 4-GB-class phone/resource evidence. Exact RAM hard gate/measurement method, latency, throughput, energy, thermal, and KV rules remain unresolved.
 10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` plus `Q4_FLOOR_SMALLEST_PASSING`; primary capability comparison uses a frozen reference build, while the canonical deployable GGUF is the smallest allowed Q5/Q4-class artifact that passes every hard gate. Sub-4-bit artifacts are excluded from the V1 `PRIMARY` canonical release. Exact reference precision and frozen conversion/calibration details remain pending.
 11. **RESOLVED POLICY / DETAILS PENDING:** `GGUF_LLAMA_CPP_CANONICAL`; GGUF + pinned llama.cpp is the canonical mass-distribution artifact/runtime family, while MLX/MLC/Core ML/native builds are optional derivatives. Exact immutable runtime/conversion revisions, build flags, and mobile wrappers remain to be frozen before execution.
 12. What contamination/quarantine proof is required for every candidate/result path, including whether `MODIFICATION_OR_DERIVATION` contamination state may legitimately be `NOT_APPLICABLE` for exact model-weight quantization under the Spec 003 contract?
@@ -535,7 +555,7 @@ The clarification lifecycle must answer, at minimum:
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is in progress at one accepted question. The unresolved factual/evidence requirements above remain active and prevent the clarification lifecycle from being declared complete or advancing to `PLAN`.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is complete at five accepted questions plus two explicit founder directives. Bounded clarification session 3 is in progress at two accepted questions. The unresolved factual/evidence requirements above remain active and prevent the clarification lifecycle from being declared complete or advancing to `PLAN`.
 
 ## 18. Specification acceptance criteria
 
@@ -552,6 +572,7 @@ A future complete clarification artifact is acceptable only when independent rev
 - preserves MedGemma 4B PT as a medical reference/control rather than incorrectly forcing it into a V1 mass-distribution role it cannot satisfy under the current package/access contract;
 - freezes `MASS_REACH_FIVE_TARGET_SET` while keeping execution/performance thresholds separately unresolved until pre-execution evidence design;
 - requires evidence for iPhone 17 Pro 12 GB, iPhone 13 4 GB, Galaxy A56 5G 8 GB, Galaxy A16 5G 4 GB, and Intel N100 + 8 GB x86-64 without post-result target weakening;
+- freezes `8K_CORE_16K_STRESS`, requiring an `8192`-token hard qualification context on all five targets and `16384`-token secondary stress evidence on 8-GB-class-or-higher targets where the pinned runtime supports it, without pretending that KV type, measurement methodology, or stress-result semantics are already frozen;
 - enforces the `700 MiB` complete minimum text/core bundle ceiling under one honest, candidate-neutral accounting rule;
 - treats `<=600 MiB`, `<=500 MiB`, and `<=2 GiB` as engineering/stretch targets exactly as frozen, without converting them into retrospective hard gates;
 - uses canonical GGUF + immutable llama.cpp compatibility as the minimum mass-distribution path, with optional optimized derivatives kept semantically and evidentially separate;
@@ -567,14 +588,14 @@ No bounded clarification session is a declaration that the full clarification li
 
 ## 19. Exit and next lifecycle step
 
-Current working state after `MASS_REACH_FIVE_TARGET_SET` acceptance and candidate-frontier reconciliation:
+Current working state after `MASS_REACH_FIVE_TARGET_SET` and `8K_CORE_16K_STRESS` acceptance plus candidate-frontier reconciliation:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
 CLARIFICATION_SESSION_1=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2_STATUS=COMPLETE_BOUNDED_SESSION
-CLARIFICATION_SESSION_3=1_QUESTION_ACCEPTED
+CLARIFICATION_SESSION_3=2_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_3_STATUS=IN_PROGRESS
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
 GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP=PRODUCT_AMBITION
@@ -595,6 +616,11 @@ APPLE_LOW_RESOURCE_REPRESENTATIVE=Apple_iPhone_13_4GB
 MODERN_MIDRANGE_ANDROID_REPRESENTATIVE=Samsung_Galaxy_A56_5G_8GB
 LOW_RESOURCE_ANDROID_REPRESENTATIVE=Samsung_Galaxy_A16_5G_4GB
 LOW_RESOURCE_LAPTOP_ENVELOPE=Intel_N100_8GB_x86_64
+CONTEXT_EVIDENCE_POLICY=8K_CORE_16K_STRESS
+COMMON_CORE_DEVICE_CONTEXT=8192_TOKENS
+LOW_RESOURCE_HARD_CONTEXT=8192_TOKENS
+SECONDARY_STRESS_CONTEXT=16384_TOKENS
+SECONDARY_STRESS_SCOPE=8GB_CLASS_OR_HIGHER_AND_WHERE_RUNTIME_SUPPORTS
 PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
@@ -608,6 +634,6 @@ CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 ```
 
-Completion of this accepted device-target clarification does **not** mean the full clarification lifecycle is complete. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
+Completion of these accepted device-target and context clarifications does **not** mean the full clarification lifecycle is complete. Remaining factual/evidence requirements must be reconciled and independently reviewed before a transition to `PLAN` can be proposed.
 
 Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
