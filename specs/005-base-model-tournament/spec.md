@@ -232,7 +232,15 @@ The following exact upstream artifact names are carried forward for admission re
 3. `google/gemma-4-E2B`
 4. `HuggingFaceTB/SmolLM3-3B-Base`
 
-Current public primary-source metadata reports Apache-2.0 licensing for these artifacts and identifies them as base/pretrained candidates. That observation is **discovery evidence only**. It does not satisfy the exact Spec 003 lineage contract, immutable-revision requirement, tokenizer/processor identity binding, access-status proof, contamination/quarantine proof, runtime compatibility proof, or device qualification required for `PRIMARY` admission.
+Read-only public-source verification performed during clarification observed:
+
+- `Qwen/Qwen3.5-2B-Base` — current public Hugging Face metadata reports `apache-2.0`;
+- `mistralai/Ministral-3-3B-Base-2512` — official model card identifies it as the base pre-trained variant and Apache 2.0;
+- `google/gemma-4-E2B` — current public Hugging Face metadata reports `apache-2.0`;
+- `HuggingFaceTB/SmolLM3-3B-Base` — official model card identifies it as the base model after pretraining and Apache 2.0;
+- `LiquidAI/LFM2.5-2.6B-Base` — current public metadata identifies it as a pre-trained base checkpoint under custom license `lfm1.0`.
+
+Those observations are **discovery evidence only**. They do not satisfy the exact Spec 003 lineage contract, immutable-revision requirement, tokenizer/processor identity binding, access-status proof, contamination/quarantine proof, runtime compatibility proof, or device qualification required for `PRIMARY` admission.
 
 Therefore:
 
