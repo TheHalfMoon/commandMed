@@ -19,7 +19,7 @@
 
 Select the strongest release-compatible **base/backbone candidate evidence** for commandMed under a frozen, safety-capped, provenance-aware, resource-aware tournament.
 
-A founder clarification on 2026-08-23 establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`: the eventual commandMed release should be small enough to make installation practical on iPhones, Android phones, and low-end ordinary laptops, with the explicit product ambition of maximizing broad Hugging Face adoption. This distribution goal does not override clinical safety, provenance, licensing, or minimum-quality gates.
+A founder clarification on 2026-08-23 establishes `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`: the eventual commandMed release should be small enough to make installation practical on iPhones, Android phones, and low-end ordinary laptops, with the explicit product ambition of maximizing broad Hugging Face adoption. The founder further sets `GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP` as a product ambition: commandMed should compete to become the most downloaded, most adopted, and most discussed open health-AI model on Hugging Face. These are adoption objectives, not scientific claims or ranking metrics, and they never override clinical safety, provenance, licensing, or minimum-quality gates.
 
 Spec 005 is a **baseline-only tournament**. It does not train, fine-tune, distill, align, quantization-aware-train, or otherwise optimize a candidate.
 
@@ -36,6 +36,8 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 3. claimed device fit must be demonstrated on named device/resource classes rather than inferred from model size or vendor claims;
 4. once safety, provenance, licensing, and minimum-quality gates are satisfied, deployable package size and low-resource reach are first-class product constraints rather than secondary marketing claims.
 
+Popularity, download counts, likes, social discussion, stars, or vendor reputation must not enter the scientific tournament ranking vector. Adoption success is measured after release under a separate product KPI framework.
+
 ## Clarifications
 
 ### Session 2026-08-23
@@ -48,15 +50,17 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 - Q: Should the frozen primary tournament manifest include only `PRIMARY` candidates whose admission gates are complete before manifest freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved candidates remain discovery/conditional outside that manifest.
 - Q: What precision/quantization policy should Spec 005 use to separate fair backbone comparison from real-device deployability evidence? → A: `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` — use a frozen reference build for primary capability comparison and a separately frozen deployable quantized build for device qualification; quantify compression regression separately.
 
-**Bounded session 2 — in progress (3/5)**
+**Bounded session 2 — in progress (4/5)**
 
 - Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: the original `FOUR_PERMISSIVE_BASE_SHORTLIST` is superseded before manifest freeze by the founder's `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`. Admission reconciliation must add `Qwen/Qwen3.5-0.8B-Base` as the lead ultra-compact candidate while retaining the prior four artifacts as quality/device comparators until pre-execution gates can exclude them without post-result substitution.
 - Q: After hard safety, provenance, licensing, and minimum medical-quality gates pass, where should deployable package size appear in the frozen ranking order? → A: `QUALITY_FLOOR_THEN_SIZE_FIRST` — all hard gates and the frozen minimum medical-quality floor are evaluated first; among candidates that pass them, complete deployable package bytes are the first ranking metric (`LOWER_BETTER`), followed only by predeclared secondary capability/performance/resource metrics.
 - Q: What mass-distribution envelope should the smallest commandMed Core release target? → A: `SUB_700MB_MASS_REACH` — the complete minimum text/core Hugging Face bundle has a hard ceiling of `700 MiB`; the engineering target is `<=600 MiB`; `<=500 MiB` is a stretch target only if the same safety and minimum medical-quality gates still pass. Peak working RAM has an engineering target of `<=2 GiB` at the later-frozen short-context condition, and qualification evidence must include a 4-GB-class phone/resource envelope rather than relying only on flagship devices.
+- Q: What runtime/artifact strategy should be canonical for the smallest mass-distribution release across phones and weak laptops? → A: `GGUF_LLAMA_CPP_CANONICAL` — the minimum-distribution artifact is canonical GGUF with compatibility bound to an immutable reviewed llama.cpp revision/toolchain before execution; MLX, MLC, Core ML, or other native/accelerated derivatives may be published as optional optimized derivatives but do not replace the canonical minimum GGUF artifact or alter its package-size ranking evidence.
 
-**Founder clarification directive — does not consume an additional clarification question**
+**Founder clarification directives — do not consume additional clarification questions**
 
 - `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`: optimize the eventual release for extremely small download footprint and practical local use across iPhone, Android, and low-end laptops. The text/core package should be independently downloadable; optional multimodal/vision assets should not be required for the smallest common-core package when the chosen runtime permits separation. Safety, provenance, licensing, and minimum medical-quality requirements remain hard gates.
+- `GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP`: optimize product packaging, documentation, discoverability, interoperability, demos, and community usability so commandMed can compete for category-leading Hugging Face downloads and mindshare. This is an aspirational product objective to be measured with post-release KPIs; it is not evidence that commandMed is already category-leading and does not alter scientific/safety qualification.
 
 ## 3. Canonical authority and inherited identities
 
@@ -156,7 +160,7 @@ The following are outside this clarification-stage authority:
 - training, SFT, LoRA/QLoRA, CPT, distillation, DPO, RLVR, QAT, or any other optimization;
 - installing or changing runtime/model dependencies merely to prepare execution;
 - creating hidden caches, credentials, secrets, tokens, provider sessions, or model-serving endpoints;
-- choosing a winner from vendor claims, model-card claims, parameter count, reputation, or preference;
+- choosing a winner from vendor claims, model-card claims, parameter count, reputation, preference, downloads, likes, or social attention;
 - treating this document's candidate-admission shortlist as an execution manifest.
 
 ## 6. Tournament outcome contract
@@ -210,7 +214,8 @@ Requirements:
 - weighted sums are prohibited unless a future separately reviewed canonical contract explicitly replaces this rule;
 - safety, lineage, licensing, and minimum medical-quality hard gates are not compensable by a smaller package or higher capability score;
 - device/resource criteria that become hard qualification gates must be frozen before execution and must not be retrofitted after results are seen;
-- the package metric must include every artifact required for the advertised minimum common-core installation; optional modality assets may be excluded only when they are genuinely optional and separately downloadable for every candidate under the frozen rule.
+- the package metric must include every artifact required for the advertised minimum common-core installation; optional modality assets may be excluded only when they are genuinely optional and separately downloadable for every candidate under the frozen rule;
+- adoption metrics such as Hugging Face downloads, likes, trends, social mentions, stars, or community buzz are product KPIs only and cannot enter the tournament ranking vector.
 
 ## 8. Candidate admission contract
 
@@ -234,7 +239,8 @@ Before a candidate can enter a future frozen execution manifest, clarification/p
 12. expected device/resource evidence class;
 13. contamination/quarantine disposition where applicable;
 14. whether the candidate is `PRIMARY`, `CONTROL`, `CONDITIONAL`, or `REFERENCE_ONLY`;
-15. pre-execution evidence that the candidate has a plausible path to the frozen `700 MiB` package ceiling and low-resource RAM/device envelope without candidate-specific post-result threshold changes.
+15. pre-execution evidence that the candidate has a plausible path to the frozen `700 MiB` package ceiling and low-resource RAM/device envelope without candidate-specific post-result threshold changes;
+16. whether the exact candidate architecture can produce a canonical GGUF artifact compatible with the future pinned llama.cpp toolchain without candidate-specific exceptions that destroy comparability.
 
 If any required admission field is unresolved, the candidate remains discovery-only or `CONDITIONAL` outside the frozen primary ranking manifest. It must not be inserted merely to produce `INCOMPLETE`, and it must not be removed after results are observed to rescue a selection. Candidate-set freeze occurs only after admission reconciliation is complete.
 
@@ -291,7 +297,7 @@ Therefore:
 - none is yet present in a frozen execution manifest;
 - immutable revisions/digests and neutral `candidate_id` values remain unresolved;
 - exact license texts, notices, upstream code/runtime obligations, tokenizer/processor licensing, and intended-use compatibility must be bound before admission;
-- pre-execution package/RAM evidence may legitimately exclude a larger candidate before live tournament execution once the universal-low-resource envelope is frozen;
+- pre-execution package/RAM/runtime evidence may legitimately exclude a larger or incompatible candidate before live tournament execution once the universal-low-resource envelope and runtime contract are frozen;
 - no candidate may be added after results merely because the original shortlist failed.
 
 ### Conditional discovery outside the primary shortlist
@@ -345,9 +351,9 @@ At minimum, the eventual plan must preserve evidence across relevant dimensions 
 
 This clarification-stage document does not authorize opening or executing the benchmark payloads needed to obtain those results.
 
-## 14. Device, package, and resource evidence
+## 14. Device, package, runtime, and resource evidence
 
-`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, and `SUB_700MB_MASS_REACH` are frozen as Spec 005 evidence strategies.
+`NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`, `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`, `UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY`, `QUALITY_FLOOR_THEN_SIZE_FIRST`, `SUB_700MB_MASS_REACH`, and `GGUF_LLAMA_CPP_CANONICAL` are frozen as Spec 005 evidence strategies.
 
 The minimum text/core package envelope is:
 
@@ -357,7 +363,21 @@ COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_ENGINEERING_TARGET=600_MiB_OR_LESS
 COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_STRETCH_TARGET=500_MiB_OR_LESS_IF_HARD_GATES_PASS
 PEAK_WORKING_RAM_ENGINEERING_TARGET=2_GiB_OR_LESS_AT_FROZEN_SHORT_CONTEXT
 LOW_RESOURCE_PHONE_TEST_ENVELOPE=4_GB_CLASS
+CANONICAL_MINIMUM_DISTRIBUTION_ARTIFACT=GGUF
+CANONICAL_RUNTIME_FAMILY=LLAMA_CPP
 ```
+
+### 14.1 Canonical mass-distribution artifact/runtime
+
+`GGUF_LLAMA_CPP_CANONICAL` means:
+
+- the canonical minimum text/core Hugging Face release artifact is GGUF;
+- the conversion procedure, GGUF metadata expectations, and llama.cpp compatibility must be bound to immutable reviewed toolchain/revision identities before any execution or release qualification;
+- the exact canonical GGUF artifact identity is the artifact whose bytes enter the `QUALITY_FLOOR_THEN_SIZE_FIRST` package-size evidence;
+- the same canonical artifact should be usable across ordinary desktop/laptop and mobile-compatible llama.cpp paths wherever the target platform/runtime supports it; platform-specific wrappers must not silently produce a scientifically different model artifact;
+- MLX, MLC, Core ML, native mobile packages, or other optimized derivatives may be released later as optional acceleration/convenience artifacts, but they are secondary derivatives and cannot replace the canonical GGUF artifact for minimum-download claims or primary size ranking;
+- an optional derivative that materially changes weights, quantization, tokenizer behavior, prompt semantics, or evaluation-relevant outputs requires its own exact identity and evidence and cannot inherit canonical GGUF claims automatically;
+- no llama.cpp installation, dependency mutation, model conversion, runtime execution, mobile build, or weight access is authorized by this clarification decision.
 
 The complete minimum bundle measurement must include model weights plus every tokenizer, config, model-side runtime metadata, and other artifact required for the advertised minimum text/core installation. A general-purpose application/runtime binary may be reported separately only under a single frozen accounting rule applied identically to every candidate. Optional vision or other modality assets may be excluded from the minimum package only when they are genuinely optional and separately downloadable under the same policy for all candidates.
 
@@ -366,30 +386,31 @@ Each target tier must be represented by both:
 1. named physical-device evidence where feasible for latency, sustained behavior, battery/energy, and thermals; and
 2. a reproducible resource envelope describing the hardware/resource boundary so conclusions are not tied solely to one retail handset.
 
-The future evidence plan must cover flagship phone, modern-midrange Android, a 4-GB-class low-resource phone/resource envelope, and a low-resource ordinary laptop. iPhone coverage must be demonstrated through an Apple-compatible runtime/build path rather than inferred from desktop Apple Silicon results.
+The future evidence plan must cover flagship phone, modern-midrange Android, a 4-GB-class low-resource phone/resource envelope, and a low-resource ordinary laptop. iPhone coverage must be demonstrated through an Apple-compatible llama.cpp-compatible runtime/application path using the canonical GGUF identity or an explicitly proven equivalent path; it must not be inferred from desktop Apple Silicon results. Android and low-resource laptop coverage likewise require platform-specific execution evidence once separately authorized.
 
 Each admitted `PRIMARY` candidate must also have two predeclared build roles when execution is eventually authorized:
 
 1. a **reference build** governed by a common, frozen high-precision policy for primary common-core capability comparison; and
-2. a **deployable build** governed by a common, frozen quantization/deployment policy for device qualification on the named devices and resource envelopes.
+2. a **deployable build** governed by the canonical GGUF quantization/deployment policy for device qualification on the named devices and resource envelopes.
 
-The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the deployable build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
+The reference build supplies the evidence used to evaluate the frozen minimum medical-quality floor and other reference-quality requirements. Device/package qualification and the size-first ranking metric use the canonical deployable GGUF build. The deployable build must not replace the reference build for reference-quality claims, and the reference build must not be used to claim phone deployability. Quality/safety regression attributable to compression must be measured and reported separately under a frozen rule; if compression pushes the deployable build below a required hard gate, that candidate is not qualified for size-first ranking.
 
-The exact reference precision, quantization format/level, conversion toolchain, runtime, build flags, architecture-specific equivalence rules, exact short-context value, latency/throughput/energy/thermal thresholds, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
+The exact reference precision, GGUF quantization ladder, conversion toolchain revision, llama.cpp revision, build flags, architecture-specific equivalence rules, exact short-context value, latency/throughput/energy/thermal thresholds, and minimum medical-quality threshold remain unresolved and must be frozen before execution. A policy may not be changed per candidate after results are observed.
 
 Before execution authorization, clarification/planning must additionally define:
 
 - exact package-byte measurement procedure and exclusions;
+- exact immutable llama.cpp and GGUF conversion-toolchain identities;
 - peak-memory measurement method;
 - TTFT/prefill/decode/sustained-throughput measurement method;
 - energy and thermal measurement method or explicit bounded proxy if direct measurement is not feasible;
 - context length and KV-cache conditions;
 - repetition count, warm-up, aggregation, and failure handling;
-- what constitutes a hard device-qualification failure beyond the already frozen `700 MiB` package ceiling;
+- what constitutes a hard device/runtime qualification failure beyond the already frozen `700 MiB` package ceiling;
 - the minimum medical-quality floor below which a smaller artifact cannot qualify;
 - the secondary metric order used only after complete deployable package bytes tie.
 
-Parameter count and upstream marketing claims remain descriptive only. No named representative, remaining envelope boundary, build policy, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
+Parameter count and upstream marketing claims remain descriptive only. No named representative, remaining envelope boundary, runtime revision, quantization rule, RAM hard threshold, medical-quality threshold, or secondary ranking rule may be chosen after candidate results are known.
 
 ## 15. Reproducibility and exact identity
 
@@ -398,14 +419,16 @@ Every live result must eventually be bound to immutable evidence sufficient to p
 - exact candidate artifact/revision;
 - exact tournament manifest digest;
 - exact canonical upstream identities;
-- exact runtime/build configuration;
+- exact reference-build identity;
+- exact canonical GGUF deployable artifact identity;
+- exact conversion-toolchain and llama.cpp revision/configuration;
 - exact benchmark/metric/safety/lineage contracts;
 - exact device/resource identity where device evidence is claimed;
 - exact packaged artifact identity and byte size where distribution evidence is claimed;
 - exact result-set evidence artifact IDs;
 - deterministic tournament report identity.
 
-A mutable tag, model family name, `latest`, branch name, or marketplace label is not sufficient identity.
+A mutable tag, model family name, `latest`, branch name, marketplace label, or unpinned runtime version is not sufficient identity.
 
 ## 16. Fail-closed rules
 
@@ -423,12 +446,14 @@ Examples include:
 - benchmark or Gold quarantine violation;
 - non-comparable metric vectors;
 - complete minimum text/core bundle exceeding `700 MiB` under the frozen accounting rule;
+- inability to construct a canonical comparable GGUF artifact under the frozen toolchain/runtime contract;
 - missing required device evidence under `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`;
 - missing required reference or deployable build evidence under `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`;
 - unmeasured required compression regression;
 - incomplete or candidate-specific package accounting that would make the size metric non-comparable;
 - omitting required assets from the measured minimum package or inconsistently excluding optional modality assets;
-- device representative, envelope boundary, build policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
+- substituting an MLX/MLC/Core ML/native derivative for the canonical GGUF evidence without a separately frozen equivalence contract;
+- device representative, envelope boundary, runtime, build policy, package threshold, RAM threshold, medical-quality threshold, or ranking-rule changes after results are observed;
 - runtime or build drift without a new exact identity;
 - candidate-set drift after manifest freeze;
 - exact top tie under the complete predeclared ranking vector.
@@ -448,8 +473,8 @@ The clarification lifecycle must answer, at minimum:
 7. What exact safety and minimum medical-quality gates are evaluated before ranking, and how are blocked/incomplete states represented?
 8. **RESOLVED POLICY:** `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE`; each target tier requires named-device evidence plus a reproducible resource envelope, now including a low-resource laptop and explicit 4-GB-class phone/resource envelope. Exact named devices and remaining numeric thresholds remain to be frozen before execution.
 9. **PARTIALLY RESOLVED:** `SUB_700MB_MASS_REACH` freezes a `700 MiB` hard ceiling for the complete minimum text/core bundle, `<=600 MiB` engineering target, `<=500 MiB` stretch target if hard gates pass, `<=2 GiB` peak-working-RAM engineering target at a later-frozen short context, and 4-GB-class phone/resource evidence. Exact short context, RAM hard gate, latency, throughput, energy, thermal, and KV rules remain unresolved.
-10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`; primary capability comparison uses a frozen reference build, device qualification uses a frozen deployable quantized build, and compression regression is reported separately. Exact precision/quantization/runtime details remain to be frozen before execution.
-11. What runtime/adapters are permitted on iOS, Android, and low-resource laptops, and what dependency changes would require separate review before execution?
+10. **RESOLVED POLICY:** `DUAL_BUILD_BASELINE_AND_DEPLOYABLE`; primary capability comparison uses a frozen reference build, device qualification uses a frozen deployable quantized build, and compression regression is reported separately. Exact reference precision and quantization details remain to be frozen before execution.
+11. **RESOLVED POLICY / DETAILS PENDING:** `GGUF_LLAMA_CPP_CANONICAL`; GGUF + pinned llama.cpp is the canonical mass-distribution artifact/runtime family, while MLX/MLC/Core ML/native builds are optional derivatives. Exact immutable runtime/conversion revisions, build flags, mobile wrappers, and quantization ladder remain to be frozen before execution.
 12. What contamination/quarantine proof is required for every candidate/result path?
 13. What is the exact public-benchmark access mechanism, and what payload access remains separately gated?
 14. **RESOLVED POLICY:** `FULLY_ADMITTED_PRIMARY_ONLY`; unresolved/conditional candidates remain outside the frozen primary ranking manifest, and candidate-set freeze occurs only after admission reconciliation.
@@ -457,7 +482,7 @@ The clarification lifecycle must answer, at minimum:
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 17. **RESOLVED:** `QUALITY_FLOOR_THEN_SIZE_FIRST`; after all hard gates and the frozen minimum medical-quality floor pass, complete deployable package bytes are the first lexicographic ranking metric with `LOWER_BETTER`.
 
-Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with three accepted questions plus one explicit founder directive. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with four accepted questions plus two explicit founder directives. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
 
 ## 18. Specification acceptance criteria
 
@@ -472,28 +497,33 @@ A future complete clarification artifact is acceptable only when independent rev
 - preserves named-device evidence while explicitly covering iPhone, modern-midrange Android, 4-GB-class phone/resource evidence, and low-resource laptops;
 - enforces the `700 MiB` complete minimum text/core bundle ceiling under one honest, candidate-neutral accounting rule;
 - treats `<=600 MiB`, `<=500 MiB`, and `<=2 GiB` as engineering/stretch targets exactly as frozen, without converting them into retrospective hard gates;
+- uses canonical GGUF + immutable llama.cpp compatibility as the minimum mass-distribution path, with optional optimized derivatives kept semantically and evidentially separate;
 - applies `QUALITY_FLOOR_THEN_SIZE_FIRST` only after all non-compensable safety/provenance/license/minimum-medical-quality gates pass;
+- keeps Hugging Face adoption/category-leadership KPIs outside the scientific ranking and claims boundary;
 - preserves Spec 004 deterministic/fail-closed comparison semantics;
 - records accepted clarification decisions without contradicting unresolved gates;
 - resolves all clarification requirements that materially affect candidate admission, comparability, device qualification, execution planning, and exact-head review before advancing to `PLAN`;
-- grants no model, weight, benchmark payload, private Gold, provider, PHI, gated-asset, or execution authority.
+- grants no model, weight, benchmark payload, private Gold, provider, PHI, gated-asset, runtime-execution, or tournament-execution authority.
 
 Neither clarification session is a declaration that the full clarification lifecycle is complete until every material unresolved requirement is reconciled and independently reviewed.
 
 ## 19. Exit and next lifecycle step
 
-Current working state after three accepted decisions in bounded clarification session 2:
+Current working state after four accepted decisions in bounded clarification session 2:
 
 ```text
 SPEC_005_SPECIFICATION=DEFINED_CANONICALLY
 CLARIFICATION_SESSION_1=5_QUESTIONS_ACCEPTED
 CLARIFICATION_SESSION_2=IN_PROGRESS
-CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=3
+CLARIFICATION_SESSION_2_QUESTIONS_ACCEPTED=4
 UNIVERSAL_LOW_RESOURCE_DISTRIBUTION_PRIORITY=LOCKED_BY_FOUNDER_DIRECTIVE
+GLOBAL_HEALTH_AI_CATEGORY_LEADERSHIP=PRODUCT_AMBITION
 LEAD_ULTRA_COMPACT_ADMISSION_CANDIDATE=Qwen/Qwen3.5-0.8B-Base
 SIZE_PRIORITY=QUALITY_FLOOR_THEN_SIZE_FIRST
 MASS_REACH_PACKAGE_POLICY=SUB_700MB_MASS_REACH
 COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_HARD_CEILING=700_MiB
+CANONICAL_MINIMUM_DISTRIBUTION_ARTIFACT=GGUF
+CANONICAL_RUNTIME_FAMILY=LLAMA_CPP
 PLAN_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
@@ -507,4 +537,4 @@ CLARIFICATION_LIFECYCLE=IN_PROGRESS
 NEXT_LIFECYCLE_STEP=CLARIFY
 ```
 
-Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, winner selection, or any other later lifecycle stage.
+Clarification is explicitly authorized only within its bounded lifecycle. This session does not authorize planning, implementation, live tournament execution, model access, model-weight retrieval, benchmark payload access, runtime execution, winner selection, or any other later lifecycle stage.
