@@ -37,13 +37,15 @@ The Grand Master Plan deliberately does not preselect a backbone. Spec 005 conve
 
 ### Session 2026-08-23
 
+**Bounded session 1 — complete (5/5)**
+
 - Q: How should Spec 005 handle the primary comparison between text-only and multimodal candidates when selecting the base backbone? → A: `COMMON_CORE_PRIMARY_RANKING` — all `PRIMARY` candidates rank only on the common text/core protocol; modality-specific capability is secondary non-ranking evidence in Spec 005.
 - Q: Should all `PRIMARY` candidates in Spec 005 be base/pretrained checkpoints only, excluding instruction-tuned models from primary ranking? → A: `BASE_ONLY_PRIMARY` — only base/pretrained checkpoints may be `PRIMARY`; instruction-tuned models may be `CONTROL` or `REFERENCE_ONLY` but cannot enter primary ranking or win Spec 005.
 - Q: How should Spec 005 define the `FLAGSHIP_PLUS_MODERN_MIDRANGE` device evidence boundary? → A: `NAMED_DEVICE_PLUS_RESOURCE_ENVELOPE` — use one named physical representative per tier plus a reproducible resource envelope for that tier; exact device models and numeric thresholds remain to be frozen before execution.
 - Q: Should the frozen primary tournament manifest include only `PRIMARY` candidates whose admission gates are complete before manifest freeze? → A: `FULLY_ADMITTED_PRIMARY_ONLY` — only fully admitted `PRIMARY` candidates may enter the frozen primary ranking manifest; unresolved candidates remain discovery/conditional outside that manifest.
 - Q: What precision/quantization policy should Spec 005 use to separate fair backbone comparison from real-device deployability evidence? → A: `DUAL_BUILD_BASELINE_AND_DEPLOYABLE` — use a frozen reference build for primary capability comparison and a separately frozen deployable quantized build for device qualification; quantify compression regression separately.
 
-**Bounded clarification session 2**
+**Bounded session 2 — in progress (1/5)**
 
 - Q: What candidate set should Spec 005 carry forward as the primary-admission shortlist before immutable revisions and exact license/lineage evidence are bound? → A: `FOUR_PERMISSIVE_BASE_SHORTLIST` — carry forward `Qwen/Qwen3.5-2B-Base`, `mistralai/Ministral-3-3B-Base-2512`, `google/gemma-4-E2B`, and `HuggingFaceTB/SmolLM3-3B-Base` for admission reconciliation; keep LFM2.5 candidates `CONDITIONAL` outside the primary shortlist until exact license compatibility is resolved.
 
@@ -392,7 +394,7 @@ The clarification lifecycle must answer, at minimum:
 15. What compute/spend budget is permitted for the tournament, and which actions remain zero-spend/read-only until execution authorization?
 16. What independent review and exact-head evidence must be present before any execution activation can be proposed?
 
-The first bounded five-question clarification session on 2026-08-23 is complete. Bounded clarification session 2 is now in progress. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
+Bounded clarification session 1 on 2026-08-23 is complete at five accepted questions. Bounded clarification session 2 is in progress with one accepted question. The unresolved questions above remain active requirements and prevent the clarification lifecycle from being declared complete.
 
 ## 18. Specification acceptance criteria
 
