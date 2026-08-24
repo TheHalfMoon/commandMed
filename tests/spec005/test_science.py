@@ -148,6 +148,13 @@ class SelectionQualityContractTests(unittest.TestCase):
         errors = validate_selection_quality_contract(contract, make_metrics_v2())
         self.assertTrue(any("Z_UNKNOWN_LANE" in e for e in errors))
 
+    def test_duplicate_lane_rejected(self):
+        contract = make_quality_contract(
+            required_quality_lanes=SEVEN_LANES + [SEVEN_LANES[0]]
+        )
+        errors = validate_selection_quality_contract(contract, make_metrics_v2())
+        self.assertTrue(any("DUPLICATE" in e.upper() for e in errors))
+
     def test_non_arabic_language_scope_fails(self):
         contract = make_quality_contract()
         contract["required_language_scope"] = ["en"]

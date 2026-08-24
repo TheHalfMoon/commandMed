@@ -51,7 +51,12 @@ def _require_fields(record: Any, fields, prefix: str, errors: list[str]) -> None
 def _contains_private_gold(value: Any) -> bool:
     if isinstance(value, str):
         return any(marker in value for marker in PRIVATE_GOLD_MARKERS)
-    if isinstance(value, list):
+    if isinstance(value, dict):
+        return any(
+            _contains_private_gold(k) or _contains_private_gold(v)
+            for k, v in value.items()
+        )
+    if isinstance(value, (list, tuple, set)):
         return any(_contains_private_gold(item) for item in value)
     return False
 
@@ -136,11 +141,19 @@ def validate_source_route(record: Any, contract: Any) -> list[str]:
     if record.get("purpose") != "CHECKPOINT_SELECTION":
         errors.append("SourceRoute:PURPOSE_MUST_BE_CHECKPOINT_SELECTION")
 
-    parents = record.get("parent_asset_ids") or []
+    parents_raw = record.get("parent_asset_ids")
+    # Scan the raw supplied value so hidden Gold markers cannot hide behind
+    # a type violation.
+    if _contains_private_gold(parents_raw):
+        errors.append("SourceRoute:PRIVATE_GOLD_CANNOT_BE_PARENT_OR_SOURCE")
+    parents = parents_raw
+    if parents is not None and not isinstance(parents, list):
+        errors.append("SourceRoute:PARENT_ASSET_IDS_MUST_BE_LIST_OF_STRINGS")
+        parents = []
+    elif any(not isinstance(item, str) for item in parents):
+        errors.append("SourceRoute:PARENT_ASSET_IDS_MUST_BE_LIST_OF_STRINGS")
     if route_class in DERIVED_ROUTE_CLASSES and not parents:
         errors.append("SourceRoute:DERIVED_ROUTE_REQUIRES_PARENT_ASSET_IDS")
-    if _contains_private_gold(parents):
-        errors.append("SourceRoute:PRIVATE_GOLD_CANNOT_BE_PARENT_OR_SOURCE")
     return errors
 
 

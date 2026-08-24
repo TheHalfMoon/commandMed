@@ -205,6 +205,18 @@ class SourceRouteTests(unittest.TestCase):
             errors = validate_source_route(record, load_contract())
             self.assertTrue(any(field in e for e in errors))
 
+    def test_gold_hidden_in_nested_parent_structure_detected(self):
+        errors = validate_source_route(
+            make_source_route(parent_asset_ids={"nested": ["COMMANDMED_ARABIC_GOLD"]}),
+            load_contract(),
+        )
+        self.assertTrue(any("PRIVATE_GOLD" in e.upper() for e in errors))
+        errors = validate_source_route(
+            make_source_route(parent_asset_ids="COMMANDMED_ARABIC_GOLD"),
+            load_contract(),
+        )
+        self.assertTrue(any("PRIVATE_GOLD" in e.upper() or "LIST" in e.upper() for e in errors))
+
     def test_gold_as_parent_never_allowed(self):
         errors = validate_source_route(
             make_source_route(parent_asset_ids=["COMMANDMED_ARABIC_GOLD"]),
