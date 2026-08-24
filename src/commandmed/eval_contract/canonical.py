@@ -46,6 +46,8 @@ RECORD_SORT_KEYS = [
     "rule_id",
     "boundary_id",
     "gate_id",
+    # Metrics V2 evidence requirements are a set keyed by lifecycle role.
+    "evidence_role",
 ]
 
 
