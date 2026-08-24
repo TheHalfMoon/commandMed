@@ -24,10 +24,15 @@ PRE_REPAIR_CANONICAL_MAIN_TREE=078dad59343e74169a777dd01181c8201c41645a
 EXACT_REPAIR_BRANCH=fix/a1-metrics-v2
 IMPLEMENTATION_HEAD_BEFORE_EVIDENCE_RECORD=d617e5077c2ed5f3dc55d5bfb05f815a36cc8a26
 EXACT_REPAIR_HEAD_SHA=d617e5077c2ed5f3dc55d5bfb05f815a36cc8a26
-EVIDENCE_RECORD_COMMIT=THIS_DOCUMENT_COMMIT_FOLLOWING_THE_QUALIFICATION_HEAD
+EVIDENCE_RECORD_COMMIT=a0ac9a6c2808a2741749fe9b9a1a217f31a88240
+REVIEW_REPAIR_COMMIT=3426262081f2003aade11a4a096519675686d023
 ```
 
 All A1 code, data, and test files are present and verified at the exact qualification head `d617e5077c2ed5f3dc55d5bfb05f815a36cc8a26`. This evidence-record document was updated afterwards in a follow-up documentation-only commit; the full verification sequence was rerun on that resulting head and produced identical PASS results, because the only delta between the two heads is this markdown file.
+
+## Review-repair cycle
+
+Independent bot exact-head review (CodeRabbit) on PR #35 at head `a0ac9a6c2808a2741749fe9b9a1a217f31a88240` identified one material latent defect: V2 evidence-requirement records effectively sort by `purpose` (earlier in `RECORD_SORT_KEYS`), so a hypothetical future lifecycle role sharing an existing purpose value would make the canonical digest order-dependent. Repair commit `3426262081f2003aade11a4a096519675686d023` adds a composite `evidence_role` tie-break in `semantic_normalize` plus a focused regression test. The repair is digest-preserving: both pinned identities reverified unchanged, full suite now 296 tests PASS on the repair head. Stale exact-head evidence from earlier heads is superseded by reruns recorded here; a fresh exact-head review was requested after the repair push.
 
 ## Exact authorized changed-path set
 
@@ -103,9 +108,9 @@ CALLER_SUPPLIED_RECOMPUTED_SHA_OVERRIDES_CANONICAL_BINDING=NO
 These fields were verified by T010 on the exact qualification head and rerun identically on the evidence-record head:
 
 ```text
-FOCUSED_TEST_RESULTS=PASS (tests.eval_contract.test_metrics_v2: 11 tests OK; tests.test_tournament_metrics_v2_identity: 8 tests OK)
+FOCUSED_TEST_RESULTS=PASS (tests.eval_contract.test_metrics_v2: 12 tests OK; tests.test_tournament_metrics_v2_identity: 8 tests OK)
 FOCUSED_V1_REGRESSION_RESULTS=PASS (test_canonical + test_hard_gates + test_fail_closed + test_tournament + test_tournament_contract_hardening: 82 tests OK)
-FULL_OFFLINE_SUITE_RESULT=PASS (unittest discover -s tests -p "test_*.py": 295 tests OK, 0 failures, offline)
+FULL_OFFLINE_SUITE_RESULT=PASS (unittest discover -s tests -p "test_*.py": 296 tests OK on review-repair head 3426262081f2003aade11a4a096519675686d023; 295 at prior heads)
 PYTHON_COMPILE_RESULT=PASS (py_compile over all A1-touched modules and tests)
 V1_IDENTITY_REVERIFICATION=PASS (semantic SHA-256 of data/eval/metrics.json == 304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a; CANONICAL_UPSTREAM_IDENTITIES_V1["metrics_sha256"] unchanged)
 V2_IDENTITY_REVERIFICATION=PASS (schema_id/schema_version/supersedes exact; semantic SHA-256 of data/eval/metrics-v2.json == ebfdaecebd924c3ec3b897bb6c26a9860635f8cfb6757e8167b20bc488b0adaf; CANONICAL_METRICS_V2_BINDING matches exactly)
