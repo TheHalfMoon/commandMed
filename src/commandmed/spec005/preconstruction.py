@@ -8,6 +8,8 @@ assessment is executed; no real construction activation is created.
 
 from __future__ import annotations
 
+import re
+
 from typing import Any
 
 REQUIRED_SNAPSHOT_GATES = (
@@ -36,6 +38,11 @@ ALLOWED_REVIEW_DISPOSITIONS = frozenset(
     {"ACCEPTED", "REJECTED", "ESCALATED_FOR_ADJUDICATION"}
 )
 PRIVATE_GOLD_MARKERS = ("COMMANDMED_ARABIC_GOLD", "PRIVATE_GOLD")
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+
+
+def _is_canonical_sha256(value: Any) -> bool:
+    return isinstance(value, str) and bool(_SHA256_RE.match(value))
 
 
 def _require_fields(record: Any, fields, prefix: str, errors: list[str]) -> None:
@@ -406,14 +413,19 @@ def evaluate_preconstruction_snapshot(
             gate_state = evidence.get("state")
             record_id = evidence.get("record_id")
             record_sha = evidence.get("record_canonical_sha256")
+            stale_flag = evidence.get("stale")
             if gate_state != "PASS":
                 reason_codes.append(f"Snapshot:GATE_{gate}_STATE_{gate_state}")
-            elif evidence.get("stale") is True:
+            elif not isinstance(stale_flag, bool):
+                reason_codes.append(f"Snapshot:GATE_{gate}_STALE_ASSERTION_REQUIRED")
+            elif stale_flag is True:
                 reason_codes.append(f"Snapshot:GATE_{gate}_STALE")
             elif not isinstance(record_id, str) or not record_id.strip():
                 reason_codes.append(f"Snapshot:GATE_{gate}_RECORD_ID_UNBOUND")
-            elif not isinstance(record_sha, str) or not record_sha.strip():
-                reason_codes.append(f"Snapshot:GATE_{gate}_RECORD_SHA_UNBOUND")
+            elif not _is_canonical_sha256(record_sha):
+                reason_codes.append(
+                    f"Snapshot:GATE_{gate}_RECORD_SHA_UNBOUND_OR_BAD_FORMAT"
+                )
 
     unique_sorted = sorted(set(reason_codes))
     computed_state = (

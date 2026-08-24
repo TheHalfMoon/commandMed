@@ -498,6 +498,69 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(result["state"], "NOT_READY_TO_CONSTRUCT")
         self.assertTrue(any("G2" in c and ("RECORD_ID" in c or "SHA" in c) for c in result["reason_codes"]))
 
+    def test_malformed_record_sha_format_rejected(self):
+        snapshot = {
+            "snapshot_id": "SNAP-008",
+            "snapshot_version": "1.0",
+            "requirements": {
+                gate: (
+                    {
+                        "state": "PASS",
+                        "record_id": f"REC-{gate}",
+                        "record_canonical_sha256": "not-a-sha",
+                        "stale": False,
+                    }
+                    if gate == "G2"
+                    else {
+                        "state": "PASS",
+                        "record_id": f"REC-{gate}",
+                        "record_canonical_sha256": "a" * 64,
+                        "stale": False,
+                    }
+                )
+                for gate in (
+                    "R1", "T1", "D34", "G1", "G2", "G3", "G4",
+                    "S1", "P1", "C1", "H1", "I1", "F1",
+                )
+            },
+        }
+        result = evaluate_preconstruction_snapshot(
+            snapshot, load_contract(), self._scientific_ready()
+        )
+        self.assertEqual(result["state"], "NOT_READY_TO_CONSTRUCT")
+        self.assertTrue(any("SHA_FORMAT" in c for c in result["reason_codes"]))
+
+    def test_omitted_freshness_assertion_blocks(self):
+        snapshot = {
+            "snapshot_id": "SNAP-009",
+            "snapshot_version": "1.0",
+            "requirements": {
+                gate: (
+                    {
+                        "state": "PASS",
+                        "record_id": f"REC-{gate}",
+                        "record_canonical_sha256": "a" * 64,
+                    }
+                    if gate == "G2"
+                    else {
+                        "state": "PASS",
+                        "record_id": f"REC-{gate}",
+                        "record_canonical_sha256": "a" * 64,
+                        "stale": False,
+                    }
+                )
+                for gate in (
+                    "R1", "T1", "D34", "G1", "G2", "G3", "G4",
+                    "S1", "P1", "C1", "H1", "I1", "F1",
+                )
+            },
+        }
+        result = evaluate_preconstruction_snapshot(
+            snapshot, load_contract(), self._scientific_ready()
+        )
+        self.assertEqual(result["state"], "NOT_READY_TO_CONSTRUCT")
+        self.assertTrue(any("G2" in c and "STALE" in c for c in result["reason_codes"]))
+
     def test_stale_gate_blocks(self):
         snapshot = {
             "snapshot_id": "SNAP-005",
