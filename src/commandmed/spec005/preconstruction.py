@@ -117,6 +117,7 @@ def validate_source_route(record: Any, contract: Any) -> list[str]:
             "route_class",
             "lineage_record_id",
             "lineage_record_sha256",
+            "parent_asset_ids",
             "rights_evidence_id",
             "privacy_evidence_id",
             "declared_use",
