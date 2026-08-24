@@ -23,12 +23,12 @@ PRE_REPAIR_CANONICAL_MAIN_SHA=19aa95bbd122f3e01421ba2618dc1efe2f088289
 PRE_REPAIR_CANONICAL_MAIN_TREE=078dad59343e74169a777dd01181c8201c41645a
 EXACT_REPAIR_BRANCH=fix/a1-metrics-v2
 IMPLEMENTATION_HEAD_BEFORE_EVIDENCE_RECORD=d617e5077c2ed5f3dc55d5bfb05f815a36cc8a26
-EXACT_REPAIR_HEAD_SHA=d617e5077c2ed5f3dc55d5bfb05f815a36cc8a26
 EVIDENCE_RECORD_COMMIT=a0ac9a6c2808a2741749fe9b9a1a217f31a88240
-REVIEW_REPAIR_COMMIT=3426262081f2003aade11a4a096519675686d023
+EXACT_REPAIR_HEAD_SHA=3426262081f2003aade11a4a096519675686d023
+FINAL_QUALIFIED_HEAD=THE_HEAD_OF_THIS_PR_AT_MERGE_TIME
 ```
 
-All A1 code, data, and test files are present and verified at the exact qualification head `d617e5077c2ed5f3dc55d5bfb05f815a36cc8a26`. This evidence-record document was updated afterwards in a follow-up documentation-only commit; the full verification sequence was rerun on that resulting head and produced identical PASS results, because the only delta between the two heads is this markdown file.
+Historical identities are preserved above: `IMPLEMENTATION_HEAD_BEFORE_EVIDENCE_RECORD` and `EVIDENCE_RECORD_COMMIT` record the pre-review chain. The current authoritative qualification head is `EXACT_REPAIR_HEAD_SHA=3426262081f2003aade11a4a096519675686d023` (code + test repair), at which compile, focused V2 tests (20 OK), focused V1 regression (82 OK), the full offline suite (296 OK), and both pinned identities were verified. Subsequent documentation-only commits after that head do not alter any code, data, or test file; the full offline suite is rerun after each such push and recorded in PR #35 comments, so qualification always applies to the actual PR head at merge time.
 
 ## Review-repair cycle
 
