@@ -416,16 +416,19 @@ def evaluate_preconstruction_snapshot(
             stale_flag = evidence.get("stale")
             if gate_state != "PASS":
                 reason_codes.append(f"Snapshot:GATE_{gate}_STATE_{gate_state}")
-            elif not isinstance(stale_flag, bool):
-                reason_codes.append(f"Snapshot:GATE_{gate}_STALE_ASSERTION_REQUIRED")
-            elif stale_flag is True:
-                reason_codes.append(f"Snapshot:GATE_{gate}_STALE")
-            elif not isinstance(record_id, str) or not record_id.strip():
-                reason_codes.append(f"Snapshot:GATE_{gate}_RECORD_ID_UNBOUND")
-            elif not _is_canonical_sha256(record_sha):
-                reason_codes.append(
-                    f"Snapshot:GATE_{gate}_RECORD_SHA_UNBOUND_OR_BAD_FORMAT"
-                )
+            else:
+                if not isinstance(stale_flag, bool):
+                    reason_codes.append(
+                        f"Snapshot:GATE_{gate}_STALE_ASSERTION_REQUIRED"
+                    )
+                elif stale_flag is True:
+                    reason_codes.append(f"Snapshot:GATE_{gate}_STALE")
+                if not isinstance(record_id, str) or not record_id.strip():
+                    reason_codes.append(f"Snapshot:GATE_{gate}_RECORD_ID_UNBOUND")
+                if not _is_canonical_sha256(record_sha):
+                    reason_codes.append(
+                        f"Snapshot:GATE_{gate}_RECORD_SHA_UNBOUND_OR_BAD_FORMAT"
+                    )
 
     unique_sorted = sorted(set(reason_codes))
     computed_state = (
