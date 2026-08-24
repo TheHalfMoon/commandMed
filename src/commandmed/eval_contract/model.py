@@ -127,6 +127,31 @@ class Purpose(str, Enum):
     PRIVATE_GOLD = "PRIVATE_GOLD"
 
 
+class MetricEvidenceRole(str, Enum):
+    """Lifecycle role of evidence attached to a V2 metric contract."""
+
+    SELECTION_DEV = "SELECTION_DEV"
+    PRIVATE_GOLD_FINAL_AUDIT = "PRIVATE_GOLD_FINAL_AUDIT"
+    PUBLIC_EXTERNAL_EVAL = "PUBLIC_EXTERNAL_EVAL"
+    QUALIFICATION_ONLY = "QUALIFICATION_ONLY"
+
+
+class EvidenceBindingMode(str, Enum):
+    """Identity-binding mode for a V2 metric evidence requirement."""
+
+    MANIFEST_BOUND = "MANIFEST_BOUND"
+    CANONICAL_FAMILY_BOUND = "CANONICAL_FAMILY_BOUND"
+
+
+class EvidenceSourcePolicy(str, Enum):
+    """Permitted source policy for a V2 metric evidence requirement."""
+
+    SELECTION_SAFE_NON_GOLD = "SELECTION_SAFE_NON_GOLD"
+    PRIVATE_GOLD_FAMILY = "PRIVATE_GOLD_FAMILY"
+    PUBLIC_EXTERNAL_TEST_ONLY = "PUBLIC_EXTERNAL_TEST_ONLY"
+    IDENTITY_BOUND_QUALIFICATION_ASSET = "IDENTITY_BOUND_QUALIFICATION_ASSET"
+
+
 class GoldFamilyId(str, Enum):
     """The three canonical private Gold families."""
 
@@ -196,6 +221,46 @@ class MetricRecord:
     applicable_modalities: tuple[str, ...]
     applicable_languages: tuple[str, ...]
     required_evidence: str
+
+
+@dataclass(frozen=True)
+class MetricEvidenceRequirement:
+    """Machine-readable evidence-role requirement for a V2 metric record."""
+
+    evidence_role: str
+    purpose: str
+    evidence_kind: str
+    binding_mode: str
+    source_policy: str
+    requirement: str
+
+
+@dataclass(frozen=True)
+class MetricRecordV2:
+    """Version 2 metric record with explicit lifecycle evidence roles."""
+
+    metric_id: str
+    name: str
+    category: str
+    description: str
+    direction: str
+    unit: str
+    is_hard_gate: bool
+    threshold_state: str
+    applicable_roles: tuple[str, ...]
+    applicable_modalities: tuple[str, ...]
+    applicable_languages: tuple[str, ...]
+    evidence_requirements: tuple[MetricEvidenceRequirement, ...]
+
+
+@dataclass(frozen=True)
+class MetricsV2Catalog:
+    """Versioned additive metrics catalog envelope."""
+
+    schema_id: str
+    schema_version: str
+    supersedes_metrics_v1_sha256: str
+    metrics: tuple[MetricRecordV2, ...]
 
 
 @dataclass(frozen=True)

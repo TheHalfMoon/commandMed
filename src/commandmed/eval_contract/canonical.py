@@ -35,7 +35,11 @@ SET_LIKE_LIST_FIELDS = {
     "out_of_scope_capabilities",
 }
 
-# Known stable ID keys used to sort list of entity records
+# Known stable ID keys used to sort list of entity records.
+# The first key present in every record of a list is its primary sort key;
+# records are additionally tie-broken by their optional evidence_role so
+# Metrics V2 evidence-requirement lists remain totally ordered even if a
+# future lifecycle role ever shares an existing purpose value.
 RECORD_SORT_KEYS = [
     "benchmark_id",
     "metric_id",
@@ -46,6 +50,8 @@ RECORD_SORT_KEYS = [
     "rule_id",
     "boundary_id",
     "gate_id",
+    # Metrics V2 evidence requirements are keyed by lifecycle role.
+    "evidence_role",
 ]
 
 
@@ -64,6 +70,16 @@ def semantic_normalize(obj: Any, parent_key: str = "") -> Any:
         if not obj:
             return []
 
+        # Frozen contract (Session 10): evidence_requirements is a set-like
+        # collection of records uniquely keyed by lifecycle role, so it is
+        # ordered primarily by evidence_role regardless of other field values.
+        if parent_key == "evidence_requirements" and isinstance(obj[0], dict):
+            if all("evidence_role" in item for item in obj):
+                sorted_records = sorted(
+                    obj, key=lambda item: str(item.get("evidence_role", ""))
+                )
+                return [semantic_normalize(item) for item in sorted_records]
+
         # Case 1: Parent key designates a set-like collection of scalar tags/enums
         if parent_key in SET_LIKE_LIST_FIELDS:
             normalized_items = [semantic_normalize(item) for item in obj]
@@ -76,7 +92,16 @@ def semantic_normalize(obj: Any, parent_key: str = "") -> Any:
         if isinstance(obj[0], dict):
             for sort_key in RECORD_SORT_KEYS:
                 if all(isinstance(item, dict) and sort_key in item for item in obj):
-                    sorted_records = sorted(obj, key=lambda item: str(item.get(sort_key, "")))
+                    sorted_records = sorted(
+                        obj,
+                        key=lambda item: (
+                            str(item.get(sort_key, "")),
+                            # Composite tie-break: evidence_role is unique per
+                            # V2 evidence requirement, so lists sharing a
+                            # primary-key value still sort deterministically.
+                            str(item.get("evidence_role", "")),
+                        ),
+                    )
                     return [semantic_normalize(item) for item in sorted_records]
 
         # Case 3: Standard sequence (order preserved)

@@ -822,3 +822,64 @@ def evaluate_tournament(manifest: Any, candidate_results: Any, artifacts: Any) -
     report["reason_code"] = "UNIQUE_BEST_QUALIFIED_CANDIDATE"
     report["selected_candidate_id"] = best[0]["candidate_id"]
     return _finalize(report)
+
+
+# Additive metrics-v2 contract identity for future explicitly bound consumers.
+# Historical Spec 004 V1 behavior above remains pinned to CANONICAL_UPSTREAM_IDENTITIES_V1.
+METRICS_V2_BINDING_KEYS = frozenset(
+    {
+        "metrics_contract_schema_id",
+        "metrics_contract_schema_version",
+        "metrics_catalog_path",
+        "metrics_catalog_sha256",
+    }
+)
+CANONICAL_METRICS_V2_BINDING: dict[str, str] = {
+    "metrics_contract_schema_id": "commandmed-metrics-catalog",
+    "metrics_contract_schema_version": "2.0",
+    "metrics_catalog_path": "data/eval/metrics-v2.json",
+    "metrics_catalog_sha256": "bad51bffe30c0fb7de37afcaf8620ad1ad2deed2dd626a1ec6c2eb47c4107f4b",
+}
+
+
+def validate_metrics_v2_consumer_binding(binding: Any, metrics_catalog: Any) -> list[str]:
+    """Validate an explicit V2 metric-contract binding with no V1/V2 fallback."""
+    errors = [
+        f"metrics_v2_binding: {error}"
+        for error in _exact_keys(binding, METRICS_V2_BINDING_KEYS)
+    ]
+    errors.extend(_scan_prohibited_keys(binding, "metrics_v2_binding"))
+    if errors or not isinstance(binding, dict):
+        return errors
+
+    for field, expected in CANONICAL_METRICS_V2_BINDING.items():
+        if binding.get(field) != expected:
+            errors.append(f"metrics_v2_binding.{field}: expected '{expected}'")
+
+    from .eval_contract.validate import validate_metrics_catalog_v2
+
+    try:
+        valid, catalog_errors = validate_metrics_catalog_v2(metrics_catalog)
+    except (KeyError, TypeError, ValueError) as exc:
+        errors.append(f"metrics_v2_catalog: canonical validator failed closed: {exc}")
+        return errors
+    if not valid or catalog_errors:
+        errors.extend(f"metrics_v2_catalog: {error}" for error in catalog_errors)
+        return errors
+
+    try:
+        actual_sha256 = compute_canonical_sha256(metrics_catalog)
+    except (KeyError, TypeError, ValueError) as exc:
+        errors.append(f"metrics_v2_catalog: canonical identity computation failed closed: {exc}")
+        return errors
+
+    expected_sha256 = CANONICAL_METRICS_V2_BINDING["metrics_catalog_sha256"]
+    if actual_sha256 != expected_sha256:
+        errors.append(
+            "metrics_v2_catalog: semantic SHA-256 does not match the canonical V2 binding"
+        )
+    if binding.get("metrics_catalog_sha256") != actual_sha256:
+        errors.append(
+            "metrics_v2_binding.metrics_catalog_sha256: supplied catalog content does not match bound SHA-256"
+        )
+    return errors

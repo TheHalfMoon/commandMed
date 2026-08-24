@@ -247,3 +247,52 @@ Spec 005 remains blocked until:
 2. the separate founder/license/device prerequisites declared for Spec 005 are resolved and Spec 005 receives explicit bounded authorization.
 
 No model execution authority is inherited merely because the harness exists.
+
+## Additive metrics V2 corrective maintenance
+
+A1 corrective maintenance adds a **separate** metrics contract for future explicitly bound consumers. It does not reinterpret or replace the historical Spec 004 V1 metrics contract.
+
+Historical V1 remains immutable:
+
+```text
+V1_METRICS_PATH=data/eval/metrics.json
+V1_METRICS_SHA256=304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a
+V1_TOURNAMENT_IDENTITY_MAP=CANONICAL_UPSTREAM_IDENTITIES_V1
+V1_FALL_FORWARD_TO_V2=PROHIBITED
+```
+
+The additive V2 identity is explicit:
+
+```text
+V2_METRICS_PATH=data/eval/metrics-v2.json
+V2_SCHEMA_ID=commandmed-metrics-catalog
+V2_SCHEMA_VERSION=2.0
+V2_SUPERSEDES_V1_SHA256=304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a
+V2_METRICS_SHA256=bad51bffe30c0fb7de37afcaf8620ad1ad2deed2dd626a1ec6c2eb47c4107f4b
+V2_FALL_BACK_TO_V1=PROHIBITED
+MUTABLE_LATEST_METRICS_CONTRACT=PROHIBITED
+```
+
+V2 replaces the ambiguous V1 `required_evidence` string **only inside the V2 schema** with machine-readable `evidence_requirements`. Each requirement binds a lifecycle `evidence_role`, canonical `purpose`, evidence kind, binding mode, source policy, and requirement text. Unknown values or incompatible role/purpose/source-policy combinations fail closed.
+
+For `arabic_clinical_parity_gap`, V2 represents two distinct lifecycle roles without granting access to either evidence source:
+
+```text
+SELECTION_DEV -> CHECKPOINT_SELECTION -> SELECTION_SAFE_NON_GOLD
+PRIVATE_GOLD_FINAL_AUDIT -> PRIVATE_GOLD -> PRIVATE_GOLD_FAMILY
+```
+
+The Private Gold role remains non-selection evidence. The schema and binding do not authorize payload access, model execution, benchmark execution, threshold selection, candidate selection, or real tournament execution.
+
+All non-Arabic V1 metric evidence text remains traceable through non-selection `QUALIFICATION_ONLY` V2 requirements; the migration does not automatically create selection, Private Gold, or public-external authority for those metrics.
+
+V2 consumers must bind all four fields exactly:
+
+```text
+metrics_contract_schema_id
+metrics_contract_schema_version
+metrics_catalog_path
+metrics_catalog_sha256
+```
+
+The repository validator recomputes the supplied V2 catalog semantic SHA-256 and validates the V2 schema before accepting a binding. Caller-supplied path/version/SHA cannot broaden the contract, and no consumer may infer a mutable "latest" metrics version.
