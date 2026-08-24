@@ -26,13 +26,11 @@ Use `tasks.md` as the implementation queue. Historical clarification files are r
 - No network required for validation.
 - No model or benchmark payload required.
 
-Do not install model/runtime/provider dependencies merely to satisfy Spec 005 planning-stage tests.
+Do not install model/runtime/provider dependencies merely to satisfy Spec 005 tests.
 
 ## 3. A1 corrective-maintenance gate
 
-A1 is first and is intentionally separate from the Spec 005 implementation branch.
-
-Before implementing Spec 005 consumers:
+A1 is first and intentionally separate from the Spec 005 implementation branch.
 
 ```text
 1. verify live canonical main;
@@ -65,10 +63,9 @@ Expected outcome: all tests pass with no V1 identity drift. A missing CI workflo
 
 ## 5. Focused Spec 005 validation
 
-After the Spec 005 package is implemented:
-
 ```text
 python -m compileall -q src tests
+python -m unittest tests.spec005.test_science -v
 python -m unittest tests.spec005.test_preconstruction -v
 python -m unittest tests.spec005.test_personnel -v
 python -m unittest tests.spec005.test_access -v
@@ -82,7 +79,23 @@ python -m unittest discover -s tests -v
 
 ## 6. Required validation scenarios
 
-### Scenario A — missing prerequisite stays blocked
+### Scenario A — scientific selection design is complete or blocked
+
+Create synthetic metrics-v2, seven-lane quality, threshold and statistical-design records.
+
+Expected:
+
+```text
+ALL_REQUIRED_LANES_PRESENT=required for scientific readiness
+MISSING_REQUIRED_THRESHOLD_OR_REVIEW_IDENTITY=BLOCKED/INCOMPLETE
+MISSING_REQUIRED_NUMERIC_N_OR_ALLOCATION=BLOCKED/INCOMPLETE
+CANDIDATE_SPECIFIC_OR_POST_RESULT_THRESHOLD_N=REJECTED
+ARABIC_PARITY_UNPAIRED_MODEL=REJECTED
+```
+
+The validator may accept synthetic complete values to prove semantics; those fixture values do not become canonical scientific thresholds or sample sizes.
+
+### Scenario B — missing prerequisite stays blocked
 
 Provide synthetic metadata with one required gate absent/stale.
 
@@ -94,51 +107,51 @@ NO_AUTOMATIC_ACTIVATION
 NO_SPEC004_EXECUTABLE_PROJECTION
 ```
 
-### Scenario B — Private Gold cannot become selection source
+### Scenario C — Private Gold cannot become selection source
 
 Create a synthetic source-route/lineage fixture that tries to use Private Gold as a parent or `CHECKPOINT_SELECTION` source.
 
 Expected: deterministic prohibited/blocked result.
 
-### Scenario C — personnel eligibility does not grant access
+### Scenario D — personnel eligibility does not grant access
 
 Create synthetic `ELIGIBLE` + `ACTIVE` assignment records without an A13 grant.
 
 Expected: assignment may be valid, real access remains absent. `ALLOW_GRANT_CONSIDERATION` is not access authorization.
 
-### Scenario D — Gold/result exposure invalidates incompatible roles
+### Scenario E — Gold/result exposure invalidates incompatible roles
 
 Create synthetic records with actual Private-Gold case exposure or same-suite candidate-result exposure for a content role.
 
 Expected: content-role eligibility blocked/ineligible and A13 revoke/deny signal where applicable.
 
-### Scenario E — finance `$0` is not silent PASS
+### Scenario F — finance `$0` is not silent PASS
 
 Use an incomplete requirement manifest with no active authorization.
 
 Expected: blocked/unknown, not `A14_NOT_REQUIRED_PASS` merely because spend is zero.
 
-### Scenario F — authorization material change requires new identity
+### Scenario G — authorization material change requires new identity
 
 Attempt synthetic cap increase/period extension/vendor substitution on an existing authorization identity.
 
 Expected: reject in-place material amendment; require a superseding authorization identity.
 
-### Scenario G — device contract validates metadata without executing device
+### Scenario H — device contract validates metadata without executing device
 
 Validate synthetic complete/incomplete run metadata against the frozen five-target protocol.
 
 Expected: deterministic PASS/BLOCKED/HARD_FAIL/INCOMPLETE semantics as appropriate, with no subprocess/runtime execution.
 
-### Scenario H — synthetic activation proves validator only
+### Scenario I — synthetic activation proves validator only
 
 Validate a synthetic fully satisfied A1–A14 fixture and an activation record.
 
 Expected: validator can return a fixture-valid state. The test must explicitly assert that fixture validity does not create canonical real-world construction authority.
 
-### Scenario I — Spec 004 projection fails closed
+### Scenario J — Spec 004 projection fails closed
 
-Attempt to build the Spec 004 projection with missing metrics-v2 identity, stale prerequisite snapshot, incomplete device evidence, Private-Gold selection source, or missing required threshold identity.
+Attempt to build the Spec 004 projection with missing metrics-v2 identity, missing/stale threshold/statistical identity, stale prerequisite snapshot, incomplete device evidence, Private-Gold selection source, or missing required activation identity.
 
 Expected: no executable projection.
 
