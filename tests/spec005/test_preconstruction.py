@@ -314,6 +314,28 @@ class ReviewBindingTests(unittest.TestCase):
             validate_review_binding(make_review_binding(), load_contract()), []
         )
 
+    def test_unhashable_reference_elements_do_not_crash(self):
+        errors = validate_review_binding(
+            make_review_binding(
+                author_references=[{"nested": 1}],
+                reviewer_references=[["x"]],
+            ),
+            load_contract(),
+        )
+        self.assertIsInstance(errors, list)
+        self.assertTrue(any("STRING" in e.upper() for e in errors))
+
+    def test_scalar_reason_codes_fail_closed(self):
+        snapshot = {
+            "snapshot_id": "SNAP-007",
+            "snapshot_version": "1.0",
+            "requirements": {},
+        }
+        result = evaluate_preconstruction_snapshot(
+            snapshot, load_contract(), {"state": "INCOMPLETE", "reason_codes": 42}
+        )
+        self.assertEqual(result["state"], "NOT_READY_TO_CONSTRUCT")
+
     def test_missing_author_or_reviewer_rejected(self):
         errors = validate_review_binding(
             make_review_binding(reviewer_references=[]), load_contract()

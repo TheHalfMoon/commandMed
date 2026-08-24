@@ -294,8 +294,14 @@ def validate_review_binding(record: Any, contract: Any) -> list[str]:
     reviewer_refs = record.get("reviewer_references")
     if not isinstance(author_refs, list) or not author_refs:
         errors.append("ReviewBinding:AUTHOR_REFERENCES_REQUIRED")
+    elif not all(isinstance(item, str) and item.strip() for item in author_refs):
+        errors.append("ReviewBinding:AUTHOR_REFERENCES_MUST_BE_STRINGS")
+        author_refs = []
     if not isinstance(reviewer_refs, list) or not reviewer_refs:
         errors.append("ReviewBinding:REVIEWER_REFERENCES_REQUIRED")
+    elif not all(isinstance(item, str) and item.strip() for item in reviewer_refs):
+        errors.append("ReviewBinding:REVIEWER_REFERENCES_MUST_BE_STRINGS")
+        reviewer_refs = []
     authors = set(author_refs or [])
     reviewers = set(reviewer_refs or [])
     adjudicator = record.get("adjudicator_reference_or_none")
@@ -379,8 +385,14 @@ def evaluate_preconstruction_snapshot(
             reason_codes.append(
                 f"Snapshot:SCIENTIFIC_READINESS_NOT_READY_STATE_{state}"
             )
-            for code in scientific_readiness.get("reason_codes") or []:
-                reason_codes.append(f"Snapshot:SCIENTIFIC_{code}")
+            readiness_codes = scientific_readiness.get("reason_codes")
+            if isinstance(readiness_codes, list):
+                for code in readiness_codes:
+                    reason_codes.append(f"Snapshot:SCIENTIFIC_{code}")
+            elif readiness_codes is not None:
+                reason_codes.append(
+                    "Snapshot:SCIENTIFIC_REASON_CODES_MALFORMED"
+                )
 
     requirements = snapshot.get("requirements") if isinstance(snapshot, dict) else None
     if not isinstance(requirements, dict) or not requirements:
