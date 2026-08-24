@@ -1,0 +1,137 @@
+{
+  "contract_id": "commandmed-spec005-selection-quality-contract",
+  "contract_version": "1.0",
+  "required_quality_lanes": [
+    "A_MEDICAL_KNOWLEDGE_BIOMEDICAL_REASONING",
+    "B_PATIENT_CAREGIVER_CLINICAL_SAFETY",
+    "C_UNCERTAINTY_ABSTENTION_INFORMATION_SEEKING",
+    "D_EVIDENCE_GROUNDED_CLINICAL",
+    "E_ARABIC_ENGLISH_PAIRED_CLINICAL_PARITY",
+    "F_CLINICAL_PROFESSIONAL_REASONING_WORKFLOW",
+    "G_LAB_DOCUMENT_STRUCTURED_QUALIFICATION"
+  ],
+  "required_role_ids": [
+    "PATIENT_CAREGIVER",
+    "CLINICAL_PROFESSIONAL",
+    "LEARNER_RESEARCHER"
+  ],
+  "required_language_scope": [
+    "ar",
+    "en"
+  ],
+  "required_arabic_coverage_anchors": [
+    "MODERN_STANDARD_ARABIC_CLINICAL",
+    "SAUDI_GULF_COLLOQUIAL_PATIENT",
+    "ARABIC_ENGLISH_CODE_SWITCHING",
+    "LOCAL_MEDICATION_NOMENCLATURE",
+    "ARABIC_EMERGENCY_TRIAGE"
+  ],
+  "metric_mapping_requirements": {
+    "every_required_lane_needs_explicit_mapping": true,
+    "allowed_evidence_roles_for_lane_mapping": [
+      "SELECTION_DEV",
+      "QUALIFICATION_ONLY"
+    ],
+    "prohibited_evidence_roles_for_lane_mapping": [
+      "PRIVATE_GOLD_FINAL_AUDIT",
+      "PUBLIC_EXTERNAL_EVAL"
+    ],
+    "metrics_catalog_schema_id": "commandmed-metrics-catalog",
+    "metrics_catalog_schema_version": "2.0",
+    "metric_direction_must_be_explicit": true,
+    "unknown_metric_id": "BLOCKED",
+    "hard_gate_metrics_cannot_be_lane_mapped": false
+  },
+  "threshold_record_requirements": {
+    "required_fields": [
+      "threshold_policy_id",
+      "threshold_policy_version",
+      "metric_id",
+      "metric_evidence_role",
+      "lane_id",
+      "required_stratum_or_scope",
+      "estimand_id",
+      "metric_direction",
+      "decision_role",
+      "threshold_kind",
+      "unit_or_scale",
+      "clinical_meaningfulness_evidence_ids",
+      "statistical_justification_evidence_ids",
+      "clinical_review_authority_reference",
+      "statistical_review_authority_reference",
+      "conflict_disposition_record_ids",
+      "pre_result_freeze",
+      "record_canonical_sha256"
+    ],
+    "conditionally_required_fields": [
+      "threshold_value_or_margin"
+    ],
+    "missing_threshold_value_blocks_pass": true,
+    "pre_result_freeze_required_value": true,
+    "candidate_result_derived_threshold_selection": "PROHIBITED",
+    "allowed_threshold_kinds": [
+      "ABSOLUTE_THRESHOLD",
+      "RELATIVE_MARGIN",
+      "NON_INFERIORITY_MARGIN",
+      "EQUIVALENCE_BAND",
+      "EXPLICIT_NOT_APPLICABLE_WITH_REVIEW"
+    ],
+    "allowed_metric_directions": [
+      "HIGHER_BETTER",
+      "LOWER_BETTER"
+    ],
+    "allowed_decision_roles": [
+      "HARD_GATE",
+      "RANKING",
+      "DIAGNOSTIC_ONLY"
+    ]
+  },
+  "statistical_design_requirements": {
+    "atomic_a3_a4_identity": true,
+    "required_fields": [
+      "statistical_design_id",
+      "design_version",
+      "quality_lane",
+      "metric_id_or_metric_mapping_id",
+      "required_stratum_or_scope",
+      "estimand",
+      "unit_of_analysis",
+      "decision_role",
+      "threshold_policy_id_or_explicit_not_applicable",
+      "precision_or_power_objective",
+      "confidence_or_error_rate_parameters",
+      "anticipated_rate_variance_or_other_nuisance_inputs",
+      "source_and_provenance_for_planning_inputs",
+      "pairing_or_cluster_dependency_model",
+      "multiplicity_structure",
+      "planned_numeric_n",
+      "coverage_allocation_design",
+      "rounding_or_allocation_rule",
+      "software_formula_or_method_identity",
+      "sensitivity_analysis_identity_or_explicit_not_required",
+      "candidate_neutral",
+      "pre_result_freeze",
+      "record_canonical_sha256"
+    ],
+    "candidate_neutral_required_value": true,
+    "pre_result_freeze_required_value": true,
+    "arabic_parity_requires_paired_root_case_dependency": true,
+    "unpaired_independent_two_sample_arabic_shortcut": "PROHIBITED",
+    "language_variant_counts_as_independent_n": false,
+    "pair_statistical_unit_count": 1,
+    "missing_n_or_allocation_blocks_pass": true,
+    "multiplicity_declaration_required": true
+  },
+  "invariants": [
+    "LANES_ARE_NONCOMPENSABLE=YES",
+    "FAILED_OR_MISSING_REQUIRED_LANE_BLOCKS_SELECTION=YES",
+    "CALLER_OWNED_PASS_ADEQUATE_OR_POWERED_CLAIMS_NOT_AUTHORITATIVE=YES",
+    "UNRESOLVED_THRESHOLD_NEVER_DEFAULTED=YES",
+    "UNRESOLVED_N_OR_ALLOCATION_NEVER_DEFAULTED=YES",
+    "POST_RESULT_MUTATION_OF_FROZEN_DESIGN=PROHIBITED",
+    "CANDIDATE_SPECIFIC_DESIGN_VALUES=PROHIBITED",
+    "PRIVATE_GOLD_CANNOT_SATISFY_LANE_MAPPING=YES"
+  ],
+  "canonical_sha256": null,
+  "_identity_note": "canonical_sha256 is computed over this projection with canonical_sha256=null by the repository canonicalization helper; it is bound at validation time, not stored as a fabricated self-hash."
+}

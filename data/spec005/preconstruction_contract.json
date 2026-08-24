@@ -1,0 +1,131 @@
+{
+  "contract_id": "commandmed-spec005-preconstruction-contract",
+  "contract_version": "1.0",
+  "source_route_classes": [
+    "ORIGINAL_HUMAN_AUTHORED_NON_PHI",
+    "PUBLIC_DEV_DIRECT",
+    "PUBLIC_DEV_DERIVED",
+    "AUTHORIZED_INTERNAL_DERIVED",
+    "MODEL_OR_PROVIDER_GENERATED",
+    "PROHIBITED_OR_BLOCKED_SOURCE"
+  ],
+  "source_route_rules": {
+    "selection_development_declared_use": "DEVELOPMENT_EVALUATION",
+    "selection_development_purpose": "CHECKPOINT_SELECTION",
+    "unauthorized_for_selection_route_classes": [
+      "MODEL_OR_PROVIDER_GENERATED",
+      "PROHIBITED_OR_BLOCKED_SOURCE"
+    ],
+    "derived_routes_require_parent_lineage_binding": true,
+    "translated_or_derived_variant_requires_source_parent": true,
+    "missing_rights_evidence": "BLOCKED",
+    "missing_privacy_evidence": "BLOCKED",
+    "unknown_privacy_state": "BLOCKED"
+  },
+  "root_task_metadata_rules": {
+    "no_clinical_text_answer_or_rubric_payload": true,
+    "content_identity_is_sha256_only": true,
+    "exactly_one_primary_coverage_anchor": true,
+    "secondary_tags_cannot_satisfy_missing_primary_anchor": true,
+    "required_fields": [
+      "root_task_id",
+      "root_task_record_version",
+      "root_task_state",
+      "root_content_artifact_sha256",
+      "source_route_record_id",
+      "source_route_record_sha256",
+      "lineage_record_id",
+      "lineage_record_sha256",
+      "primary_coverage_anchor_id",
+      "role_id",
+      "use_context_id",
+      "statistical_stratum_id",
+      "statistical_slot_id",
+      "rights_instrument_evidence_id",
+      "privacy_attestation_evidence_id",
+      "gold_nonexposure_attestation_reference",
+      "content_authoring_record_id",
+      "record_canonical_sha256"
+    ]
+  },
+  "language_variant_rules": {
+    "closed_language_scope": [
+      "ar",
+      "en"
+    ],
+    "variant_binds_one_root_task": true,
+    "variant_binds_one_pair": true,
+    "arabic_and_english_share_root_and_pair": true
+  },
+  "pair_metadata_rules": {
+    "statistical_unit_count": 1,
+    "requires_exactly_one_arabic_and_one_english_variant": true,
+    "pair_content_identity_binds_root_and_both_variants": true,
+    "variants_are_not_independent_n": true
+  },
+  "review_binding_rules": {
+    "author_reviewer_separation_required": true,
+    "adjudicator_separation_from_author_and_reviewer": true,
+    "review_must_bind_exact_content_identity": true,
+    "stale_review_for_mutated_content": "BLOCKED",
+    "accepted_dispositions": [
+      "ACCEPTED",
+      "REJECTED",
+      "ESCALATED_FOR_ADJUDICATION"
+    ],
+    "self_review": "PROHIBITED"
+  },
+  "contamination_plan_rules": {
+    "plan_is_identity_only_not_assessment_result": true,
+    "parent_aware_required_value": true,
+    "cross_lingual_semantic_assessment_required_value": true,
+    "required_fields": [
+      "contamination_plan_id",
+      "selection_content_universe_policy",
+      "exact_method_id",
+      "exact_method_version",
+      "semantic_method_id",
+      "semantic_method_version",
+      "semantic_threshold_policy_id",
+      "candidate_corpus_binding_policy",
+      "parent_aware",
+      "cross_lingual_semantic_assessment_required",
+      "record_canonical_sha256"
+    ]
+  },
+  "material_change_rule": {
+    "metric_or_evidence_role_mapping_change_creates_new_identity": true,
+    "threshold_margin_identity_change_creates_new_identity": true,
+    "statistical_design_or_allocation_change_creates_new_identity": true,
+    "source_route_change_creates_new_identity": true,
+    "scoring_or_metric_mapping_change_creates_new_identity": true,
+    "personnel_eligibility_change_creates_new_identity": true,
+    "access_binding_change_creates_new_identity": true,
+    "finance_authorization_scope_change_creates_new_identity": true,
+    "device_protocol_change_creates_new_identity": true,
+    "activation_prerequisite_change_creates_new_identity": true,
+    "dependent_cached_pass_invalidated_until_revalidated": true
+  },
+  "snapshot_readiness_states": [
+    "NOT_READY_TO_CONSTRUCT",
+    "READY_FOR_SEPARATE_ACTIVATION_NOT_AUTHORIZED"
+  ],
+  "prohibited_snapshot_state": "AUTHORIZED_TO_CONSTRUCT",
+  "payload_prohibition": {
+    "clinical_case_text": "PROHIBITED",
+    "answer_or_rubric_text": "PROHIBITED",
+    "private_gold_payload_reference": "PROHIBITED",
+    "phi_fields": "PROHIBITED",
+    "credentials_or_tokens": "PROHIBITED"
+  },
+  "invariants": [
+    "CALLER_OWNED_READY_ELIGIBLE_OR_PASS_CLAIMS_NOT_AUTHORITATIVE=YES",
+    "SCIENTIFIC_READINESS_REQUIRED_INPUT_CANNOT_BE_BYPASSED=YES",
+    "UNKNOWN_STATES_FAIL_CLOSED=YES",
+    "MALFORMED_INPUT_RETURNS_ERRORS_NOT_EXCEPTIONS=YES",
+    "PRIVATE_GOLD_NEVER_PARENT_OR_SOURCE=YES",
+    "MUTABLE_LATEST_POLICY_BINDING=PROHIBITED"
+  ],
+  "canonical_sha256": null,
+  "_identity_note": "canonical_sha256 is computed over this projection with canonical_sha256=null at validation time; no fabricated self-hash is stored."
+}
