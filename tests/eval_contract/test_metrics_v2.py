@@ -198,6 +198,37 @@ class MetricsV2CatalogTests(unittest.TestCase):
             compute_canonical_sha256(mutated),
         )
 
+    def test_shared_purpose_records_tie_break_deterministically_by_role(self):
+        """Records sharing a primary sort key stay order-independent via the
+        evidence_role composite tie-break, even though duplicate roles are
+        rejected by the validator for real catalogs."""
+        shared_purpose = [
+            {
+                "evidence_role": "ZZ_ROLE",
+                "purpose": "SHARED_PURPOSE",
+                "evidence_kind": "synthetic",
+                "binding_mode": "MANIFEST_BOUND",
+                "source_policy": "IDENTITY_BOUND_QUALIFICATION_ASSET",
+                "requirement": "same",
+            },
+            {
+                "evidence_role": "AA_ROLE",
+                "purpose": "SHARED_PURPOSE",
+                "evidence_kind": "synthetic",
+                "binding_mode": "MANIFEST_BOUND",
+                "source_policy": "IDENTITY_BOUND_QUALIFICATION_ASSET",
+                "requirement": "same",
+            },
+        ]
+        self.assertEqual(
+            compute_canonical_sha256(shared_purpose),
+            compute_canonical_sha256(list(reversed(shared_purpose))),
+        )
+        self.assertEqual(
+            compute_canonical_sha256(shared_purpose)[0],
+            compute_canonical_sha256([shared_purpose[1], shared_purpose[0]])[0],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
