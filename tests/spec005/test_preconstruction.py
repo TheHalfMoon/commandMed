@@ -528,7 +528,7 @@ class SnapshotTests(unittest.TestCase):
             snapshot, load_contract(), self._scientific_ready()
         )
         self.assertEqual(result["state"], "NOT_READY_TO_CONSTRUCT")
-        self.assertTrue(any("SHA_FORMAT" in c for c in result["reason_codes"]))
+        self.assertTrue(any("BAD_FORMAT" in c for c in result["reason_codes"]))
 
     def test_omitted_freshness_assertion_blocks(self):
         snapshot = {

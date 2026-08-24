@@ -270,12 +270,29 @@ def evaluate_a14_operational_pass(requirements: Any, authorizations: Any) -> dic
             "reason_codes": ["A14:MALFORMED_REQUIREMENT_INPUT"],
         }
 
+    # Both PASS modes require the claimed requirement decision to be bound to
+    # and reproducible from the supplied requirement manifest.
+    bound_manifest = requirements.get("requirement_manifest")
+    recomputed = evaluate_a14_requirement(bound_manifest)
+    manifest_id = requirements.get("requirement_manifest_id")
+    if not isinstance(bound_manifest, dict):
+        return {
+            "state": "BLOCKED_UNKNOWN_OR_INCOMPLETE",
+            "reason_codes": ["A14:NO_BOUND_REQUIREMENT_MANIFEST"],
+        }
+    if recomputed.get("requirement_manifest_id") != manifest_id:
+        reason_codes.append(
+            f"A14:BOUND_MANIFEST_ID_MISMATCH_{recomputed.get('requirement_manifest_id')}"
+        )
+        return {
+            "state": "BLOCKED_UNKNOWN_OR_INCOMPLETE",
+            "reason_codes": sorted(set(reason_codes)),
+        }
+
     req_state = requirements.get("state")
     if req_state == "NOT_REQUIRED":
         # Caller-owned NOT_REQUIRED is never trusted: recompute from the
         # bound requirement manifest supplied alongside the claim.
-        manifest = requirements.get("requirement_manifest")
-        recomputed = evaluate_a14_requirement(manifest)
         if recomputed["state"] != "NOT_REQUIRED":
             reason_codes.append("A14:NOT_REQUIRED_CLAIM_NOT_REPRODUCIBLE")
             reason_codes.extend(
@@ -288,10 +305,14 @@ def evaluate_a14_operational_pass(requirements: Any, authorizations: Any) -> dic
         return {
             "state": "A14_NOT_REQUIRED_PASS",
             "reason_codes": [],
-            "requirement_manifest_id": recomputed.get("requirement_manifest_id"),
+            "requirement_manifest_id": manifest_id,
         }
     if req_state != "REQUIRED":
         reason_codes.append(f"A14:REQUIREMENT_STATE_{req_state}")
+    elif recomputed["state"] != "REQUIRED":
+        reason_codes.append(
+            f"A14:REQUIRED_CLAIM_NOT_REPRODUCIBLE_STATE_{recomputed['state']}"
+        )
 
     auth_list = authorizations if isinstance(authorizations, list) else []
     manifest_id = requirements.get("requirement_manifest_id")

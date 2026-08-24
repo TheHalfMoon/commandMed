@@ -191,20 +191,35 @@ class TransitionTests(unittest.TestCase):
 
 
 class OperationalPassTests(unittest.TestCase):
-    def _req_required(self):
+    def _req_required(self, manifest=None):
         return {
             "state": "REQUIRED",
             "reason_codes": [],
             "requirement_manifest_id": "REQM-001",
             "requirement_manifest_sha256": "b" * 64,
+            "requirement_manifest": manifest if manifest is not None else make_manifest(),
         }
 
     def _req_not_required(self):
+        full = self._full_capacity_manifest() if hasattr(self, "_full_capacity_manifest") else None
         return {
             "state": "NOT_REQUIRED",
             "reason_codes": [],
-            "requirement_manifest_id": "REQM-002",
+            "requirement_manifest_id": "REQM-001",
             "requirement_manifest_sha256": "e" * 64,
+            "requirement_manifest": full or make_manifest(
+                work_packages=[
+                    {
+                        "work_package_id": "WP-FULL",
+                        "workload_kind": "BILINGUAL_CLINICAL_REVIEW_HOURS",
+                        "required_capacity_units": 40,
+                        "existing_capacity_units": 40,
+                    }
+                ],
+                capacity_gap_records=[],
+                new_engagement_requirement_records=[],
+                new_financial_commitment_requirement_records=[],
+            ),
         }
 
     def test_authorized_pass_with_matching_active_auth(self):
@@ -244,6 +259,48 @@ class OperationalPassTests(unittest.TestCase):
         self.assertTrue(
             any("NOT_REPRODUCIBLE" in c for c in result["reason_codes"])
         )
+
+    def test_required_pass_requires_bound_reproducible_manifest(self):
+        req = {
+            "state": "REQUIRED",
+            "reason_codes": [],
+            "requirement_manifest_id": "REQM-001",
+            "requirement_manifest_sha256": "b" * 64,
+            # No bound manifest: claim cannot be reproduced.
+        }
+        result = evaluate_a14_operational_pass(req, [make_authorization()])
+        self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
+
+        # Bound manifest that does NOT evaluate to REQUIRED also blocks.
+        req = {
+            "state": "REQUIRED",
+            "reason_codes": [],
+            "requirement_manifest_id": "REQM-001",
+            "requirement_manifest_sha256": "b" * 64,
+            "requirement_manifest": make_manifest(
+                work_packages=[],
+                capacity_gap_records=[],
+                new_engagement_requirement_records=[],
+                new_financial_commitment_requirement_records=[],
+            ),
+        }
+        result = evaluate_a14_operational_pass(req, [make_authorization()])
+        self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
+
+    def test_authorized_pass_with_bound_required_manifest(self):
+        manifest = make_manifest()
+        req = {
+            "state": "REQUIRED",
+            "reason_codes": [],
+            "requirement_manifest_id": "REQM-001",
+            "requirement_manifest_sha256": "b" * 64,
+            "requirement_manifest": manifest,
+        }
+        auth = make_authorization(
+            requirement_manifest_sha256=manifest.get("record_canonical_sha256") or "b" * 64
+        )
+        result = evaluate_a14_operational_pass(req, [auth])
+        self.assertEqual(result["state"], "A14_AUTHORIZED_PASS")
 
     def test_invalid_authorization_shape_cannot_cover(self):
         broken = make_authorization(
