@@ -89,6 +89,16 @@ class ActivationRecordTests(unittest.TestCase):
         errors = validate_activation_record(make_activation(), snapshot)
         self.assertTrue(any("SNAPSHOT_SHA256_REQUIRED" in e for e in errors))
 
+    def test_non_canonical_snapshot_sha_rejected(self):
+        snapshot = make_snapshot(snapshot_sha256="not-a-sha")
+        errors = validate_activation_record(make_activation(), snapshot)
+        self.assertTrue(any("NOT_CANONICAL_SHA256" in e for e in errors))
+        gate = dict(make_activation()["required_gate_identities"]["T1"])
+        snapshot2 = make_snapshot()
+        snapshot2["requirements"]["T1"]["record_canonical_sha256"] = "nope"
+        errors = validate_activation_record(make_activation(), snapshot2)
+        self.assertTrue(any("NOT_CANONICAL_SHA256" in e for e in errors))
+
     def test_unbound_gate_evidence_rejected(self):
         snapshot = make_snapshot()
         snapshot["requirements"]["G1"] = {"state": "PASS", "stale": False}

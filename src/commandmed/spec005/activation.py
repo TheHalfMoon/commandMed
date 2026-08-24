@@ -90,8 +90,8 @@ def validate_activation_record(record: Any, snapshot: Any) -> list[str]:
     expected_snapshot_sha = (
         snapshot.get("snapshot_sha256") if isinstance(snapshot, dict) else None
     )
-    if not isinstance(expected_snapshot_sha, str) or not expected_snapshot_sha.strip():
-        errors.append("Activation:BOUND_SNAPSHOT_SHA256_REQUIRED")
+    if not _is_canonical_sha256(expected_snapshot_sha):
+        errors.append("Activation:BOUND_SNAPSHOT_SHA256_REQUIRED_OR_NOT_CANONICAL")
     elif declared_snapshot_sha != expected_snapshot_sha:
         errors.append("Activation:PRECONSTRUCTION_SNAPSHOT_SHA_MISMATCH")
 

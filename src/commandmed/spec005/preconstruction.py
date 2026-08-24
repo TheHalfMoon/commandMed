@@ -80,7 +80,12 @@ def _contract_vocab(contract: Any, key: str) -> set:
     if not isinstance(contract, dict):
         return set()
     value = contract.get(key)
-    return set(value) if isinstance(value, list) else set()
+    if not isinstance(value, list):
+        return set()
+    try:
+        return {item for item in value if isinstance(item, str)}
+    except TypeError:
+        return set()
 
 
 def validate_preconstruction_contract(contract: Any) -> list[str]:
@@ -98,9 +103,12 @@ def validate_preconstruction_contract(contract: Any) -> list[str]:
             errors.append(f"PreconstructionContract:{key}_MISSING")
 
     readiness_states = contract.get("snapshot_readiness_states") or []
-    if isinstance(readiness_states, list) and contract.get(
-        "prohibited_snapshot_state"
-    ) in readiness_states:
+    readiness_strings = (
+        {s for s in readiness_states if isinstance(s, str)}
+        if isinstance(readiness_states, list)
+        else set()
+    )
+    if contract.get("prohibited_snapshot_state") in readiness_strings:
         errors.append(
             "PreconstructionContract:PROHIBITED_STATE_"
             f"{contract.get('prohibited_snapshot_state')}_IN_READINESS_VOCABULARY"

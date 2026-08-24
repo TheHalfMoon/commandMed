@@ -151,6 +151,13 @@ class ContractTests(unittest.TestCase):
             self.assertIsInstance(errors, list)
             self.assertTrue(errors)
 
+    def test_unhashable_contract_vocabularies_do_not_crash(self):
+        contract = load_contract()
+        contract["source_route_classes"] = [[], {"a": 1}]
+        errors = validate_source_route(make_source_route(), contract)
+        self.assertIsInstance(errors, list)
+        self.assertTrue(any("ROUTE" in e.upper() or "VOCABULARY" in e.upper() for e in errors))
+
     def test_malformed_contract_fails_closed_in_record_validators(self):
         for bad in (None, "x", 42):
             for validator in (
