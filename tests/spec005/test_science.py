@@ -389,7 +389,10 @@ class ScientificReadinessTests(unittest.TestCase):
         quality = make_quality_contract()
         mappings = [make_lane_mapping(metrics_v2, lane) for lane in SEVEN_LANES]
         thresholds = [
-            make_threshold_record(metrics_v2, lane_id=lane) for lane in SEVEN_LANES
+            make_threshold_record(
+                metrics_v2, lane_id=lane, threshold_policy_id=f"TP-{lane}"
+            )
+            for lane in SEVEN_LANES
         ]
         designs = [
             make_statistical_design(
