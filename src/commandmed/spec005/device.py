@@ -112,12 +112,18 @@ def validate_device_evidence_metadata(
         return errors
 
     runs = record.get("measured_runs")
-    if not isinstance(runs, list) or len(runs) < REQUIRED_RUN_COUNT:
-        errors.append(
-            f"DeviceEvidence:INCOMPLETE_MEASURED_RUNS_"
-            f"{len(runs) if isinstance(runs, list) else 0}_OF_{REQUIRED_RUN_COUNT}"
-        )
+    if not isinstance(runs, list):
+        errors.append(f"DeviceEvidence:INCOMPLETE_MEASURED_RUNS_0_OF_{REQUIRED_RUN_COUNT}")
         return errors
+    if len(runs) != REQUIRED_RUN_COUNT:
+        code = (
+            f"DeviceEvidence:INCOMPLETE_MEASURED_RUNS_{len(runs)}_OF_{REQUIRED_RUN_COUNT}"
+            if len(runs) < REQUIRED_RUN_COUNT
+            else f"DeviceEvidence:RUN_COUNT_VIOLATION_{len(runs)}_OF_EXACTLY_{REQUIRED_RUN_COUNT}"
+        )
+        errors.append(code)
+        if len(runs) < REQUIRED_RUN_COUNT:
+            return errors
 
     for index, run in enumerate(runs):
         prefix = f"DeviceEvidence[{index}]"
@@ -197,6 +203,17 @@ def evaluate_device_preflight(records: Any, contract: Any) -> dict[str, object]:
                     f"Preflight:HARD_FAIL_RUNTIME_CRASH_{evidence.get('target_id')}"
                 )
                 hard_fail = True
+
+    duplicates = sorted(
+        target for target in seen_targets
+        if sum(
+            1 for r in records
+            if isinstance(r, dict) and r.get("target_id") == target
+        ) > 1
+    )
+    for dup in duplicates:
+        reason_codes.append(f"Preflight:DUPLICATE_TARGET_EVIDENCE_{dup}")
+        incomplete = True
 
     for missing_target in sorted(known_targets - seen_targets):
         reason_codes.append(f"Preflight:MISSING_TARGET_EVIDENCE_{missing_target}")

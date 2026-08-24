@@ -136,6 +136,28 @@ class EvidenceMetadataTests(unittest.TestCase):
         )
         self.assertTrue(any("TARGET" in e.upper() for e in errors))
 
+    def test_duplicate_target_records_rejected_in_preflight(self):
+        contract = load_contract()
+        records = [
+            make_evidence(
+                evidence_id="DEV-DUP",
+                target_id="FLAGSHIP_REPRESENTATIVE",
+                measured_runs=[
+                    make_run(run_index=i) for i in range(1, 6)
+                ],
+            )
+        ]
+        result = evaluate_device_preflight(records + [dict(records[0])], contract)
+        self.assertNotEqual(result["state"], "PREFLIGHT_PASS")
+        self.assertTrue(any("DUPLICATE" in c.upper() for c in result["reason_codes"]))
+
+    def test_more_than_five_runs_rejected(self):
+        runs = [make_run(run_index=i) for i in range(1, 7)]
+        errors = validate_device_evidence_metadata(
+            make_evidence(measured_runs=runs), load_contract()
+        )
+        self.assertTrue(any("RUN_COUNT" in e.upper() for e in errors))
+
     def test_malformed_does_not_raise(self):
         for bad in (None, 8, []):
             errors = validate_device_evidence_metadata(bad, load_contract())

@@ -56,6 +56,21 @@ def _contains_private_gold(value: Any) -> bool:
     return False
 
 
+def _guard_contract(contract: Any, prefix: str, errors: list[str]) -> bool:
+    """Fail closed when the governing contract itself is malformed."""
+    if not isinstance(contract, dict):
+        errors.append(f"{prefix}:GOVERNING_CONTRACT_MALFORMED")
+        return False
+    return True
+
+
+def _contract_vocab(contract: Any, key: str) -> set:
+    if not isinstance(contract, dict):
+        return set()
+    value = contract.get(key)
+    return set(value) if isinstance(value, list) else set()
+
+
 def validate_preconstruction_contract(contract: Any) -> list[str]:
     """Validate closed vocabularies, invariants and the frozen dependency DAG."""
     errors: list[str] = []
@@ -88,6 +103,8 @@ def validate_preconstruction_contract(contract: Any) -> list[str]:
 def validate_source_route(record: Any, contract: Any) -> list[str]:
     """Validate one A10 exact source-route record for selection development."""
     errors: list[str] = []
+    if not _guard_contract(contract, "SourceRoute", errors):
+        return errors
     _require_fields(
         record,
         (
@@ -108,7 +125,7 @@ def validate_source_route(record: Any, contract: Any) -> list[str]:
         return errors
 
     route_class = record.get("route_class")
-    allowed_classes = set(contract.get("source_route_classes") or [])
+    allowed_classes = _contract_vocab(contract, "source_route_classes")
     if route_class not in allowed_classes:
         errors.append(f"SourceRoute:UNKNOWN_ROUTE_CLASS_{route_class}")
     if route_class in PROHIBITED_ROUTE_CLASSES:
@@ -149,6 +166,8 @@ def _reject_payload_fields(record: dict, prefix: str, errors: list[str]) -> None
 def validate_root_task_metadata(record: Any, contract: Any) -> list[str]:
     """Validate one A9 metadata-only root-task provenance envelope."""
     errors: list[str] = []
+    if not _guard_contract(contract, "RootTaskMetadata", errors):
+        return errors
     _require_fields(
         record,
         (
@@ -173,9 +192,7 @@ def validate_root_task_metadata(record: Any, contract: Any) -> list[str]:
     if not isinstance(record, dict):
         return errors
 
-    anchor_vocab = set(
-        (contract.get("arabic_selection_coverage") or {}).get("anchors", [])
-    )
+    anchor_vocab = _contract_vocab(contract, "required_arabic_coverage_anchors")
     anchor = record.get("primary_coverage_anchor_id")
     known_anchors = {
         "MODERN_STANDARD_ARABIC_CLINICAL",
@@ -200,6 +217,8 @@ def validate_root_task_metadata(record: Any, contract: Any) -> list[str]:
 def validate_pair_metadata(record: Any, contract: Any) -> list[str]:
     """Validate one paired Arabic/English statistical unit."""
     errors: list[str] = []
+    if not _guard_contract(contract, "PairMetadata", errors):
+        return errors
     _require_fields(
         record,
         (
@@ -233,6 +252,8 @@ def validate_pair_metadata(record: Any, contract: Any) -> list[str]:
 def validate_review_binding(record: Any, contract: Any) -> list[str]:
     """Validate one A8 author/reviewer separation binding."""
     errors: list[str] = []
+    if not _guard_contract(contract, "ReviewBinding", errors):
+        return errors
     _require_fields(
         record,
         (
@@ -280,6 +301,9 @@ def validate_review_binding(record: Any, contract: Any) -> list[str]:
 
 def validate_contamination_plan(record: Any, contract: Any) -> list[str]:
     """Validate the A11 pre-declared contamination plan identity."""
+    errors: list[str] = []
+    if not _guard_contract(contract, "ContaminationPlan", errors):
+        return errors
     errors: list[str] = []
     _require_fields(
         record,

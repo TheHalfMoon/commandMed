@@ -276,14 +276,14 @@ def evaluate_scientific_selection_readiness(
     reason_codes.extend(contract_errors)
 
     if not isinstance(records, dict):
-        reason_codes.append(
-            "ScientificReadiness:MALFORMED_RECORDS_NOT_OBJECT"
-            if not isinstance(records, dict)
-            else "ScientificReadiness:NO_RECORDS"
-        )
+        reason_codes.append("ScientificReadiness:MALFORMED_RECORDS_NOT_OBJECT")
+    elif not isinstance(quality_contract, dict):
+        reason_codes.append("QualityContract:MALFORMED_RECORD_NOT_OBJECT")
+    elif not isinstance(metrics_v2, dict):
+        reason_codes.append("MetricsV2:MALFORMED_RECORD_NOT_OBJECT")
     else:
         reason_codes.extend(
-            _validate_lane_mappings(records, quality_contract or {}, metrics_v2 or {})
+            _validate_lane_mappings(records, quality_contract, metrics_v2)
         )
 
         thresholds = records.get("threshold_policies")

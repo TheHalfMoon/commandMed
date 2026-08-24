@@ -151,6 +151,26 @@ class ContractTests(unittest.TestCase):
             self.assertIsInstance(errors, list)
             self.assertTrue(errors)
 
+    def test_malformed_contract_fails_closed_in_record_validators(self):
+        for bad in (None, "x", 42):
+            for validator in (
+                validate_source_route,
+                validate_root_task_metadata,
+                validate_pair_metadata,
+                validate_review_binding,
+                validate_contamination_plan,
+            ):
+                record = {
+                    validate_source_route: make_source_route(),
+                    validate_root_task_metadata: make_root_task(),
+                    validate_pair_metadata: make_pair(),
+                    validate_review_binding: make_review_binding(),
+                    validate_contamination_plan: make_contamination_plan(),
+                }[validator]
+                errors = validator(record, bad)
+                self.assertIsInstance(errors, list)
+                self.assertTrue(errors)
+
 
 class SourceRouteTests(unittest.TestCase):
     def test_valid_original_route_validates(self):

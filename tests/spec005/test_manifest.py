@@ -150,6 +150,23 @@ class ManifestValidationTests(unittest.TestCase):
             self.assertIsInstance(errors, list)
             self.assertTrue(errors)
 
+    def test_malformed_identity_subobjects_do_not_crash(self):
+        manifest = make_manifest(
+            metrics_v2_identity="not-a-dict",
+            selection_quality_contract_identity=["x"],
+            comparison_policy="LEXICOGRAPHIC_PREDECLARED",
+            candidate_admission_records=[
+                {"candidate_role": "PRIMARY", "base_pretrained": True}
+            ],
+        )
+        errors = validate_spec005_manifest(manifest, make_artifacts())
+        self.assertIsInstance(errors, list)
+        self.assertTrue(any("candidate_id" in e for e in errors))
+
+    def test_projection_never_raises_on_preflight_blocked(self):
+        manifest = make_manifest(candidate_admission_records=[{}])
+        self.assertIsNone(build_spec004_projection(manifest, make_artifacts()))
+
 
 class PreflightTests(unittest.TestCase):
     def test_complete_manifest_preflight_passes(self):

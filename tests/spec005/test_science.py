@@ -366,6 +366,30 @@ class ScientificReadinessTests(unittest.TestCase):
         self.assertIn(result["state"], {"INCOMPLETE", "BLOCKED"})
         self.assertTrue(result["reason_codes"])
 
+    def test_malformed_inputs_fail_closed_not_crash(self):
+        for bad in ([], "x", 42):
+            result = evaluate_scientific_selection_readiness({}, bad, make_metrics_v2())
+            self.assertIn(result["state"], {"INCOMPLETE", "BLOCKED"})
+            result = evaluate_scientific_selection_readiness(
+                {}, make_quality_contract(), bad
+            )
+            self.assertIn(result["state"], {"INCOMPLETE", "BLOCKED"})
+
+    def test_design_and_threshold_lane_bindings_validated(self):
+        metrics_v2 = make_metrics_v2()
+        quality = make_quality_contract()
+        records = {
+            "lane_metric_mappings": [
+                make_lane_mapping(metrics_v2, lane) for lane in SEVEN_LANES
+            ],
+            "threshold_policies": [
+                make_threshold_record(metrics_v2, lane_id="Q_UNKNOWN_LANE")
+            ],
+            "statistical_designs": [],
+        }
+        result = evaluate_scientific_selection_readiness(records, quality, metrics_v2)
+        self.assertNotEqual(result["state"], "READY_FOR_PRECONSTRUCTION")
+
     def test_reason_codes_sorted_deterministic(self):
         metrics_v2 = make_metrics_v2()
         quality = make_quality_contract()

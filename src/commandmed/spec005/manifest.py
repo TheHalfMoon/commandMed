@@ -63,7 +63,10 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
         return errors
 
     # Exact metrics-v2 binding, verified against the supplied catalog content.
-    metrics_identity = manifest.get("metrics_v2_identity") or {}
+    metrics_identity = manifest.get("metrics_v2_identity")
+    if not isinstance(metrics_identity, dict):
+        errors.append("Manifest:metrics_v2_identity_MUST_BE_OBJECT")
+        metrics_identity = {}
     for field, expected in CANONICAL_METRICS_V2_BINDING.items():
         if metrics_identity.get(field) != expected:
             errors.append(
@@ -79,7 +82,10 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
             errors.append("Manifest:MetricsV2Catalog:SEMANTIC_SHA_MISMATCH")
 
     quality = artifacts.get("selection_quality_contract")
-    quality_identity = manifest.get("selection_quality_contract_identity") or {}
+    quality_identity = manifest.get("selection_quality_contract_identity")
+    if not isinstance(quality_identity, dict):
+        errors.append("Manifest:selection_quality_contract_identity_MUST_BE_OBJECT")
+        quality_identity = {}
     if not isinstance(quality, dict):
         errors.append("Manifest:SelectionQualityContract:SUPPLIED_ARTIFACT_REQUIRED")
     elif (
@@ -129,6 +135,9 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
             if not isinstance(candidate, dict):
                 errors.append(f"{prefix}:MALFORMED_RECORD_NOT_OBJECT")
                 continue
+            candidate_id = candidate.get("candidate_id")
+            if not isinstance(candidate_id, str) or not candidate_id.strip():
+                errors.append(f"{prefix}:candidate_id_RESOLVED_STRING_REQUIRED")
             role = candidate.get("candidate_role")
             if role not in CANDIDATE_ROLES:
                 errors.append(f"{prefix}:UNKNOWN_CANDIDATE_ROLE_{role}")
@@ -139,7 +148,10 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
             if _contains_private_gold(candidate):
                 errors.append(f"{prefix}:PRIVATE_GOLD_EVIDENCE_PROHIBITED")
 
-    comparison = manifest.get("comparison_policy") or {}
+    comparison = manifest.get("comparison_policy")
+    if not isinstance(comparison, dict):
+        errors.append("Manifest:comparison_policy_MUST_BE_OBJECT")
+        comparison = {}
     if comparison.get("comparison_strategy") != "LEXICOGRAPHIC_PREDECLARED" or (
         comparison.get("tie_policy") != "NO_SELECTION_ON_TIE"
     ):
@@ -200,6 +212,7 @@ def build_spec004_projection(manifest: Any, artifacts: Any) -> dict[str, object]
         "candidate_ids": [
             c["candidate_id"]
             for c in manifest["candidate_admission_records"]
+            if isinstance(c, dict) and isinstance(c.get("candidate_id"), str)
         ],
         "metrics_v2_binding": dict(metrics_identity),
     }
