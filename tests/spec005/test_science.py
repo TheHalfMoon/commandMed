@@ -313,8 +313,17 @@ class ScientificReadinessTests(unittest.TestCase):
         ]
         records = {
             "lane_metric_mappings": mappings,
-            "threshold_policies": [make_threshold_record(metrics_v2)],
-            "statistical_designs": [make_statistical_design()],
+            "threshold_policies": [
+                make_threshold_record(metrics_v2, lane_id=lane,
+                                      threshold_policy_id=f"TP-{lane}")
+                for lane in SEVEN_LANES
+            ],
+            "statistical_designs": [
+                make_statistical_design(
+                    quality_lane=lane, statistical_design_id=f"SD-{lane}"
+                )
+                for lane in SEVEN_LANES
+            ],
         }
         result = evaluate_scientific_selection_readiness(
             records, quality, metrics_v2
@@ -365,6 +374,35 @@ class ScientificReadinessTests(unittest.TestCase):
         )
         self.assertIn(result["state"], {"INCOMPLETE", "BLOCKED"})
         self.assertTrue(result["reason_codes"])
+
+    def test_per_lane_threshold_and_design_coverage_required(self):
+        metrics_v2 = make_metrics_v2()
+        quality = make_quality_contract()
+        mappings = [make_lane_mapping(metrics_v2, lane) for lane in SEVEN_LANES]
+        thresholds = [
+            make_threshold_record(metrics_v2, lane_id=lane) for lane in SEVEN_LANES
+        ]
+        designs = [
+            make_statistical_design(quality_lane=lane, statistical_design_id=f"SD-{lane}")
+            for lane in SEVEN_LANES
+        ]
+        full = {
+            "lane_metric_mappings": mappings,
+            "threshold_policies": thresholds,
+            "statistical_designs": designs,
+        }
+        result = evaluate_scientific_selection_readiness(full, quality, metrics_v2)
+        self.assertEqual(result["state"], "READY_FOR_PRECONSTRUCTION")
+
+        partial = dict(full)
+        partial["threshold_policies"] = thresholds[:6]
+        result = evaluate_scientific_selection_readiness(partial, quality, metrics_v2)
+        self.assertNotEqual(result["state"], "READY_FOR_PRECONSTRUCTION")
+
+        partial = dict(full)
+        partial["statistical_designs"] = designs[:6]
+        result = evaluate_scientific_selection_readiness(partial, quality, metrics_v2)
+        self.assertNotEqual(result["state"], "READY_FOR_PRECONSTRUCTION")
 
     def test_malformed_inputs_fail_closed_not_crash(self):
         for bad in ([], "x", 42):

@@ -309,6 +309,24 @@ def evaluate_scientific_selection_readiness(
         if not designs:
             reason_codes.append("ScientificReadiness:NO_STATISTICAL_DESIGNS")
 
+        # Noncompensable lanes require decision-criteria coverage in both the
+        # A2 threshold layer and the atomic A3+A4 design layer.
+        required_lanes = set(quality_contract.get("required_quality_lanes", []))
+        threshold_lanes = {
+            t.get("lane_id")
+            for t in thresholds
+            if isinstance(t, dict)
+        }
+        design_lanes = {
+            d.get("quality_lane")
+            for d in designs
+            if isinstance(d, dict)
+        }
+        for lane in sorted(required_lanes - threshold_lanes):
+            reason_codes.append(f"ScientificReadiness:LANE_{lane}_THRESHOLD_COVERAGE_MISSING")
+        for lane in sorted(required_lanes - design_lanes):
+            reason_codes.append(f"ScientificReadiness:LANE_{lane}_DESIGN_COVERAGE_MISSING")
+
     unique_sorted = sorted(set(reason_codes))
     state = "READY_FOR_PRECONSTRUCTION" if not unique_sorted else "INCOMPLETE"
     return {"state": state, "reason_codes": unique_sorted}

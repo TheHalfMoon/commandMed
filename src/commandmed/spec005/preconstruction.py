@@ -276,8 +276,14 @@ def validate_review_binding(record: Any, contract: Any) -> list[str]:
     if disposition not in ALLOWED_REVIEW_DISPOSITIONS:
         errors.append(f"ReviewBinding:UNKNOWN_FINAL_REVIEW_DISPOSITION_{disposition}")
 
-    authors = set(record.get("author_references") or [])
-    reviewers = set(record.get("reviewer_references") or [])
+    author_refs = record.get("author_references")
+    reviewer_refs = record.get("reviewer_references")
+    if not isinstance(author_refs, list) or not author_refs:
+        errors.append("ReviewBinding:AUTHOR_REFERENCES_REQUIRED")
+    if not isinstance(reviewer_refs, list) or not reviewer_refs:
+        errors.append("ReviewBinding:REVIEWER_REFERENCES_REQUIRED")
+    authors = set(author_refs or [])
+    reviewers = set(reviewer_refs or [])
     adjudicator = record.get("adjudicator_reference_or_none")
     if authors & reviewers:
         errors.append("ReviewBinding:SELF_REVIEW_PROHIBITED_AUTHOR_IS_REVIEWER")
@@ -372,10 +378,16 @@ def evaluate_preconstruction_snapshot(
                 reason_codes.append(f"Snapshot:MISSING_GATE_{gate}")
                 continue
             gate_state = evidence.get("state")
+            record_id = evidence.get("record_id")
+            record_sha = evidence.get("record_canonical_sha256")
             if gate_state != "PASS":
                 reason_codes.append(f"Snapshot:GATE_{gate}_STATE_{gate_state}")
             elif evidence.get("stale") is True:
                 reason_codes.append(f"Snapshot:GATE_{gate}_STALE")
+            elif not isinstance(record_id, str) or not record_id.strip():
+                reason_codes.append(f"Snapshot:GATE_{gate}_RECORD_ID_UNBOUND")
+            elif not isinstance(record_sha, str) or not record_sha.strip():
+                reason_codes.append(f"Snapshot:GATE_{gate}_RECORD_SHA_UNBOUND")
 
     unique_sorted = sorted(set(reason_codes))
     computed_state = (
