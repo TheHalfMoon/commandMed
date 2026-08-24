@@ -314,7 +314,11 @@ def validate_review_binding(record: Any, contract: Any) -> list[str]:
     adjudicator = record.get("adjudicator_reference_or_none")
     if authors & reviewers:
         errors.append("ReviewBinding:SELF_REVIEW_PROHIBITED_AUTHOR_IS_REVIEWER")
-    if adjudicator and (adjudicator in authors or adjudicator in reviewers):
+    if adjudicator is not None and (
+        not isinstance(adjudicator, str) or not adjudicator.strip()
+    ):
+        errors.append("ReviewBinding:ADJUDICATOR_REFERENCE_MUST_BE_STRING_OR_NONE")
+    elif isinstance(adjudicator, str) and adjudicator in (authors | reviewers):
         errors.append(
             "ReviewBinding:ADJUDICATOR_MUST_BE_SEPARATE_FROM_AUTHOR_AND_REVIEWER"
         )

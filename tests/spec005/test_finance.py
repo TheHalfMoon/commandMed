@@ -223,10 +223,12 @@ class OperationalPassTests(unittest.TestCase):
         }
 
     def test_authorized_pass_with_matching_active_auth(self):
-        result = evaluate_a14_operational_pass(
-            self._req_required(),
-            [make_authorization()],
+        manifest = make_manifest()
+        req = self._req_required(manifest=manifest)
+        auth = make_authorization(
+            requirement_manifest_sha256=manifest["record_canonical_sha256"]
         )
+        result = evaluate_a14_operational_pass(req, [auth])
         self.assertEqual(result["state"], "A14_AUTHORIZED_PASS")
         # Operational pass is evidence, not a payment or contract action.
         self.assertNotIn("payment_executed", result)
@@ -311,6 +313,21 @@ class OperationalPassTests(unittest.TestCase):
             requirement_manifest_sha256=manifest.get("record_canonical_sha256") or "b" * 64
         )
         result = evaluate_a14_operational_pass(req, [auth])
+        self.assertEqual(result["state"], "A14_AUTHORIZED_PASS")
+
+    def test_authorization_manifest_digest_must_match_bound_manifest(self):
+        manifest = make_manifest()
+        req = self._req_required(manifest=manifest)
+        wrong_digest_auth = make_authorization(
+            requirement_manifest_sha256="f" * 64
+        )
+        result = evaluate_a14_operational_pass(req, [wrong_digest_auth])
+        self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
+
+        right_digest_auth = make_authorization(
+            requirement_manifest_sha256=manifest["record_canonical_sha256"]
+        )
+        result = evaluate_a14_operational_pass(req, [right_digest_auth])
         self.assertEqual(result["state"], "A14_AUTHORIZED_PASS")
 
     def test_invalid_authorization_shape_cannot_cover(self):

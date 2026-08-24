@@ -317,12 +317,21 @@ def evaluate_a14_operational_pass(requirements: Any, authorizations: Any) -> dic
     auth_list = authorizations if isinstance(authorizations, list) else []
     manifest_id = requirements.get("requirement_manifest_id")
     covering = []
+    bound_manifest_sha = (bound_manifest or {}).get("record_canonical_sha256")
     for index, auth in enumerate(auth_list):
         if not isinstance(auth, dict):
             continue
         if auth.get("lifecycle_state") != "ACTIVE" or auth.get("stale") is True:
             continue
         if auth.get("requirement_manifest_id") != manifest_id:
+            continue
+        if (
+            bound_manifest_sha
+            and auth.get("requirement_manifest_sha256") != bound_manifest_sha
+        ):
+            reason_codes.append(
+                f"A14:AUTHORIZATION[{index}]:REQUIREMENT_MANIFEST_SHA_MISMATCH"
+            )
             continue
         shape_errors = validate_a14_authorization(auth)
         if shape_errors:

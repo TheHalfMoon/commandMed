@@ -314,6 +314,15 @@ class ReviewBindingTests(unittest.TestCase):
             validate_review_binding(make_review_binding(), load_contract()), []
         )
 
+    def test_non_string_adjudicator_rejected(self):
+        for bad in (["x"], {"a": 1}, 42):
+            errors = validate_review_binding(
+                make_review_binding(adjudicator_reference_or_none=bad),
+                load_contract(),
+            )
+            self.assertIsInstance(errors, list)
+            self.assertTrue(any("ADJUDICATOR" in e.upper() for e in errors))
+
     def test_unhashable_reference_elements_do_not_crash(self):
         errors = validate_review_binding(
             make_review_binding(

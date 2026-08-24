@@ -196,6 +196,15 @@ class ManifestValidationTests(unittest.TestCase):
         self.assertIsInstance(errors, list)
         self.assertTrue(any("candidate_id" in e for e in errors))
 
+    def test_malformed_artifact_collections_do_not_crash(self):
+        for bad in (None, "x", 42, {"a": 1}):
+            artifacts = make_artifacts(
+                threshold_policies=bad, statistical_designs=bad
+            )
+            errors = validate_spec005_manifest(make_manifest(), artifacts)
+            self.assertIsInstance(errors, list)
+            self.assertTrue(errors)
+
     def test_projection_never_raises_on_preflight_blocked(self):
         manifest = make_manifest(candidate_admission_records=[{}])
         self.assertIsNone(build_spec004_projection(manifest, make_artifacts()))

@@ -104,16 +104,32 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
         elif declared_sha != supplied_sha:
             errors.append("Manifest:SELECTION_QUALITY_CONTRACT_SHA_MISMATCH")
 
-    supplied_thresholds = {
-        t.get("threshold_policy_id"): t.get("record_canonical_sha256")
-        for t in artifacts.get("threshold_policies", []) or []
-        if isinstance(t, dict)
-    }
-    declared_thresholds = {
-        t.get("threshold_policy_id"): t.get("record_canonical_sha256")
-        for t in manifest.get("threshold_policy_identities") or []
-        if isinstance(t, dict)
-    }
+    def _id_sha_map(value: Any, prefix: str, id_field: str) -> dict:
+        if not isinstance(value, list):
+            errors.append(f"{prefix}:MUST_BE_LIST")
+            return {}
+        mapping: dict = {}
+        for entry in value:
+            if not isinstance(entry, dict):
+                errors.append(f"{prefix}:MALFORMED_RECORD_NOT_OBJECT")
+                continue
+            entry_id = entry.get(id_field)
+            if not isinstance(entry_id, str) or not entry_id.strip():
+                errors.append(f"{prefix}:{id_field}_RESOLVED_STRING_REQUIRED")
+                continue
+            mapping[entry_id] = entry.get("record_canonical_sha256")
+        return mapping
+
+    supplied_thresholds = _id_sha_map(
+        artifacts.get("threshold_policies"),
+        "Manifest:ThresholdPolicies",
+        "threshold_policy_id",
+    )
+    declared_thresholds = _id_sha_map(
+        manifest.get("threshold_policy_identities"),
+        "Manifest:ThresholdPolicyIdentities",
+        "threshold_policy_id",
+    )
     for policy_id in sorted(set(declared_thresholds) - set(supplied_thresholds)):
         errors.append(f"Manifest:THRESHOLD_POLICY_{policy_id}_NOT_SUPPLIED")
     for policy_id in sorted(set(supplied_thresholds) - set(declared_thresholds)):
@@ -124,16 +140,16 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
                 f"Manifest:THRESHOLD_POLICY_{policy_id}_SHA_MISMATCH_WITH_SUPPLIED"
             )
 
-    supplied_designs = {
-        d.get("statistical_design_id"): d.get("record_canonical_sha256")
-        for d in artifacts.get("statistical_designs", []) or []
-        if isinstance(d, dict)
-    }
-    declared_designs = {
-        d.get("statistical_design_id"): d.get("record_canonical_sha256")
-        for d in manifest.get("statistical_design_identities") or []
-        if isinstance(d, dict)
-    }
+    supplied_designs = _id_sha_map(
+        artifacts.get("statistical_designs"),
+        "Manifest:StatisticalDesigns",
+        "statistical_design_id",
+    )
+    declared_designs = _id_sha_map(
+        manifest.get("statistical_design_identities"),
+        "Manifest:StatisticalDesignIdentities",
+        "statistical_design_id",
+    )
     for design_id in sorted(set(declared_designs) - set(supplied_designs)):
         errors.append(f"Manifest:STATISTICAL_DESIGN_{design_id}_NOT_SUPPLIED")
     for design_id in sorted(set(supplied_designs) - set(declared_designs)):
