@@ -208,9 +208,33 @@ class OperationalPassTests(unittest.TestCase):
         self.assertNotIn("payment_executed", result)
         self.assertNotIn("contract_created", result)
 
+    def _full_capacity_manifest(self):
+        return make_manifest(
+            work_packages=[
+                {
+                    "work_package_id": "WP-001",
+                    "workload_kind": "BILINGUAL_CLINICAL_REVIEW_HOURS",
+                    "required_capacity_units": 40,
+                    "existing_capacity_units": 40,
+                }
+            ],
+            capacity_gap_records=[],
+            new_engagement_requirement_records=[],
+            new_financial_commitment_requirement_records=[],
+        )
+
     def test_not_required_yields_not_required_pass(self):
-        result = evaluate_a14_operational_pass(self._req_not_required(), [])
+        req = dict(self._req_not_required())
+        req["requirement_manifest"] = self._full_capacity_manifest()
+        result = evaluate_a14_operational_pass(req, [])
         self.assertEqual(result["state"], "A14_NOT_REQUIRED_PASS")
+
+    def test_caller_not_required_claim_without_manifest_blocked(self):
+        result = evaluate_a14_operational_pass(self._req_not_required(), [])
+        self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
+        self.assertTrue(
+            any("NOT_REPRODUCIBLE" in c for c in result["reason_codes"])
+        )
 
     def test_stale_authorization_invalidates_pass(self):
         result = evaluate_a14_operational_pass(

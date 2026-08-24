@@ -54,34 +54,40 @@ def validate_activation_record(record: Any, snapshot: Any) -> list[str]:
     if not isinstance(record, dict):
         return errors
 
-    gate_identities = record.get("required_gate_identities") or {}
+    gate_identities = (
+        record.get("required_gate_identities")
+        if isinstance(record.get("required_gate_identities"), dict)
+        else {}
+    )
     snapshot_requirements = (
         snapshot.get("requirements", {}) if isinstance(snapshot, dict) else {}
     )
     for gate in REQUIRED_GATES:
-        bound_record = gate_identities.get(gate) if isinstance(gate_identities, dict) else None
+        bound_record = gate_identities.get(gate)
         requirement = snapshot_requirements.get(gate)
-        expected_record = (
-            requirement.get("record_id")
-            if isinstance(requirement, dict)
-            else None
-        )
+        if not isinstance(requirement, dict):
+            errors.append(f"Activation:SNAPSHOT_GATE_EVIDENCE_MISSING_{gate}")
+            continue
+        expected_record = requirement.get("record_id")
+        expected_sha = requirement.get("record_canonical_sha256")
+        if not isinstance(expected_record, str) or not expected_record.strip():
+            errors.append(f"Activation:SNAPSHOT_GATE_{gate}_RECORD_ID_UNBOUND")
+            continue
+        if not isinstance(expected_sha, str) or not expected_sha.strip():
+            errors.append(f"Activation:SNAPSHOT_GATE_{gate}_RECORD_SHA_UNBOUND")
+            continue
         if not bound_record:
             errors.append(f"Activation:MISSING_GATE_IDENTITY_{gate}")
-        elif expected_record is not None and bound_record != expected_record:
-            errors.append(
-                f"Activation:GATE_{gate}_IDENTITY_MISMATCH_WITH_SNAPSHOT"
-            )
+        elif bound_record != expected_record:
+            errors.append(f"Activation:GATE_{gate}_IDENTITY_MISMATCH_WITH_SNAPSHOT")
 
     declared_snapshot_sha = record.get("preconstruction_snapshot_sha256")
     expected_snapshot_sha = (
         snapshot.get("snapshot_sha256") if isinstance(snapshot, dict) else None
     )
-    if (
-        isinstance(expected_snapshot_sha, str)
-        and expected_snapshot_sha.strip()
-        and declared_snapshot_sha != expected_snapshot_sha
-    ):
+    if not isinstance(expected_snapshot_sha, str) or not expected_snapshot_sha.strip():
+        errors.append("Activation:BOUND_SNAPSHOT_SHA256_REQUIRED")
+    elif declared_snapshot_sha != expected_snapshot_sha:
         errors.append("Activation:PRECONSTRUCTION_SNAPSHOT_SHA_MISMATCH")
 
     if isinstance(snapshot, dict) and record.get(

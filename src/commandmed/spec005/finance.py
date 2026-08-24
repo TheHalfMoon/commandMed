@@ -53,6 +53,8 @@ AUTHORIZATION_REQUIRED_FIELDS = (
     "stop_conditions",
     "approval_decision_id",
     "approval_decision_sha256",
+    "approver_reference",
+    "lifecycle_state",
     "record_canonical_sha256",
 )
 
@@ -170,6 +172,22 @@ def validate_a14_authorization(record: Any) -> list[str]:
     scope = record.get("bounded_scope")
     if scope == "ANYTHING" or (isinstance(scope, str) and len(scope.strip()) < 4):
         errors.append("A14Authorization:BOUNDED_SCOPE_MUST_BE_EXPLICIT")
+
+    lifecycle_state = record.get("lifecycle_state")
+    if lifecycle_state not in LIFECYCLE_STATES:
+        errors.append(f"A14Authorization:UNKNOWN_LIFECYCLE_STATE_{lifecycle_state}")
+
+    committed = record.get("max_committed_amount")
+    payable = record.get("max_payable_amount")
+    for name, value in (("max_committed_amount", committed), ("max_payable_amount", payable)):
+        if not isinstance(value, (int, float)) or isinstance(value, bool) or value < 0:
+            errors.append(f"A14Authorization:{name}_MUST_BE_NON_NEGATIVE_NUMBER")
+    if (
+        isinstance(committed, (int, float)) and not isinstance(committed, bool)
+        and isinstance(payable, (int, float)) and not isinstance(payable, bool)
+        and committed >= 0 and payable > committed
+    ):
+        errors.append("A14Authorization:max_payable_amount_EXCEEDS_max_committed_amount")
     return errors
 
 
@@ -221,10 +239,23 @@ def evaluate_a14_operational_pass(requirements: Any, authorizations: Any) -> dic
 
     req_state = requirements.get("state")
     if req_state == "NOT_REQUIRED":
+        # Caller-owned NOT_REQUIRED is never trusted: recompute from the
+        # bound requirement manifest supplied alongside the claim.
+        manifest = requirements.get("requirement_manifest")
+        recomputed = evaluate_a14_requirement(manifest)
+        if recomputed["state"] != "NOT_REQUIRED":
+            reason_codes.append("A14:NOT_REQUIRED_CLAIM_NOT_REPRODUCIBLE")
+            reason_codes.extend(
+                f"A14:{c}" for c in recomputed["reason_codes"]
+            )
+            return {
+                "state": "BLOCKED_UNKNOWN_OR_INCOMPLETE",
+                "reason_codes": sorted(set(reason_codes)),
+            }
         return {
             "state": "A14_NOT_REQUIRED_PASS",
             "reason_codes": [],
-            "requirement_manifest_id": requirements.get("requirement_manifest_id"),
+            "requirement_manifest_id": recomputed.get("requirement_manifest_id"),
         }
     if req_state != "REQUIRED":
         reason_codes.append(f"A14:REQUIREMENT_STATE_{req_state}")

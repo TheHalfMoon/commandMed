@@ -14,6 +14,7 @@ def make_snapshot(**overrides):
     snapshot = {
         "snapshot_id": "SNAP-ACT-1",
         "snapshot_version": "1.0",
+        "snapshot_sha256": "e" * 64,
         "computed_readiness": "READY_FOR_SEPARATE_ACTIVATION_NOT_AUTHORIZED",
         "requirements": {
             gate: {
@@ -37,7 +38,7 @@ def make_activation(**overrides):
         "activation_id": "ACT-SYNTHETIC-001",
         "activation_version": "1.0",
         "preconstruction_snapshot_id": "SNAP-ACT-1",
-        "preconstruction_snapshot_sha256": "b" * 64,
+        "preconstruction_snapshot_sha256": "e" * 64,
         "required_gate_identities": {
             gate: f"REC-{gate}" for gate in (
                 "R1", "T1", "D34", "G1", "G2", "G3", "G4",
@@ -72,6 +73,30 @@ class ActivationRecordTests(unittest.TestCase):
         self.assertTrue(any("preconstruction_snapshot_id" in e for e in errors))
 
     def test_snapshot_sha_mismatch_rejected(self):
+        snapshot = make_snapshot(snapshot_sha256="d" * 64)
+        self.assertIn(
+            "Activation:PRECONSTRUCTION_SNAPSHOT_SHA_MISMATCH",
+            validate_activation_record(make_activation(), snapshot),
+        )
+
+    def test_missing_snapshot_sha_rejected(self):
+        snapshot = make_snapshot()
+        del snapshot["snapshot_sha256"]
+        errors = validate_activation_record(make_activation(), snapshot)
+        self.assertTrue(any("SNAPSHOT_SHA256_REQUIRED" in e for e in errors))
+
+    def test_unbound_gate_evidence_rejected(self):
+        snapshot = make_snapshot()
+        snapshot["requirements"]["G1"] = {"state": "PASS", "stale": False}
+        errors = validate_activation_record(make_activation(), snapshot)
+        self.assertTrue(any("G1_RECORD_ID_UNBOUND" in e for e in errors))
+
+    def test_snapshot_sha_mismatch_still_detected(self):
+        snapshot = make_snapshot(snapshot_sha256="d" * 64)
+        errors = validate_activation_record(make_activation(), snapshot)
+        self.assertTrue(any("SHA_MISMATCH" in e.upper() for e in errors))
+
+    def _unused_legacy(self):
         snapshot = make_snapshot(snapshot_sha256="d" * 64)
         errors = validate_activation_record(make_activation(), snapshot)
         self.assertTrue(any("SHA" in e.upper() for e in errors))
