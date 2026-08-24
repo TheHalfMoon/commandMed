@@ -4,7 +4,7 @@
 
 **Input**: Feature specification plus accepted clarification Sessions 1–14 and `clarification-closeout.md`.
 
-**Plan status:** `COMPLETE_READY_FOR_CHECKLIST_AND_TASKS`
+**Plan status:** `REPAIRED_COMPLETE_READY_FOR_CHECKLIST_AND_TASKS`
 
 ## Summary
 
@@ -13,7 +13,7 @@ Build the deterministic, offline, identity-bound control plane required to prepa
 The implementation has two layers:
 
 1. **A1 upstream corrective maintenance** — add metrics-v2 as an additive, versioned evaluation contract in a separate branch/PR while preserving historical V1 identities.
-2. **Spec 005 preconstruction package** — implement pure validators/state machines for A5–A15, device/runtime protocol metadata, and a fail-closed adapter that can produce a Spec 004-compatible tournament manifest only after every required prerequisite identity is valid.
+2. **Spec 005 preconstruction package** — implement pure validators/state machines for scientific quality/statistical design (A2+A3/A4), governance A5–A15, device/runtime protocol metadata, and a fail-closed adapter that can produce a Spec 004-compatible tournament manifest only after every required prerequisite identity is valid.
 
 Actual case construction, model access, benchmark execution, device execution, spending and tournament execution remain outside this implementation plan until their separately frozen activation gates are satisfied.
 
@@ -43,9 +43,10 @@ Actual case construction, model access, benchmark execution, device execution, s
 - preserve Spec 001–004 historical V1 identities;
 - no force-push/rebase/history rewrite;
 - A1 must be implemented and merged in a separate corrective-maintenance PR before Spec 005 consumes metrics-v2;
-- unresolved scientific/runtime/personnel values remain fail-closed evidence prerequisites, not guessed defaults.
+- exact scientific thresholds/sample counts must be evidence-bound A2/A3+A4 records; implementation MUST NOT invent values;
+- unresolved runtime/personnel/storage/vendor values remain fail-closed evidence prerequisites, not guessed defaults.
 
-**Scale/Scope**: One additive metrics-v2 contract; one small `commandmed.spec005` package; two small canonical policy JSON files; focused fixture tests; no live asset registry/service.
+**Scale/Scope**: One additive metrics-v2 contract; one small `commandmed.spec005` package; three small canonical policy JSON files; focused fixture tests; no live asset registry/service.
 
 ## Constitution Check
 
@@ -53,8 +54,8 @@ Actual case construction, model access, benchmark execution, device execution, s
 
 | Constitution principle | Plan disposition |
 |---|---|
-| I. Evidence Before Training | PASS — thresholds/evaluation contracts precede any future execution; no training in scope. |
-| II. Clinical Safety Is a Hard Gate | PASS — noncompensable safety/quality gates and unresolved thresholds fail closed. |
+| I. Evidence Before Training | PASS — threshold/statistical/evaluation contracts precede any future execution; no training in scope. |
+| II. Clinical Safety Is a Hard Gate | PASS — seven noncompensable quality lanes and unresolved thresholds fail closed. |
 | III. Provenance, Licensing, Data Lineage | PASS — source/rights/privacy/parent identities are mandatory inputs. |
 | IV. Smallness Is Measured in Resources | PASS — named device/resource protocol is represented before execution. |
 | V. Universal Roles, Shared Medical Truth | PASS — role and Arabic paired coverage remain explicit metadata dimensions. |
@@ -104,6 +105,7 @@ src/commandmed/
 ├── tournament.py
 └── spec005/
     ├── __init__.py
+    ├── science.py
     ├── preconstruction.py
     ├── personnel.py
     ├── access.py
@@ -114,10 +116,11 @@ src/commandmed/
 
 data/
 ├── eval/
-│   ├── metrics.json              # immutable V1
-│   └── metrics-v2.json           # A1 additive artifact
+│   ├── metrics.json                    # immutable V1
+│   └── metrics-v2.json                 # A1 additive artifact
 └── spec005/
-    ├── preconstruction_contract.json
+    ├── selection_quality_contract.json # A2 + A3/A4 + seven lanes
+    ├── preconstruction_contract.json   # A5–A13 metadata/governance vocabularies
     └── device_qualification_contract.json
 
 tests/
@@ -126,6 +129,7 @@ tests/
 ├── test_tournament_metrics_v2_identity.py
 └── spec005/
     ├── __init__.py
+    ├── test_science.py
     ├── test_preconstruction.py
     ├── test_personnel.py
     ├── test_access.py
@@ -135,7 +139,7 @@ tests/
     └── test_manifest.py
 ```
 
-**Structure Decision**: Extend the existing single Python package. Each Spec 005 module corresponds to one frozen governance boundary. Do not create services, plugin systems, databases, workflow engines, or model-runtime wrappers in this bounded implementation.
+**Structure Decision**: Extend the existing single Python package. `science.py` isolates scientific metric/estimand/threshold/statistical-allocation logic from source/personnel/access/finance governance. The remaining modules correspond directly to frozen governance boundaries. Do not create services, plugin systems, databases, workflow engines, or model-runtime wrappers in this bounded implementation.
 
 ## Phase 0 Result — Research
 
@@ -172,7 +176,28 @@ V1_METRICS_SHA256=304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d2414
 
 `data/eval/metrics.json` MUST remain byte/identity compatible with historical evidence. A1 is not implemented on the Spec 005 planning branch.
 
-### 2. Preconstruction policy core — A5/A6/A8/A9/A10/A11/A12
+### 2. Scientific selection contract — A2 + atomic A3/A4
+
+`science.py` + `data/spec005/selection_quality_contract.json` implement the scientific contract that was missing from the first planning draft.
+
+The contract freezes machine-verifiable structure for:
+
+- seven required noncompensable quality lanes A–G;
+- metric/evidence-role mapping through metrics-v2;
+- intended-use role/language/use-context and required strata identities;
+- per-claim estimand, unit of analysis, metric direction and decision role;
+- clinical threshold/margin identity and qualified-review reference;
+- precision/power objective, confidence/error parameters and nuisance assumptions;
+- paired Arabic parity and root-case dependency;
+- multiplicity declaration;
+- exact sample-size/allocation record identity;
+- candidate-neutral planning and post-result mutation prohibition.
+
+The implementation validates **records**, not scientific values. If an exact threshold/margin/N or review identity required for PASS is absent, the result is `BLOCKED`/`INCOMPLETE`; no default value is supplied.
+
+A3 and A4 remain one atomic statistical/allocation record because total N and allocation across required anchors/roles/strata cannot be chosen independently.
+
+### 3. Preconstruction policy core — A5/A6/A8/A9/A10/A11/A12
 
 `preconstruction.py` validates:
 
@@ -187,110 +212,49 @@ V1_METRICS_SHA256=304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d2414
 
 `data/spec005/preconstruction_contract.json` contains only closed vocabularies/invariants. No case payload belongs there.
 
-### 3. Personnel governance — A7
+### 4. Personnel governance — A7
 
-`personnel.py` implements pure record validation/state transitions for:
+`personnel.py` implements pure record validation/state transitions for opaque identity, role-scoped qualification, conflicts, Gold exposure, assignment, independence, result exposure, bootstrap readiness and A7→A13 signals. It never creates a personnel vault or ingests credentials.
 
-- opaque personnel references;
-- identity verification state;
-- role-scoped qualification eligibility;
-- conflicts and Gold-exposure dispositions;
-- assignment state;
-- reviewer/adjudicator independence;
-- result-exposure transition restrictions;
-- bootstrap/steady-state evidence readiness;
-- signals consumed by A13.
+### 5. Payload/result access boundary — A13
 
-It stores/validates references to protected evidence; it does not create a personnel vault or ingest credentials.
+`access.py` validates the three-zone policy, A7 handshake, role incompatibilities, revoke/revalidation signals, export/copy restrictions and audit-record shape. It does not provision storage or grant real filesystem/cloud access.
 
-### 4. Payload/result access boundary — A13
+### 6. Spend/engagement governance — A14
 
-`access.py` validates the three-zone policy and A7→A13 handshake:
+`finance.py` implements pure validation for workload/requirement manifests, precommitment authorization identity, financial separation of duties, payee/vendor conflict, authorization lifecycle/supersession, dual PASS modes and staleness. It never performs a payment, contract, reimbursement, vendor call or provisioning action.
 
-- metadata/governance references;
-- selection-content access grants;
-- candidate-result access grants;
-- role incompatibilities;
-- revoke/revalidation signals;
-- export/copy restrictions;
-- audit-record shape.
+### 7. Device/runtime qualification contract
 
-It does not provision storage or grant real filesystem/cloud access.
+`device.py` + `data/spec005/device_qualification_contract.json` represent the frozen five targets, 8K/16K protocol, Q8_0 KV, token/batch/cache profile, five fresh runs, memory/timing/thermal/energy evidence, package-size boundaries, immutable runtime/build identity requirements and fatal/incomplete semantics. The module validates metadata only.
 
-### 5. Spend/engagement governance — A14
+### 8. A15 activation record
 
-`finance.py` implements pure policy/state validation for:
+`activation.py` validates an immutable prerequisite snapshot. A real activation must bind current PASS identities for A1–A14, including the scientific A2/A3+A4 record, and fail on blocked/stale/mismatched evidence. Synthetic activation fixtures test semantics only and never create canonical authority.
 
-- requirement/workload manifest shape;
-- `NOT_REQUIRED` / `REQUIRED` / blocked disposition evidence;
-- precommitment authorization identity;
-- approval/payment/reconciliation separation;
-- payee/vendor conflicts;
-- authorization lifecycle and material supersession;
-- `A14_NOT_REQUIRED_PASS` and `A14_AUTHORIZED_PASS` evidence;
-- staleness/revalidation.
+### 9. Spec 005 tournament manifest adapter
 
-It never performs a payment, contract, reimbursement, vendor call, or provisioning action.
+`manifest.py` builds/validates a Spec 005 pre-execution manifest and emits a Spec 004-compatible projection only when exact metrics-v2, scientific quality/statistical, governance, device and activation identities satisfy the contract.
 
-### 6. Device/runtime qualification contract
-
-`device.py` + `data/spec005/device_qualification_contract.json` represent the already-frozen protocol:
-
-- five target classes;
-- 8K core and 16K stress applicability;
-- Q8_0 symmetric KV;
-- prompt/generation budgets;
-- B512/U128 cold/no-reuse profile;
-- five fresh measured runs, median + worst evidence;
-- platform-native peak-memory semantics and 2 GiB core hard cap;
-- timing decomposition;
-- thermal-ready and energy-required evidence shape;
-- package-size hard/target/stretch boundaries;
-- immutable runtime/platform build identity requirements;
-- fatal vs incomplete failure semantics.
-
-The module validates metadata only. Actual llama.cpp/model/device execution is out of scope.
-
-### 7. A15 activation record
-
-`activation.py` validates an immutable prerequisite snapshot for construction activation. A valid activation object must bind current identities for all required A1–A14 gates and fail if any dependency is blocked, stale or identity-mismatched.
-
-The module may validate a synthetic fixture that represents `AUTHORIZED_TO_CONSTRUCT`, but the repository MUST NOT create a real activation record without separate explicit founder authorization after real prerequisites pass.
-
-### 8. Spec 005 tournament manifest adapter
-
-`manifest.py` builds/validates the pre-execution Spec 005 manifest from exact prerequisite records and delegates comparison semantics to existing `commandmed.tournament` contracts.
-
-It MUST NOT:
-
-- download/load model weights;
-- access benchmark payloads;
-- execute candidate inference;
-- run device tests;
-- infer missing scientific thresholds;
-- admit Private Gold as selection evidence;
-- select a winner from fabricated/partial evidence.
-
-A blocked/incomplete prerequisite produces a deterministic non-executable preflight disposition.
+It MUST NOT download/load weights, access benchmark payloads, execute candidates/devices, infer missing thresholds/N, admit Private Gold as selection evidence, or select a winner from fabricated/partial evidence.
 
 ## Interface Contracts
 
-The internal record/validator contract is specified in `contracts/preconstruction-control-contract.md`. The implementation should prefer plain dictionaries, frozen string vocabularies, small enums/frozensets where helpful, and pure functions returning deterministic error/reason lists or immutable-style result dictionaries.
+The internal interfaces are specified in `contracts/preconstruction-control-contract.md`. Prefer plain dictionaries, closed string vocabularies, small enums/frozensets where helpful, and pure functions returning deterministic error/reason lists or result dictionaries.
 
 ## Data Model
 
-`data-model.md` defines the exact entities, relationships and state transitions. Canonical identity is SHA-256 over explicit scientific/governance projections; timestamps/local paths/reviewer workstation details do not silently alter scientific identity unless a policy explicitly says they are identity-bearing.
+`data-model.md` defines scientific, governance, access, finance, device, activation and manifest entities. Canonical identity is SHA-256 over explicit scientific/governance projections; timestamps/local paths/workstation details are excluded unless explicitly identity-bearing.
 
 ## Verification Strategy
 
-TDD is required for the high-risk validators/state machines.
-
-Focused validation order:
+TDD is required for high-risk validators/state machines.
 
 ```text
 python -m compileall -q src tests
 python -m unittest tests.eval_contract.test_metrics_v2 -v
 python -m unittest tests.test_tournament_metrics_v2_identity -v
+python -m unittest tests.spec005.test_science -v
 python -m unittest discover -s tests/spec005 -v
 python -m unittest discover -s tests -v
 ```
@@ -304,28 +268,29 @@ All tests use synthetic/non-medical fixture metadata. No test may require networ
 3. Create/continue a Spec 005 implementation branch from current canonical main after A1.
 4. Implement `tasks.md` in dependency order using small commits.
 5. Stop at any authority gate instead of substituting synthetic evidence for real prerequisite evidence.
-6. Run full offline verification and independent exact-head review before any implementation merge.
+6. Run full offline verification and independent exact-head review before implementation merge.
 7. Construction/model/device/tournament execution requires later explicit activation and is not part of this code-build plan.
 
 No force-push or rebase is needed. If canonical `main` advances, reconcile by ordinary non-destructive merge where necessary and requalify the exact resulting head.
 
 ## Implementation Slices Used by `tasks.md`
 
-The existing Spec 005 document is governance/decision-centric rather than a persona UI feature. For Spec Kit task organization, the following **delivery stories** are derived directly from frozen requirements; they are engineering increments, not new product requirements:
+The current Spec 005 is governance/decision-centric rather than a persona UI feature. Spec Kit tasks use these derived engineering delivery stories; they add no product requirements:
 
 - **US1 — Additive Metrics V2 Without Breaking V1**
-- **US2 — Preconstruction Evidence and Source Governance**
-- **US3 — Personnel Governance**
-- **US4 — Payload and Candidate-Result Access Firewall**
-- **US5 — Spend and Engagement Governance**
-- **US6 — Construction Activation, Device Protocol and Tournament Manifest**
+- **US2 — Scientific Quality, Threshold and Statistical Design**
+- **US3 — Preconstruction Evidence and Source Governance**
+- **US4 — Personnel Governance**
+- **US5 — Payload and Candidate-Result Access Firewall**
+- **US6 — Spend and Engagement Governance**
+- **US7 — Construction Activation, Device Protocol and Tournament Manifest**
 
-Each slice is independently fixture-testable and traceable to accepted clarification artifacts.
+Each slice is independently fixture-testable and traceable to frozen clarification decisions.
 
 ## Post-Design Constitution Re-check
 
-PASS. The design remains offline, deterministic, standard-library-first, fixture-only, fail-closed, identity-bound, Gold-quarantined and bounded. It adds no training/model/provider/device/payment authority and preserves historical V1 evidence.
+PASS. The repaired design explicitly covers A2/A3+A4 and the seven quality lanes while remaining offline, deterministic, standard-library-first, fixture-only, fail-closed, identity-bound, Gold-quarantined and bounded.
 
 ## Complexity Tracking
 
-No constitution violation requires justification. The seven-module `spec005` package is the minimum separation needed to avoid conflating scientific eligibility, personnel governance, access control, financial authority, device protocol and activation state.
+No constitution violation requires justification. The eight-module `spec005` package is the minimum separation needed to avoid conflating scientific threshold/statistical logic with source governance, personnel, access, finance, device protocol and activation state.
