@@ -1,13 +1,31 @@
 # Spec 005 — Preconstruction Control Contract
 
-**Status:** `COMPLETE`
+**Status:** `REPAIRED_COMPLETE`
 **Contract type:** Internal deterministic Python/JSON interface contract.
 
-This contract defines the implementation surface for Spec 005. It is intentionally metadata-only and does not authorize or transport model, benchmark, case, Gold, PHI, credential, payment, or device-execution payloads.
+This contract defines the implementation surface for Spec 005. It is metadata-only and does not authorize or transport model, benchmark, case, Gold, PHI, credential, payment, or device-execution payloads.
 
-## 1. Public module interfaces
+## 1. `commandmed.spec005.science`
 
-### `commandmed.spec005.preconstruction`
+```python
+validate_selection_quality_contract(contract: object, metrics_v2: object) -> list[str]
+validate_threshold_policy(record: object, quality_contract: object, metrics_v2: object) -> list[str]
+validate_statistical_design(record: object, threshold_records: object, quality_contract: object) -> list[str]
+evaluate_scientific_selection_readiness(records: object, quality_contract: object, metrics_v2: object) -> dict[str, object]
+```
+
+Requirements:
+
+- exactly the seven required noncompensable quality lanes are recognized;
+- every required lane/stratum has explicit metric/evidence-role mapping;
+- threshold/margin records bind metric, estimand, direction, scope, clinical/statistical evidence and qualified review identities;
+- missing exact threshold/margin required for a decision is `INCOMPLETE/BLOCKED`, never defaulted;
+- A3+A4 is one atomic statistical/allocation identity binding estimand, unit, precision/power objective, nuisance assumptions, dependency/pairing, multiplicity, numeric N and allocation;
+- Arabic parity is paired/root-case aware and cannot use an unpaired independent-two-sample shortcut;
+- candidate-specific/post-result thresholds, nuisance inputs, N or allocation are rejected;
+- caller-owned `pass`, `adequate`, `powered` or equivalent claims are not authoritative.
+
+## 2. `commandmed.spec005.preconstruction`
 
 ```python
 validate_preconstruction_contract(contract: object) -> list[str]
@@ -16,7 +34,7 @@ validate_root_task_metadata(record: object, contract: object) -> list[str]
 validate_pair_metadata(record: object, contract: object) -> list[str]
 validate_review_binding(record: object, contract: object) -> list[str]
 validate_contamination_plan(record: object, contract: object) -> list[str]
-evaluate_preconstruction_snapshot(snapshot: object, contract: object) -> dict[str, object]
+evaluate_preconstruction_snapshot(snapshot: object, contract: object, scientific_readiness: object) -> dict[str, object]
 ```
 
 Requirements:
@@ -24,10 +42,11 @@ Requirements:
 - ordinary malformed parsed JSON returns deterministic errors rather than raising;
 - unknown states/fields covered by closed-shape rules fail closed;
 - computed readiness ignores caller-owned `pass`, `ready`, `eligible` or equivalent claims;
+- scientific A2/A3+A4 readiness is a required input and cannot be bypassed;
 - dependency/staleness is computed from exact bound records;
 - no clinical case text is accepted in metadata records.
 
-### `commandmed.spec005.personnel`
+## 3. `commandmed.spec005.personnel`
 
 ```python
 validate_personnel_record(record: object) -> list[str]
@@ -47,7 +66,7 @@ Requirements:
 - stale eligibility cannot support active access consideration;
 - role independence collisions fail closed.
 
-### `commandmed.spec005.access`
+## 4. `commandmed.spec005.access`
 
 ```python
 validate_access_policy(record: object) -> list[str]
@@ -65,7 +84,7 @@ Requirements:
 - candidate results cannot flow back to active author/reviewer/adjudicator roles;
 - no storage provisioning occurs.
 
-### `commandmed.spec005.finance`
+## 5. `commandmed.spec005.finance`
 
 ```python
 validate_requirement_manifest(record: object) -> list[str]
@@ -85,7 +104,7 @@ Requirements:
 - `$0`, free-tier labels or assumed volunteer capacity cannot establish PASS;
 - no payment/contract/vendor operation occurs.
 
-### `commandmed.spec005.device`
+## 6. `commandmed.spec005.device`
 
 ```python
 validate_device_qualification_contract(contract: object) -> list[str]
@@ -101,7 +120,7 @@ Requirements:
 - require five complete measured-run records for a numeric median;
 - never invoke llama.cpp/model/device tooling.
 
-### `commandmed.spec005.activation`
+## 7. `commandmed.spec005.activation`
 
 ```python
 validate_activation_record(record: object, snapshot: object) -> list[str]
@@ -110,12 +129,12 @@ evaluate_activation_readiness(record: object, snapshot: object) -> dict[str, obj
 
 Requirements:
 
-- a real activation must bind an exact current A1–A14 prerequisite snapshot;
+- a real activation must bind an exact current A1–A14 prerequisite snapshot, including A2/A3+A4 scientific records;
 - stale/blocked/incomplete/mismatched prerequisite prevents activation readiness;
 - caller-owned authorization claims are not trusted;
 - synthetic fixture validation does not create canonical construction authority.
 
-### `commandmed.spec005.manifest`
+## 8. `commandmed.spec005.manifest`
 
 ```python
 validate_spec005_manifest(manifest: object, artifacts: object) -> list[str]
@@ -125,14 +144,14 @@ evaluate_spec005_preflight(manifest: object, artifacts: object) -> dict[str, obj
 
 Requirements:
 
-- validates exact metrics-v2, preconstruction, device, candidate/admission and activation identities;
-- preserves common-core/base-only/fully-admitted rules;
+- validates exact metrics-v2, selection-quality, threshold/statistical, preconstruction, device, candidate/admission and activation identities;
+- preserves seven-lane noncompensable quality, common-core/base-only/fully-admitted rules;
 - rejects Private Gold as selection evidence;
 - unresolved metric/threshold/sample/runtime/evidence values block projection rather than defaulting;
 - projection reuses existing Spec 004 tournament semantics;
 - does not execute candidates or select a winner from fabricated evidence.
 
-## 2. Error/result conventions
+## 9. Error/result conventions
 
 Validation functions return ordered deterministic error-code strings. Evaluation functions return JSON-compatible mappings with at least:
 
@@ -141,31 +160,29 @@ state
 reason_codes[]
 ```
 
-and identity fields applicable to their domain.
+and applicable exact identity fields.
 
-Recommended global ordering rule:
+Recommended global ordering:
 
 ```text
 reason_codes = sorted(unique_reason_codes)
 ```
 
-unless an existing canonical repository contract already defines a stronger ordering requirement.
+unless an inherited canonical contract defines a stronger ordering requirement.
 
-Ordinary malformed input must not raise. Programmer errors/internal invariant violations may raise only if existing repository conventions already do so; prefer fail-closed result objects for user-supplied parsed JSON.
+Ordinary malformed input must not raise. Prefer fail-closed result objects for user-supplied parsed JSON.
 
-## 3. Identity contract
+## 10. Identity contract
 
-Use the repository's existing canonical SHA-256 helper on an explicit identity-bearing projection.
+Use the existing canonical SHA-256 helper on explicit identity-bearing projections.
 
-Identity-bearing fields include governed scientific/policy values, immutable revisions, exact evidence references and dependency identities.
+Identity-bearing fields include governed scientific/policy values, metric/evidence-role mappings, threshold/margin/N/allocation values when frozen, immutable revisions, exact evidence references and dependency identities.
 
-Exclude audit-only/local values when they do not change governed meaning, such as local paths, retrieval timestamps or workstation notes.
+Exclude audit-only/local values when they do not change governed meaning. Material changes require a new identity; never silently rewrite history while retaining the prior digest.
 
-Material changes require a new identity. Never silently rewrite a historical record and retain its prior digest.
+## 11. Closed-content boundary
 
-## 4. Closed-content boundary
-
-The implementation MUST reject or prohibit repository metadata objects attempting to embed prohibited payload fields such as:
+Reject/prohibit repository metadata objects embedding fields such as:
 
 ```text
 clinical_case_text
@@ -184,11 +201,11 @@ payment_instrument
 
 Use opaque artifact/evidence references and cryptographic content identities instead.
 
-## 5. Offline fixture contract
+## 12. Offline fixture contract
 
-Tests may construct synthetic dictionaries representing all state paths, including synthetic `AUTHORIZED_TO_CONSTRUCT`/`ACTIVE` records solely to prove validator semantics.
+Tests may construct synthetic dictionaries representing all state paths, including synthetic fully frozen scientific records and `AUTHORIZED_TO_CONSTRUCT`/`ACTIVE` states solely to prove validator semantics.
 
-A synthetic fixture state:
+Synthetic fixture state:
 
 ```text
 DOES_NOT_EQUAL_REAL_AUTHORITY
@@ -200,15 +217,16 @@ DOES_NOT_AUTHORIZE_SPEND
 
 No test may require network, external provider, credential, model weight, benchmark/Gold payload, PHI, payment or device runtime.
 
-## 6. Compatibility contract
+## 13. Compatibility contract
 
 - Historical V1 metric/tournament identities remain reproducible.
 - A1 V2 is additive and explicit.
+- Spec 005 science records consume metrics-v2 rather than inventing metric identities.
 - Spec 005 does not redefine Spec 003 lineage admission.
 - Spec 005 does not redefine Spec 002 safety hard-gate evaluation.
 - Spec 005 does not replace Spec 004 deterministic comparison/no-selection logic.
-- Spec 005 adds prerequisite evidence, admission constraints, resource/device metadata and activation gating around those inherited contracts.
+- Spec 005 adds scientific threshold/statistical evidence, prerequisite governance, resource/device metadata and activation gating around those inherited contracts.
 
-## 7. No implicit authority
+## 14. No implicit authority
 
-No function in this package may perform an external side effect that turns a validated policy object into a real-world action. In particular, these modules expose no provider calls, downloads, subprocess/device runners, storage provisioning, payment actions, contract acceptance, credential access, model loading or inference.
+No function in this package may perform an external side effect that turns a validated policy object into a real-world action. These modules expose no provider calls, downloads, subprocess/device runners, storage provisioning, payment actions, contract acceptance, credential access, model loading or inference.
