@@ -254,7 +254,18 @@ class OperationalPassTests(unittest.TestCase):
         self.assertEqual(result["state"], "A14_NOT_REQUIRED_PASS")
 
     def test_caller_not_required_claim_without_manifest_blocked(self):
-        result = evaluate_a14_operational_pass(self._req_not_required(), [])
+        req = self._req_not_required()
+        del req["requirement_manifest"]
+        result = evaluate_a14_operational_pass(req, [])
+        self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
+        self.assertTrue(
+            any("NO_BOUND_REQUIREMENT_MANIFEST" in c for c in result["reason_codes"])
+        )
+
+    def test_caller_not_required_claim_with_wrong_manifest_blocked(self):
+        req = self._req_not_required()
+        req["requirement_manifest"] = make_manifest()
+        result = evaluate_a14_operational_pass(req, [])
         self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
         self.assertTrue(
             any("NOT_REPRODUCIBLE" in c for c in result["reason_codes"])
