@@ -312,22 +312,65 @@ def evaluate_scientific_selection_readiness(
             reason_codes.append("ScientificReadiness:NO_STATISTICAL_DESIGNS")
 
         # Noncompensable lanes require decision-criteria coverage in both the
-        # A2 threshold layer and the atomic A3+A4 design layer.
+        # A2 threshold layer and the atomic A3+A4 design layer, with exactly
+        # one authoritative record per lane (duplicates are ambiguous).
         required_lanes = set(quality_contract.get("required_quality_lanes", []))
-        threshold_lanes = {
-            t.get("lane_id")
+        threshold_lane_counts: dict[str, int] = {}
+        for t in thresholds:
+            if isinstance(t, dict):
+                threshold_lane_counts[t.get("lane_id")] = (
+                    threshold_lane_counts.get(t.get("lane_id"), 0) + 1
+                )
+        design_lane_counts: dict[str, int] = {}
+        for d in designs:
+            if isinstance(d, dict):
+                design_lane_counts[d.get("quality_lane")] = (
+                    design_lane_counts.get(d.get("quality_lane"), 0) + 1
+                )
+        for lane in sorted(required_lanes - set(threshold_lane_counts)):
+            reason_codes.append(
+                f"ScientificReadiness:LANE_{lane}_THRESHOLD_COVERAGE_MISSING"
+            )
+        for lane in sorted(required_lanes - set(design_lane_counts)):
+            reason_codes.append(
+                f"ScientificReadiness:LANE_{lane}_DESIGN_COVERAGE_MISSING"
+            )
+        for lane, count in sorted(threshold_lane_counts.items()):
+            if count > 1:
+                reason_codes.append(
+                    f"ScientificReadiness:LANE_{lane}_DUPLICATE_THRESHOLD_POLICIES_{count}"
+                )
+        for lane, count in sorted(design_lane_counts.items()):
+            if count > 1:
+                reason_codes.append(
+                    f"ScientificReadiness:LANE_{lane}_DUPLICATE_STATISTICAL_DESIGNS_{count}"
+                )
+
+        # Designs must bind their threshold reference to a validated record
+        # of the same lane, or declare explicit not-applicable.
+        known_thresholds_by_id = {
+            t.get("threshold_policy_id"): t
             for t in thresholds
             if isinstance(t, dict)
         }
-        design_lanes = {
-            d.get("quality_lane")
-            for d in designs
-            if isinstance(d, dict)
-        }
-        for lane in sorted(required_lanes - threshold_lanes):
-            reason_codes.append(f"ScientificReadiness:LANE_{lane}_THRESHOLD_COVERAGE_MISSING")
-        for lane in sorted(required_lanes - design_lanes):
-            reason_codes.append(f"ScientificReadiness:LANE_{lane}_DESIGN_COVERAGE_MISSING")
+        for index, design in enumerate(designs):
+            if not isinstance(design, dict):
+                continue
+            ref = design.get("threshold_policy_id_or_explicit_not_applicable")
+            if ref == "EXPLICIT_NOT_APPLICABLE":
+                continue
+            referenced = known_thresholds_by_id.get(ref)
+            prefix = f"StatisticalDesign[{index}]"
+            if referenced is None:
+                reason_codes.append(
+                    f"{prefix}:THRESHOLD_POLICY_ID_OR_EXPLICIT_NOT_APPLICABLE_"
+                    f"UNRESOLVED_{ref}"
+                )
+                continue
+            if referenced.get("lane_id") != design.get("quality_lane"):
+                reason_codes.append(
+                    f"{prefix}:THRESHOLD_POLICY_LANE_MISMATCH_WITH_DESIGN"
+                )
 
     unique_sorted = sorted(set(reason_codes))
     state = "READY_FOR_PRECONSTRUCTION" if not unique_sorted else "INCOMPLETE"

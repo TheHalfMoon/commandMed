@@ -327,7 +327,9 @@ class ScientificReadinessTests(unittest.TestCase):
             ],
             "statistical_designs": [
                 make_statistical_design(
-                    quality_lane=lane, statistical_design_id=f"SD-{lane}"
+                    quality_lane=lane,
+                    statistical_design_id=f"SD-{lane}",
+                    threshold_policy_id_or_explicit_not_applicable=f"TP-{lane}",
                 )
                 for lane in SEVEN_LANES
             ],
@@ -390,7 +392,11 @@ class ScientificReadinessTests(unittest.TestCase):
             make_threshold_record(metrics_v2, lane_id=lane) for lane in SEVEN_LANES
         ]
         designs = [
-            make_statistical_design(quality_lane=lane, statistical_design_id=f"SD-{lane}")
+            make_statistical_design(
+                quality_lane=lane,
+                statistical_design_id=f"SD-{lane}",
+                threshold_policy_id_or_explicit_not_applicable=f"TP-{lane}",
+            )
             for lane in SEVEN_LANES
         ]
         full = {
@@ -410,6 +416,73 @@ class ScientificReadinessTests(unittest.TestCase):
         partial["statistical_designs"] = designs[:6]
         result = evaluate_scientific_selection_readiness(partial, quality, metrics_v2)
         self.assertNotEqual(result["state"], "READY_FOR_PRECONSTRUCTION")
+
+    def test_duplicate_lane_records_rejected(self):
+        metrics_v2 = make_metrics_v2()
+        quality = make_quality_contract()
+        mappings = [make_lane_mapping(metrics_v2, lane) for lane in SEVEN_LANES]
+        thresholds = [
+            make_threshold_record(
+                metrics_v2, lane_id=lane, threshold_policy_id=f"TP-{lane}"
+            )
+            for lane in SEVEN_LANES
+        ]
+        thresholds.append(
+            make_threshold_record(
+                metrics_v2,
+                lane_id=SEVEN_LANES[0],
+                threshold_policy_id="TP-DUP",
+            )
+        )
+        designs = [
+            make_statistical_design(
+                quality_lane=lane,
+                statistical_design_id=f"SD-{lane}",
+                threshold_policy_id_or_explicit_not_applicable=f"TP-{lane}",
+            )
+            for lane in SEVEN_LANES
+        ]
+        records = {
+            "lane_metric_mappings": mappings,
+            "threshold_policies": thresholds,
+            "statistical_designs": designs,
+        }
+        result = evaluate_scientific_selection_readiness(records, quality, metrics_v2)
+        self.assertNotEqual(result["state"], "READY_FOR_PRECONSTRUCTION")
+        self.assertTrue(
+            any("DUPLICATE" in c.upper() and "LANE" in c.upper()
+                for c in result["reason_codes"])
+        )
+
+    def test_design_threshold_binding_validated(self):
+        metrics_v2 = make_metrics_v2()
+        quality = make_quality_contract()
+        mappings = [make_lane_mapping(metrics_v2, lane) for lane in SEVEN_LANES]
+        thresholds = [
+            make_threshold_record(
+                metrics_v2, lane_id=lane, threshold_policy_id=f"TP-{lane}"
+            )
+            for lane in SEVEN_LANES
+        ]
+        designs = [
+            make_statistical_design(
+                quality_lane=lane,
+                statistical_design_id=f"SD-{lane}",
+                threshold_policy_id_or_explicit_not_applicable="TP-UNKNOWN",
+            )
+            for lane in SEVEN_LANES
+        ]
+        records = {
+            "lane_metric_mappings": mappings,
+            "threshold_policies": thresholds,
+            "statistical_designs": designs,
+        }
+        result = evaluate_scientific_selection_readiness(records, quality, metrics_v2)
+        self.assertNotEqual(result["state"], "READY_FOR_PRECONSTRUCTION")
+        self.assertTrue(
+            any("THRESHOLD_POLICY_ID_OR_EXPLICIT_NOT_APPLICABLE" in c
+                for c in result["reason_codes"])
+        )
 
     def test_malformed_inputs_fail_closed_not_crash(self):
         for bad in ([], "x", 42):
