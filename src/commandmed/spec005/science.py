@@ -97,10 +97,12 @@ def validate_selection_quality_contract(
     if not isinstance(lanes, list):
         lanes = []
         errors.append("QualityContract:REQUIRED_QUALITY_LANES_MUST_BE_SEVEN")
-    if len(lanes) != len(set(lanes)):
+    if not all(isinstance(lane, str) for lane in lanes):
+        errors.append("QualityContract:QUALITY_LANES_MUST_BE_STRINGS")
+    elif len(lanes) != len(set(lanes)):
         errors.append("QualityContract:DUPLICATE_QUALITY_LANE_PROHIBITED")
     for lane in lanes:
-        if lane not in EXPECTED_LANES:
+        if isinstance(lane, str) and lane not in EXPECTED_LANES:
             errors.append(f"QualityContract:UNKNOWN_LANE_{lane}")
     for lane in EXPECTED_LANES:
         if lane not in lanes:

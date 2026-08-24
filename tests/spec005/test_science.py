@@ -148,6 +148,12 @@ class SelectionQualityContractTests(unittest.TestCase):
         errors = validate_selection_quality_contract(contract, make_metrics_v2())
         self.assertTrue(any("Z_UNKNOWN_LANE" in e for e in errors))
 
+    def test_unhashable_lane_entries_do_not_crash(self):
+        contract = make_quality_contract(required_quality_lanes=[[], {"x": 1}, 7])
+        errors = validate_selection_quality_contract(contract, make_metrics_v2())
+        self.assertIsInstance(errors, list)
+        self.assertTrue(errors)
+
     def test_duplicate_lane_rejected(self):
         contract = make_quality_contract(
             required_quality_lanes=SEVEN_LANES + [SEVEN_LANES[0]]

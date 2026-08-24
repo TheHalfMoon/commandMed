@@ -205,6 +205,13 @@ class SourceRouteTests(unittest.TestCase):
             errors = validate_source_route(record, load_contract())
             self.assertTrue(any(field in e for e in errors))
 
+    def test_missing_parent_asset_ids_does_not_raise(self):
+        record = make_source_route()
+        del record["parent_asset_ids"]
+        errors = validate_source_route(record, load_contract())
+        self.assertIsInstance(errors, list)
+        self.assertTrue(any("parent_asset_ids" in e for e in errors))
+
     def test_gold_hidden_in_nested_parent_structure_detected(self):
         errors = validate_source_route(
             make_source_route(parent_asset_ids={"nested": ["COMMANDMED_ARABIC_GOLD"]}),

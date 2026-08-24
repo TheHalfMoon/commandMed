@@ -150,7 +150,7 @@ def validate_source_route(record: Any, contract: Any) -> list[str]:
     if parents is not None and not isinstance(parents, list):
         errors.append("SourceRoute:PARENT_ASSET_IDS_MUST_BE_LIST_OF_STRINGS")
         parents = []
-    elif any(not isinstance(item, str) for item in parents):
+    elif isinstance(parents, list) and any(not isinstance(item, str) for item in parents):
         errors.append("SourceRoute:PARENT_ASSET_IDS_MUST_BE_LIST_OF_STRINGS")
     if route_class in DERIVED_ROUTE_CLASSES and not parents:
         errors.append("SourceRoute:DERIVED_ROUTE_REQUIRES_PARENT_ASSET_IDS")
