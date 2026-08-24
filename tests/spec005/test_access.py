@@ -155,6 +155,18 @@ class DispositionTests(unittest.TestCase):
         )
         self.assertEqual(result["state"], "DENIED")
 
+    def test_malformed_grant_cannot_receive_consideration(self):
+        result = evaluate_access_disposition({}, make_handshake())
+        self.assertEqual(result["state"], "DENIED")
+        result = evaluate_access_disposition(
+            make_grant(resource_zone="ZONE_X"), make_handshake()
+        )
+        self.assertEqual(result["state"], "DENIED")
+        result = evaluate_access_disposition(
+            make_grant(authorization_reference=""), make_handshake()
+        )
+        self.assertEqual(result["state"], "DENIED")
+
     def test_default_deny_without_signal(self):
         result = evaluate_access_disposition(make_grant(), {})
         self.assertEqual(result["state"], "DENIED")

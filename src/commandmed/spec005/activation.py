@@ -116,6 +116,12 @@ def evaluate_activation_readiness(
     errors = validate_activation_record(record, snapshot)
     reason_codes.extend(f"ACTIVATION:{e}" for e in errors)
 
+    snapshot_state = snapshot.get("computed_readiness")
+    if snapshot_state != "READY_FOR_SEPARATE_ACTIVATION_NOT_AUTHORIZED":
+        reason_codes.append(
+            f"ACTIVATION:SNAPSHOT_COMPUTED_STATE_INVALID_{snapshot_state}"
+        )
+
     requirements = snapshot.get("requirements") or {}
     for gate in REQUIRED_GATES:
         evidence = requirements.get(gate)

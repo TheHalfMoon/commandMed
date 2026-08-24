@@ -128,6 +128,16 @@ class EvidenceMetadataTests(unittest.TestCase):
         errors = validate_device_evidence_metadata(evidence, load_contract())
         self.assertTrue(any("LATEST" in e.upper() or "MUTABLE" in e.upper() for e in errors))
 
+    def test_missing_timing_or_protocol_run_fields_rejected(self):
+        evidence = make_evidence()
+        del evidence["measured_runs"][0]["ttft_ms"]
+        evidence["measured_runs"][1]["thermal_state_before_run"] = ""
+        evidence["measured_runs"][2]["os_memory_termination"] = None
+        errors = validate_device_evidence_metadata(evidence, load_contract())
+        self.assertTrue(any("ttft_ms" in e for e in errors))
+        self.assertTrue(any("thermal_state_before_run" in e for e in errors))
+        self.assertTrue(any("os_memory_termination" in e for e in errors))
+
     def test_mixed_target_runs_rejected(self):
         runs = make_evidence()["measured_runs"]
         runs[0]["target_id"] = "APPLE_LOW_RESOURCE_REPRESENTATIVE"

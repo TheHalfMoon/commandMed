@@ -132,11 +132,19 @@ def validate_device_evidence_metadata(
             continue
         if run.get("target_id") != target_id:
             errors.append(f"{prefix}:TARGET_ID_MISMATCH_WITH_EVIDENCE_HEADER")
-        for field in ("absolute_peak_memory_bytes",):
-            if not isinstance(run.get(field), (int, float)) or isinstance(
-                run.get(field), bool
-            ):
+        for field in ("absolute_peak_memory_bytes", *REQUIRED_TIMING_RECORDS):
+            value = run.get(field)
+            if not isinstance(value, (int, float)) or isinstance(value, bool):
+                errors.append(f"{prefix}:{field}_MISSING_OR_NON_NUMERIC")
+        for field in ("thermal_state_before_run", "thermal_state_after_run",
+                      "energy_proxy_per_run"):
+            value = run.get(field)
+            if not isinstance(value, str) or not value.strip():
                 errors.append(f"{prefix}:{field}_MISSING")
+        if run.get("os_memory_termination") is None:
+            errors.append(f"{prefix}:os_memory_termination_ASSERTION_REQUIRED")
+        if run.get("throttling_observed") is None:
+            errors.append(f"{prefix}:throttling_observed_ASSERTION_REQUIRED")
 
     if record.get("claims_complete"):
         runtime_identity = record.get("runtime_identity")

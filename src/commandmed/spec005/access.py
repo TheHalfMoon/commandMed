@@ -105,6 +105,15 @@ def evaluate_access_disposition(
     if not isinstance(record, dict):
         return {"state": "DENIED", "reason_codes": ["ACCESS:MALFORMED_GRANT"]}
 
+    # Structural grant validation gates every disposition; malformed grants
+    # are denied outright rather than partially considered.
+    shape_errors = validate_access_grant_metadata(record, a7_handshake)
+    if any("UNKNOWN_RESOURCE_ZONE" in e or "_MISSING" in e for e in shape_errors):
+        return {
+            "state": "DENIED",
+            "reason_codes": sorted(f"ACCESS:{e}" for e in shape_errors),
+        }
+
     signal = a7_handshake.get("signal")
 
     if signal == "DENY_GRANT":

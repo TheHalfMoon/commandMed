@@ -498,6 +498,18 @@ class ScientificReadinessTests(unittest.TestCase):
                 for c in result["reason_codes"])
         )
 
+    def test_malformed_record_sha_rejected(self):
+        metrics_v2 = make_metrics_v2()
+        quality = make_quality_contract()
+        bad_threshold = make_threshold_record(
+            metrics_v2, record_canonical_sha256="not-a-sha"
+        )
+        errors = validate_threshold_policy(bad_threshold, quality, metrics_v2)
+        self.assertTrue(any("record_canonical_sha256" in e for e in errors))
+        bad_design = make_statistical_design(record_canonical_sha256="nope")
+        errors = validate_statistical_design(bad_design, [], quality)
+        self.assertTrue(any("record_canonical_sha256" in e for e in errors))
+
     def test_malformed_inputs_fail_closed_not_crash(self):
         for bad in ([], "x", 42):
             result = evaluate_scientific_selection_readiness({}, bad, make_metrics_v2())

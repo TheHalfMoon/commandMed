@@ -7,6 +7,8 @@ metadata validation: no scientific values are invented, defaulted or fetched.
 
 from __future__ import annotations
 
+import re
+
 from typing import Any
 
 EXPECTED_LANES = (
@@ -71,6 +73,11 @@ DESIGN_REQUIRED_FIELDS = (
 )
 
 UNPAIRED_SHORTCUT_MARKERS = ("INDEPENDENT_TWO_SAMPLE", "UNPAIRED")
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+
+
+def _is_canonical_sha256(value: Any) -> bool:
+    return isinstance(value, str) and bool(_SHA256_RE.match(value))
 
 
 def _require_fields(record: Any, fields, prefix: str, errors: list[str]) -> None:
@@ -221,6 +228,9 @@ def validate_threshold_policy(
 
     if record.get("pre_result_freeze") is not True:
         errors.append("ThresholdPolicy:pre_result_freeze_MUST_BE_TRUE")
+    record_sha = record.get("record_canonical_sha256")
+    if isinstance(record_sha, str) and record_sha.strip() and not _is_canonical_sha256(record_sha):
+        errors.append("ThresholdPolicy:record_canonical_sha256_NOT_CANONICAL_SHA256")
     return errors
 
 def validate_statistical_design(
@@ -259,6 +269,10 @@ def validate_statistical_design(
         errors.append("StatisticalDesign:candidate_neutral_MUST_BE_TRUE")
     if record.get("pre_result_freeze") is not True:
         errors.append("StatisticalDesign:pre_result_freeze_MUST_BE_TRUE")
+
+    design_sha = record.get("record_canonical_sha256")
+    if isinstance(design_sha, str) and design_sha.strip() and not _is_canonical_sha256(design_sha):
+        errors.append("StatisticalDesign:record_canonical_sha256_NOT_CANONICAL_SHA256")
 
     n_value = record.get("planned_numeric_n")
     if not isinstance(n_value, int) or isinstance(n_value, bool) or n_value <= 0:

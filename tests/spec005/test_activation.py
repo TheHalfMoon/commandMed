@@ -192,6 +192,15 @@ class ActivationReadinessTests(unittest.TestCase):
         result = evaluate_activation_readiness(make_activation(), snapshot)
         self.assertEqual(result["state"], "BLOCKED")
 
+    def test_snapshot_computed_state_enforced(self):
+        snapshot = make_snapshot(computed_readiness="NOT_READY_TO_CONSTRUCT")
+        result = evaluate_activation_readiness(make_activation(), snapshot)
+        self.assertEqual(result["state"], "BLOCKED")
+
+        snapshot = make_snapshot(computed_readiness="SOMEONE_ELSES_STATE")
+        result = evaluate_activation_readiness(make_activation(), snapshot)
+        self.assertEqual(result["state"], "BLOCKED")
+
     def test_caller_authorized_claim_not_trusted(self):
         activation = make_activation(activation_state="AUTHORIZED_TO_CONSTRUCT")
         result = evaluate_activation_readiness(activation, make_snapshot())
