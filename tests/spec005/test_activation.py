@@ -40,7 +40,11 @@ def make_activation(**overrides):
         "preconstruction_snapshot_id": "SNAP-ACT-1",
         "preconstruction_snapshot_sha256": "e" * 64,
         "required_gate_identities": {
-            gate: f"REC-{gate}" for gate in (
+            gate: {
+                "record_id": f"REC-{gate}",
+                "record_canonical_sha256": "a" * 64,
+            }
+            for gate in (
                 "R1", "T1", "D34", "G1", "G2", "G3", "G4",
                 "S1", "P1", "C1", "H1", "I1", "F1",
             )
@@ -100,6 +104,46 @@ class ActivationRecordTests(unittest.TestCase):
         snapshot = make_snapshot(snapshot_sha256="d" * 64)
         errors = validate_activation_record(make_activation(), snapshot)
         self.assertTrue(any("SHA" in e.upper() for e in errors))
+
+    def test_activation_must_bind_gate_record_sha(self):
+        activation = make_activation()
+        activation["required_gate_identities"] = {
+            gate: {"record_id": f"REC-{gate}"} for gate in (
+                "R1", "T1", "D34", "G1", "G2", "G3", "G4",
+                "S1", "P1", "C1", "H1", "I1", "F1",
+            )
+        }
+        errors = validate_activation_record(activation, make_snapshot())
+        self.assertTrue(any("SHA_MISMATCH" in e for e in errors))
+        # Full binding remains valid.
+        activation["required_gate_identities"] = {
+            gate: {
+                "record_id": f"REC-{gate}",
+                "record_canonical_sha256": "a" * 64,
+            }
+            for gate in (
+                "R1", "T1", "D34", "G1", "G2", "G3", "G4",
+                "S1", "P1", "C1", "H1", "I1", "F1",
+            )
+        }
+        self.assertEqual(validate_activation_record(activation, make_snapshot()), [])
+
+    def test_wrong_bound_gate_sha_rejected(self):
+        activation = make_activation()
+        activation["required_gate_identities"] = {
+            gate: {
+                "record_id": f"REC-{gate}",
+                "record_canonical_sha256": (
+                    "a" * 64 if gate != "T1" else "f" * 64
+                ),
+            }
+            for gate in (
+                "R1", "T1", "D34", "G1", "G2", "G3", "G4",
+                "S1", "P1", "C1", "H1", "I1", "F1",
+            )
+        }
+        errors = validate_activation_record(activation, make_snapshot())
+        self.assertTrue(any("T1" in e and "SHA" in e.upper() for e in errors))
 
     def test_gate_identity_mismatch_rejected(self):
         activation = make_activation()

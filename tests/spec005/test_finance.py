@@ -114,6 +114,15 @@ class RequirementManifestTests(unittest.TestCase):
         result = evaluate_a14_requirement(manifest)
         self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
 
+    def test_insufficient_capacity_without_gap_record_is_not_required_never(self):
+        manifest = make_manifest(
+            capacity_gap_records=[],
+            new_engagement_requirement_records=[],
+            new_financial_commitment_requirement_records=[],
+        )
+        result = evaluate_a14_requirement(manifest)
+        self.assertNotEqual(result["state"], "NOT_REQUIRED")
+
     def test_validate_manifest_shape(self):
         errors = validate_requirement_manifest(make_manifest())
         self.assertEqual(errors, [])
@@ -235,6 +244,27 @@ class OperationalPassTests(unittest.TestCase):
         self.assertTrue(
             any("NOT_REPRODUCIBLE" in c for c in result["reason_codes"])
         )
+
+    def test_invalid_authorization_shape_cannot_cover(self):
+        broken = make_authorization(
+            max_committed_amount=None,
+            approver_reference=None,
+            lifecycle_state="ACTIVE",
+        )
+        result = evaluate_a14_operational_pass(
+            self._req_required(), [broken]
+        )
+        self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
+
+    def test_self_approved_authorization_cannot_cover(self):
+        broken = make_authorization(
+            approver_reference="P-REV-1",
+            payee_vendor_or_personnel_references=["P-REV-1"],
+        )
+        result = evaluate_a14_operational_pass(
+            self._req_required(), [broken]
+        )
+        self.assertEqual(result["state"], "BLOCKED_UNKNOWN_OR_INCOMPLETE")
 
     def test_stale_authorization_invalidates_pass(self):
         result = evaluate_a14_operational_pass(

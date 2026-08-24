@@ -63,7 +63,7 @@ def validate_activation_record(record: Any, snapshot: Any) -> list[str]:
         snapshot.get("requirements", {}) if isinstance(snapshot, dict) else {}
     )
     for gate in REQUIRED_GATES:
-        bound_record = gate_identities.get(gate)
+        binding = gate_identities.get(gate)
         requirement = snapshot_requirements.get(gate)
         if not isinstance(requirement, dict):
             errors.append(f"Activation:SNAPSHOT_GATE_EVIDENCE_MISSING_{gate}")
@@ -76,10 +76,15 @@ def validate_activation_record(record: Any, snapshot: Any) -> list[str]:
         if not isinstance(expected_sha, str) or not expected_sha.strip():
             errors.append(f"Activation:SNAPSHOT_GATE_{gate}_RECORD_SHA_UNBOUND")
             continue
-        if not bound_record:
+        if not isinstance(binding, dict):
             errors.append(f"Activation:MISSING_GATE_IDENTITY_{gate}")
-        elif bound_record != expected_record:
+            continue
+        bound_record = binding.get("record_id")
+        bound_sha = binding.get("record_canonical_sha256")
+        if bound_record != expected_record:
             errors.append(f"Activation:GATE_{gate}_IDENTITY_MISMATCH_WITH_SNAPSHOT")
+        elif bound_sha != expected_sha:
+            errors.append(f"Activation:GATE_{gate}_SHA_MISMATCH_WITH_SNAPSHOT")
 
     declared_snapshot_sha = record.get("preconstruction_snapshot_sha256")
     expected_snapshot_sha = (

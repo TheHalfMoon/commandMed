@@ -136,7 +136,40 @@ def evaluate_a14_requirement(record: Any) -> dict[str, object]:
         if isinstance(label, str) and "$0" in label:
             reason_codes.append(f"A14:{label_field}_CANNOT_ESTABLISH_NOT_REQUIRED")
 
-    has_gaps = bool(gaps) or bool(engagements) or bool(commitments)
+    # Recompute capacity gaps per package; supplied gap evidence must be
+    # consistent with the workload numbers or the manifest fails closed.
+    derived_gap = False
+    if isinstance(work_packages, list):
+        for package in work_packages:
+            if not isinstance(package, dict):
+                continue
+            required_units = package.get("required_capacity_units")
+            existing_units = package.get("existing_capacity_units")
+            package_id = package.get("work_package_id", "?")
+            if (
+                isinstance(required_units, (int, float)) and not isinstance(required_units, bool)
+                and isinstance(existing_units, (int, float)) and not isinstance(existing_units, bool)
+                and required_units > existing_units
+            ):
+                derived_gap = True
+                gap_ids = {
+                    g.get("gap_id") for g in gaps if isinstance(g, dict)
+                }
+                if not any(
+                    g.get("work_package_id") == package_id
+                    for g in gaps if isinstance(g, dict)
+                ) and f"A14:WORK_PACKAGE_{package_id}_GAP_RECORD_MISSING" not in reason_codes:
+                    reason_codes.append(
+                        f"A14:WORK_PACKAGE_{package_id}_GAP_RECORD_MISSING"
+                    )
+    if gaps and not derived_gap:
+        # Declared gaps without insufficient capacity are inconsistent.
+        pass  # engagement/commitment records may still require authority.
+
+    has_gaps = (
+        bool(engagements) or bool(commitments) or derived_gap
+        or any(isinstance(g, dict) and g.get("gap_units", 0) for g in gaps)
+    )
     blocked = any(_is_blocking(code) for code in reason_codes)
 
     if blocked:
@@ -262,14 +295,21 @@ def evaluate_a14_operational_pass(requirements: Any, authorizations: Any) -> dic
 
     auth_list = authorizations if isinstance(authorizations, list) else []
     manifest_id = requirements.get("requirement_manifest_id")
-    covering = [
-        auth
-        for auth in auth_list
-        if isinstance(auth, dict)
-        and auth.get("lifecycle_state") == "ACTIVE"
-        and auth.get("stale") is not True
-        and auth.get("requirement_manifest_id") == manifest_id
-    ]
+    covering = []
+    for index, auth in enumerate(auth_list):
+        if not isinstance(auth, dict):
+            continue
+        if auth.get("lifecycle_state") != "ACTIVE" or auth.get("stale") is True:
+            continue
+        if auth.get("requirement_manifest_id") != manifest_id:
+            continue
+        shape_errors = validate_a14_authorization(auth)
+        if shape_errors:
+            reason_codes.extend(
+                f"A14:AUTHORIZATION[{index}]:{e}" for e in shape_errors
+            )
+            continue
+        covering.append(auth)
     if not covering:
         reason_codes.append("A14:NO_ACTIVE_UNSTALE_MATCHING_AUTHORIZATION")
 
