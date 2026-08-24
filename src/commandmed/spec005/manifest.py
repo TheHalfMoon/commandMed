@@ -10,11 +10,18 @@ from __future__ import annotations
 
 from typing import Any
 
+import re
+
 from ..eval_contract.validate import validate_metrics_catalog_v2
 from ..eval_contract.canonical import compute_canonical_sha256
 from ..tournament import CANONICAL_METRICS_V2_BINDING
 
 CANDIDATE_ROLES = frozenset({"PRIMARY", "CONTROL", "CONDITIONAL", "REFERENCE_ONLY"})
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+
+
+def _is_canonical_sha256(value) -> bool:
+    return isinstance(value, str) and bool(_SHA256_RE.match(value))
 PROHIBITED_EVIDENCE_MARKERS = ("COMMANDMED_ARABIC_GOLD", "PRIVATE_GOLD")
 
 MANIFEST_REQUIRED_FIELDS = (
@@ -117,7 +124,16 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
             if not isinstance(entry_id, str) or not entry_id.strip():
                 errors.append(f"{prefix}:{id_field}_RESOLVED_STRING_REQUIRED")
                 continue
-            mapping[entry_id] = entry.get("record_canonical_sha256")
+            if entry_id in mapping:
+                errors.append(f"{prefix}:DUPLICATE_{id_field}_{entry_id}")
+                continue
+            entry_sha = entry.get("record_canonical_sha256")
+            if not _is_canonical_sha256(entry_sha):
+                errors.append(
+                    f"{prefix}:RECORD_CANONICAL_SHA256_MALFORMED_FOR_{entry_id}"
+                )
+                continue
+            mapping[entry_id] = entry_sha
         return mapping
 
     supplied_thresholds = _id_sha_map(
@@ -212,11 +228,41 @@ def evaluate_spec005_preflight(manifest: Any, artifacts: Any) -> dict[str, objec
         if not manifest.get("statistical_design_identities"):
             reason_codes.append("PROJECTION:NO_STATISTICAL_DESIGN_IDENTITIES")
 
+        # A synthetic AUTHORIZED state alone is insufficient: the activation
+        # identity must be a complete record binding (id, canonical hash, and
+        # the exact preconstruction snapshot this manifest binds).
         activation = manifest.get("construction_activation_identity")
+        snapshot_identity = manifest.get("preconstruction_snapshot_identity") or {}
+        required_binding = {
+            "activation_id": str,
+            "activation_record_canonical_sha256": "sha256",
+            "preconstruction_snapshot_id": str,
+            "activation_state": str,
+        }
         if not isinstance(activation, dict):
             reason_codes.append("PROJECTION:A15_REAL_ACTIVATION_NOT_AUTHORIZED")
-        elif activation.get("activation_state") != "AUTHORIZED_TO_CONSTRUCT":
-            reason_codes.append("PROJECTION:A15_REAL_ACTIVATION_NOT_AUTHORIZED")
+        else:
+            missing_fields = [
+                field for field in required_binding if field not in activation
+            ]
+            if missing_fields:
+                reason_codes.append(
+                    f"PROJECTION:ACTIVATION_BINDING_INCOMPLETE_{sorted(missing_fields)}"
+                )
+            elif activation.get("activation_state") != "AUTHORIZED_TO_CONSTRUCT":
+                reason_codes.append("PROJECTION:A15_REAL_ACTIVATION_NOT_AUTHORIZED")
+            elif activation.get(
+                "preconstruction_snapshot_id"
+            ) != snapshot_identity.get("snapshot_id"):
+                reason_codes.append(
+                    "PROJECTION:ACTIVATION_SNAPSHOT_ID_MISMATCH_WITH_MANIFEST"
+                )
+            elif not _is_canonical_sha256(
+                activation.get("activation_record_canonical_sha256")
+            ):
+                reason_codes.append(
+                    "PROJECTION:ACTIVATION_RECORD_CANONICAL_SHA_MALFORMED"
+                )
 
     unique_sorted = sorted(set(reason_codes))
     state = "PREFLIGHT_COMPLETE" if not unique_sorted else "PREFLIGHT_BLOCKED"
@@ -237,9 +283,13 @@ def build_spec004_projection(manifest: Any, artifacts: Any) -> dict[str, object]
     if not isinstance(manifest, dict):
         return None
     activation = manifest.get("construction_activation_identity")
-    if not isinstance(activation, dict) or activation.get(
-        "activation_state"
-    ) != "AUTHORIZED_TO_CONSTRUCT":
+    if (
+        not isinstance(activation, dict)
+        or activation.get("activation_state") != "AUTHORIZED_TO_CONSTRUCT"
+        or not _is_canonical_sha256(
+            activation.get("activation_record_canonical_sha256")
+        )
+    ):
         return None
 
     metrics_identity = manifest["metrics_v2_identity"]

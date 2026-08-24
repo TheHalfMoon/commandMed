@@ -196,6 +196,36 @@ class ManifestValidationTests(unittest.TestCase):
         self.assertIsInstance(errors, list)
         self.assertTrue(any("candidate_id" in e for e in errors))
 
+    def test_malformed_or_duplicate_id_sha_entries_rejected(self):
+        artifacts = make_artifacts(
+            threshold_policies=[
+                {"threshold_policy_id": "TP-001", "record_canonical_sha256": "bad"},
+            ]
+        )
+        errors = validate_spec005_manifest(make_manifest(), artifacts)
+        self.assertTrue(
+            any("TP-001" in e and ("SHA" in e.upper() or "FORMAT" in e.upper())
+                for e in errors)
+        )
+        artifacts = make_artifacts(
+            threshold_policies=[
+                {"threshold_policy_id": "TP-001", "record_canonical_sha256": "a" * 64},
+                {"threshold_policy_id": "TP-001", "record_canonical_sha256": "b" * 64},
+            ]
+        )
+        errors = validate_spec005_manifest(make_manifest(), artifacts)
+        self.assertTrue(any("DUPLICATE" in e.upper() for e in errors))
+
+    def test_activation_identity_required_for_projection_preflight(self):
+        manifest = make_manifest()
+        # Synthetic AUTHORIZED state alone must not satisfy preflight without
+        # a full activation record binding.
+        manifest["construction_activation_identity"] = {
+            "activation_state": "AUTHORIZED_TO_CONSTRUCT"
+        }
+        result = evaluate_spec005_preflight(manifest, make_artifacts())
+        self.assertNotEqual(result["state"], "PREFLIGHT_COMPLETE")
+
     def test_malformed_artifact_collections_do_not_crash(self):
         for bad in (None, "x", 42, {"a": 1}):
             artifacts = make_artifacts(
@@ -217,6 +247,10 @@ class PreflightTests(unittest.TestCase):
         # validator compatibility only; this creates no real authority.
         manifest["construction_activation_identity"] = {
             "activation_id": "ACT-SYNTH-AUTH",
+            "activation_record_canonical_sha256": "6" * 64,
+            "preconstruction_snapshot_id": manifest[
+                "preconstruction_snapshot_identity"
+            ]["snapshot_id"],
             "activation_state": "AUTHORIZED_TO_CONSTRUCT",
         }
         result = evaluate_spec005_preflight(manifest, make_artifacts())
@@ -256,8 +290,8 @@ class ProjectionTests(unittest.TestCase):
         result = evaluate_spec005_preflight(
             self._ready_manifest(), make_artifacts()
         )
-        self.assertIn(
-            "PROJECTION:A15_REAL_ACTIVATION_NOT_AUTHORIZED",
+        self.assertTrue(
+            any("A15" in c or "ACTIVATION_BINDING" in c for c in result["reason_codes"]),
             result["reason_codes"],
         )
 

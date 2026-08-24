@@ -113,9 +113,11 @@ def validate_selection_quality_contract(
         errors.append("QualityContract:MISSING_REQUIRED_ARABIC_COVERAGE_ANCHOR")
 
     language_scope = contract.get("required_language_scope")
-    if not isinstance(language_scope, list) or not {"ar", "en"}.issubset(
-        set(language_scope)
+    if not isinstance(language_scope, list) or not all(
+        isinstance(item, str) for item in language_scope
     ):
+        errors.append("QualityContract:ARABIC_ENGLISH_LANGUAGE_SCOPE_REQUIRED")
+    elif not {"ar", "en"}.issubset(set(language_scope)):
         errors.append("QualityContract:ARABIC_ENGLISH_LANGUAGE_SCOPE_REQUIRED")
 
     mapping_req = contract.get("metric_mapping_requirements")
@@ -316,7 +318,12 @@ def evaluate_scientific_selection_readiness(
         # Noncompensable lanes require decision-criteria coverage in both the
         # A2 threshold layer and the atomic A3+A4 design layer, with exactly
         # one authoritative record per lane (duplicates are ambiguous).
-        required_lanes = set(quality_contract.get("required_quality_lanes", []))
+        lanes_raw = quality_contract.get("required_quality_lanes", [])
+        required_lanes = (
+            set(lanes_raw)
+            if all(isinstance(lane, str) for lane in lanes_raw)
+            else set()
+        )
         threshold_lane_counts: dict[str, int] = {}
         for t in thresholds:
             if isinstance(t, dict):

@@ -272,6 +272,19 @@ class RootTaskMetadataTests(unittest.TestCase):
         )
         self.assertTrue(any("PRIMARY" in e.upper() for e in errors))
 
+    def test_malformed_sha_fields_fail_closed(self):
+        for field in (
+            "root_content_artifact_sha256",
+            "source_route_record_sha256",
+            "lineage_record_sha256",
+            "record_canonical_sha256",
+        ):
+            record = make_root_task(**{field: "not-a-sha"})
+            errors = validate_root_task_metadata(record, load_contract())
+            self.assertTrue(
+                any(field in e for e in errors), f"{field} not validated"
+            )
+
     def test_payload_text_field_rejected(self):
         record = make_root_task(embedded_case_text="patient has chest pain")
         errors = validate_root_task_metadata(record, load_contract())

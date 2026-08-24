@@ -112,6 +112,16 @@ def validate_preconstruction_contract(contract: Any) -> list[str]:
     return errors
 
 
+def _validate_sha_fields(record: dict, fields, prefix: str, errors: list[str]) -> None:
+    for field in fields:
+        value = record.get(field)
+        if _is_canonical_sha256(value):
+            continue
+        if value is None:
+            continue  # absence handled by _require_fields where required
+        errors.append(f"{prefix}:{field}_NOT_CANONICAL_SHA256")
+
+
 def validate_source_route(record: Any, contract: Any) -> list[str]:
     """Validate one A10 exact source-route record for selection development."""
     errors: list[str] = []
@@ -143,6 +153,13 @@ def validate_source_route(record: Any, contract: Any) -> list[str]:
         errors.append(f"SourceRoute:UNKNOWN_ROUTE_CLASS_{route_class}")
     if route_class in PROHIBITED_ROUTE_CLASSES:
         errors.append(f"SourceRoute:ROUTE_CLASS_PROHIBITED_FOR_SELECTION_{route_class}")
+
+    _validate_sha_fields(
+        record,
+        ("lineage_record_sha256", "record_canonical_sha256"),
+        "SourceRoute",
+        errors,
+    )
 
     if record.get("declared_use") != "DEVELOPMENT_EVALUATION":
         errors.append("SourceRoute:DECLARED_USE_MUST_BE_DEVELOPMENT_EVALUATION")
@@ -230,6 +247,18 @@ def validate_root_task_metadata(record: Any, contract: Any) -> list[str]:
     secondary = record.get("secondary_coverage_tags") or []
     if not isinstance(secondary, list):
         errors.append("RootTaskMetadata:SECONDARY_COVERAGE_TAGS_MUST_BE_LIST")
+
+    _validate_sha_fields(
+        record,
+        (
+            "root_content_artifact_sha256",
+            "source_route_record_sha256",
+            "lineage_record_sha256",
+            "record_canonical_sha256",
+        ),
+        "RootTaskMetadata",
+        errors,
+    )
 
     _reject_payload_fields(record, "RootTaskMetadata", errors)
     return errors

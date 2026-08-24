@@ -148,6 +148,11 @@ class SelectionQualityContractTests(unittest.TestCase):
         errors = validate_selection_quality_contract(contract, make_metrics_v2())
         self.assertTrue(any("Z_UNKNOWN_LANE" in e for e in errors))
 
+    def test_readiness_tolerates_unhashable_language_scope(self):
+        contract = make_quality_contract(required_language_scope=[["ar"], {"en": 1}])
+        result = evaluate_scientific_selection_readiness({}, contract, make_metrics_v2())
+        self.assertIn(result["state"], {"INCOMPLETE", "BLOCKED"})
+
     def test_unhashable_lane_entries_do_not_crash(self):
         contract = make_quality_contract(required_quality_lanes=[[], {"x": 1}, 7])
         errors = validate_selection_quality_contract(contract, make_metrics_v2())
