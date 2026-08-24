@@ -217,6 +217,8 @@ def validate_root_task_metadata(record: Any, contract: Any) -> list[str]:
             "source_route_record_sha256",
             "primary_coverage_anchor_id",
             "role_id",
+            "use_context_id",
+            "content_authoring_record_id",
             "statistical_stratum_id",
             "statistical_slot_id",
             "rights_instrument_evidence_id",
@@ -296,6 +298,13 @@ def validate_pair_metadata(record: Any, contract: Any) -> list[str]:
     unit_count = record.get("statistical_unit_count", 1)
     if unit_count != 1:
         errors.append("PairMetadata:PAIR_STATISTICAL_UNIT_COUNT_MUST_BE_ONE")
+
+    _validate_sha_fields(
+        record,
+        ("record_canonical_sha256",),
+        "PairMetadata",
+        errors,
+    )
     return errors
 
 
@@ -351,6 +360,17 @@ def validate_review_binding(record: Any, contract: Any) -> list[str]:
         errors.append(
             "ReviewBinding:ADJUDICATOR_MUST_BE_SEPARATE_FROM_AUTHOR_AND_REVIEWER"
         )
+
+    _validate_sha_fields(
+        record,
+        (
+            "review_protocol_canonical_sha256",
+            "reviewed_pair_content_identity_sha256",
+            "record_canonical_sha256",
+        ),
+        "ReviewBinding",
+        errors,
+    )
 
     reviewed_identity = record.get("reviewed_pair_content_identity_sha256")
     current_identity = record.get("current_pair_content_identity_sha256")

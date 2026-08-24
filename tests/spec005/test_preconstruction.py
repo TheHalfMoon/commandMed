@@ -285,6 +285,25 @@ class RootTaskMetadataTests(unittest.TestCase):
                 any(field in e for e in errors), f"{field} not validated"
             )
 
+    def test_missing_use_context_or_authoring_record_rejected(self):
+        for field in ("use_context_id", "content_authoring_record_id"):
+            record = make_root_task()
+            del record[field]
+            errors = validate_root_task_metadata(record, load_contract())
+            self.assertTrue(any(field in e for e in errors), field)
+
+    def test_pair_and_review_sha_formats_validated(self):
+        pair = make_pair(record_canonical_sha256="bad")
+        errors = validate_pair_metadata(pair, load_contract())
+        self.assertTrue(any("record_canonical_sha256" in e for e in errors))
+        binding = make_review_binding(
+            review_protocol_canonical_sha256="also-bad",
+            reviewed_pair_content_identity_sha256="still-bad",
+        )
+        errors = validate_review_binding(binding, load_contract())
+        self.assertTrue(any("review_protocol_canonical_sha256" in e for e in errors))
+        self.assertTrue(any("reviewed_pair_content_identity_sha256" in e for e in errors))
+
     def test_payload_text_field_rejected(self):
         record = make_root_task(embedded_case_text="patient has chest pain")
         errors = validate_root_task_metadata(record, load_contract())
