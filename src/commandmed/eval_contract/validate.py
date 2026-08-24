@@ -517,7 +517,6 @@ def validate_quarantine_rules(entries: Any) -> tuple[bool, list[str]]:
     errors: list[str] = []
     allowed_purposes = {e.value for e in Purpose}
     seen_purposes: set[str] = set()
-
     for idx, rule in enumerate(entries):
         if not isinstance(rule, dict):
             errors.append(f"QuarantineRule[{idx}]: Quarantine rule must be a JSON object")
@@ -753,3 +752,176 @@ def evaluate_hard_gates(
     else:
         overall_state = GateEvaluationState.PASS.value
     return overall_state, gate_breakdown
+
+
+# Metrics V2 is additive. Historical V1 validation above remains unchanged.
+METRICS_V2_SCHEMA_ID = "commandmed-metrics-catalog"
+METRICS_V2_SCHEMA_VERSION = "2.0"
+METRICS_V1_CANONICAL_SHA256 = "304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a"
+METRICS_V2_TOP_LEVEL_KEYS = frozenset(
+    {"schema_id", "schema_version", "supersedes_metrics_v1_sha256", "metrics"}
+)
+METRICS_V2_METRIC_KEYS = frozenset(
+    {
+        "metric_id", "name", "category", "description", "direction", "unit",
+        "is_hard_gate", "threshold_state", "applicable_roles",
+        "applicable_modalities", "applicable_languages", "evidence_requirements",
+    }
+)
+METRICS_V2_EVIDENCE_KEYS = frozenset(
+    {"evidence_role", "purpose", "evidence_kind", "binding_mode", "source_policy", "requirement"}
+)
+METRICS_V2_EVIDENCE_ROLES = frozenset(
+    {"SELECTION_DEV", "PRIVATE_GOLD_FINAL_AUDIT", "PUBLIC_EXTERNAL_EVAL", "QUALIFICATION_ONLY"}
+)
+METRICS_V2_BINDING_MODES = frozenset({"MANIFEST_BOUND", "CANONICAL_FAMILY_BOUND"})
+METRICS_V2_SOURCE_POLICIES = frozenset(
+    {
+        "SELECTION_SAFE_NON_GOLD",
+        "PRIVATE_GOLD_FAMILY",
+        "PUBLIC_EXTERNAL_TEST_ONLY",
+        "IDENTITY_BOUND_QUALIFICATION_ASSET",
+    }
+)
+METRICS_V2_ROLE_CONTRACT = {
+    "SELECTION_DEV": (Purpose.CHECKPOINT_SELECTION.value, "MANIFEST_BOUND", "SELECTION_SAFE_NON_GOLD"),
+    "PRIVATE_GOLD_FINAL_AUDIT": (Purpose.PRIVATE_GOLD.value, "CANONICAL_FAMILY_BOUND", "PRIVATE_GOLD_FAMILY"),
+    "PUBLIC_EXTERNAL_EVAL": (Purpose.PUBLIC_EXTERNAL_EVAL.value, "MANIFEST_BOUND", "PUBLIC_EXTERNAL_TEST_ONLY"),
+    "QUALIFICATION_ONLY": (Purpose.DEV.value, "MANIFEST_BOUND", "IDENTITY_BOUND_QUALIFICATION_ASSET"),
+}
+
+
+def _exact_string_keys(value: Any, expected: frozenset[str], prefix: str) -> list[str]:
+    if not isinstance(value, dict):
+        return [f"{prefix}: expected a JSON object"]
+    keys = set(value)
+    if any(not isinstance(key, str) for key in keys):
+        return [f"{prefix}: all object keys must be strings"]
+    errors: list[str] = []
+    missing = sorted(expected - keys)
+    extra = sorted(keys - expected)
+    if missing:
+        errors.append(f"{prefix}: Missing required fields {missing}")
+    if extra:
+        errors.append(f"{prefix}: Unknown fields {extra}")
+    return errors
+
+
+def _validate_metric_evidence_requirement_v2(entry: Any, prefix: str) -> list[str]:
+    errors = _exact_string_keys(entry, METRICS_V2_EVIDENCE_KEYS, prefix)
+    if errors or not isinstance(entry, dict):
+        return errors
+
+    for field in ("evidence_role", "purpose", "evidence_kind", "binding_mode", "source_policy", "requirement"):
+        _required_string(entry, field, prefix, errors)
+
+    role = entry.get("evidence_role")
+    purpose = entry.get("purpose")
+    binding_mode = entry.get("binding_mode")
+    source_policy = entry.get("source_policy")
+
+    if role not in METRICS_V2_EVIDENCE_ROLES:
+        errors.append(f"{prefix}: Unknown evidence_role '{role}'")
+    if purpose not in {item.value for item in Purpose}:
+        errors.append(f"{prefix}: Unknown purpose '{purpose}'")
+    if binding_mode not in METRICS_V2_BINDING_MODES:
+        errors.append(f"{prefix}: Unknown binding_mode '{binding_mode}'")
+    if source_policy not in METRICS_V2_SOURCE_POLICIES:
+        errors.append(f"{prefix}: Unknown source_policy '{source_policy}'")
+
+    expected = METRICS_V2_ROLE_CONTRACT.get(role)
+    if expected is not None:
+        expected_purpose, expected_binding, expected_source = expected
+        if purpose != expected_purpose:
+            errors.append(
+                f"{prefix}: evidence_role '{role}' requires purpose='{expected_purpose}'"
+            )
+        if binding_mode != expected_binding:
+            errors.append(
+                f"{prefix}: evidence_role '{role}' requires binding_mode='{expected_binding}'"
+            )
+        if source_policy != expected_source:
+            errors.append(
+                f"{prefix}: evidence_role '{role}' requires source_policy='{expected_source}'"
+            )
+    return errors
+
+
+def _validate_metric_v2(entry: Any, index: int) -> list[str]:
+    prefix = f"MetricV2[{index}]"
+    errors = _exact_string_keys(entry, METRICS_V2_METRIC_KEYS, prefix)
+    if errors or not isinstance(entry, dict):
+        return errors
+
+    metric_id = entry.get("metric_id")
+    display_id = metric_id if isinstance(metric_id, str) and metric_id.strip() else str(index)
+    prefix = f"MetricV2({display_id})"
+
+    v1_projection = {
+        key: value
+        for key, value in entry.items()
+        if key != "evidence_requirements"
+    }
+    v1_projection["required_evidence"] = "V2_EVIDENCE_REQUIREMENTS"
+    errors.extend(validate_metric(v1_projection, index))
+
+    requirements = entry.get("evidence_requirements")
+    if not isinstance(requirements, list) or not requirements:
+        errors.append(f"{prefix}: 'evidence_requirements' must be a non-empty list")
+        return errors
+
+    seen_roles: set[str] = set()
+    for requirement_index, requirement in enumerate(requirements):
+        requirement_prefix = f"{prefix}.evidence_requirements[{requirement_index}]"
+        errors.extend(_validate_metric_evidence_requirement_v2(requirement, requirement_prefix))
+        if isinstance(requirement, dict):
+            role = requirement.get("evidence_role")
+            if isinstance(role, str):
+                if role in seen_roles:
+                    errors.append(f"{prefix}: Duplicate evidence_role '{role}'")
+                seen_roles.add(role)
+
+    if metric_id == "arabic_clinical_parity_gap":
+        required_roles = {"SELECTION_DEV", "PRIVATE_GOLD_FINAL_AUDIT"}
+        if seen_roles != required_roles:
+            errors.append(
+                f"{prefix}: canonical Arabic parity evidence roles must be exactly {sorted(required_roles)}"
+            )
+    return errors
+
+
+def validate_metrics_catalog_v2(catalog: Any) -> tuple[bool, list[str]]:
+    """Validate the additive metrics V2 contract without changing V1 semantics."""
+    errors = _exact_string_keys(catalog, METRICS_V2_TOP_LEVEL_KEYS, "MetricsV2Catalog")
+    if errors or not isinstance(catalog, dict):
+        return False, errors
+
+    errors.extend(check_no_payload_markers(catalog, "metrics_v2"))
+    if catalog.get("schema_id") != METRICS_V2_SCHEMA_ID:
+        errors.append(
+            f"MetricsV2Catalog: schema_id must equal '{METRICS_V2_SCHEMA_ID}'"
+        )
+    if catalog.get("schema_version") != METRICS_V2_SCHEMA_VERSION:
+        errors.append(
+            f"MetricsV2Catalog: schema_version must equal '{METRICS_V2_SCHEMA_VERSION}'"
+        )
+    if catalog.get("supersedes_metrics_v1_sha256") != METRICS_V1_CANONICAL_SHA256:
+        errors.append(
+            "MetricsV2Catalog: supersedes_metrics_v1_sha256 must equal the historical V1 canonical identity"
+        )
+
+    metrics = catalog.get("metrics")
+    if not isinstance(metrics, list) or not metrics:
+        errors.append("MetricsV2Catalog: 'metrics' must be a non-empty list")
+        return False, errors
+
+    seen_ids: set[str] = set()
+    for index, metric in enumerate(metrics):
+        errors.extend(_validate_metric_v2(metric, index))
+        if isinstance(metric, dict):
+            metric_id = metric.get("metric_id")
+            if isinstance(metric_id, str) and metric_id.strip():
+                if metric_id in seen_ids:
+                    errors.append(f"Duplicate metric_id '{metric_id}' found in V2 catalog")
+                seen_ids.add(metric_id)
+    return len(errors) == 0, errors
