@@ -158,6 +158,9 @@ def evaluate_device_preflight(records: Any, contract: Any) -> dict[str, object]:
     """Compute preflight state across all five targets; fail closed."""
     reason_codes: list[str] = []
 
+    contract_errors = validate_device_qualification_contract(contract)
+    reason_codes.extend(f"Preflight:Contract:{e}" for e in contract_errors)
+
     known_targets = (
         _known_target_ids(contract) if isinstance(contract, dict) else set()
     )

@@ -88,37 +88,61 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
         quality_identity = {}
     if not isinstance(quality, dict):
         errors.append("Manifest:SelectionQualityContract:SUPPLIED_ARTIFACT_REQUIRED")
-    elif (
-        quality_identity.get("contract_id") != quality.get("contract_id")
-        or quality_identity.get("contract_version") != quality.get("contract_version")
-    ):
-        errors.append("Manifest:SELECTION_QUALITY_CONTRACT_IDENTITY_MISMATCH")
+    else:
+        if (
+            quality_identity.get("contract_id") != quality.get("contract_id")
+            or quality_identity.get("contract_version")
+            != quality.get("contract_version")
+        ):
+            errors.append("Manifest:SELECTION_QUALITY_CONTRACT_IDENTITY_MISMATCH")
+        declared_sha = quality_identity.get("selection_quality_contract_sha256")
+        supplied_sha = quality.get("canonical_sha256")
+        if not isinstance(supplied_sha, str) or not supplied_sha.strip():
+            errors.append(
+                "Manifest:SelectionQualityContract:SUPPLIED_CANONICAL_SHA_ABSENT"
+            )
+        elif declared_sha != supplied_sha:
+            errors.append("Manifest:SELECTION_QUALITY_CONTRACT_SHA_MISMATCH")
 
-    thresholds_supplied = {
-        t.get("threshold_policy_id")
+    supplied_thresholds = {
+        t.get("threshold_policy_id"): t.get("record_canonical_sha256")
         for t in artifacts.get("threshold_policies", []) or []
         if isinstance(t, dict)
     }
-    thresholds_declared = {
-        t.get("threshold_policy_id")
+    declared_thresholds = {
+        t.get("threshold_policy_id"): t.get("record_canonical_sha256")
         for t in manifest.get("threshold_policy_identities") or []
         if isinstance(t, dict)
     }
-    if thresholds_declared != thresholds_supplied:
-        errors.append("Manifest:THRESHOLD_POLICY_IDENTITIES_MISMATCH_WITH_SUPPLIED")
+    for policy_id in sorted(set(declared_thresholds) - set(supplied_thresholds)):
+        errors.append(f"Manifest:THRESHOLD_POLICY_{policy_id}_NOT_SUPPLIED")
+    for policy_id in sorted(set(supplied_thresholds) - set(declared_thresholds)):
+        errors.append(f"Manifest:THRESHOLD_POLICY_{policy_id}_NOT_DECLARED")
+    for policy_id in sorted(set(declared_thresholds) & set(supplied_thresholds)):
+        if declared_thresholds[policy_id] != supplied_thresholds[policy_id]:
+            errors.append(
+                f"Manifest:THRESHOLD_POLICY_{policy_id}_SHA_MISMATCH_WITH_SUPPLIED"
+            )
 
-    designs_supplied = {
-        d.get("statistical_design_id")
+    supplied_designs = {
+        d.get("statistical_design_id"): d.get("record_canonical_sha256")
         for d in artifacts.get("statistical_designs", []) or []
         if isinstance(d, dict)
     }
-    designs_declared = {
-        d.get("statistical_design_id")
+    declared_designs = {
+        d.get("statistical_design_id"): d.get("record_canonical_sha256")
         for d in manifest.get("statistical_design_identities") or []
         if isinstance(d, dict)
     }
-    if designs_declared != designs_supplied:
-        errors.append("Manifest:STATISTICAL_DESIGN_IDENTITIES_MISMATCH_WITH_SUPPLIED")
+    for design_id in sorted(set(declared_designs) - set(supplied_designs)):
+        errors.append(f"Manifest:STATISTICAL_DESIGN_{design_id}_NOT_SUPPLIED")
+    for design_id in sorted(set(supplied_designs) - set(declared_designs)):
+        errors.append(f"Manifest:STATISTICAL_DESIGN_{design_id}_NOT_DECLARED")
+    for design_id in sorted(set(declared_designs) & set(supplied_designs)):
+        if declared_designs[design_id] != supplied_designs[design_id]:
+            errors.append(
+                f"Manifest:STATISTICAL_DESIGN_{design_id}_SHA_MISMATCH_WITH_SUPPLIED"
+            )
 
     device_identity = manifest.get("device_protocol_identity")
     if not isinstance(device_identity, dict) or device_identity.get("preflight_state") != (

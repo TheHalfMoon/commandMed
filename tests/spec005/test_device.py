@@ -213,6 +213,13 @@ class PreflightTests(unittest.TestCase):
         self.assertIn(result["state"], {"INCOMPLETE", "HARD_FAIL"})
         self.assertNotEqual(result["state"], "PREFLIGHT_PASS")
 
+    def test_preflight_validates_contract_first(self):
+        contract = load_contract()
+        contract["common_protocol"]["core_context_tokens"] = 4096
+        result = evaluate_device_preflight(self._all_targets_pass(), contract)
+        self.assertNotEqual(result["state"], "PREFLIGHT_PASS")
+        self.assertTrue(any("core_context_tokens" in c for c in result["reason_codes"]))
+
     def test_no_llama_cpp_invocation_possible(self):
         import src.commandmed.spec005.device as device
         source = open(device.__file__, encoding="utf-8").read()

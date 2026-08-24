@@ -24,14 +24,19 @@ GATES = (
 )
 
 
+CONTRACT_CANONICAL_HASH = "c0ffee" + "0" * 58
+
+
 def make_artifacts(**overrides):
+    quality_contract = json.loads(
+        QUALITY_CONTRACT_PATH.read_text(encoding="utf-8")
+    )
+    quality_contract["canonical_sha256"] = CONTRACT_CANONICAL_HASH
     artifacts = {
         "metrics_v2_catalog": json.loads(
             METRICS_V2_PATH.read_text(encoding="utf-8")
         ),
-        "selection_quality_contract": json.loads(
-            QUALITY_CONTRACT_PATH.read_text(encoding="utf-8")
-        ),
+        "selection_quality_contract": quality_contract,
         "threshold_policies": [
             {
                 "threshold_policy_id": "TP-001",
@@ -62,7 +67,7 @@ def make_manifest(**overrides):
         "selection_quality_contract_identity": {
             "contract_id": "commandmed-spec005-selection-quality-contract",
             "contract_version": "1.0",
-            "selection_quality_contract_sha256": "d" * 64,
+            "selection_quality_contract_sha256": CONTRACT_CANONICAL_HASH,
         },
         "threshold_policy_identities": [
             {"threshold_policy_id": "TP-001", "record_canonical_sha256": "a" * 64}
@@ -149,6 +154,34 @@ class ManifestValidationTests(unittest.TestCase):
             errors = validate_spec005_manifest(bad, make_artifacts())
             self.assertIsInstance(errors, list)
             self.assertTrue(errors)
+
+    def test_declared_artifact_hashes_are_bound(self):
+        artifacts = make_artifacts()
+        artifacts["threshold_policies"][0]["record_canonical_sha256"] = "8" * 64
+        errors = validate_spec005_manifest(make_manifest(), artifacts)
+        self.assertTrue(any("THRESHOLD" in e.upper() and "SHA" in e.upper() for e in errors))
+
+        errors = validate_spec005_manifest(make_manifest(), make_artifacts())
+        self.assertEqual(errors, [])
+
+    def test_design_hashes_are_bound(self):
+        artifacts = make_artifacts()
+        artifacts["statistical_designs"][0]["record_canonical_sha256"] = "7" * 64
+        errors = validate_spec005_manifest(make_manifest(), artifacts)
+        self.assertTrue(any("STATISTICAL" in e.upper() and "SHA" in e.upper() for e in errors))
+
+    def test_quality_contract_hash_is_verified_when_supplied(self):
+        manifest = make_manifest()
+        manifest["selection_quality_contract_identity"][
+            "selection_quality_contract_sha256"
+        ] = "d" * 64
+        # Fixture contract has canonical_sha256=null; declared hash cannot be
+        # verified against a null, so validation must fail closed.
+        errors = validate_spec005_manifest(manifest, make_artifacts())
+        self.assertTrue(
+            any("SELECTION_QUALITY_CONTRACT_SHA" in e for e in errors),
+            errors,
+        )
 
     def test_malformed_identity_subobjects_do_not_crash(self):
         manifest = make_manifest(
