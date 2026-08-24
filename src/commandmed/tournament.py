@@ -838,7 +838,7 @@ CANONICAL_METRICS_V2_BINDING: dict[str, str] = {
     "metrics_contract_schema_id": "commandmed-metrics-catalog",
     "metrics_contract_schema_version": "2.0",
     "metrics_catalog_path": "data/eval/metrics-v2.json",
-    "metrics_catalog_sha256": "ebfdaecebd924c3ec3b897bb6c26a9860635f8cfb6757e8167b20bc488b0adaf",
+    "metrics_catalog_sha256": "bad51bffe30c0fb7de37afcaf8620ad1ad2deed2dd626a1ec6c2eb47c4107f4b",
 }
 
 

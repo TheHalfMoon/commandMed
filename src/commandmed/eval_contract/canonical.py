@@ -70,6 +70,16 @@ def semantic_normalize(obj: Any, parent_key: str = "") -> Any:
         if not obj:
             return []
 
+        # Frozen contract (Session 10): evidence_requirements is a set-like
+        # collection of records uniquely keyed by lifecycle role, so it is
+        # ordered primarily by evidence_role regardless of other field values.
+        if parent_key == "evidence_requirements" and isinstance(obj[0], dict):
+            if all("evidence_role" in item for item in obj):
+                sorted_records = sorted(
+                    obj, key=lambda item: str(item.get("evidence_role", ""))
+                )
+                return [semantic_normalize(item) for item in sorted_records]
+
         # Case 1: Parent key designates a set-like collection of scalar tags/enums
         if parent_key in SET_LIKE_LIST_FIELDS:
             normalized_items = [semantic_normalize(item) for item in obj]

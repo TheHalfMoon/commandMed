@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from src.commandmed.eval_contract.canonical import (
+    canonical_json_dumps,
     compute_canonical_sha256,
     compute_file_canonical_sha256,
 )
@@ -224,9 +225,40 @@ class MetricsV2CatalogTests(unittest.TestCase):
             compute_canonical_sha256(shared_purpose),
             compute_canonical_sha256(list(reversed(shared_purpose))),
         )
+
+    def _role_record(self, role: str, purpose: str) -> dict:
+        return {
+            "evidence_role": role,
+            "purpose": purpose,
+            "evidence_kind": "synthetic",
+            "binding_mode": "MANIFEST_BOUND",
+            "source_policy": "IDENTITY_BOUND_QUALIFICATION_ASSET",
+            "requirement": f"req-{role}",
+        }
+
+    def test_evidence_requirements_are_canonically_ordered_by_role(self):
+        """Frozen contract CANONICAL_RECORD_SORT_KEY_ADD=evidence_role:
+        inside an evidence_requirements collection, differing purpose values
+        must not override evidence_role as the primary canonical identity."""
+        presented = [
+            self._role_record("ZZ_ROLE", "AAA_PURPOSE"),
+            self._role_record("AA_ROLE", "ZZZ_PURPOSE"),
+        ]
+        container = {"evidence_requirements": presented}
+        reversed_container = {
+            "evidence_requirements": list(reversed(presented)),
+        }
+
+        normalized = json.loads(canonical_json_dumps(container))
+        roles_in_canonical_order = [
+            record["evidence_role"]
+            for record in normalized["evidence_requirements"]
+        ]
+        self.assertEqual(roles_in_canonical_order, ["AA_ROLE", "ZZ_ROLE"])
+
         self.assertEqual(
-            compute_canonical_sha256(shared_purpose)[0],
-            compute_canonical_sha256([shared_purpose[1], shared_purpose[0]])[0],
+            compute_canonical_sha256(container),
+            compute_canonical_sha256(reversed_container),
         )
 
 
