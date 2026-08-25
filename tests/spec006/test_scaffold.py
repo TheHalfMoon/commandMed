@@ -237,8 +237,11 @@ class TestTrustedTreeVerification(unittest.TestCase):
         self.assertIn("UNTRUSTED_COMMIT_UNRESOLVED", result["reason_codes"])
 
     def test_unrelated_commit_rejected_missing_manifest(self):
+        # Any commit predating the fixtures must fail: the manifest cannot be
+        # read from its tree. Use the repository root commit.
+        root_commit = git(["rev-list", "--max-parents=0", "HEAD"])
         result = trace.validate_trace_set_trusted(
-            self.parent, self.interaction_ids[0], self.manifest_bytes, repo_root=ROOT
+            root_commit, self.interaction_ids[0], self.manifest_bytes, repo_root=ROOT
         )
         self.assertEqual("INSUFFICIENT_EVIDENCE", result["status"])
         self.assertIn("MANIFEST_MISSING_FROM_TRUSTED_TREE", result["reason_codes"])
@@ -378,3 +381,79 @@ class TestHardGateDelegation(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestMalformedPolicyFailClosed(unittest.TestCase):
+    """Finding repairs 4+5: malformed bundles fail closed, never crash/inert."""
+
+    def setUp(self):
+        self.registry_bundle, self.policy_bundle, self.prerequisites = load_bundles()
+        self.context = {
+            "role": "PATIENT_CAREGIVER",
+            "language": "en",
+            "available_evidence_ids": [],
+            "tool_availability": {},
+        }
+        self.request = {"text": "how much medicine should I take?",
+                        "requested_tool_id": None, "provided_slots": []}
+
+    def _evaluate(self, bundle):
+        return scaffold.evaluate_interaction(
+            "88888888-9999-4aaa-8bbb-cccccccccccc", copy.deepcopy(self.request),
+            copy.deepcopy(self.context), self.registry_bundle, bundle, self.prerequisites,
+        )
+
+    def test_rule_without_trigger_condition_blocked_not_crash(self):
+        bundle = copy.deepcopy(self.policy_bundle)
+        broken = {"rule_id": "R-BROKEN"}
+        bundle["rules"] = [broken]
+        decision = self._evaluate(bundle)
+        self.assertEqual("ABSTAIN", decision["state_after"])
+        self.assertIn("BLOCKED_SAFETY_STATE", decision["reason_codes"])
+
+    def test_non_dict_rule_blocked_not_crash(self):
+        bundle = copy.deepcopy(self.policy_bundle)
+        bundle["rules"] = ["not-a-dict"]
+        decision = self._evaluate(bundle)
+        self.assertEqual("ABSTAIN", decision["state_after"])
+        self.assertIn("BLOCKED_SAFETY_STATE", decision["reason_codes"])
+
+    def test_malformed_regex_fails_closed_not_silently_inert(self):
+        bundle = copy.deepcopy(self.policy_bundle)
+        rule = copy.deepcopy(next(
+            r for r in bundle["rules"] if r["rule_id"] == "R006-ESCALATE-SEVERE-PATTERN-V1"
+        ))
+        rule["trigger_condition"]["ref"] = "(unclosed["
+        bundle["rules"] = [rule]
+        decision = self._evaluate(bundle)
+        self.assertEqual("ABSTAIN", decision["state_after"])
+        self.assertIn("BLOCKED_SAFETY_STATE", decision["reason_codes"])
+        errors = trace.validate_trace(decision["trace"])
+        self.assertEqual([], errors)
+
+    def test_rules_missing_entirely_blocked(self):
+        bundle = copy.deepcopy(self.policy_bundle)
+        del bundle["rules"]
+        decision = self._evaluate(bundle)
+        self.assertEqual("ABSTAIN", decision["state_after"])
+
+
+class TestCanonicalStateConstants(unittest.TestCase):
+    """Finding repair 1: scaffold references the canonical vocabulary."""
+
+    def test_state_constants_are_members_of_canonical_set(self):
+        for name in ("STATE_ANSWER", "STATE_ASK_MORE", "STATE_USE_TOOL",
+                     "STATE_RETRIEVE_EVIDENCE", "STATE_ABSTAIN", "STATE_ESCALATE",
+                     "STATE_EMERGENCY"):
+            token = getattr(scaffold, name)
+            with self.subTest(constant=name, token=token):
+                self.assertIn(token, policy_mod.BEHAVIORAL_STATES)
+
+    def test_binary_blob_reader_returns_exact_bytes(self):
+        # Finding repair 2: read_blob must return object-store bytes verbatim.
+        manifest_rel = "specs/006-patient-safety-scaffold/fixtures/fixture-manifest.json"
+        worktree_bytes = (ROOT / manifest_rel).read_bytes()
+        head_tree = trace.TrustedTreeReader(ROOT).resolve_tree(git(["rev-parse", "HEAD"]))
+        blob = trace.TrustedTreeReader(ROOT).read_blob(head_tree, manifest_rel)
+        self.assertIsInstance(blob, bytes)
+        self.assertEqual(worktree_bytes, blob)

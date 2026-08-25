@@ -15,10 +15,11 @@ import re
 from typing import Any
 
 from src.commandmed.eval_contract.canonical import compute_canonical_sha256
+from src.commandmed.eval_contract.safety import BEHAVIOR_STATES
 
-BEHAVIORAL_STATES = frozenset(
-    "ANSWER ASK_MORE USE_TOOL RETRIEVE_EVIDENCE ABSTAIN ESCALATE EMERGENCY".split()
-)
+# Single canonical behavioral-state vocabulary (Spec 002): every spec006
+# module references this definition instead of local copies.
+BEHAVIORAL_STATES = BEHAVIOR_STATES
 
 REASON_CODES = frozenset(
     {
@@ -99,14 +100,37 @@ def validate_safety_rule(rule: Any, field: str = "rules") -> list[str]:
         undeclared = set(trigger) - {"kind", "ref", "threshold"}
         if undeclared:
             errors.append(f"{field}.trigger_condition: undeclared fields {sorted(undeclared)}")
-        if trigger.get("kind") not in TRIGGER_KINDS:
+        kind = trigger.get("kind")
+        if kind not in TRIGGER_KINDS:
             errors.append(f"{field}.trigger_condition.kind: unsupported value '{trigger.get('kind')}'")
-        ref = trigger.get("ref")
-        if ref is not None and (not isinstance(ref, str) or not ref.strip()):
-            errors.append(f"{field}.trigger_condition.ref: expected non-empty string when present")
-        threshold = trigger.get("threshold")
-        if threshold is not None and not isinstance(threshold, (str, int, float, bool)):
-            errors.append(f"{field}.trigger_condition.threshold: unsupported type")
+        else:
+            ref = trigger.get("ref")
+            # Per-kind required bindings: a rule without its frozen signal can
+            # never fire, which would silently disable a safety behavior.
+            if kind in ("lexical", "semantic_pattern", "tool_result_flag"):
+                if not isinstance(ref, str) or not ref.strip():
+                    errors.append(
+                        f"{field}.trigger_condition.ref: required non-empty string for kind '{kind}'"
+                    )
+            elif kind == "missing_slot":
+                if not isinstance(ref, str) or not ref.strip():
+                    errors.append(
+                        f"{field}.trigger_condition.ref: required non-empty string for kind 'missing_slot'"
+                    )
+                threshold = trigger.get("threshold")
+                if not isinstance(threshold, str) or not threshold.strip():
+                    errors.append(
+                        f"{field}.trigger_condition.threshold: required non-empty"
+                        " gated tool-class list for kind 'missing_slot'"
+                    )
+            threshold = trigger.get("threshold")
+            if threshold is not None and not isinstance(threshold, (str, int, float, bool)):
+                errors.append(f"{field}.trigger_condition.threshold: unsupported type")
+            if kind == "semantic_pattern" and isinstance(ref, str) and ref.strip():
+                try:
+                    re.compile(ref)
+                except re.error as exc:
+                    errors.append(f"{field}.trigger_condition.ref: malformed frozen pattern ({exc})")
 
     if rule["required_state"] not in BEHAVIORAL_STATES:
         errors.append(f"{field}.required_state: unsupported value '{rule['required_state']}'")

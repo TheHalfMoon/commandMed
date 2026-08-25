@@ -7,6 +7,7 @@ import json
 import unittest
 from pathlib import Path
 
+from src.commandmed.spec006 import policy as policy_mod
 from src.commandmed.spec006.policy import (
     evaluate_precedence,
     validate_policy_bundle,
@@ -200,3 +201,52 @@ class TestPrecedenceEvaluation(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestCanonicalVocabulary(unittest.TestCase):
+    """Finding repair: one canonical behavioral-state definition."""
+
+    def test_policy_vocabulary_is_the_spec002_canonical_set(self):
+        from src.commandmed.eval_contract.safety import BEHAVIOR_STATES
+
+        self.assertIs(BEHAVIOR_STATES, policy_mod.BEHAVIORAL_STATES)
+
+    def test_trace_module_reuses_canonical_vocabulary(self):
+        from src.commandmed.spec006 import trace
+
+        self.assertIs(policy_mod.BEHAVIORAL_STATES, trace.BEHAVIORAL_STATES)
+
+
+class TestTriggerBindingStrictness(unittest.TestCase):
+    """Finding repairs 4+6: required trigger bindings + regex compile check."""
+
+    def test_lexical_rule_without_ref_rejected(self):
+        rule = minimal_rule(
+            trigger_condition={"kind": "lexical"}
+        )
+        errors = validate_safety_rule(rule)
+        self.assertTrue(any("ref" in error for error in errors))
+
+    def test_semantic_pattern_without_ref_rejected(self):
+        rule = minimal_rule(trigger_condition={"kind": "semantic_pattern"})
+        errors = validate_safety_rule(rule)
+        self.assertTrue(any("ref" in error for error in errors))
+
+    def test_tool_result_flag_without_ref_rejected(self):
+        rule = minimal_rule(trigger_condition={"kind": "tool_result_flag"})
+        errors = validate_safety_rule(rule)
+        self.assertTrue(any("ref" in error for error in errors))
+
+    def test_missing_slot_without_threshold_rejected(self):
+        rule = minimal_rule(trigger_condition={"kind": "missing_slot", "ref": "slot_a|slot_b"})
+        errors = validate_safety_rule(rule)
+        self.assertTrue(any("threshold" in error for error in errors))
+
+    def test_malformed_regex_rejected_at_validation_time(self):
+        rule = minimal_rule(trigger_condition={"kind": "semantic_pattern", "ref": "(unclosed["})
+        errors = validate_safety_rule(rule)
+        self.assertTrue(any("malformed frozen pattern" in error for error in errors))
+
+    def test_valid_regex_accepted(self):
+        rule = minimal_rule(trigger_condition={"kind": "semantic_pattern", "ref": "worst .*pain"})
+        self.assertEqual([], validate_safety_rule(rule))

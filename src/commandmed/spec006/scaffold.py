@@ -30,6 +30,11 @@ from typing import Any
 
 from src.commandmed.eval_contract.canonical import compute_canonical_sha256
 from src.commandmed.spec006 import policy, registry, trace
+from src.commandmed.spec006.policy import BEHAVIORAL_STATES
+
+
+class MalformedPolicyError(Exception):
+    """A frozen policy bundle is malformed; evaluation must fail closed."""
 
 # Frozen suppression markers for known instruction-injection shapes. Detection
 # is signal-only: matched payloads never alter the frozen decision path.
@@ -51,6 +56,15 @@ EVIDENCE_GATED_TOOL_CLASSES = frozenset(
 TOOL_LAYER_RULE_ID = "SCAFFOLD::TOOL_LAYER"
 TOOL_LAYER_PRECEDENCE = 6
 
+# Canonical behavioral-state tokens (single vocabulary from policy/Spec 002).
+STATE_ANSWER = "ANSWER"
+STATE_ASK_MORE = "ASK_MORE"
+STATE_USE_TOOL = "USE_TOOL"
+STATE_RETRIEVE_EVIDENCE = "RETRIEVE_EVIDENCE"
+STATE_ABSTAIN = "ABSTAIN"
+STATE_ESCALATE = "ESCALATE"
+STATE_EMERGENCY = "EMERGENCY"
+
 
 def _normalized_text(value: Any) -> str:
     return value.strip().lower() if isinstance(value, str) else ""
@@ -68,20 +82,23 @@ def _rule_matches(
     provided_slots: set[str],
     requested_tool_class: str | None,
 ) -> bool:
-    condition = rule["trigger_condition"]
+    condition = rule.get("trigger_condition")
+    if not isinstance(condition, dict):
+        raise MalformedPolicyError("trigger_condition missing or not an object")
     kind = condition.get("kind")
     ref = condition.get("ref")
-    if not isinstance(ref, str):
-        return False
+    if not isinstance(ref, str) or not isinstance(kind, str):
+        raise MalformedPolicyError("trigger kind/ref missing or not a string")
     if kind == "lexical":
         tokens = [token.strip().lower() for token in ref.split("|") if token.strip()]
         return any(token in text for token in tokens)
     if kind == "semantic_pattern":
+        # Frozen patterns are compile-checked at validation time; any pattern
+        # that still fails to compile here fails CLOSED (never silently inert).
         try:
             return re.search(ref, text, flags=re.IGNORECASE) is not None
-        except re.error:
-            # Malformed frozen pattern fails closed through BLOCKED_SAFETY_STATE.
-            return False
+        except re.error as exc:
+            raise MalformedPolicyError(f"malformed frozen pattern: {exc}") from exc
     if kind == "missing_slot":
         # Scoped by the frozen ``threshold`` list of tool classes: the rule
         # only gates deterministic steps whose class actually requires the
@@ -89,7 +106,7 @@ def _rule_matches(
         # CLAIMED finding/action).
         threshold = condition.get("threshold")
         if not isinstance(threshold, str):
-            return False
+            raise MalformedPolicyError("missing_slot threshold missing or not a string")
         gated_classes = {token.strip() for token in threshold.split("|") if token.strip()}
         if requested_tool_class is None or requested_tool_class not in gated_classes:
             return False
@@ -107,10 +124,18 @@ def _collect_fired_rules(
     requested_tool_class: str | None = None,
 ) -> list[dict[str, Any]]:
     fired: list[dict[str, Any]] = []
-    for rule in policy_bundle.get("rules", []):
-        if not isinstance(rule, dict):
-            continue
-        if rule["trigger_condition"].get("kind") == "tool_result_flag":
+    rules = policy_bundle.get("rules") if isinstance(policy_bundle, dict) else None
+    if not isinstance(rules, list):
+        raise MalformedPolicyError("policy bundle has no rules array")
+    for rule in rules:
+        if not isinstance(rule, dict) or not isinstance(rule.get("rule_id"), str):
+            raise MalformedPolicyError("policy bundle contains a malformed rule record")
+        condition_kind = (
+            rule["trigger_condition"].get("kind")
+            if isinstance(rule.get("trigger_condition"), dict)
+            else None
+        )
+        if condition_kind == "tool_result_flag":
             if rule["rule_id"] in tool_flag_rule_ids:
                 fired.append(rule)
             continue
@@ -217,7 +242,7 @@ def _resolve_tool_outcome(
         return {
             "rule_id": TOOL_LAYER_RULE_ID,
             "precedence": TOOL_LAYER_PRECEDENCE,
-            "required_state": "ABSTAIN",
+            "required_state": STATE_ABSTAIN,
         }, records
 
     availability = safety_context.get("tool_availability") or {}
@@ -230,7 +255,7 @@ def _resolve_tool_outcome(
         return {
             "rule_id": TOOL_LAYER_RULE_ID,
             "precedence": TOOL_LAYER_PRECEDENCE,
-            "required_state": "ABSTAIN",
+            "required_state": STATE_ABSTAIN,
         }, records
 
     if availability_state == "UNAVAILABLE":
@@ -250,7 +275,7 @@ def _resolve_tool_outcome(
             return {
                 "rule_id": TOOL_LAYER_RULE_ID,
                 "precedence": TOOL_LAYER_PRECEDENCE,
-                "required_state": "ABSTAIN",
+                "required_state": STATE_ABSTAIN,
             }, records
 
     if isinstance(claimed_provenance, dict):
@@ -270,9 +295,9 @@ def _resolve_tool_outcome(
             }, records
 
     target_state = (
-        "RETRIEVE_EVIDENCE"
+        STATE_RETRIEVE_EVIDENCE
         if tool["tool_class"] == "evidence_retrieval"
-        else "USE_TOOL"
+        else STATE_USE_TOOL
     )
     records.append(_record(tool, is_failure=False, reason_code=None))
     return {
@@ -296,6 +321,38 @@ def _build_determinism_proof(
         ],
         "replay_output_state": state_after,
     }
+
+
+def _blocked_trace(
+    interaction_id: Any,
+    identities: dict[str, str],
+    safety_context: dict[str, Any],
+    previous_trace: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """Build a valid ABSTAIN/BLOCKED_SAFETY_STATE trace for malformed input."""
+    partial = {
+        "interaction_id": interaction_id,
+        "trace_version": "v1",
+        "predecessor_sha256": None,
+        "input_identity_sha256": identities["input_identity_sha256"],
+        "context_identity_sha256": identities["context_identity_sha256"],
+        "policy_identity_sha256": identities["policy_identity_sha256"],
+        "tool_registry_identity_sha256": identities["tool_registry_identity_sha256"],
+        "state_before": None if previous_trace is None else previous_trace["state_after"],
+        "state_after": "ABSTAIN",
+        "trigger_record_ids": [],
+        "tool_call_record_ids": [],
+        "output_identity_sha256": compute_canonical_sha256(
+            {"state_after": "ABSTAIN", "reason_codes": ["BLOCKED_SAFETY_STATE"]}
+        ),
+        "failure_reason_codes": ["BLOCKED_SAFETY_STATE"],
+        "safety_context": safety_context,
+        "tool_calls": [],
+        "determinism_proof": {},
+    }
+    record = trace.append_trace(previous_trace, partial)
+    record["determinism_proof"] = _build_determinism_proof("ABSTAIN", identities)
+    return record
 
 
 def evaluate_interaction(
@@ -342,9 +399,21 @@ def evaluate_interaction(
         requested_tool["tool_class"] if isinstance(requested_tool, dict) else None
     )
 
-    fired_rules = _collect_fired_rules(
-        policy_bundle, text, provided_slots, tool_flag_rule_ids, requested_tool_class
-    )
+    try:
+        fired_rules = _collect_fired_rules(
+            policy_bundle, text, provided_slots, tool_flag_rule_ids, requested_tool_class
+        )
+    except MalformedPolicyError:
+        # Fail closed: a malformed frozen policy can never yield ANSWER.
+        return {
+            "state_after": "ABSTAIN",
+            "reason_codes": ["BLOCKED_SAFETY_STATE"],
+            "trigger_record_ids": [],
+            "tool_calls": [],
+            "trace": _blocked_trace(
+                interaction_id, identities, safety_context, previous_trace
+            ),
+        }
 
     tool_rule, tool_records = _resolve_tool_outcome(
         requested_tool_id,

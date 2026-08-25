@@ -383,3 +383,18 @@ class TestManifestValidation(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestGenesisStateContract(unittest.TestCase):
+    """Finding repair 3: genesis state_before must be null."""
+
+    def test_genesis_with_non_null_state_before_rejected(self):
+        record = minimal_trace(state_before="ANSWER")
+        errors = validate_trace(record)
+        self.assertTrue(any("genesis" in error and "null" in error for error in errors))
+
+    def test_non_genesis_with_null_state_before_rejected_per_record(self):
+        record = minimal_trace(trace_sequence=1, predecessor_sha256="0" * 64,
+                               state_before=None)
+        errors = validate_trace(record)
+        self.assertTrue(any("non-genesis" in error for error in errors))

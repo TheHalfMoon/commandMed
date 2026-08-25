@@ -29,10 +29,7 @@ from pathlib import Path
 from typing import Any
 
 from src.commandmed.eval_contract.canonical import compute_canonical_sha256
-
-BEHAVIORAL_STATES = frozenset(
-    "ANSWER ASK_MORE USE_TOOL RETRIEVE_EVIDENCE ABSTAIN ESCALATE EMERGENCY".split()
-)
+from src.commandmed.spec006.policy import BEHAVIORAL_STATES
 
 ROLES = frozenset({"PATIENT_CAREGIVER", "CLINICAL_PROFESSIONAL", "LEARNER_RESEARCHER"})
 LANGUAGES = frozenset({"ar", "en", "ar-en"})
@@ -253,6 +250,13 @@ def validate_trace(record: Any) -> list[str]:
     sequence = record["trace_sequence"]
     if not isinstance(sequence, int) or isinstance(sequence, bool) or sequence < 0:
         errors.append("trace.trace_sequence: expected integer >= 0")
+
+    # Genesis contract (data-model §1.4): trace_sequence 0 has no prior state.
+    if sequence == 0 and not isinstance(sequence, bool):
+        if record["state_before"] is not None:
+            errors.append("trace.state_before: genesis record must use null")
+    elif sequence > 0 and record["state_before"] is None:
+        errors.append("trace.state_before: non-genesis record requires a prior state")
 
     predecessor = record["predecessor_sha256"]
     if sequence == 0 and not isinstance(sequence, bool):
@@ -507,18 +511,20 @@ class TrustedTreeReader:
     """Read blobs exclusively from one resolved git tree via local git plumbing.
 
     Standard-library only (subprocess to the git binary). No network access.
+    Blob reads are strictly binary: bytes returned from ``read_blob`` are the
+    exact object-store contents, so byte-identity checks in
+    ``validate_trace_set_trusted`` compare true object bytes.
     """
 
     def __init__(self, repo_root: Path) -> None:
         self.repo_root = repo_root
         self._env_workdir = str(repo_root)
 
-    def _run(self, args: list[str]) -> subprocess.CompletedProcess[str]:
+    def _run(self, args: list[str]) -> subprocess.CompletedProcess[bytes]:
         return subprocess.run(
             ["git", *args],
             cwd=self._env_workdir,
             capture_output=True,
-            text=True,
             check=False,
         )
 
@@ -526,20 +532,19 @@ class TrustedTreeReader:
         result = self._run(["cat-file", "-t", oid])
         if result.returncode != 0:
             return None
-        return result.stdout.strip()
+        return result.stdout.decode("utf-8", errors="replace").strip()
 
     def resolve_tree(self, commit_oid: str) -> str | None:
         result = self._run(["rev-parse", "--verify", "--quiet", f"{commit_oid}^{{tree}}"])
-        if result.returncode != 0:
+        if result.returncode != 0 or result.stdout.strip() == b"":
             return None
-        tree = result.stdout.strip()
-        return tree or None
+        return result.stdout.decode("utf-8").strip()
 
     def read_blob(self, tree_oid: str, path: str) -> bytes | None:
         result = self._run(["cat-file", "blob", f"{tree_oid}:{path}"])
         if result.returncode != 0:
             return None
-        return result.stdout.encode("utf-8", errors="surrogateescape")
+        return result.stdout
 
 
 def validate_trace_set_trusted(
