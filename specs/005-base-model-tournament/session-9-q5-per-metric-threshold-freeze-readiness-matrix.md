@@ -1,0 +1,549 @@
+# Spec 005 — Session 9 Q5 Per-Metric Threshold-Freeze Readiness Matrix
+
+**Lifecycle:** CLARIFY ONLY  
+**Evidence capture date:** 2026-08-23  
+**Canonical commandMed base:** `19aa95bbd122f3e01421ba2618dc1efe2f088289`  
+**Predecessor PR head:** `c56fbd9b7b07c0998cbbc58cb331ee100ba487fa`
+
+> This artifact freezes threshold-readiness status only. It does not choose numeric clinical/statistical thresholds, margins, confidence levels, sample sizes, power targets, reviewer identities, founder decisions, evaluation payloads, or execution settings. It does not access benchmark payloads or Private Gold, run models, access weights, authorize corrective maintenance, or advance to PLAN.
+
+## 1. Q5 decision
+
+```text
+SESSION9_Q5_POLICY=PER_METRIC_FAIL_CLOSED_THRESHOLD_FREEZE_READINESS_MATRIX
+
+THRESHOLD_FREEZE_READINESS_MATRIX=FROZEN
+HARD_GATE_POPULATION_THRESHOLDS_READY_TO_FREEZE=0
+HARD_GATE_POPULATION_THRESHOLDS_NOT_READY_TO_FREEZE=6
+
+BENIGN_CASE_OVER_TRIAGE_THRESHOLD_READY_TO_FREEZE=NO
+
+NO_THRESHOLD_MAY_BE_FROZEN_FROM_ARCHITECTURE_ONLY=YES
+NO_THRESHOLD_MAY_BE_FROZEN_FROM_SENTINEL_PASS_ALONE=YES
+NO_THRESHOLD_MAY_BE_FROZEN_FROM_CANDIDATE_RESULTS=YES
+```
+
+Session 9 Q1-Q4 froze architecture and governance prerequisites. Q5 evaluates whether the canonical evidence presently satisfies those prerequisites for each relevant metric. It does not manufacture missing evidence.
+
+## 2. Canonical threshold prerequisites
+
+The canonical `commandmed-safety-policy-v1` requires the following before each statistical threshold may freeze:
+
+```text
+INTENDED_USE_AND_POPULATION
+EVALUATION_DESIGN
+IDENTITY_BOUND_EVIDENCE
+CLINICAL_REVIEW_AUTHORITY
+STATISTICAL_RATIONALE
+SAMPLE_SIZE_OR_POWER_RATIONALE
+```
+
+`benign_case_over_triage_rate` additionally requires:
+
+```text
+FOUNDER_POLICY_DECISION=FD-004
+```
+
+The current structural state after Session 9 Q1-Q4 is:
+
+```text
+INTENDED_USE_AND_POPULATION=
+STRUCTURE_PARTIALLY_FROZEN_METRIC_SPECIFIC_COMPLETION_REQUIRED
+
+EVALUATION_DESIGN=
+STRUCTURE_FROZEN_EXACT_CASE_AND_SOURCE_MANIFESTS_INCOMPLETE
+
+IDENTITY_BOUND_EVIDENCE=
+UNRESOLVED_FOR_POPULATION_THRESHOLD_FREEZE
+
+CLINICAL_REVIEW_AUTHORITY=
+ARCHITECTURE_FROZEN_EXACT_AUTHORITY_IDENTITIES_UNRESOLVED
+
+STATISTICAL_RATIONALE=
+ARCHITECTURE_FROZEN_METRIC_SPECIFIC_METHOD_AND_NUMERIC_INPUTS_UNRESOLVED
+
+SAMPLE_SIZE_OR_POWER_RATIONALE=
+ARCHITECTURE_FROZEN_EXACT_NUMERIC_DERIVATION_UNRESOLVED
+
+CANONICAL_GOVERNANCE_ADOPTION_OF_ANY_NEW_NUMERIC_THRESHOLD=
+NOT_PERFORMED
+```
+
+Therefore architecture completion is not threshold completion.
+
+## 3. Sentinel mechanics versus population thresholds
+
+The canonical safety policy already has frozen sentinel/policy gates for some metrics. Those gates prove exact policy-fixture invariants only.
+
+```text
+EMERGENCY_SENTINEL_ZERO_VIOLATION_MECHANICS=FROZEN_CANONICAL
+MEDICATION_SENTINEL_ZERO_VIOLATION_MECHANICS=FROZEN_CANONICAL
+CITATION_UNSUPPORTED_EVIDENCE_SENTINEL_MECHANICS=FROZEN_CANONICAL
+
+SENTINEL_ZERO_VIOLATIONS_PROVE_ZERO_POPULATION_ERROR_RATE=NO
+SENTINEL_PASS_MAKES_POPULATION_THRESHOLD_READY_TO_FREEZE=NO
+```
+
+Population/statistical thresholds for those metrics remain separately governed by `PENDING_CLINICAL_EVIDENCE`.
+
+## 4. Readiness status vocabulary
+
+Q5 uses the following clarification-only readiness statuses:
+
+```text
+READY_TO_FREEZE=
+ALL_CANONICAL_PREREQUISITES_AND_EXACT_EVIDENCE_IDENTITIES_RESOLVED
+
+NOT_READY_TO_FREEZE=
+ONE_OR_MORE_REQUIRED_PREREQUISITES_OR_IDENTITIES_UNRESOLVED
+
+BLOCKED_BY_CANONICAL_EVIDENCE_ROLE_CONFLICT=
+CURRENT_CANONICAL_REQUIRED_EVIDENCE_ROLE_CONFLICTS_WITH_SPEC005_SELECTION_QUARANTINE
+```
+
+These are Spec 005 clarification statuses, not replacements for Spec 001/002 enums.
+
+```text
+Q5_REDEFINES_THRESHOLD_STATE_ENUM=NO
+Q5_REDEFINES_GATE_EVALUATION_STATE=NO
+```
+
+## 5. `emergency_miss_rate`
+
+Canonical identity:
+
+```text
+METRIC_ID=emergency_miss_rate
+CATEGORY=SAFETY
+DIRECTION=LOWER_BETTER
+UNIT=ratio
+IS_HARD_GATE=YES
+CANONICAL_THRESHOLD_STATE=DEFINED_NOT_YET_THRESHOLD_FROZEN
+SPEC002_STATISTICAL_STATE=PENDING_CLINICAL_EVIDENCE
+FOUNDER_DECISION_REQUIRED=NO
+```
+
+Canonical metric evidence requirement:
+
+```text
+REQUIRED_EVIDENCE=Clinical adjudication panel on emergency evaluation suite
+```
+
+Session 9 Q4 authority requirement:
+
+```text
+CLINICAL_DOMAIN_REVIEW=RELEVANT_ACUTE_OR_EMERGENCY_CLINICAL_REVIEW
+STATISTICAL_METHOD_REVIEW=REQUIRED
+CANONICAL_GOVERNANCE_ADOPTION=REQUIRED
+```
+
+Current readiness:
+
+```text
+EMERGENCY_MISS_RATE_THRESHOLD_FREEZE_READINESS=NOT_READY_TO_FREEZE
+```
+
+Current blockers include:
+
+```text
+EMERGENCY_EXACT_IDENTITY_BOUND_POPULATION_EVALUATION_SUITE=UNRESOLVED
+EMERGENCY_EXACT_CLINICAL_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+EMERGENCY_EXACT_STATISTICAL_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+EMERGENCY_EXACT_THRESHOLD_EVIDENCE_PACKAGE=UNRESOLVED
+EMERGENCY_EXACT_POPULATION_MAXIMUM_ACCEPTABLE_RATE=NOT_YET_FROZEN
+EMERGENCY_EXACT_UNCERTAINTY_METHOD=NOT_YET_FROZEN
+EMERGENCY_EXACT_CONFIDENCE_LEVEL=NOT_YET_FROZEN
+EMERGENCY_EXACT_SAMPLE_SIZE_OR_POWER_DERIVATION=NOT_YET_FROZEN
+```
+
+The canonical emergency sentinel remains valid but does not remove these population-threshold blockers.
+
+## 6. `medication_critical_error_rate`
+
+Canonical identity:
+
+```text
+METRIC_ID=medication_critical_error_rate
+CATEGORY=SAFETY
+DIRECTION=LOWER_BETTER
+UNIT=ratio
+IS_HARD_GATE=YES
+CANONICAL_THRESHOLD_STATE=DEFINED_NOT_YET_THRESHOLD_FROZEN
+SPEC002_STATISTICAL_STATE=PENDING_CLINICAL_EVIDENCE
+FOUNDER_DECISION_REQUIRED=NO
+```
+
+Canonical metric evidence requirement:
+
+```text
+REQUIRED_EVIDENCE=Deterministic drug-interaction lookup and clinical pharmacology review
+```
+
+The canonical truth boundary also requires authoritative medication lookup identity when that mechanism is used:
+
+```text
+REQUIRED_RESULT_IDENTITY_FIELDS=source_id,source_revision,result_digest
+```
+
+Current readiness:
+
+```text
+MEDICATION_CRITICAL_ERROR_RATE_THRESHOLD_FREEZE_READINESS=NOT_READY_TO_FREEZE
+```
+
+Current blockers include:
+
+```text
+MEDICATION_EXACT_IDENTITY_BOUND_EVALUATION_SUITE=UNRESOLVED
+MEDICATION_EXACT_AUTHORITATIVE_LOOKUP_SOURCE_IDENTITY=UNRESOLVED_FOR_SPEC005_SELECTION_EVIDENCE
+MEDICATION_EXACT_CLINICAL_PHARMACOLOGY_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+MEDICATION_EXACT_STATISTICAL_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+MEDICATION_EXACT_THRESHOLD_EVIDENCE_PACKAGE=UNRESOLVED
+MEDICATION_EXACT_POPULATION_MAXIMUM_ACCEPTABLE_ERROR_RATE=NOT_YET_FROZEN
+MEDICATION_EXACT_UNCERTAINTY_METHOD=NOT_YET_FROZEN
+MEDICATION_EXACT_SAMPLE_SIZE_OR_POWER_DERIVATION=NOT_YET_FROZEN
+```
+
+The canonical medication sentinel remains separate from the unresolved population rate threshold.
+
+## 7. `selective_risk_at_target_coverage`
+
+Canonical identity:
+
+```text
+METRIC_ID=selective_risk_at_target_coverage
+CATEGORY=UNCERTAINTY
+DIRECTION=LOWER_BETTER
+UNIT=score
+IS_HARD_GATE=YES
+CANONICAL_THRESHOLD_STATE=DEFINED_NOT_YET_THRESHOLD_FROZEN
+SPEC002_STATISTICAL_STATE=PENDING_CLINICAL_EVIDENCE
+FOUNDER_DECISION_REQUIRED=NO
+```
+
+Canonical metric evidence requirement:
+
+```text
+REQUIRED_EVIDENCE=Abstention curve evaluation on calibrated holdout suite
+```
+
+Current readiness:
+
+```text
+SELECTIVE_RISK_THRESHOLD_FREEZE_READINESS=NOT_READY_TO_FREEZE
+```
+
+Current blockers include:
+
+```text
+SELECTIVE_RISK_EXACT_CALIBRATED_HOLDOUT_IDENTITY=UNRESOLVED
+SELECTIVE_RISK_EXACT_TARGET_COVERAGE=NOT_YET_FROZEN
+SELECTIVE_RISK_EXACT_ACCEPTABLE_RISK_THRESHOLD_OR_MARGIN=NOT_YET_FROZEN
+SELECTIVE_RISK_EXACT_CLINICAL_SAFETY_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+SELECTIVE_RISK_EXACT_STATISTICAL_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+SELECTIVE_RISK_EXACT_UNCERTAINTY_METHOD=NOT_YET_FROZEN
+SELECTIVE_RISK_EXACT_SAMPLE_SIZE_OR_POWER_DERIVATION=NOT_YET_FROZEN
+```
+
+Q5 does not infer a target coverage from the metric name and does not borrow one from another project or benchmark.
+
+## 8. `citation_entailment_fidelity`
+
+Canonical identity:
+
+```text
+METRIC_ID=citation_entailment_fidelity
+CATEGORY=EVIDENCE
+DIRECTION=HIGHER_BETTER
+UNIT=percentage
+IS_HARD_GATE=YES
+CANONICAL_THRESHOLD_STATE=DEFINED_NOT_YET_THRESHOLD_FROZEN
+SPEC002_STATISTICAL_STATE=PENDING_CLINICAL_EVIDENCE
+FOUNDER_DECISION_REQUIRED=NO
+```
+
+Canonical metric evidence requirement:
+
+```text
+REQUIRED_EVIDENCE=Deterministic verifier + clinician audit on citation-backed responses
+```
+
+Current readiness:
+
+```text
+CITATION_ENTAILMENT_FIDELITY_THRESHOLD_FREEZE_READINESS=NOT_READY_TO_FREEZE
+```
+
+Current blockers include:
+
+```text
+CITATION_EXACT_SELECTION_DEV_EVIDENCE_SUITE_IDENTITY=UNRESOLVED
+CITATION_EXACT_DETERMINISTIC_VERIFIER_IDENTITY=UNRESOLVED
+CITATION_EXACT_CLINICIAN_AUDIT_PROTOCOL_AND_AUTHORITY_IDENTITIES=UNRESOLVED
+CITATION_EXACT_STATISTICAL_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+CITATION_EXACT_MINIMUM_ACCEPTABLE_POPULATION_FIDELITY=NOT_YET_FROZEN
+CITATION_EXACT_UNCERTAINTY_METHOD=NOT_YET_FROZEN
+CITATION_EXACT_SAMPLE_SIZE_OR_POWER_DERIVATION=NOT_YET_FROZEN
+```
+
+The unsupported-evidence sentinel is a zero-tolerance policy invariant; it is not a substitute for the unresolved population fidelity percentage.
+
+## 9. `arabic_clinical_parity_gap`
+
+Canonical identity:
+
+```text
+METRIC_ID=arabic_clinical_parity_gap
+CATEGORY=MULTILINGUAL
+DIRECTION=LOWER_BETTER
+UNIT=relative_gap
+IS_HARD_GATE=YES
+CANONICAL_THRESHOLD_STATE=DEFINED_NOT_YET_THRESHOLD_FROZEN
+SPEC002_STATISTICAL_STATE=PENDING_CLINICAL_EVIDENCE
+FOUNDER_DECISION_REQUIRED=NO
+```
+
+Canonical metric evidence requirement:
+
+```text
+REQUIRED_EVIDENCE=Paired evaluation on COMMANDMED_ARABIC_GOLD
+```
+
+Canonical quarantine rule:
+
+```text
+PRIVATE_GOLD_CAN_SELECT_MODEL=NO
+PRIVATE_GOLD_CAN_BE_USED_FOR_BACKBONE_SELECTION=NO
+PRIVATE_GOLD_CAN_BE_USED_FOR_CHECKPOINT_SELECTION=NO
+```
+
+Therefore the current Spec 005 selection use has a canonical evidence-role incompatibility:
+
+```text
+ARABIC_PARITY_SELECTION_THRESHOLD_EVIDENCE_ROLE_CONFLICT=YES
+ARABIC_PARITY_THRESHOLD_FREEZE_READINESS=BLOCKED_BY_CANONICAL_EVIDENCE_ROLE_CONFLICT
+```
+
+Q5 does not weaken either contract. It does not access `COMMANDMED_ARABIC_GOLD`, and it does not silently substitute an unbound public or synthetic suite for the canonical required evidence field.
+
+A future resolution requires separately governed canonical reconciliation before Spec 005 selection use can freeze this population threshold.
+
+```text
+ARABIC_PARITY_CAN_BE_UNBLOCKED_BY_SPEC005_DOC_ONLY_ASSERTION=NO
+ARABIC_PARITY_PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+ARABIC_PARITY_CORRECTIVE_MAINTENANCE_IMPLEMENTATION_AUTHORITY=NONE
+EXACT_CANONICAL_RECONCILIATION_PATH=NOT_YET_FROZEN
+```
+
+Additional unresolved items remain:
+
+```text
+ARABIC_PARITY_SELECTION_SAFE_PAIRED_EVIDENCE_IDENTITY=UNRESOLVED
+ARABIC_PARITY_EXACT_MAXIMUM_ACCEPTABLE_GAP=NOT_YET_FROZEN
+ARABIC_PARITY_EXACT_PAIRED_ANALYSIS_METHOD=NOT_YET_FROZEN
+ARABIC_PARITY_EXACT_CLINICAL_SEMANTIC_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+ARABIC_PARITY_EXACT_STATISTICAL_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+ARABIC_PARITY_EXACT_COMPLETE_PAIR_SAMPLE_SIZE_DERIVATION=NOT_YET_FROZEN
+```
+
+## 10. `lab_report_field_extraction_accuracy`
+
+Canonical identity:
+
+```text
+METRIC_ID=lab_report_field_extraction_accuracy
+CATEGORY=MULTIMODAL
+DIRECTION=HIGHER_BETTER
+UNIT=f1_score
+IS_HARD_GATE=YES
+CANONICAL_THRESHOLD_STATE=DEFINED_NOT_YET_THRESHOLD_FROZEN
+SPEC002_STATISTICAL_STATE=PENDING_CLINICAL_EVIDENCE
+FOUNDER_DECISION_REQUIRED=NO
+```
+
+Canonical metric evidence requirement:
+
+```text
+REQUIRED_EVIDENCE=Deterministic field comparator against curated lab fixtures
+```
+
+Current readiness:
+
+```text
+LAB_REPORT_FIELD_EXTRACTION_THRESHOLD_FREEZE_READINESS=NOT_READY_TO_FREEZE
+```
+
+Current blockers include:
+
+```text
+LAB_EXACT_SELECTION_DEV_CURATED_FIXTURE_IDENTITIES=UNRESOLVED
+LAB_EXACT_FIELD_SCHEMA_AND_COMPARATOR_IDENTITIES=UNRESOLVED
+LAB_EXACT_CLINICAL_INFORMATICS_OR_LAB_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+LAB_EXACT_STATISTICAL_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
+LAB_EXACT_MINIMUM_ACCEPTABLE_F1=NOT_YET_FROZEN
+LAB_EXACT_F1_UNCERTAINTY_METHOD=NOT_YET_FROZEN
+LAB_EXACT_ROOT_CASE_DEPENDENCY_METHOD=NOT_YET_FROZEN
+LAB_EXACT_SAMPLE_SIZE_OR_POWER_DERIVATION=NOT_YET_FROZEN
+```
+
+Q5 creates no lab payload and accesses no private multimodal Gold.
+
+## 11. Hard-gate readiness summary
+
+```text
+emergency_miss_rate=NOT_READY_TO_FREEZE
+medication_critical_error_rate=NOT_READY_TO_FREEZE
+selective_risk_at_target_coverage=NOT_READY_TO_FREEZE
+citation_entailment_fidelity=NOT_READY_TO_FREEZE
+arabic_clinical_parity_gap=BLOCKED_BY_CANONICAL_EVIDENCE_ROLE_CONFLICT
+lab_report_field_extraction_accuracy=NOT_READY_TO_FREEZE
+
+HARD_GATE_POPULATION_THRESHOLDS_READY_TO_FREEZE=0
+HARD_GATE_POPULATION_THRESHOLDS_BLOCKED_OR_NOT_READY=6
+```
+
+No hard-gate population threshold may be represented as frozen or passable from the present repository state.
+
+## 12. `benign_case_over_triage_rate` — founder-dependent non-hard-gate policy
+
+Canonical identity:
+
+```text
+METRIC_ID=benign_case_over_triage_rate
+CATEGORY=SAFETY
+DIRECTION=LOWER_BETTER
+UNIT=ratio
+IS_HARD_GATE=NO
+SPEC002_STATISTICAL_STATE=PENDING_FOUNDER_AND_CLINICAL_EVIDENCE
+FOUNDER_DECISION_ID=FD-004
+```
+
+Current readiness:
+
+```text
+BENIGN_CASE_OVER_TRIAGE_THRESHOLD_FREEZE_READINESS=NOT_READY_TO_FREEZE
+FD004_CURRENT_DISPOSITION=UNRESOLVED
+```
+
+It requires all ordinary clinical/statistical prerequisites plus the explicit founder product/ethics decision.
+
+```text
+BENIGN_OVER_TRIAGE_FOUNDER_DECISION_ALONE_SUFFICIENT=NO
+BENIGN_OVER_TRIAGE_CLINICAL_EVIDENCE_ALONE_SUFFICIENT=NO
+BENIGN_OVER_TRIAGE_STATISTICAL_RATIONALE_ALONE_SUFFICIENT=NO
+```
+
+No FD-004 decision is invented by Q5.
+
+## 13. Cross-metric common blockers
+
+Across the six hard-gate population thresholds, the following remain unresolved in at least one required form:
+
+```text
+EXACT_IDENTITY_BOUND_SELECTION_DEV_EVIDENCE_PACKAGES=UNRESOLVED
+EXACT_PRIMARY_SELECTION_SLICE_MANIFEST=NOT_YET_FROZEN
+EXACT_CLINICAL_REVIEW_AUTHORITY_IDENTITIES=NOT_YET_FROZEN
+EXACT_STATISTICAL_REVIEW_AUTHORITY_IDENTITIES=NOT_YET_FROZEN
+EXACT_REVIEWER_COUNT_OR_QUORUM=NOT_YET_FROZEN
+EXACT_DISAGREEMENT_RESOLUTION_PROTOCOL=NOT_YET_FROZEN
+EXACT_NUMERIC_THRESHOLDS_OR_MARGINS=NOT_YET_FROZEN
+EXACT_CONFIDENCE_OR_UNCERTAINTY_METHODS_BY_METRIC=NOT_YET_FROZEN
+EXACT_NUMERIC_SAMPLE_SIZE_OR_POWER_DERIVATIONS=NOT_YET_FROZEN
+EXACT_MULTIPLICITY_STRUCTURE=NOT_YET_FROZEN
+SELECTION_DEV_CONTAMINATION_EVIDENCE=NOT_RESOLVED
+RELEVANT_SOURCE_RIGHTS_PRIVACY_LICENSE_EVIDENCE=NOT_FULLY_RESOLVED
+```
+
+Therefore:
+
+```text
+CANONICAL_QUALITY_FLOOR_PASS_CURRENTLY_POSSIBLE=NO
+SIZE_RANKING_MAY_START=NO
+WINNER_SELECTION_MAY_START=NO
+```
+
+## 14. Threshold-freeze gate for future clarification
+
+Before any one of these metrics can move to `READY_TO_FREEZE`, a future exact canonical record must bind at least:
+
+```text
+metric_id
+threshold_id
+comparison_operator
+numeric_value_or_range
+unit
+intended_use_and_population
+exact_evaluation_design
+exact_case_or_source_manifest_identity
+evidence_source_ids_and_revisions
+clinical_rationale
+statistical_rationale
+sample_size_or_power_rationale
+uncertainty_method_identity
+clinical_review_authority_identity_and_disposition
+statistical_review_authority_identity_and_disposition
+canonical_governance_adoption_identity
+founder_decision_identity_or_explicit_not_required
+source_rights_privacy_license_disposition
+contamination_or_quarantine_disposition_where_applicable
+freeze_date
+canonical_policy_revision_or_hash
+supersedes_threshold_id_or_explicit_none
+```
+
+No field may be supplied from observed tournament candidate performance.
+
+## 15. Current authority boundary
+
+```text
+CURRENT_AUTHORIZED_SPEND_USD=0
+PLAN_AUTHORITY=NONE
+CORRECTIVE_MAINTENANCE_IMPLEMENTATION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+MODEL_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+PUBMEDQA_SPLIT_GENERATION_AUTHORITY=NONE
+CONTAMINATION_ASSESSMENT_PAYLOAD_ACCESS_AUTHORITY=NONE
+DEVICE_EXECUTION_AUTHORITY=NONE
+PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+PROVIDER_GENERATION_AUTHORITY=NONE
+PHI_ACCESS_AUTHORITY=NONE
+GATED_ASSET_ACCESS_AUTHORITY=NONE
+```
+
+Q5 does not expand any authority.
+
+## 16. Session 9 bounded closeout
+
+```text
+CLARIFICATION_SESSION_9=5_QUESTIONS_ACCEPTED
+CLARIFICATION_SESSION_9_STATUS=COMPLETE_BOUNDED_SESSION
+
+CLARIFICATION_LIFECYCLE=IN_PROGRESS
+NEXT_LIFECYCLE_STEP=CLARIFY
+PLAN_AUTHORITY=NONE
+```
+
+Completion of Session 9 does not mean the overall CLARIFY lifecycle is complete.
+
+## 17. Q5 mutation boundary
+
+The intended Q5 repository delta is this documentation artifact only.
+
+```text
+RUNTIME_MUTATION=NO
+SOURCE_MUTATION=NO
+TEST_MUTATION=NO
+WORKFLOW_MUTATION=NO
+DEPENDENCY_MUTATION=NO
+BENCHMARK_PAYLOAD_MUTATION=NO
+PRIVATE_GOLD_MUTATION=NO
+MODEL_OR_WEIGHT_MUTATION=NO
+CORRECTIVE_MAINTENANCE_MUTATION=NO
+EXECUTION_MUTATION=NO
+```
+
+During Q5 read-only verification, five invalid workflow-job lookups with `job_id=0` returned GitHub `404`. They created no PR, commit, ref movement, file change, workflow run, or other repository mutation and are not evidence for any gate.
