@@ -2,13 +2,18 @@
 
 **Base:** `52f799b` | **Offline only** | No model/PHI/network authority
 
-## 1. Verify baseline
+## 0. Repository synchronization (separate setup step, not part of offline evaluation)
 
 ```bash
-git fetch origin --prune
-git rev-parse origin/main  # must be 52f799b
+git fetch origin --prune  # only here, not inside offline verification
+git rev-parse origin/main  # must be 52f799b before planning work
+```
+
+## 1. Verify baseline (offline, after sync)
+
+```bash
 python3 -m compileall -q src tests
-python3 -m pytest -q  # 513 PASS inherited baseline
+python3 -m pytest -q  # 513 PASS inherited baseline — no network
 ```
 
 ## 2. Validate contracts (offline, stdlib only)
@@ -29,10 +34,12 @@ for name in ['tool-registry','safety-rule','interaction-trace']:
 
 1. Choose `tool_class` from the frozen vocabulary (see `research.md` §3).
 2. Write a record per `contracts/tool-registry.schema.json` with `tool_content_identity` = canonical SHA-256 of the versioned content/schema, `source_authority` bound, `network_required=false`, `execution_authority=NONE`, `failure_semantics` fail-closed.
-3. Validate:
+3. Validate (post-implementation only — `src/commandmed/spec006` does not exist in planning PR):
    ```python
+   # After T011 (AUTHORIZED_TO_START):
    from src.commandmed.spec006.registry import validate_tool_record
    errors = validate_tool_record(record)  # [] == pass
+   # Planning stage: validate against contracts/tool-registry.schema.json via offline JSON Schema check
    ```
 4. Real implementation/service binding requires `AUTHORIZED_TO_START` — not granted here.
 
@@ -41,10 +48,12 @@ for name in ['tool-registry','safety-rule','interaction-trace']:
 1. Bind `source_policy_sha256` + `rule_version`.
 2. Set `required_state` with exact equality for `EMERGENCY`/`ESCALATE` (SP-001); set `precedence` per research.md §5 order.
 3. Set `threshold_policy_class` per Spec 002 §8 (`FROZEN_*` zero-tolerance vs `PENDING_*`).
-4. Validate:
+4. Validate (post-implementation only):
    ```python
+   # After T011 (AUTHORIZED_TO_START):
    from src.commandmed.spec006.policy import validate_safety_rule
    errors = validate_safety_rule(rule)
+   # Planning stage: validate against contracts/safety-rule.schema.json via offline JSON Schema check
    ```
 
 ## 5. How fixtures prove the scaffold

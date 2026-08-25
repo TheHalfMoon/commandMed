@@ -10,7 +10,7 @@ Terminal outcome of one interaction evaluation. One per interaction.
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `state` | enum `ANSWER|ASK_MORE|USE_TOOL|RETRIEVE_EVIDENCE|ABSTAIN|ESCALATE|EMERGENCY` | yes | Spec 002 closed vocabulary; unknown → validation fail |
+| `state` | enum `ANSWER`, `ASK_MORE`, `USE_TOOL`, `RETRIEVE_EVIDENCE`, `ABSTAIN`, `ESCALATE`, `EMERGENCY` | yes | Spec 002 closed vocabulary; unknown → validation fail |
 | `trigger_record_ids` | `list[str]` | yes | may be empty only for `ANSWER`; otherwise must reference frozen rule/tool triggers |
 | `reason_codes` | `list[str]` | yes | frozen vocab: e.g., `MISSING_CRITICAL_SLOT`, `TOOL_UNAVAILABLE`, `TOOL_TIMEOUT`, `SPOOFED_TOOL_RESULT_REJECTED`, `CONFLICTING_SAFETY_OUTCOMES`, `INJECTION_ATTEMPT_SUPPRESSED`, `EVIDENCE_NOT_RESOLVED`, `FROZEN_POLICY_EMERGENCY` |
 
@@ -25,7 +25,7 @@ Metadata record for one allow-listed tool. No service binding.
 | `tool_id` | `str` (stable) | yes | e.g., `ucum_unit_conversion@v1` |
 | `tool_version` | `str` | yes | semver or date version |
 | `tool_content_identity` | `str` (hex sha256) | yes | canonical JSON hash of versioned content/schema |
-| `tool_class` | enum `unit_conversion|pure_arithmetic|validated_clinical_score|interaction_lookup|schema_validation|evidence_retrieval` | yes | maps to Spec 002 `TASK_CLASS` |
+| `tool_class` | enum `unit_conversion`, `pure_arithmetic`, `validated_clinical_score`, `interaction_lookup`, `schema_validation`, `evidence_retrieval` | yes | maps to Spec 002 `TASK_CLASS` |
 | `input_schema` | `object` (JSON Schema) | yes | closed, required fields enumerated |
 | `output_schema` | `object` (JSON Schema) | yes | typed, includes provenance sub-schema |
 | `source_authority` | `str` | yes | WHO/label/DB/standard identifier + version |
@@ -35,7 +35,7 @@ Metadata record for one allow-listed tool. No service binding.
 | `freshness_policy` | `object` | yes | `{max_age_days, revocation_signal}` |
 | `result_provenance_required` | `bool` | yes | must be true for clinical/interaction/evidence tools |
 | `network_required` | `bool` | yes | must be `false` for offline fixture suite |
-| `execution_authority` | enum `NONE|AUTHORIZED_TO_START` | yes | `NONE` during planning |
+| `execution_authority` | enum `NONE` (planning) | yes | `NONE` during planning; `AUTHORIZED_TO_START` only after separate gate via new registry version |
 
 Registry bundle: `tool_registry.json` (`list[DeterministicTool]` + `registry_version` + `registry_sha256` over canonical JSON).
 
@@ -48,11 +48,11 @@ Frozen deterministic safety policy record. Implements Spec 002 `SP-001`…`SP-00
 | `rule_id` | `str` | yes | stable, unique |
 | `rule_version` | `str` | yes | version |
 | `source_policy_sha256` | `str` | yes | hash of frozen policy document/bundle |
-| `trigger_condition` | `object` | yes | `{kind: lexical|semantic_pattern|tool_result_flag|missing_slot|evidence_state, ref: str, threshold: optional}` |
+| `trigger_condition` | `object` | yes | `{kind: lexical, semantic_pattern, tool_result_flag, missing_slot, evidence_state; ref: str; threshold: optional}` |
 | `required_state` | enum `BehavioralState` | yes | exact equality for EMERGENCY/ESCALATE per SP-001 |
 | `precedence` | `int` (1=highest) | yes | deterministic evaluation order; ties are validation error |
-| `threshold_policy_class` | enum `FROZEN_POLICY_ZERO_TOLERANCE|FROZEN_SENTINEL_ZERO_VIOLATIONS|PENDING_CLINICAL_EVIDENCE|PENDING_FOUNDER_AND_CLINICAL_EVIDENCE|NOT_APPLICABLE_TO_DECLARED_SCOPE` | yes | Spec 002 governance class |
-| `applicable_scope` | enum `SYSTEM_QUALIFICATION|COMPONENT_QUALIFICATION` | yes | |
+| `threshold_policy_class` | enum `FROZEN_POLICY_ZERO_TOLERANCE`, `FROZEN_SENTINEL_ZERO_VIOLATIONS`, `PENDING_CLINICAL_EVIDENCE`, `PENDING_FOUNDER_AND_CLINICAL_EVIDENCE`, `NOT_APPLICABLE_TO_DECLARED_SCOPE` | yes | Spec 002 governance class |
+| `applicable_scope` | enum `SYSTEM_QUALIFICATION`, `COMPONENT_QUALIFICATION` | yes | |
 | `revoked` | `bool` | yes | fail-closed on revoked/contradictory rules per SP-006 |
 
 Policy bundle: `safety_policy.json` (`list[SafetyRule]` + `policy_version` + `policy_sha256`).
@@ -65,11 +65,13 @@ One verifiable record per synthetic interaction, append-only semantics (no mutat
 |---|---|---|---|
 | `interaction_id` | `str` (uuid) | yes | unique per fixture |
 | `trace_version` | `str` | yes | trace schema version |
+| `trace_sequence` | `int` | yes | monotonic per `interaction_id`; 0 for genesis |
+| `predecessor_sha256` | `str` | yes | `GENESIS` for sequence 0, else `sha256(canonical_json(predecessor trace))`; hash-chain integrity |
 | `input_identity_sha256` | `str` | yes | hash of canonical input fixture |
 | `context_identity_sha256` | `str` | yes | hash of canonical SafetyContext |
 | `policy_identity_sha256` | `str` | yes | `safety_policy.json` hash |
 | `tool_registry_identity_sha256` | `str` | yes | `tool_registry.json` hash |
-| `state_before` | `BehavioralState \| null` | yes | null for initial; otherwise prior terminal state |
+| `state_before` | `BehavioralState` or `null` | yes | null for initial; otherwise prior terminal state |
 | `state_after` | `BehavioralState` | yes | exactly one terminal state |
 | `trigger_record_ids` | `list[str]` | yes | rule/trigger IDs that fired |
 | `tool_call_record_ids` | `list[str]` | yes | may be empty; ordered |

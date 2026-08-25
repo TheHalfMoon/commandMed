@@ -1,12 +1,12 @@
 # Analyze — Spec 006 Patient Safety Scaffold
 
-**Analyzed head:** planning PR #39 (base `52f799b`)
+**Analyzed head:** planning PR #39 (base `52f799b` → head `3ac81ea` and repairs for 13 CodeRabbit findings; re-verified after T022 + quickstart offline + contract hardening)
 **Artifacts:** `spec.md`, `research.md`, `plan.md`, `data-model.md`, `contracts/*.schema.json`, `quickstart.md`, `checklists/requirements.md`, `tasks.md` + constitution + AGENTS.md + Spec 002 `CLOSED_CANONICAL` + Spec 005 `CLOSED_CANONICAL`
 **Authority:** planning only
 
 ## Verdict
 
-```
+```text
 CRITICAL=0
 HIGH=0
 MEDIUM=0

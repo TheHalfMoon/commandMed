@@ -55,7 +55,7 @@
         },
         "result_provenance_required": { "type": "boolean" },
         "network_required": { "type": "boolean", "const": false },
-        "execution_authority": { "enum": ["NONE", "AUTHORIZED_TO_START"] }
+        "execution_authority": { "const": "NONE" }
       },
       "additionalProperties": false
     }

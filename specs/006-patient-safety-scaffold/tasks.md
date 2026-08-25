@@ -46,7 +46,7 @@ Tasks below are **planned, not executed** in this PR. They are dependency-ordere
 ### C4 — Verification & close
 
 - [ ] T021 Full `pytest -q` + trace replay + `evaluate_hard_gates` delegation proof (fixture suite 100% + hash-bound + deterministic, `SC-001..SC-004`)
-- [ ] T022 `AUTHORIZED_TO_START` gate decision (canonical repo/founder) — implementation must not write `src/spec006` before this
+- [ ] T022 `AUTHORIZED_TO_START` gate decision (canonical repo/founder) — implementation must not write `src/commandmed/spec006` before this
 
 **Task count:** 22 (10 planning executed + 12 deferred implementation prerequisites)
 **Implementation file paths referenced but not created in planning PR:** `src/commandmed/spec006/*`, `tests/spec006/*`, `data/spec006/*`

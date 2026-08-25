@@ -35,7 +35,7 @@ No constitution amendment is required.
 
 ## 4. Architecture (smallest deterministic implementation planned)
 
-```
+```text
 specs/006-patient-safety-scaffold/
   spec.md, research.md, plan.md, data-model.md, quickstart.md,
   contracts/{tool-registry.schema.json, safety-rule.schema.json, interaction-trace.schema.json},
@@ -52,8 +52,8 @@ Intended implementation (deferred, NOT created in this planning PR):
 
 Core validators (intended):
 
-- `registry.validate_tool_record` / `validate_registry` — closed allow-list, input/output JSON Schemas, SHA-256, freshness, network-false, authority NONE.
-- `policy.validate_safety_rule` / `evaluate_precedence` — frozen precedence order (Sec. 5 of research.md), exact-equality for EMERGENCY/ESCALATE, conflict → ABSTAIN/ESCALATE, injection/spoof → fail-closed, reason codes.
+- `registry.validate_tool_record` / `validate_registry` — closed allow-list, input/output JSON Schemas, SHA-256, freshness, network-false (`const NONE`), authority NONE.
+- `policy.validate_safety_rule` / `validate_policy_bundle` / `evaluate_precedence` — frozen precedence order (Sec. 5 of research.md), exact-equality for EMERGENCY/ESCALATE, conflict → ABSTAIN with `BLOCKED_SAFETY_STATE` reason, injection/spoof → fail-closed, `minItems:1` + unique-precedence + trigger-coverage validation in planned `spec006.policy` bundle validator, reason codes.
 - `trace.validate_trace` / `append_trace` — canonical, deterministic, append-only, hash-bound, privacy-safe (no raw PHI), determinism proof.
 - `scaffold.evaluate_interaction` — composes registry + policy + trace into `ANSWER|ASK_MORE|USE_TOOL|RETRIEVE_EVIDENCE|ABSTAIN|ESCALATE|EMERGENCY` with exactly one terminal state.
 
@@ -78,7 +78,7 @@ See `data-model.md`. Entities: `BehavioralState`, `DeterministicTool`, `SafetyRu
 - `contracts/safety-rule.schema.json` — one record per rule; bundle hashed as policy identity.
 - `contracts/interaction-trace.schema.json` — one trace per synthetic interaction; hash-bound and replay-verifiable.
 
-All contracts use JSON Schema draft 2020-12, standard-library validation only.
+All contracts are JSON Schema draft 2020-12. Validation uses a frozen offline Draft 2020-12 conformance subset executed by an approved offline validator (e.g., vendored `jsonschema` or stdlib `json` + typed validators in `src/commandmed/spec006/`); no network fetch of meta-schemas. Conformance is proven by committed negative/positive fixture tests for each keyword used (`required`, `type`, `enum`, `const`, `pattern`, `minLength`, `minItems`, `uniqueItems`, `additionalProperties`).
 
 ## 7. Verification plan
 

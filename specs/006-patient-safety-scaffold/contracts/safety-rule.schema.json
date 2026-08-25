@@ -10,7 +10,8 @@
     "rules": {
       "type": "array",
       "items": { "$ref": "#/$defs/SafetyRule" },
-      "uniqueItems": true
+      "uniqueItems": true,
+      "minItems": 1
     }
   },
   "additionalProperties": false,

@@ -60,7 +60,7 @@ Real database/service/live lookup is an implementation dependency deferred to `A
 Spec 002 defines `SP-001`…`SP-006` as non-overridable precedence, not a total order. Spec 006 operationalizes one **deterministic evaluation order** that respects all six without inventing clinical severity ranking:
 
 ```
-1. Contradictory/malformed safety state → BLOCKED / ABSTAIN (SP-006, fail-closed, zero tolerance)
+1. Contradictory/malformed safety state → ABSTAIN with frozen reason code BLOCKED_SAFETY_STATE (SP-006, fail-closed, zero tolerance; `BLOCKED` is a gate-result, not a behavioral state)
 2. Identity-bound EMERGENCY trigger present → EMERGENCY (SP-001, exact equality)
 3. Identity-bound ESCALATE trigger present → ESCALATE (SP-001, exact equality)
 4. Required evidence missing/contradictory for claimed finding → RETRIEVE_EVIDENCE / ASK_MORE / ABSTAIN per policy (SP-005, SP-002)
