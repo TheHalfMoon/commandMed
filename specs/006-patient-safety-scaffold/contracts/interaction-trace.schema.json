@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commandmed.spec/006/interaction-trace.schema.json",
+  "title": "InteractionTrace",
+  "type": "object",
+  "required": ["interaction_id", "trace_version", "input_identity_sha256", "context_identity_sha256", "policy_identity_sha256", "tool_registry_identity_sha256", "state_before", "state_after", "trigger_record_ids", "tool_call_record_ids", "output_identity_sha256", "failure_reason_codes", "safety_context", "tool_calls", "determinism_proof"],
+  "properties": {
+    "interaction_id": { "type": "string", "minLength": 1 },
+    "trace_version": { "type": "string", "minLength": 1 },
+    "input_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "context_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "policy_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tool_registry_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "state_before": { "type": ["string", "null"], "enum": ["ANSWER", "ASK_MORE", "USE_TOOL", "RETRIEVE_EVIDENCE", "ABSTAIN", "ESCALATE", "EMERGENCY", null] },
+    "state_after": { "enum": ["ANSWER", "ASK_MORE", "USE_TOOL", "RETRIEVE_EVIDENCE", "ABSTAIN", "ESCALATE", "EMERGENCY"] },
+    "trigger_record_ids": { "type": "array", "items": { "type": "string" } },
+    "tool_call_record_ids": { "type": "array", "items": { "type": "string" } },
+    "output_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "failure_reason_codes": { "type": "array", "items": { "type": "string" } },
+    "safety_context": {
+      "type": "object",
+      "required": ["role", "language"],
+      "properties": {
+        "role": { "enum": ["PATIENT_CAREGIVER", "CLINICAL_PROFESSIONAL", "LEARNER_RESEARCHER"] },
+        "language": { "enum": ["ar", "en", "ar-en"] },
+        "available_evidence_ids": { "type": "array", "items": { "type": "string" } },
+        "tool_availability": { "type": "object", "additionalProperties": { "enum": ["AVAILABLE", "UNAVAILABLE", "TIMEOUT"] } },
+        "locale_hint": { "type": ["string", "null"] },
+        "jurisdiction": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "tool_calls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tool_call_id", "tool_id", "tool_version", "input_identity_sha256", "output_identity_sha256", "provenance", "failure"],
+        "properties": {
+          "tool_call_id": { "type": "string" },
+          "tool_id": { "type": "string" },
+          "tool_version": { "type": "string" },
+          "input_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "output_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "provenance": {
+            "type": "object",
+            "required": ["tool_content_identity", "source_authority", "result_sha256"],
+            "properties": {
+              "tool_content_identity": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "source_authority": { "type": "string" },
+              "result_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+            }
+          },
+          "failure": {
+            "type": "object",
+            "required": ["is_failure", "reason_code"],
+            "properties": {
+              "is_failure": { "type": "boolean" },
+              "reason_code": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "determinism_proof": {
+      "type": "object",
+      "required": ["replayed", "replay_input_sha256", "replay_output_state"],
+      "properties": {
+        "replayed": { "type": "boolean" },
+        "replay_input_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "replay_output_state": { "enum": ["ANSWER", "ASK_MORE", "USE_TOOL", "RETRIEVE_EVIDENCE", "ABSTAIN", "ESCALATE", "EMERGENCY"] }
+      }
+    }
+  },
+  "additionalProperties": false
+}

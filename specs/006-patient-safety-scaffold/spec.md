@@ -71,9 +71,9 @@ A prompt attempts to bypass safety policy via instruction injection or tool-outp
 - **FR-004**: System MUST represent safety context (role, language, available evidence, tool availability) as explicit, auditable data, not hidden prompt state.
 - **FR-005**: System MUST log every safety-critical decision (state, triggering rule/tool, input hash, output hash) in a canonical, append-only, deterministic format for evaluation.
 
-*Unresolved as evidence prerequisites (not placeholders):*
-- **FR-006**: System MUST handle [NEEDS CLARIFICATION: exact clinical-score list, interaction database identities, emergency-keyword policy source — to be frozen as deterministic tool registry records before implementation]
-- **FR-007**: System MUST enforce [NEEDS CLARIFICATION: exact Arabic/English emergency lexicon and escalation routing — to be frozen as policy records]
+*Clarified as typed evidence prerequisites (FR-006/FR-007 remain non-fabrication markers):*
+- **FR-006**: System MUST handle [CLARIFIED: tool categories/schemas/failure semantics/precedence/provenance/network prohibition resolved in `research.md` §3–§5 and `contracts/tool-registry.schema.json`; exact clinical-score list, interaction database identities/versions, and emergency-keyword policy source remain typed `NEEDS_EVIDENCE` prerequisites bound as versioned registry records with `tool_content_identity` + `source_authority` before any `PASS` claim — tracked as tasks T017/T018]
+- **FR-007**: System MUST enforce [CLARIFIED: behavioral state precedence, single terminal state, trigger/provenance/spoof/append-only/privacy/role/evidence-retrieval boundaries resolved in `research.md` §5–§7 and `data-model.md`/`contracts/safety-rule.schema.json`; exact Arabic/English emergency lexicon content and jurisdiction-bound escalation routing remain typed `NEEDS_EVIDENCE` prerequisites bound as versioned policy records before any locale-specific routing — tracked as tasks T019/T020; ambiguous high-risk fails toward ASK_MORE/ESCALATE/EMERGENCY; no local service info fabricated]
 
 ### Key Entities
 

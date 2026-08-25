@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commandmed.spec/006/tool-registry.schema.json",
+  "title": "DeterministicToolRegistry",
+  "type": "object",
+  "required": ["registry_version", "registry_sha256", "tools"],
+  "properties": {
+    "registry_version": { "type": "string", "minLength": 1 },
+    "registry_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tools": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/DeterministicTool" },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "DeterministicTool": {
+      "type": "object",
+      "required": [
+        "tool_id", "tool_version", "tool_content_identity", "tool_class",
+        "input_schema", "output_schema", "source_authority",
+        "failure_semantics", "applicable_when", "prohibited_when",
+        "freshness_policy", "result_provenance_required",
+        "network_required", "execution_authority"
+      ],
+      "properties": {
+        "tool_id": { "type": "string", "minLength": 1 },
+        "tool_version": { "type": "string", "minLength": 1 },
+        "tool_content_identity": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "tool_class": { "enum": ["unit_conversion", "pure_arithmetic", "validated_clinical_score", "interaction_lookup", "schema_validation", "evidence_retrieval"] },
+        "input_schema": { "type": "object" },
+        "output_schema": { "type": "object" },
+        "source_authority": { "type": "string", "minLength": 1 },
+        "failure_semantics": {
+          "type": "object",
+          "required": ["fail_state", "reason_code", "retryable"],
+          "properties": {
+            "fail_state": { "enum": ["ASK_MORE", "ABSTAIN", "ESCALATE", "EMERGENCY"] },
+            "reason_code": { "type": "string", "minLength": 1 },
+            "retryable": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        "applicable_when": { "type": "string", "minLength": 1 },
+        "prohibited_when": { "type": "string", "minLength": 1 },
+        "freshness_policy": {
+          "type": "object",
+          "required": ["max_age_days"],
+          "properties": {
+            "max_age_days": { "type": "integer", "minimum": 1 },
+            "revocation_signal": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "result_provenance_required": { "type": "boolean" },
+        "network_required": { "type": "boolean", "const": false },
+        "execution_authority": { "enum": ["NONE", "AUTHORIZED_TO_START"] }
+      },
+      "additionalProperties": false
+    }
+  }
+}
