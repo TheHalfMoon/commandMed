@@ -23,8 +23,8 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 002 | Safety Gates | `CLOSED_CANONICAL` | 001 | Implementation merge `b637382fd9a0d8a02f71c11073a5276d61726bb6`; dedicated closure records final 54/9/157 exact-head qualification. |
 | 003 | Data, License & Provenance | `CLOSED_CANONICAL` | 001 | Qualified implementation merge `a5fef84f9f0cee12dcd2ea6735888faee43db1ec`, tree `d7b2e11a8470ec66f50f1cff77bba4dddff20812`; final exact-head evidence: 71 focused / 9 hard-gate / 228 full tests and independent review with no material blocker. |
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; closure merge `3dc705a1de09347f3574b305afb1bfaa6d46ecff`. Final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
-| 005 | Base Model Tournament | `AUTHORIZED_TO_SPECIFY` | 004 `CLOSED_CANONICAL` + `FD-001`/`FD-002`/`FD-006` `LOCKED` | Founder decisions canonical at `a68d37acd713049694106e81dc134ccf4d51feb9`. Specification-stage only; baseline-only/no training. No model execution, weight access, benchmark-payload execution, private-Gold access, provider generation, PHI access, or gated-asset access. |
-| 006 | Patient Safety Scaffold & Deterministic Tools | `BLOCKED` | 002, 005 | Defense-in-depth interaction/tool boundary. |
+| 005 | Base Model Tournament | `CLOSED_CANONICAL` | 004 `CLOSED_CANONICAL` | Implementation `5e35cd4` (tree `5b823d20`, head `d4caf94`) + planning reconciliation `799c36a` (tree `eaa8942`, head `83d7612`); closure `CLOSED_CANONICAL` via this closeout. Deterministic control plane only; no model/benchmark/Private Gold/PHI/device/spend execution. 513 tests + exact-head reviews `d4caf94`/`83d7612` MATERIAL_BLOCKER=NO. |
+| 006 | Patient Safety Scaffold & Deterministic Tools | `AUTHORIZED_TO_SPECIFY` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Dependency 005 satisfied via `799c36a`; Spec Kit specify may begin per governance. No execution authority. |
 | 007 | SFT V1 | `BLOCKED` | 003, 005, 006 | Three-class high-quality SFT. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
 | 009 | Distillation V1 | `BLOCKED` | 008 | Minimum license-clean distillation; on-policy candidate. |
@@ -111,13 +111,36 @@ Do not generate detailed implementation plans for blocked future specs merely to
 
 Prefer one bounded spec per implementation branch/PR. A spec's merged closeout evidence, not mere code existence, is what can satisfy its dependency edge. Satisfying a dependency does not itself grant start authority to the dependent spec when separate founder decisions or explicit authorization are required.
 
+## Spec 005 canonical closure record
+
+Spec 005 deterministic control plane is canonically closed via:
+
+```text
+SPEC005_IMPLEMENTATION_PR=36
+SPEC005_IMPLEMENTATION_HEAD=d4caf94952e77888755788b490d6a5267e5e3a9d
+SPEC005_IMPLEMENTATION_MERGE=5e35cd423c54ce743b9b305287971a97eeeb7a64
+SPEC005_IMPLEMENTATION_TREE=5b823d20fd1106669e1b79af4d301d15c5e4e8dd
+SPEC005_RECONCILIATION_PR=37
+SPEC005_RECONCILIATION_HEAD=83d76127df340b26350a79ccd4c6b2b266479ec6
+SPEC005_RECONCILIATION_MERGE=799c36a9a6113357a6fa9b02a7178f94fad6ee0c
+SPEC005_RECONCILIATION_TREE=eaa89429f996f2fed315ebc15462273dfa5125a4
+SPEC005_CLOSEOUT_PR=<THIS_PR>
+SPEC005_TASKS=49/49 checked with evidence mapping (tasks.md reconciled 2026-08-25)
+FULL_OFFLINE_SUITE=513/513 PASS
+QODO_REVIEWS=d4caf94 NO_FINDINGS, 83d7612 NO_FINDINGS
+V1_SHA_PRESERVED=304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a
+```
+
+Planning reconciliation superseded stale PR #34 (`f116bea`) without deleting implementation. All `src/commandmed/spec005/*` + `tests/spec005/*` + `data/spec005/*` canonical. See `specs/005-base-model-tournament/closeout.md` for full binding. `SPEC_005=CLOSED_CANONICAL` effective after this closure merge.
+
 ## Execution and training authority
 
 **No spec currently authorizes training, model execution, model-weight access, benchmark payload execution, or real-model tournament execution.**
 
 ```text
-SPEC_005=AUTHORIZED_TO_SPECIFY
-SPEC_005_LIFECYCLE_AUTHORITY=SPECIFY_ONLY
+SPEC_005=CLOSED_CANONICAL
+SPEC_005_LIFECYCLE_AUTHORITY=CLOSED_CANONICAL (control-plane only)
+SPEC_006=AUTHORIZED_TO_SPECIFY
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
