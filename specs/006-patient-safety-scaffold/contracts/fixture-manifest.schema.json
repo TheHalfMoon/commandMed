@@ -4,10 +4,11 @@
   "title": "FixtureManifest",
   "description": "Immutable manifest anchoring committed trace seals for offline fixture verification; verification must be supplied a trusted manifest commit/tree hash out-of-band and reject if manifest does not match",
   "type": "object",
-  "required": ["manifest_version", "manifest_commit_sha256", "entries"],
+  "required": ["manifest_version", "trusted_manifest_commit_oid", "entries"],
   "properties": {
     "manifest_version": { "type": "string", "minLength": 1 },
-    "manifest_commit_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Trusted git tree or commit hash anchoring this manifest; verifier must be supplied this value independently and reject if computed manifest hash or current tree does not match" },
+    "trusted_manifest_commit_oid": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$", "description": "Trusted git commit OID (40 hex for sha1, 64 for sha256) anchoring this manifest per repository object format; verifier must be supplied this OID independently, resolve it to its tree, read fixture-manifest.json from that trusted tree at canonical path, and reject unless checked-out manifest bytes are identical to trusted-tree bytes; separate canonical content hash is manifest_identity_sha256 if needed (not alternative to OID)" },
+    "manifest_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Optional canonical content identity sha256(canonical_json({manifest_version, entries})) omitting commit OID; not a substitute for trusted commit OID" },
     "entries": {
       "type": "array",
       "minItems": 1,
