@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://commandmed.spec/006/trace-seal.schema.json",
   "title": "TraceSeal",
-  "description": "Terminal completeness anchor per interaction_id: expected_final_sequence + terminal_record_sha256 over canonical JSON of final InteractionTrace record; verifies no truncation/deletion/reordering",
+  "description": "Terminal completeness anchor per interaction_id: expected_final_sequence + terminal_record_sha256 over canonical JSON of final InteractionTrace record; verifies no truncation/deletion/reordering and is anchored in an append-only committed manifest (seal immutability)",
   "type": "object",
   "required": ["interaction_id", "seal_version", "expected_final_sequence", "terminal_record_sha256"],
   "properties": {
