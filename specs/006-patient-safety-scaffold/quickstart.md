@@ -2,13 +2,13 @@
 
 > **Post-implementation reconciliation (2026-08-25):** this planning artifact was recovered from qualified planning head `6308e40f5f134bae7acccd66c8aa695ad9bba8ba` (PR #39) after the bounded implementation merged canonically through PR #41 (`4df3dc4eab5d3160d88b2f296dea62a8dd884b60`, tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`). Lifecycle statements below reflecting `AUTHORIZED_TO_SPECIFY` / `SPECIFY ONLY` / deferred implementation are historical snapshots of the planning stage; the authoritative current state is implementation-complete with `SPEC_006=AUTHORIZED_TO_START` recorded in `specs/README.md`. All model/weight/training/data/spend authorities remain NONE.
 
-**Base:** `52f799b` | **Offline only** | No model/PHI/network authority
+**Base:** `52f799b` (historical planning base; implementation canonical via PR #41 / merge `4df3dc4`) | **Offline only** | No model/PHI/network authority
 
 ## 0. Repository synchronization (separate setup step, not part of offline evaluation)
 
 ```bash
 git fetch origin --prune  # only here, not inside offline verification
-git rev-parse HEAD         # must be on planning head derived from 52f799b
+git rev-parse HEAD         # current checkout; canonical implementation is PR #41 (merge 4df3dc4) or a descendant of it
 cat specs/README.md | grep SPEC_006   # AUTHORIZED_TO_START; implementation canonical via PR #41
 ```
 
@@ -16,7 +16,7 @@ cat specs/README.md | grep SPEC_006   # AUTHORIZED_TO_START; implementation cano
 
 ```bash
 python3 -m compileall -q src tests
-python3 -m pytest -q  # 513 PASS inherited baseline — no network
+python3 -m pytest -q  # 627 passed + 128 subtests expected on canonical main (513 inherited baseline + spec006 suite)
 ```
 
 ## 2. Validate contracts (offline, stdlib only — no network, no vendored validator)
@@ -71,4 +71,4 @@ Synthetic fixtures only, committed JSON, `pytest -q` deterministic:
 
 ## 6. Authority guardrails
 
-Every registry/policy record must keep the bounded record constraint `execution_authority=NONE`. Validators reject any record that attempts to change it. Separately — and independently of that per-record field — this scaffold grants no model execution, model-weight access, benchmark payload access/execution, Private Gold access, PHI access, device execution, external clinical database access, credential access, or spend; those require their own explicit authorization gates and are not granted by Spec 006.
+Every registry/policy record keeps the bounded record constraint `execution_authority=NONE`; the canonical validators enforce this field (see `registry.py` and the schema `const: "NONE"`). Separately — and independently of that per-record field — this scaffold grants no model execution, model-weight access, benchmark payload access/execution, Private Gold access, PHI access, device execution, external clinical database access, credential access, or spend; those require their own explicit authorization gates and are not granted by Spec 006.
