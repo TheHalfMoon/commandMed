@@ -7,7 +7,7 @@
 
 ## 1. Summary
 
-Compose Spec 002 `CLOSED_CANONICAL` safety gates and Spec 005 `CLOSED_CANONICAL` control-plane validators into a minimal, offline-fixture, deterministic interaction scaffold. Freeze the tool registry contract, safety-rule precedence, fail-closed semantics, multilingual emergency handling architecture, and auditable trace contract before any implementation. All real clinical-score versions, drug-lookup DB identities, and jurisdiction-bound emergency routing remain typed evidence prerequisites.
+Compose Spec 002 `CLOSED_CANONICAL` safety gates and Spec 005 `CLOSED_CANONICAL` control-plane validators into a minimal, offline-fixture, deterministic interaction scaffold. Freeze — [historical planning objective, satisfied and now implemented via PR #41] — the tool registry contract, safety-rule precedence, fail-closed semantics, multilingual emergency handling architecture, and auditable trace contract before any implementation. All real clinical-score versions, drug-lookup DB identities, and jurisdiction-bound emergency routing remain typed evidence prerequisites.
 
 ## 2. Technical context
 
@@ -31,7 +31,7 @@ Compose Spec 002 `CLOSED_CANONICAL` safety gates and Spec 005 `CLOSED_CANONICAL`
 - Defense in depth (XI): `model reasoning → deterministic checks → evidence/tools → abstain/escalate` chain made operable.
 - Claims integrity (XII): no clinical efficacy claim from scaffold alone.
 - Minimal mechanism (XIII): smallest registry/policy/trace records that satisfy the bounded spec.
-- Bounded authority (XIV): roadmap does not authorize implementation.
+- Bounded authority (XIV): [historical planning note] the roadmap did not authorize implementation; the later founder authorization (PR #40) and merged implementation (PR #41) supply that authority canonically.
 
 No constitution amendment is required.
 
@@ -87,9 +87,9 @@ All contracts are JSON Schema draft 2020-12. Validation uses standard-library on
 ## 7. Verification plan
 
 - `python3 -m compileall -q src tests` PASS
-- `pytest -q` — baseline 513 pass preserved; spec006 fixtures add deterministically (no network/model/PHI)
+- `pytest -q` — baseline 513 pass preserved at planning; after implementation the full suite is 627 passed + 128 subtests (spec006 fixtures added deterministically, no network/model/PHI)
 - `git diff --check` PASS
-- `audit: git diff --name-status origin/main...HEAD` — no accidental implementation deletion; no `src/commandmed/spec006` implementation yet (planning PR)
+- [HISTORICAL PLANNING CHECK] `audit: git diff --name-status` confirmed no implementation existed in the planning PR. Post-implementation reconciliation re-proves the inverse: IMPLEMENTATION_DELETION=NONE against canonical PR #41 content.
 - Independent exact-head review requested at meaningful heads; CodeRabbit Draft skip is NOT a pass.
 
 ## 8. Risks & mitigations

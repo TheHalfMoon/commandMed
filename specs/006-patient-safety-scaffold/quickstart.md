@@ -35,22 +35,20 @@ for name in ['tool-registry','safety-rule','interaction-trace']:
     print(name, sha[:12], 'valid-json')
 # Full schema conformance (required/type/enum/const/pattern/minItems/etc.)
 # is proven by committed fixtures in tests/spec006/fixtures/ (see plan.md §6);
-# planning stage has no runtime validator beyond syntax+hash — T011 provides typed validators.
+# [historical planning note] T011 has since provided typed validators canonically (PR #41);
 "
 ```
 
-## 3. How to add a deterministic tool (metadata only, planning stage)
+## 3. How to add a deterministic tool (metadata record; runtime validators canonical since PR #41)
 
 1. Choose `tool_class` from the frozen vocabulary (see `research.md` §3).
 2. Write a record per `contracts/tool-registry.schema.json` with `tool_content_identity` = canonical SHA-256 of the versioned content/schema, `source_authority` bound, `network_required=false`, `execution_authority=NONE`, `failure_semantics` fail-closed.
 3. Validate (implementation is canonical since PR #41):
    ```python
-   # After T011 (AUTHORIZED_TO_START):
    from src.commandmed.spec006.registry import validate_tool_record
    errors = validate_tool_record(record)  # [] == pass
-   # Planning stage: validate against contracts/tool-registry.schema.json via offline JSON Schema check
    ```
-4. Real implementation/service binding requires `AUTHORIZED_TO_START` — not granted here.
+4. Real implementation/service binding remains outside this scaffold's authority: registry records stay `execution_authority=NONE`; any live binding requires its own separate authorization gate. No model/weight/training/data/spend authority is granted or implied here.
 
 ## 4. How to add a frozen safety rule
 

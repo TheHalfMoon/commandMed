@@ -2,8 +2,8 @@
 
 > **Post-implementation reconciliation (2026-08-25):** this planning artifact was recovered from qualified planning head `6308e40f5f134bae7acccd66c8aa695ad9bba8ba` (PR #39) after the bounded implementation merged canonically through PR #41 (`4df3dc4eab5d3160d88b2f296dea62a8dd884b60`, tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`). Lifecycle statements below reflecting `AUTHORIZED_TO_SPECIFY` / `SPECIFY ONLY` / deferred implementation are historical snapshots of the planning stage; the authoritative current state is implementation-complete with `SPEC_006=AUTHORIZED_TO_START` recorded in `specs/README.md`. All model/weight/training/data/spend authorities remain NONE.
 
-**Branch:** `spec/006-specify` | **Base:** `52f799b` | **Authority:** planning only (no implementation until `AUTHORIZED_TO_START`)
-**Verification:** `python3 -m compileall -q src tests` + `pytest -q` (513 PASS) + `git diff --check` after every material commit
+**Branch:** `spec/006-specify` (planning, superseded by reconciliation) | **Base:** `52f799b` | **Authority:** historical planning snapshot; implementation executed via PR #41 under PR #40 authorization
+**Verification (historical planning):** baseline 513 PASS during planning; current canonical verification is 627 passed + 128 subtests with `python3 -m compileall -q src tests` + `git diff --check`
 **Paths below with `src/commandmed/spec006` were implemented canonically via PR #41 and are present in this tree.**
 
 ## Phase A — Specify/Clarify/Research (planning, this PR)
@@ -17,7 +17,7 @@
 - [x] T007 Freeze `checklists/requirements.md` (hard-requirement, determinism, tool-boundary, privacy, measurability, dependency gates)
 - [x] T008 Repair PR #39 body (backtick command-substitution fix via `--body-file` with single-quoted heredoc)
 
-## Phase B — Analyze & qualify planning (still this PR, before any implementation)
+## Phase B — Analyze & qualify planning [HISTORICAL — completed at qualified head `6308e40`]
 
 - [x] T009 Run `analyze` over `spec.md` + `research.md` + `plan.md` + `data-model.md` + `contracts/` + `checklists/requirements.md` + constitution + AGENTS.md + Spec 002 + Spec 005; emit CRITICAL/HIGH/MEDIUM/LOW + constitution/privacy/safety/determinism/testability gaps with repairs; rerun until clean
 - [x] T010 Independent exact-head review of this planning head: request review on PR #39, reproduce/validate findings, repair docs/contracts, rerun checklist/analyze + `compileall`/`pytest`/`diff --check`, push fresh exact-head review (Draft skip is NOT a pass)
