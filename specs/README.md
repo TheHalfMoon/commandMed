@@ -144,9 +144,30 @@ QUALIFIED_PLANNING_BRANCH=spec/006-specify
 QUALIFIED_PLANNING_HEAD=6308e40f5f134bae7acccd66c8aa695ad9bba8ba
 QUALIFIED_PLANNING_REVIEW=MATERIAL_BLOCKER=NO (exact-head independent review)
 IMPLEMENTATION_SCOPE=OFFLINE_DETERMINISTIC_SPEC006_ONLY
-AUTHORIZED_TASKS=T011..T021 per specs/006-patient-safety-scaffold/tasks.md at the qualified planning head
-EVIDENCE_GATE_TASKS=T017..T020 remain typed/fail-closed; real clinical-score authorities, interaction-database identities, versioned Arabic/English emergency lexicons, and jurisdiction routing must NOT be fabricated
+AUTHORIZED_TASKS=T011,T012,T013,T014,T015,T016,T021
+EVIDENCE_GATE_TASKS=T017,T018,T019,T020 executed ONLY as typed fail-closed NEEDS_EVIDENCE records (validators must accept/reject such records; real clinical-score authorities, interaction-database identities, versioned Arabic/English emergency lexicons, and jurisdiction routing must NOT be fabricated)
+TASKS_FILE_AT_QUALIFIED_HEAD=
+  path=specs/006-patient-safety-scaffold/tasks.md
+  git_blob_oid=3cf4e37808ff3621376bfa9da1403f91eaeba43a
+  raw_bytes_sha256=fa44671dd8d85756ed909ff6dec9a5f5813b5a49605b42500c031c68f5da8ae8
 ```
+
+### Supersession of earlier Spec 006 lifecycle text
+
+The `specs/README.md` registry above is the single authoritative Spec 006 lifecycle state as of this authorization merge. Earlier canonical text that describes the post-005 state as `SPEC_006=AUTHORIZED_TO_SPECIFY` — including the "Execution and training authority" section of `specs/005-base-model-tournament/closeout.md` and the prior README authority block — is superseded by this record for the implementation-start stage only. Those statements remain accurate historical snapshots of their own merge points and are not rewritten. No other lifecycle field changes: all execution/training/data/spend authorities stay `NONE`.
+
+### Planning exit-gate checklist (criterion → evidence)
+
+| Exit criterion | Evidence |
+|---|---|
+| Bounded problem, exclusions, testable stories, verifiable FRs frozen | `spec.md` FR-001..FR-007 + explicit out-of-scope section at qualified head |
+| Deterministic precedence + fail-closed semantics frozen | `research.md` §5–§6 (SP-001..SP-002 order, conflict → ABSTAIN/ESCALATE, reason-code vocabulary) |
+| Tool registry contract frozen | `contracts/tool-registry.schema.json` (14 required fields, `network_required const false`, `execution_authority const NONE`) |
+| Trace/seal/manifest trust model frozen | `data-model.md` §1.4–§1.5 + `contracts/{interaction-trace,trace-seal,fixture-manifest}.schema.json`; trusted commit OID out-of-band |
+| Typed evidence prerequisites marked, not fabricated | `checklists/requirements.md` FR-006 `[~]`, FR-007 `[~]`; T017..T020 unexecuted |
+| Static analyze clean | `analysis.md`: CRITICAL=0 HIGH=0 MEDIUM=0 RESULT=PASS (planning) |
+| Independent exact-head review qualified | Qodo review of PR #39 head `6308e40` MATERIAL_BLOCKER=NO |
+| Baseline preserved | 513 tests + 77 subtests PASS, `compileall` PASS, worktree clean at `52f799b` |
 
 Scope boundary: this authorizes offline deterministic software implementation of the frozen qualified planning package only. It does NOT grant model execution, model-weight access, model conversion, training, benchmark payload access/execution, Private Gold access, PHI access, device execution, external clinical database access, credential access, or any spend.
 
