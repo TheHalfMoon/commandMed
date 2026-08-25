@@ -163,8 +163,7 @@ def evaluate_a14_requirement(record: Any) -> dict[str, object]:
                         f"A14:WORK_PACKAGE_{package_id}_GAP_RECORD_MISSING"
                     )
     if gaps and not derived_gap:
-        # Declared gaps without insufficient capacity are inconsistent.
-        pass  # engagement/commitment records may still require authority.
+        reason_codes.append("A14:CAPACITY_GAP_RECORDS_INCONSISTENT_WITH_WORKLOAD_MALFORMED")
 
     has_gaps = (
         bool(engagements) or bool(commitments) or derived_gap

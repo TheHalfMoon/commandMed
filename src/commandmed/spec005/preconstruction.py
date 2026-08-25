@@ -433,6 +433,13 @@ def validate_contamination_plan(record: Any, contract: Any) -> list[str]:
         and threshold_policy.strip().lower() == "latest"
     ):
         errors.append("ContaminationPlan:MUTABLE_LATEST_POLICY_BINDING_PROHIBITED")
+
+    _validate_sha_fields(
+        record,
+        ("record_canonical_sha256",),
+        "ContaminationPlan",
+        errors,
+    )
     return errors
 
 

@@ -7,7 +7,25 @@ activation requires separate founder authorization outside this code.
 
 from __future__ import annotations
 
+import re
+
 from typing import Any
+
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+
+
+def _is_canonical_sha256(value: Any) -> bool:
+    return isinstance(value, str) and bool(_SHA256_RE.match(value))
+
+
+def _validate_sha_fields(record: dict, fields, prefix: str, errors: list[str]) -> None:
+    for field in fields:
+        value = record.get(field)
+        if _is_canonical_sha256(value):
+            continue
+        if value is None:
+            continue
+        errors.append(f"{prefix}:{field}_NOT_CANONICAL_SHA256")
 
 REQUIRED_GATES = (
     "R1",
@@ -54,6 +72,13 @@ def validate_activation_record(record: Any, snapshot: Any) -> list[str]:
     if not isinstance(record, dict):
         return errors
 
+    _validate_sha_fields(
+        record,
+        ("record_canonical_sha256", "preconstruction_snapshot_sha256"),
+        "Activation",
+        errors,
+    )
+
     gate_identities = (
         record.get("required_gate_identities")
         if isinstance(record.get("required_gate_identities"), dict)
@@ -76,24 +101,41 @@ def validate_activation_record(record: Any, snapshot: Any) -> list[str]:
         if not isinstance(expected_sha, str) or not expected_sha.strip():
             errors.append(f"Activation:SNAPSHOT_GATE_{gate}_RECORD_SHA_UNBOUND")
             continue
+        if not _is_canonical_sha256(expected_sha):
+            errors.append(f"Activation:SNAPSHOT_GATE_{gate}_RECORD_SHA_NOT_CANONICAL_SHA256")
+            continue
         if not isinstance(binding, dict):
             errors.append(f"Activation:MISSING_GATE_IDENTITY_{gate}")
             continue
         bound_record = binding.get("record_id")
         bound_sha = binding.get("record_canonical_sha256")
+        if not _is_canonical_sha256(bound_sha) and bound_sha is not None:
+            errors.append(f"Activation:GATE_{gate}_BOUND_SHA_NOT_CANONICAL_SHA256")
+            continue
         if bound_record != expected_record:
             errors.append(f"Activation:GATE_{gate}_IDENTITY_MISMATCH_WITH_SNAPSHOT")
         elif bound_sha != expected_sha:
             errors.append(f"Activation:GATE_{gate}_SHA_MISMATCH_WITH_SNAPSHOT")
+        else:
+            gate_state = requirement.get("state")
+            stale_flag = requirement.get("stale")
+            if gate_state != "PASS":
+                errors.append(f"Activation:PREREQUISITE_GATE_{gate}_STATE_{gate_state}")
+            elif stale_flag is True:
+                errors.append(f"Activation:PREREQUISITE_GATE_{gate}_STALE")
+            elif not isinstance(stale_flag, bool):
+                errors.append(f"Activation:PREREQUISITE_GATE_{gate}_STALE_ASSERTION_REQUIRED")
 
     declared_snapshot_sha = record.get("preconstruction_snapshot_sha256")
     expected_snapshot_sha = (
         snapshot.get("snapshot_sha256") if isinstance(snapshot, dict) else None
     )
     if not _is_canonical_sha256(expected_snapshot_sha):
-        errors.append("Activation:BOUND_SNAPSHOT_SHA256_REQUIRED_OR_NOT_CANONICAL")
+        errors.append("Activation:BOUND_SNAPSHOT_SHA256_REQUIRED_OR_NOT_CANONICAL_SHA256")
     elif declared_snapshot_sha != expected_snapshot_sha:
         errors.append("Activation:PRECONSTRUCTION_SNAPSHOT_SHA_MISMATCH")
+    elif not _is_canonical_sha256(declared_snapshot_sha):
+        errors.append("Activation:ACTIVATION_SNAPSHOT_SHA_NOT_CANONICAL_SHA256")
 
     if isinstance(snapshot, dict) and record.get(
         "preconstruction_snapshot_id"
