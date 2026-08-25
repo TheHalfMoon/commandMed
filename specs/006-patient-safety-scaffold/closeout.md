@@ -65,7 +65,7 @@ SPEC006_FOCUSED=114 passed + 51 subtests PASS
 FULL_OFFLINE_SUITE=627 passed + 128 subtests PASS
 COMPILEALL=PASS
 GIT_DIFF_CHECK=PASS
-SC001..SC004=PASS (tests/spec006/test_success_criteria.py)
+SC001..SC004=PASS (tests/spec006/test_scaffold.py: TestScenarioFixtures, TestScaffoldDeterminism, TestHardGateDelegation, TestTrustedTreeVerification)
 HARD_GATE_DELEGATION=eval_contract.evaluate_hard_gates re-exported unchanged
 ```
 
