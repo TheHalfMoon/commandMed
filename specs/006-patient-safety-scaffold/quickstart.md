@@ -55,12 +55,10 @@ for name in ['tool-registry','safety-rule','interaction-trace']:
 1. Bind `source_policy_sha256` + `rule_version`.
 2. Set `required_state` with exact equality for `EMERGENCY`/`ESCALATE` (SP-001); set `precedence` per research.md §5 order.
 3. Set `threshold_policy_class` per Spec 002 §8 (`FROZEN_*` zero-tolerance vs `PENDING_*`).
-4. Validate (post-implementation only):
+4. Validate with the canonical validators (implemented since PR #41):
    ```python
-   # After T011 (AUTHORIZED_TO_START):
    from src.commandmed.spec006.policy import validate_safety_rule
    errors = validate_safety_rule(rule)
-   # Planning stage: validate against contracts/safety-rule.schema.json via offline JSON Schema check
    ```
 
 ## 5. How fixtures prove the scaffold
@@ -73,4 +71,4 @@ Synthetic fixtures only, committed JSON, `pytest -q` deterministic:
 
 ## 6. Authority guardrails
 
-At this stage every registry/policy record must have `execution_authority=NONE`. Any attempt to set `AUTHORIZED_TO_START`, access model weights, benchmark payloads, Private Gold, PHI, devices, or spend must be rejected by validators.
+Every registry/policy record must keep the bounded record constraint `execution_authority=NONE`. Validators reject any record that attempts to change it. Separately — and independently of that per-record field — this scaffold grants no model execution, model-weight access, benchmark payload access/execution, Private Gold access, PHI access, device execution, external clinical database access, credential access, or spend; those require their own explicit authorization gates and are not granted by Spec 006.
