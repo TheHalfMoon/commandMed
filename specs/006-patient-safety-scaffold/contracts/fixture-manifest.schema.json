@@ -13,9 +13,11 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["interaction_id", "seal_canonical_sha256", "expected_final_sequence", "terminal_record_sha256"],
+        "required": ["interaction_id", "seal_path", "trace_set_path", "seal_canonical_sha256", "expected_final_sequence", "terminal_record_sha256"],
         "properties": {
           "interaction_id": { "type": "string", "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" },
+          "seal_path": { "type": "string", "pattern": "^specs/006-patient-safety-scaffold/fixtures/[^/]+/trace_seal\\.json$", "description": "Canonical relative path to seal file inside repo, confined to fixture root, normalized, no traversal" },
+          "trace_set_path": { "type": "string", "pattern": "^specs/006-patient-safety-scaffold/fixtures/[^/]+/traces\\.json$", "description": "Canonical relative path to ordered JSON array of InteractionTrace records for this interaction_id, confined to fixture root, normalized, no traversal" },
           "seal_canonical_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "sha256(canonical_json(trace_seal)) for this interaction_id" },
           "expected_final_sequence": { "type": "integer", "minimum": 0 },
           "terminal_record_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
