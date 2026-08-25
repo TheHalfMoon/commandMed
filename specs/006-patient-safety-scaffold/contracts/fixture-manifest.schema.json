@@ -4,10 +4,10 @@
   "title": "FixtureManifest",
   "description": "Immutable manifest describing committed trace seals for offline fixture verification; trusted git commit OID is supplied out-of-band to verifier, not stored inside manifest",
   "type": "object",
-  "required": ["manifest_version", "entries"],
+  "required": ["manifest_version", "manifest_identity_sha256", "entries"],
   "properties": {
     "manifest_version": { "type": "string", "minLength": 1 },
-    "manifest_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Canonical content identity sha256(canonical_json({manifest_version, entries})) computed over projection omitting manifest_identity_sha256 itself" },
+    "manifest_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Canonical content identity sha256(canonical_json({manifest_version, entries})) computed over projection omitting manifest_identity_sha256 itself; semantic validator must recompute projection and reject absent or mismatched value as INSUFFICIENT_EVIDENCE" },
     "entries": {
       "type": "array",
       "minItems": 1,
