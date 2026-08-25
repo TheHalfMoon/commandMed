@@ -9,7 +9,7 @@
 ```bash
 git fetch origin --prune  # only here, not inside offline verification
 git rev-parse HEAD         # must be on planning head derived from 52f799b
-cat specs/006-patient-safety-scaffold/spec.md | head -n 6  # Status AUTHORIZED_TO_SPECIFY
+cat specs/README.md | grep SPEC_006   # AUTHORIZED_TO_START; implementation canonical via PR #41
 ```
 
 ## 1. Verify baseline (offline, after sync)
@@ -43,7 +43,7 @@ for name in ['tool-registry','safety-rule','interaction-trace']:
 
 1. Choose `tool_class` from the frozen vocabulary (see `research.md` §3).
 2. Write a record per `contracts/tool-registry.schema.json` with `tool_content_identity` = canonical SHA-256 of the versioned content/schema, `source_authority` bound, `network_required=false`, `execution_authority=NONE`, `failure_semantics` fail-closed.
-3. Validate (post-implementation only — `src/commandmed/spec006` does not exist in planning PR):
+3. Validate (implementation is canonical since PR #41):
    ```python
    # After T011 (AUTHORIZED_TO_START):
    from src.commandmed.spec006.registry import validate_tool_record

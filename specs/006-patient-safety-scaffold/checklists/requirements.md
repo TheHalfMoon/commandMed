@@ -51,7 +51,7 @@ Legend: `[x]` pass, `[ ]` fail/blocked, `[~]` partial/needs evidence (typed prer
 
 - [x] Spec 002 semantics preserved and composed, not redefined
 - [x] Spec 005 validators reused (canonical JSON, SHA-256, fail-closed, `evaluate_hard_gates` delegation)
-- [x] `AUTHORIZED_TO_START` explicitly remains `NOT_GRANTED`; no implementation source created in this planning PR
+- [x] `AUTHORIZED_TO_START` was `NOT_GRANTED` at the qualified planning head (historical snapshot); later granted via PR #40 and satisfied — implementation now canonical via PR #41
 - [x] No hidden external runtime dependency assumed for fixture suite
 
 ## Overall

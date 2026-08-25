@@ -2,7 +2,7 @@
 
 > **Post-implementation reconciliation (2026-08-25):** this planning artifact was recovered from qualified planning head `6308e40f5f134bae7acccd66c8aa695ad9bba8ba` (PR #39) after the bounded implementation merged canonically through PR #41 (`4df3dc4eab5d3160d88b2f296dea62a8dd884b60`, tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`). Lifecycle statements below reflecting `AUTHORIZED_TO_SPECIFY` / `SPECIFY ONLY` / deferred implementation are historical snapshots of the planning stage; the authoritative current state is implementation-complete with `SPEC_006=AUTHORIZED_TO_START` recorded in `specs/README.md`. All model/weight/training/data/spend authorities remain NONE.
 
-**Branch:** `spec/006-specify` | **Base:** `52f799b` | **Status:** `AUTHORIZED_TO_SPECIFY` (planning only)
+**Branch:** `spec/006-specify` | **Base:** `52f799b` | **Status:** planning qualified at `6308e40`; implementation canonical via PR #41 (`4df3dc4`)
 **Execution authority:** NONE | **No model/weight/benchmark/Private Gold/PHI/device/spend**
 
 ## 1. Summary
@@ -43,7 +43,7 @@ specs/006-patient-safety-scaffold/
   contracts/{tool-registry.schema.json, safety-rule.schema.json, interaction-trace.schema.json},
   checklists/requirements.md, tasks.md, analysis.md
 
-Intended implementation (deferred, NOT created in this planning PR):
+Implemented layout (created canonically via PR #41):
   src/commandmed/spec006/
     __init__.py, registry.py, policy.py, trace.py, scaffold.py, canonical.py (re-exports)
   tests/spec006/
@@ -109,4 +109,4 @@ All contracts are JSON Schema draft 2020-12. Validation uses standard-library on
 
 ## 10. Lifecycle note
 
-This plan is `AUTHORIZED_TO_SPECIFY` planning only. Implementation may begin only after a separately authorized `AUTHORIZED_TO_START` gate. The PR remains Draft until `analyze` passes cleanly and exact-head review qualifies it.
+Reconciled lifecycle: the `AUTHORIZED_TO_START` gate was granted via founder authorization recorded in PR #40 (merge `18d26f7`), after which implementation was executed and merged via PR #41. This plan text is historical planning evidence; the authoritative registry state lives in `specs/README.md`.

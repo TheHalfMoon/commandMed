@@ -4,7 +4,7 @@
 
 **Branch:** `spec/006-specify` | **Base:** `52f799b` | **Authority:** planning only (no implementation until `AUTHORIZED_TO_START`)
 **Verification:** `python3 -m compileall -q src tests` + `pytest -q` (513 PASS) + `git diff --check` after every material commit
-**Paths below with `src/commandmed/spec006` are intended implementation targets referenced by planning docs only — do NOT create them in this planning PR.**
+**Paths below with `src/commandmed/spec006` were implemented canonically via PR #41 and are present in this tree.**
 
 ## Phase A — Specify/Clarify/Research (planning, this PR)
 
@@ -26,7 +26,7 @@
 
 > Post-implementation reconciliation: all tasks below are complete. Evidence mapped per task. Implementation merge `4df3dc4eab5d3160d88b2f296dea62a8dd884b60` (tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`); final reviewed head `09da2d1b4f6d21a1053967df0b4c3a68ea6078f3`; exact-head review no remaining material blocker.
 
-Tasks below are **planned, not executed** in this PR. They are dependency-ordered, small, fixture-first, TDD-friendly.
+Tasks below were executed canonically via PR #41 after the `AUTHORIZED_TO_START` gate (PR #40). Each task is checked with its evidence mapping.
 
 ### C1 — Scaffolding (no clinical truth)
 
@@ -53,4 +53,4 @@ Tasks below are **planned, not executed** in this PR. They are dependency-ordere
 - [x] T022 `AUTHORIZED_TO_START` gate decision (canonical repo/founder) — implementation must not write `src/commandmed/spec006` before this — GATE SATISFIED: founder authorization recorded canonically via PR #40 (merge 18d26f75506cfd60de03caabe2083ff96eafa762, SPEC006_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START)
 
 **Task count:** 22 (10 planning executed at the qualified head + 12 implementation tasks executed via PR #41)
-**Implementation file paths referenced but not created in planning PR:** `src/commandmed/spec006/*`, `tests/spec006/*`, `data/spec006/*`
+**Implementation file paths now canonical in this tree:** `src/commandmed/spec006/*`, `tests/spec006/*`, `data/spec006/*` (via PR #41)

@@ -2,11 +2,11 @@
 
 > **Post-implementation reconciliation (2026-08-25):** this planning artifact was recovered from qualified planning head `6308e40f5f134bae7acccd66c8aa695ad9bba8ba` (PR #39) after the bounded implementation merged canonically through PR #41 (`4df3dc4eab5d3160d88b2f296dea62a8dd884b60`, tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`). Lifecycle statements below reflecting `AUTHORIZED_TO_SPECIFY` / `SPECIFY ONLY` / deferred implementation are historical snapshots of the planning stage; the authoritative current state is implementation-complete with `SPEC_006=AUTHORIZED_TO_START` recorded in `specs/README.md`. All model/weight/training/data/spend authorities remain NONE.
 
-**Feature Branch**: `spec/006-specify`
+**Planning Branch**: `spec/006-specify` (PR #39, superseded by reconciliation PR) | **Implementation**: PR #41 on `impl/006-patient-safety-scaffold`
 **Created**: 2026-08-25
-**Status**: Draft — `AUTHORIZED_TO_SPECIFY`
+**Status**: `IMPLEMENTATION COMPLETE` — implemented via PR #41 (merge `4df3dc4`); originally specified under `AUTHORIZED_TO_SPECIFY` at qualified head `6308e40`
 **Depends on**: Spec 002 `CLOSED_CANONICAL`, Spec 005 `CLOSED_CANONICAL` (52f799b)
-**Lifecycle authority**: SPECIFY ONLY
+**Lifecycle authority**: IMPLEMENTATION COMPLETE (offline deterministic scope only)
 **Execution authority**: NONE — no model execution, weight access, benchmark execution, Private Gold/PHI access, device execution, spend
 
 > This specification defines the defense-in-depth safety scaffold that bounds generative behavior with deterministic tools and behavioral states. It is not a model-training, model-execution, mobile-app, or clinical-deployment authorization.
