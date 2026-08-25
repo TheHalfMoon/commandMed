@@ -6,7 +6,8 @@
 
 ```bash
 git fetch origin --prune  # only here, not inside offline verification
-git rev-parse origin/main  # must be 52f799b before planning work
+git rev-parse HEAD         # must be on planning head derived from 52f799b
+cat specs/006-patient-safety-scaffold/spec.md | head -n 6  # Status AUTHORIZED_TO_SPECIFY
 ```
 
 ## 1. Verify baseline (offline, after sync)
@@ -16,17 +17,21 @@ python3 -m compileall -q src tests
 python3 -m pytest -q  # 513 PASS inherited baseline — no network
 ```
 
-## 2. Validate contracts (offline, stdlib only)
+## 2. Validate contracts (offline, stdlib only — no network, no vendored validator)
 
 ```bash
 python3 -c "
-import json, pathlib, hashlib
-from src.commandmed.eval_contract.canonical import canonical_json_dumps, compute_canonical_sha256
+import json, pathlib
+from src.commandmed.eval_contract.canonical import compute_canonical_sha256
 for name in ['tool-registry','safety-rule','interaction-trace']:
     p = pathlib.Path(f'specs/006-patient-safety-scaffold/contracts/{name}.schema.json')
     j = json.loads(p.read_text())
+    assert json.dumps(j)  # syntax check
     sha = compute_canonical_sha256(j)
     print(name, sha[:12], 'valid-json')
+# Full schema conformance (required/type/enum/const/pattern/minItems/etc.)
+# is proven by committed fixtures in tests/spec006/fixtures/ (see plan.md §6);
+# planning stage has no runtime validator beyond syntax+hash — T011 provides typed validators.
 "
 ```
 

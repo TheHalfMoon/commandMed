@@ -78,7 +78,7 @@ See `data-model.md`. Entities: `BehavioralState`, `DeterministicTool`, `SafetyRu
 - `contracts/safety-rule.schema.json` — one record per rule; bundle hashed as policy identity.
 - `contracts/interaction-trace.schema.json` — one trace per synthetic interaction; hash-bound and replay-verifiable.
 
-All contracts are JSON Schema draft 2020-12. Validation uses a frozen offline Draft 2020-12 conformance subset executed by an approved offline validator (e.g., vendored `jsonschema` or stdlib `json` + typed validators in `src/commandmed/spec006/`); no network fetch of meta-schemas. Conformance is proven by committed negative/positive fixture tests for each keyword used (`required`, `type`, `enum`, `const`, `pattern`, `minLength`, `minItems`, `uniqueItems`, `additionalProperties`).
+All contracts are JSON Schema draft 2020-12. Validation uses standard-library only (`json` + typed validators in `src/commandmed/spec006/`; no vendored `jsonschema` dependency); no network fetch of meta-schemas. Conformance is proven by committed negative/positive fixture tests for every keyword used across the three schemas (`required`, `type`, `enum`, `const`, `pattern`, `minLength`, `minItems`, `maximum`, `minimum`, `uniqueItems`, `additionalProperties`, `properties`, `items`, `$ref`, `$defs`, `allOf`, `if`/`then`/`else`). Stdlib validators enforce nested constraints; `properties`/`items`/`$ref` coverage is proven by fixtures that would fail if nested `additionalProperties:false` or `$ref` resolution were ignored.
 
 ## 7. Verification plan
 
