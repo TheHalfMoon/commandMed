@@ -1,6 +1,6 @@
 # Requirements Checklist — Spec 006 Patient Safety Scaffold
 
-> **Post-implementation reconciliation (2026-08-25):** this planning artifact was recovered from qualified planning head `6308e40f5f134bae7acccd66c8aa695ad9bba8ba` (PR #39) after the bounded implementation merged canonically through PR #41 (`4df3dc4eab5d3160d88b2f296dea62a8dd884b60`, tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`). Lifecycle statements below reflecting `AUTHORIZED_TO_SPECIFY` / `SPECIFY ONLY` / deferred implementation are historical snapshots of the planning stage; the authoritative current state is implementation-complete with `SPEC_006=AUTHORIZED_TO_START` recorded in `specs/README.md`. All model/weight/training/data/spend authorities remain NONE.
+> **Post-implementation reconciliation (2026-08-25):** this planning artifact was recovered from qualified planning head `6308e40f5f134bae7acccd66c8aa695ad9bba8ba` (PR #39) after the bounded implementation merged canonically through PR #41 (`4df3dc4eab5d3160d88b2f296dea62a8dd884b60`, tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`). Lifecycle statements below reflecting `AUTHORIZED_TO_SPECIFY` / `SPECIFY ONLY` / deferred implementation are historical snapshots of the planning stage; the authoritative current state is **`SPEC_006=CLOSED_CANONICAL`** recorded in `specs/README.md` and bound in `closeout.md`. All model/weight/training/data/spend authorities remain NONE.
 
 **Branch:** `spec/006-specify` | **Base:** `52f799b` | **Authority:** planning only
 
