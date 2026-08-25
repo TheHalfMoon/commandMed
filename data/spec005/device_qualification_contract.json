@@ -1,0 +1,149 @@
+{
+  "protocol_id": "commandmed-spec005-device-qualification-protocol",
+  "protocol_version": "1.0",
+  "targets": [
+    {
+      "target_id": "FLAGSHIP_REPRESENTATIVE",
+      "device_class_identity": "Apple_iPhone_17_Pro_12GB",
+      "os_family": "IOS",
+      "resource_envelope": "12GB_RAM"
+    },
+    {
+      "target_id": "APPLE_LOW_RESOURCE_REPRESENTATIVE",
+      "device_class_identity": "Apple_iPhone_13_4GB",
+      "os_family": "IOS",
+      "resource_envelope": "4GB_RAM"
+    },
+    {
+      "target_id": "MODERN_MIDRANGE_ANDROID_REPRESENTATIVE",
+      "device_class_identity": "Samsung_Galaxy_A56_5G_8GB",
+      "os_family": "ANDROID",
+      "resource_envelope": "8GB_RAM"
+    },
+    {
+      "target_id": "LOW_RESOURCE_ANDROID_REPRESENTATIVE",
+      "device_class_identity": "Samsung_Galaxy_A16_5G_4GB",
+      "os_family": "ANDROID",
+      "resource_envelope": "4GB_RAM"
+    },
+    {
+      "target_id": "LOW_RESOURCE_LAPTOP_ENVELOPE",
+      "device_class_identity": "Intel_N100_8GB_x86_64",
+      "os_family": "X86_64_DESKTOP_LINUX_OR_WINDOWS",
+      "cpu_cores": 4,
+      "thermal_design_watts": 6,
+      "ram_gb": 8,
+      "gpu": "Intel_UHD_integrated",
+      "target_os": "Windows_11_x64_OR_EQUIVALENT_LINUX_x86_64"
+    }
+  ],
+  "device_evidence_policy": {
+    "policy_name": "MASS_REACH_FIVE_TARGET_SET",
+    "all_targets_required": true,
+    "shared_gguf_model_identity_across_targets": true,
+    "shared_llama_cpp_core_revision_required": true,
+    "platform_wrappers_may_differ_but_are_exact_identity_fields": true,
+    "physical_device_substitution_after_results": "PROHIBITED",
+    "pre_result_substitution_requires_separate_reviewed_clarification_preserving_equal_or_stricter_resource_class": true
+  },
+  "common_protocol": {
+    "core_context_tokens": 8192,
+    "stress_context_tokens": 16384,
+    "prompt_budget_core": 7168,
+    "generation_budget": 1024,
+    "prompt_budget_stress": 15360,
+    "kv_k_type": "Q8_0",
+    "kv_v_type": "Q8_0",
+    "batch": 512,
+    "ubatch": 128,
+    "cache_reuse": false
+  },
+  "measurement_policy": {
+    "measured_runs": 5,
+    "aggregation": "MEDIAN_WITH_WORST_CASE",
+    "warmup_runs_required_before_measurement": true,
+    "fresh_process_per_measured_run_required": true
+  },
+  "memory_policy": {
+    "name": "PLATFORM_NATIVE_PEAK_MEMORY",
+    "ios_primary_metric": "PHYSICAL_FOOTPRINT_PEAK",
+    "android_primary_metric": "RSS_TRACE_PEAK",
+    "linux_primary_metric": "CGROUP_V2_MEMORY_PEAK",
+    "windows_primary_metric": "UNRESOLVED_SEPARATELY_BOUND_BEFORE_EXECUTION",
+    "cross_platform_raw_ranking_metric": "PROHIBITED",
+    "baseline_before_load_recorded": true,
+    "absolute_peak_bytes_recorded": true,
+    "peak_delta_from_baseline_recorded": true,
+    "peak_delta_is_diagnostic_only": true,
+    "absolute_peak_is_hard_gate_input": true,
+    "helper_and_child_processes_must_be_included": true
+  },
+  "memory_hard_gate": {
+    "gate_name": "CORE_8K_PEAK_MEMORY_HARD_CEILING",
+    "applies_to_all_five_targets": true,
+    "ceiling_bytes": 2147483648,
+    "uses_platform_native_primary_metric": true,
+    "termination_on_exceed_or_os_kill": "HARD_FAIL"
+  },
+  "package_boundaries": {
+    "package_hard_cap_bytes": null,
+    "package_target_bytes": null,
+    "package_stretch_bytes": null,
+    "_resolution_note": "Package byte thresholds are intentionally unresolved at specify/implementation stage; they must be frozen before execution authorization and cannot be chosen after candidate results are observed."
+  },
+  "runtime_identity_policy": {
+    "exact_llama_cpp_revision_required_in_evidence": true,
+    "exact_build_toolchain_identity_required_when_completeness_claimed": true,
+    "mutable_tag_latest_branch_or_family_name_sufficient": false,
+    "runtime_drift_requires_new_exact_identity": true,
+    "exact_values_resolved_before_execution_not_by_this_contract": true
+  },
+  "timing_policy": {
+    "ttft_prefill_decode_sustained_throughput_required_records": [
+      "TTFT_MS",
+      "PREFILL_TOKENS_PER_SECOND",
+      "DECODE_TOKENS_PER_SECOND",
+      "SUSTAINED_THROUGHPUT_TOKENS_PER_SECOND"
+    ],
+    "exact_thresholds_frozen_before_execution_only": true
+  },
+  "thermal_policy": {
+    "evidence_family": "BOUNDED_PROXY_UNTIL_DIRECT_METHOD_BOUND",
+    "required_records": [
+      "THERMAL_STATE_BEFORE_RUN",
+      "THERMAL_STATE_AFTER_RUN",
+      "THROTTLING_OBSERVED"
+    ]
+  },
+  "energy_policy": {
+    "evidence_family": "BOUNDED_PROXY_UNTIL_DIRECT_METHOD_BOUND",
+    "required_records": [
+      "BATTERY_DELTA_OR_ENERGY_PROXY_PER_RUN"
+    ]
+  },
+  "failure_semantics": {
+    "hard_fail_conditions": [
+      "MEMORY_CEILING_EXCEEDED",
+      "OS_MEMORY_TERMINATION_DURING_QUALIFICATION",
+      "RUNTIME_CRASH_DURING_MEASURED_RUN",
+      "WRONG_MODEL_ARTIFACT_IDENTITY",
+      "RUNTIME_IDENTITY_DRIFT"
+    ],
+    "incomplete_conditions": [
+      "MISSING_MEASURED_RUN",
+      "MISSING_MEMORY_SAMPLE",
+      "MISSING_RUNTIME_IDENTITY_FIELD",
+      "FEWER_THAN_FIVE_COMPLETE_RUNS_FOR_MEDIAN"
+    ],
+    "incomplete_is_never_silently_favorable": true,
+    "hard_fail_disqualifies_candidate_for_that_target": true
+  },
+  "invariants": [
+    "METADATA_ONLY_NO_LLAMA_CPP_OR_DEVICE_INVOCATION=YES",
+    "NO_THRESHOLD_CHOSEN_AFTER_CANDIDATE_RESULTS_KNOWN=YES",
+    "FIVE_COMPLETE_MEASURED_RUNS_REQUIRED_FOR_MEDIAN=YES",
+    "PARAMETER_COUNT_AND_VENDOR_CLAIMS_ARE_DESCRIPTIVE_ONLY=YES"
+  ],
+  "canonical_sha256": null,
+  "_identity_note": "canonical_sha256 is computed over this projection with canonical_sha256=null at validation time; no fabricated self-hash is stored."
+}
