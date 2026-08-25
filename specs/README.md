@@ -24,8 +24,8 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 003 | Data, License & Provenance | `CLOSED_CANONICAL` | 001 | Qualified implementation merge `a5fef84f9f0cee12dcd2ea6735888faee43db1ec`, tree `d7b2e11a8470ec66f50f1cff77bba4dddff20812`; final exact-head evidence: 71 focused / 9 hard-gate / 228 full tests and independent review with no material blocker. |
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; closure merge `3dc705a1de09347f3574b305afb1bfaa6d46ecff`. Final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
 | 005 | Base Model Tournament | `CLOSED_CANONICAL` | 004 `CLOSED_CANONICAL` | Implementation `5e35cd4` (tree `5b823d20`, head `d4caf94`) + planning reconciliation `799c36a` (tree `eaa8942`, head `83d7612`); closure `CLOSED_CANONICAL` via this closeout. Deterministic control plane only; no model/benchmark/Private Gold/PHI/device/spend execution. 513 tests + exact-head reviews `d4caf94`/`83d7612` MATERIAL_BLOCKER=NO. |
-| 006 | Patient Safety Scaffold & Deterministic Tools | `AUTHORIZED_TO_START` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Qualified planning PR #39 at exact head `6308e40` reviewed MATERIAL_BLOCKER=NO; bounded offline deterministic implementation authorized. No model/training/data/spend authority. |
-| 007 | SFT V1 | `BLOCKED` | 003, 005, 006 | Three-class high-quality SFT. |
+| 006 | Patient Safety Scaffold & Deterministic Tools | `CLOSED_CANONICAL` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Implementation merge `4df3dc4eab5d3160d88b2f296dea62a8dd884b60` (tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`, final head `09da2d1b4f6d21a1053967df0b4c3a68ea6078f3`) under founder authorization PR #40; planning reconciliation `a9d7f37ea1abc537e99bbb75dda2a5b1f8625a8f`. Final 114+51 focused / 627+128 full tests; exact-head reviews no remaining material blocker. Offline deterministic scope only; T017-T020 remain typed `NEEDS_EVIDENCE` fail-closed gates. See closeout for full binding. |
+| 007 | SFT V1 | `BLOCKED` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` + founder training authorization NOT YET GRANTED | Three-class high-quality SFT. Dependencies satisfied by Spec 006 closure; training authority remains a separate required gate. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
 | 009 | Distillation V1 | `BLOCKED` | 008 | Minimum license-clean distillation; on-policy candidate. |
 | 010 | RLVR V1 | `BLOCKED` | 009 | Verifiable tasks only; optional NO-GO outcome. |
@@ -135,6 +135,8 @@ Planning reconciliation superseded stale PR #34 (`f116bea`) without deleting imp
 
 ## Spec 006 implementation authorization record
 
+> Superseded 2026-08-25: Spec 006 has since been implemented (PR #41) and closed canonically; see the Spec 006 canonical closure record below and `specs/006-patient-safety-scaffold/closeout.md`. This section is preserved as historical authorization evidence.
+
 The founder has explicitly authorized the bounded implementation of Spec 006. This authorization is recorded canonically here before any `src/commandmed/spec006` implementation begins.
 
 ```text
@@ -187,6 +189,30 @@ SPEND_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
+## Spec 006 canonical closure record
+
+Spec 006 patient safety scaffold is canonically closed via:
+
+```text
+SPEC006_AUTHORIZATION_PR=40
+SPEC006_AUTHORIZATION_MERGE=18d26f75506cfd60de03caabe2083ff96eafa762
+QUALIFIED_PLANNING_PR=39 (superseded by #42, head 6308e40f5f134bae7acccd66c8aa695ad9bba8ba)
+SPEC006_IMPLEMENTATION_PR=41
+SPEC006_IMPLEMENTATION_HEAD=09da2d1b4f6d21a1053967df0b4c3a68ea6078f3
+SPEC006_IMPLEMENTATION_MERGE=4df3dc4eab5d3160d88b2f296dea62a8dd884b60
+SPEC006_IMPLEMENTATION_TREE=b5a88fa89c52335a2343d37d33bde32fb42d5082
+SPEC006_RECONCILIATION_PR=42
+SPEC006_RECONCILIATION_HEAD=9f59932496d09a41ba4da5cda4347c4dd1cbd243
+SPEC006_RECONCILIATION_MERGE=a9d7f37ea1abc537e99bbb75dda2a5b1f8625a8f
+SPEC006_CLOSEOUT_PR=<THIS_PR>
+SPEC006_TASKS=22/22 (T017-T020 as typed NEEDS_EVIDENCE fail-closed gates)
+FULL_OFFLINE_SUITE=627 passed + 128 subtests PASS
+QODO_REVIEWS=09da2d1 NO_MATERIAL_BLOCKER, 9f59932 NO_MATERIAL_BLOCKER
+EVIDENCE_GATES_CARRIED_FORWARD=T017,T018,T019,T020 NEEDS_EVIDENCE
+```
+
+See `specs/006-patient-safety-scaffold/closeout.md` for full binding. `SPEC_006=CLOSED_CANONICAL` effective after this closure merge and resulting canonical `main` verification.
+
 ## Execution and training authority
 
 **No spec currently authorizes training, model execution, model-weight access, benchmark payload execution, or real-model tournament execution.**
@@ -194,7 +220,8 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 ```text
 SPEC_005=CLOSED_CANONICAL
 SPEC_005_LIFECYCLE_AUTHORITY=CLOSED_CANONICAL (control-plane only)
-SPEC_006=AUTHORIZED_TO_START
+SPEC_006=CLOSED_CANONICAL
+SPEC_007=BLOCKED_PENDING_FOUNDER_TRAINING_AUTHORIZATION
 SPEC_006_LIFECYCLE_AUTHORITY=IMPLEMENTATION_ONLY (offline deterministic)
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
