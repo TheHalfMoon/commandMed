@@ -9,7 +9,7 @@
 ```bash
 git fetch origin --prune  # only here, not inside offline verification
 git rev-parse HEAD         # current checkout; canonical implementation is PR #41 (merge 4df3dc4) or a descendant of it
-cat specs/README.md | grep SPEC_006   # AUTHORIZED_TO_START; implementation canonical via PR #41
+cat specs/README.md | grep SPEC_006   # CLOSED_CANONICAL (closure bound in closeout.md)
 ```
 
 ## 1. Verify baseline (offline, after sync)
