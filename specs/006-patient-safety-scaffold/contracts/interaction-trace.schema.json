@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commandmed.spec/006/interaction-trace.schema.json",
+  "title": "InteractionTrace",
+  "type": "object",
+  "required": ["interaction_id", "trace_version", "trace_sequence", "predecessor_sha256", "input_identity_sha256", "context_identity_sha256", "policy_identity_sha256", "tool_registry_identity_sha256", "state_before", "state_after", "trigger_record_ids", "tool_call_record_ids", "output_identity_sha256", "failure_reason_codes", "safety_context", "tool_calls", "determinism_proof"],
+  "allOf": [
+    {
+      "if": { "properties": { "trace_sequence": { "const": 0 } } },
+      "then": { "properties": { "predecessor_sha256": { "const": "GENESIS" } } },
+      "else": { "properties": { "predecessor_sha256": { "pattern": "^[0-9a-f]{64}$" } } }
+    }
+  ],
+  "properties": {
+    "interaction_id": { "type": "string", "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" },
+    "trace_version": { "type": "string", "minLength": 1 },
+    "trace_sequence": { "type": "integer", "minimum": 0 },
+    "predecessor_sha256": { "type": "string", "pattern": "^([0-9a-f]{64}|GENESIS)$" },
+    "input_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "context_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "policy_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "tool_registry_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "state_before": { "type": ["string", "null"], "enum": ["ANSWER", "ASK_MORE", "USE_TOOL", "RETRIEVE_EVIDENCE", "ABSTAIN", "ESCALATE", "EMERGENCY", null] },
+    "state_after": { "enum": ["ANSWER", "ASK_MORE", "USE_TOOL", "RETRIEVE_EVIDENCE", "ABSTAIN", "ESCALATE", "EMERGENCY"] },
+    "trigger_record_ids": { "type": "array", "items": { "type": "string" } },
+    "tool_call_record_ids": { "type": "array", "items": { "type": "string" } },
+    "output_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "failure_reason_codes": { "type": "array", "items": { "type": "string" } },
+    "safety_context": {
+      "type": "object",
+      "required": ["role", "language", "available_evidence_ids", "tool_availability"],
+      "properties": {
+        "role": { "enum": ["PATIENT_CAREGIVER", "CLINICAL_PROFESSIONAL", "LEARNER_RESEARCHER"] },
+        "language": { "enum": ["ar", "en", "ar-en"] },
+        "available_evidence_ids": { "type": "array", "items": { "type": "string" } },
+        "tool_availability": { "type": "object", "additionalProperties": { "enum": ["AVAILABLE", "UNAVAILABLE", "TIMEOUT"] } },
+        "locale_hint": { "type": ["string", "null"] },
+        "jurisdiction": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "tool_calls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tool_call_id", "tool_id", "tool_version", "input_identity_sha256", "output_identity_sha256", "provenance", "failure"],
+        "properties": {
+          "tool_call_id": { "type": "string" },
+          "tool_id": { "type": "string" },
+          "tool_version": { "type": "string" },
+          "input_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "output_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "provenance": {
+            "type": "object",
+            "required": ["tool_content_identity", "source_authority", "result_sha256"],
+            "properties": {
+              "tool_content_identity": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "source_authority": { "type": "string" },
+              "result_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+            },
+            "additionalProperties": false
+          },
+          "failure": {
+            "type": "object",
+            "required": ["is_failure", "reason_code"],
+            "properties": {
+              "is_failure": { "type": "boolean" },
+              "reason_code": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "determinism_proof": {
+      "type": "object",
+      "required": ["replayed", "replay_input_sha256", "replay_context_identity_sha256", "replay_policy_identity_sha256", "replay_tool_registry_identity_sha256", "replay_output_state"],
+      "description": "Normative determinism proof: replayed MUST be true; semantic validator MUST enforce replay_input_sha256==input_identity_sha256, replay_context_identity_sha256==context_identity_sha256, replay_policy_identity_sha256==policy_identity_sha256, replay_tool_registry_identity_sha256==tool_registry_identity_sha256, and replay_output_state==state_after; JSON Schema alone cannot enforce cross-field equality",
+      "properties": {
+        "replayed": { "const": true, "description": "Must be true; false indicates replay was not performed or failed and MUST be rejected" },
+        "replay_input_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Must equal input_identity_sha256; enforced by semantic validator" },
+        "replay_context_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Must equal context_identity_sha256; enforced by semantic validator" },
+        "replay_policy_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Must equal policy_identity_sha256; enforced by semantic validator" },
+        "replay_tool_registry_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Must equal tool_registry_identity_sha256; enforced by semantic validator" },
+        "replay_output_state": { "enum": ["ANSWER", "ASK_MORE", "USE_TOOL", "RETRIEVE_EVIDENCE", "ABSTAIN", "ESCALATE", "EMERGENCY"], "description": "Must equal state_after; enforced by semantic validator" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

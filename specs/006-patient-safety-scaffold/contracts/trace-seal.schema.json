@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commandmed.spec/006/trace-seal.schema.json",
+  "title": "TraceSeal",
+  "description": "Terminal completeness anchor per interaction_id: expected_final_sequence + terminal_record_sha256 over canonical JSON of final InteractionTrace record; verifies no truncation/deletion/reordering and is anchored in an append-only committed manifest (seal immutability)",
+  "type": "object",
+  "required": ["interaction_id", "seal_version", "expected_final_sequence", "terminal_record_sha256"],
+  "properties": {
+    "interaction_id": { "type": "string", "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", "description": "UUID matching the sealed InteractionTrace set" },
+    "seal_version": { "type": "string", "minLength": 1, "description": "Seal schema version, e.g. v1" },
+    "expected_final_sequence": { "type": "integer", "minimum": 0, "description": "Expected max trace_sequence for this interaction_id; verification must reject unless trace set is contiguous 0..expected_final_sequence" },
+    "terminal_record_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "sha256(canonical_json(final InteractionTrace record)) for trace_sequence==expected_final_sequence; verification must recompute canonical hash of final record and compare" }
+  },
+  "additionalProperties": false
+}
