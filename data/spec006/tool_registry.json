@@ -1,0 +1,232 @@
+{
+  "registry_sha256": "862a3e00385a1f2b9ee1c936cbfa059a67afa0c0ef39da2c9d39f8032a8c86c6",
+  "registry_version": "v1",
+  "tools": [
+    {
+      "applicable_when": "request maps to a UCUM-expressible unit conversion",
+      "execution_authority": "NONE",
+      "failure_semantics": {
+        "fail_state": "ABSTAIN",
+        "reason_code": "TOOL_UNAVAILABLE",
+        "retryable": false
+      },
+      "freshness_policy": {
+        "max_age_days": 365
+      },
+      "input_schema": {
+        "properties": {
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "network_required": false,
+      "output_schema": {
+        "properties": {
+          "result": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "type": "object"
+      },
+      "prohibited_when": "non-UCUM or clinically interpreted conversions",
+      "result_provenance_required": true,
+      "source_authority": "UCUM 2.1 (identity-bound offline binding)",
+      "tool_class": "unit_conversion",
+      "tool_content_identity": "5216aed8eeb378e7dd3a62067566c2c50de6306c7404ac823180b1dbe3eda691",
+      "tool_id": "ucum_unit_conversion@v1",
+      "tool_version": "1.0.0"
+    },
+    {
+      "applicable_when": "closed-form dosage arithmetic with all inputs supplied",
+      "execution_authority": "NONE",
+      "failure_semantics": {
+        "fail_state": "ASK_MORE",
+        "reason_code": "TOOL_UNAVAILABLE",
+        "retryable": false
+      },
+      "freshness_policy": {
+        "max_age_days": 365
+      },
+      "input_schema": {
+        "properties": {
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "network_required": false,
+      "output_schema": {
+        "properties": {
+          "result": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "type": "object"
+      },
+      "prohibited_when": "guideline-derived or range-recommending calculations",
+      "result_provenance_required": false,
+      "source_authority": "CLOSED_FORM_ARITHMETIC (no guideline lookup)",
+      "tool_class": "pure_arithmetic",
+      "tool_content_identity": "0a38364e699ce172dddb156e493cceb59603a7ab767adb29b75ee000fd3c8dc7",
+      "tool_id": "pure_dosage_arithmetic@v1",
+      "tool_version": "1.0.0"
+    },
+    {
+      "applicable_when": "payload validated against a frozen FHIR/JSON schema",
+      "execution_authority": "NONE",
+      "failure_semantics": {
+        "fail_state": "ABSTAIN",
+        "reason_code": "TOOL_TIMEOUT",
+        "retryable": false
+      },
+      "freshness_policy": {
+        "max_age_days": 365
+      },
+      "input_schema": {
+        "type": "object"
+      },
+      "network_required": false,
+      "output_schema": {
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "valid"
+        ],
+        "type": "object"
+      },
+      "prohibited_when": "clinical interpretation of coded values",
+      "result_provenance_required": true,
+      "source_authority": "HL7 FHIR R4 v4.0.1 (structure-bound)",
+      "tool_class": "schema_validation",
+      "tool_content_identity": "74889509ae840893a58887feb1ceec83e5e56cc044a25fb1ee9184517b4a49b4",
+      "tool_id": "schema_validation_fhir_r4@v1",
+      "tool_version": "1.0.0"
+    },
+    {
+      "applicable_when": "retrieval against the committed synthetic fixture index only",
+      "execution_authority": "NONE",
+      "failure_semantics": {
+        "fail_state": "ABSTAIN",
+        "reason_code": "EVIDENCE_NOT_RESOLVED",
+        "retryable": false
+      },
+      "freshness_policy": {
+        "max_age_days": 365
+      },
+      "input_schema": {
+        "required": [
+          "query_identity_sha256"
+        ],
+        "type": "object"
+      },
+      "network_required": false,
+      "output_schema": {
+        "required": [
+          "evidence_ids"
+        ],
+        "type": "object"
+      },
+      "prohibited_when": "any live or external retrieval surface",
+      "result_provenance_required": true,
+      "source_authority": "COMMANDMED_SYNTHETIC_FIXTURE_EVIDENCE_INDEX_V0",
+      "tool_class": "evidence_retrieval",
+      "tool_content_identity": "7602fd14a196caba783ed04dfa3d4946d92855630285accad4e08fca41108813",
+      "tool_id": "fixture_evidence_index@v1",
+      "tool_version": "1.0.0"
+    },
+    {
+      "applicable_when": "never applicable until T017 binds exact score list + validation-paper identities",
+      "execution_authority": "NONE",
+      "failure_semantics": {
+        "fail_state": "ABSTAIN",
+        "reason_code": "EVIDENCE_NOT_RESOLVED",
+        "retryable": false
+      },
+      "freshness_policy": {
+        "max_age_days": 365
+      },
+      "input_schema": {
+        "properties": {
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "network_required": false,
+      "output_schema": {
+        "required": [
+          "score",
+          "provenance"
+        ],
+        "type": "object"
+      },
+      "prohibited_when": "all uses until T017 resolves",
+      "result_provenance_required": true,
+      "source_authority": "NEEDS_EVIDENCE:T017",
+      "tool_class": "validated_clinical_score",
+      "tool_content_identity": "3ed7739264cd396cdde578de3197cbbfcbf1a9f5aaa6e9144b2cde8775384695",
+      "tool_id": "validated_clinical_score@needs-evidence-t017",
+      "tool_version": "0.0.0-unbound"
+    },
+    {
+      "applicable_when": "never applicable until T018 binds database identity/version/content SHA-256/license",
+      "execution_authority": "NONE",
+      "failure_semantics": {
+        "fail_state": "ABSTAIN",
+        "reason_code": "EVIDENCE_NOT_RESOLVED",
+        "retryable": false
+      },
+      "freshness_policy": {
+        "max_age_days": 365
+      },
+      "input_schema": {
+        "properties": {
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "network_required": false,
+      "output_schema": {
+        "required": [
+          "interaction_verdict",
+          "provenance"
+        ],
+        "type": "object"
+      },
+      "prohibited_when": "all uses until T018 resolves",
+      "result_provenance_required": true,
+      "source_authority": "NEEDS_EVIDENCE:T018",
+      "tool_class": "interaction_lookup",
+      "tool_content_identity": "235cfbd37a1508843f130135bb34490ce0b838696c3fdf397814877ffef55580",
+      "tool_id": "interaction_lookup@needs-evidence-t018",
+      "tool_version": "0.0.0-unbound"
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "user_story": "US1",
+  "description": "Deterministic tool is used where a validated tool exists; pure generative answers never replace routing.",
+  "cases": [
+    {
+      "case_id": "tool-available-routes-to-tool",
+      "request": {
+        "text": "Convert 5 mg to mcg for the dose",
+        "requested_tool_id": "ucum_unit_conversion@v1",
+        "provided_slots": [
+          "dosage_weight_kg",
+          "medication_name"
+        ]
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "USE_TOOL",
+      "expected_reason_codes": []
+    },
+    {
+      "case_id": "evidence-class-retrieves-evidence",
+      "request": {
+        "text": "Show me the evidence for this fixture claim",
+        "requested_tool_id": "fixture_evidence_index@v1",
+        "provided_slots": []
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "RETRIEVE_EVIDENCE",
+      "expected_reason_codes": []
+    },
+    {
+      "case_id": "no-requested-tool-plain-answer",
+      "request": {
+        "text": "What does paracetamol do generally?",
+        "requested_tool_id": null,
+        "provided_slots": []
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "ANSWER",
+      "expected_reason_codes": []
+    },
+    {
+      "case_id": "unknown-tool-fails-closed",
+      "request": {
+        "text": "Look up drug X interactions now",
+        "requested_tool_id": "nonexistent_tool@v9",
+        "provided_slots": [
+          "dosage_weight_kg",
+          "medication_name"
+        ]
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "ABSTAIN",
+      "expected_reason_codes": [
+        "TOOL_UNAVAILABLE"
+      ]
+    },
+    {
+      "case_id": "clinical-score-gate-closed-t017",
+      "request": {
+        "text": "Calculate my risk score please",
+        "requested_tool_id": "validated_clinical_score@needs-evidence-t017",
+        "provided_slots": [
+          "dosage_weight_kg",
+          "medication_name"
+        ]
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "ABSTAIN",
+      "expected_reason_codes": [
+        "EVIDENCE_NOT_RESOLVED"
+      ]
+    },
+    {
+      "case_id": "interaction-lookup-gate-closed-t018",
+      "request": {
+        "text": "Check interaction between my two medicines",
+        "requested_tool_id": "interaction_lookup@needs-evidence-t018",
+        "provided_slots": [
+          "dosage_weight_kg",
+          "medication_name"
+        ]
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "ABSTAIN",
+      "expected_reason_codes": [
+        "EVIDENCE_NOT_RESOLVED"
+      ]
+    },
+    {
+      "case_id": "tool-unavailable-fails-closed",
+      "request": {
+        "text": "Convert 2 g to mg units",
+        "requested_tool_id": "ucum_unit_conversion@v1",
+        "provided_slots": [
+          "dosage_weight_kg",
+          "medication_name"
+        ]
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "ucum_unit_conversion@v1": "UNAVAILABLE"
+        }
+      },
+      "expected_state_after": "ABSTAIN",
+      "expected_reason_codes": [
+        "TOOL_UNAVAILABLE"
+      ]
+    },
+    {
+      "case_id": "tool-timeout-fails-closed",
+      "request": {
+        "text": "Validate this FHIR payload structure",
+        "requested_tool_id": "schema_validation_fhir_r4@v1",
+        "provided_slots": [
+          "dosage_weight_kg",
+          "medication_name"
+        ]
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "schema_validation_fhir_r4@v1": "TIMEOUT"
+        }
+      },
+      "expected_state_after": "ABSTAIN",
+      "expected_reason_codes": [
+        "TOOL_TIMEOUT"
+      ]
+    }
+  ]
+}

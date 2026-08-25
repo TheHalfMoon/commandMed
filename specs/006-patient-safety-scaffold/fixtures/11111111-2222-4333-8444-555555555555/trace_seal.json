@@ -1,0 +1,6 @@
+{
+  "expected_final_sequence": 1,
+  "interaction_id": "11111111-2222-4333-8444-555555555555",
+  "seal_version": "v1",
+  "terminal_record_sha256": "7daeee0f6626553828d115a30e84c65d6be8930b439e6e6bb512c05842015213"
+}

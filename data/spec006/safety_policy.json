@@ -1,0 +1,78 @@
+{
+  "policy_sha256": "3d3fb1c91fde1ac3f9e7336f9591aa7f0b0120e4a8a176c8ff1305b7f6bc6f36",
+  "policy_version": "v1",
+  "rules": [
+    {
+      "applicable_scope": "COMPONENT_QUALIFICATION",
+      "precedence": 2,
+      "required_state": "EMERGENCY",
+      "revoked": false,
+      "rule_id": "R006-EMERG-LEX-V1",
+      "rule_version": "1.0.0",
+      "source_policy_sha256": "6a1cfda77ddf3741c7bf139d6d4102e59d04d6d5d7146c8ed71a7ca95812fdb0",
+      "threshold_policy_class": "FROZEN_POLICY_ZERO_TOLERANCE",
+      "trigger_condition": {
+        "kind": "lexical",
+        "ref": "chest pain|can't breathe|cannot breathe|severe bleeding|unconscious|ألم في الصدر|ألم بالصدر|نزيف حاد|فقدان الوعي|لا أستطيع التنفس|chest hurt"
+      }
+    },
+    {
+      "applicable_scope": "COMPONENT_QUALIFICATION",
+      "precedence": 3,
+      "required_state": "ESCALATE",
+      "revoked": false,
+      "rule_id": "R006-ESCALATE-SEVERE-PATTERN-V1",
+      "rule_version": "1.0.0",
+      "source_policy_sha256": "6a1cfda77ddf3741c7bf139d6d4102e59d04d6d5d7146c8ed71a7ca95812fdb0",
+      "threshold_policy_class": "FROZEN_POLICY_ZERO_TOLERANCE",
+      "trigger_condition": {
+        "kind": "semantic_pattern",
+        "ref": "(worst .*(headache|pain) (of my life|ever))|(أسوأ (صداع|ألم) (في حياتي|عمرى))"
+      }
+    },
+    {
+      "applicable_scope": "COMPONENT_QUALIFICATION",
+      "precedence": 4,
+      "required_state": "ASK_MORE",
+      "revoked": false,
+      "rule_id": "R006-MISSING-CRITICAL-SLOT-V1",
+      "rule_version": "1.0.0",
+      "source_policy_sha256": "6a1cfda77ddf3741c7bf139d6d4102e59d04d6d5d7146c8ed71a7ca95812fdb0",
+      "threshold_policy_class": "FROZEN_SENTINEL_ZERO_VIOLATIONS",
+      "trigger_condition": {
+        "kind": "missing_slot",
+        "ref": "dosage_weight_kg|medication_name",
+        "threshold": "pure_arithmetic|validated_clinical_score|interaction_lookup"
+      }
+    },
+    {
+      "applicable_scope": "COMPONENT_QUALIFICATION",
+      "precedence": 5,
+      "required_state": "ESCALATE",
+      "revoked": false,
+      "rule_id": "R006-SCORE-BREACH-FLAG-V1",
+      "rule_version": "1.0.0",
+      "source_policy_sha256": "6a1cfda77ddf3741c7bf139d6d4102e59d04d6d5d7146c8ed71a7ca95812fdb0",
+      "threshold_policy_class": "FROZEN_SENTINEL_ZERO_VIOLATIONS",
+      "trigger_condition": {
+        "kind": "tool_result_flag",
+        "ref": "score_threshold_breach",
+        "threshold": true
+      }
+    },
+    {
+      "applicable_scope": "COMPONENT_QUALIFICATION",
+      "precedence": 7,
+      "required_state": "ASK_MORE",
+      "revoked": false,
+      "rule_id": "R006-DOSAGE-INTENT-INCOMPLETE-V1",
+      "rule_version": "1.0.0",
+      "source_policy_sha256": "6a1cfda77ddf3741c7bf139d6d4102e59d04d6d5d7146c8ed71a7ca95812fdb0",
+      "threshold_policy_class": "FROZEN_SENTINEL_ZERO_VIOLATIONS",
+      "trigger_condition": {
+        "kind": "semantic_pattern",
+        "ref": "(how much|what dose|what dosage|how many)\\b.*\\b(take|taking|medicine|medication|dose)?"
+      }
+    }
+  ]
+}

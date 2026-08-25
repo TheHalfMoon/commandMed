@@ -1,0 +1,122 @@
+[
+  {
+    "context_identity_sha256": "3799cce77db0504b3f67a60cfe3fb431d27688b8c00c7646c0a9a488ca8e87f3",
+    "determinism_proof": {
+      "replay_context_identity_sha256": "3799cce77db0504b3f67a60cfe3fb431d27688b8c00c7646c0a9a488ca8e87f3",
+      "replay_input_sha256": "11df39c2d53b980044cfdf702183328cf93ce29087b064a21edc1463b998c863",
+      "replay_output_state": "ASK_MORE",
+      "replay_policy_identity_sha256": "3d3fb1c91fde1ac3f9e7336f9591aa7f0b0120e4a8a176c8ff1305b7f6bc6f36",
+      "replay_tool_registry_identity_sha256": "862a3e00385a1f2b9ee1c936cbfa059a67afa0c0ef39da2c9d39f8032a8c86c6",
+      "replayed": true
+    },
+    "failure_reason_codes": [],
+    "input_identity_sha256": "11df39c2d53b980044cfdf702183328cf93ce29087b064a21edc1463b998c863",
+    "interaction_id": "11111111-2222-4333-8444-555555555555",
+    "output_identity_sha256": "befc3c74b521bd25a5ec0deb74e59c7d01e92831c2ec5e1d49c2a6971c82b670",
+    "policy_identity_sha256": "3d3fb1c91fde1ac3f9e7336f9591aa7f0b0120e4a8a176c8ff1305b7f6bc6f36",
+    "predecessor_sha256": "GENESIS",
+    "safety_context": {
+      "available_evidence_ids": [
+        "fixture-evidence-1"
+      ],
+      "language": "ar-en",
+      "role": "PATIENT_CAREGIVER",
+      "tool_availability": {
+        "fixture_evidence_index@v1": "AVAILABLE",
+        "interaction_lookup@needs-evidence-t018": "AVAILABLE",
+        "pure_dosage_arithmetic@v1": "AVAILABLE",
+        "schema_validation_fhir_r4@v1": "AVAILABLE",
+        "ucum_unit_conversion@v1": "AVAILABLE",
+        "validated_clinical_score@needs-evidence-t017": "AVAILABLE"
+      }
+    },
+    "state_after": "ASK_MORE",
+    "state_before": null,
+    "tool_call_record_ids": [
+      "pure_dosage_arithmetic@v1::call"
+    ],
+    "tool_calls": [
+      {
+        "failure": {
+          "is_failure": false,
+          "reason_code": null
+        },
+        "input_identity_sha256": "8d7374567f3fa2b46dcb2d16f52f87e66c1702f48bb82c987a6faa0e3eb7628f",
+        "output_identity_sha256": "f432bafea05f9965b3a48ed0d788145777d0757292cb78fba47cddd74a02c507",
+        "provenance": {
+          "result_sha256": "e0991de615e0dffacd794ab9ed1def85089aef12b6f98ee680faf42168559a13",
+          "source_authority": "CLOSED_FORM_ARITHMETIC (no guideline lookup)",
+          "tool_content_identity": "0a38364e699ce172dddb156e493cceb59603a7ab767adb29b75ee000fd3c8dc7"
+        },
+        "tool_call_id": "pure_dosage_arithmetic@v1::call",
+        "tool_id": "pure_dosage_arithmetic@v1",
+        "tool_version": "1.0.0"
+      }
+    ],
+    "tool_registry_identity_sha256": "862a3e00385a1f2b9ee1c936cbfa059a67afa0c0ef39da2c9d39f8032a8c86c6",
+    "trace_sequence": 0,
+    "trace_version": "v1",
+    "trigger_record_ids": [
+      "R006-MISSING-CRITICAL-SLOT-V1"
+    ]
+  },
+  {
+    "context_identity_sha256": "3799cce77db0504b3f67a60cfe3fb431d27688b8c00c7646c0a9a488ca8e87f3",
+    "determinism_proof": {
+      "replay_context_identity_sha256": "3799cce77db0504b3f67a60cfe3fb431d27688b8c00c7646c0a9a488ca8e87f3",
+      "replay_input_sha256": "7de0f5367724d66053969ba516b8c61afbd667d73b8be247a0c07a4fea314ac4",
+      "replay_output_state": "USE_TOOL",
+      "replay_policy_identity_sha256": "3d3fb1c91fde1ac3f9e7336f9591aa7f0b0120e4a8a176c8ff1305b7f6bc6f36",
+      "replay_tool_registry_identity_sha256": "862a3e00385a1f2b9ee1c936cbfa059a67afa0c0ef39da2c9d39f8032a8c86c6",
+      "replayed": true
+    },
+    "failure_reason_codes": [],
+    "input_identity_sha256": "7de0f5367724d66053969ba516b8c61afbd667d73b8be247a0c07a4fea314ac4",
+    "interaction_id": "11111111-2222-4333-8444-555555555555",
+    "output_identity_sha256": "e75e81295676721637373761776a71e41d698fe4abc6edace922fd684b98fc9e",
+    "policy_identity_sha256": "3d3fb1c91fde1ac3f9e7336f9591aa7f0b0120e4a8a176c8ff1305b7f6bc6f36",
+    "predecessor_sha256": "17b77e974db9fdb933ded8715a3e19c3d7443deab223c87ef69c55f952c2712b",
+    "safety_context": {
+      "available_evidence_ids": [
+        "fixture-evidence-1"
+      ],
+      "language": "ar-en",
+      "role": "PATIENT_CAREGIVER",
+      "tool_availability": {
+        "fixture_evidence_index@v1": "AVAILABLE",
+        "interaction_lookup@needs-evidence-t018": "AVAILABLE",
+        "pure_dosage_arithmetic@v1": "AVAILABLE",
+        "schema_validation_fhir_r4@v1": "AVAILABLE",
+        "ucum_unit_conversion@v1": "AVAILABLE",
+        "validated_clinical_score@needs-evidence-t017": "AVAILABLE"
+      }
+    },
+    "state_after": "USE_TOOL",
+    "state_before": "ASK_MORE",
+    "tool_call_record_ids": [
+      "pure_dosage_arithmetic@v1::call"
+    ],
+    "tool_calls": [
+      {
+        "failure": {
+          "is_failure": false,
+          "reason_code": null
+        },
+        "input_identity_sha256": "8d7374567f3fa2b46dcb2d16f52f87e66c1702f48bb82c987a6faa0e3eb7628f",
+        "output_identity_sha256": "f432bafea05f9965b3a48ed0d788145777d0757292cb78fba47cddd74a02c507",
+        "provenance": {
+          "result_sha256": "e0991de615e0dffacd794ab9ed1def85089aef12b6f98ee680faf42168559a13",
+          "source_authority": "CLOSED_FORM_ARITHMETIC (no guideline lookup)",
+          "tool_content_identity": "0a38364e699ce172dddb156e493cceb59603a7ab767adb29b75ee000fd3c8dc7"
+        },
+        "tool_call_id": "pure_dosage_arithmetic@v1::call",
+        "tool_id": "pure_dosage_arithmetic@v1",
+        "tool_version": "1.0.0"
+      }
+    ],
+    "tool_registry_identity_sha256": "862a3e00385a1f2b9ee1c936cbfa059a67afa0c0ef39da2c9d39f8032a8c86c6",
+    "trace_sequence": 1,
+    "trace_version": "v1",
+    "trigger_record_ids": []
+  }
+]

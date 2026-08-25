@@ -1,0 +1,65 @@
+{
+  "gates": [
+    {
+      "bound_values": null,
+      "evidence_kind": "CLINICAL_SCORE_REGISTRY_SOURCE_AUTHORITIES_AND_IDENTITIES",
+      "gate_task": "T017",
+      "note": "Exact clinical-score inclusion list and per-score validation-paper identity/hash must be sourced before any PASS claim; contents must NOT be fabricated.",
+      "required_bindings": [
+        "per_score_source_authority",
+        "per_score_tool_content_identity",
+        "per_score_version"
+      ],
+      "status": "NEEDS_EVIDENCE",
+      "tool_classes": [
+        "validated_clinical_score"
+      ]
+    },
+    {
+      "bound_values": null,
+      "evidence_kind": "INTERACTION_DATABASE_IDENTITY_VERSION_LICENSE",
+      "gate_task": "T018",
+      "note": "Interaction database selection, version, content hash, and license compatibility per FD-001 remain unresolved; contents must NOT be fabricated.",
+      "required_bindings": [
+        "database_name",
+        "database_version",
+        "content_sha256",
+        "license_compatibility_with_fd_001"
+      ],
+      "status": "NEEDS_EVIDENCE",
+      "tool_classes": [
+        "interaction_lookup"
+      ]
+    },
+    {
+      "bound_values": null,
+      "evidence_kind": "VERSIONED_ARABIC_ENGLISH_EMERGENCY_LEXICONS",
+      "gate_task": "T019",
+      "note": "The offline safety_policy.json carries a clearly-scoped synthetic demonstration lexicon for fixture qualification only; the production versioned lexicon must NOT be fabricated.",
+      "policy_binding": "production emergency lexicon (MSA + Saudi/Gulf colloquial + code-switch + transliterated)",
+      "required_bindings": [
+        "lexicon_version",
+        "lexicon_content_identity",
+        "language_coverage"
+      ],
+      "status": "NEEDS_EVIDENCE",
+      "tool_classes": []
+    },
+    {
+      "bound_values": null,
+      "evidence_kind": "JURISDICTION_BOUND_ESCALATION_ROUTING_EVIDENCE",
+      "gate_task": "T020",
+      "note": "Never fabricate local emergency service information; emit generic escalation until jurisdiction-bound routing is sourced and versioned.",
+      "policy_binding": "escalation routing table (e.g. 937/997/MOH) must stay generic until sourced + versioned",
+      "required_bindings": [
+        "jurisdiction",
+        "routing_source_authority",
+        "routing_version"
+      ],
+      "status": "NEEDS_EVIDENCE",
+      "tool_classes": []
+    }
+  ],
+  "prerequisites_sha256": "642c94f751fe501fffd4760a8ae5e0e1f89db54a6bd44291f7168170c50cf259",
+  "prerequisites_version": "v1"
+}
