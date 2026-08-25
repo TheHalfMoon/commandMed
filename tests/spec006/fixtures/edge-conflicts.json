@@ -1,0 +1,6 @@
+{
+  "user_story": "EDGE",
+  "description": "Edge cases from spec.md: conflicting results, revoked rules, bilingual triggers.",
+  "requires_policy_override": true,
+  "cases": []
+}

@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {
+      "expected_final_sequence": 1,
+      "interaction_id": "11111111-2222-4333-8444-555555555555",
+      "seal_canonical_sha256": "47f320f676f550ca8e2691230f1283b7288210982953b7f0d897dd3ea16abe41",
+      "seal_path": "specs/006-patient-safety-scaffold/fixtures/11111111-2222-4333-8444-555555555555/trace_seal.json",
+      "terminal_record_sha256": "7daeee0f6626553828d115a30e84c65d6be8930b439e6e6bb512c05842015213",
+      "trace_set_path": "specs/006-patient-safety-scaffold/fixtures/11111111-2222-4333-8444-555555555555/traces.json"
+    },
+    {
+      "expected_final_sequence": 0,
+      "interaction_id": "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee",
+      "seal_canonical_sha256": "37ef0cb9eb067b18ea72c4cc21c53b17cfcf9bb459070df5caa6ae2d4be0170e",
+      "seal_path": "specs/006-patient-safety-scaffold/fixtures/aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee/trace_seal.json",
+      "terminal_record_sha256": "317c2059badd16362c4bbcfab12543b31b822172265a11d4c044e9e4efd435c3",
+      "trace_set_path": "specs/006-patient-safety-scaffold/fixtures/aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee/traces.json"
+    }
+  ],
+  "manifest_identity_sha256": "8ebf951549e90db33c6e1c34fbbd55d5655595b9b9766dafaa3dfdac054ca831",
+  "manifest_version": "v1"
+}

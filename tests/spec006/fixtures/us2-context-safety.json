@@ -1,0 +1,137 @@
+{
+  "user_story": "US2",
+  "description": "Abstain or escalate on missing or unsafe context; bilingual emergency handling.",
+  "cases": [
+    {
+      "case_id": "missing-slot-asks-more-en",
+      "request": {
+        "text": "How much should I take of it?",
+        "requested_tool_id": null,
+        "provided_slots": []
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "ASK_MORE",
+      "expected_reason_codes": []
+    },
+    {
+      "case_id": "emergency-keyword-en",
+      "request": {
+        "text": "My father has severe bleeding right now",
+        "requested_tool_id": null,
+        "provided_slots": []
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "EMERGENCY",
+      "expected_reason_codes": [
+        "FROZEN_POLICY_EMERGENCY"
+      ]
+    },
+    {
+      "case_id": "emergency-keyword-ar-msa",
+      "request": {
+        "text": "عندي ألم في الصدر شديد الآن",
+        "requested_tool_id": null,
+        "provided_slots": []
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "EMERGENCY",
+      "expected_reason_codes": [
+        "FROZEN_POLICY_EMERGENCY"
+      ]
+    },
+    {
+      "case_id": "severe-pattern-escalates",
+      "request": {
+        "text": "This is the worst headache of my life",
+        "requested_tool_id": null,
+        "provided_slots": []
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "ESCALATE",
+      "expected_reason_codes": []
+    },
+    {
+      "case_id": "ambiguous-risk-fails-toward-escalation-not-answer",
+      "request": {
+        "text": "I took double pills and feel dizzy and my chest hurts slightly",
+        "requested_tool_id": null,
+        "provided_slots": []
+      },
+      "context": {
+        "role": "PATIENT_CAREGIVER",
+        "language": "ar-en",
+        "available_evidence_ids": [
+          "fixture-evidence-1"
+        ],
+        "tool_availability": {
+          "pure_dosage_arithmetic@v1": "AVAILABLE",
+          "ucum_unit_conversion@v1": "AVAILABLE",
+          "schema_validation_fhir_r4@v1": "AVAILABLE",
+          "fixture_evidence_index@v1": "AVAILABLE",
+          "validated_clinical_score@needs-evidence-t017": "AVAILABLE",
+          "interaction_lookup@needs-evidence-t018": "AVAILABLE"
+        }
+      },
+      "expected_state_after": "EMERGENCY",
+      "expected_reason_codes": [
+        "FROZEN_POLICY_EMERGENCY"
+      ]
+    }
+  ]
+}
