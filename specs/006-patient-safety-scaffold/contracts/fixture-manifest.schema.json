@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commandmed.spec/006/fixture-manifest.schema.json",
+  "title": "FixtureManifest",
+  "description": "Immutable manifest describing committed trace seals for offline fixture verification; trusted git commit OID is supplied out-of-band to verifier, not stored inside manifest",
+  "type": "object",
+  "required": ["manifest_version", "manifest_identity_sha256", "entries"],
+  "properties": {
+    "manifest_version": { "type": "string", "minLength": 1 },
+    "manifest_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Canonical content identity sha256(canonical_json({manifest_version, entries})) computed over projection omitting manifest_identity_sha256 itself; semantic validator must recompute projection and reject absent or mismatched value as INSUFFICIENT_EVIDENCE" },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["interaction_id", "seal_path", "trace_set_path", "seal_canonical_sha256", "expected_final_sequence", "terminal_record_sha256"],
+        "properties": {
+          "interaction_id": { "type": "string", "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" },
+          "seal_path": { "type": "string", "pattern": "^specs/006-patient-safety-scaffold/fixtures/[^/]+/trace_seal\\.json$", "description": "Canonical relative path to seal file inside repo, confined to fixture root, normalized, no traversal" },
+          "trace_set_path": { "type": "string", "pattern": "^specs/006-patient-safety-scaffold/fixtures/[^/]+/traces\\.json$", "description": "Canonical relative path to ordered JSON array of InteractionTrace records for this interaction_id, confined to fixture root, normalized, no traversal" },
+          "seal_canonical_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "sha256(canonical_json(trace_seal)) for this interaction_id" },
+          "expected_final_sequence": { "type": "integer", "minimum": 0 },
+          "terminal_record_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        },
+        "additionalProperties": false
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}
