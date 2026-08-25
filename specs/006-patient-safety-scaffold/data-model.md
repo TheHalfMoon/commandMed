@@ -37,7 +37,7 @@ Metadata record for one allow-listed tool. No service binding.
 | `network_required` | `bool` | yes | must be `false` for offline fixture suite |
 | `execution_authority` | enum `NONE` (planning) | yes | `NONE` during planning; `AUTHORIZED_TO_START` only after separate gate via new registry version |
 
-Registry bundle: `tool_registry.json` (`list[DeterministicTool]` + `registry_version` + `registry_sha256` over canonical JSON).
+Registry bundle: `tool_registry.json` (`list[DeterministicTool]` + `registry_version` + `registry_sha256`). Canonical bundle identity `registry_sha256 = sha256(canonical_json({registry_version, tools}))` computed over the canonical JSON projection that omits the `registry_sha256` field itself (deterministic sorted-key serialization per `eval_contract/canonical.py`). Validators must recompute by omitting `registry_sha256` and comparing; fixtures must include a negative case where `registry_sha256` does not match the projection.
 
 ### 1.3 SafetyRule
 
@@ -55,7 +55,7 @@ Frozen deterministic safety policy record. Implements Spec 002 `SP-001`…`SP-00
 | `applicable_scope` | enum `SYSTEM_QUALIFICATION`, `COMPONENT_QUALIFICATION` | yes | |
 | `revoked` | `bool` | yes | fail-closed on revoked/contradictory rules per SP-006 |
 
-Policy bundle: `safety_policy.json` (`list[SafetyRule]` + `policy_version` + `policy_sha256`).
+Policy bundle: `safety_policy.json` (`list[SafetyRule]` + `policy_version` + `policy_sha256`). Canonical bundle identity `policy_sha256 = sha256(canonical_json({policy_version, rules}))` computed over the canonical JSON projection that omits the `policy_sha256` field itself. Validators must recompute by omitting `policy_sha256` and comparing; fixtures must include a negative case where `policy_sha256` does not match the projection.
 
 ### 1.4 InteractionTrace
 
@@ -69,8 +69,8 @@ One verifiable record per synthetic interaction, append-only semantics (no mutat
 | `predecessor_sha256` | `str` | yes | `GENESIS` for sequence 0, else `sha256(canonical_json(predecessor trace))`; hash-chain integrity |
 | `input_identity_sha256` | `str` | yes | hash of canonical input fixture |
 | `context_identity_sha256` | `str` | yes | hash of canonical SafetyContext |
-| `policy_identity_sha256` | `str` | yes | `safety_policy.json` hash |
-| `tool_registry_identity_sha256` | `str` | yes | `tool_registry.json` hash |
+| `policy_identity_sha256` | `str` | yes | `safety_policy.json` projection hash (per §1.3, omitting `policy_sha256`) |
+| `tool_registry_identity_sha256` | `str` | yes | `tool_registry.json` projection hash (per §1.2, omitting `registry_sha256`) |
 | `state_before` | `BehavioralState` or `null` | yes | null for initial; otherwise prior terminal state |
 | `state_after` | `BehavioralState` | yes | exactly one terminal state |
 | `trigger_record_ids` | `list[str]` | yes | rule/trigger IDs that fired |
@@ -79,7 +79,7 @@ One verifiable record per synthetic interaction, append-only semantics (no mutat
 | `failure_reason_codes` | `list[str]` | yes | may be empty |
 | `safety_context` | `SafetyContext` | yes | embedded auditable context (no raw PHI) |
 | `tool_calls` | `list[ToolCallRecord]` | yes | ordered, hash-bound |
-| `determinism_proof` | `object` | yes | `{replayed: bool, replay_input_sha256, replay_output_state}` |
+| `determinism_proof` | `object` | yes | `{replayed: const true, replay_input_sha256 == input_identity_sha256, replay_output_state == state_after}` — JSON Schema enforces `replayed=true`; semantic validator must enforce equality of replay input/context/policy/registry identities and replay output state (see contracts) |
 
 ### 1.5 Supporting structs
 

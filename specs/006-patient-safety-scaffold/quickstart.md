@@ -19,6 +19,8 @@ python3 -m pytest -q  # 513 PASS inherited baseline — no network
 
 ## 2. Validate contracts (offline, stdlib only — no network, no vendored validator)
 
+Bundle identities are projection hashes: `registry_sha256 = sha256(canonical_json({registry_version, tools}))` and `policy_sha256 = sha256(canonical_json({policy_version, rules}))` omitting the hash field itself. Determinism proof requires `replayed=true` and semantic equality `replay_input_sha256==input_identity_sha256` + `replay_output_state==state_after` (enforced by semantic validator, not JSON Schema alone).
+
 ```bash
 python3 -c "
 import json, pathlib

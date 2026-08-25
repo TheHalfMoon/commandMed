@@ -6,7 +6,7 @@
   "required": ["policy_version", "policy_sha256", "rules"],
   "properties": {
     "policy_version": { "type": "string", "minLength": 1 },
-    "policy_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "policy_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Canonical bundle identity: sha256(canonical_json({policy_version, rules})) computed over projection omitting policy_sha256 itself; validators must recompute by omitting this field per data-model §1.3" },
     "rules": {
       "type": "array",
       "items": { "$ref": "#/$defs/SafetyRule" },

@@ -6,7 +6,7 @@
   "required": ["registry_version", "registry_sha256", "tools"],
   "properties": {
     "registry_version": { "type": "string", "minLength": 1 },
-    "registry_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "registry_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Canonical bundle identity: sha256(canonical_json({registry_version, tools})) computed over projection omitting registry_sha256 itself; validators must recompute by omitting this field per data-model §1.2" },
     "tools": {
       "type": "array",
       "items": { "$ref": "#/$defs/DeterministicTool" },
