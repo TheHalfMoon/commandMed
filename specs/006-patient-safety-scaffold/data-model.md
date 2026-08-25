@@ -79,9 +79,22 @@ One verifiable record per synthetic interaction, append-only semantics (no mutat
 | `failure_reason_codes` | `list[str]` | yes | may be empty |
 | `safety_context` | `SafetyContext` | yes | embedded auditable context (no raw PHI) |
 | `tool_calls` | `list[ToolCallRecord]` | yes | ordered, hash-bound |
-| `determinism_proof` | `object` | yes | `{replayed: const true, replay_input_sha256 == input_identity_sha256, replay_output_state == state_after}` — JSON Schema enforces `replayed=true`; semantic validator must enforce equality of replay input/context/policy/registry identities and replay output state (see contracts) |
+| `determinism_proof` | `object` | yes | `{replayed: const true, replay_input_sha256 == input_identity_sha256, replay_context_identity_sha256 == context_identity_sha256, replay_policy_identity_sha256 == policy_identity_sha256, replay_tool_registry_identity_sha256 == tool_registry_identity_sha256, replay_output_state == state_after}` — JSON Schema enforces `replayed=true` and typed fields; semantic validator must enforce all five equalities (see contracts) |
 
-### 1.5 Supporting structs
+### 1.5 TraceSeal (terminal completeness anchor)
+
+Per `interaction_id`, one `trace_seal.json` anchoring the complete trace set. Verification consumes the full set plus the seal.
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `interaction_id` | `str` (uuid) | yes | matches sealed InteractionTrace set |
+| `seal_version` | `str` | yes | seal schema version |
+| `expected_final_sequence` | `int` | yes | expected max `trace_sequence`; verification rejects unless contiguous 0..expected_final_sequence |
+| `terminal_record_sha256` | `str` (hex sha256) | yes | `sha256(canonical_json(final InteractionTrace record))` where `trace_sequence == expected_final_sequence` |
+
+Validation rule (FR-005): verification MUST reject unless sequences are strictly contiguous from 0, `(interaction_id, trace_sequence)` keys are unique and monotonic, `predecessor_sha256 == sha256(canonical_json(predecessor))` chain validates, and `terminal_record_sha256` equals recomputed hash of final record — otherwise `INSUFFICIENT_EVIDENCE`. Missing seal, gap, duplicate, reordered, or hash mismatch → `INSUFFICIENT_EVIDENCE`. Seal has no self-referential hash.
+
+### 1.6 Supporting structs
 
 **SafetyContext**
 
@@ -115,7 +128,7 @@ Provenance validation: spoofed results (mismatched `tool_content_identity`/`sour
 
 ## 4. JSON Schemas
 
-Schemas live at `specs/006-patient-safety-scaffold/contracts/{tool-registry,safety-rule,interaction-trace}.schema.json` and are the normative validators (draft 2020-12). Python validators re-export standard-library checks and canonical hashing.
+Schemas live at `specs/006-patient-safety-scaffold/contracts/{tool-registry,safety-rule,interaction-trace,trace-seal}.schema.json` and are the normative validators (draft 2020-12). Python validators re-export standard-library checks and canonical hashing. Trace-set validation (contiguous sequence + predecessor chain + terminal seal) is a semantic validator over the set plus `TraceSeal`, not a single-record JSON Schema check.
 
 ## 5. What is NOT in this model
 

@@ -75,11 +75,14 @@
     },
     "determinism_proof": {
       "type": "object",
-      "required": ["replayed", "replay_input_sha256", "replay_output_state"],
-      "description": "Normative determinism proof: replayed MUST be true; semantic validator MUST enforce replay_input_sha256 == input_identity_sha256, replay_output_state == state_after, and replay context/policy/registry identities equal the trace's context_identity_sha256/policy_identity_sha256/tool_registry_identity_sha256; JSON Schema alone cannot enforce cross-field equality",
+      "required": ["replayed", "replay_input_sha256", "replay_context_identity_sha256", "replay_policy_identity_sha256", "replay_tool_registry_identity_sha256", "replay_output_state"],
+      "description": "Normative determinism proof: replayed MUST be true; semantic validator MUST enforce replay_input_sha256==input_identity_sha256, replay_context_identity_sha256==context_identity_sha256, replay_policy_identity_sha256==policy_identity_sha256, replay_tool_registry_identity_sha256==tool_registry_identity_sha256, and replay_output_state==state_after; JSON Schema alone cannot enforce cross-field equality",
       "properties": {
         "replayed": { "const": true, "description": "Must be true; false indicates replay was not performed or failed and MUST be rejected" },
         "replay_input_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Must equal input_identity_sha256; enforced by semantic validator" },
+        "replay_context_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Must equal context_identity_sha256; enforced by semantic validator" },
+        "replay_policy_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Must equal policy_identity_sha256; enforced by semantic validator" },
+        "replay_tool_registry_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "Must equal tool_registry_identity_sha256; enforced by semantic validator" },
         "replay_output_state": { "enum": ["ANSWER", "ASK_MORE", "USE_TOOL", "RETRIEVE_EVIDENCE", "ABSTAIN", "ESCALATE", "EMERGENCY"], "description": "Must equal state_after; enforced by semantic validator" }
       },
       "additionalProperties": false

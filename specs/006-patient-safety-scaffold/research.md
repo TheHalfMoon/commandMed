@@ -100,7 +100,7 @@ state_before, state_after,
 trigger_record_ids, tool_call_record_ids,
 output_identity_sha256, failure_reason_codes,
 safety_context (role, language, tool_availability — no raw PHI),
-determinism_proof (replay with same input/context/policy/registry → same state; requires replayed=true, replay_input_sha256==input_identity_sha256, replay_output_state==state_after)
+determinism_proof (replay with same input/context/policy/registry → same state; requires replayed=true, replay_input_sha256==input_identity_sha256, replay_context_identity_sha256==context_identity_sha256, replay_policy_identity_sha256==policy_identity_sha256, replay_tool_registry_identity_sha256==tool_registry_identity_sha256, replay_output_state==state_after; plus trace_seal.json per interaction_id anchoring expected_final_sequence and terminal_record_sha256)
 ```
 
 Raw user text is never logged for auditability; hashes and structured reasons suffice. `output_identity_sha256` is hash of the final system utterance, not its raw text in the trace store.
