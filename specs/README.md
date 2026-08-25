@@ -24,7 +24,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 003 | Data, License & Provenance | `CLOSED_CANONICAL` | 001 | Qualified implementation merge `a5fef84f9f0cee12dcd2ea6735888faee43db1ec`, tree `d7b2e11a8470ec66f50f1cff77bba4dddff20812`; final exact-head evidence: 71 focused / 9 hard-gate / 228 full tests and independent review with no material blocker. |
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; closure merge `3dc705a1de09347f3574b305afb1bfaa6d46ecff`. Final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
 | 005 | Base Model Tournament | `CLOSED_CANONICAL` | 004 `CLOSED_CANONICAL` | Implementation `5e35cd4` (tree `5b823d20`, head `d4caf94`) + planning reconciliation `799c36a` (tree `eaa8942`, head `83d7612`); closure `CLOSED_CANONICAL` via this closeout. Deterministic control plane only; no model/benchmark/Private Gold/PHI/device/spend execution. 513 tests + exact-head reviews `d4caf94`/`83d7612` MATERIAL_BLOCKER=NO. |
-| 006 | Patient Safety Scaffold & Deterministic Tools | `AUTHORIZED_TO_SPECIFY` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Dependency 005 satisfied via `799c36a`; Spec Kit specify may begin per governance. No execution authority. |
+| 006 | Patient Safety Scaffold & Deterministic Tools | `AUTHORIZED_TO_START` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Qualified planning PR #39 at exact head `6308e40` reviewed MATERIAL_BLOCKER=NO; bounded offline deterministic implementation authorized. No model/training/data/spend authority. |
 | 007 | SFT V1 | `BLOCKED` | 003, 005, 006 | Three-class high-quality SFT. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
 | 009 | Distillation V1 | `BLOCKED` | 008 | Minimum license-clean distillation; on-policy candidate. |
@@ -133,6 +133,60 @@ V1_SHA_PRESERVED=304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143
 
 Planning reconciliation superseded stale PR #34 (`f116bea`) without deleting implementation. All `src/commandmed/spec005/*` + `tests/spec005/*` + `data/spec005/*` canonical. See `specs/005-base-model-tournament/closeout.md` for full binding. `SPEC_005=CLOSED_CANONICAL` effective after this closure merge.
 
+## Spec 006 implementation authorization record
+
+The founder has explicitly authorized the bounded implementation of Spec 006. This authorization is recorded canonically here before any `src/commandmed/spec006` implementation begins.
+
+```text
+SPEC006_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START
+QUALIFIED_PLANNING_PR=#39
+QUALIFIED_PLANNING_BRANCH=spec/006-specify
+QUALIFIED_PLANNING_HEAD=6308e40f5f134bae7acccd66c8aa695ad9bba8ba
+QUALIFIED_PLANNING_REVIEW=MATERIAL_BLOCKER=NO (exact-head independent review)
+IMPLEMENTATION_SCOPE=OFFLINE_DETERMINISTIC_SPEC006_ONLY
+AUTHORIZED_TASKS=T011,T012,T013,T014,T015,T016,T021
+EVIDENCE_GATE_TASKS=T017,T018,T019,T020 executed ONLY as typed fail-closed NEEDS_EVIDENCE records (validators must accept/reject such records; real clinical-score authorities, interaction-database identities, versioned Arabic/English emergency lexicons, and jurisdiction routing must NOT be fabricated)
+TASKS_FILE_AT_QUALIFIED_HEAD=
+  path=specs/006-patient-safety-scaffold/tasks.md
+  git_blob_oid=3cf4e37808ff3621376bfa9da1403f91eaeba43a
+  raw_bytes_sha256=fa44671dd8d85756ed909ff6dec9a5f5813b5a49605b42500c031c68f5da8ae8
+```
+
+### Supersession of earlier Spec 006 lifecycle text
+
+The `specs/README.md` registry above is the single authoritative Spec 006 lifecycle state as of this authorization merge. Earlier canonical text that describes the post-005 state as `SPEC_006=AUTHORIZED_TO_SPECIFY` — including the "Execution and training authority" section of `specs/005-base-model-tournament/closeout.md` and the prior README authority block — is superseded by this record for the implementation-start stage only. Those statements remain accurate historical snapshots of their own merge points and are not rewritten. No other lifecycle field changes: all execution/training/data/spend authorities stay `NONE`.
+
+### Planning exit-gate checklist (criterion → evidence)
+
+| Exit criterion | Evidence |
+|---|---|
+| Bounded problem, exclusions, testable stories, verifiable FRs frozen | `spec.md` FR-001..FR-007 + explicit out-of-scope section at qualified head |
+| Deterministic precedence + fail-closed semantics frozen | `research.md` §5–§6 (SP-001..SP-002 order, conflict → ABSTAIN/ESCALATE, reason-code vocabulary) |
+| Tool registry contract frozen | `contracts/tool-registry.schema.json` (14 required fields, `network_required const false`, `execution_authority const NONE`) |
+| Trace/seal/manifest trust model frozen | `data-model.md` §1.4–§1.5 + `contracts/{interaction-trace,trace-seal,fixture-manifest}.schema.json`; trusted commit OID out-of-band |
+| Typed evidence prerequisites marked, not fabricated | `checklists/requirements.md` FR-006 `[~]`, FR-007 `[~]`; T017..T020 unexecuted |
+| Static analyze clean | `analysis.md`: CRITICAL=0 HIGH=0 MEDIUM=0 RESULT=PASS (planning) |
+| Independent exact-head review qualified | Qodo review of PR #39 head `6308e40` MATERIAL_BLOCKER=NO |
+| Baseline preserved | 513 tests + 77 subtests PASS, `compileall` PASS, worktree clean at `52f799b` |
+
+Scope boundary: this authorizes offline deterministic software implementation of the frozen qualified planning package only. It does NOT grant model execution, model-weight access, model conversion, training, benchmark payload access/execution, Private Gold access, PHI access, device execution, external clinical database access, credential access, or any spend.
+
+```text
+MODEL_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+PRIVATE_GOLD_AUTHORITY=NONE
+PHI_AUTHORITY=NONE
+DEVICE_EXECUTION_AUTHORITY=NONE
+EXTERNAL_CLINICAL_DATABASE_ACCESS_AUTHORITY=NONE
+CREDENTIAL_ACCESS_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
 ## Execution and training authority
 
 **No spec currently authorizes training, model execution, model-weight access, benchmark payload execution, or real-model tournament execution.**
@@ -140,7 +194,8 @@ Planning reconciliation superseded stale PR #34 (`f116bea`) without deleting imp
 ```text
 SPEC_005=CLOSED_CANONICAL
 SPEC_005_LIFECYCLE_AUTHORITY=CLOSED_CANONICAL (control-plane only)
-SPEC_006=AUTHORIZED_TO_SPECIFY
+SPEC_006=AUTHORIZED_TO_START
+SPEC_006_LIFECYCLE_AUTHORITY=IMPLEMENTATION_ONLY (offline deterministic)
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
