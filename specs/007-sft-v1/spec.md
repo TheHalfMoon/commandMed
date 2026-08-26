@@ -56,8 +56,8 @@ Every SFT example carries provenance, license status, content identity/hash, spl
 
 - **FR-001**: System MUST define the SFT V1 curriculum as a versioned, identity-bound set of examples spanning medical fundamentals/factual accuracy, clinical problem representation, differential reasoning, active information acquisition, patient explanation, professional workflow, evidence use, uncertainty/abstention, tools/structured outputs, Arabic/English clinical language, and adversarial/unsafe cases — with per-class (`PATIENT_CAREGIVER` / `CLINICAL_PROFESSIONAL` / `LEARNER_RESEARCHER`) routing recorded per example.
 - **FR-002**: System MUST bind the base checkpoint exclusively to tournament evidence: exact checkpoint identity, license compatibility with FD-001, and qualification manifest from the frozen Specs 004–005 protocol. [CLARIFIED as typed prerequisite: the winning checkpoint remains `NEEDS_EVIDENCE` until the authorized tournament execution produces it — this specification MUST NOT name a candidate family as selected]
-- **FR-003**: System MUST enforce Gold/holdout quarantine: `COMMANDMED_CLINICAL_GOLD`, `COMMANDMED_ARABIC_GOLD`, and `COMMANDMED_MULTIMODAL_GOLD` artifacts are structurally excluded from curriculum construction, hyperparameter selection, and checkpoint selection, with machine-verifiable exclusion evidence.
-- **FR-004**: System MUST require every curriculum record to satisfy the Spec 003 provenance contract (source authority, license, content SHA-256, split identity, contamination status, review/adjudication state) before admission, failing closed otherwise.
+- **FR-003**: System MUST enforce Gold/holdout quarantine: `COMMANDMED_CLINICAL_GOLD`, `COMMANDMED_ARABIC_GOLD`, and `COMMANDMED_MULTIMODAL_GOLD` artifacts are structurally excluded from curriculum construction, SFT training, hyperparameter and recipe selection, checkpoint selection, and every other selection or tuning surface, with machine-verifiable exclusion evidence for each surface.
+- **FR-004**: System MUST require every curriculum record AND every evaluation asset consumed by the frozen protocol replay (metric inputs, replay fixtures, threshold records) to satisfy the Spec 003 provenance contract (source authority, license, content SHA-256, split identity, contamination status, `source_verification_status`, review/adjudication state) before admission, failing closed otherwise.
 - **FR-005**: System MUST freeze the evaluation protocol BEFORE any run: the V1 metric catalog, hard gates, statistical metrics, stratification (including Arabic strata per master plan §13), sample-size rationale, and review-threshold margins from Specs 001–002 apply unchanged; SFT-specific acceptance thresholds are frozen as versioned records prior to activation.
 - **FR-006**: System MUST represent the training configuration (role mix ratios, sequence budget, adapter/full-update decision, optimizer class, seeds) as a versioned preconstruction record validated by the Spec 005 control plane, with every unresolved numeric left as `NEEDS_EVIDENCE` rather than placeholder fiction. [CLARIFIED boundaries resolved here; exact values are later-stage evidence]
 - **FR-007**: System MUST keep Spec 006's behavioral states intact: the SFT candidate is evaluated through the same fixture protocol, and generative adaptation MUST NOT weaken emergency/escalation precedence, abstention, or tool-routing determinism.
@@ -71,17 +71,17 @@ Every SFT example carries provenance, license status, content identity/hash, spl
 - **Base Checkpoint Binding**: tournament-evidence-bound model identity + license posture + device-tier fit note.
 - **Training Configuration Record**: versioned preconstruction artifact (mix ratios, budgets, seeds, adapter decision) passing Spec 005 validators.
 - **Evaluation Binding**: pointer into the frozen V1 metric catalog + SFT acceptance thresholds frozen pre-run.
-- **Run Manifest**: (later stage) activation-gated record tying checkpoint + config + data snapshot + eval protocol into one reproducible unit.
+- **Run Manifest**: (later stage) activation-gated record tying checkpoint + config + data snapshot + eval protocol into one reproducible unit, and carrying the identity-bound Spec 005 **A14 finance authorization reference** (requirement-manifest identity, budget estimate, and `CURRENT_AUTHORIZED_SPEND_USD` snapshot) so activation validates A14 against the exact run — or A14 is validated independently against the run by the activation gate before any execution.
 
 ## Success Criteria
 
 ### Measurable Outcomes
 
-- **SC-001**: 100% of admitted curriculum records carry complete Spec 003 provenance bundles; zero records admitted fail-closed.
+- **SC-001**: 100% of admitted curriculum records AND evaluation assets carry complete Spec 003 provenance bundles; zero records or assets admitted fail-closed.
 - **SC-002**: Zero Gold/holdout artifacts present in any construction surface, proven by replayable exclusion evidence.
 - **SC-003**: All hard safety gates evaluate **PASS** on the candidate's frozen evaluation replay through the canonical qualification path. Any gate returning `INSUFFICIENT_EVIDENCE` is surfaced explicitly as **non-qualification** of the candidate (fail-closed per Spec 002), never accepted as success; zero silent or averaged failures.
 - **SC-004**: Base-vs-SFT paired deltas are computed on the full frozen stratification with pre-registered margins; out-of-margin regressions are surfaced as failures, never averaged.
-- **SC-005**: The entire specify→construction→evaluation pipeline runs offline-deterministically at the validator level (`pytest -q`); no network, weights, PHI, or spend is required until separately authorized gates open.
+- **SC-005**: The entire specify→construction→evaluation pipeline runs offline-deterministically at the validator level (`pytest -q`) AND passes one composed fail-closed validator check spanning the full path — covering model weights access, PHI, credentials, provider APIs, network access, and spend — such that any prohibited-surface touch fails closed; none of these surfaces is required or permitted until separately authorized gates open.
 
 ## Assumptions
 
@@ -104,7 +104,7 @@ Exit from the specification stage requires ALL of the following, merged canonica
 
 1. This `spec.md` passing static analyze with CRITICAL=0 / HIGH=0 / MEDIUM=0 and no constitution violation.
 2. Independent exact-head review of the specification head reporting MATERIAL_BLOCKER=NO.
-3. Every hard FR above either frozen from existing canonical contracts (FR-003/FR-004/FR-005/FR-007) or explicitly typed as `NEEDS_EVIDENCE` with named evidence kind and later-stage owner (FR-002/FR-006/FR-008) — no silent gaps.
+3. Every hard FR above (FR-001 through FR-008) is classified exactly one way with no silent gaps: either frozen from an identified canonical contract — FR-001 from decision-register D-003 role classes, FR-003 from AGENTS.md invariants 3–4, FR-004 from the Spec 003 contract, FR-005 from Specs 001–002, FR-007 from the Spec 006 boundary — or explicitly typed `NEEDS_EVIDENCE` with named evidence kind and later-stage owner: FR-002 (tournament winner identity; owner: authorized tournament execution), FR-006 (training-config numerics; owner: planning stage), FR-008 (budget determination; owner: Spec 005 finance workload + founder spend gate).
 4. Baseline suite unchanged (`pytest -q` 627+128 PASS, `compileall` PASS, `git diff --check` PASS) — specifications add no runtime code.
 5. Registry updated to the next lifecycle stage only via the separate founder authorization record.
 
