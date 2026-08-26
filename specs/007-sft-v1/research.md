@@ -20,7 +20,7 @@ The resulting design must remain:
 - explicit about the limits of GPU reproducibility;
 - compatible with the three frozen role classes;
 - safe under multi-turn/tool-use interactions;
-- quarantine-clean across every tuning and checkpoint-selection surface.
+- quarantine-clean across every monitoring, tuning, recipe, and checkpoint-selection surface.
 
 ## 2. Findings and planning decisions
 
@@ -110,23 +110,25 @@ Real health interactions are frequently multi-turn, context-seeking, and tool/ev
 
 BFCL-style dimensions may inform methodology, but no external benchmark is automatically a release gate.
 
-### R-006 — Safety preservation must be measured during training, not only at the end
+### R-006 — Safety preservation during a run must not create a quarantine leak
 
-Published evidence shows that downstream fine-tuning can degrade an aligned model's safety even when fine-tuning data is not intentionally adversarial.
+Published evidence shows that downstream fine-tuning can degrade an aligned model's safety even when fine-tuning data is not intentionally adversarial. That does not justify reusing quarantined evaluation assets as optimization feedback.
 
-**Decision:** future authorized training must use checkpoint-level sentinel evaluation:
+**Decision:** the canonical Spec 007 FR-003 quarantine matrix remains authoritative across monitoring, early stopping, recipe selection, and checkpoint selection. A future authorized run may use a separately identity-bound `SFT_ABORT_SENTINEL_SET` only if its source identities are outside the prohibited canonical quarantine set for the exact SFT monitoring purpose, all Spec 003 evidence passes, the set is excluded from gradient-bearing data, and its only permitted actions are `CONTINUE`, `ABORT_RUN`, or `DISQUALIFY_RUN`.
 
-1. freeze base checkpoint safety/abstention/tool baselines before optimization;
-2. evaluate a small quarantined development-safety sentinel at declared checkpoint intervals;
-3. hard-fail/abort a run when a frozen non-compensable gate regresses beyond its predeclared rule;
-4. never use final Gold as a checkpoint-selection signal;
-5. run full canonical safety qualification only after candidate selection.
+An abort-only sentinel must never:
 
-No amount of average quality gain compensates for a hard safety failure.
+- rank checkpoints;
+- choose a recipe/update strategy;
+- change hyperparameters;
+- drive early stopping toward a preferred checkpoint;
+- select a model.
 
-### R-007 — Catastrophic forgetting requires an explicit preservation contract
+If no permissible abort-only sentinel exists, intra-run monitoring does not become an exception: the pre-registered run schedule continues and final qualification occurs after checkpoint identity is frozen.
 
-Spec 007 already requires base-vs-SFT paired deltas, but the plan must make the preservation set and decision rule operational.
+### R-007 — Catastrophic forgetting requires an explicit preservation contract without tuning on holdouts
+
+Spec 007 already requires base-vs-SFT paired deltas, but the plan must make the preservation set and decision rule operational without leaking quarantined assets into optimization.
 
 **Decision:** create a versioned `CapabilityPreservationBinding` covering at minimum:
 
@@ -138,21 +140,15 @@ Spec 007 already requires base-vs-SFT paired deltas, but the plan must make the 
 - safety;
 - core medical strata.
 
-Checkpoint-level development evidence may detect drift early. Final qualification remains against frozen evaluation assets and pre-registered margins.
+When those slices are backed by canonical quarantine-controlled sources, they are qualification evidence only. They cannot rank checkpoints, alter the recipe, set hyperparameters, or otherwise influence optimization. Abort-only drift detection, if used, must satisfy R-006's separate non-quarantined sentinel contract.
 
-### R-008 — Checkpoint selection needs a quarantine-safe firewall
+### R-008 — Checkpoint selection needs the complete canonical quarantine firewall
 
-Selecting the "best" checkpoint solely by training loss or repeatedly consulting final test/Gold evidence creates hidden optimization leakage.
+Selecting the "best" checkpoint by repeatedly consulting test, Gold, development, benchmark, pilot, or other quarantine-controlled evidence creates hidden optimization leakage.
 
-**Decision:** freeze checkpoint selection before training as a lexicographic policy, not an ad hoc post-hoc choice:
+**Decision:** all source identities governed by Spec 007 FR-003's canonical quarantine matrix are structurally excluded from SFT checkpoint ranking/selection, recipe selection, hyperparameter selection, early stopping, and every other tuning surface. This includes the explicitly named sources `COMMANDMED_CLINICAL_GOLD`, `COMMANDMED_ARABIC_GOLD`, `COMMANDMED_MULTIMODAL_GOLD`, `CALIBRATION_HOLD_OUT_SPLIT`, `MODEL_SELECTION_DEV_SET`, `PUBLIC_BENCHMARK_DEV_SPLITS`, `HELD_OUT_SYNTHETIC_PILOT_CASES`, `VERIFIED_DEV_SPLIT`, plus every additional source identifier in the frozen matrix for a prohibited SFT tuning purpose. `CALIBRATION_HOLD_OUT_SPLIT` remains calibration-only.
 
-1. all hard development safety/quarantine requirements must pass;
-2. development capability-preservation gates must pass;
-3. declared SFT development objectives determine ordering;
-4. resource/efficiency evidence may break allowed ties;
-5. final Gold/test/Private Gold never participates in checkpoint or recipe selection.
-
-The exact metrics/margins remain typed evidence until the planning stage freezes them.
+Until a separate canonical source/purpose authority admits a demonstrably non-quarantined SFT checkpoint-selection source, the checkpoint rule is fixed before training — e.g. the final checkpoint at the pre-registered step/token budget — with no evaluation asset used to rank checkpoints. Abort-only sentinels cannot rank.
 
 ### R-009 — GPU reproducibility must be defined realistically
 
@@ -247,22 +243,22 @@ TRL/Transformers, PEFT, Axolotl, Unsloth, Liger, or other stacks may be useful, 
 
 Do not canonically preselect Unsloth, Axolotl, raw TRL, PEFT mode, LoRA, QLoRA, or full update during clarification.
 
-### R-015 — Open-ended and realistic medical evaluation should complement MCQ evidence
+### R-015 — Open-ended and realistic medical evaluation should complement MCQ evidence without becoming hidden tuning feedback
 
-HealthBench uses realistic multi-turn health conversations and physician-authored rubrics. HealthBench Professional extends this toward clinician workflows. These are useful development/evaluation references because commandMed targets patient and professional behavior rather than only exam accuracy.
+HealthBench uses realistic multi-turn health conversations and physician-authored rubrics. HealthBench Professional extends this toward clinician workflows. These are useful evaluation references because commandMed targets patient and professional behavior rather than only exam accuracy.
 
-**Decision:** planning must maintain two distinct evaluation families:
+**Decision:** planning maintains two distinct evaluation families:
 
 - structured/verifiable tasks where deterministic scoring is defensible;
 - open-ended conversation/workflow tasks with physician-derived rubrics and explicit evaluator-validation limits.
 
-An LLM judge is never the sole medical truth authority. Evaluator independence and calibration must be checked before a judge-derived metric can influence checkpoint selection.
+An LLM judge is never the sole medical truth authority. Admission of an external suite as evaluation evidence does not authorize its use for checkpoint/recipe selection. Any judge-derived result that is backed by a quarantined source is qualification-only under FR-003; a future optimization-affecting use would require a separately canonicalized, non-quarantined source/purpose authority.
 
 ### R-016 — Abstention needs a dedicated curriculum/evaluation slice
 
 MedAbstain-style evidence reinforces that high task accuracy does not imply knowing when to abstain.
 
-**Decision:** SFT V1 requires dedicated development and final-evaluation slices for:
+**Decision:** SFT V1 requires dedicated curriculum coverage and final-evaluation slices for:
 
 - missing information;
 - contradictory information;
@@ -274,7 +270,7 @@ MedAbstain-style evidence reinforces that high task accuracy does not imply know
 - `ESCALATE`;
 - `EMERGENCY`.
 
-Correctly not answering can be a positive target.
+Correctly not answering can be a positive target. Quarantined final/development evaluation sources remain outside tuning and checkpoint selection.
 
 ### R-017 — Memorization/regurgitation requires explicit auditability
 
@@ -284,8 +280,10 @@ Correctly not answering can be a positive target.
 - repeated-record detection;
 - benchmark overlap detection;
 - bounded canary strategy for memorization testing using non-sensitive synthetic strings;
-- verbatim-regurgitation probes on licensed/public development material where legally appropriate;
+- verbatim-regurgitation probes on licensed/public evidence where legally appropriate;
 - no PHI or secrets used as canaries.
+
+Any audit asset that belongs to the canonical quarantine set is evidence-only and cannot be fed back into recipe/checkpoint tuning.
 
 ### R-018 — The tournament-to-training handshake must be an explicit lifecycle gate
 
@@ -309,7 +307,7 @@ Pi may prepare schemas, validators, manifests, and decision packets. Pi must not
 
 ## 3. Evaluation/reference candidates discovered in this review
 
-These are research/evaluation candidates only and require their own license, identity, version, contamination, and admissibility review before use:
+These are research/evaluation candidates only and require their own license, identity, version, contamination, admissibility, and quarantine-purpose review before use:
 
 - HealthBench — realistic multi-turn health conversations with physician-authored rubrics.
 - HealthBench Professional — clinician-facing care consult, writing/documentation, and medical-research tasks.
@@ -318,7 +316,7 @@ These are research/evaluation candidates only and require their own license, ide
 - MedArabiQ — multiple Arabic medical task formats.
 - BFCL V4 methodology — tool/function-calling accuracy, multi-turn behavior, hallucination measurement, format sensitivity.
 
-None is automatically a training source or release gate.
+None is automatically a training source, tuning source, checkpoint-selection source, or release gate.
 
 ## 4. Primary research sources
 
@@ -351,8 +349,8 @@ P0_PLAN_HARDENING_REQUIRED=
   TOKENIZER_TEMPLATE_IDENTITY,
   LOSS_MASK_POLICY,
   PACKING_TRUNCATION_POLICY,
-  CHECKPOINT_SELECTION_FIREWALL,
-  SAFETY_SENTINEL_GATES,
+  FULL_QUARANTINE_SELECTION_FIREWALL,
+  ABORT_ONLY_SAFETY_SENTINEL_GATE,
   CAPABILITY_PRESERVATION,
   REPRODUCIBILITY_LEVELS,
   RUN_RESUME_INTEGRITY,
