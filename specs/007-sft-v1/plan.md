@@ -3,7 +3,7 @@
 **Branch:** `spec/007-clarify-plan-hardening-v2`
 **Parent authorization candidate:** PR #47 head `5e8618de32468f04d797117cc46bb2bdf72dd3e1`
 **Specification:** canonical via PR #46 / merge `645da20263fc44d1ed8977024cf2df57aa6f7465`
-**Status:** planning candidate created from Founder-directed gap review; merge/canonicalization remains lifecycle-gated
+**Status:** non-canonical planning candidate created from Founder-directed gap review; clarification may become canonical only after PR #47, and this `plan.md` itself must not become canonical until the repository separately records planning-stage authority
 **Execution authority:** NONE
 **Training authority:** NONE
 **Model selection authority:** FOUNDER+CHATGPT ONLY
@@ -14,7 +14,7 @@
 
 Build the minimum SFT V1 control plane required to make the first future commandMed supervised fine-tuning run scientifically reproducible, quarantine-clean, safety-preserving, Arabic-aware, and auditable.
 
-The plan intentionally separates four different states that must never be conflated:
+The plan intentionally separates states that must never be conflated:
 
 ```text
 SFT_PLAN_READY
@@ -47,15 +47,32 @@ No plan item may allow optimization evidence to redefine a frozen evaluation tar
 
 ### 3.1 Evaluation before optimization
 
-PASS by construction: all candidate qualification, capability-preservation margins, safety sentinels, checkpoint-selection rules, and SFT-specific acceptance records must be versioned and frozen before the first gradient update they govern.
+PASS by construction: candidate qualification rules, capability-preservation rules, any abort-only sentinel thresholds, fixed checkpoint policy, and SFT-specific acceptance records must be versioned and frozen before the first gradient update they govern.
 
 ### 3.2 Safety hard gates
 
-PASS by construction: hard safety/quarantine failures remain non-compensable. Development monitoring may abort/disqualify a run but may not redefine final Gold/test criteria.
+PASS by construction: hard safety/quarantine failures remain non-compensable. A permissible abort-only safety sentinel may terminate or invalidate a future run, but it cannot rank checkpoints, choose recipes, alter hyperparameters, or create an early-stopping preference.
 
-### 3.3 Provenance and quarantine
+### 3.3 Provenance and complete quarantine firewall
 
-PASS by construction: every training/evaluation asset and every rendered training record is identity-bound. Gold/holdout assets remain structurally excluded from curriculum, training, recipe selection, early stopping, checkpoint selection, and model selection.
+PASS by construction: every training/evaluation asset and every rendered training record is identity-bound. The canonical quarantine source matrix from `eval_contract.validate` / its frozen quarantine data is authoritative.
+
+For Spec 007 SFT tuning surfaces, the sources explicitly named by FR-003 are structurally excluded from curriculum construction, gradient-bearing SFT data, monitoring that can influence optimization, hyperparameter/recipe selection, early stopping, checkpoint ranking/selection, model selection, and every other tuning or selection surface:
+
+```text
+COMMANDMED_CLINICAL_GOLD
+COMMANDMED_ARABIC_GOLD
+COMMANDMED_MULTIMODAL_GOLD
+CALIBRATION_HOLD_OUT_SPLIT
+MODEL_SELECTION_DEV_SET
+PUBLIC_BENCHMARK_DEV_SPLITS
+HELD_OUT_SYNTHETIC_PILOT_CASES
+VERIFIED_DEV_SPLIT
+```
+
+The same exclusion applies to every additional source identifier governed by the frozen canonical matrix for a prohibited SFT tuning purpose, including public canonical-test sources. The implementation must bind to the canonical matrix identity rather than treating this copied list as the sole authority. `CALIBRATION_HOLD_OUT_SPLIT` remains calibration-only.
+
+A label such as `DEV` or `CHECKPOINT_SELECTION` does not create an exception to Spec 007 FR-003.
 
 ### 3.4 Model neutrality
 
@@ -258,7 +275,7 @@ Binds the exact admitted record set, canonical ordering, rendered-token accounti
 
 ### 6.7 CapabilityPreservationBinding
 
-Defines base-vs-SFT paired development/final slices for:
+Defines base-vs-SFT paired qualification slices for:
 
 - general reasoning;
 - instruction following;
@@ -268,19 +285,22 @@ Defines base-vs-SFT paired development/final slices for:
 - uncertainty/abstention;
 - safety.
 
+Any slice that is part of the canonical quarantine matrix is final/qualification evidence only and cannot be recycled into tuning or checkpoint selection.
+
 ### 6.8 CheckpointSelectionPolicy
 
-Pre-registered lexicographic policy:
+The checkpoint-selection rule is frozen pre-run and must not consume any asset in the canonical quarantine-controlled source set.
+
+Default policy while no separately authorized, non-quarantined SFT selection source exists:
 
 ```text
-HARD_DEV_SAFETY_PASS
-AND QUARANTINE_PASS
-AND CAPABILITY_PRESERVATION_PASS
-THEN optimize declared SFT development objectives
-THEN allowed resource/efficiency tie-breaks
+SELECTION_MODE=FIXED_PRE_REGISTERED_CHECKPOINT
+CHECKPOINT_RULE=PREDECLARED_FINAL_STEP_OR_TOKEN_BUDGET
+EVALUATION_ASSET_RANKING=PROHIBITED
+ABORT_SENTINEL_CAN_RANK=NO
 ```
 
-Final Gold/test/Private Gold are prohibited inputs.
+A future evidence-driven ranking policy is permitted only after a separately canonicalized source/purpose authority proves that its selection evidence is outside the prohibited quarantine set for the exact SFT selection surface. Training loss or evaluator output cannot silently create such authority.
 
 ### 6.9 EnvironmentManifest
 
@@ -356,17 +376,17 @@ Generate a `CurriculumCoverageReport` with:
 
 Any future data-selection algorithm is optional and must prove incremental value; LESS or similar approaches are research candidates, not mandatory dependencies.
 
-### 7.4 Duplicate/contamination firewall
+### 7.4 Duplicate/contamination/quarantine firewall
 
 Before admission and again after transformations/rendering:
 
 - exact duplicate detection;
 - normalized near-duplicate detection;
 - benchmark overlap detection;
-- quarantine-source matching;
+- canonical quarantine-source matching against the frozen matrix identity;
 - repeated-content concentration detection.
 
-A post-rendering transformation must not reintroduce an overlap missed at raw-record stage.
+A post-rendering transformation must not reintroduce an overlap missed at raw-record stage. A source permitted for one canonical purpose is not automatically permitted for SFT training, monitoring, selection, or tuning.
 
 ### 7.5 Mutable knowledge placement
 
@@ -411,6 +431,8 @@ All final behavior still composes through Spec 006.
 
 Create a dedicated `AbstentionCoverageReport` and evaluation slice for missing, contradictory, ambiguous, OOD, unsupported, and insufficient-evidence scenarios. Correct `ASK_MORE`/`ABSTAIN`/`ESCALATE` decisions are positive behavior, not failures to answer.
 
+Any quarantined evaluation slice is qualification-only and cannot be used to tune the recipe or select the checkpoint.
+
 ## 9. Arabic plan
 
 ### 9.1 Record metadata
@@ -443,7 +465,7 @@ Pi reports measurements; Pi does not select the model.
 
 ### 9.3 Evaluation candidates
 
-MedAraBench and MedArabiQ are candidates for development/evaluation research only after exact identity/license/split/contamination review. No automatic training use.
+MedAraBench and MedArabiQ are candidates for development/evaluation research only after exact identity/license/split/contamination review. No automatic training use and no checkpoint/recipe-selection use unless a future explicit source/purpose policy authorizes that exact surface without violating FR-003.
 
 ## 10. Prompt rendering, masking, packing, and truncation
 
@@ -471,11 +493,11 @@ Fail closed rather than silently truncating required safety/tool/target context.
 
 ## 11. Safety and catastrophic-forgetting plan
 
-### 11.1 Base baseline
+### 11.1 Base qualification baselines
 
-Before any future run, freeze base checkpoint development baselines on:
+Before any future run, freeze base-checkpoint qualification baselines on the required canonical protocol dimensions:
 
-- Spec 002 hard-gate development counterparts;
+- Spec 002 hard gates;
 - Spec 006 behavioral-state/tool fixtures;
 - abstention;
 - general reasoning;
@@ -483,35 +505,74 @@ Before any future run, freeze base checkpoint development baselines on:
 - Arabic;
 - medical core.
 
-### 11.2 Checkpoint-level sentinel gates
+If an underlying asset belongs to the canonical quarantine matrix, its base result is retained for later paired qualification only. It cannot be exposed during optimization or used to rank checkpoints/recipes.
 
-Use only designated development assets. At predeclared checkpoints:
+### 11.2 Abort-only checkpoint sentinel gates
 
-- run small safety/capability sentinel evaluation;
-- write immutable result identities;
-- abort/disqualify according to frozen thresholds/rules;
-- never consult final Gold for early stopping.
+Intra-run monitoring is optional, not an exception to quarantine.
+
+A separately identity-bound `SFT_ABORT_SENTINEL_SET` may be used only if pre-run validation proves:
+
+- none of its source identities belong to the canonical quarantine-controlled set for a prohibited SFT tuning purpose;
+- Spec 003 provenance/license/split/contamination/source-verification requirements pass;
+- it is excluded from gradient-bearing curriculum/training data;
+- thresholds are frozen pre-run;
+- the only allowed action is `CONTINUE`, `ABORT_RUN`, or `DISQUALIFY_RUN`.
+
+It must not:
+
+- rank checkpoints;
+- choose a recipe/update strategy;
+- change hyperparameters;
+- drive early stopping toward a preferred checkpoint;
+- select a model.
+
+If such a sentinel cannot be established, no intra-run evaluator is permitted to bypass the quarantine firewall. The pre-registered fixed checkpoint schedule remains in force.
 
 ### 11.3 Final qualification
 
-After checkpoint selection freezes, evaluate against the full frozen canonical protocol. Hard failures are non-compensable.
+After checkpoint identity is frozen by the pre-registered quarantine-safe rule, evaluate against the full frozen canonical protocol. Hard failures are non-compensable. Final results cannot retroactively alter the recipe/checkpoint and then be re-used as untouched holdout evidence.
 
 ## 12. Checkpoint selection firewall
 
-Checkpoint selection policy must exist before the run.
+Checkpoint policy must exist before the run.
 
-Forbidden:
+### 12.1 Canonical prohibited inputs
 
-- choosing the checkpoint with the best final test/Gold result;
-- repeated human/LLM inspection of final holdout for recipe tuning;
-- choosing solely by lowest training/eval loss when safety/capability constraints exist.
+No source governed by Spec 007 FR-003's canonical quarantine set may influence checkpoint ranking/selection, early stopping, hyperparameter selection, recipe selection, model selection, or another tuning surface. This includes at minimum:
 
-Required ordering:
+- `COMMANDMED_CLINICAL_GOLD`;
+- `COMMANDMED_ARABIC_GOLD`;
+- `COMMANDMED_MULTIMODAL_GOLD`;
+- `CALIBRATION_HOLD_OUT_SPLIT`;
+- `MODEL_SELECTION_DEV_SET`;
+- `PUBLIC_BENCHMARK_DEV_SPLITS`;
+- `HELD_OUT_SYNTHETIC_PILOT_CASES`;
+- `VERIFIED_DEV_SPLIT`;
+- every other source identifier controlled by the same frozen matrix for a prohibited SFT tuning purpose.
 
-1. hard development safety + quarantine;
-2. capability-preservation gates;
-3. frozen SFT development objectives;
-4. declared resource tie-breaks.
+The implementation validates against the canonical matrix identity, not only this prose list.
+
+### 12.2 Current default selection rule
+
+Until a separate canonical policy admits an expressly non-quarantined selection source for SFT V1, checkpoint selection is deterministic and evaluation-independent:
+
+```text
+SELECTION_MODE=FIXED_PRE_REGISTERED_CHECKPOINT
+RULE=FINAL_CHECKPOINT_AT_FROZEN_STEP_OR_TOKEN_BUDGET
+```
+
+Training loss, abort-only sentinels, human inspection, LLM judges, or quarantined development assets cannot override this rule.
+
+### 12.3 Future optional selection evidence
+
+A later evidence-ranking policy may exist only if, before the run:
+
+- the source is outside the prohibited canonical quarantine set for the exact intended purpose;
+- source/purpose authority is explicit and canonical;
+- provenance/license/contamination checks pass;
+- selection rule and thresholds are frozen;
+- no final qualification asset is recycled into tuning.
 
 Record every checkpoint considered and the deterministic reason for selection/rejection.
 
@@ -525,9 +586,11 @@ HealthBench is a development/evaluation candidate for multi-turn patient/clinici
 
 HealthBench Professional is a candidate for care consult, writing/documentation, and medical-research workflows.
 
+Their admission as evaluation assets does not make them eligible for recipe/checkpoint/tuning decisions. Purpose-specific quarantine rules remain authoritative.
+
 ### 13.2 Evaluator limits
 
-Judge-based scoring never overrides deterministic hard gates. Before a judge-derived metric affects checkpoint selection, validate evaluator agreement, bias/lineage concerns, and failure-to-abstain behavior sufficiently for the intended use.
+Judge-based scoring never overrides deterministic hard gates. Under the current Spec 007 quarantine contract, judge-derived results from quarantined evaluation assets cannot influence checkpoint or recipe selection. Any future selection use requires a separately admitted non-quarantined source/purpose record and validated evaluator agreement, bias/lineage behavior, and failure-to-abstain behavior.
 
 ### 13.3 Tool use
 
@@ -656,6 +719,8 @@ Training activation must fail if any of the following is missing/stale/mismatche
 - access grants;
 - training authorization.
 
+Activation must additionally verify that no canonical quarantined source is bound to a prohibited training/monitoring/selection/tuning surface and that any abort-only sentinel has `CAN_RANK_CHECKPOINTS=false`, `CAN_TUNE_RECIPE=false`, and `CAN_CHANGE_HYPERPARAMETERS=false` semantics.
+
 Return only a non-executing readiness state until every separately controlled gate is canonical.
 
 ## 19. Verification plan for offline implementation
@@ -674,13 +739,17 @@ Additional focused verification should prove:
 
 - closed record vocabularies;
 - canonical identity generation;
-- duplicate and quarantine rejection;
+- duplicate rejection;
+- canonical quarantine-matrix identity binding;
+- rejection of every quarantined source on curriculum/training/monitoring/early-stopping/recipe/checkpoint/model-selection surfaces where FR-003 prohibits it;
+- calibration split accepted only for calibration;
+- abort-only sentinel cannot rank/select/tune;
+- fixed pre-registered checkpoint rule when no separately admitted selection source exists;
 - role/language/strata coverage reports;
 - rendering identity changes on template changes;
 - loss-mask boundary fixtures;
 - truncation fail-closed behavior;
 - packing policy admission/rejection;
-- checkpoint-selection Gold firewall;
 - environment-manifest completeness;
 - resumable-vs-export checkpoint distinction;
 - all activation prerequisites;
@@ -694,12 +763,12 @@ Test counts must be reported from the live branch; do not hard-code the current 
 
 ```text
 P0 lifecycle/contract identities
-P1 curriculum/provenance/quarantine contracts
+P1 curriculum/provenance/full-quarantine contracts
 P2 tokenizer/template/rendering/loss-mask contracts
 P3 packing/truncation contracts
 P4 Arabic metadata + tokenizer-evidence packet schema
-P5 capability-preservation + safety-sentinel contracts
-P6 checkpoint-selection firewall
+P5 capability-preservation + abort-only safety-sentinel contracts
+P6 fixed checkpoint-selection firewall + optional future selection-source gate
 P7 environment/reproducibility/resume contracts
 P8 run-manifest + activation composition
 P9 synthetic fixtures + focused validator tests
@@ -713,9 +782,9 @@ Tasks must not smuggle live execution into offline implementation.
 ## 21. Risks and mitigations
 
 - **Hidden objective drift from trainer defaults** -> explicit rendering + loss-mask contracts.
-- **Safety degradation during benign SFT** -> pre-run baseline + checkpoint sentinels + final hard gates.
-- **Catastrophic forgetting** -> paired capability-preservation binding.
-- **Benchmark leakage through checkpoint selection** -> dev-only selection firewall.
+- **Safety degradation during benign SFT** -> pre-run baseline + optional abort-only, quarantine-clean sentinel + final hard gates.
+- **Catastrophic forgetting** -> paired capability-preservation binding used for qualification, never as a hidden tuning leak.
+- **Benchmark/holdout leakage through selection or monitoring** -> full canonical quarantine firewall across all optimization-affecting surfaces.
 - **Arabic inefficiency hidden by aggregate accuracy** -> tokenizer fragmentation evidence.
 - **Irreproducible interrupted runs** -> resumable checkpoint manifest.
 - **False cross-GPU determinism claim** -> two-level reproducibility semantics.
@@ -748,11 +817,11 @@ This plan does NOT authorize or perform:
 
 ## 23. Plan exit condition
 
-The planning package is ready for checklist/tasks/analyze only when review confirms that it contains no unresolved hard ambiguity about:
+This non-canonical planning candidate is ready to enter the repository's separately authorized planning lifecycle only when review confirms that it contains no unresolved hard ambiguity about:
 
 ```text
 CURRICULUM_IDENTITY
-PROVENANCE_AND_QUARANTINE
+PROVENANCE_AND_FULL_QUARANTINE_FIREWALL
 TOKENIZER_AND_TEMPLATE_IDENTITY
 PROMPT_RENDERING
 LOSS_MASKING
@@ -760,9 +829,9 @@ PACKING_AND_TRUNCATION
 MULTI_TURN_AND_TOOL_USE
 ABSTENTION
 ARABIC_METADATA_AND_TOKENIZER_EVIDENCE
-SAFETY_SENTINEL_MONITORING
+ABORT_ONLY_SAFETY_MONITORING
 CAPABILITY_PRESERVATION
-CHECKPOINT_SELECTION_FIREWALL
+FIXED_CHECKPOINT_SELECTION_FIREWALL
 MEMORIZATION_AUDIT
 REPRODUCIBILITY_LEVELS
 RESUME_INTEGRITY
