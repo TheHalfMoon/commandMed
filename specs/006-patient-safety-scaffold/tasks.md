@@ -49,7 +49,7 @@ Tasks below were executed canonically via PR #41 after the `AUTHORIZED_TO_START`
 
 ### C4 — Verification & close
 
-- [x] T021 Full `pytest -q` + trace replay + `evaluate_hard_gates` delegation proof (fixture suite 100% + hash-bound + deterministic, `SC-001..SC-004`) — IMPLEMENTED: tests/spec006/test_success_criteria.py SC-001..SC-004 + hard-gate delegation proof; full suite 627+128 PASS
+- [x] T021 Full `pytest -q` + trace replay + `evaluate_hard_gates` delegation proof (fixture suite 100% + hash-bound + deterministic, `SC-001..SC-004`) — IMPLEMENTED: tests/spec006/test_scaffold.py SC-001..SC-004 coverage (scenario fixtures, determinism replay, trusted-tree anchoring) + TestHardGateDelegation hard-gate delegation proof; full suite 627+128 PASS
 - [x] T022 `AUTHORIZED_TO_START` gate decision (canonical repo/founder) — implementation must not write `src/commandmed/spec006` before this — GATE SATISFIED: founder authorization recorded canonically via PR #40 (merge 18d26f75506cfd60de03caabe2083ff96eafa762, SPEC006_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START)
 
 **Task count:** 22 (10 planning executed at the qualified head + 12 implementation tasks executed via PR #41)
