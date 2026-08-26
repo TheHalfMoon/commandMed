@@ -25,7 +25,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; closure merge `3dc705a1de09347f3574b305afb1bfaa6d46ecff`. Final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
 | 005 | Base Model Tournament | `CLOSED_CANONICAL` | 004 `CLOSED_CANONICAL` | Implementation `5e35cd4` (tree `5b823d20`, head `d4caf94`) + planning reconciliation `799c36a` (tree `eaa8942`, head `83d7612`); closure `CLOSED_CANONICAL` via this closeout. Deterministic control plane only; no model/benchmark/Private Gold/PHI/device/spend execution. 513 tests + exact-head reviews `d4caf94`/`83d7612` MATERIAL_BLOCKER=NO. |
 | 006 | Patient Safety Scaffold & Deterministic Tools | `CLOSED_CANONICAL` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Implementation merge `4df3dc4eab5d3160d88b2f296dea62a8dd884b60` (tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`, final head `09da2d1b4f6d21a1053967df0b4c3a68ea6078f3`) under founder authorization PR #40; planning reconciliation `a9d7f37ea1abc537e99bbb75dda2a5b1f8625a8f`. Final 114+51 focused / 627+128 full tests; exact-head reviews no remaining material blocker. Offline deterministic scope only; T017-T020 remain typed `NEEDS_EVIDENCE` fail-closed gates. See closeout for full binding. |
-| 007 | SFT V1 | `BLOCKED` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` + founder training authorization NOT YET GRANTED | Three-class high-quality SFT. Dependencies satisfied by Spec 006 closure; training authority remains a separate required gate. |
+| 007 | SFT V1 | `AUTHORIZED_TO_SPECIFY` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Dependency edges satisfied by Spec 006 closure; founder approved the Spec 007 entry gate (specification stage ONLY). `TRAINING_AUTHORITY=NONE` — no SFT execution, weight access, or dataset construction is authorized by this stage. See authorization record below. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
 | 009 | Distillation V1 | `BLOCKED` | 008 | Minimum license-clean distillation; on-policy candidate. |
 | 010 | RLVR V1 | `BLOCKED` | 009 | Verifiable tasks only; optional NO-GO outcome. |
@@ -213,6 +213,38 @@ EVIDENCE_GATES_CARRIED_FORWARD=T017,T018,T019,T020 NEEDS_EVIDENCE
 
 See `specs/006-patient-safety-scaffold/closeout.md` for full binding. `SPEC_006=CLOSED_CANONICAL` effective after this closure merge and resulting canonical `main` verification.
 
+## Spec 007 specification authorization record
+
+The founder approved the Spec 007 entry gate after the Spec 006 canonical closure unblocked its dependency edges. Recorded canonically here before any `specs/007-*` artifact begins.
+
+```text
+SPEC007_SPECIFICATION_AUTHORITY=AUTHORIZED_TO_SPECIFY
+AUTHORIZATION_DATE=2026-08-25
+DEPENDENCY_EDGES_SATISFIED=003 CLOSED_CANONICAL, 005 CLOSED_CANONICAL, 006 CLOSED_CANONICAL
+IMPLEMENTATION_SCOPE=SPECIFICATION_STAGE_ONLY
+AUTHORIZED_STAGE=specify (Spec Kit: define bounded problem, exclusions, testable stories, verifiable FRs, typed evidence prerequisites, no implied execution authority)
+```
+
+Scope boundary: this authorizes **specification-stage work only**. It does NOT authorize clarification beyond the specify stage's own gate, planning, implementation, or any execution. Training authority remains explicitly withheld:
+
+```text
+TRAINING_AUTHORITY=NONE
+MODEL_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+PRIVATE_GOLD_AUTHORITY=NONE
+PHI_AUTHORITY=NONE
+DEVICE_EXECUTION_AUTHORITY=NONE
+EXTERNAL_CLINICAL_DATABASE_ACCESS_AUTHORITY=NONE
+CREDENTIAL_ACCESS_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+Each later Spec 007 lifecycle transition (`AUTHORIZED_TO_PLAN`, implementation start, and especially any training run) requires a separate explicit founder authorization recorded in this register before work begins.
+
 ## Execution and training authority
 
 **No spec currently authorizes training, model execution, model-weight access, benchmark payload execution, or real-model tournament execution.**
@@ -221,8 +253,8 @@ See `specs/006-patient-safety-scaffold/closeout.md` for full binding. `SPEC_006=
 SPEC_005=CLOSED_CANONICAL
 SPEC_005_LIFECYCLE_AUTHORITY=CLOSED_CANONICAL (control-plane only)
 SPEC_006=CLOSED_CANONICAL
-SPEC_007=BLOCKED_PENDING_FOUNDER_TRAINING_AUTHORIZATION
 SPEC_006_LIFECYCLE_AUTHORITY=IMPLEMENTATION_ONLY (offline deterministic)
+SPEC_007=AUTHORIZED_TO_SPECIFY
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
