@@ -164,6 +164,7 @@ OFFLINE SFT INFRASTRUCTURE QUALIFIED
 -> FOUNDER+CHATGPT BACKBONE WINNER DECISION
 -> BASE CHECKPOINT BINDING CANONICAL
 -> NON_EXECUTING_RECIPE_EVIDENCE_FROZEN
+-> FROZEN EVALUATION PROTOCOL BOUND (identity-bound protocol with immutable success criteria, safety-critical hard gates, and pre-run thresholds; no training run may define its own success — D-001)
 -> DATA / ACCESS / FINANCE / ACTIVATION GATES PASS
 -> TRAINING_AUTHORITY=AUTHORIZED_TO_RUN
 -> FIRST TRAINING RUN
@@ -172,6 +173,8 @@ OFFLINE SFT INFRASTRUCTURE QUALIFIED
 `NON_EXECUTING_RECIPE_EVIDENCE` means static/control-plane evidence obtainable without loading/executing model weights or performing gradient-bearing work: schema completeness, documented compatibility, rendering/loss-mask/packing/truncation contracts, static resource estimates, provenance/quarantine bindings, and environment identity.
 
 It explicitly excludes loss curves, gradients, convergence, model outputs, benchmark execution, and other execution-derived evidence.
+
+A frozen, identity-bound evaluation protocol — immutable success criteria, safety-critical hard gates, and pre-run thresholds bound into the run record before activation — is a mandatory precondition of `TRAINING_AUTHORITY=AUTHORIZED_TO_RUN` (D-001: evaluation precedes optimization). A training run whose success criteria are not frozen before the run cannot be authorized.
 
 Any pilot, smoke-train, adapter pilot, one-step train, gradient probe, or equivalent is a training run for authority purposes and requires all applicable model/weight/data/device/finance/training gates first.
 

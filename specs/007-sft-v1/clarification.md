@@ -73,17 +73,21 @@ Unsafe-to-represent examples fail closed or are deterministically segmented with
 
 ### C-006 — Curriculum readiness is not a row-count target
 
-Readiness must report, at minimum:
+Admission requires every training or evaluation asset to carry the complete Spec 003 identity contract, at minimum: provenance (source authority), license status, content identity/hash, split identity, contamination status, and a verification state to which `review/adjudication state` is explicitly mapped.
+
+Readiness must additionally report, at minimum:
 
 - role-class coverage;
 - curriculum-domain coverage;
 - Arabic/English and dialect/code-switch coverage;
 - provenance completeness;
-- verification/review state;
+- verification/review state (mapped to the required verification state above);
 - contamination status;
 - exact/near-duplicate status;
 - rendered-token contribution;
 - safety/abstention/tool/multi-turn coverage.
+
+Assets missing any required identity field fail closed and cannot be admitted.
 
 Exact numeric thresholds remain later evidence records unless already canonical.
 
@@ -247,6 +251,7 @@ OFFLINE SFT INFRASTRUCTURE QUALIFIED
 -> FOUNDER+CHATGPT BACKBONE WINNER DECISION
 -> BASE CHECKPOINT BINDING CANONICAL
 -> NON_EXECUTING_RECIPE_EVIDENCE_FROZEN
+-> FROZEN EVALUATION PROTOCOL BOUND (immutable success criteria, safety-critical hard gates, pre-run thresholds; D-001)
 -> DATA / ACCESS / FINANCE / ACTIVATION GATES PASS
 -> TRAINING_AUTHORITY=AUTHORIZED_TO_RUN
 -> FIRST TRAINING RUN
@@ -255,6 +260,8 @@ OFFLINE SFT INFRASTRUCTURE QUALIFIED
 `NON_EXECUTING_RECIPE_EVIDENCE` is limited to static/control-plane evidence obtainable without loading/executing model weights or performing gradient-bearing work: schema completeness, documented compatibility, rendering/loss-mask/packing/truncation conformance contracts, static resource estimates, provenance/quarantine bindings, and environment identity.
 
 It excludes loss curves, gradient behavior, convergence, model outputs, benchmark execution, and other execution-derived evidence.
+
+A frozen, identity-bound evaluation protocol with immutable success criteria, safety-critical hard gates, and pre-run thresholds is a mandatory precondition of `TRAINING_AUTHORITY=AUTHORIZED_TO_RUN` (D-001); a run without it cannot be authorized.
 
 Any pilot, smoke-train, adapter pilot, one-step train, gradient probe, or equivalent is a training run for authority purposes and must occur only after all applicable model/weight/data/device/finance/training gates are canonical.
 
