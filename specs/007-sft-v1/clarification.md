@@ -249,15 +249,9 @@ No backend may change the frozen loss mask, chat rendering, packing/truncation s
 
 No update strategy is selected by clarification.
 
-The future decision must consider:
+Before the first authorized training run, the update-strategy decision may use only non-executing evidence available without model execution: winner architecture support, documented adapter/full-update compatibility, static memory/compute estimates, intended deployable-artifact needs, reproducibility requirements, license implications, and backend conformance evidence. Empirical convergence, gradient, loss-curve, or model-output evidence is not a prerequisite unless it was produced by a separately authorized training execution under all applicable gates.
 
-- winner architecture support;
-- memory/compute budget;
-- medical/general/Arabic regression evidence;
-- convergence/stability evidence;
-- deployable artifact needs;
-- reproducibility;
-- license implications where relevant.
+Any later pilot or gradient-bearing experiment used to compare `FULL`, `LORA`, `QLORA`, or another strategy is itself a training run for authority purposes and cannot occur before training authority. Its results also cannot influence recipe/hyperparameter/checkpoint selection unless a separately authorized policy satisfies the full FR-003 quarantine firewall.
 
 ### C-018 — Mutable medical truth should not be baked into weights by default
 
@@ -303,7 +297,7 @@ The future dataset/recipe plan must include:
 
 No PHI, credentials, secrets, or restricted content may be used as memorization canaries.
 
-### C-023 — Tournament-to-training handshake is explicit
+### C-023 — Tournament-to-training handshake is explicit and contains no pre-authorized pilot
 
 The lifecycle before the first gradient update is frozen as:
 
@@ -315,10 +309,15 @@ OFFLINE SFT INFRASTRUCTURE QUALIFIED
 -> EVIDENCE PACK RETURNED
 -> FOUNDER+CHATGPT BACKBONE WINNER DECISION
 -> BASE CHECKPOINT BINDING CANONICAL
--> TRAINING RECIPE/PILOT EVIDENCE FROZEN
--> TRAINING ACTIVATION AUTHORITY
+-> NON_EXECUTING_RECIPE_EVIDENCE_FROZEN
+-> DATA / ACCESS / FINANCE / ACTIVATION GATES PASS
+-> TRAINING_AUTHORITY=AUTHORIZED_TO_RUN
 -> FIRST TRAINING RUN
 ```
+
+`NON_EXECUTING_RECIPE_EVIDENCE` is limited to static/control-plane evidence obtainable without loading model weights or performing gradient-bearing work: schema completeness, backend/model compatibility declarations, rendering/loss-mask/packing/truncation conformance contracts, static compute/resource estimates, provenance/quarantine bindings, environment identity, and other non-executing preflight evidence. It does not include loss curves, gradient behavior, convergence, model outputs, benchmark results, or any empirical evidence that requires model execution.
+
+Any experiment called a pilot, smoke-train, adapter pilot, one-step train, gradient probe, or equivalent is a training run for authority purposes. It must occur only after model/weight/data/device/finance/training authorities applicable to that run are canonical. Its results cannot select recipe/hyperparameters/checkpoints unless a separately authorized policy also satisfies the complete FR-003 quarantine firewall.
 
 Spec 007 planning and offline implementation may prepare for these gates, but cannot silently satisfy them.
 
@@ -335,7 +334,7 @@ TOKENIZER_TEMPLATE_CONCRETE_IDENTITIES=DEPEND_ON_WINNER
 LOSS_MASK_CONCRETE_TOKEN_IDS=DEPEND_ON_WINNER_TEMPLATE
 PACKING_BACKEND_IMPLEMENTATION=DEPEND_ON_BACKEND_EVIDENCE
 TRAINING_NUMERICS=NEEDS_EVIDENCE
-ADAPTER_VS_FULL_UPDATE=NEEDS_EVIDENCE
+ADAPTER_VS_FULL_UPDATE=NEEDS_NON_EXECUTING_EVIDENCE_OR_LATER_AUTHORIZED_TRAINING_EVIDENCE
 TRAINING_BACKEND=NEEDS_EVIDENCE
 COMPUTE_BUDGET=NEEDS_EVIDENCE+FOUNDER_SPEND_AUTHORITY
 REAL_CURRICULUM_CONTENT=DATA_AUTHORITY+PROVENANCE_REQUIRED
@@ -369,7 +368,8 @@ AMBIGUOUS_TRAINING_MECHANICS_CLOSED=
   ARABIC_METADATA,
   KNOWLEDGE_PLACEMENT,
   MEMORIZATION_AUDIT,
-  TOURNAMENT_TO_TRAINING_HANDSHAKE
+  TOURNAMENT_TO_TRAINING_HANDSHAKE,
+  NO_PREAUTHORIZATION_PILOT
 ```
 
 Planning must implement these decisions without expanding into actual model selection or training execution.
