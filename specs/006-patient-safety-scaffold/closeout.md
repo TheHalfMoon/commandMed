@@ -98,4 +98,4 @@ SPEND_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-With `SPEC_006=CLOSED_CANONICAL`, Spec 007's dependency edges (003, 005, 006) become satisfied. Spec 007 (SFT V1) additionally requires explicit founder **training** authorization, which has not been granted; it therefore remains `BLOCKED` pending that separate gate.
+With `SPEC_006=CLOSED_CANONICAL`, Spec 007's dependency edges (003, 005, 006) become satisfied. [Historical snapshot at this closure merge: Spec 007 was `BLOCKED` pending the founder entry gate. **Superseded 2026-08-25** — the founder subsequently approved the Spec 007 entry gate; the authoritative current state is `AUTHORIZED_TO_SPECIFY` per the "Spec 007 specification authorization record" in `specs/README.md`. That record authorizes specification-stage work ONLY: planning, implementation, and any training execution remain withheld and each still requires its own explicit founder authorization.]
