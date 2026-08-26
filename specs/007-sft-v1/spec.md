@@ -25,7 +25,7 @@ A frozen evaluation prompt drawn from the V1 metric catalog strata is answered b
 
 **Why this priority**: role adaptation without safety regression is the core purpose of SFT V1.
 
-**Independent Test**: offline fixture evaluation replays the candidate's recorded outputs against `evaluate_hard_gates` and the Spec 006 scaffold precedence; any emergency/escalation miss, medication-critical error, or state override fails the story regardless of quality metrics.
+**Independent Test**: offline fixture evaluation replays the candidate's recorded outputs through the canonical Spec 002 policy/scope **prequalification adapter first**, then delegates to `evaluate_hard_gates` within that path, with the Spec 006 scaffold precedence applied inside the same canonical qualification flow; any emergency/escalation miss, medication-critical error, state override, or skipped-prequalification shortcut fails the story regardless of quality metrics.
 
 ### User Story 2 — Capability preservation under specialization (Priority: P1)
 
@@ -79,7 +79,7 @@ Every SFT example carries provenance, license status, content identity/hash, spl
 
 - **SC-001**: 100% of admitted curriculum records carry complete Spec 003 provenance bundles; zero records admitted fail-closed.
 - **SC-002**: Zero Gold/holdout artifacts present in any construction surface, proven by replayable exclusion evidence.
-- **SC-003**: All hard safety gates evaluate PASS-or-INSUFFICIENT-EVIDENCE-only on the candidate's frozen evaluation replay; zero silent failures.
+- **SC-003**: All hard safety gates evaluate **PASS** on the candidate's frozen evaluation replay through the canonical qualification path. Any gate returning `INSUFFICIENT_EVIDENCE` is surfaced explicitly as **non-qualification** of the candidate (fail-closed per Spec 002), never accepted as success; zero silent or averaged failures.
 - **SC-004**: Base-vs-SFT paired deltas are computed on the full frozen stratification with pre-registered margins; out-of-margin regressions are surfaced as failures, never averaged.
 - **SC-005**: The entire specify→construction→evaluation pipeline runs offline-deterministically at the validator level (`pytest -q`); no network, weights, PHI, or spend is required until separately authorized gates open.
 
@@ -90,13 +90,23 @@ Every SFT example carries provenance, license status, content identity/hash, spl
 - Arabic depth beyond measured-parity reporting belongs to Spec 013; SFT V1 carries the strata, not the deepening program.
 - Compute policy constraints (free/low-cost tiers) shape budgets but do not appear as fabricated numbers here.
 
-## Out of Scope (explicit exclusions)
+## Exclusions
 
 - Continued pretraining (Spec 008 ablation), distillation (Spec 009), RLVR (Spec 010), DPO/preference optimization, quantization/device work (Spec 012).
 - Selecting or announcing a backbone winner; executing the live tournament; downloading or loading weights.
 - Constructing Private Gold; accessing PHI or restricted clinical datasets; sending data to third-party APIs.
 - Any training run, provider generation, or spend — each requires its own founder authorization plus Spec 005 finance gates.
 - Multimodal adaptation (Spec 014), human evaluation programs (FD-003 / Spec 015).
+
+## Exit Evidence
+
+Exit from the specification stage requires ALL of the following, merged canonically:
+
+1. This `spec.md` passing static analyze with CRITICAL=0 / HIGH=0 / MEDIUM=0 and no constitution violation.
+2. Independent exact-head review of the specification head reporting MATERIAL_BLOCKER=NO.
+3. Every hard FR above either frozen from existing canonical contracts (FR-003/FR-004/FR-005/FR-007) or explicitly typed as `NEEDS_EVIDENCE` with named evidence kind and later-stage owner (FR-002/FR-006/FR-008) — no silent gaps.
+4. Baseline suite unchanged (`pytest -q` 627+128 PASS, `compileall` PASS, `git diff --check` PASS) — specifications add no runtime code.
+5. Registry updated to the next lifecycle stage only via the separate founder authorization record.
 
 ## Lifecycle note
 
