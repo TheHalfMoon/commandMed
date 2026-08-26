@@ -8,6 +8,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 
 - `CANONICAL_PLANNING` — definition is frozen enough to govern later work; not necessarily executable.
 - `AUTHORIZED_TO_SPECIFY` — specification-stage work may begin; does not authorize clarification, planning, implementation, execution, model/weight/data access, or later lifecycle stages.
+- `AUTHORIZED_TO_CLARIFY` — clarification-stage work may begin on a canonically merged specification; does not authorize planning, implementation, execution, model/weight/data access, or later lifecycle stages.
 - `AUTHORIZED_TO_START` — may be implemented under its bounded scope.
 - `ACTIVE` — implementation/reconciliation in progress.
 - `CLOSED_CANONICAL` — acceptance evidence is complete and merged canonically.
@@ -25,7 +26,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; closure merge `3dc705a1de09347f3574b305afb1bfaa6d46ecff`. Final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
 | 005 | Base Model Tournament | `CLOSED_CANONICAL` | 004 `CLOSED_CANONICAL` | Implementation `5e35cd4` (tree `5b823d20`, head `d4caf94`) + planning reconciliation `799c36a` (tree `eaa8942`, head `83d7612`); closure `CLOSED_CANONICAL` via this closeout. Deterministic control plane only; no model/benchmark/Private Gold/PHI/device/spend execution. 513 tests + exact-head reviews `d4caf94`/`83d7612` MATERIAL_BLOCKER=NO. |
 | 006 | Patient Safety Scaffold & Deterministic Tools | `CLOSED_CANONICAL` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Implementation merge `4df3dc4eab5d3160d88b2f296dea62a8dd884b60` (tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`, final head `09da2d1b4f6d21a1053967df0b4c3a68ea6078f3`) under founder authorization PR #40; planning reconciliation `a9d7f37ea1abc537e99bbb75dda2a5b1f8625a8f`. Final 114+51 focused / 627+128 full tests; exact-head reviews no remaining material blocker. Offline deterministic scope only; T017-T020 remain typed `NEEDS_EVIDENCE` fail-closed gates. See closeout for full binding. |
-| 007 | SFT V1 | `AUTHORIZED_TO_SPECIFY` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Dependency edges satisfied by Spec 006 closure; founder approved the Spec 007 entry gate (specification stage ONLY). `TRAINING_AUTHORITY=NONE` — no SFT execution, weight access, or dataset construction is authorized by this stage. See authorization record below. |
+| 007 | SFT V1 | `AUTHORIZED_TO_CLARIFY` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Specification canonical via PR #46 (`645da20`, final head `07fb71e`); founder approved the clarification stage ONLY. `TRAINING_AUTHORITY=NONE`. Model selection reserved to FOUNDER+CHATGPT; `BACKBONE_WINNER=NEEDS_EVIDENCE`. See authorization records below. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
 | 009 | Distillation V1 | `BLOCKED` | 008 | Minimum license-clean distillation; on-policy candidate. |
 | 010 | RLVR V1 | `BLOCKED` | 009 | Verifiable tasks only; optional NO-GO outcome. |
@@ -245,6 +246,50 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 Each later Spec 007 lifecycle transition (`AUTHORIZED_TO_PLAN`, implementation start, and especially any training run) requires a separate explicit founder authorization recorded in this register before work begins.
 
+## Spec 007 clarification authorization record
+
+The founder approved the Spec 007 clarification stage after the specification merged canonically. Recorded here before any clarification artifact begins.
+
+```text
+SPEC007_CLARIFICATION_AUTHORITY=AUTHORIZED_TO_CLARIFY
+AUTHORIZATION_DATE=2026-08-26
+CANONICAL_SPEC007_MERGE=645da20263fc44d1ed8977024cf2df57aa6f7465
+QUALIFIED_SPECIFICATION_HEAD=07fb71e60e783cb9b689c97e08eb8b001b056cfe
+QUALIFIED_SPECIFICATION_REVIEW=NO_MATERIAL_BLOCKER
+AUTHORIZED_STAGE=clarify
+MODEL_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY
+PI_MODEL_SELECTION_AUTHORITY=NONE
+BACKBONE_WINNER=NEEDS_EVIDENCE
+```
+
+Hard boundary: candidate-model selection and final backbone-winner selection are reserved exclusively to FOUNDER+CHATGPT. PI must not choose, rank, eliminate, recommend, or freeze any model lineage, and must not substitute a likely winner for missing evidence. When planning requires a concrete model identity it is recorded only as:
+
+```text
+BACKBONE_WINNER=NEEDS_EVIDENCE
+OWNER=FOUNDER+CHATGPT
+EVIDENCE_KIND=AUTHORIZED_TOURNAMENT_RESULT
+```
+
+Scope boundary: this authorizes the clarify lifecycle plus ordinary non-destructive repository work to qualify and canonicalize that stage. All execution authorities remain withheld:
+
+```text
+TRAINING_AUTHORITY=NONE
+MODEL_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+PRIVATE_GOLD_AUTHORITY=NONE
+PHI_AUTHORITY=NONE
+DEVICE_EXECUTION_AUTHORITY=NONE
+EXTERNAL_CLINICAL_DATABASE_ACCESS_AUTHORITY=NONE
+CREDENTIAL_ACCESS_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+Decision-register T-001 remains TEST_BEFORE_LOCK: clarification may identify what evidence the future tournament must return to satisfy Spec 007 binding, but must not resolve T-001, run the tournament, or choose a winner.
+
 ## Execution and training authority
 
 **No spec currently authorizes training, model execution, model-weight access, benchmark payload execution, or real-model tournament execution.**
@@ -254,7 +299,7 @@ SPEC_005=CLOSED_CANONICAL
 SPEC_005_LIFECYCLE_AUTHORITY=CLOSED_CANONICAL (control-plane only)
 SPEC_006=CLOSED_CANONICAL
 SPEC_006_LIFECYCLE_AUTHORITY=IMPLEMENTATION_ONLY (offline deterministic)
-SPEC_007=AUTHORIZED_TO_SPECIFY
+SPEC_007=AUTHORIZED_TO_CLARIFY
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
