@@ -161,13 +161,19 @@ The future Founder + ChatGPT model-selection packet must include tokenizer-effic
 
 This is evidence for selection, not a decision rule delegated to Pi.
 
-### C-011 — Safety preservation uses checkpoint-level development sentinels
+### C-011 — Safety preservation uses an abort-only, quarantine-clean sentinel path
 
-Final Gold remains quarantined, but an authorized future training run must not wait until the end to discover catastrophic safety regression.
+The complete canonical quarantine source matrix defined by `eval_contract.validate` / its frozen quarantine data is authoritative. Every asset governed by that matrix is excluded from SFT curriculum construction, gradient-bearing training, monitoring that can influence optimization, early stopping, hyperparameter/recipe selection, checkpoint selection, model selection, and every other tuning or selection surface unless the canonical purpose→allowed-sources policy explicitly permits that exact purpose. Spec 007 is stricter for SFT tuning surfaces: the sources explicitly named by FR-003 — `COMMANDMED_CLINICAL_GOLD`, `COMMANDMED_ARABIC_GOLD`, `COMMANDMED_MULTIMODAL_GOLD`, `CALIBRATION_HOLD_OUT_SPLIT`, `MODEL_SELECTION_DEV_SET`, `PUBLIC_BENCHMARK_DEV_SPLITS`, `HELD_OUT_SYNTHETIC_PILOT_CASES`, `VERIFIED_DEV_SPLIT` — plus every additional source identifier in the same frozen matrix (including public canonical-test sources) must not influence SFT recipe/checkpoint/tuning decisions. `CALIBRATION_HOLD_OUT_SPLIT` remains calibration-only.
 
-Freeze a small development-safety sentinel set before the run. It may be used only for declared development safety monitoring and must be distinct from final Gold/test assets.
+A future authorized run may optionally use a separately identity-bound `SFT_ABORT_SENTINEL_SET` only when all of the following are proven before activation:
 
-A frozen non-compensable sentinel failure can abort a run or disqualify a checkpoint according to the plan.
+- its source identities are not members of the canonical quarantine-controlled source set for a prohibited SFT tuning purpose;
+- provenance, license, split, contamination, and source-verification state pass Spec 003;
+- it is excluded from gradient-bearing curriculum/training data;
+- its thresholds and behavior are frozen pre-run;
+- it is **abort/disqualify-only**: it may terminate or invalidate an unsafe run, but it must not rank checkpoints, choose a recipe, alter hyperparameters, drive early stopping toward a preferred checkpoint, or select a model.
+
+If no such permissible abort-only sentinel can be established, intra-run safety monitoring does not become an exception to quarantine. The run follows its pre-registered schedule and final qualification occurs only after checkpoint choice is frozen by a quarantine-safe rule.
 
 ### C-012 — Capability preservation is explicit
 
@@ -181,26 +187,27 @@ A `CapabilityPreservationBinding` must eventually cover:
 - safety;
 - frozen medical strata.
 
-The plan must distinguish development drift monitoring from final qualification.
+The plan must distinguish abort-only, quarantine-clean drift detection from final qualification. No canonical quarantined source may influence optimization or checkpoint/recipe selection merely because it is labeled a development slice.
 
-### C-013 — Checkpoint selection must be pre-registered and quarantine-safe
+### C-013 — Checkpoint selection must be pre-registered and enforce the complete quarantine firewall
 
-Checkpoint/recipe selection may use only designated development assets. Final Gold/test/Private Gold never participates in:
+The complete canonical quarantine-controlled source set is prohibited from influencing:
 
-- checkpoint selection;
+- checkpoint ranking or selection;
 - hyperparameter selection;
-- recipe selection;
-- early stopping;
-- model selection.
+- recipe/update-strategy selection;
+- early stopping toward a preferred checkpoint;
+- model selection;
+- any other SFT tuning or selection surface.
 
-Selection is lexicographic:
+This prohibition includes the FR-003 sources `COMMANDMED_CLINICAL_GOLD`, `COMMANDMED_ARABIC_GOLD`, `COMMANDMED_MULTIMODAL_GOLD`, `CALIBRATION_HOLD_OUT_SPLIT`, `MODEL_SELECTION_DEV_SET`, `PUBLIC_BENCHMARK_DEV_SPLITS`, `HELD_OUT_SYNTHETIC_PILOT_CASES`, `VERIFIED_DEV_SPLIT`, and all other members of the frozen canonical matrix. A purpose label such as `DEV` or `CHECKPOINT_SELECTION` does not override Spec 007's stricter structural exclusion for SFT tuning surfaces.
 
-1. hard development safety/quarantine constraints;
-2. capability-preservation constraints;
-3. declared development SFT objectives;
-4. allowed resource/efficiency tie-breaks.
+Therefore the pre-run `CheckpointSelectionPolicy` must use one of these fail-closed forms:
 
-Training loss alone is not sufficient to declare the best checkpoint.
+1. a deterministic fixed checkpoint rule frozen before training (for example, the final checkpoint at a pre-registered step/token budget), with no evaluation asset used to rank checkpoints; or
+2. a separately authorized, identity-bound selection evidence source that is demonstrably outside the prohibited canonical quarantine set for the intended SFT selection purpose and is admitted under an explicit canonical policy added before the run.
+
+Until option 2 exists canonically, option 1 is the default. Abort-only sentinels from C-011 cannot rank checkpoints or recipes. Training/evaluation loss alone cannot silently create a selection exception.
 
 ### C-014 — Reproducibility has two levels
 
@@ -356,7 +363,7 @@ AMBIGUOUS_TRAINING_MECHANICS_CLOSED=
   MULTI_TURN_TOOL_USE,
   SAFETY_MONITORING,
   CAPABILITY_PRESERVATION,
-  CHECKPOINT_SELECTION,
+  FULL_QUARANTINE_SELECTION_FIREWALL,
   REPRODUCIBILITY,
   RESUME_INTEGRITY,
   ARABIC_METADATA,
