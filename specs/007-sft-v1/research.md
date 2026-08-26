@@ -285,9 +285,9 @@ Correctly not answering can be a positive target. Quarantined final/development 
 
 Any audit asset that belongs to the canonical quarantine set is evidence-only and cannot be fed back into recipe/checkpoint tuning.
 
-### R-018 — The tournament-to-training handshake must be an explicit lifecycle gate
+### R-018 — The tournament-to-training handshake must not imply a pre-authorized pilot
 
-Spec 007 assumes a qualified winner but must not create one.
+Spec 007 assumes a qualified winner but must not create one. No training-like pilot may run before the same controlled authorities required for training are canonical.
 
 **Decision:** the pre-training sequence is:
 
@@ -298,10 +298,15 @@ SFT OFFLINE INFRASTRUCTURE READY
 -> EVIDENCE PACK RETURNED
 -> FOUNDER+CHATGPT BACKBONE WINNER DECISION
 -> BASE CHECKPOINT BINDING CANONICAL
--> RECIPE/PILOT EVIDENCE FREEZE
--> TRAINING ACTIVATION AUTHORITY
+-> NON_EXECUTING_RECIPE_EVIDENCE_FROZEN
+-> DATA / ACCESS / FINANCE / ACTIVATION GATES PASS
+-> TRAINING_AUTHORITY=AUTHORIZED_TO_RUN
 -> FIRST TRAINING RUN
 ```
+
+`NON_EXECUTING_RECIPE_EVIDENCE` means only static/control-plane evidence available without loading model weights or performing gradient-bearing work: recipe schema completeness, backend compatibility declarations, loss-mask/rendering/packing/truncation conformance contracts, compute/resource estimates, provenance/quarantine bindings, environment identity, and other non-executing preflight evidence. It does **not** include loss curves, gradient behavior, convergence, model outputs, benchmark results, or any empirical evidence requiring model execution.
+
+Any later experiment described as a pilot, smoke-train, adapter pilot, one-step train, gradient probe, or equivalent is a training run for authority purposes. It requires model/weight/data/device/finance/training gates before execution and cannot select recipe/hyperparameters/checkpoints unless a separately authorized policy also satisfies the complete FR-003 quarantine firewall.
 
 Pi may prepare schemas, validators, manifests, and decision packets. Pi must not perform the candidate freeze or winner decision.
 
@@ -354,7 +359,8 @@ P0_PLAN_HARDENING_REQUIRED=
   CAPABILITY_PRESERVATION,
   REPRODUCIBILITY_LEVELS,
   RUN_RESUME_INTEGRITY,
-  TOURNAMENT_TO_TRAINING_HANDSHAKE
+  TOURNAMENT_TO_TRAINING_HANDSHAKE,
+  NO_PREAUTHORIZATION_PILOT
 ```
 
 These findings should be incorporated into clarification and plan before Spec 007 implementation is authorized.
