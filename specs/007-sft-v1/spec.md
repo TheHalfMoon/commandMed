@@ -4,7 +4,7 @@
 **Created**: 2026-08-25
 **Status**: Specification CANONICAL at PR #46 merge `645da20`; originally drafted under `AUTHORIZED_TO_SPECIFY` [**superseded 2026-08-26** — current stage is `AUTHORIZED_TO_CLARIFY` per the "Spec 007 clarification authorization record" in `specs/README.md`]
 **Depends on**: Spec 003 `CLOSED_CANONICAL`, Spec 005 `CLOSED_CANONICAL`, Spec 006 `CLOSED_CANONICAL` (entry gate approved via the "Spec 007 specification authorization record" in `specs/README.md`)
-**Lifecycle authority**: SPECIFY ONLY
+**Lifecycle authority**: CURRENT=`AUTHORIZED_TO_CLARIFY` per `specs/README.md`; historical specification-artifact boundary=`SPECIFY ONLY`
 **Execution authority**: NONE — no training run, model execution, weight access, benchmark payload access/execution, Private Gold/PHI access, device execution, provider generation, credential use, or spend is authorized by this specification.
 
 > This specification defines the bounded problem for the minimal multi-role supervised fine-tuning candidate. It freezes what SFT V1 must prove, what it must not claim, and which inputs remain typed evidence prerequisites. It does NOT select a base model, a dataset, hyperparameters, or a budget, and it does not authorize any run.
