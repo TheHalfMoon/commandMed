@@ -2,7 +2,7 @@
 
 **Planning Branch**: `spec/007-specify`
 **Created**: 2026-08-25
-**Status**: Draft — `AUTHORIZED_TO_SPECIFY`
+**Status**: Specification CANONICAL at PR #46 merge `645da20`; originally drafted under `AUTHORIZED_TO_SPECIFY` [**superseded 2026-08-26** — current stage is `AUTHORIZED_TO_CLARIFY` per the "Spec 007 clarification authorization record" in `specs/README.md`]
 **Depends on**: Spec 003 `CLOSED_CANONICAL`, Spec 005 `CLOSED_CANONICAL`, Spec 006 `CLOSED_CANONICAL` (entry gate approved via the "Spec 007 specification authorization record" in `specs/README.md`)
 **Lifecycle authority**: SPECIFY ONLY
 **Execution authority**: NONE — no training run, model execution, weight access, benchmark payload access/execution, Private Gold/PHI access, device execution, provider generation, credential use, or spend is authorized by this specification.
@@ -118,4 +118,4 @@ Exit from the specification stage requires ALL of the following, merged canonica
 
 ## Lifecycle note
 
-This spec is `AUTHORIZED_TO_SPECIFY`. Successful canonical definition advances only to a separately authorized clarification/planning step. Implementation start and any run require further explicit founder authorization recorded in `specs/README.md`.
+[Historical snapshot at specification merge: this spec was `AUTHORIZED_TO_SPECIFY`. **Superseded 2026-08-26** — the founder approved the clarify stage per the "Spec 007 clarification authorization record" in `specs/README.md`, which is the authoritative current authority. Clarification advances only to a separately authorized planning step. Implementation start and any run require further explicit founder authorization recorded there. Model selection remains reserved to FOUNDER+CHATGPT with `BACKBONE_WINNER=NEEDS_EVIDENCE`.]

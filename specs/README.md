@@ -8,6 +8,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 
 - `CANONICAL_PLANNING` — definition is frozen enough to govern later work; not necessarily executable.
 - `AUTHORIZED_TO_SPECIFY` — specification-stage work may begin; does not authorize clarification, planning, implementation, execution, model/weight/data access, or later lifecycle stages.
+- `AUTHORIZED_TO_CLARIFY` — clarification-stage work may begin on a canonically merged specification; does not authorize planning, implementation, execution, model/weight/data access, or later lifecycle stages.
 - `AUTHORIZED_TO_START` — may be implemented under its bounded scope.
 - `ACTIVE` — implementation/reconciliation in progress.
 - `CLOSED_CANONICAL` — acceptance evidence is complete and merged canonically.
