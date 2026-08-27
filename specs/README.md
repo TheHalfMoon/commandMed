@@ -9,6 +9,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 - `CANONICAL_PLANNING` — definition is frozen enough to govern later work; not necessarily executable.
 - `AUTHORIZED_TO_SPECIFY` — specification-stage work may begin; does not authorize clarification, planning, implementation, execution, model/weight/data access, or later lifecycle stages.
 - `AUTHORIZED_TO_CLARIFY` — clarification-stage work may begin on a canonically merged specification; does not authorize planning, implementation, execution, model/weight/data access, or later lifecycle stages.
+- `AUTHORIZED_TO_PLAN` — the complete non-executing planning package may be created and qualified from a canonically merged clarification, including plan, supporting research/data-model/contracts/quickstart, requirements checklist, dependency-ordered tasks, and static analyze; does not authorize implementation, model execution, weight/data access, training, device execution, credentials, spend, or any other execution authority.
 - `AUTHORIZED_TO_START` — may be implemented under its bounded scope.
 - `ACTIVE` — implementation/reconciliation in progress.
 - `CLOSED_CANONICAL` — acceptance evidence is complete and merged canonically.
@@ -26,7 +27,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; closure merge `3dc705a1de09347f3574b305afb1bfaa6d46ecff`. Final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
 | 005 | Base Model Tournament | `CLOSED_CANONICAL` | 004 `CLOSED_CANONICAL` | Implementation `5e35cd4` (tree `5b823d20`, head `d4caf94`) + planning reconciliation `799c36a` (tree `eaa8942`, head `83d7612`); closure `CLOSED_CANONICAL` via this closeout. Deterministic control plane only; no model/benchmark/Private Gold/PHI/device/spend execution. 513 tests + exact-head reviews `d4caf94`/`83d7612` MATERIAL_BLOCKER=NO. |
 | 006 | Patient Safety Scaffold & Deterministic Tools | `CLOSED_CANONICAL` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Implementation merge `4df3dc4eab5d3160d88b2f296dea62a8dd884b60` (tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`, final head `09da2d1b4f6d21a1053967df0b4c3a68ea6078f3`) under founder authorization PR #40; planning reconciliation `a9d7f37ea1abc537e99bbb75dda2a5b1f8625a8f`. Final 114+51 focused / 627+128 full tests; exact-head reviews no remaining material blocker. Offline deterministic scope only; T017-T020 remain typed `NEEDS_EVIDENCE` fail-closed gates. See closeout for full binding. |
-| 007 | SFT V1 | `AUTHORIZED_TO_CLARIFY` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Specification canonical via PR #46 (`645da20`, final head `07fb71e`); founder approved the clarification stage ONLY. `TRAINING_AUTHORITY=NONE`. Model selection reserved to FOUNDER+CHATGPT; `BACKBONE_WINNER=NEEDS_EVIDENCE`. See authorization records below. |
+| 007 | SFT V1 | `AUTHORIZED_TO_PLAN` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Specification canonical via PR #46 (`645da20`, final head `07fb71e`); clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`, qualified head `1919779ba87725b7d529ba35465dc546f61fbc13`; founder approved the complete non-executing planning package only. `TRAINING_AUTHORITY=NONE`. Model selection reserved to FOUNDER+CHATGPT; `BACKBONE_WINNER=NEEDS_EVIDENCE`. See authorization records below. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
 | 009 | Distillation V1 | `BLOCKED` | 008 | Minimum license-clean distillation; on-policy candidate. |
 | 010 | RLVR V1 | `BLOCKED` | 009 | Verifiable tasks only; optional NO-GO outcome. |
@@ -270,7 +271,7 @@ OWNER=FOUNDER+CHATGPT
 EVIDENCE_KIND=AUTHORIZED_TOURNAMENT_RESULT
 ```
 
-Scope boundary: this authorizes the clarify lifecycle plus ordinary non-destructive repository work to qualify and canonicalize that stage. All execution authorities remain withheld:
+Scope boundary: this authorizes the clarification lifecycle plus ordinary non-destructive repository work to qualify and canonicalize that stage. All execution authorities remain withheld:
 
 ```text
 TRAINING_AUTHORITY=NONE
@@ -290,6 +291,47 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 Decision-register T-001 remains TEST_BEFORE_LOCK: clarification may identify what evidence the future tournament must return to satisfy Spec 007 binding, but must not resolve T-001, run the tournament, or choose a winner.
 
+## Spec 007 planning authorization record
+
+The founder explicitly approved a real, strengthened Spec 007 planning package on 2026-08-27 after PR #49 made the clarification/research artifacts canonical. This authorization is recorded before any planning artifact becomes canonical.
+
+```text
+SPEC007_PLANNING_AUTHORITY=AUTHORIZED_TO_PLAN
+AUTHORIZATION_DATE=2026-08-27
+CANONICAL_CLARIFICATION_PR=#49
+CANONICAL_CLARIFICATION_MERGE=16ae16b50680469fe14f44c1e3fdcb655d34b822
+QUALIFIED_CLARIFICATION_HEAD=1919779ba87725b7d529ba35465dc546f61fbc13
+QUALIFIED_CLARIFICATION_REVIEW=MATERIAL_BLOCKER=NO (CodeRabbit exact-head review)
+AUTHORIZED_STAGE=plan
+PLANNING_SCOPE=COMPLETE_NON_EXECUTING_SPEC_KIT_PLANNING_PACKAGE
+MODEL_CANDIDATE_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY
+BACKBONE_WINNER_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY
+PI_MODEL_SELECTION_AUTHORITY=NONE
+BACKBONE_WINNER=NEEDS_EVIDENCE
+```
+
+Planning authority permits the complete non-executing planning lifecycle for Spec 007: `plan.md`, additional bounded research needed by planning, data-model/contracts/quickstart, requirements checklist, dependency-ordered tasks, and static analyze/qualification artifacts. It does not authorize implementation or any runtime/model/data/device/spend activity.
+
+The planning package must preserve the founder's research objective — maximize **verified medical usefulness and safety per byte, joule, second, peak RAM, shipped GB, parameter, and reasoning token** — while keeping record/SOTA claims narrower than independently reproducible evidence. It may define record-class scoreboards and future experiments, but it must not fabricate a record or select a model.
+
+```text
+TRAINING_AUTHORITY=NONE
+MODEL_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+PRIVATE_GOLD_AUTHORITY=NONE
+PHI_AUTHORITY=NONE
+DEVICE_EXECUTION_AUTHORITY=NONE
+EXTERNAL_CLINICAL_DATABASE_ACCESS_AUTHORITY=NONE
+CREDENTIAL_ACCESS_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+Decision-register T-001 remains `TEST_BEFORE_LOCK`. Planning may define the candidate-decision packet, record-class definitions, tournament evidence requirements, training contracts, and future handoffs, but only Founder + ChatGPT may freeze candidates and select the final backbone after separately authorized tournament evidence exists.
+
 ## Execution and training authority
 
 **No spec currently authorizes training, model execution, model-weight access, benchmark payload execution, or real-model tournament execution.**
@@ -299,7 +341,7 @@ SPEC_005=CLOSED_CANONICAL
 SPEC_005_LIFECYCLE_AUTHORITY=CLOSED_CANONICAL (control-plane only)
 SPEC_006=CLOSED_CANONICAL
 SPEC_006_LIFECYCLE_AUTHORITY=IMPLEMENTATION_ONLY (offline deterministic)
-SPEC_007=AUTHORIZED_TO_CLARIFY
+SPEC_007=AUTHORIZED_TO_PLAN
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
