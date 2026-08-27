@@ -376,6 +376,39 @@ def evaluate_device_execution_readiness(
     return {"state": state, "reason_codes": unique_sorted}
 
 
+def build_device_execution_readiness_record(
+    records: Any, contract: Any
+) -> dict[str, object]:
+    """Build the deterministic identity-bearing projection used by the manifest.
+
+    Target records are set-like for this purpose and are sorted by target_id.
+    The computed state is always produced by ``evaluate_device_execution_readiness``;
+    callers cannot inject a favorable state into this projection.
+    """
+    result = evaluate_device_execution_readiness(records, contract)
+    if isinstance(records, list) and all(isinstance(item, dict) for item in records):
+        normalized_records: object = sorted(
+            records, key=lambda item: str(item.get("target_id", ""))
+        )
+    else:
+        normalized_records = records
+    performance = (
+        contract.get("performance_threshold_policy")
+        if isinstance(contract, dict)
+        else None
+    )
+    return {
+        "protocol_id": contract.get("protocol_id") if isinstance(contract, dict) else None,
+        "protocol_version": (
+            contract.get("protocol_version") if isinstance(contract, dict) else None
+        ),
+        "performance_threshold_policy": performance,
+        "target_identity_records": normalized_records,
+        "state": result["state"],
+        "reason_codes": result["reason_codes"],
+    }
+
+
 def validate_device_evidence_metadata(record: Any, contract: Any) -> list[str]:
     """Validate one target's post-execution measured qualification evidence."""
     errors: list[str] = []
