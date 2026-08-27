@@ -3,9 +3,12 @@
 **Spec:** 007 SFT V1
 **Task:** E003
 **Decision owner:** Founder
-**Decision state:** AUTHORIZED_PENDING_CANONICAL_MERGE
+**Decision state:** CLOSED_CANONICAL
 **Canonical base:** `065015f89cbae0cb8af860c2a181f4f1fb6b05ad`
 **Canonical base tree:** `e490fb0b33c54badde6b6337b674b2add6882a6e`
+**Canonical authorization merge:** `86e77ffa10e92f4d7aab1d8b03742ad1f7ef57c6`
+**Canonical authorization tree:** `7927103d94d1bca89d9f0b0079c6730c08a5c515`
+**Qualified authorization head:** `c1d0c9854cf689849b515741b69a70232d9642f8`
 **E001 freeze record:** `specs/007-sft-v1/e001-candidate-manifest-freeze-2026-08-27.md`
 **Frozen manifest:** `specs/007-sft-v1/e001-proposed-candidate-manifest.json`
 **Frozen manifest version:** `e001-mass-reach-v1`
@@ -188,26 +191,27 @@ That response is interpreted only as the E003 authorization described here. It d
 
 ## Exit Evidence
 
-E003 may close canonically only when all of the following are true on the same qualified authorization head:
+E003 canonical authorization qualified and merged with every required current-state reconciliation present on the reviewed head.
 
-| Exit criterion | Required evidence | State before canonical merge |
+| Exit criterion | Canonical evidence | State |
 |---|---|---|
-| Founder separately authorized E003 | This record binds the post-E002 `go ahead` to E003 only | `PRESENT` |
-| E001 identity remains frozen | Manifest version/SHA/blob above remain unchanged | `REQUIRED_AT_EXACT_HEAD` |
-| E002 remains bounded and canonical | E002 authority record remains `CLOSED_CANONICAL` and unchanged in meaning | `REQUIRED_AT_EXACT_HEAD` |
-| Candidate execution scope is exact | Four frozen candidates/revisions enumerated above | `PRESENT` |
-| Benchmark access is fail-closed | Exact A15-bound public/ungated/provenance/contamination conditions above | `PRESENT` |
-| Downstream exclusions remain explicit | E005/training/conversion/Private Gold/PHI/credential/gated/spend remain unauthorized | `PRESENT` |
-| Repository current-state authority summary is reconciled | `specs/README.md` reflects E003 while preserving exclusions | `REQUIRED_IN_THIS_PR` |
-| Phase E ledger is reconciled | `tasks.md` closes E003 and leaves E004 as execution work | `REQUIRED_IN_THIS_PR` |
-| No execution happened before canonical authorization | PR diff/evidence contains documentation only; no model/benchmark/device execution evidence | `REQUIRED_AT_EXACT_HEAD` |
-| Independent exact-head review has no material blocker | Fresh review on the final authorization head | `REQUIRED_BEFORE_MERGE` |
+| Founder separately authorized E003 | This record binds the post-E002 `go ahead` to E003 only | `PASS` |
+| E001 identity remains frozen | Manifest version `e001-mass-reach-v1`; SHA-256 `98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28`; Git blob `f81e42ad1cb138f741cd730cda34ffcf49e77824` verified on qualified head | `PASS` |
+| E002 remains bounded and canonical | E002 record remains `CLOSED_CANONICAL`; not changed by PR #61 | `PASS` |
+| Candidate execution scope is exact | Four frozen candidates/revisions enumerated above | `PASS` |
+| Benchmark access is fail-closed | Exact A15-bound public/ungated/provenance/contamination conditions above | `PASS` |
+| Downstream exclusions remain explicit | E005/training/conversion/Private Gold/PHI/credential/gated/spend remain unauthorized | `PASS` |
+| Repository current-state authority summary is reconciled | `specs/README.md` was reconciled on qualified head `c1d0c9854cf689849b515741b69a70232d9642f8` | `PASS` |
+| Phase E ledger is reconciled | `specs/007-sft-v1/tasks.md` closes E003 and leaves E004 incomplete on qualified head | `PASS` |
+| No execution happened before canonical authorization | PR #61 changed only three documentation files; no model/benchmark/device execution evidence was introduced | `PASS` |
+| Independent exact-head review has no material blocker | Qodo exact-head review on `c1d0c9854cf689849b515741b69a70232d9642f8`: 0 bugs / 0 rule violations; initial exit-gate finding auto-resolved after ledger/README repair | `PASS` |
+| Canonical authorization merge exists | PR #61 merged exact qualified head as `86e77ffa10e92f4d7aab1d8b03742ad1f7ef57c6`, tree `7927103d94d1bca89d9f0b0079c6730c08a5c515` | `PASS` |
 
-No review silence, pending CI, or unverified preflight is a PASS.
+No CI PASS is claimed for the documentation-only authorization head unless a matching workflow run is explicitly available; review and canonical merge evidence above are the closure evidence.
 
 ## Closure condition
 
-On canonical merge of an exact-head-qualified version of this record with the current authority summary and Phase E ledger reconciled:
+Canonical closure is effective for the bounded authority recorded here:
 
 ```text
 E003=CLOSED_CANONICAL
