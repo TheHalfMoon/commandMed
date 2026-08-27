@@ -28,7 +28,7 @@ Tasks are dependency ordered. `[x]` means the task has concrete evidence recorde
 
 ## Phase I0 — Future offline implementation foundation
 
-Authorized by the canonical Spec 007 implementation authorization record. Scope is I001-I045 offline deterministic implementation only; E001-E015 remain separately blocked.
+Authorized by the canonical Spec 007 implementation authorization record. Scope is I001-I045 offline deterministic implementation only. That implementation authorization does not extend into Phase E; E001 is closed only by its separate Founder+ChatGPT freeze decision, while E002-E015 remain separately gated.
 
 - [x] **I001** Create minimal `src/commandmed/spec007` package only if existing modules cannot own the contracts. Depends on P016 + implementation authority. — `src/commandmed/spec007/__init__.py`, `src/commandmed/spec007/foundation.py`; exact-head GREEN `a3ff3ce90d47c8615dd0047f80c0eb3ce61cb373`.
 - [x] **I002** Implement deterministic canonical serialization/identity utilities using repository precedent; no duplicate framework. Depends on I001. — Reuses `eval_contract.canonical` by identity; no second serializer; covered by `tests/spec007/test_foundation_canonical.py`.
