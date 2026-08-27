@@ -18,7 +18,7 @@
     "review_state": {"type":"string","minLength":1},
     "role_class": {"enum":["PATIENT_CAREGIVER","CLINICAL_PROFESSIONAL","LEARNER_RESEARCHER"]},
     "curriculum_strata": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
-    "language_profile": {"type":"object","additionalProperties":false,"required":["primary_language","authored_language","translation_state","dialect_or_register","code_switch_state","transliteration_state","qualified_review_state"],"properties":{"primary_language":{"type":"string","minLength":2},"authored_language":{"type":"string","minLength":2},"translation_state":{"enum":["ORIGINAL","HUMAN_TRANSLATED","CLINICALLY_TRANSREATED","MACHINE_TRANSLATED_UNVERIFIED","NOT_APPLICABLE"]},"dialect_or_register":{"type":"string","minLength":1},"code_switch_state":{"type":"string","minLength":1},"transliteration_state":{"type":"string","minLength":1},"terminology_normalization_id":{"type":["string","null"]},"qualified_review_state":{"type":"string","minLength":1}}},
+    "language_profile": {"type":"object","additionalProperties":false,"required":["primary_language","authored_language","translation_state","dialect_or_register","code_switch_state","transliteration_state","terminology_normalization_id","qualified_review_state"],"properties":{"primary_language":{"type":"string","minLength":2},"authored_language":{"type":"string","minLength":2},"translation_state":{"enum":["ORIGINAL","HUMAN_TRANSLATED","CLINICALLY_TRANSREATED","MACHINE_TRANSLATED_UNVERIFIED","NOT_APPLICABLE"]},"dialect_or_register":{"type":"string","minLength":1},"code_switch_state":{"type":"string","minLength":1},"transliteration_state":{"type":"string","minLength":1},"terminology_normalization_id":{"type":["string","null"]},"qualified_review_state":{"type":"string","minLength":1}}},
     "conversation_structure_id": {"type":"string","minLength":1},
     "knowledge_placement": {"enum":["DURABLE_WEIGHT_ELIGIBLE","MUTABLE_RUNTIME_EVIDENCE_PREFERRED","DETERMINISTIC_TOOL_REQUIRED","REJECTED"]},
     "quarantine_disposition": {"type":"string","minLength":1},
@@ -28,5 +28,20 @@
     "supervised_token_count": {"type":"integer","minimum":0},
     "loss_mask_policy_id": {"type":"string","minLength":1}
   },
+  "dependentRequired": {
+    "rendering_policy_id": ["rendered_input_sha256","rendered_token_count","supervised_token_count","loss_mask_policy_id"],
+    "rendered_input_sha256": ["rendering_policy_id","rendered_token_count","supervised_token_count","loss_mask_policy_id"],
+    "rendered_token_count": ["rendering_policy_id","rendered_input_sha256","supervised_token_count","loss_mask_policy_id"],
+    "supervised_token_count": ["rendering_policy_id","rendered_input_sha256","rendered_token_count","loss_mask_policy_id"],
+    "loss_mask_policy_id": ["rendering_policy_id","rendered_input_sha256","rendered_token_count","supervised_token_count"]
+  },
+  "x-commandmed-cross-field-invariants": [
+    {
+      "id": "SUPERVISED_TOKEN_COUNT_LTE_RENDERED_TOKEN_COUNT",
+      "expression": "supervised_token_count <= rendered_token_count",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_RECORD"
+    }
+  ],
   "$defs":{"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"}}
 }
