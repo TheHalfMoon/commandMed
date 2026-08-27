@@ -4,7 +4,7 @@
 **Implementation authority:** `AUTHORIZED_TO_START` — offline deterministic I001-I045 only
 **Training authority:** NONE
 
-Tasks are dependency ordered. `[x]` means the planning artifact exists in this branch; `[ ]` means future work. Implementation tasks MUST NOT begin until a separate canonical implementation authorization exists.
+Tasks are dependency ordered. `[x]` means the task has concrete evidence recorded here; `[ ]` means incomplete or still gated. Implementation work below is authorized only by the separate canonical Spec 007 implementation-authorization record; no checkbox expands model, data, execution, training, device, credential, or spend authority.
 
 ## Phase P — Planning package
 
@@ -30,71 +30,71 @@ Tasks are dependency ordered. `[x]` means the planning artifact exists in this b
 
 Authorized by the canonical Spec 007 implementation authorization record. Scope is I001-I045 offline deterministic implementation only; E001-E015 remain separately blocked.
 
-- [ ] **I001** Create minimal `src/commandmed/spec007` package only if existing modules cannot own the contracts. Depends on P016 + implementation authority.
-- [ ] **I002** Implement deterministic canonical serialization/identity utilities using repository precedent; no duplicate framework. Depends on I001.
-- [ ] **I003** Implement closed vocabularies and strict record parsing. Depends on I001-I002.
-- [ ] **I004** Add synthetic fixtures proving undeclared/missing/invalid field rejection. Depends on I003.
+- [x] **I001** Create minimal `src/commandmed/spec007` package only if existing modules cannot own the contracts. Depends on P016 + implementation authority. — `src/commandmed/spec007/__init__.py`, `src/commandmed/spec007/foundation.py`; exact-head GREEN `a3ff3ce90d47c8615dd0047f80c0eb3ce61cb373`.
+- [x] **I002** Implement deterministic canonical serialization/identity utilities using repository precedent; no duplicate framework. Depends on I001. — Reuses `eval_contract.canonical` by identity; no second serializer; covered by `tests/spec007/test_foundation_canonical.py`.
+- [x] **I003** Implement closed vocabularies and strict record parsing. Depends on I001-I002. — Frozen three-role vocabulary, duplicate-key-safe JSON object parsing, closed-object and SHA-256 validation in `foundation.py`.
+- [x] **I004** Add synthetic fixtures proving undeclared/missing/invalid field rejection. Depends on I003. — RED run `33043673901` / job `98422681423` failed only because the package was absent; GREEN run `33043755992` / job `98422942429` compiled the new surface and passed 13 focused tests.
 
 ## Phase I1 — Curriculum / provenance / quarantine
 
-- [ ] **I005** Implement CurriculumRecord validator against full Spec 003 identity requirements, including mandatory cross-field rendering invariants declared by the contract registry. Depends on I003.
-- [ ] **I006** Implement knowledge-placement validation. Depends on I005.
-- [ ] **I007** Implement raw duplicate/near-duplicate report contract. Depends on I005.
-- [ ] **I008** Implement purpose-aware canonical quarantine-matrix binding; never rely only on copied names. Depends on I005.
-- [ ] **I009** Add negative fixtures for every prohibited training/monitoring/recipe/checkpoint/model-selection purpose. Depends on I008.
-- [ ] **I010** Implement DatasetSnapshot and CurriculumCoverageReport generation over synthetic fixtures, enforcing `record_count == len(record_ids)` and snapshot token-accounting cross-field invariants fail closed. Depends on I005-I009.
+- [x] **I005** Implement CurriculumRecord validator against full Spec 003 identity requirements, including mandatory cross-field rendering invariants declared by the contract registry. Depends on I003. — `src/commandmed/spec007/curriculum.py`; exact-head GREEN `fac65cefd4030730a5150df3a1e7d074448a8523`.
+- [x] **I006** Implement knowledge-placement validation. Depends on I005. — Closed knowledge-placement vocabulary and fail-closed validation in `curriculum.py`.
+- [x] **I007** Implement raw duplicate/near-duplicate report contract. Depends on I005. — Duplicate/contamination report validation in the I1 surface.
+- [x] **I008** Implement purpose-aware canonical quarantine-matrix binding; never rely only on copied names. Depends on I005. — `src/commandmed/spec007/quarantine.py` reads and validates canonical `data/eval/quarantine.json` rather than copying policy names.
+- [x] **I009** Add negative fixtures for every prohibited training/monitoring/recipe/checkpoint/model-selection purpose. Depends on I008. — Explicit prohibited-purpose fixtures in `tests/spec007/test_quarantine_snapshot.py`.
+- [x] **I010** Implement DatasetSnapshot and CurriculumCoverageReport generation over synthetic fixtures, enforcing `record_count == len(record_ids)` and snapshot token-accounting cross-field invariants fail closed. Depends on I005-I009. — `src/commandmed/spec007/snapshot.py`; I1 GREEN run `33044322855` / job `98424696714`: 37 passed + 8 subtests.
 
 ## Phase I2 — Rendering / loss / sequence semantics
 
-- [ ] **I011** Implement PromptRenderingPolicy validator without model runtime. Depends on I003.
-- [ ] **I012** Implement LossMaskPolicy validator with all required token classes explicit. Depends on I011.
-- [ ] **I013** Implement PackingTruncationPolicy validator and fail-closed reason codes. Depends on I011.
-- [ ] **I014** Add synthetic conformance fixtures proving required context cannot be silently truncated. Depends on I013.
-- [ ] **I015** Add multi-turn/tool semantic fixture records without executing tools/models. Depends on I011-I014.
+- [x] **I011** Implement PromptRenderingPolicy validator without model runtime. Depends on I003. — `src/commandmed/spec007/sequence.py`.
+- [x] **I012** Implement LossMaskPolicy validator with all required token classes explicit. Depends on I011. — All eight contract token classes validated explicitly.
+- [x] **I013** Implement PackingTruncationPolicy validator and fail-closed reason codes. Depends on I011. — Static packing/truncation validator only.
+- [x] **I014** Add synthetic conformance fixtures proving required context cannot be silently truncated. Depends on I013. — Required-context negative fixtures in `tests/spec007/test_sequence_contracts.py`.
+- [x] **I015** Add multi-turn/tool semantic fixture records without executing tools/models. Depends on I011-I014. — Static semantic fixtures only; I2 GREEN run `33044504501` / job `98425278204`: 48 passed + 8 subtests.
 
 ## Phase I3 — Arabic / behavior / safety preservation
 
-- [ ] **I016** Implement LanguageProfile validator for MSA, Saudi/Gulf, code-switch, transliteration, terminology-normalization identity and verification state. Depends on I005.
-- [ ] **I017** Implement future candidate tokenizer-evidence packet shape; measurements remain `NEEDS_EVIDENCE`. Depends on I016.
-- [ ] **I018** Implement CapabilityPreservationBinding validator. Depends on I003.
-- [ ] **I019** Implement AbortSentinelPolicy validator with only CONTINUE/ABORT/DISQUALIFY effects. Depends on I008,I018.
-- [ ] **I020** Prove sentinel cannot rank checkpoints, tune recipe, change hyperparameters or create preferred early stopping. Depends on I019.
+- [x] **I016** Implement LanguageProfile validator for MSA, Saudi/Gulf, code-switch, transliteration, terminology-normalization identity and verification state. Depends on I005. — `src/commandmed/spec007/preservation.py`.
+- [x] **I017** Implement future candidate tokenizer-evidence packet shape; measurements remain `NEEDS_EVIDENCE`. Depends on I016. — Evidence packet requires `execution_performed=false`, measurements `NEEDS_EVIDENCE`, recommendation `NONE`.
+- [x] **I018** Implement CapabilityPreservationBinding validator. Depends on I003. — Exact required preservation slices enforced.
+- [x] **I019** Implement AbortSentinelPolicy validator with only CONTINUE/ABORT/DISQUALIFY effects. Depends on I008,I018. — Closed allowed effects and frozen-before-run checks.
+- [x] **I020** Prove sentinel cannot rank checkpoints, tune recipe, change hyperparameters or create preferred early stopping. Depends on I019. — Negative fixtures in `tests/spec007/test_preservation_contracts.py`; I3 GREEN run `33044740770` / job `98426007386`: 59 passed + 8 subtests.
 
 ## Phase I4 — Selection / reproducibility / resume
 
-- [ ] **I021** Implement CheckpointSelectionPolicy default fixed-pre-registered rule and structured source-purpose authorization validation for any separately authorized mode. Depends on I003,I008.
-- [ ] **I022** Reject protected evaluation, LLM-judge, human-inspection and sentinel evidence as ranking inputs absent separately canonical source/purpose authority; require exact source-set equality with the structured authorization object. Depends on I008,I021.
-- [ ] **I023** Implement EnvironmentManifest validator. Depends on I003.
-- [ ] **I024** Implement TrainingCheckpointManifest validator and distinguish resumable checkpoint from export. Depends on I023.
-- [ ] **I025** Implement FrozenEvaluationProtocolBinding with `frozen_before_training_authorization=true` and provenance-complete manifests for every metric input, replay fixture, threshold, stratification, sample-size or other consumed evaluation asset. Depends on I003,I008.
-- [ ] **I026** Implement NonExecutingRecipeEvidence validator rejecting any execution-derived evidence. Depends on I003.
+- [x] **I021** Implement CheckpointSelectionPolicy default fixed-pre-registered rule and structured source-purpose authorization validation for any separately authorized mode. Depends on I003,I008. — `src/commandmed/spec007/selection.py`.
+- [x] **I022** Reject protected evaluation, LLM-judge, human-inspection and sentinel evidence as ranking inputs absent separately canonical source/purpose authority; require exact source-set equality with the structured authorization object. Depends on I008,I021. — Explicit four-source negative/authorized fixtures in `tests/spec007/test_selection_reproducibility.py`; final review follow-up also proves `ABORT_SENTINEL` and `PROTECTED_EVALUATION` remain structurally prohibited even when the underlying dev source is separately authorized.
+- [x] **I023** Implement EnvironmentManifest validator. Depends on I003. — Closed environment identity and known-nondeterminism validation.
+- [x] **I024** Implement TrainingCheckpointManifest validator and distinguish resumable checkpoint from export. Depends on I023. — Full optimizer/scheduler/RNG/data-position state required for resumable classification.
+- [x] **I025** Implement FrozenEvaluationProtocolBinding with `frozen_before_training_authorization=true` and provenance-complete manifests for every metric input, replay fixture, threshold, stratification, sample-size or other consumed evaluation asset. Depends on I003,I008. — Asset identity/provenance/hash checks fail closed.
+- [x] **I026** Implement NonExecutingRecipeEvidence validator rejecting any execution-derived evidence. Depends on I003. — I4 GREEN requalification `9499f623dd4f74c514458735ab0dd9d05ba060e2`; run `33047626288` / job `98435248283`: 83 passed + 8 subtests.
 
 ## Phase I5 — Intelligence-density / failure-development contracts
 
-- [ ] **I027** Implement RecordClassDefinition validator requiring pre-registration and hard-safety PASS. Depends on I003.
-- [ ] **I028** Implement ResourceAccountingRecord shape with synthetic-only planning fixtures; no real device measurements. Depends on I027.
-- [ ] **I029** Implement EfficiencyScorecard validator preserving raw values and disqualifying safety failure. Depends on I027-I028.
-- [ ] **I030** Implement FailureTaxonomyRecord validator. Depends on I003.
-- [ ] **I031** Enforce protected-final-evidence rule: protected failures cannot authorize training-data admission. Depends on I030,I008.
+- [x] **I027** Implement RecordClassDefinition validator requiring pre-registration and hard-safety PASS. Depends on I003. — `src/commandmed/spec007/intelligence.py`.
+- [x] **I028** Implement ResourceAccountingRecord shape with synthetic-only planning fixtures; no real device measurements. Depends on I027. — Validator accepts supplied raw records only; no measurement code exists.
+- [x] **I029** Implement EfficiencyScorecard validator preserving raw values and disqualifying safety failure. Depends on I027-I028. — Safety FAIL => DISQUALIFIED; insufficient evidence cannot qualify.
+- [x] **I030** Implement FailureTaxonomyRecord validator. Depends on I003. — Closed failure/remediation vocabularies and reason-code validation.
+- [x] **I031** Enforce protected-final-evidence rule: protected failures cannot authorize training-data admission. Depends on I030,I008. — I5 GREEN run `33047827616` / job `98435898849`: 103 passed + 8 subtests.
 
 ## Phase I6 — Config / run activation composition
 
-- [ ] **I032** Implement TrainingConfigurationRecord validator; unresolved values remain typed `NEEDS_EVIDENCE`. Depends on I010,I011-I026.
-- [ ] **I033** Implement BackendCandidateEvidence validator; evidence-only and no backend selection. Depends on I032.
-- [ ] **I034** Implement CandidateEvidenceRecord with `pi_recommendation=NONE`. Depends on I003.
-- [ ] **I035** Implement BaseCheckpointBinding validator but leave concrete binding unavailable until Founder+ChatGPT winner decision. Depends on I034.
-- [ ] **I036** Implement RunManifest validator. Depends on I010,I012,I013,I018,I021,I023,I025,I026,I032,I035.
-- [ ] **I037** Implement composed non-executing activation preflight checking identity freshness, quarantine, evaluation, finance/access/training authority presence. Depends on I036.
-- [ ] **I038** Prove activation never loads weights, executes models, benchmarks, devices or network. Depends on I037.
+- [x] **I032** Implement TrainingConfigurationRecord validator; unresolved values remain typed `NEEDS_EVIDENCE`. Depends on I010,I011-I026. — `src/commandmed/spec007/activation.py`; planning mode rejects invented numeric/strategy resolution.
+- [x] **I033** Implement BackendCandidateEvidence validator; evidence-only and no backend selection. Depends on I032. — Requires `non_executing_evidence_only=true`.
+- [x] **I034** Implement CandidateEvidenceRecord with `pi_recommendation=NONE`. Depends on I003. — Candidate evidence cannot recommend a winner.
+- [x] **I035** Implement BaseCheckpointBinding validator but leave concrete binding unavailable until Founder+ChatGPT winner decision. Depends on I034. — Structural validator only; fixtures are explicitly synthetic/not-a-winner.
+- [x] **I036** Implement RunManifest validator. Depends on I010,I012,I013,I018,I021,I023,I025,I026,I032,I035. — Closed manifest, exact software identities, component-reference resolution, explicit authority IDs.
+- [x] **I037** Implement composed non-executing activation preflight checking identity freshness, quarantine, evaluation, finance/access/training authority presence. Depends on I036. — Data-only decision with explicit fail-closed reason codes; review repairs additionally validate every directly resolved RunManifest component with its canonical validator before preflight can allow execution.
+- [x] **I038** Prove activation never loads weights, executes models, benchmarks, devices or network. Depends on I037. — `activation.py` contains no loader/device/network/optimizer/training entry point; preflight always reports `model_loaded=false`, `device_opened=false`, `training_started=false`; I6 GREEN run `33048129036` / job `98436866639`: 124 passed + 8 subtests.
 
 ## Phase I7 — Offline verification and implementation qualification
 
-- [ ] **I039** Add focused tests for all Spec 007 validators using synthetic fixtures, including every `x-commandmed-cross-field-invariants` rule. Depends on I038.
-- [ ] **I040** Add negative tests for malformed identity, undeclared fields, protected sources, partial rendering bundles, rendered/supervised token-accounting violations, snapshot record-count mismatch, evaluation assets lacking complete provenance, checkpoint source-purpose mismatch, execution-derived evidence, stale/mismatched bindings and authority gaps. Depends on I039.
-- [ ] **I041** Run focused Spec 007 tests. Depends on I040.
-- [ ] **I042** Run full offline repository regression, compileall and diff-check. Depends on I041.
-- [ ] **I043** Open bounded implementation PR with exact task/evidence mapping. Depends on I042.
-- [ ] **I044** Obtain exact-head independent implementation review; repair until no material blockers. Depends on I043.
+- [x] **I039** Add focused tests for all Spec 007 validators using synthetic fixtures, including every `x-commandmed-cross-field-invariants` rule. Depends on I038. — `tests/spec007/` spans foundation, curriculum/quarantine/snapshot, sequence, preservation, selection/reproducibility, intelligence/failure, activation; final follow-up adds explicit review regression coverage in `tests/spec007/test_review_followup_regressions.py`.
+- [x] **I040** Add negative tests for malformed identity, undeclared fields, protected sources, partial rendering bundles, rendered/supervised token-accounting violations, snapshot record-count mismatch, evaluation assets lacking complete provenance, checkpoint source-purpose mismatch, execution-derived evidence, stale/mismatched bindings and authority gaps. Depends on I039. — Explicit negative fixtures cover each listed class across `tests/spec007/`, including malformed/unhashable nested values requested in final review.
+- [x] **I041** Run focused Spec 007 tests. Depends on I040. — Original exact implementation head `2888b0d9cf9de11e77574cfba1f40a55f380c988`: compileall PASS; 124 passed + 8 subtests, run `33048129036` / job `98436866639`. Final pre-ledger review head `b4b6c87fa55c1e66a5e4377a160172f3980d6d5c`: 158 passed + 8 subtests in run `33051293464` / job `98447180522`.
+- [x] **I042** Run full offline repository regression, compileall and diff-check. Depends on I041. — Original head `2888b0d9cf9de11e77574cfba1f40a55f380c988`: run `33048270761` / job `98437313527`, 751 passed + 136 subtests. Final pre-ledger review head `b4b6c87fa55c1e66a5e4377a160172f3980d6d5c`: run `33051293464` / job `98447180522`, 785 passed + 136 subtests; 36 combined review regressions; compileall PASS; `git diff --check` PASS; bounded diff scope PASS.
+- [x] **I043** Open bounded implementation PR with exact task/evidence mapping. Depends on I042. — PR #53 is open against canonical base `19bdffc28f20e52575922852dd3a8de2b9d0d312`; changed paths are bounded to `src/commandmed/spec007/**`, `tests/spec007/**`, and `specs/007-sft-v1/tasks.md`; PR description records phased qualification and review-repair evidence.
+- [x] **I044** Obtain exact-head independent implementation review; repair until no material blockers. Depends on I043. — Qodo raised 11 valid findings on the original implementation; RED `2e0f5cf485d9c5ca5f8b91c582d1087d50c20b60` / run-job `33049053415`/`98439810190`, repairs and GREEN `43936c1b3e13fad0d232015d1fe5a3547ed22b3a` / `33049539882`/`98441390167`, then Qodo 0 bugs / 0 rule violations. CodeRabbit independently found four remaining material/reliability issues; RED `4c5aa33235622a0eae8825942652d11bad5e36ad` / `33050087065`/`98443183736`, repairs and GREEN `c0bc78a6c094aee4ba66d619eafffc855d8ad625` / `33050446275`/`98444362630`; CodeRabbit confirmed the implementation fixes and requested only explicit regression coverage. Final coverage head `b4b6c87fa55c1e66a5e4377a160172f3980d6d5c` adds those tests and qualifies in `33051293464`/`98447180522` (36 review regressions, 158+8 focused, 785+136 full, compile/diff/scope PASS); Qodo re-reviewed that head with 0 bugs / 0 rule violations. CodeRabbit cannot produce another included review on this head at present (`0` included reviews remain; exact-head status reports manual review required for this OSS repository), so the canonical service-unavailable fallback is used transparently: substantive CodeRabbit review/fix confirmation on the unchanged implementation code at `c0bc78a6...`, exact-head Qodo review on the test-only `b4b6c87...` delta, all CodeRabbit material threads resolved, and exact-head deterministic qualification. No PASS is inferred from silence.
 - [ ] **I045** Merge offline control plane only after all implementation gates and separate merge authority/precedent are satisfied. Depends on I044.
 
 ## Phase E — Controlled external evidence / authority gates
