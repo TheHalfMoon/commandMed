@@ -1,7 +1,7 @@
 # Static Analyze — Spec 007 SFT V1 Planning Package
 
-**Date:** 2026-08-27  
-**Lifecycle:** `AUTHORIZED_TO_PLAN`  
+**Date:** 2026-08-27
+**Lifecycle:** `AUTHORIZED_TO_PLAN`
 **Scope:** planning/static consistency only; no model/data/device/training execution
 
 ## 1. Inputs analyzed

@@ -1,10 +1,10 @@
 # commandMed Medical Intelligence Density Strategy v0.1
 
-**Date:** 2026-08-27  
-**Status:** ADDITIVE PLANNING STRATEGY — does not amend execution authority  
-**Parent baseline:** `docs/COMMANDMED-GRAND-MASTER-PLAN-v0.1.md`  
-**Current lifecycle:** Spec 007 `AUTHORIZED_TO_PLAN`  
-**Training authority:** NONE  
+**Date:** 2026-08-27
+**Status:** ADDITIVE PLANNING STRATEGY — does not amend execution authority
+**Parent baseline:** `docs/COMMANDMED-GRAND-MASTER-PLAN-v0.1.md`
+**Current lifecycle:** Spec 007 `AUTHORIZED_TO_PLAN`
+**Training authority:** NONE
 **Model selection authority:** FOUNDER + CHATGPT ONLY
 
 ## 1. Purpose

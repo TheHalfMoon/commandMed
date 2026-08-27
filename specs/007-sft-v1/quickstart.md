@@ -1,7 +1,7 @@
 # Quickstart — Spec 007 SFT V1 Planning and Future Offline Control Plane
 
-**Current lifecycle:** `AUTHORIZED_TO_PLAN`  
-**Model execution:** NONE  
+**Current lifecycle:** `AUTHORIZED_TO_PLAN`
+**Model execution:** NONE
 **Training:** NONE
 
 This quickstart describes how to inspect and later validate the Spec 007 planning/offline control plane without downloading weights, constructing real clinical datasets, executing benchmarks, training, using devices, credentials, or spending money.

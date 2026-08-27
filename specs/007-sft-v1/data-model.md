@@ -1,8 +1,8 @@
 # Data Model — Spec 007 SFT V1
 
-**Lifecycle:** `AUTHORIZED_TO_PLAN`  
-**Execution authority:** NONE  
-**Training authority:** NONE  
+**Lifecycle:** `AUTHORIZED_TO_PLAN`
+**Execution authority:** NONE
+**Training authority:** NONE
 **Model selection:** FOUNDER + CHATGPT ONLY
 
 This document defines the planning-level logical records required by Spec 007. It does not create real training data, model identities, runtime evidence, benchmark results, or execution authority.

@@ -1,7 +1,7 @@
 # Tasks — Spec 007 SFT V1
 
-**Current lifecycle:** `AUTHORIZED_TO_PLAN`  
-**Implementation authority:** NONE  
+**Current lifecycle:** `AUTHORIZED_TO_PLAN`
+**Implementation authority:** NONE
 **Training authority:** NONE
 
 Tasks are dependency ordered. `[x]` means the planning artifact exists in this branch; `[ ]` means future work. Implementation tasks MUST NOT begin until a separate canonical implementation authorization exists.

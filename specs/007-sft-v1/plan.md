@@ -1,14 +1,14 @@
 # Plan — Spec 007 SFT V1 (Record-Grade Compact Medical Core)
 
-**Branch:** `spec/007-plan-record-frontier`  
-**Canonical planning base:** `981987390f60302d4c38ae6d54c101aa78c12f4e`  
-**Planning authorization:** PR #50 / merge `981987390f60302d4c38ae6d54c101aa78c12f4e`  
-**Canonical clarification:** PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`  
-**Qualified clarification head:** `1919779ba87725b7d529ba35465dc546f61fbc13`  
-**Strategy:** `docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1.md`  
-**Lifecycle:** `AUTHORIZED_TO_PLAN`  
-**Execution authority:** NONE  
-**Training authority:** NONE  
+**Branch:** `spec/007-plan-record-frontier`
+**Canonical planning base:** `981987390f60302d4c38ae6d54c101aa78c12f4e`
+**Planning authorization:** PR #50 / merge `981987390f60302d4c38ae6d54c101aa78c12f4e`
+**Canonical clarification:** PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`
+**Qualified clarification head:** `1919779ba87725b7d529ba35465dc546f61fbc13`
+**Strategy:** `docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1.md`
+**Lifecycle:** `AUTHORIZED_TO_PLAN`
+**Execution authority:** NONE
+**Training authority:** NONE
 **Model selection authority:** FOUNDER + CHATGPT ONLY
 
 > This plan defines the complete non-executing architecture and task boundary for commandMed's first supervised-fine-tuned compact Core candidate. It does not select a model, backend, dataset payload, update strategy, hyperparameter values, compute budget, teacher, quantization method, or winner. It does not authorize model access, tournament execution, training, Private Gold/PHI access, restricted data, device execution, credentials, provider generation, or spend.
