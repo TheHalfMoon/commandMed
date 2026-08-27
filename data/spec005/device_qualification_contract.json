@@ -1,6 +1,6 @@
 {
   "protocol_id": "commandmed-spec005-device-qualification-protocol",
-  "protocol_version": "1.0",
+  "protocol_version": "1.1",
   "targets": [
     {
       "target_id": "FLAGSHIP_REPRESENTATIVE",
@@ -61,8 +61,10 @@
   "measurement_policy": {
     "measured_runs": 5,
     "aggregation": "MEDIAN_WITH_WORST_CASE",
-    "warmup_runs_required_before_measurement": true,
-    "fresh_process_per_measured_run_required": true
+    "warmup_runs_required_before_measurement": false,
+    "non_measured_warmup_requests": 0,
+    "fresh_process_per_measured_run_required": true,
+    "one_measured_request_per_fresh_process": true
   },
   "memory_policy": {
     "name": "PLATFORM_NATIVE_PEAK_MEMORY",
@@ -86,10 +88,13 @@
     "termination_on_exceed_or_os_kill": "HARD_FAIL"
   },
   "package_boundaries": {
-    "package_hard_cap_bytes": null,
-    "package_target_bytes": null,
-    "package_stretch_bytes": null,
-    "_resolution_note": "Package byte thresholds are intentionally unresolved at specify/implementation stage; they must be frozen before execution authorization and cannot be chosen after candidate results are observed."
+    "scope": "COMPLETE_MINIMUM_TEXT_CORE_HUGGINGFACE_BUNDLE",
+    "package_hard_cap_bytes": 734003200,
+    "package_target_bytes": 629145600,
+    "package_stretch_bytes": 524288000,
+    "hard_cap_semantics": "NONCOMPENSABLE_QUALIFICATION_GATE",
+    "target_semantics": "ENGINEERING_TARGET_NON_GATE",
+    "stretch_semantics": "STRETCH_TARGET_NON_GATE"
   },
   "runtime_identity_policy": {
     "exact_llama_cpp_revision_required_in_evidence": true,
@@ -97,6 +102,31 @@
     "mutable_tag_latest_branch_or_family_name_sufficient": false,
     "runtime_drift_requires_new_exact_identity": true,
     "exact_values_resolved_before_execution_not_by_this_contract": true
+  },
+  "pre_execution_identity_policy": {
+    "all_five_targets_required": true,
+    "measured_runs_required": false,
+    "required_target_identity_fields": [
+      "candidate_id",
+      "model_artifact_sha256",
+      "complete_bundle_sha256",
+      "complete_bundle_bytes",
+      "gguf_quantization",
+      "llama_cpp_core_revision",
+      "build_toolchain_identity",
+      "runtime_artifact_sha256",
+      "wrapper_identity",
+      "memory_measurement_identity",
+      "thermal_signal_identity",
+      "energy_signal_identity",
+      "execution_plan_sha256"
+    ]
+  },
+  "performance_threshold_policy": {
+    "state": "UNRESOLVED_PRE_EXECUTION",
+    "record_id": null,
+    "record_canonical_sha256": null,
+    "resolution_rule": "MUST_BE_FROZEN_BEFORE_REAL_DEVICE_EXECUTION"
   },
   "timing_policy": {
     "ttft_prefill_decode_sustained_throughput_required_records": [
@@ -123,6 +153,7 @@
   },
   "failure_semantics": {
     "hard_fail_conditions": [
+      "PACKAGE_HARD_CAP_EXCEEDED",
       "MEMORY_CEILING_EXCEEDED",
       "OS_MEMORY_TERMINATION_DURING_QUALIFICATION",
       "RUNTIME_CRASH_DURING_MEASURED_RUN",
@@ -130,6 +161,8 @@
       "RUNTIME_IDENTITY_DRIFT"
     ],
     "incomplete_conditions": [
+      "MISSING_PRE_EXECUTION_IDENTITY",
+      "UNRESOLVED_PERFORMANCE_THRESHOLD_POLICY",
       "MISSING_MEASURED_RUN",
       "MISSING_MEMORY_SAMPLE",
       "MISSING_RUNTIME_IDENTITY_FIELD",
@@ -141,7 +174,10 @@
   "invariants": [
     "METADATA_ONLY_NO_LLAMA_CPP_OR_DEVICE_INVOCATION=YES",
     "NO_THRESHOLD_CHOSEN_AFTER_CANDIDATE_RESULTS_KNOWN=YES",
-    "FIVE_COMPLETE_MEASURED_RUNS_REQUIRED_FOR_MEDIAN=YES",
+    "PRE_EXECUTION_READINESS_REQUIRES_MEASURED_RUNS=NO",
+    "POST_EXECUTION_QUALIFICATION_REQUIRES_FIVE_COMPLETE_MEASURED_RUNS=YES",
+    "NO_NON_MEASURED_WARMUP_REQUESTS=YES",
+    "PACKAGE_SCOPE_COMPLETE_MINIMUM_TEXT_CORE_BUNDLE=YES",
     "PARAMETER_COUNT_AND_VENDOR_CLAIMS_ARE_DESCRIPTIVE_ONLY=YES"
   ],
   "canonical_sha256": null,
