@@ -25,7 +25,7 @@ TRAINING_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-## 1. Controlling frozen candidate identities
+## 1. Controlling frozen candidate identities and device-role semantics
 
 The E001 candidate manifest remains unchanged.
 
@@ -42,7 +42,19 @@ CONTROL_PURPOSE=SCALE_QUALITY_OPPORTUNITY_COST
 CONTROL_MASS_REACH_PACKAGE_GATE_REQUIRED_FOR_CONTROL_WINNING=NO
 ```
 
-No candidate/revision substitution is in scope.
+The corrected canonical device control plane is also explicit: both `PRIMARY` and `CONTROL` are executable roles for static pre-execution readiness; all five target identity records are required. The package hard cap applies only to `PRIMARY`.
+
+```text
+DEVICE_EXECUTABLE_CANDIDATE_ROLES=PRIMARY,CONTROL
+CONTROL_DEVICE_PREEXECUTION_READINESS_REQUIRED=YES
+CONTROL_ALL_FIVE_TARGET_IDENTITY_RECORDS_REQUIRED=YES
+CONTROL_MODEL_ARTIFACT_SHA256_REQUIRED=YES
+CONTROL_GGUF_QUANTIZATION_IDENTITY_REQUIRED=YES
+CONTROL_LLAMA_CPP_CORE_REVISION_REQUIRED=YES
+CONTROL_PRIMARY_PACKAGE_HARD_CAP_APPLIES=NO
+```
+
+No candidate/revision substitution and no silent CONTROL scope reduction are in scope.
 
 ## 2. Existing E002 preconverted acquisition authority
 
@@ -125,12 +137,16 @@ EXACT_FROZEN_SOURCE_REVISION_USED_TO_PRODUCE_BYTES=NEEDS_EVIDENCE
 CURRENT_E002_ALLOWLIST_ELIGIBILITY=INCOMPLETE
 ```
 
-The CONTROL is not subject to the PRIMARY winning mass-reach package gate, but this fact does not itself define which device/runtime evidence the CONTROL must execute under E004. The artifact decision must not silently amend that obligation.
+The CONTROL is exempt from the PRIMARY package hard cap, but it is not exempt from the current device pre-execution identity contract. Under the frozen current control plane it still needs an exact model artifact identity, GGUF quantization identity, llama.cpp revision, shared runtime identity, and all five target records before device execution can become ready.
 
 ```text
-CONTROL_DEVICE_RUNTIME_OBLIGATION=REQUIRES_EXACT_FROZEN_PROTOCOL_INTERPRETATION_OR_SEPARATE_GOVERNANCE_DECISION
+CONTROL_DEVICE_RUNTIME_OBLIGATION=BOUND_BY_CURRENT_DEVICE_CONTROL_PLANE
+CONTROL_PREEXECUTION_DEVICE_IDENTITY_REQUIRED=YES
+CONTROL_PRIMARY_PACKAGE_HARD_CAP_APPLIES=NO
 CONTROL_ARTIFACT_SUBSTITUTION_BY_CONVENIENCE=PROHIBITED
 ```
+
+If governance wishes to remove or narrow that CONTROL obligation, that is `ARTIFACT_DECISION_D` protocol amendment, not an artifact-resolution inference.
 
 ## 5. Decision classes
 
@@ -156,7 +172,8 @@ The proposed minimal conversion scope is:
 ```text
 CONVERSION_SOURCE_SCOPE=EXACT_FROZEN_E001_SOURCE_REVISIONS_ONLY
 PRIMARY_GRANITE_CONVERSION_ELIGIBLE_FOR_REQUEST=YES
-CONTROL_CONVERSION_ELIGIBLE_FOR_REQUEST=ONLY_IF_CONTROL_RUNTIME_OBLIGATION_REQUIRES_GGUF_AND_IS_GOVERNANCE_BOUND
+CONTROL_QWEN3_4B_CONVERSION_ELIGIBLE_FOR_REQUEST=YES
+CONTROL_CONVERSION_PURPOSE=SATISFY_CURRENT_FROZEN_CONTROL_RUNTIME_ARTIFACT_IDENTITY_REQUIREMENT
 QWEN_0_6_OR_0_8_RECONVERSION_AUTO_AUTHORIZED=NO
 OTHER_MODELS_OR_REVISIONS=PROHIBITED
 ```
@@ -203,11 +220,13 @@ runtime_compatibility_static_check
 CONVERSION_OUTPUT_AUTOMATICALLY_EQUALS_E004_RUNTIME_BINDING=NO
 CONVERSION_OUTPUT_AUTOMATICALLY_PASSES_DEVICE_GATE=NO
 CONVERSION_OUTPUT_AUTOMATICALLY_BECOMES_WINNER_OR_TRAINING_ASSET=NO
+CONTROL_CONVERSION_OUTPUT_EXEMPT_FROM_PRIMARY_PACKAGE_HARD_CAP=YES
+CONTROL_CONVERSION_OUTPUT_EXEMPT_FROM_OTHER_FROZEN_DEVICE_READINESS_FIELDS=NO
 ```
 
-### `ARTIFACT_DECISION_C` — wait for a future fully bound preconverted artifact
+### `ARTIFACT_DECISION_C` — wait for future fully bound preconverted artifacts
 
-No current public artifact may enter E002 by this option until a new evidence packet proves, at minimum:
+No current public Granite/CONTROL artifact may enter E002 under this option until a new evidence packet proves, at minimum:
 
 ```text
 exact_repository
@@ -224,19 +243,21 @@ A later explicit allowlist mutation would still be required.
 
 ### `ARTIFACT_DECISION_D` — amend frozen protocol/candidate obligations
 
-This is a scientific/governance change, not an artifact shortcut. It requires its own explicit authority and rationale and cannot be inferred from package inconvenience or resource limits.
+This is a scientific/governance change, not an artifact shortcut. It requires its own explicit authority and rationale and cannot be inferred from package inconvenience or resource limits. This is also the only decision class that may intentionally narrow the current CONTROL device/runtime obligation.
 
 ## 6. ChatGPT decision position for Founder review
 
 ```text
-CHATGPT_ARTIFACT_POSITION=RECOMMEND_ARTIFACT_DECISION_B_FOR_GRANITE_PRIMARY_ONLY_AS_THE_NEXT_RESOLUTION_PATH
+CHATGPT_ARTIFACT_POSITION=RECOMMEND_ARTIFACT_DECISION_B_FOR_BOTH_CURRENTLY_UNRESOLVED_FROZEN_RUNTIME_ARTIFACT_PATHS
+CHATGPT_GRANITE_SCOPE=ibm-granite/granite-4.0-350m-base@a50b46cef21c8a86b15f0496cb794487a78a910b
+CHATGPT_CONTROL_SCOPE=Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539
 CHATGPT_REASON_1=EXACT_SOURCE_CONTROLLED_CONVERSION_CAN_CREATE_AUDITABLE_SOURCE_TO_OUTPUT_PROVENANCE_WITHOUT_TRUSTING_AMBIGUOUS_PRECONVERTED_LINEAGE
-CHATGPT_REASON_2=GRANITE_IS_PRIMARY_AND_CURRENT_PRECONVERTED_BINDING_REMAINS_INCOMPLETE
-CHATGPT_REASON_3=THE_PROPOSED_AUTHORITY_CAN_BE_STRICTLY_SEPARATED_FROM_INFERENCE_DEVICE_BENCHMARK_TRAINING_AND_SPEND
-CHATGPT_CONTROL_POSITION=DO_NOT_AUTHORIZE_CONTROL_CONVERSION_UNTIL_ITS_EXACT_E004_RUNTIME_DEVICE_OBLIGATION_IS_GOVERNANCE_BOUND
+CHATGPT_REASON_2=GRANITE_PRIMARY_AND_CONTROL_BOTH_REQUIRE_EXACT_RUNTIME_ARTIFACT_IDENTITIES_UNDER_THE_CURRENT_FROZEN_CONTROL_PLANE
+CHATGPT_REASON_3=CONTROL_IS_EXEMPT_FROM_THE_PRIMARY_PACKAGE_HARD_CAP_BUT_NOT_FROM_DEVICE_PREEXECUTION_IDENTITY_REQUIREMENTS
+CHATGPT_REASON_4=THE_PROPOSED_CONVERSION_AUTHORITY_CAN_BE_STRICTLY_SEPARATED_FROM_INFERENCE_DEVICE_BENCHMARK_TRAINING_AND_SPEND
 ```
 
-This is a recommendation, not Founder authorization.
+This is a recommendation, not Founder authorization. If the Founder does not want CONTROL conversion under the current frozen role, the safe alternative is an explicit `ARTIFACT_DECISION_D`, not silent omission.
 
 ## 7. If `ARTIFACT_DECISION_B` is later authorized
 
