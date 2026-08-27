@@ -21,6 +21,8 @@ from src.commandmed.spec007.preservation import (
 )
 from src.commandmed.spec007.selection import validate_checkpoint_ranking_inputs
 from src.commandmed.spec007.sequence import (
+    compute_loss_mask_policy_sha256,
+    compute_prompt_rendering_policy_sha256,
     evaluate_truncation_admission,
     validate_loss_mask_policy,
     validate_packing_truncation_policy,
@@ -41,8 +43,18 @@ from tests.spec007.test_preservation_contracts import (
     valid_capability_binding,
 )
 from tests.spec007.test_quarantine_snapshot import rendered_record
-from tests.spec007.test_selection_reproducibility import separately_authorized_policy
-from tests.spec007.test_sequence_contracts import valid_loss_policy, valid_packing_policy
+from tests.spec007.test_selection_reproducibility import (
+    environment_manifest,
+    evaluation_binding,
+    fixed_policy,
+    recipe_evidence,
+    separately_authorized_policy,
+)
+from tests.spec007.test_sequence_contracts import (
+    valid_loss_policy,
+    valid_packing_policy,
+    valid_rendering_policy,
+)
 
 
 def _authorized_preflight_inputs() -> tuple[dict[str, object], dict[str, object]]:
@@ -60,6 +72,62 @@ def _authorized_preflight_inputs() -> tuple[dict[str, object], dict[str, object]
         }
     )
     return manifest, authority
+
+
+def _valid_component_store() -> dict[str, dict[str, dict[str, object]]]:
+    """Return complete synthetic component records for a fully authorized preflight."""
+    store = component_store()
+
+    rendering = valid_rendering_policy()
+    rendering["policy_id"] = "render:synthetic:v1"
+    rendering["base_checkpoint_binding_id"] = "base:synthetic:v1"
+    rendering["policy_sha256"] = compute_prompt_rendering_policy_sha256(rendering)
+
+    loss = valid_loss_policy()
+    loss["policy_id"] = "loss:synthetic:v1"
+    loss["rendering_policy_id"] = "render:synthetic:v1"
+    loss["policy_sha256"] = compute_loss_mask_policy_sha256(loss)
+
+    packing = valid_packing_policy()
+    packing["policy_id"] = "packing:synthetic:v1"
+
+    checkpoint = fixed_policy()
+    checkpoint["policy_id"] = "checkpoint-policy:synthetic:v1"
+
+    capability = valid_capability_binding()
+    capability["binding_id"] = "capability:synthetic:v1"
+    capability["base_checkpoint_binding_id"] = "base:synthetic:v1"
+    capability["frozen_evaluation_protocol_id"] = "eval-binding:synthetic:v1"
+    capability["quarantine_verification_id"] = "quarantine:synthetic:v1"
+
+    environment = environment_manifest()
+    environment["environment_id"] = "env:synthetic:v1"
+
+    evaluation = evaluation_binding()
+    evaluation["binding_id"] = "eval-binding:synthetic:v1"
+
+    recipe = recipe_evidence()
+    recipe["evidence_id"] = "recipe:synthetic:v1"
+
+    dataset = build_dataset_snapshot(
+        [],
+        snapshot_id="dataset:synthetic:v1",
+        canonical_order_identity="record-id-ascending-v1",
+        duplicate_report_id="dup:synthetic:v1",
+        contamination_report_id="contam:synthetic:v1",
+        quarantine_verification_id="quarantine:synthetic:v1",
+    )
+
+    store["dataset_snapshots"]["dataset:synthetic:v1"] = dataset
+    store["prompt_rendering_policies"]["render:synthetic:v1"] = rendering
+    store["loss_mask_policies"]["loss:synthetic:v1"] = loss
+    store["packing_truncation_policies"]["packing:synthetic:v1"] = packing
+    store["checkpoint_selection_policies"]["checkpoint-policy:synthetic:v1"] = checkpoint
+    store["capability_preservation_bindings"]["capability:synthetic:v1"] = capability
+    store["environment_manifests"]["env:synthetic:v1"] = environment
+    store["frozen_evaluation_protocol_bindings"]["eval-binding:synthetic:v1"] = evaluation
+    store["non_executing_recipe_evidence"]["recipe:synthetic:v1"] = recipe
+    return store
 
 
 def test_snapshot_rejects_prohibited_source_authority_even_with_allowed_split() -> None:
@@ -110,7 +178,7 @@ def test_protected_or_noncanonical_checkpoint_source_cannot_rank() -> None:
 
 def test_nested_license_identity_mismatch_blocks_preflight() -> None:
     manifest, authority = _authorized_preflight_inputs()
-    store = component_store()
+    store = _valid_component_store()
     store["license_evidence"]["license:synthetic:v1"]["license_evidence_id"] = "license:other"
     decision = preflight_run_manifest(manifest, store, authority)
     assert decision["allowed"] is False
@@ -119,7 +187,7 @@ def test_nested_license_identity_mismatch_blocks_preflight() -> None:
 
 def test_nested_quarantine_identity_mismatch_blocks_preflight() -> None:
     manifest, authority = _authorized_preflight_inputs()
-    store = component_store()
+    store = _valid_component_store()
     store["quarantine_verifications"]["quarantine:synthetic:v1"][
         "quarantine_verification_id"
     ] = "quarantine:other"
@@ -130,7 +198,7 @@ def test_nested_quarantine_identity_mismatch_blocks_preflight() -> None:
 
 def test_malformed_dataset_snapshot_blocks_authorized_preflight() -> None:
     manifest, authority = _authorized_preflight_inputs()
-    store = component_store()
+    store = _valid_component_store()
     assert preflight_run_manifest(manifest, store, authority)["allowed"] is True
     store["dataset_snapshots"]["dataset:synthetic:v1"]["snapshot_sha256"] = "BAD"
     decision = preflight_run_manifest(manifest, store, authority)
@@ -140,7 +208,7 @@ def test_malformed_dataset_snapshot_blocks_authorized_preflight() -> None:
 
 def test_invalid_resolved_component_blocks_authorized_preflight() -> None:
     manifest, authority = _authorized_preflight_inputs()
-    store = component_store()
+    store = _valid_component_store()
     assert preflight_run_manifest(manifest, store, authority)["allowed"] is True
     store["environment_manifests"]["env:synthetic:v1"]["known_nondeterminism"] = "NONE"
     decision = preflight_run_manifest(manifest, store, authority)
