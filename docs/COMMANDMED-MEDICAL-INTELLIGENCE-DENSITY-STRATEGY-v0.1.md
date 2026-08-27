@@ -3,7 +3,7 @@
 **Date:** 2026-08-27
 **Status:** ADDITIVE PLANNING STRATEGY — does not amend execution authority
 **Parent baseline:** `docs/COMMANDMED-GRAND-MASTER-PLAN-v0.1.md`
-**Current lifecycle:** Spec 007 `AUTHORIZED_TO_PLAN`
+**Current lifecycle:** Spec 007 `AUTHORIZED_TO_START` — bounded offline deterministic I001-I045 implementation only; this strategy itself grants no execution authority
 **Training authority:** NONE
 **Model selection authority:** FOUNDER + CHATGPT ONLY
 

@@ -2,7 +2,7 @@
 
 **Branch:** `spec/007-clarification-canonical`
 **Canonical base:** `703f8a688b5bd2599f51855c850f0281c755ef90` (PR #47 clarification authorization merge)
-**Status:** CANONICAL via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`; clarification authority superseded 2026-08-27 by current `AUTHORIZED_TO_PLAN` in `specs/README.md`
+**Status:** CANONICAL via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`; clarification authority was superseded by historical `AUTHORIZED_TO_PLAN`, which is itself superseded 2026-08-27 by current `AUTHORIZED_TO_START` in `specs/README.md`
 **Model selection authority:** FOUNDER+CHATGPT ONLY
 **Execution authority:** NONE
 

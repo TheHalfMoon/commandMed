@@ -27,7 +27,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; closure merge `3dc705a1de09347f3574b305afb1bfaa6d46ecff`. Final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
 | 005 | Base Model Tournament | `CLOSED_CANONICAL` | 004 `CLOSED_CANONICAL` | Implementation `5e35cd4` (tree `5b823d20`, head `d4caf94`) + planning reconciliation `799c36a` (tree `eaa8942`, head `83d7612`); closure `CLOSED_CANONICAL` via this closeout. Deterministic control plane only; no model/benchmark/Private Gold/PHI/device/spend execution. 513 tests + exact-head reviews `d4caf94`/`83d7612` MATERIAL_BLOCKER=NO. |
 | 006 | Patient Safety Scaffold & Deterministic Tools | `CLOSED_CANONICAL` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Implementation merge `4df3dc4eab5d3160d88b2f296dea62a8dd884b60` (tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`, final head `09da2d1b4f6d21a1053967df0b4c3a68ea6078f3`) under founder authorization PR #40; planning reconciliation `a9d7f37ea1abc537e99bbb75dda2a5b1f8625a8f`. Final 114+51 focused / 627+128 full tests; exact-head reviews no remaining material blocker. Offline deterministic scope only; T017-T020 remain typed `NEEDS_EVIDENCE` fail-closed gates. See closeout for full binding. |
-| 007 | SFT V1 | `AUTHORIZED_TO_PLAN` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Specification canonical via PR #46 (`645da20`, final head `07fb71e`); clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`, qualified head `1919779ba87725b7d529ba35465dc546f61fbc13`; founder approved the complete non-executing planning package only. `TRAINING_AUTHORITY=NONE`. Model selection reserved to FOUNDER+CHATGPT; `BACKBONE_WINNER=NEEDS_EVIDENCE`. See authorization records below. |
+| 007 | SFT V1 | `AUTHORIZED_TO_START` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Specification canonical via PR #46 (`645da20`, final head `07fb71e`); clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`, qualified head `1919779ba87725b7d529ba35465dc546f61fbc13`; planning package canonical via PR #51 / merge `947f3aba4d4316e21470ac26352d96e3bfb74ae6`; Founder authorized bounded offline implementation on 2026-08-27. `TRAINING_AUTHORITY=NONE`. Model selection reserved to FOUNDER+CHATGPT; `BACKBONE_WINNER=NEEDS_EVIDENCE`. See authorization records below. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
 | 009 | Distillation V1 | `BLOCKED` | 008 | Minimum license-clean distillation; on-policy candidate. |
 | 010 | RLVR V1 | `BLOCKED` | 009 | Verifiable tasks only; optional NO-GO outcome. |
@@ -341,7 +341,7 @@ SPEC_005=CLOSED_CANONICAL
 SPEC_005_LIFECYCLE_AUTHORITY=CLOSED_CANONICAL (control-plane only)
 SPEC_006=CLOSED_CANONICAL
 SPEC_006_LIFECYCLE_AUTHORITY=IMPLEMENTATION_ONLY (offline deterministic)
-SPEC_007=AUTHORIZED_TO_PLAN
+SPEC_007=AUTHORIZED_TO_START
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
@@ -352,3 +352,62 @@ PHI_RESTRICTED_DATA_ACCESS_AUTHORITY=NONE
 PRIVATE_GOLD_PAYLOAD_ACCESS_AUTHORITY=NONE
 GATED_ASSET_ACCESS_AUTHORITY=NONE
 ```
+
+
+## Spec 007 implementation authorization record
+
+Founder authorization on 2026-08-27 advances Spec 007 from `AUTHORIZED_TO_PLAN` to `AUTHORIZED_TO_START` for the bounded **offline deterministic implementation control plane only**.
+
+```text
+SPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START
+AUTHORIZATION_DATE=2026-08-27
+CANONICAL_PLANNING_PR=#51
+CANONICAL_PLANNING_MERGE=947f3aba4d4316e21470ac26352d96e3bfb74ae6
+CANONICAL_PLANNING_TREE=faa5c15c84dbd84d162b6ba6850bbc312584203b
+QUALIFIED_PLANNING_HEAD=701c933acdf84572f627446e5199231236f97988
+QUALIFIED_PLANNING_TREE=faa5c15c84dbd84d162b6ba6850bbc312584203b
+P013_VALIDATED_SUBJECT_SHA=701c933acdf84572f627446e5199231236f97988
+P013_VALIDATED_SUBJECT_TREE=faa5c15c84dbd84d162b6ba6850bbc312584203b
+P013_VALIDATION_RUN=33040059680
+P013_VALIDATION_JOB=98411371329
+P013_WORKFLOW_CARRIER_SHA=65973326632d07bb63cab03d9ab696b5f1f0c375
+P013_WORKFLOW_CARRIER_ROLE=TRIGGER_ONLY_NOT_VALIDATED_SUBJECT
+P013_EXACT_CHECKOUT_BINDING=JOB_98411371329_CHECKOUT_AND_VERIFY_HEAD_BOTH_EQUAL_VALIDATED_SUBJECT_SHA
+P013_COMPILEALL=PASS
+P013_PYTEST=627 passed + 128 subtests
+P013_GIT_DIFF_CHECK=PASS
+FINAL_QODO_REVIEW=MATERIAL_BLOCKER=NO
+FINAL_CODERABBIT_REVIEW=MATERIAL_BLOCKER=NO
+AUTHORIZED_IMPLEMENTATION_TASKS=I001-I045
+AUTHORIZED_SCOPE=OFFLINE_DETERMINISTIC_SPEC007_CONTROL_PLANE_ONLY
+```
+
+This authorization permits implementation and qualification of the dependency-ordered I-phase validators, identity/serialization utilities, synthetic fixtures, quarantine/provenance composition, rendering/loss/packing policies, Arabic/language evidence shapes, checkpoint-selection policy enforcement, reproducibility/resume records, record/resource/efficiency/failure contracts, non-executing run-manifest composition, activation preflight, and their offline tests.
+
+It does **not** authorize any E-phase external-evidence activity and grants none of the following:
+
+```text
+MODEL_CANDIDATE_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY
+BACKBONE_WINNER_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY
+PI_MODEL_SELECTION_AUTHORITY=NONE
+BACKBONE_WINNER=NEEDS_EVIDENCE
+MODEL_EXECUTION_AUTHORITY=NONE
+MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE
+PRIVATE_GOLD_AUTHORITY=NONE
+PHI_AUTHORITY=NONE
+DEVICE_EXECUTION_AUTHORITY=NONE
+EXTERNAL_CLINICAL_DATABASE_ACCESS_AUTHORITY=NONE
+CREDENTIAL_ACCESS_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+P013 exact-subject binding: workflow carrier `65973326632d07bb63cab03d9ab696b5f1f0c375` is trigger-only. Job `98411371329` explicitly checked out and verified `701c933acdf84572f627446e5199231236f97988` (tree `faa5c15c84dbd84d162b6ba6850bbc312584203b`) before compileall, full pytest, and diff-check. The validated subject tree equals the canonical planning merge tree.
+
+`E001-E015` remain blocked by their own explicit evidence/Founder/execution/data/access gates. A pilot, smoke-train, one-step gradient probe, adapter run, model load, benchmark execution, or empirical convergence test is a training/model-execution activity and is not authorized by this record.
+
+Implementation must remain fail-closed, offline, deterministic, synthetic-fixture based, and consistent with Specs 002, 003, 005, and 006. Exact-head implementation review and repository regression evidence remain required before any implementation merge.

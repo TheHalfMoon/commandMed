@@ -6,7 +6,7 @@
 **Canonical clarification:** PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`
 **Qualified clarification head:** `1919779ba87725b7d529ba35465dc546f61fbc13`
 **Strategy:** `docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1.md`
-**Lifecycle:** `AUTHORIZED_TO_PLAN`
+**Current lifecycle:** `AUTHORIZED_TO_START` — this canonical plan was frozen under historical `AUTHORIZED_TO_PLAN` and now governs bounded offline deterministic I001-I045 implementation
 **Execution authority:** NONE
 **Training authority:** NONE
 **Model selection authority:** FOUNDER + CHATGPT ONLY

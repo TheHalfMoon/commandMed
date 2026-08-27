@@ -1,6 +1,6 @@
 # Data Model — Spec 007 SFT V1
 
-**Lifecycle:** `AUTHORIZED_TO_PLAN`
+**Current lifecycle:** `AUTHORIZED_TO_START` — data model remains the canonical planning contract consumed by bounded offline deterministic I001-I045 implementation
 **Execution authority:** NONE
 **Training authority:** NONE
 **Model selection:** FOUNDER + CHATGPT ONLY
