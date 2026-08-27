@@ -35,15 +35,24 @@ def _unique_object_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return result
 
 
+def _reject_json_constant(value: str) -> None:
+    """Reject Python's non-standard NaN/Infinity JSON extensions."""
+    raise ValueError(f"invalid JSON constant {value}")
+
+
 def parse_json_object(
     raw_text: Any, *, field: str = "record"
 ) -> tuple[dict[str, Any] | None, list[str]]:
-    """Parse one JSON object without coercion and reject duplicate object keys."""
+    """Parse one strict JSON object without coercion or non-standard constants."""
     if not isinstance(raw_text, str):
         return None, [f"{field}: expected JSON text string"]
 
     try:
-        parsed = json.loads(raw_text, object_pairs_hook=_unique_object_pairs)
+        parsed = json.loads(
+            raw_text,
+            object_pairs_hook=_unique_object_pairs,
+            parse_constant=_reject_json_constant,
+        )
     except _DuplicateJsonKeyError as exc:
         return None, [f"{field}: duplicate JSON object key '{exc.args[0]}'"]
     except (json.JSONDecodeError, ValueError):
@@ -61,20 +70,24 @@ def validate_closed_object(
     optional_fields: Iterable[str] = (),
     field: str = "record",
 ) -> list[str]:
-    """Reject non-objects, missing required keys, and every undeclared key."""
+    """Reject non-objects, non-string keys, missing fields, and undeclared keys."""
     if not isinstance(record, dict):
         return [f"{field}: expected object record"]
 
     required = set(required_fields)
     declared = required | set(optional_fields)
-    present = set(record)
+    string_keys = {key for key in record if isinstance(key, str)}
+    non_string_keys = sorted(repr(key) for key in record if not isinstance(key, str))
 
     errors: list[str] = []
-    missing = sorted(required - present)
+    if non_string_keys:
+        errors.append(f"{field}: object keys must be strings {non_string_keys}")
+
+    missing = sorted(required - string_keys)
     if missing:
         errors.append(f"{field}: required fields missing {missing}")
 
-    undeclared = sorted(present - declared)
+    undeclared = sorted(string_keys - declared)
     if undeclared:
         errors.append(f"{field}: undeclared fields {undeclared}")
     return errors
