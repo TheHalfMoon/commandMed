@@ -1,4 +1,4 @@
-name: Spec 007 I1 exact-head RED
+name: Spec 007 I1 complete exact-head RED
 
 on:
   push:
@@ -16,21 +16,17 @@ jobs:
       - name: Checkout exact RED head
         uses: actions/checkout@v4
         with:
-          ref: 2fd7d7c73761fc8d527d57d9f0b6f97374b66491
+          ref: 23985b58b0ff76fa94b3d586ea979f981dc1f47e
           fetch-depth: 0
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Install pytest only
         run: python -m pip install --disable-pip-version-check pytest
-
       - name: Verify exact RED subject
         run: |
-          test "$(git rev-parse HEAD)" = "2fd7d7c73761fc8d527d57d9f0b6f97374b66491"
+          test "$(git rev-parse HEAD)" = "23985b58b0ff76fa94b3d586ea979f981dc1f47e"
           echo "RED_SUBJECT_SHA=$(git rev-parse HEAD)"
-
-      - name: Run focused I005-I010 tests
-        run: python3 -m pytest -q tests/spec007/test_curriculum.py tests/spec007/test_quarantine_snapshot.py
+      - name: Run complete I005-I010 RED tests
+        run: python3 -m pytest -q tests/spec007/test_curriculum.py tests/spec007/test_quarantine_snapshot.py tests/spec007/test_quarantine_prohibited_surfaces.py
