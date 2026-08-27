@@ -10,7 +10,7 @@
 **Conversion performed:** NO  
 **Model execution performed:** NO
 
-This document converts the remaining frozen-artifact blocker into an exact decision surface. It does not infer authorization from repository progress, the existence of public GGUF files, or a generic instruction to continue.
+This document converts the remaining frozen-artifact blocker into an exact decision surface. It does not infer authorization from repository progress, public artifact availability, code-review status, or a generic instruction to continue.
 
 ```text
 FOUNDER_ARTIFACT_DECISION=ABSENT
@@ -42,7 +42,7 @@ CONTROL_PURPOSE=SCALE_QUALITY_OPPORTUNITY_COST
 CONTROL_MASS_REACH_PACKAGE_GATE_REQUIRED_FOR_CONTROL_WINNING=NO
 ```
 
-The corrected canonical device control plane is also explicit: both `PRIMARY` and `CONTROL` are executable roles for static pre-execution readiness; all five target identity records are required. The package hard cap applies only to `PRIMARY`.
+The current corrected device control plane is explicit: both `PRIMARY` and `CONTROL` are executable roles for static pre-execution readiness and require all five target identity records. The package hard cap is PRIMARY-only.
 
 ```text
 DEVICE_EXECUTABLE_CANDIDATE_ROLES=PRIMARY,CONTROL
@@ -89,8 +89,6 @@ PRECONVERTED_ARTIFACTS_NOT_EXPLICITLY_LISTED=UNAUTHORIZED
 
 ## 3. Unresolved Granite PRIMARY path
 
-Frozen subject:
-
 ```text
 CANDIDATE=ibm-granite/granite-4.0-350m-base
 FROZEN_SOURCE_REVISION=a50b46cef21c8a86b15f0496cb794487a78a910b
@@ -110,11 +108,9 @@ EXACT_FROZEN_SOURCE_REVISION_USED_TO_PRODUCE_BYTES=NEEDS_EVIDENCE
 CURRENT_E002_ALLOWLIST_ELIGIBILITY=INCOMPLETE
 ```
 
-Fresh public verification on 2026-08-27 confirms that a public first-party Granite base GGUF repository and Q4_K_M artifact remain available. That observation does not establish the missing immutable source-to-output binding or exact integer-byte evidence required by E002.
+Current public availability does not establish immutable frozen-source-to-output binding or exact integer-byte evidence.
 
 ## 4. Unresolved CONTROL path
-
-Frozen subject:
 
 ```text
 CANDIDATE=Qwen/Qwen3-4B-Base
@@ -137,7 +133,7 @@ EXACT_FROZEN_SOURCE_REVISION_USED_TO_PRODUCE_BYTES=NEEDS_EVIDENCE
 CURRENT_E002_ALLOWLIST_ELIGIBILITY=INCOMPLETE
 ```
 
-The CONTROL is exempt from the PRIMARY package hard cap, but it is not exempt from the current device pre-execution identity contract. Under the frozen current control plane it still needs an exact model artifact identity, GGUF quantization identity, llama.cpp revision, shared runtime identity, and all five target records before device execution can become ready.
+The CONTROL is exempt from the PRIMARY package hard cap but not from current device pre-execution identity requirements.
 
 ```text
 CONTROL_DEVICE_RUNTIME_OBLIGATION=BOUND_BY_CURRENT_DEVICE_CONTROL_PLANE
@@ -146,11 +142,11 @@ CONTROL_PRIMARY_PACKAGE_HARD_CAP_APPLIES=NO
 CONTROL_ARTIFACT_SUBSTITUTION_BY_CONVENIENCE=PROHIBITED
 ```
 
-If governance wishes to remove or narrow that CONTROL obligation, that is `ARTIFACT_DECISION_D` protocol amendment, not an artifact-resolution inference.
+If governance intentionally narrows that obligation, that is a protocol amendment under `ARTIFACT_DECISION_D`, not an artifact-resolution inference.
 
 ## 5. Decision classes
 
-The Founder should choose an explicit bounded class. Silence, repository merge, or code-review PASS is not a decision.
+Silence, repository merge, or code-review PASS is not a Founder decision.
 
 ### `ARTIFACT_DECISION_A` — preserve current authority
 
@@ -160,14 +156,11 @@ MODEL_CONVERSION_AUTHORITY=NONE
 FULL_E004_ARTIFACT_FRONTIER=BLOCKED
 ```
 
-Scientific advantage: no authority expansion.  
-Consequence: full frozen tournament remains blocked on artifact prerequisites.
-
 ### `ARTIFACT_DECISION_B` — authorize a bounded exact-source conversion path
 
-This option would authorize conversion only after a separately reviewable conversion manifest binds every required field below. It would not itself authorize model inference, benchmark execution, device measurement, training, credentials, PHI, Private Gold, provider generation, or spend.
+This class would authorize conversion only after a separately reviewable exact conversion subject is bound. It would not itself authorize inference, benchmark execution, device measurement, training, credentials, PHI, Private Gold, provider generation, or spend.
 
-The proposed minimal conversion scope is:
+Proposed bounded candidate scope:
 
 ```text
 CONVERSION_SOURCE_SCOPE=EXACT_FROZEN_E001_SOURCE_REVISIONS_ONLY
@@ -178,7 +171,7 @@ QWEN_0_6_OR_0_8_RECONVERSION_AUTO_AUTHORIZED=NO
 OTHER_MODELS_OR_REVISIONS=PROHIBITED
 ```
 
-Before any conversion execution, an exact `ConversionManifest`-equivalent evidence packet must bind:
+Before any conversion execution, the exact subject must bind:
 
 ```text
 source_repository
@@ -198,12 +191,12 @@ normalization_or_metadata_policy_if_any
 expected_zero_spend_resource_envelope
 storage_and_retention_policy
 network_access_boundary
-no_credentials_assertion
+credential_state
 no_model_inference_assertion
 no_benchmark_access_assertion
 ```
 
-After conversion, but before the output can become a tournament runtime artifact, evidence must bind:
+After conversion, before an output can become a tournament runtime artifact, evidence must bind:
 
 ```text
 output_sha256
@@ -226,7 +219,7 @@ CONTROL_CONVERSION_OUTPUT_EXEMPT_FROM_OTHER_FROZEN_DEVICE_READINESS_FIELDS=NO
 
 ### `ARTIFACT_DECISION_C` — wait for future fully bound preconverted artifacts
 
-No current public Granite/CONTROL artifact may enter E002 under this option until a new evidence packet proves, at minimum:
+No current public Granite/CONTROL artifact may enter E002 under this option until a new evidence packet proves:
 
 ```text
 exact_repository
@@ -243,9 +236,9 @@ A later explicit allowlist mutation would still be required.
 
 ### `ARTIFACT_DECISION_D` — amend frozen protocol/candidate obligations
 
-This is a scientific/governance change, not an artifact shortcut. It requires its own explicit authority and rationale and cannot be inferred from package inconvenience or resource limits. This is also the only decision class that may intentionally narrow the current CONTROL device/runtime obligation.
+This is a scientific/governance change, not an artifact shortcut. It requires separate explicit authority and rationale. It is the only decision class here that may intentionally narrow the current CONTROL device/runtime obligation.
 
-## 6. ChatGPT decision position for Founder review
+## 6. ChatGPT position for Founder review
 
 ```text
 CHATGPT_ARTIFACT_POSITION=RECOMMEND_ARTIFACT_DECISION_B_FOR_BOTH_CURRENTLY_UNRESOLVED_FROZEN_RUNTIME_ARTIFACT_PATHS
@@ -257,16 +250,19 @@ CHATGPT_REASON_3=CONTROL_IS_EXEMPT_FROM_THE_PRIMARY_PACKAGE_HARD_CAP_BUT_NOT_FRO
 CHATGPT_REASON_4=THE_PROPOSED_CONVERSION_AUTHORITY_CAN_BE_STRICTLY_SEPARATED_FROM_INFERENCE_DEVICE_BENCHMARK_TRAINING_AND_SPEND
 ```
 
-This is a recommendation, not Founder authorization. If the Founder does not want CONTROL conversion under the current frozen role, the safe alternative is an explicit `ARTIFACT_DECISION_D`, not silent omission.
+This is recommendation-only. If the Founder does not want CONTROL conversion under the current frozen role, the safe path is an explicit `ARTIFACT_DECISION_D`, not silent omission.
 
-## 7. If `ARTIFACT_DECISION_B` is later authorized
+## 7. Exact future authority record for Decision B
 
-The authority record should state an exact subject, not a generic conversion permission. At minimum:
+If B is later chosen, the authorization must bind an exact subject rather than generic conversion permission:
 
 ```text
 AUTHORIZED_CANDIDATE_IDS
 AUTHORIZED_SOURCE_REVISIONS
+AUTHORIZED_SOURCE_WEIGHT_IDENTITIES_AND_SHA256
+AUTHORIZED_CONVERSION_TOOL_REPOSITORY
 AUTHORIZED_CONVERSION_TOOL_REVISION
+AUTHORIZED_CONVERSION_RUNTIME_SHA256
 AUTHORIZED_QUANTIZATION_FAMILY
 AUTHORIZED_OUTPUT_CLASS
 AUTHORIZED_PURPOSE=E004_FROZEN_TOURNAMENT_ARTIFACT_PREPARATION_ONLY
@@ -278,26 +274,7 @@ EXPIRY_OR_SUPERSESSION_RULE
 
 Any unresolved field keeps conversion execution blocked.
 
-## 8. Explicit non-decisions
-
-This request does not authorize or decide:
-
-```text
-MODEL_WEIGHT_DOWNLOAD_BEYOND_EXISTING_E002=NO
-NEW_PRECONVERTED_ARTIFACT_BYTE_ACCESS=NO
-MODEL_CONVERSION=NO
-MODEL_LOADING_OR_INFERENCE=NO
-BENCHMARK_PAYLOAD_ACCESS_OR_EXECUTION=NO
-DEVICE_EXECUTION=NO
-CONTAMINATION_ASSESSMENT=NO
-PRIVATE_GOLD_OR_PHI=NO
-PROVIDER_GENERATION=NO
-BACKBONE_WINNER=NO
-TRAINING=NO
-SPEND=NO
-```
-
-## 9. Decision capture requirement
+## 8. Decision capture requirement
 
 A future Founder response may be recorded as authority only after the exact decision class and exact bounded scope are presented immediately before that response. A generic continuation instruction must not be retroactively expanded across unrelated authority gates.
 
@@ -308,3 +285,33 @@ FROZEN_ARTIFACT_AUTHORITY_RECONCILIATION=DECISION_NOT_TAKEN
 MODEL_CONVERSION_AUTHORITY=NONE
 E004_STATE=BLOCKED_PREFLIGHT
 ```
+
+## Exclusions
+
+This bounded decision request explicitly excludes:
+
+- any current Founder authorization or inference of authorization;
+- expansion of the existing two-entry E002 preconverted allowlist;
+- downloading Granite, CONTROL, or any other newly unlisted model/GGUF bytes;
+- conversion execution, model loading, inference, benchmark payload access/execution, device execution, or measured device evidence;
+- contamination assessment, selection-suite construction, Private Gold, PHI, restricted/gated assets, credentials, provider generation, winner selection, training, payment, procurement, or spend;
+- candidate/revision substitution or silent narrowing of CONTROL obligations;
+- treating public artifact availability, public SHA metadata, code-review status, or this document's merge as evidence of source-to-output provenance.
+
+## Exit Evidence
+
+This **decision-request artifact** is eligible for repository-level closure only when one exact head demonstrates:
+
+```text
+REQUEST_BINDS_FROZEN_E001_CANDIDATE_IDENTITIES=YES
+REQUEST_PRESERVES_EXISTING_E002_TWO_ENTRY_ALLOWLIST=YES
+REQUEST_DISTINGUISHES_PUBLIC_ARTIFACT_EXISTENCE_FROM_E002_ELIGIBILITY=YES
+REQUEST_PRESERVES_PRIMARY_AND_CONTROL_DEVICE_ROLE_SEMANTICS=YES
+REQUEST_PRESERVES_PRIMARY_ONLY_PACKAGE_HARD_CAP=YES
+REQUEST_PRESENTS_BOUNDED_DECISION_CLASSES_WITHOUT_GRANTING_AUTHORITY=YES
+REQUEST_BINDS_DECISION_B_TO_EXACT_SOURCE_CONVERSION_EVIDENCE=YES
+REQUEST_GRANTS_CURRENT_CONVERSION_AUTHORITY=NO
+REQUEST_DOWNLOADS_OR_EXECUTES_MODEL_BYTES=NO
+```
+
+Repository closure additionally requires fresh exact-head review with no unresolved material findings, no active review threads, bounded documentation-only diff verification, guarded canonical merge, and post-merge main verification. Those checks close this **decision-request document only**. They do not constitute Founder selection of A/B/C/D, do not mutate E002, and do not authorize conversion or E004 execution.
