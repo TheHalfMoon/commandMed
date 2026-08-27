@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/abort-sentinel-policy/v1",
+  "title":"Spec007 AbortSentinelPolicy",
+  "type":"object","additionalProperties":false,
+  "required":["policy_id","sentinel_set_id","source_purpose_verification_id","threshold_record_id","allowed_effects","can_rank_checkpoints","can_tune_recipe","can_change_hyperparameters","frozen_before_run"],
+  "properties":{"policy_id":{"type":"string","minLength":1},"sentinel_set_id":{"type":"string","minLength":1},"source_purpose_verification_id":{"type":"string","minLength":1},"threshold_record_id":{"type":"string","minLength":1},"allowed_effects":{"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["CONTINUE","ABORT_RUN","DISQUALIFY_RUN"]}},"can_rank_checkpoints":{"const":false},"can_tune_recipe":{"const":false},"can_change_hyperparameters":{"const":false},"frozen_before_run":{"const":true}}
+}

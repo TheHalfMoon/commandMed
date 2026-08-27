@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/dataset-snapshot/v1",
+  "title":"Spec007 DatasetSnapshot",
+  "type":"object","additionalProperties":false,
+  "required":["snapshot_id","snapshot_sha256","record_ids","canonical_order_identity","record_count","source_summary","license_summary","role_coverage","curriculum_coverage","language_coverage","duplicate_report_id","contamination_report_id","quarantine_verification_id","knowledge_placement_summary"],
+  "properties":{"snapshot_id":{"type":"string","minLength":1},"snapshot_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},"record_ids":{"type":"array","uniqueItems":true,"items":{"type":"string","minLength":1}},"canonical_order_identity":{"type":"string","minLength":1},"record_count":{"type":"integer","minimum":0},"rendered_token_count":{"type":["integer","null"],"minimum":0},"supervised_token_count":{"type":["integer","null"],"minimum":0},"source_summary":{"type":"object"},"license_summary":{"type":"object"},"role_coverage":{"type":"object"},"curriculum_coverage":{"type":"object"},"language_coverage":{"type":"object"},"duplicate_report_id":{"type":"string","minLength":1},"contamination_report_id":{"type":"string","minLength":1},"quarantine_verification_id":{"type":"string","minLength":1},"knowledge_placement_summary":{"type":"object"}}
+}

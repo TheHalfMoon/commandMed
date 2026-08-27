@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/efficiency-scorecard/v1",
+  "title":"commandMed EfficiencyScorecard",
+  "type":"object","additionalProperties":false,
+  "required":["scorecard_id","artifact_identity","raw_medical_metrics","hard_safety_disposition","selective_risk_metrics","arabic_metrics","tool_reliability_metrics","general_capability_delta","resource_accounting_id","derived_efficiency_metrics","qualification_state"],
+  "properties":{"scorecard_id":{"type":"string","minLength":1},"artifact_identity":{"type":"string","minLength":1},"record_class_id":{"type":["string","null"]},"raw_medical_metrics":{"type":"object"},"hard_safety_disposition":{"enum":["PASS","FAIL","INSUFFICIENT_EVIDENCE"]},"selective_risk_metrics":{"type":"object"},"arabic_metrics":{"type":"object"},"tool_reliability_metrics":{"type":"object"},"general_capability_delta":{"type":"object"},"resource_accounting_id":{"type":"string","minLength":1},"reasoning_token_metrics":{"type":["object","null"]},"derived_efficiency_metrics":{"type":"object"},"qualification_state":{"enum":["QUALIFIED","DISQUALIFIED","INSUFFICIENT_EVIDENCE"]}}
+}

@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/training-checkpoint-manifest/v1",
+  "title":"Spec007 TrainingCheckpointManifest",
+  "type":"object","additionalProperties":false,
+  "required":["checkpoint_manifest_id","model_or_adapter_state_identity","optimizer_state_identity","scheduler_state_identity","rng_state_identity","data_position_identity","global_step","training_config_id","base_checkpoint_binding_id","dataset_snapshot_id","rendering_policy_id","environment_manifest_id"],
+  "properties":{"checkpoint_manifest_id":{"type":"string","minLength":1},"model_or_adapter_state_identity":{"type":"string","minLength":1},"optimizer_state_identity":{"type":"string","minLength":1},"scheduler_state_identity":{"type":"string","minLength":1},"scaler_state_identity":{"type":["string","null"]},"rng_state_identity":{"type":"string","minLength":1},"data_position_identity":{"type":"string","minLength":1},"global_step":{"type":"integer","minimum":0},"training_config_id":{"type":"string","minLength":1},"base_checkpoint_binding_id":{"type":"string","minLength":1},"dataset_snapshot_id":{"type":"string","minLength":1},"rendering_policy_id":{"type":"string","minLength":1},"environment_manifest_id":{"type":"string","minLength":1}}
+}

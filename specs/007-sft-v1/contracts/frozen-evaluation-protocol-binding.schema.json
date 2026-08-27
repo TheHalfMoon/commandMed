@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/frozen-evaluation-protocol-binding/v1",
+  "title":"Spec007 FrozenEvaluationProtocolBinding",
+  "type":"object","additionalProperties":false,
+  "required":["binding_id","metric_catalog_identity","hard_gate_identity","statistical_protocol_identity","stratification_identity","sample_size_rationale_identity","acceptance_threshold_identity","quarantine_matrix_identity","frozen_before_training_authorization"],
+  "properties":{"binding_id":{"type":"string","minLength":1},"metric_catalog_identity":{"type":"string","minLength":1},"hard_gate_identity":{"type":"string","minLength":1},"statistical_protocol_identity":{"type":"string","minLength":1},"stratification_identity":{"type":"string","minLength":1},"sample_size_rationale_identity":{"type":"string","minLength":1},"acceptance_threshold_identity":{"type":"string","minLength":1},"quarantine_matrix_identity":{"type":"string","minLength":1},"frozen_before_training_authorization":{"const":true}}
+}

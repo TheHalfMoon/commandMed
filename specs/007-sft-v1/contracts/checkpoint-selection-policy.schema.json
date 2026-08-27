@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/checkpoint-selection-policy/v1",
+  "title":"Spec007 CheckpointSelectionPolicy",
+  "type":"object","additionalProperties":false,
+  "required":["policy_id","selection_mode","checkpoint_rule","selection_source_ids","evaluation_asset_ranking_allowed","abort_sentinel_can_rank","recipe_tuning_allowed","hyperparameter_tuning_allowed","frozen_before_run"],
+  "properties":{"policy_id":{"type":"string","minLength":1},"selection_mode":{"enum":["FIXED_PRE_REGISTERED_CHECKPOINT","SEPARATELY_AUTHORIZED_NON_QUARANTINED_SELECTION"]},"checkpoint_rule":{"type":"string","minLength":1},"selection_source_ids":{"type":"array","uniqueItems":true,"items":{"type":"string","minLength":1}},"evaluation_asset_ranking_allowed":{"type":"boolean"},"abort_sentinel_can_rank":{"const":false},"recipe_tuning_allowed":{"type":"boolean"},"hyperparameter_tuning_allowed":{"type":"boolean"},"frozen_before_run":{"const":true}}
+}
