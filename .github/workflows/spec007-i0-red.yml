@@ -1,4 +1,4 @@
-name: Spec 007 final review coverage qualification
+name: Spec 007 final implementation qualification
 
 on:
   push:
@@ -9,14 +9,14 @@ permissions:
   contents: read
 
 jobs:
-  final-review-coverage-green:
+  final-implementation-green:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Checkout exact implementation head
         uses: actions/checkout@v4
         with:
-          ref: b4b6c87fa55c1e66a5e4377a160172f3980d6d5c
+          ref: 5bbd2659bc0b86151b731fc240286203687c2a2b
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,7 +30,7 @@ jobs:
           git config user.email "validation@commandmed.invalid"
       - name: Verify exact implementation head
         run: |
-          test "$(git rev-parse HEAD)" = "b4b6c87fa55c1e66a5e4377a160172f3980d6d5c"
+          test "$(git rev-parse HEAD)" = "5bbd2659bc0b86151b731fc240286203687c2a2b"
           echo "EXACT_IMPLEMENTATION_HEAD=$(git rev-parse HEAD)"
       - name: Compile Python sources and tests
         run: |
@@ -47,13 +47,13 @@ jobs:
         run: python3 -m pytest -q
       - name: Check implementation diff whitespace
         run: |
-          git diff --check 19bdffc28f20e52575922852dd3a8de2b9d0d312 b4b6c87fa55c1e66a5e4377a160172f3980d6d5c
+          git diff --check 19bdffc28f20e52575922852dd3a8de2b9d0d312 5bbd2659bc0b86151b731fc240286203687c2a2b
           echo "GIT_DIFF_CHECK=PASS"
       - name: Enforce bounded implementation paths
         shell: bash
         run: |
           set -euo pipefail
-          git diff --name-only 19bdffc28f20e52575922852dd3a8de2b9d0d312 b4b6c87fa55c1e66a5e4377a160172f3980d6d5c | while IFS= read -r path; do
+          git diff --name-only 19bdffc28f20e52575922852dd3a8de2b9d0d312 5bbd2659bc0b86151b731fc240286203687c2a2b | while IFS= read -r path; do
             case "$path" in
               specs/007-sft-v1/*|src/commandmed/spec007/*|tests/spec007/*) ;;
               *) echo "OUT_OF_SCOPE_PATH=$path"; exit 1 ;;
