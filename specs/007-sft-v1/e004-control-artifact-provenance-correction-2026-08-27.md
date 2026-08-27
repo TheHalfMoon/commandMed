@@ -1,4 +1,4 @@
-# E004 CONTROL Artifact-Provenance Correction — 2026-08-27
+# E004 CONTROL Artifact-Provenance Follow-Up — 2026-08-27
 
 **Spec:** 007 SFT V1
 **Lifecycle:** E004 prerequisite research only
@@ -6,7 +6,7 @@
 **Predecessor evidence packet:** `specs/007-sft-v1/e004-artifact-public-evidence-2026-08-27.md`
 **Authority effect:** NONE
 
-This document records newly recovered read-only public evidence for the frozen CONTROL `Qwen/Qwen3-4B-Base` preconverted-artifact path. It narrows the Antigma artifact result from `NEEDS_EVIDENCE` to a deterministic non-match against the exact E001 frozen revision, and records a later community candidate as a research lead only. It does not rewrite E001, expand E002, authorize acquisition of any new preconverted artifact, authorize model conversion, authorize E004 execution, select a backbone, authorize training, or authorize spend.
+This document records newly recovered read-only public evidence for the frozen CONTROL `Qwen/Qwen3-4B-Base` preconverted-artifact path. It strengthens the conversion-service provenance description for the previously identified Antigma artifact and records a later exact-base Q4_K_M repository as a research lead only. It does not claim that repository/index update dates establish the creation time of specific immutable artifact bytes. It does not rewrite E001, expand E002, authorize acquisition of any new preconverted artifact, authorize model conversion, authorize E004 execution, select a backbone, authorize training, or authorize spend.
 
 ```text
 ARTIFACT_RESEARCH_ONLY=YES
@@ -45,7 +45,7 @@ PRECONVERTED_EXACT_ALLOWLIST_ONLY=ENFORCED
 PRECONVERTED_ARTIFACTS_NOT_EXPLICITLY_LISTED=UNAUTHORIZED
 ```
 
-E002 does not permit substituting another source revision merely because the repository family is the same or the weight-bearing files may appear similar.
+E002 does not permit substituting another source revision merely because the repository family is the same or weight-bearing files may appear similar.
 
 ## 2. Antigma artifact identity remains stable
 
@@ -70,17 +70,17 @@ Public sources:
 - `https://huggingface.co/Antigma/Qwen3-4B-Base-GGUF/blob/main/qwen3-4b-base-q4_k_m.gguf`
 - `https://huggingface.co/Antigma/Qwen3-4B-Base-GGUF/tree/ab03cef12ef7fac77574d54a28331026c21257a0`
 
-The repository card explicitly points to `Qwen/Qwen3-4B-Base`, and the file page exposes the stable SHA-256 and Xet identities above.
+The repository card points to `Qwen/Qwen3-4B-Base`, while the file page exposes the stable artifact commit, SHA-256, and Xet identities above.
 
-The human-readable `2.5 GB` file display and `2.33 GB` model-card table entry are not exact integer-byte metadata and must not be converted into an exact byte count by assumption.
+The human-readable `2.5 GB` file display and `2.33 GB` model-card table entry are not exact integer-byte metadata and are not converted into an exact byte count by assumption.
 
-## 3. Antigma conversion implementation is repository-pinned only
+## 3. Antigma public conversion implementation is repository-pinned only
 
-The public Antigma Quantize Space source currently exposes its conversion path in:
+The public Antigma Quantize Space source exposes its conversion path in:
 
 - `https://huggingface.co/spaces/Antigma/quantize-my-repo/blob/main/app.py`
 
-The application accepts a `model_id` string and downloads the model using the equivalent of:
+The inspected application accepts a `model_id` string and downloads the source repository using the equivalent of:
 
 ```python
 api.snapshot_download(
@@ -91,7 +91,7 @@ api.snapshot_download(
 )
 ```
 
-No immutable Hugging Face `revision` parameter is passed to `snapshot_download(...)` in the inspected source. The generated model card also records only the original repository identity, not a source commit SHA.
+No immutable Hugging Face `revision` parameter is passed to `snapshot_download(...)` in the inspected public source. The generated model-card pattern records the original repository identity rather than an immutable source commit SHA.
 
 Therefore:
 
@@ -101,17 +101,17 @@ ANTIGMA_PUBLIC_CONVERTER_IMMUTABLE_HF_REVISION_INPUT=NO
 ANTIGMA_GENERATED_CARD_IMMUTABLE_SOURCE_REVISION_ATTESTATION=NO
 ```
 
-This alone would keep exact frozen-revision provenance incomplete. The temporal evidence below is stronger and deterministically excludes the frozen revision from being the conversion input for this artifact.
+This is evidence about the inspected public converter implementation. It is not evidence that the identified artifact used a wrong source revision, and it does not prove which mutable `main` commit resolved at the historical conversion time.
 
-## 4. Antigma artifact predates the E001 frozen revision
+## 4. Repository/index dates are context, not immutable artifact-byte timestamps
 
-The Hugging Face quantization index for `Qwen/Qwen3-4B-Base` reports:
+Hugging Face's quantized-model index currently displays:
 
 ```text
-ANTIGMA_QWEN3_4B_BASE_GGUF_UPDATED_DATE=2025-05-29
+ANTIGMA_REPOSITORY_INDEX_UPDATED_DATE=2025-05-29
 ```
 
-The upstream Qwen commit history reports the E001 frozen revision:
+The upstream Qwen history displays the E001 frozen revision:
 
 ```text
 FROZEN_UPSTREAM_REVISION=906bfd4b4dc7f14ee4320094d8b41684abff8539
@@ -124,45 +124,47 @@ Public source history:
 - `https://huggingface.co/Qwen/Qwen3-4B-Base/commits/main`
 - `https://huggingface.co/Qwen/Qwen3-4B-Base/commits/906bfd4b4dc7f14ee4320094d8b41684abff8539`
 
-The Antigma artifact repository was already published/updated approximately two months before the exact frozen revision existed. An artifact that already existed on 2025-05-29 cannot have been produced by downloading a source commit first created on 2025-07-26.
+The index-level `updated` date is not, by itself, a timestamp bound to artifact commit `ab03cef12ef7fac77574d54a28331026c21257a0`, its SHA-256/Xet content identity, or the conversion event that produced those bytes. No dated immutable historical file revision containing the same SHA-256/Xet identity was recovered in this research pass.
 
-Therefore the predecessor field can be deterministically corrected for this artifact:
+Accordingly, no deterministic predate conclusion is made:
 
 ```text
-ANTIGMA_ARTIFACT_PREDATES_FROZEN_REVISION=YES
-ANTIGMA_EXACT_FROZEN_SOURCE_REVISION_USED_BY_CONVERSION=NO
+ANTIGMA_REPOSITORY_INDEX_DATE_CONTEXT=2025-05-29
+ANTIGMA_CURRENT_FILE_COMMIT_IDENTITY=PASS
+ANTIGMA_CURRENT_FILE_SHA256_IDENTITY=PASS
+ANTIGMA_CURRENT_FILE_XET_IDENTITY=PASS
+ANTIGMA_CURRENT_FILE_BYTES_PROVEN_TO_EXIST_BY_2025_05_29=NEEDS_EVIDENCE
+ANTIGMA_EXACT_FROZEN_SOURCE_REVISION_USED_BY_CONVERSION=NEEDS_EVIDENCE
 ```
 
-This is stronger than `NEEDS_EVIDENCE` for the Antigma artifact itself.
+The predecessor result therefore remains fail-closed rather than being promoted to either PASS or deterministic mismatch.
 
-It does **not** mean `Qwen/Qwen3-4B-Base` is a NO-GO CONTROL candidate. It means only that this specific preconverted artifact cannot satisfy E002's exact frozen-revision binding standard.
+## 5. LICENSE-only frozen commit does not authorize predecessor substitution
 
-## 5. Later LICENSE-only revision does not authorize predecessor substitution
+The E001 frozen commit message is `Create LICENSE`. Public repository history shows that the model family existed before that commit.
 
-The E001 frozen commit message is `Create LICENSE`. Public repository history shows the model family existed before that commit and the July commit appears later than the original weight publication.
-
-That fact does not permit commandMed to silently replace exact revision identity with a predecessor revision. E002 states that access is limited to the exact frozen revisions and explicitly prohibits substituting another checkpoint revision.
+That fact does not permit commandMed to replace the exact frozen revision with a predecessor revision. E002 states that access is limited to exact frozen candidate revisions and does not authorize substitution.
 
 Accordingly:
 
 ```text
 FROZEN_REVISION_MAY_BE_CONTENT_CLOSE_TO_PREDECESSOR=UNDECIDED_NOT_AUTHORITY
 PREDECESSOR_REVISION_SUBSTITUTION_ALLOWED=NO
-ANTIGMA_ARTIFACT_ALLOWLIST_ELIGIBILITY=REJECT_EXACT_REVISION_MISMATCH
+ANTIGMA_ARTIFACT_ALLOWLIST_ELIGIBILITY=INCOMPLETE
 ```
 
-A separately accepted canonical method could in principle establish byte-equivalent source identity for a future authority decision, but no such method is created by this packet and no byte-equivalence proof was executed here.
+A separately accepted canonical method could in principle establish byte-equivalent source identity for a future authority decision, but no such method is created here and no byte-equivalence proof was executed.
 
-## 6. Later exact-base Q4_K_M candidate scan
+## 6. Later exact-base Q4_K_M repository discovered
 
-Read-only discovery of Hugging Face's quantized-model index found at least one later exact-base-family Q4_K_M artifact published after the frozen revision:
+Read-only discovery of Hugging Face's quantized-model index found a later exact-base-family Q4_K_M repository:
 
 ```text
 ALTERNATE_REPOSITORY=straino/Qwen3-4B-Base-Q4_K_M-GGUF
 ALTERNATE_DECLARED_SOURCE=Qwen/Qwen3-4B-Base
 ALTERNATE_DECLARED_FORMAT=GGUF
 ALTERNATE_DECLARED_QUANTIZATION=Q4_K_M
-ALTERNATE_PUBLIC_UPDATED_DATE=2025-09-08
+ALTERNATE_REPOSITORY_INDEX_UPDATED_DATE=2025-09-08
 ALTERNATE_CONVERSION_SERVICE=ggml.ai GGUF-my-repo
 ```
 
@@ -170,13 +172,23 @@ Public source:
 
 - `https://huggingface.co/straino/Qwen3-4B-Base-Q4_K_M-GGUF`
 
-The publication date is after the frozen source revision date, so this candidate does not suffer the same deterministic temporal impossibility as the Antigma artifact.
+The repository card states that the model was converted from `Qwen/Qwen3-4B-Base` using llama.cpp via ggml.ai's GGUF-my-repo Space.
 
-However, publication after the frozen revision is not the same thing as an immutable conversion-input attestation.
+The displayed repository/index date is context only. It is not treated as the immutable file commit time, the conversion event time, or proof of the source revision resolved during conversion.
 
-## 7. ggml-org GGUF-my-repo is also not immutable-source-revision pinned
+```text
+ALTERNATE_EXACT_BASE_FAMILY_DECLARATION=PASS
+ALTERNATE_Q4_K_M_DECLARATION=PASS
+ALTERNATE_REPOSITORY_INDEX_DATE_CONTEXT=2025-09-08
+ALTERNATE_EXACT_ARTIFACT_COMMIT=NEEDS_EVIDENCE_IN_THIS_PACKET
+ALTERNATE_EXACT_ARTIFACT_SHA256=NEEDS_EVIDENCE_IN_THIS_PACKET
+ALTERNATE_EXACT_ARTIFACT_XET=NEEDS_EVIDENCE_IN_THIS_PACKET
+ALTERNATE_EXACT_ARTIFACT_BYTES=NEEDS_EVIDENCE
+```
 
-The public `ggml-org/gguf-my-repo` Space source shows the model acquisition path using `snapshot_download(...)`/`HfApi.snapshot_download(...)` with `repo_id=model_id` and no immutable source `revision` parameter in the inspected implementations.
+## 7. ggml-org GGUF-my-repo public source is also not immutable-source-revision pinned
+
+The inspected public `ggml-org/gguf-my-repo` Space source shows model acquisition using `snapshot_download(...)` / `HfApi.snapshot_download(...)` with `repo_id=model_id` and no immutable source `revision` parameter.
 
 Representative public source:
 
@@ -193,7 +205,7 @@ api.snapshot_download(
 )
 ```
 
-Older public implementations likewise call `snapshot_download(repo_id=model_id, ...)` without an immutable revision.
+Older inspected public implementations likewise use repository identity without an immutable revision parameter.
 
 Therefore:
 
@@ -202,31 +214,29 @@ GGML_MY_REPO_REPOSITORY_IDENTITY_INPUT=YES
 GGML_MY_REPO_IMMUTABLE_HF_REVISION_INPUT=NO
 ```
 
-## 8. Temporal inference for later candidates is strong but not an attestation
+This is converter-source evidence only. It does not prove the exact source revision consumed by any particular historical artifact unless a separate immutable job/manifest/log record binds that execution.
 
-The public Qwen commit history currently lists `906bfd4b4dc7f14ee4320094d8b41684abff8539` as the latest commit after 2025-07-26; no later source commit is listed.
+## 8. Current source history does not replace historical conversion attestation
 
-A default-revision conversion of `Qwen/Qwen3-4B-Base` performed on 2025-09-08 would therefore be strongly consistent with resolving to the frozen revision, assuming the service resolved the default `main` ref in the ordinary way at conversion time.
+The public Qwen commit history currently lists `906bfd4b4dc7f14ee4320094d8b41684abff8539` as the latest visible commit after 2025-07-26. That current history can inform future research, but it does not prove which commit a mutable `main` reference resolved to during a particular conversion event whose exact execution record has not been bound.
 
-This is useful research evidence, but commandMed's current CONTROL requirement is stronger:
-
-> obtain an immutable conversion-source revision attestation proving the exact input was `Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539`.
-
-The later candidate therefore remains:
+Therefore the later research candidate remains:
 
 ```text
-ALTERNATE_TEMPORAL_DEFAULT_HEAD_MATCH=STRONG_PUBLIC_INFERENCE
+ALTERNATE_CURRENT_SOURCE_HISTORY_CONSISTENT_WITH_FROZEN_REVISION=YES
+ALTERNATE_HISTORICAL_CONVERSION_TIME=NEEDS_EVIDENCE
+ALTERNATE_HISTORICAL_RESOLVED_SOURCE_REVISION=NEEDS_EVIDENCE
 ALTERNATE_IMMUTABLE_CONVERSION_SOURCE_REVISION_ATTESTATION=NEEDS_EVIDENCE
 ALTERNATE_E002_ALLOWLIST_ELIGIBILITY=INCOMPLETE
 ```
 
-`STRONG_PUBLIC_INFERENCE` must not be promoted to `PASS` for an immutable provenance field.
+No temporal inference is promoted to PASS for an immutable provenance field.
 
 ## 9. Alternative inventory does not expand artifact authority
 
-The Hugging Face model tree exposes multiple quantizations of `Qwen/Qwen3-4B-Base`, including later artifacts. Their existence is discovery evidence only.
+The Hugging Face model tree exposes multiple quantizations associated with `Qwen/Qwen3-4B-Base`. Their existence is discovery evidence only.
 
-A later publication date, exact family name, model-tree relationship, or community conversion statement does not independently satisfy all of E002's deterministic binding requirements:
+Repository naming, a model-tree relationship, a repository/index update date, or a community conversion statement does not independently satisfy E002's deterministic binding requirements, including:
 
 - exact artifact repository;
 - immutable artifact revision;
@@ -234,7 +244,7 @@ A later publication date, exact family name, model-tree relationship, or communi
 - exact integer byte count;
 - exact SHA-256;
 - exact frozen source-revision provenance;
-- acceptable rights/provenance;
+- acceptable rights/provenance; and
 - explicit authority expansion.
 
 No alternate artifact is added to E002 by this packet.
@@ -245,28 +255,29 @@ No alternate artifact is added to E002 by this packet.
 |---|---|---|
 | Exact CONTROL repository family | `PASS` | `PASS` |
 | Declared original model is `Qwen/Qwen3-4B-Base` | `PASS` | `PASS` |
-| Q4_K_M artifact | `PASS` | `PASS` |
+| Q4_K_M artifact declaration | `PASS` | `PASS` |
+| Stable artifact commit | `PASS` | `NEEDS_EVIDENCE_IN_THIS_PACKET` |
 | Stable artifact SHA-256 | `PASS` | `NEEDS_EVIDENCE_IN_THIS_PACKET` |
 | Stable artifact Xet identity | `PASS` | `NEEDS_EVIDENCE_IN_THIS_PACKET` |
 | Exact integer bytes | `NEEDS_EVIDENCE` | `NEEDS_EVIDENCE` |
-| Conversion service public | `PASS` | `PASS` |
-| Converter accepts immutable HF revision | `FAIL_ABSENT` | `FAIL_ABSENT` |
-| Artifact predates frozen revision | `YES` | `NO` |
-| Exact frozen revision could have been conversion input | `NO` | `POSSIBLE` |
-| Immutable frozen revision attested | `NO` | `NEEDS_EVIDENCE` |
-| E002 allowlist eligibility | `REJECT_EXACT_REVISION_MISMATCH` | `INCOMPLETE` |
+| Public converter implementation inspected | `PASS` | `PASS` |
+| Inspected converter accepts immutable HF revision | `FAIL_ABSENT` | `FAIL_ABSENT` |
+| Repository/index date bound to exact artifact bytes | `NO` | `NO` |
+| Immutable frozen source revision attested | `NEEDS_EVIDENCE` | `NEEDS_EVIDENCE` |
+| E002 allowlist eligibility | `INCOMPLETE` | `INCOMPLETE` |
 
-The alternate row is intentionally not promoted beyond the evidence inspected in this packet. It is a research lead, not a proposed allowlist mutation.
+Neither row satisfies the complete deterministic E002 preconverted-artifact binding standard.
 
 ## 11. Artifact-authority reconciliation result
 
-The CONTROL evidence is now more decisive than the predecessor packet for the Antigma artifact:
+The CONTROL research strengthens converter provenance but does not support a deterministic source-revision match or mismatch for the Antigma bytes and does not qualify the later research candidate.
 
 ```text
 CONTROL_ANTIGMA_EXACT_BASE_FAMILY_MATCH=PASS
 CONTROL_ANTIGMA_ARTIFACT_IDENTITY=PASS
-CONTROL_ANTIGMA_EXACT_FROZEN_SOURCE_REVISION_USED_BY_CONVERSION=NO
-CONTROL_ANTIGMA_E002_ALLOWLIST_ELIGIBILITY=REJECT_EXACT_REVISION_MISMATCH
+CONTROL_ANTIGMA_EXACT_FROZEN_SOURCE_REVISION_USED_BY_CONVERSION=NEEDS_EVIDENCE
+CONTROL_ANTIGMA_EXACT_ARTIFACT_BYTES=NEEDS_EVIDENCE
+CONTROL_ANTIGMA_E002_ALLOWLIST_ELIGIBILITY=INCOMPLETE
 
 CONTROL_LATER_EXACT_BASE_ARTIFACT_EXISTS=YES
 CONTROL_LATER_ARTIFACT_IMMUTABLE_SOURCE_ATTESTATION=NEEDS_EVIDENCE
@@ -286,20 +297,25 @@ TRAINING_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-This is an artifact-level rejection, not a CONTROL-model rejection.
+This is not a CONTROL-model NO-GO and is not an artifact provenance PASS. It is a fail-closed incomplete result.
 
 ## 12. Remaining dependency-safe CONTROL research
 
 Without changing authority, later read-only work may seek:
 
-1. a later Q4_K_M exact-base artifact whose immutable conversion manifest directly records source revision `906bfd4b4dc7f14ee4320094d8b41684abff8539`;
-2. immutable Space/job/log metadata for a later conversion binding the default source checkout to that exact SHA;
-3. public Hugging Face/Xet/LFS metadata exposing exact integer artifact bytes without downloading model payload bytes;
-4. a first-party Qwen exact-base GGUF generated from the frozen revision, if one is published later; or
-5. a separately accepted canonical byte-equivalence method, if the repository explicitly authorizes such a method in a future decision.
+1. an immutable dated historical Antigma file revision containing the same artifact SHA-256/Xet identity, if one exists, together with source-revision conversion evidence;
+2. a Q4_K_M exact-base artifact whose immutable conversion manifest directly records source revision `906bfd4b4dc7f14ee4320094d8b41684abff8539`;
+3. immutable Space/job/log metadata binding a particular conversion execution to the exact resolved source SHA;
+4. public Hugging Face/Xet/LFS metadata exposing exact integer artifact bytes without downloading model payload bytes;
+5. a first-party Qwen exact-base GGUF generated from the frozen revision, if one is published; or
+6. a separately accepted canonical byte-equivalence method, if the repository explicitly authorizes such a method in a future decision.
 
 If no qualifying preconverted artifact can satisfy the frozen identity standard, the repository must preserve the gap. A fresh deterministic conversion from the frozen E001 source remains a separate Founder authorization decision and is not implied by this research.
 
-## 13. Non-events
+## 13. Review remediation note
+
+The first exact-head review of this branch at `7d2454394fbda5f2705033f650d6555619a5b5ad` correctly identified that the model-index `updated` date had been overinterpreted as a timestamp for the specific immutable Antigma artifact bytes. This revision removes that inference and restores `NEEDS_EVIDENCE` / `INCOMPLETE` for the affected fields. A new exact-head review is required before merge.
+
+## 14. Non-events
 
 No model or GGUF payload bytes were downloaded. No model was loaded. No inference, benchmark, physical-device measurement, contamination assessment, model conversion, quantization, training, credentialed/gated-asset access, Private Gold, PHI, provider generation, or paid-resource execution occurred.
