@@ -7,6 +7,7 @@ admission from protected evaluation evidence.
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 from src.commandmed.spec007.foundation import validate_closed_object
@@ -153,7 +154,9 @@ def _is_int(value: Any) -> bool:
 
 
 def _is_number(value: Any) -> bool:
-    return type(value) in (int, float)
+    if type(value) is int:
+        return True
+    return type(value) is float and math.isfinite(value)
 
 
 def validate_record_class_definition(record: Any) -> list[str]:
@@ -261,15 +264,15 @@ def validate_resource_accounting_record(record: Any) -> list[str]:
 
     ttft = record.get("ttft_ms")
     if not _is_number(ttft) or ttft < 0:
-        errors.append(f"{prefix}: ttft_ms must be a number >= 0")
+        errors.append(f"{prefix}: ttft_ms must be a finite number >= 0")
     for field in ("prefill_tokens_per_second", "decode_tokens_per_second", "sustained_tokens_per_second"):
         value = record.get(field)
         if not _is_number(value) or value <= 0:
-            errors.append(f"{prefix}: {field} must be a number > 0")
+            errors.append(f"{prefix}: {field} must be a finite number > 0")
 
     energy = record.get("energy_joules_per_case")
     if energy is not None and (not _is_number(energy) or energy < 0):
-        errors.append(f"{prefix}: energy_joules_per_case must be a number >= 0 or null")
+        errors.append(f"{prefix}: energy_joules_per_case must be a finite number >= 0 or null")
     thermal = record.get("thermal_condition")
     if thermal is not None and not isinstance(thermal, str):
         errors.append(f"{prefix}: thermal_condition must be string or null")
