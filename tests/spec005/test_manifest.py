@@ -1,11 +1,14 @@
-"""US7 fixture tests: Spec 005 manifest validation and Spec 004 projection."""
+"""Corrective-maintenance tests for Spec 005 manifest pre-execution binding."""
 
 from __future__ import annotations
 
+import copy
 import json
 import unittest
 from pathlib import Path
 
+from src.commandmed.eval_contract.canonical import compute_canonical_sha256
+from src.commandmed.spec005.device import build_device_execution_readiness_record
 from src.commandmed.spec005.manifest import (
     build_spec004_projection,
     evaluate_spec005_preflight,
@@ -15,16 +18,73 @@ from src.commandmed.spec005.manifest import (
 ROOT = Path(__file__).resolve().parents[2]
 QUALITY_CONTRACT_PATH = ROOT / "data/spec005/selection_quality_contract.json"
 METRICS_V2_PATH = ROOT / "data/eval/metrics-v2.json"
+DEVICE_CONTRACT_PATH = ROOT / "data/spec005/device_qualification_contract.json"
 V1_SHA = "304c980ce4ce84c18f70115661089db29430d0166a630cd9e95948726d24143a"
 V2_SHA = "bad51bffe30c0fb7de37afcaf8620ad1ad2deed2dd626a1ec6c2eb47c4107f4b"
 
 GATES = (
-    "R1", "T1", "D34", "G1", "G2", "G3", "G4",
-    "S1", "P1", "C1", "H1", "I1", "F1",
+    "R1",
+    "T1",
+    "D34",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "S1",
+    "P1",
+    "C1",
+    "H1",
+    "I1",
+    "F1",
 )
 
-
 CONTRACT_CANONICAL_HASH = "c0ffee" + "0" * 58
+
+
+def make_device_contract():
+    contract = json.loads(DEVICE_CONTRACT_PATH.read_text(encoding="utf-8"))
+    contract["performance_threshold_policy"] = {
+        "state": "FROZEN",
+        "record_id": "PERF-THRESHOLD-SYNTHETIC-001",
+        "record_canonical_sha256": "9" * 64,
+        "resolution_rule": "MUST_BE_FROZEN_BEFORE_REAL_DEVICE_EXECUTION",
+    }
+    return contract
+
+
+def make_device_records(contract=None):
+    contract = contract or make_device_contract()
+    records = []
+    for target in contract["targets"]:
+        target_id = target["target_id"]
+        records.append(
+            {
+                "target_id": target_id,
+                "candidate_id": "candidate-alpha",
+                "candidate_role": "PRIMARY",
+                "model_artifact_sha256": "f" * 64,
+                "complete_bundle_sha256": "1" * 64,
+                "complete_bundle_bytes": 563_035_840,
+                "gguf_quantization": "Q4_0",
+                "llama_cpp_core_revision": "2" * 40,
+                "build_toolchain_identity": f"TOOLCHAIN_{target_id}",
+                "runtime_artifact_sha256": "3" * 64,
+                "wrapper_identity": f"WRAPPER_{target_id}",
+                "memory_measurement_identity": f"MEMORY_{target_id}",
+                "thermal_signal_identity": f"THERMAL_{target_id}",
+                "energy_signal_identity": f"ENERGY_{target_id}",
+                "execution_plan_sha256": "4" * 64,
+            }
+        )
+    return records
+
+
+def make_device_binding():
+    contract = make_device_contract()
+    records = make_device_records(contract)
+    readiness = build_device_execution_readiness_record(records, contract)
+    assert readiness["state"] == "PRE_EXECUTION_READY"
+    return contract, records, compute_canonical_sha256(readiness)
 
 
 def make_artifacts(**overrides):
@@ -32,10 +92,9 @@ def make_artifacts(**overrides):
         QUALITY_CONTRACT_PATH.read_text(encoding="utf-8")
     )
     quality_contract["canonical_sha256"] = CONTRACT_CANONICAL_HASH
+    device_contract, device_records, _ = make_device_binding()
     artifacts = {
-        "metrics_v2_catalog": json.loads(
-            METRICS_V2_PATH.read_text(encoding="utf-8")
-        ),
+        "metrics_v2_catalog": json.loads(METRICS_V2_PATH.read_text(encoding="utf-8")),
         "selection_quality_contract": quality_contract,
         "threshold_policies": [
             {
@@ -49,12 +108,15 @@ def make_artifacts(**overrides):
                 "record_canonical_sha256": "b" * 64,
             }
         ],
+        "device_qualification_contract": device_contract,
+        "device_execution_readiness_records": device_records,
     }
     artifacts.update(overrides)
     return artifacts
 
 
 def make_manifest(**overrides):
+    _, _, readiness_sha = make_device_binding()
     manifest = {
         "manifest_id": "MANIFEST-SPEC005-001",
         "manifest_version": "1.0",
@@ -93,8 +155,9 @@ def make_manifest(**overrides):
         ],
         "device_protocol_identity": {
             "protocol_id": "commandmed-spec005-device-qualification-protocol",
-            "protocol_version": "1.0",
-            "preflight_state": "PREFLIGHT_PASS",
+            "protocol_version": "1.1",
+            "execution_readiness_state": "PRE_EXECUTION_READY",
+            "execution_readiness_record_sha256": readiness_sha,
         },
         "comparison_policy": {
             "comparison_strategy": "LEXICOGRAPHIC_PREDECLARED",
@@ -110,6 +173,33 @@ class ManifestValidationTests(unittest.TestCase):
     def test_valid_manifest_validates(self):
         errors = validate_spec005_manifest(make_manifest(), make_artifacts())
         self.assertEqual(errors, [])
+
+    def test_device_ready_state_is_recomputed_not_caller_owned(self):
+        artifacts = make_artifacts()
+        artifacts["device_execution_readiness_records"] = artifacts[
+            "device_execution_readiness_records"
+        ][:-1]
+        errors = validate_spec005_manifest(make_manifest(), artifacts)
+        self.assertTrue(any("COMPUTED_DEVICE_EXECUTION_READINESS" in e for e in errors))
+
+    def test_device_readiness_sha_is_exactly_bound(self):
+        manifest = make_manifest()
+        manifest["device_protocol_identity"]["execution_readiness_record_sha256"] = (
+            "8" * 64
+        )
+        errors = validate_spec005_manifest(manifest, make_artifacts())
+        self.assertTrue(any("READINESS_SHA_MISMATCH" in e for e in errors))
+
+    def test_legacy_measured_preflight_state_cannot_satisfy_pre_execution_gate(self):
+        manifest = make_manifest()
+        manifest["device_protocol_identity"] = {
+            "protocol_id": "commandmed-spec005-device-qualification-protocol",
+            "protocol_version": "1.1",
+            "preflight_state": "PREFLIGHT_PASS",
+        }
+        errors = validate_spec005_manifest(manifest, make_artifacts())
+        self.assertTrue(any("LEGACY_DEVICE_PREFLIGHT" in e for e in errors))
+        self.assertTrue(any("PRE_EXECUTION_READY" in e for e in errors))
 
     def test_wrong_metrics_v2_sha_rejected(self):
         manifest = make_manifest()
@@ -175,13 +265,8 @@ class ManifestValidationTests(unittest.TestCase):
         manifest["selection_quality_contract_identity"][
             "selection_quality_contract_sha256"
         ] = "d" * 64
-        # Fixture contract has canonical_sha256=null; declared hash cannot be
-        # verified against a null, so validation must fail closed.
         errors = validate_spec005_manifest(manifest, make_artifacts())
-        self.assertTrue(
-            any("SELECTION_QUALITY_CONTRACT_SHA" in e for e in errors),
-            errors,
-        )
+        self.assertTrue(any("SELECTION_QUALITY_CONTRACT_SHA" in e for e in errors))
 
     def test_malformed_identity_subobjects_do_not_crash(self):
         manifest = make_manifest(
@@ -204,8 +289,10 @@ class ManifestValidationTests(unittest.TestCase):
         )
         errors = validate_spec005_manifest(make_manifest(), artifacts)
         self.assertTrue(
-            any("TP-001" in e and ("SHA" in e.upper() or "FORMAT" in e.upper())
-                for e in errors)
+            any(
+                "TP-001" in e and ("SHA" in e.upper() or "FORMAT" in e.upper())
+                for e in errors
+            )
         )
         artifacts = make_artifacts(
             threshold_policies=[
@@ -218,8 +305,6 @@ class ManifestValidationTests(unittest.TestCase):
 
     def test_activation_identity_required_for_projection_preflight(self):
         manifest = make_manifest()
-        # Synthetic AUTHORIZED state alone must not satisfy preflight without
-        # a full activation record binding.
         manifest["construction_activation_identity"] = {
             "activation_state": "AUTHORIZED_TO_CONSTRUCT"
         }
@@ -241,10 +326,8 @@ class ManifestValidationTests(unittest.TestCase):
 
 
 class PreflightTests(unittest.TestCase):
-    def test_complete_manifest_preflight_passes(self):
+    def test_complete_manifest_preflight_passes_with_synthetic_authorized_shape(self):
         manifest = make_manifest()
-        # Synthetic fixture representing the fully authorized shape to test
-        # validator compatibility only; this creates no real authority.
         manifest["construction_activation_identity"] = {
             "activation_id": "ACT-SYNTH-AUTH",
             "activation_record_canonical_sha256": "6" * 64,
@@ -281,26 +364,16 @@ class ProjectionTests(unittest.TestCase):
         return make_manifest()
 
     def test_no_projection_when_not_authorized(self):
-        projection = build_spec004_projection(
-            self._ready_manifest(), make_artifacts()
-        )
-        # A15 is not authorized; no executable Spec 004 tournament manifest
-        # may be produced from synthetic evidence.
+        projection = build_spec004_projection(self._ready_manifest(), make_artifacts())
         self.assertIsNone(projection)
-        result = evaluate_spec005_preflight(
-            self._ready_manifest(), make_artifacts()
-        )
+        result = evaluate_spec005_preflight(self._ready_manifest(), make_artifacts())
         self.assertTrue(
             any("A15" in c or "ACTIVATION_BINDING" in c for c in result["reason_codes"]),
             result["reason_codes"],
         )
 
     def test_projection_shape_matches_spec004_requirements(self):
-        """If a real authorized activation existed, the projection would carry
-        the exact Spec 004 required fields; verified here structurally."""
-        source = open(
-            str(ROOT / "src/commandmed/tournament.py"), encoding="utf-8"
-        ).read()
+        source = open(str(ROOT / "src/commandmed/tournament.py"), encoding="utf-8").read()
         for required in (
             "tournament_id",
             "execution_mode",
