@@ -1,0 +1,9 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/loss-mask-policy/v1",
+  "title":"Spec007 LossMaskPolicy",
+  "type":"object","additionalProperties":false,
+  "required":["policy_id","policy_sha256","rendering_policy_id","token_class_rules","unknown_token_class_behavior","padding_behavior","validation_fixture_set_id"],
+  "properties":{"policy_id":{"type":"string","minLength":1},"policy_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},"rendering_policy_id":{"type":"string","minLength":1},"token_class_rules":{"type":"object","additionalProperties":false,"required":["SYSTEM","USER","ASSISTANT_NATURAL_LANGUAGE","ASSISTANT_TOOL_CALL","TOOL_RESULT","SAFETY_CONTROL","SEPARATOR_OR_SPECIAL","PADDING"],"properties":{"SYSTEM":{"$ref":"#/$defs/rule"},"USER":{"$ref":"#/$defs/rule"},"ASSISTANT_NATURAL_LANGUAGE":{"$ref":"#/$defs/rule"},"ASSISTANT_TOOL_CALL":{"$ref":"#/$defs/rule"},"TOOL_RESULT":{"$ref":"#/$defs/rule"},"SAFETY_CONTROL":{"$ref":"#/$defs/rule"},"SEPARATOR_OR_SPECIAL":{"$ref":"#/$defs/rule"},"PADDING":{"$ref":"#/$defs/rule"}}},"unknown_token_class_behavior":{"const":"FAIL_CLOSED"},"padding_behavior":{"enum":["MASKED"]},"validation_fixture_set_id":{"type":"string","minLength":1}},
+  "$defs":{"rule":{"enum":["SUPERVISED","MASKED"]}}
+}

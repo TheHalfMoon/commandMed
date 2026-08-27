@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/base-checkpoint-binding/v1",
+  "title":"Spec007 BaseCheckpointBinding",
+  "type":"object","additionalProperties":false,
+  "required":["binding_id","winner_decision_record_id","model_repository_id","model_revision","checkpoint_identity","weight_content_identity","total_parameter_count","reference_precision_bytes","tokenizer_identity","chat_template_identity","special_token_map_identity","license_evidence_id","lineage_evidence_id","tournament_evidence_pack_id"],
+  "properties":{"binding_id":{"type":"string","minLength":1},"winner_decision_record_id":{"type":"string","minLength":1},"model_repository_id":{"type":"string","minLength":1},"model_revision":{"type":"string","minLength":1},"checkpoint_identity":{"type":"string","minLength":1},"weight_content_identity":{"type":"string","minLength":1},"total_parameter_count":{"type":"integer","minimum":1},"active_parameter_semantics":{"type":["string","null"]},"reference_precision_bytes":{"type":"integer","minimum":1},"tokenizer_identity":{"type":"string","minLength":1},"chat_template_identity":{"type":"string","minLength":1},"special_token_map_identity":{"type":"string","minLength":1},"license_evidence_id":{"type":"string","minLength":1},"lineage_evidence_id":{"type":"string","minLength":1},"tournament_evidence_pack_id":{"type":"string","minLength":1},"resource_evidence_id":{"type":["string","null"]}}
+}

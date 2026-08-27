@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/backend-candidate-evidence/v1",
+  "title":"Spec007 BackendCandidateEvidence",
+  "type":"object","additionalProperties":false,
+  "required":["backend_candidate_id","software_identity","architecture_support_evidence","rendering_fidelity_evidence","loss_mask_support_evidence","packing_truncation_support_evidence","resume_support_evidence","reproducibility_support_evidence","precision_update_strategy_support","network_telemetry_behavior","maintenance_dependency_cost","non_executing_evidence_only","status"],
+  "properties":{"backend_candidate_id":{"type":"string","minLength":1},"software_identity":{"type":"string","minLength":1},"architecture_support_evidence":{"type":"string","minLength":1},"rendering_fidelity_evidence":{"type":"string","minLength":1},"loss_mask_support_evidence":{"type":"string","minLength":1},"packing_truncation_support_evidence":{"type":"string","minLength":1},"resume_support_evidence":{"type":"string","minLength":1},"reproducibility_support_evidence":{"type":"string","minLength":1},"precision_update_strategy_support":{"type":"string","minLength":1},"network_telemetry_behavior":{"type":"string","minLength":1},"maintenance_dependency_cost":{"type":"string","minLength":1},"non_executing_evidence_only":{"const":true},"status":{"enum":["NEEDS_EVIDENCE","ADMISSIBLE_STATIC_EVIDENCE","INADMISSIBLE_STATIC_EVIDENCE"]}}
+}

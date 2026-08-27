@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/non-executing-recipe-evidence/v1",
+  "title":"Spec007 NonExecutingRecipeEvidence",
+  "type":"object","additionalProperties":false,
+  "required":["evidence_id","evidence_classes","contains_execution_derived_evidence","model_weights_loaded","gradient_work_performed","benchmark_payload_executed"],
+  "properties":{"evidence_id":{"type":"string","minLength":1},"evidence_classes":{"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["SCHEMA_COMPLETENESS","DOCUMENTED_COMPATIBILITY","STATIC_RESOURCE_ESTIMATE","RENDERING_CONFORMANCE_DEFINITION","LOSS_MASK_CONFORMANCE_DEFINITION","PACKING_TRUNCATION_CONFORMANCE_DEFINITION","PROVENANCE_QUARANTINE_BINDING","ENVIRONMENT_IDENTITY","ARTIFACT_EXPORT_REQUIREMENT","LICENSE_POSTURE"]}},"contains_execution_derived_evidence":{"const":false},"model_weights_loaded":{"const":false},"gradient_work_performed":{"const":false},"benchmark_payload_executed":{"const":false}}
+}

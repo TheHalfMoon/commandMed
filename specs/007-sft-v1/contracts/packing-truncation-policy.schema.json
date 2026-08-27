@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/packing-truncation-policy/v1",
+  "title":"Spec007 PackingTruncationPolicy",
+  "type":"object","additionalProperties":false,
+  "required":["policy_id","packing_mode","cross_example_attention_allowed","truncation_mode","safe_segmentation_mode","required_context_classes","reason_code_vocabulary_id"],
+  "properties":{"policy_id":{"type":"string","minLength":1},"packing_mode":{"enum":["DISABLED","BOUNDARY_SAFE","NEEDS_EVIDENCE"]},"cross_example_attention_allowed":{"const":false},"truncation_mode":{"enum":["FAIL_CLOSED","SAFE_SEGMENTATION_ONLY"]},"safe_segmentation_mode":{"type":"string","minLength":1},"required_context_classes":{"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["PATIENT_FACTS_REQUIRED_FOR_TARGET","SAFETY_OR_EMERGENCY_CONTEXT","TOOL_SCHEMA_REQUIRED_FOR_TARGET","SUPERVISED_TARGET","MATERIAL_CONVERSATION_STATE"]}},"reason_code_vocabulary_id":{"type":"string","minLength":1}}
+}

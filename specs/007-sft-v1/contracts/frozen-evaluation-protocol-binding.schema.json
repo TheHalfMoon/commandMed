@@ -1,0 +1,40 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/frozen-evaluation-protocol-binding/v1",
+  "title":"Spec007 FrozenEvaluationProtocolBinding",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["binding_id","metric_catalog_identity","hard_gate_identity","statistical_protocol_identity","stratification_identity","sample_size_rationale_identity","acceptance_threshold_identity","quarantine_matrix_identity","evaluation_asset_manifests","frozen_before_training_authorization"],
+  "properties":{
+    "binding_id":{"type":"string","minLength":1},
+    "metric_catalog_identity":{"type":"string","minLength":1},
+    "hard_gate_identity":{"type":"string","minLength":1},
+    "statistical_protocol_identity":{"type":"string","minLength":1},
+    "stratification_identity":{"type":"string","minLength":1},
+    "sample_size_rationale_identity":{"type":"string","minLength":1},
+    "acceptance_threshold_identity":{"type":"string","minLength":1},
+    "quarantine_matrix_identity":{"type":"string","minLength":1},
+    "evaluation_asset_manifests":{
+      "type":"array",
+      "minItems":1,
+      "items":{
+        "type":"object",
+        "additionalProperties":false,
+        "required":["asset_id","asset_role","source_authority_id","source_license_id","content_sha256","split_id","contamination_status","source_verification_status","review_state","provenance_validation_status"],
+        "properties":{
+          "asset_id":{"type":"string","minLength":1},
+          "asset_role":{"enum":["METRIC_INPUT","REPLAY_FIXTURE","THRESHOLD_ASSET","STRATIFICATION_ASSET","SAMPLE_SIZE_EVIDENCE","OTHER_PROTOCOL_ASSET"]},
+          "source_authority_id":{"type":"string","minLength":1},
+          "source_license_id":{"type":"string","minLength":1},
+          "content_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "split_id":{"type":"string","minLength":1},
+          "contamination_status":{"type":"string","minLength":1},
+          "source_verification_status":{"type":"string","minLength":1},
+          "review_state":{"type":"string","minLength":1},
+          "provenance_validation_status":{"const":"PASS"}
+        }
+      }
+    },
+    "frozen_before_training_authorization":{"const":true}
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/resource-accounting/v1",
+  "title":"commandMed ResourceAccountingRecord",
+  "type":"object","additionalProperties":false,
+  "required":["resource_record_id","artifact_identity","total_parameter_count","reference_precision_bytes","shipped_model_bytes","required_tokenizer_config_bytes","required_adapter_bytes","peak_memory_bytes","context_length_tested","kv_cache_bytes","hardware_identity","runtime_identity","ttft_ms","prefill_tokens_per_second","decode_tokens_per_second","sustained_tokens_per_second"],
+  "properties":{"resource_record_id":{"type":"string","minLength":1},"artifact_identity":{"type":"string","minLength":1},"total_parameter_count":{"type":"integer","minimum":1},"active_parameters_per_token":{"type":["integer","null"],"minimum":1},"reference_precision_bytes":{"type":"integer","minimum":1},"shipped_model_bytes":{"type":"integer","minimum":1},"required_tokenizer_config_bytes":{"type":"integer","minimum":0},"required_adapter_bytes":{"type":"integer","minimum":0},"peak_memory_bytes":{"type":"integer","minimum":1},"context_length_tested":{"type":"integer","minimum":1},"kv_cache_bytes":{"type":"integer","minimum":0},"hardware_identity":{"type":"string","minLength":1},"runtime_identity":{"type":"string","minLength":1},"ttft_ms":{"type":"number","minimum":0},"prefill_tokens_per_second":{"type":"number","exclusiveMinimum":0},"decode_tokens_per_second":{"type":"number","exclusiveMinimum":0},"sustained_tokens_per_second":{"type":"number","exclusiveMinimum":0},"energy_joules_per_case":{"type":["number","null"],"minimum":0},"thermal_condition":{"type":["string","null"]}}
+}

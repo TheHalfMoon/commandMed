@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/prompt-rendering-policy/v1",
+  "title":"Spec007 PromptRenderingPolicy",
+  "type":"object","additionalProperties":false,
+  "required":["policy_id","policy_sha256","base_checkpoint_binding_id","tokenizer_identity","chat_template_identity","normalization_policy","system_message_policy","tool_schema_rendering_policy","bos_policy","eos_policy","special_token_map_identity","target_turn_policy","multi_turn_continuation_policy"],
+  "properties":{"policy_id":{"type":"string","minLength":1},"policy_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},"base_checkpoint_binding_id":{"type":"string","minLength":1},"tokenizer_identity":{"type":"string","minLength":1},"chat_template_identity":{"type":"string","minLength":1},"normalization_policy":{"type":"string","minLength":1},"system_message_policy":{"type":"string","minLength":1},"tool_schema_rendering_policy":{"type":"string","minLength":1},"bos_policy":{"type":"string","minLength":1},"eos_policy":{"type":"string","minLength":1},"special_token_map_identity":{"type":"string","minLength":1},"target_turn_policy":{"type":"string","minLength":1},"multi_turn_continuation_policy":{"type":"string","minLength":1}}
+}

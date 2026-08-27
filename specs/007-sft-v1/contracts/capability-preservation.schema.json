@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/capability-preservation/v1",
+  "title":"Spec007 CapabilityPreservationBinding",
+  "type":"object","additionalProperties":false,
+  "required":["binding_id","base_checkpoint_binding_id","candidate_checkpoint_id","frozen_evaluation_protocol_id","required_slices","pre_registered_margins_id","quarantine_verification_id"],
+  "properties":{"binding_id":{"type":"string","minLength":1},"base_checkpoint_binding_id":{"type":"string","minLength":1},"candidate_checkpoint_id":{"type":"string","minLength":1},"frozen_evaluation_protocol_id":{"type":"string","minLength":1},"required_slices":{"type":"array","minItems":7,"uniqueItems":true,"items":{"enum":["GENERAL_REASONING","INSTRUCTION_FOLLOWING","MEDICAL_CORE","ARABIC","TOOL_BEHAVIOR","ABSTENTION_SELECTIVE_RISK","SAFETY"]}},"pre_registered_margins_id":{"type":"string","minLength":1},"quarantine_verification_id":{"type":"string","minLength":1}}
+}

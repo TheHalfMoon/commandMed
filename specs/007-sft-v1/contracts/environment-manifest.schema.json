@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/environment-manifest/v1",
+  "title":"Spec007 EnvironmentManifest",
+  "type":"object","additionalProperties":false,
+  "required":["environment_id","os_or_container_identity","python_identity","framework_identity","training_backend_identity","device_runtime_identity","device_identity","driver_identity","attention_kernel_identity","precision_identity","dependency_lock_identity","seed_policy","deterministic_mode","known_nondeterminism"],
+  "properties":{"environment_id":{"type":"string","minLength":1},"os_or_container_identity":{"type":"string","minLength":1},"python_identity":{"type":"string","minLength":1},"framework_identity":{"type":"string","minLength":1},"training_backend_identity":{"type":"string","minLength":1},"device_runtime_identity":{"type":"string","minLength":1},"device_identity":{"type":"string","minLength":1},"driver_identity":{"type":"string","minLength":1},"attention_kernel_identity":{"type":"string","minLength":1},"precision_identity":{"type":"string","minLength":1},"compiler_flags_identity":{"type":["string","null"]},"dependency_lock_identity":{"type":"string","minLength":1},"seed_policy":{"type":"string","minLength":1},"deterministic_mode":{"type":"string","minLength":1},"known_nondeterminism":{"type":"array","items":{"type":"string","minLength":1}}}
+}
