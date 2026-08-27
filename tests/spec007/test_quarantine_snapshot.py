@@ -24,7 +24,7 @@ def rendered_record(record_id: str, role: str = "PATIENT_CAREGIVER") -> dict:
         "record_id": record_id,
         "record_canonical_sha256": "0" * 64,
         "content_sha256": "1" * 64,
-        "source_authority_id": "synthetic-authority",
+        "source_authority_id": "VERIFIED_SFT_CURRICULUM_DATA",
         "source_license_id": "synthetic-license",
         "source_verification_status": "VERIFIED",
         "split_id": "VERIFIED_SFT_CURRICULUM_DATA",
