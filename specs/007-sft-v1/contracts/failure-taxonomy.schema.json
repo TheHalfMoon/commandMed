@@ -2,7 +2,27 @@
   "$schema":"https://json-schema.org/draft/2020-12/schema",
   "$id":"commandmed://spec007/failure-taxonomy/v1",
   "title":"commandMed FailureTaxonomyRecord",
-  "type":"object","additionalProperties":false,
+  "type":"object",
+  "additionalProperties":false,
   "required":["failure_id","evidence_source_id","source_is_protected_final_evidence","failure_category","subtype","severity","language_stratum","role_stratum","root_cause_confidence","recommended_remediation_surface","training_data_admission_allowed","reason_codes"],
-  "properties":{"failure_id":{"type":"string","minLength":1},"evidence_source_id":{"type":"string","minLength":1},"source_is_protected_final_evidence":{"type":"boolean"},"failure_category":{"enum":["FACTUAL_KNOWLEDGE","CLINICAL_REASONING","ACTIVE_INFORMATION_ACQUISITION","EVIDENCE_USE","TOOL_SELECTION_OR_ARGUMENTS","TOOL_RESULT_TRUST","ABSTENTION_OR_OVERANSWERING","ESCALATION_OR_EMERGENCY","PATIENT_COMMUNICATION","PROFESSIONAL_WORKFLOW","ARABIC_OR_CODE_SWITCH","STRUCTURED_OUTPUT","PROVENANCE_OR_DATA","EVALUATION_AMBIGUITY","MUTABLE_KNOWLEDGE_PLACEMENT","GENERAL_CAPABILITY_REGRESSION","OTHER_REVIEW_REQUIRED"]},"subtype":{"type":"string","minLength":1},"severity":{"type":"string","minLength":1},"language_stratum":{"type":"string","minLength":1},"role_stratum":{"type":"string","minLength":1},"root_cause_confidence":{"type":"string","minLength":1},"recommended_remediation_surface":{"enum":["SFT_DATA","RETRIEVAL_EVIDENCE","DETERMINISTIC_TOOL","SAFETY_POLICY","EVALUATION_REPAIR","NO_ACTION","REVIEW_REQUIRED"]},"training_data_admission_allowed":{"type":"boolean"},"reason_codes":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}}}
+  "properties":{
+    "failure_id":{"type":"string","minLength":1},
+    "evidence_source_id":{"type":"string","minLength":1},
+    "source_is_protected_final_evidence":{"type":"boolean"},
+    "failure_category":{"enum":["FACTUAL_KNOWLEDGE","CLINICAL_REASONING","ACTIVE_INFORMATION_ACQUISITION","EVIDENCE_USE","TOOL_SELECTION_OR_ARGUMENTS","TOOL_RESULT_TRUST","ABSTENTION_OR_OVERANSWERING","ESCALATION_OR_EMERGENCY","PATIENT_COMMUNICATION","PROFESSIONAL_WORKFLOW","ARABIC_OR_CODE_SWITCH","STRUCTURED_OUTPUT","PROVENANCE_OR_DATA","EVALUATION_AMBIGUITY","MUTABLE_KNOWLEDGE_PLACEMENT","GENERAL_CAPABILITY_REGRESSION","OTHER_REVIEW_REQUIRED"]},
+    "subtype":{"type":"string","minLength":1},
+    "severity":{"type":"string","minLength":1},
+    "language_stratum":{"type":"string","minLength":1},
+    "role_stratum":{"type":"string","minLength":1},
+    "root_cause_confidence":{"type":"string","minLength":1},
+    "recommended_remediation_surface":{"enum":["SFT_DATA","RETRIEVAL_EVIDENCE","DETERMINISTIC_TOOL","SAFETY_POLICY","EVALUATION_REPAIR","NO_ACTION","REVIEW_REQUIRED"]},
+    "training_data_admission_allowed":{"type":"boolean"},
+    "reason_codes":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}}
+  },
+  "allOf":[
+    {
+      "if":{"properties":{"source_is_protected_final_evidence":{"const":true}},"required":["source_is_protected_final_evidence"]},
+      "then":{"properties":{"training_data_admission_allowed":{"const":false}}}
+    }
+  ]
 }
