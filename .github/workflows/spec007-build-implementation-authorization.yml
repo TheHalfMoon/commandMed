@@ -1,4 +1,4 @@
-name: Qualify repaired Spec 007 authorization
+name: Qualify final Spec 007 authorization candidate
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout exact authorization head
         uses: actions/checkout@v4
         with:
-          ref: d9cdb946a76e760008031a7d20e4240c796c1f94
+          ref: 618c7b650463d1d8f639bdc162940542a4a94859
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
@@ -29,7 +29,7 @@ jobs:
           git config user.email "validation@commandmed.invalid"
       - name: Verify exact head
         run: |
-          test "$(git rev-parse HEAD)" = "d9cdb946a76e760008031a7d20e4240c796c1f94"
+          test "$(git rev-parse HEAD)" = "618c7b650463d1d8f639bdc162940542a4a94859"
           echo "EXACT_HEAD=$(git rev-parse HEAD)"
       - name: Compile
         run: |
@@ -39,5 +39,5 @@ jobs:
         run: python3 -m pytest -q
       - name: Diff check
         run: |
-          git diff --check 947f3aba4d4316e21470ac26352d96e3bfb74ae6 d9cdb946a76e760008031a7d20e4240c796c1f94
+          git diff --check 947f3aba4d4316e21470ac26352d96e3bfb74ae6 618c7b650463d1d8f639bdc162940542a4a94859
           echo "GIT_DIFF_CHECK=PASS"
