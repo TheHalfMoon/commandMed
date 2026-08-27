@@ -25,6 +25,7 @@ AGENTS.md
 .specify/memory/constitution.md
 docs/COMMANDMED-GRAND-MASTER-PLAN-v0.1.md
 docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1.md
+docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1-EDITORIAL-AMENDMENT-2026-08-27.md
 docs/decision-register.md
 specs/README.md
 specs/007-sft-v1/spec.md
@@ -33,6 +34,8 @@ specs/007-sft-v1/research.md
 specs/007-sft-v1/plan.md
 specs/007-sft-v1/data-model.md
 ```
+
+The density-strategy amendment is required reading with the original strategy: it supersedes only the approximate Core/Nano parameter-band interpretation while preserving the original document as historical planning evidence and preserving frozen Spec 005 gates.
 
 Confirm current authority before doing anything else.
 
