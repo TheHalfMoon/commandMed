@@ -1,4 +1,4 @@
-name: Repair Spec 007 authorization record
+name: Qualify repaired Spec 007 authorization
 
 on:
   push:
@@ -6,61 +6,38 @@ on:
       - validation/007-auth-builder
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  repair:
+  exact-head-baseline:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout exact authorization head
+        uses: actions/checkout@v4
         with:
-          ref: auth/007-implementation-start
+          ref: d9cdb946a76e760008031a7d20e4240c796c1f94
           fetch-depth: 0
-      - name: Verify old head
-        run: test "$(git rev-parse HEAD)" = "485b774c95a39b344301743b38481d8f888560f2"
-      - name: Patch governance records
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Configure fixture Git identity
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          s='701c933acdf84572f627446e5199231236f97988'
-          tree='faa5c15c84dbd84d162b6ba6850bbc312584203b'
-          carrier='65973326632d07bb63cab03d9ab696b5f1f0c375'
-          run_id='33040059680'
-          job='98411371329'
-          extra='QUALIFIED_PLANNING_TREE='+tree+'\nP013_VALIDATED_SUBJECT_SHA='+s+'\nP013_VALIDATED_SUBJECT_TREE='+tree+'\nP013_VALIDATION_RUN='+run_id+'\nP013_VALIDATION_JOB='+job+'\nP013_WORKFLOW_CARRIER_SHA='+carrier+'\nP013_WORKFLOW_CARRIER_ROLE=TRIGGER_ONLY_NOT_VALIDATED_SUBJECT\nP013_EXACT_CHECKOUT_BINDING=JOB_'+job+'_CHECKOUT_AND_VERIFY_HEAD_BOTH_EQUAL_VALIDATED_SUBJECT_SHA'
-          for name in ['specs/README.md','specs/007-sft-v1/implementation-authorization.md']:
-              p=Path(name); x=p.read_text()
-              needle='QUALIFIED_PLANNING_HEAD='+s+'\nP013_VALIDATION_RUN='+run_id
-              replacement='QUALIFIED_PLANNING_HEAD='+s+'\n'+extra
-              if x.count(needle)!=1: raise SystemExit(name+' P013 block mismatch')
-              x=x.replace(needle,replacement,1)
-              p.write_text(x)
-          p=Path('specs/README.md'); x=p.read_text()
-          needle='SPEC_007=AUTHORIZED_TO_PLAN\nMODEL_EXECUTION_AUTHORITY=NONE'
-          if x.count(needle)!=1: raise SystemExit('README lifecycle mismatch')
-          x=x.replace(needle,'SPEC_007=AUTHORIZED_TO_START\nMODEL_EXECUTION_AUTHORITY=NONE',1)
-          marker='`E001-E015` remain blocked by their own explicit evidence/Founder/execution/data/access gates.'
-          note='P013 exact-subject binding: workflow carrier `'+carrier+'` is trigger-only. Job `'+job+'` explicitly checked out and verified `'+s+'` (tree `'+tree+'`) before compileall, full pytest, and diff-check. The validated subject tree equals the canonical planning merge tree.\n\n'
-          if x.count(marker)!=1: raise SystemExit('README marker mismatch')
-          x=x.replace(marker,note+marker,1); p.write_text(x)
-          p=Path('specs/007-sft-v1/implementation-authorization.md'); x=p.read_text()
-          marker='## Founder authorization'
-          note='## Exact-subject validation binding\n\nRun `'+run_id+'` is triggered by carrier `'+carrier+'`, but job `'+job+'` explicitly checks out and verifies subject `'+s+'` / tree `'+tree+'` before the required checks. The subject tree equals the canonical planning merge tree; the carrier is not treated as the validated content.\n\n'
-          if x.count(marker)!=1: raise SystemExit('auth marker mismatch')
-          x=x.replace(marker,note+marker,1); p.write_text(x)
-          p=Path('specs/007-sft-v1/tasks.md'); x=p.read_text()
-          old='- [x] **P013** Run repository baseline checks on exact planning head and record actual results. — Run `'+run_id+'`: compileall PASS; 627 tests + 128 subtests PASS; diff-check PASS.'
-          new='- [x] **P013** Run repository baseline checks on exact planning head and record actual results. — Subject `'+s+'` / tree `'+tree+'`; run `'+run_id+'`, job `'+job+'` explicitly checked out and verified that subject (carrier `'+carrier+'` is trigger-only); compileall PASS; 627 tests + 128 subtests PASS; diff-check PASS.'
-          if x.count(old)!=1: raise SystemExit('task P013 mismatch')
-          p.write_text(x.replace(old,new,1))
-          PY
-          git diff --check
-      - name: Commit repair
+          git config user.name "commandMed Validation"
+          git config user.email "validation@commandmed.invalid"
+      - name: Verify exact head
         run: |
-          git config user.name "commandMed Governance"
-          git config user.email "governance@commandmed.invalid"
-          git add specs/README.md specs/007-sft-v1/tasks.md specs/007-sft-v1/implementation-authorization.md
-          git diff --cached --check
-          git commit -m "fix(spec007): bind authorization evidence to validated planning head"
-          git push origin HEAD:auth/007-implementation-start
+          test "$(git rev-parse HEAD)" = "d9cdb946a76e760008031a7d20e4240c796c1f94"
+          echo "EXACT_HEAD=$(git rev-parse HEAD)"
+      - name: Compile
+        run: |
+          python3 -m compileall -q src tests
+          echo "COMPILEALL=PASS"
+      - name: Full tests
+        run: python3 -m pytest -q
+      - name: Diff check
+        run: |
+          git diff --check 947f3aba4d4316e21470ac26352d96e3bfb74ae6 d9cdb946a76e760008031a7d20e4240c796c1f94
+          echo "GIT_DIFF_CHECK=PASS"
