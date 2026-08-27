@@ -1,0 +1,61 @@
+name: E004 corrective-maintenance exact-head qualification
+
+on:
+  push:
+    branches:
+      - validation/e004-cm-53aa3ab
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact corrective-maintenance head
+        uses: actions/checkout@v4
+        with:
+          ref: 53aa3ab29636563f11a82b72d4cfd940a2351792
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest only
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Configure ephemeral Git identity for fixture plumbing
+        run: |
+          git config user.name "commandMed Validation"
+          git config user.email "validation@commandmed.invalid"
+      - name: Verify exact corrective-maintenance head
+        run: |
+          test "$(git rev-parse HEAD)" = "53aa3ab29636563f11a82b72d4cfd940a2351792"
+          echo "EXACT_SUBJECT_HEAD=$(git rev-parse HEAD)"
+      - name: Compile Python sources and tests
+        run: |
+          python3 -m compileall -q src tests
+          echo "COMPILEALL=PASS"
+      - name: Run focused corrective-maintenance tests
+        run: |
+          python3 -m pytest -q \
+            tests/spec005/test_device.py \
+            tests/spec005/test_manifest.py \
+            tests/spec007/test_e004.py
+      - name: Run full repository test suite
+        run: python3 -m pytest -q
+      - name: Check corrective-maintenance diff whitespace
+        run: |
+          git diff --check 238d8a0b8cfed54356ca39bb892f94ebf12d89de 53aa3ab29636563f11a82b72d4cfd940a2351792
+          echo "GIT_DIFF_CHECK=PASS"
+      - name: Enforce bounded corrective-maintenance paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only 238d8a0b8cfed54356ca39bb892f94ebf12d89de 53aa3ab29636563f11a82b72d4cfd940a2351792 | while IFS= read -r path; do
+            case "$path" in
+              data/spec005/device_qualification_contract.json|src/commandmed/spec005/device.py|src/commandmed/spec005/manifest.py|src/commandmed/spec007/e004.py|tests/spec005/test_device.py|tests/spec005/test_manifest.py|tests/spec007/test_e004.py) ;;
+              *) echo "OUT_OF_SCOPE_PATH=$path"; exit 1 ;;
+            esac
+          done
+          echo "BOUNDED_DIFF_SCOPE=PASS"
