@@ -48,7 +48,9 @@ Permitted work includes only repository-local deterministic validators, canonica
 
 Implementation must prefer existing repository mechanisms and stdlib/native facilities over new frameworks or services. No network, credentials, model runtime, benchmark payload, PHI, Private Gold, device execution, or paid service is required or permitted.
 
-## Explicitly not authorized
+## Exclusions
+
+The following authorities and activities are explicitly outside this bounded implementation authorization:
 
 ```text
 MODEL_CANDIDATE_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY
@@ -70,8 +72,22 @@ SPEND_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-`E001-E015` are not activated by this record. No candidate model may be selected, ranked, eliminated, recommended as canonical, downloaded, loaded, converted, inferred, benchmarked, trained, fine-tuned, or used in a pilot under this authority.
+`E001-E015` are not activated by this record. No candidate model may be selected, ranked, eliminated, recommended as canonical, downloaded, loaded, converted, inferred, benchmarked, trained, fine-tuned, or used in a pilot under this authority. No real benchmark payload, Private Gold payload, PHI, restricted clinical database, credential, paid provider, or device execution may be used.
 
-## Exit discipline
+## Exit Evidence
 
-Before implementation merge, the exact implementation head must satisfy the canonical I-phase task/evidence map, focused Spec 007 tests, full offline regression, compileall, diff-check, and fresh independent exact-head review with no unresolved material blocker. Any head movement invalidates prior exact-head qualification.
+The implementation merge gate is fail-closed. Each criterion below must have concrete evidence on the **same exact implementation head**; `NEEDS_EVIDENCE` is not a pass state. Any implementation-head movement invalidates prior exact-head qualification and requires the affected evidence to be regenerated.
+
+| Exit criterion | Required concrete evidence | Status at authorization | Canonical reference / future evidence slot |
+|---|---|---|---|
+| I-phase task/evidence map complete | `specs/007-sft-v1/tasks.md` with I001-I045 completion mapped to implementation paths/tests; no E-task falsely checked | `NEEDS_EVIDENCE` | `specs/007-sft-v1/tasks.md` |
+| Focused Spec 007 tests pass | Exact-head command output and test count for the dedicated Spec 007 test surface | `NEEDS_EVIDENCE` | future implementation qualification run/job ID |
+| Full offline regression passes | Exact-head `pytest -q` output with actual repository-wide count | `NEEDS_EVIDENCE` | future implementation qualification run/job ID |
+| Python compilation passes | Exact-head `python3 -m compileall -q src tests` result | `NEEDS_EVIDENCE` | future implementation qualification run/job ID |
+| Diff hygiene passes | `git diff --check <canonical-implementation-base> <exact-implementation-head>` output | `NEEDS_EVIDENCE` | future implementation qualification run/job ID |
+| Authority boundary remains closed | Exact-head inspection proving E001-E015 remain gated and model/weight/training/benchmark/PHI/Private Gold/device/credential/spend authority remains `NONE` | `NEEDS_EVIDENCE` | implementation PR review record |
+| Independent exact-head review passes | Fresh Qodo and CodeRabbit (or canonical independent-review substitute if one service is unavailable) with no unresolved material blocker on the exact implementation SHA | `NEEDS_EVIDENCE` | implementation PR review/comment references |
+| Review threads reconciled | Zero unresolved material review threads; every valid finding repaired and requalified | `NEEDS_EVIDENCE` | implementation PR thread listing |
+| Worktree/artifact scope remains bounded | Changed-file evidence limited to authorized offline deterministic implementation, tests, fixtures, and required lifecycle reconciliation | `NEEDS_EVIDENCE` | implementation PR changed-file set |
+
+The planning evidence above is already complete and authorizes entry into implementation; it is not a substitute for the implementation-exit evidence in this table. Implementation merge is prohibited until every row reaches a concrete `PASS`/satisfied state with exact-head evidence.
