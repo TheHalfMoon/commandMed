@@ -3,7 +3,7 @@
 **Spec:** 007 SFT V1
 **Task:** E001
 **Decision owner:** Founder + ChatGPT
-**Decision state:** FROZEN_PENDING_CANONICAL_MERGE
+**Decision state:** FROZEN
 **Evidence merge base:** `1af0e05bf5e04eb3b75b39e170e4ec2b31d08cd5` (PR #55)
 
 ## Decision
