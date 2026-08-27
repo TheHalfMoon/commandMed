@@ -1,4 +1,4 @@
-name: Spec 007 CodeRabbit repair RED
+name: Spec 007 final CodeRabbit repair qualification
 
 on:
   push:
@@ -9,14 +9,14 @@ permissions:
   contents: read
 
 jobs:
-  coderabbit-repair-red:
+  coderabbit-repair-green:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout exact CodeRabbit RED head
+      - name: Checkout exact repaired implementation head
         uses: actions/checkout@v4
         with:
-          ref: 4c5aa33235622a0eae8825942652d11bad5e36ad
+          ref: c0bc78a6c094aee4ba66d619eafffc855d8ad625
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -24,11 +24,36 @@ jobs:
           python-version: '3.11'
       - name: Install pytest only
         run: python -m pip install --disable-pip-version-check pytest
-      - name: Verify exact RED head
+      - name: Configure ephemeral Git identity for fixture plumbing
         run: |
-          test "$(git rev-parse HEAD)" = "4c5aa33235622a0eae8825942652d11bad5e36ad"
-          echo "EXACT_RED_HEAD=$(git rev-parse HEAD)"
-      - name: Compile review regression fixture
-        run: python3 -m compileall -q src tests/spec007/test_review_repair_regressions.py
-      - name: Run remaining CodeRabbit regressions
+          git config user.name "commandMed Validation"
+          git config user.email "validation@commandmed.invalid"
+      - name: Verify exact repaired head
+        run: |
+          test "$(git rev-parse HEAD)" = "c0bc78a6c094aee4ba66d619eafffc855d8ad625"
+          echo "EXACT_REPAIRED_HEAD=$(git rev-parse HEAD)"
+      - name: Compile Python sources and tests
+        run: |
+          python3 -m compileall -q src tests
+          echo "COMPILEALL=PASS"
+      - name: Run all review-repair regressions
         run: python3 -m pytest -q tests/spec007/test_review_repair_regressions.py
+      - name: Run focused Spec 007 tests
+        run: python3 -m pytest -q tests/spec007
+      - name: Run full repository test suite
+        run: python3 -m pytest -q
+      - name: Check implementation diff whitespace
+        run: |
+          git diff --check 19bdffc28f20e52575922852dd3a8de2b9d0d312 c0bc78a6c094aee4ba66d619eafffc855d8ad625
+          echo "GIT_DIFF_CHECK=PASS"
+      - name: Enforce bounded implementation paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only 19bdffc28f20e52575922852dd3a8de2b9d0d312 c0bc78a6c094aee4ba66d619eafffc855d8ad625 | while IFS= read -r path; do
+            case "$path" in
+              specs/007-sft-v1/*|src/commandmed/spec007/*|tests/spec007/*) ;;
+              *) echo "OUT_OF_SCOPE_PATH=$path"; exit 1 ;;
+            esac
+          done
+          echo "BOUNDED_DIFF_SCOPE=PASS"
