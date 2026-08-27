@@ -8,20 +8,26 @@ complete-but-unauthorized evidence never produces one.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
-import re
-
-from ..eval_contract.validate import validate_metrics_catalog_v2
 from ..eval_contract.canonical import compute_canonical_sha256
+from ..eval_contract.validate import validate_metrics_catalog_v2
 from ..tournament import CANONICAL_METRICS_V2_BINDING
+from .device import (
+    PROTOCOL_ID as DEVICE_PROTOCOL_ID,
+    PROTOCOL_VERSION as DEVICE_PROTOCOL_VERSION,
+    build_device_execution_readiness_record,
+)
 
 CANDIDATE_ROLES = frozenset({"PRIMARY", "CONTROL", "CONDITIONAL", "REFERENCE_ONLY"})
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def _is_canonical_sha256(value) -> bool:
-    return isinstance(value, str) and bool(_SHA256_RE.match(value))
+    return isinstance(value, str) and _SHA256_RE.fullmatch(value) is not None
+
+
 PROHIBITED_EVIDENCE_MARKERS = ("COMMANDMED_ARABIC_GOLD", "PRIVATE_GOLD")
 
 MANIFEST_REQUIRED_FIELDS = (
@@ -59,6 +65,52 @@ def _contains_private_gold(value: Any) -> bool:
     return False
 
 
+def _validate_device_readiness_binding(
+    manifest: dict[str, Any], artifacts: dict[str, Any], errors: list[str]
+) -> None:
+    """Bind manifest device identity to computed pre-execution readiness.
+
+    The favorable state is recomputed from supplied identity records and the
+    supplied frozen device contract. A caller-owned ``PRE_EXECUTION_READY``
+    string cannot make an incomplete record ready.
+    """
+    device_identity = manifest.get("device_protocol_identity")
+    if not isinstance(device_identity, dict):
+        errors.append("Manifest:device_protocol_identity_MUST_BE_OBJECT")
+        return
+
+    if "preflight_state" in device_identity:
+        errors.append("Manifest:LEGACY_DEVICE_PREFLIGHT_STATE_PROHIBITED_FOR_PRE_EXECUTION")
+    if device_identity.get("protocol_id") != DEVICE_PROTOCOL_ID:
+        errors.append("Manifest:DEVICE_PROTOCOL_ID_MISMATCH")
+    if device_identity.get("protocol_version") != DEVICE_PROTOCOL_VERSION:
+        errors.append("Manifest:DEVICE_PROTOCOL_VERSION_MISMATCH")
+    if device_identity.get("execution_readiness_state") != "PRE_EXECUTION_READY":
+        errors.append("Manifest:DEVICE_PRE_EXECUTION_READY_REQUIRED")
+
+    declared_sha = device_identity.get("execution_readiness_record_sha256")
+    if not _is_canonical_sha256(declared_sha):
+        errors.append("Manifest:DEVICE_EXECUTION_READINESS_SHA256_REQUIRED")
+
+    contract = artifacts.get("device_qualification_contract")
+    records = artifacts.get("device_execution_readiness_records")
+    computed_record = build_device_execution_readiness_record(records, contract)
+    computed_state = computed_record.get("state")
+    if computed_state != "PRE_EXECUTION_READY":
+        errors.append(
+            f"Manifest:COMPUTED_DEVICE_EXECUTION_READINESS_STATE_{computed_state}"
+        )
+        return
+
+    try:
+        computed_sha = compute_canonical_sha256(computed_record)
+    except (TypeError, ValueError):
+        errors.append("Manifest:DEVICE_EXECUTION_READINESS_CANONICALIZATION_FAILED")
+        return
+    if declared_sha != computed_sha:
+        errors.append("Manifest:DEVICE_EXECUTION_READINESS_SHA_MISMATCH")
+
+
 def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
     """Validate exact identity bindings of the Spec 005 manifest."""
     errors: list[str] = []
@@ -69,7 +121,6 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
         errors.append("Manifest:Artifacts:MALFORMED_RECORD_NOT_OBJECT")
         return errors
 
-    # Exact metrics-v2 binding, verified against the supplied catalog content.
     metrics_identity = manifest.get("metrics_v2_identity")
     if not isinstance(metrics_identity, dict):
         errors.append("Manifest:metrics_v2_identity_MUST_BE_OBJECT")
@@ -176,11 +227,7 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
                 f"Manifest:STATISTICAL_DESIGN_{design_id}_SHA_MISMATCH_WITH_SUPPLIED"
             )
 
-    device_identity = manifest.get("device_protocol_identity")
-    if not isinstance(device_identity, dict) or device_identity.get("preflight_state") != (
-        "PREFLIGHT_PASS"
-    ):
-        errors.append("Manifest:DEVICE_PROTOCOL_PREFLIGHT_PASS_REQUIRED")
+    _validate_device_readiness_binding(manifest, artifacts, errors)
 
     candidates = manifest.get("candidate_admission_records") or []
     if not isinstance(candidates, list) or not candidates:
@@ -212,7 +259,7 @@ def validate_spec005_manifest(manifest: Any, artifacts: Any) -> list[str]:
         comparison.get("tie_policy") != "NO_SELECTION_ON_TIE"
     ):
         errors.append("Manifest:COMPARISON_POLICY_MUST_INHERIT_SPEC004_SEMANTICS")
-    return errors
+    return sorted(set(errors))
 
 
 def evaluate_spec005_preflight(manifest: Any, artifacts: Any) -> dict[str, object]:
@@ -228,9 +275,6 @@ def evaluate_spec005_preflight(manifest: Any, artifacts: Any) -> dict[str, objec
         if not manifest.get("statistical_design_identities"):
             reason_codes.append("PROJECTION:NO_STATISTICAL_DESIGN_IDENTITIES")
 
-        # A synthetic AUTHORIZED state alone is insufficient: the activation
-        # identity must be a complete record binding (id, canonical hash, and
-        # the exact preconstruction snapshot this manifest binds).
         activation = manifest.get("construction_activation_identity")
         snapshot_identity = manifest.get("preconstruction_snapshot_identity") or {}
         required_binding = {
@@ -270,12 +314,7 @@ def evaluate_spec005_preflight(manifest: Any, artifacts: Any) -> dict[str, objec
 
 
 def build_spec004_projection(manifest: Any, artifacts: Any) -> dict[str, object] | None:
-    """Produce a Spec 004-compatible manifest only when fully authorized.
-
-    A15 real construction activation is separately authorized; until then no
-    executable projection exists. This function therefore returns None unless
-    preflight is complete AND an explicitly authorized activation is bound.
-    """
+    """Produce a Spec 004-compatible precomputed-results manifest only when ready."""
     preflight = evaluate_spec005_preflight(manifest, artifacts)
     if preflight["state"] != "PREFLIGHT_COMPLETE":
         return None
