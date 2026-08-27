@@ -218,7 +218,11 @@ def evaluate_abort_sentinel_effect(policy: Any, effect: Any) -> dict[str, Any]:
             "reason_code": "INVALID_SENTINEL_POLICY",
             "validation_errors": errors,
         }
-    if effect not in _ALLOWED_SENTINEL_EFFECTS or effect not in policy["allowed_effects"]:
+    if (
+        not isinstance(effect, str)
+        or effect not in _ALLOWED_SENTINEL_EFFECTS
+        or effect not in policy["allowed_effects"]
+    ):
         return {
             "allowed": False,
             "reason_code": "EFFECT_NOT_AUTHORIZED",
