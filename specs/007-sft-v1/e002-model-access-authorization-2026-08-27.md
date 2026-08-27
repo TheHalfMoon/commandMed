@@ -3,12 +3,16 @@
 **Spec:** 007 SFT V1
 **Task:** E002
 **Decision owner:** Founder
-**Decision state:** AUTHORIZED_PENDING_CANONICAL_MERGE
+**Decision state:** CLOSED_CANONICAL
 **Canonical base:** `c097ff973ca8b00922a3ca78a794da87daf3a1f1`
+**Canonical authorization merge:** `4551c432eb0c75843f72b6594d045d69d8d7c211`
+**Canonical authorization tree:** `f140f7ea91f8afddc44c39d56fd7096255604fca`
+**Qualified authorization head:** `5ae12461dc5bf463243fe64f6ea04e84c37ca084`
 **E001 freeze record:** `specs/007-sft-v1/e001-candidate-manifest-freeze-2026-08-27.md`
 **Frozen manifest:** `specs/007-sft-v1/e001-proposed-candidate-manifest.json`
 **Frozen manifest version:** `e001-mass-reach-v1`
 **Frozen manifest canonical SHA-256:** `98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28`
+**Frozen manifest Git blob:** `f81e42ad1cb138f741cd730cda34ffcf49e77824`
 
 ## Decision
 
@@ -157,28 +161,30 @@ That response is interpreted only as the separate E002 authorization described i
 
 ## Exit Evidence
 
-E002 may close only when all of the following are true on the same qualified authorization PR/head or are immutable upstream inputs already bound by E001:
+E002 closed canonically only after the following evidence was satisfied:
 
-| Exit criterion | Required evidence | Current state before canonical merge |
+| Exit criterion | Canonical evidence | State |
 |---|---|---|
-| Founder authorization exists | This record's bounded interpretation of the post-E001 `go ahead` | `PRESENT` |
-| Frozen candidate scope is identity-bound | E001 manifest version `e001-mass-reach-v1`, SHA-256 `98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28`, exact PRIMARY+CONTROL revisions | `PRESENT` |
-| Frozen E001 bytes remain unchanged | `specs/007-sft-v1/e001-proposed-candidate-manifest.json` remains blob-identical to the E001 freeze | `REQUIRED_AT_MERGE` |
-| Preconverted access is deterministic | Exact allowlist above; every allowed entry has repository, immutable revision, filename, byte count, and SHA-256 | `PRESENT` |
-| Current authority summary is reconciled | `specs/README.md` reports the bounded E002 model-weight access overlay and preserves E003/execution/benchmark/device/training/credential/spend as `NONE` | `REQUIRED_IN_THIS_PR` |
-| E002 task ledger is reconciled | `specs/007-sft-v1/tasks.md` marks E002 complete and E003 separately gated | `PRESENT_IN_THIS_PR` |
-| No downstream authority is smuggled in | Exact-head diff/review confirms E003 and all prohibited authorities remain `NONE` | `REQUIRED_AT_EXACT_HEAD` |
-| Independent exact-head review has no material blocker | Fresh Qodo review, with CodeRabbit service-unavailable behavior recorded transparently if applicable | `REQUIRED_BEFORE_MERGE` |
-| Changed scope remains documentation-only | PR diff contains authority/ledger/current-summary documentation only; no model/benchmark bytes, product code, runtime, credentials, device or training surface | `REQUIRED_BEFORE_MERGE` |
+| Founder authorization exists | This record's bounded interpretation of the post-E001 `go ahead` | `PASS` |
+| Frozen candidate scope is identity-bound | E001 manifest version `e001-mass-reach-v1`, SHA-256 `98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28`, exact PRIMARY+CONTROL revisions | `PASS` |
+| Frozen E001 bytes remain unchanged | Manifest Git blob `f81e42ad1cb138f741cd730cda34ffcf49e77824` at qualified head and canonical merge | `PASS` |
+| Preconverted access is deterministic | Exact two-entry allowlist above; each entry binds repository, immutable revision, filename, exact byte count, and SHA-256 | `PASS` |
+| Current authority summary is reconciled | `specs/README.md` on qualified head reports bounded E002 access and preserves E003/execution/benchmark/device/training/credential/spend as `NONE` | `PASS` |
+| E002 task ledger is reconciled | `specs/007-sft-v1/tasks.md` marks E002 `[x]` and E003 `SEPARATE_AUTHORIZATION_REQUIRED` | `PASS` |
+| No downstream authority is smuggled in | Exact-head Qodo review at `5ae12461dc5bf463243fe64f6ea04e84c37ca084`: 0 bugs / 0 rule violations; all three prior findings resolved | `PASS` |
+| Independent exact-head review has no material blocker | PR #59 Qodo exact-head review at `5ae12461dc5bf463243fe64f6ea04e84c37ca084`: 0 bugs / 0 rule violations. CodeRabbit status was success but automatic substantive review was unavailable because the repository is below its OSS auto-review threshold; no PASS is inferred from silence. | `PASS_WITH_TRANSPARENT_SERVICE_FALLBACK` |
+| Changed scope remains documentation-only | Base `c097ff973ca8b00922a3ca78a794da87daf3a1f1` to qualified head `5ae12461dc5bf463243fe64f6ea04e84c37ca084`: exactly three documentation files changed; no model/benchmark bytes, product code, runtime, credentials, device or training surface | `PASS` |
+| Canonical merge preserves the qualified head | PR #59 merge `4551c432eb0c75843f72b6594d045d69d8d7c211`, tree `f140f7ea91f8afddc44c39d56fd7096255604fca`, parents `c097ff973ca8b00922a3ca78a794da87daf3a1f1` and `5ae12461dc5bf463243fe64f6ea04e84c37ca084` | `PASS` |
 
-`NEEDS_EVIDENCE`, a pending review, or an unresolved material finding is not a closure PASS.
+No GitHub Actions workflow run was returned for the exact documentation-only head; no CI PASS is claimed for PR #59.
 
-## Closure condition
-
-On canonical merge of an exact-head-qualified version of this authorization record with the Spec 007 task ledger and current repository authority summary reconciled:
+## Canonical closure
 
 ```text
 E002=CLOSED_CANONICAL
+CANONICAL_MERGE=4551c432eb0c75843f72b6594d045d69d8d7c211
+CANONICAL_TREE=f140f7ea91f8afddc44c39d56fd7096255604fca
+QUALIFIED_HEAD=5ae12461dc5bf463243fe64f6ea04e84c37ca084
 MODEL_WEIGHT_ACCESS_AUTHORITY=AUTHORIZED_E002_FROZEN_PUBLIC_CANDIDATES_ONLY
 NEXT_TASK=E003
 NEXT_TASK_STATE=SEPARATE_AUTHORIZATION_REQUIRED
