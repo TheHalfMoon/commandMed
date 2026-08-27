@@ -4,6 +4,13 @@ from src.commandmed.eval_contract.canonical import (
     canonical_json_dumps,
     compute_canonical_sha256,
 )
+from src.commandmed.spec007.curriculum import (
+    KNOWLEDGE_PLACEMENTS,
+    compute_curriculum_record_sha256,
+    validate_curriculum_record,
+    validate_duplicate_contamination_report,
+    validate_knowledge_placement,
+)
 from src.commandmed.spec007.foundation import (
     ROLE_CLASSES,
     is_canonical_sha256,
@@ -12,14 +19,37 @@ from src.commandmed.spec007.foundation import (
     validate_closed_object,
     validate_role_class,
 )
+from src.commandmed.spec007.quarantine import (
+    canonical_quarantine_matrix_sha256,
+    evaluate_quarantine_source,
+    validate_quarantine_binding,
+)
+from src.commandmed.spec007.snapshot import (
+    build_curriculum_coverage_report,
+    build_dataset_snapshot,
+    compute_dataset_snapshot_sha256,
+    validate_dataset_snapshot,
+)
 
 __all__ = [
+    "KNOWLEDGE_PLACEMENTS",
     "ROLE_CLASSES",
+    "build_curriculum_coverage_report",
+    "build_dataset_snapshot",
     "canonical_json_dumps",
+    "canonical_quarantine_matrix_sha256",
     "compute_canonical_sha256",
+    "compute_curriculum_record_sha256",
+    "compute_dataset_snapshot_sha256",
+    "evaluate_quarantine_source",
     "is_canonical_sha256",
     "parse_json_object",
     "validate_canonical_sha256",
     "validate_closed_object",
+    "validate_curriculum_record",
+    "validate_dataset_snapshot",
+    "validate_duplicate_contamination_report",
+    "validate_knowledge_placement",
+    "validate_quarantine_binding",
     "validate_role_class",
 ]
