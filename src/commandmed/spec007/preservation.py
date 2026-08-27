@@ -114,15 +114,16 @@ def validate_tokenizer_evidence_packet(packet: Any) -> list[str]:
         errors.append(f"{prefix}: measurements must be an object")
     else:
         expected = set(_TOKENIZER_MEASUREMENTS)
-        present = set(measurements)
-        if present != expected:
-            missing = sorted(expected - present)
-            extra = sorted(present - expected)
-            if missing:
-                errors.append(f"{prefix}: measurements missing {missing}")
-            if extra:
-                errors.append(f"{prefix}: measurements undeclared {extra}")
-        for field in sorted(expected & present):
+        string_keys = {key for key in measurements if isinstance(key, str)}
+        if len(string_keys) != len(measurements):
+            errors.append(f"{prefix}: measurements keys must be strings")
+        missing = sorted(expected - string_keys)
+        extra = sorted(string_keys - expected)
+        if missing:
+            errors.append(f"{prefix}: measurements missing {missing}")
+        if extra:
+            errors.append(f"{prefix}: measurements undeclared {extra}")
+        for field in sorted(expected & string_keys):
             if measurements[field] != "NEEDS_EVIDENCE":
                 errors.append(f"{prefix}: measurements.{field} must equal 'NEEDS_EVIDENCE'")
 
@@ -153,6 +154,8 @@ def validate_capability_preservation_binding(binding: Any) -> list[str]:
     slices = binding.get("required_slices")
     if not isinstance(slices, list):
         errors.append(f"{prefix}: required_slices must be a list")
+    elif any(not isinstance(item, str) for item in slices):
+        errors.append(f"{prefix}: required_slices entries must be strings")
     else:
         if len(slices) != len(set(slices)):
             errors.append(f"{prefix}: required_slices must be unique")
@@ -185,6 +188,8 @@ def validate_abort_sentinel_policy(policy: Any) -> list[str]:
     effects = policy.get("allowed_effects")
     if not isinstance(effects, list) or not effects:
         errors.append(f"{prefix}: allowed_effects must be a non-empty list")
+    elif any(not isinstance(item, str) for item in effects):
+        errors.append(f"{prefix}: allowed_effects entries must be strings")
     else:
         if len(effects) != len(set(effects)):
             errors.append(f"{prefix}: allowed_effects must be unique")
