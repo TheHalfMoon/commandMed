@@ -128,8 +128,11 @@ def validate_loss_mask_policy(policy: Any) -> list[str]:
     if not isinstance(rules, dict):
         errors.append(f"{prefix}: token_class_rules must be an object")
     else:
+        non_string_keys = [key for key in rules if not isinstance(key, str)]
+        if non_string_keys:
+            errors.append(f"{prefix}: token_class_rules keys must be strings")
         expected = set(_TOKEN_CLASSES)
-        present = set(rules)
+        present = {key for key in rules if isinstance(key, str)}
         missing = sorted(expected - present)
         undeclared = sorted(present - expected)
         if missing:
@@ -180,12 +183,23 @@ def validate_packing_truncation_policy(policy: Any) -> list[str]:
     else:
         if any(not isinstance(item, str) for item in required):
             errors.append(f"{prefix}: required_context_classes entries must be strings")
-        if len(required) != len(set(required)):
-            errors.append(f"{prefix}: required_context_classes must be unique")
-        unknown = sorted(set(required) - _REQUIRED_CONTEXT_CLASSES)
-        if unknown:
-            errors.append(f"{prefix}: unknown required_context_classes {unknown}")
+        else:
+            if len(required) != len(set(required)):
+                errors.append(f"{prefix}: required_context_classes must be unique")
+            unknown = sorted(set(required) - _REQUIRED_CONTEXT_CLASSES)
+            if unknown:
+                errors.append(f"{prefix}: unknown required_context_classes {unknown}")
     return errors
+
+
+def _context_set(value: Iterable[str], field: str) -> tuple[set[str] | None, list[str]]:
+    try:
+        materialized = list(value)
+    except TypeError:
+        return None, [f"{field}: expected iterable of strings"]
+    if any(not isinstance(item, str) for item in materialized):
+        return None, [f"{field}: entries must be strings"]
+    return set(materialized), []
 
 
 def evaluate_truncation_admission(
@@ -201,8 +215,15 @@ def evaluate_truncation_admission(
             "reason_codes": ["INVALID_PACKING_POLICY"],
             "validation_errors": policy_errors,
         }
-    present = set(present_context_classes)
-    retained = set(retained_context_classes)
+    present, present_errors = _context_set(present_context_classes, "present_context_classes")
+    retained, retained_errors = _context_set(retained_context_classes, "retained_context_classes")
+    context_errors = present_errors + retained_errors
+    if context_errors or present is None or retained is None:
+        return {
+            "allowed": False,
+            "reason_codes": ["INVALID_CONTEXT_CLASS_INPUT"],
+            "validation_errors": context_errors,
+        }
     required = set(policy["required_context_classes"])
     truncated = sorted((present & required) - retained)
     reasons = [f"REQUIRED_CONTEXT_TRUNCATED:{item}" for item in truncated]
