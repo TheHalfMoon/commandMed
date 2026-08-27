@@ -10,7 +10,7 @@
 **Model/GGUF download performed:** NO  
 **Model/device execution performed:** NO
 
-This record narrows the E004 runtime-identity research surface by binding current exact public upstream `llama.cpp` metadata anchored to an exact source commit SHA and observed release-asset content digests. Release/tag labels are descriptive discovery handles, not immutable commandMed authorities. This is compatibility and provenance research only. It does **not** freeze a commandMed runtime revision, wrapper, build toolchain, binary, device plan, or execution manifest.
+This record narrows the E004 runtime-identity research surface using exact public metadata. It does not freeze a commandMed runtime revision, binary, wrapper, toolchain, backend, device plan, or execution manifest.
 
 ```text
 RUNTIME_CANDIDATE_RESEARCH_ONLY=YES
@@ -25,198 +25,164 @@ TRAINING_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-## 1. Upstream stable source candidate
+## 1. Exact upstream source candidate
 
-On 2026-08-27 the latest stable `ggml-org/llama.cpp` release observed through the GitHub release API is:
+On 2026-08-27, GitHub release metadata for `ggml-org/llama.cpp` identified stable release `v0.3.0` at exact source commit:
 
 ```text
 UPSTREAM_REPOSITORY=ggml-org/llama.cpp
-STABLE_RELEASE_TAG=v0.3.0
-STABLE_RELEASE_PUBLISHED_AT=2026-08-25T10:22:58Z
-STABLE_SOURCE_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
-STABLE_SOURCE_COMMIT_IS_COMMANDMED_RUNTIME_FREEZE=NO
-RELEASE_TAG_ITSELF_IS_COMMANDMED_IDENTITY_AUTHORITY=NO
+OBSERVED_STABLE_RELEASE_TAG=v0.3.0
+OBSERVED_STABLE_RELEASE_PUBLISHED_AT=2026-08-25T10:22:58Z
+EXACT_SOURCE_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
+RELEASE_TAG_IS_COMMANDMED_IDENTITY_AUTHORITY=NO
+EXACT_SOURCE_COMMIT_IS_COMMANDMED_RUNTIME_FREEZE=NO
 ```
 
-Primary public evidence:
+The commit SHA is the exact source identity used by this research. Release/tag labels remain descriptive discovery handles only.
 
-- `https://github.com/ggml-org/llama.cpp/releases/tag/v0.3.0`
-- `https://github.com/ggml-org/llama.cpp/commit/c1d0e7a004015f23bc0233470b747b596f29b264`
+## 2. Qwen architecture implementation presence
 
-The exact commit SHA provides the immutable **source candidate identity** used by this research record. The release tag is only an observed pointer/discovery label. Current availability or recency alone does not make either one the commandMed execution revision.
-
-```text
-LATEST_STABLE_EQUALS_AUTOMATIC_RUNTIME_SELECTION=NO
-SOURCE_COMMIT_SUPPORT_EQUALS_DEVICE_PASS=NO
-SOURCE_COMMIT_SUPPORT_EQUALS_FINAL_BUILD_IDENTITY=NO
-```
-
-## 2. Frozen candidate architecture coverage at the exact stable commit
-
-At exact source commit `c1d0e7a004015f23bc0233470b747b596f29b264`, `src/llama-model.cpp` contains explicit model implementation mappings for architecture families relevant to the current frozen E001 candidates:
+At exact source commit `c1d0e7a004015f23bc0233470b747b596f29b264`, `src/llama-model.cpp` contains:
 
 ```text
 QWEN3_ARCH_MAPPING=LLM_ARCH_QWEN3 -> llama_model_qwen3
 QWEN35_ARCH_MAPPING=LLM_ARCH_QWEN35 -> llama_model_qwen35
-GRANITE_HYBRID_ARCH_MAPPING=LLM_ARCH_GRANITE_HYBRID -> llama_model_granite_hybrid
 ```
 
-Primary public evidence:
-
-`https://github.com/ggml-org/llama.cpp/blob/c1d0e7a004015f23bc0233470b747b596f29b264/src/llama-model.cpp`
-
-This supplies architecture-implementation-presence evidence relevant to:
+These mappings are relevant to the frozen candidates:
 
 ```text
 Qwen/Qwen3-0.6B-Base
 Qwen/Qwen3-4B-Base
 Qwen/Qwen3.5-0.8B-Base
-ibm-granite/granite-4.0-350m-base
 ```
 
-For Granite, the family association is additionally consistent with the frozen IBM model configuration identifying `GraniteMoeHybridForCausalLM`; that family-level association still does not prove exact GGUF compatibility.
+They prove only that the exact upstream source contains the corresponding architecture implementations. They do not prove exact GGUF loading, tokenizer/rendering correctness, backend stability, device compatibility, or any commandMed hard-gate PASS.
 
-It does not prove that a particular GGUF artifact, quantization, tokenizer/rendering configuration, wrapper, build, OS/backend, or physical device path loads correctly or performs acceptably.
+## 3. Granite naming ambiguity resolved explicitly
 
-## 3. Qwen3.5 direct upstream usage evidence
-
-The exact stable README at `c1d0e7a...` uses Qwen3.5 directly in its Quick Start examples:
+The frozen candidate is:
 
 ```text
-llama cli -hf ggml-org/Qwen3.5-0.8B-GGUF
-llama serve -hf ggml-org/Qwen3.5-0.8B-GGUF
+ibm-granite/granite-4.0-350m-base@a50b46cef21c8a86b15f0496cb794487a78a910b
 ```
 
-Primary public evidence:
+Canonical E001 research classifies this product variant as the **350M dense** PRIMARY and separately identifies `granite-4.0-h-350m-base` as the screened-out hybrid Mamba2 product variant.
 
-`https://github.com/ggml-org/llama.cpp/blob/c1d0e7a004015f23bc0233470b747b596f29b264/README.md`
-
-This is current upstream ecosystem-usage evidence for the Qwen3.5 architecture family. It is not evidence that the commandMed frozen exact-base artifact is the same repository/file, and it grants no artifact-access or execution authority.
-
-## 4. Platform-family support metadata
-
-The exact stable README describes upstream support or build documentation relevant to the frozen commandMed platform classes, including:
+The frozen/public IBM configuration for `granite-4.0-350m-base` nevertheless uses the Transformers implementation class and model type:
 
 ```text
-APPLE_SILICON=FIRST_CLASS_CITIZEN_WITH_ARM_NEON_ACCELERATE_METAL
-X86_ARCHITECTURE=AVX_AVX2_AVX512_AMX_SUPPORT_DECLARED
-ANDROID_BUILD_DOCUMENTATION=PRESENT
-METAL_BACKEND=PRESENT
-VULKAN_BACKEND=PRESENT
-OPENCL_BACKEND=PRESENT
-SYCL_BACKEND=PRESENT
+HF_ARCHITECTURES=[GraniteMoeHybridForCausalLM]
+HF_MODEL_TYPE=granitemoehybrid
+HF_LAYER_TYPES=ALL_ATTENTION
+HF_NUM_LOCAL_EXPERTS=0
+HF_NUM_EXPERTS_PER_TOK=0
 ```
 
-These statements establish upstream capability/documentation families only, not exact commandMed platform wrappers or measurement identities.
+The all-attention / zero-expert fields are consistent with IBM's model-card description of this product as a dense transformer. Therefore the word `Hybrid` in the Transformers class name must not be used as a product-topology classification by commandMed.
+
+At exact llama.cpp source commit `c1d0e7a...`, `conversion/granite.py` registers:
+
+```text
+TRANSFORMERS_CLASS=GraniteMoeHybridForCausalLM
+LLAMA_CPP_CONVERTER_CLASS=GraniteHybridModel
+GGUF_MODEL_ARCH=GRANITE_HYBRID
+```
+
+And `src/llama-model.cpp` contains:
+
+```text
+LLM_ARCH_GRANITE_HYBRID -> llama_model_granite_hybrid
+```
+
+Accordingly, the bounded claim is:
+
+```text
+FROZEN_GRANITE_PRODUCT_TOPOLOGY=DENSE_ALL_ATTENTION
+LLAMA_CPP_CONVERTER_ARCH_NAME_FOR_FROZEN_HF_CLASS=GRANITE_HYBRID
+DISTINCT_H_PRODUCT_VARIANT_ADMITTED=NO
+CONVERTER_ARCH_NAME_EQUALS_PRODUCT_H_VARIANT=NO
+EXACT_GGUF_LOAD_SUCCESS_PROVEN=NO
+```
+
+This resolves the naming ambiguity without claiming that the admitted dense PRIMARY is the screened-out `-h-` model.
+
+## 4. Qwen3.5 direct upstream usage evidence
+
+The exact upstream README at `c1d0e7a...` includes Qwen3.5 quick-start examples using `ggml-org/Qwen3.5-0.8B-GGUF`. This is ecosystem-usage evidence for the architecture family only. It does not prove identity equivalence with the commandMed frozen exact-base artifact and grants no artifact or execution authority.
+
+## 5. Platform-family metadata
+
+The exact upstream README documents capability/build families relevant to commandMed planning, including Apple Silicon, x86, Android, Metal, Vulkan, OpenCL, and SYCL.
 
 ```text
 UPSTREAM_PLATFORM_SUPPORT_EQUALS_FROZEN_TARGET_BINDING=NO
-UPSTREAM_BACKEND_SUPPORT_EQUALS_PERFORMANCE_THRESHOLD_PASS=NO
-UPSTREAM_BACKEND_SUPPORT_EQUALS_MEMORY_GATE_PASS=NO
+UPSTREAM_BACKEND_SUPPORT_EQUALS_MEMORY_PASS=NO
+UPSTREAM_BACKEND_SUPPORT_EQUALS_PERFORMANCE_PASS=NO
 ```
 
-## 5. Build/release metadata sharing the stable source commit
+## 6. Observed build metadata sharing the source commit
 
-The upstream prerelease/nightly tag `b10621` was observed through the GitHub release API pointing to the same exact source commit as `v0.3.0`:
+GitHub release metadata for prerelease/nightly tag `b10621` was observed pointing to the same exact source commit `c1d0e7a...`.
 
 ```text
-UPSTREAM_BUILD_TAG=b10621
-UPSTREAM_BUILD_PRERELEASE=YES
-UPSTREAM_BUILD_TARGET_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
-UPSTREAM_BUILD_PUBLISHED_AT=2026-08-25T10:17:02Z
-UPSTREAM_BUILD_TAG_IS_COMMANDMED_RUNTIME_IDENTITY=NO
+OBSERVED_BUILD_TAG=b10621
+OBSERVED_BUILD_PRERELEASE=YES
+OBSERVED_BUILD_TARGET_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
+BUILD_TAG_IS_COMMANDMED_RUNTIME_IDENTITY=NO
 ```
 
-The release API reported exact byte counts and SHA-256 content digests for observed asset identities. Representative observed assets relevant to commandMed platform research include:
+Representative observed release-asset metadata:
 
-| Upstream asset | Exact bytes observed | SHA-256 reported by GitHub | Research implication |
+| Upstream asset | Bytes observed | SHA-256 reported by GitHub | Scope |
 |---|---:|---|---|
-| `llama-b10621-bin-android-arm64.tar.gz` | 72431960 | `050b7bc2ba0bcc66be790be6741bce1e75247a635469093c6328ebc90a95762e` | Android arm64 binary provenance candidate only |
-| `llama-b10621-bin-macos-arm64.tar.gz` | 10954823 | `429c8270608600188035e5e92f7d78dffb7900904fe7dd7e6a84f48068cd13cf` | macOS arm64 binary provenance candidate only |
-| `llama-b10621-bin-ubuntu-x64.tar.gz` | 16291771 | `91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583` | Linux x64 binary provenance candidate only |
-| `llama-b10621-bin-win-cpu-x64.zip` | 18068018 | `0e8b65e650e369f70f8307d890508886f171ef4fb00facccddd4a1b7ffdaca51` | Windows x64 CPU binary provenance candidate only |
-| `llama-b10621-xcframework.zip` | 80871640 | `ea50671b3dfe86136be16448763f94642c53443df96964777b4e1c3d51f06e20` | Apple/XCFramework packaging candidate only |
+| `llama-b10621-bin-android-arm64.tar.gz` | 72431960 | `050b7bc2ba0bcc66be790be6741bce1e75247a635469093c6328ebc90a95762e` | provenance candidate only |
+| `llama-b10621-bin-macos-arm64.tar.gz` | 10954823 | `429c8270608600188035e5e92f7d78dffb7900904fe7dd7e6a84f48068cd13cf` | provenance candidate only |
+| `llama-b10621-bin-ubuntu-x64.tar.gz` | 16291771 | `91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583` | provenance candidate only |
+| `llama-b10621-bin-win-cpu-x64.zip` | 18068018 | `0e8b65e650e369f70f8307d890508886f171ef4fb00facccddd4a1b7ffdaca51` | provenance candidate only |
+| `llama-b10621-xcframework.zip` | 80871640 | `ea50671b3dfe86136be16448763f94642c53443df96964777b4e1c3d51f06e20` | provenance candidate only |
 
-Primary public evidence:
+No listed asset was downloaded or executed. Asset digests are observed public metadata, not accepted commandMed runtime bindings.
 
-`https://github.com/ggml-org/llama.cpp/releases/tag/b10621`
-
-No listed asset was downloaded or executed while creating this record. This repository records the observed asset names, byte counts, and digests as public metadata; it does not assume that a mutable release/tag label will continue to resolve identically in the future.
-
-The published assets are **not** automatically suitable commandMed runtime artifacts because final qualification still requires exact accepted asset identity, wrapper/toolchain/backend/build configuration, runtime executable identity, platform/device mapping, and reproducible commandMed execution-plan evidence.
-
-## 6. Source revision versus runtime artifact identity
-
-The canonical device contract requires both the shared llama.cpp core revision and target-specific runtime/build identities. Therefore this research distinguishes:
+## 7. Conservative interpretation
 
 ```text
-SOURCE_CANDIDATE_REVISION=c1d0e7a004015f23bc0233470b747b596f29b264
-SOURCE_CANDIDATE_EVIDENCE_STATE=PUBLIC_EXACT_COMMIT_AND_OBSERVED_DIGEST_METADATA_BOUND
-FINAL_LLAMA_CPP_CORE_REVISION=NEEDS_EVIDENCE
-FINAL_BUILD_TOOLCHAIN_IDENTITY=NEEDS_EVIDENCE
-FINAL_RUNTIME_ARTIFACT_SHA256=NEEDS_EVIDENCE
-FINAL_PLATFORM_WRAPPER_IDENTITIES=NEEDS_EVIDENCE
-FINAL_BACKEND_CONFIGURATION=NEEDS_EVIDENCE
-```
-
-A future exact runtime-binding decision may adopt this source commit, a later commit, or another justified exact revision only under the frozen pre-result protocol and review requirements. The decision must not be based on observed candidate scores or device results.
-
-## 7. Backend/regression caveat
-
-Architecture implementation presence is necessary but insufficient. The commandMed repository already treats exact runtime identity and device execution as hard evidence because backend/model combinations can regress between builds.
-
-This record therefore adopts the following conservative interpretation:
-
-```text
-ARCHITECTURE_IMPLEMENTATION_MAPPING_PRESENT_IN_EXACT_SOURCE=YES
-ARCHITECTURE_MAPPING_PROVES_EXACT_MODEL_OR_GGUF_LOAD_SUCCESS=NO
-ARCHITECTURE_MAPPING_PROVES_TOKENIZER_OR_RENDERING_CORRECTNESS=NO
-ARCHITECTURE_MAPPING_PROVES_TARGET_DEVICE_STABILITY=NO
-ARCHITECTURE_MAPPING_PROVES_MEMORY_LATENCY_THERMAL_ENERGY_PASS=NO
+EXACT_SOURCE_ARCHITECTURE_IMPLEMENTATIONS_OBSERVED=YES
+FROZEN_GRANITE_HF_CLASS_TO_LLAMA_CPP_CONVERTER_MAPPING_OBSERVED=YES
+ALL_FROZEN_CANDIDATES_HAVE_FINAL_ACCEPTED_RUNTIME_BINDINGS=NO
+ARCHITECTURE_IMPLEMENTATION_PROVES_EXACT_GGUF_LOAD_SUCCESS=NO
+ARCHITECTURE_IMPLEMENTATION_PROVES_TOKENIZER_RENDERING_CORRECTNESS=NO
+ARCHITECTURE_IMPLEMENTATION_PROVES_TARGET_DEVICE_STABILITY=NO
+ARCHITECTURE_IMPLEMENTATION_PROVES_MEMORY_LATENCY_THERMAL_ENERGY_PASS=NO
 UPSTREAM_PREBUILT_ASSET_PROVES_COMMANDMED_WRAPPER_IDENTITY=NO
 ```
 
-Only real, separately authorized exact-artifact/device evidence can close those fields.
-
-## 8. Current runtime evidence reduction
-
-Before this research, the runtime family was known but an immediately reviewable exact current source candidate was not bound in one E004 record. This document safely reduces that ambiguity to:
-
-```text
-CURRENT_UPSTREAM_STABLE_SOURCE_CANDIDATE=c1d0e7a004015f23bc0233470b747b596f29b264
-CURRENT_MATCHING_UPSTREAM_BUILD_TAG_OBSERVED=b10621
-ALL_FROZEN_MODEL_ARCH_FAMILIES_HAVE_RELEVANT_IMPLEMENTATION_MAPPINGS_AT_CANDIDATE=YES
-MULTIPLE_RELEVANT_PLATFORM_BUILD_ASSET_DIGESTS_OBSERVED=YES
-COMMANDMED_FINAL_RUNTIME_SELECTION_MADE=NO
-COMMANDMED_RUNTIME_EXECUTION_READY=NO
-```
-
-Remaining runtime evidence cannot be completed by read-only public metadata alone. It requires a separately reviewed exact commandMed runtime/build/wrapper/target binding before execution.
+Final commandMed binding still requires a separately reviewed exact runtime/build/wrapper/backend/target subject before device execution.
 
 ## Exclusions
 
 This bounded research explicitly excludes:
 
-- selecting or freezing `c1d0e7a...`, `b10621`, or any other source/build as the commandMed final runtime;
-- treating a release/tag label as an immutable authority or assuming it cannot later move/change;
-- downloading or executing upstream binaries, source builds, models, GGUF files, benchmarks, or device workloads;
-- selecting Metal/Vulkan/OpenCL/SYCL/CPU or any other backend for a frozen target;
-- constructing target wrappers, resolving toolchains, choosing measurement methods, or setting performance thresholds;
-- changing E001 candidates, E002 artifact authority, E003 execution authority, the PR #81 artifact/A11 authority state, the PR #83 evidence-intake state, A7/A13/A14 state, A15 state, E004 completion, E005 winner selection, training authority, or spend;
-- treating public upstream support statements or architecture implementation mappings as exact-model/device qualification.
+- selecting or freezing `c1d0e7a...`, `b10621`, or any other runtime/build;
+- treating release/tag labels as immutable authority;
+- downloading, converting, building, or executing upstream binaries, models, GGUF files, benchmarks, or device workloads;
+- treating `GraniteMoeHybridForCausalLM` or `GRANITE_HYBRID` naming as proof that the admitted product is the screened-out `granite-4.0-h-350m-base` variant;
+- choosing backends, wrappers, toolchains, measurement methods, or performance thresholds;
+- changing E001/E002/E003 authority, PR #81 decision state, PR #83 intake state, A7/A13/A14/A15 state, E004 completion, E005 winner selection, training authority, or spend.
 
 ## Exit Evidence
 
-This **research artifact** is eligible for repository-level closure when one exact head proves:
+This research artifact is repository-level complete only when one exact reviewed head proves:
 
 ```text
 EXACT_SOURCE_COMMIT_CANDIDATE_RECORDED=YES
-RELEASE_TAGS_TREATED_AS_DESCRIPTIVE_NOT_IMMUTABLE_AUTHORITY=YES
-EXACT_SOURCE_ARCHITECTURE_IMPLEMENTATION_MAPPINGS_RECORDED=YES
-OBSERVED_BUILD_TAG_AND_PUBLIC_ASSET_DIGESTS_RECORDED=YES
+RELEASE_TAGS_TREATED_AS_DESCRIPTIVE_ONLY=YES
+QWEN_IMPLEMENTATION_MAPPINGS_RECORDED=YES
+GRANITE_PRODUCT_VS_CONVERTER_NAMING_DISAMBIGUATED=YES
+OBSERVED_BUILD_ASSET_METADATA_RECORDED=YES
 NO_RUNTIME_SELECTION_OR_EXECUTION_CLAIMED=YES
 FINAL_RUNTIME_AND_BUILD_FIELDS_REMAIN_NEEDS_EVIDENCE=YES
 E004_REMAINS_BLOCKED_PREFLIGHT=YES
 ```
 
-Repository closure of this research record does not close any runtime/device gate. It closes only the bounded public-metadata research step.
+Repository closure of this record closes only the bounded public-metadata research step.
