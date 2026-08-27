@@ -1,0 +1,81 @@
+name: Build Spec 007 implementation authorization
+
+on:
+  push:
+    branches:
+      - validation/007-auth-builder
+
+permissions:
+  contents: write
+
+jobs:
+  build-authorization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout authorization branch
+        uses: actions/checkout@v4
+        with:
+          ref: auth/007-implementation-start
+          fetch-depth: 0
+
+      - name: Verify canonical planning base
+        run: |
+          test "$(git rev-parse HEAD)" = "947f3aba4d4316e21470ac26352d96e3bfb74ae6"
+          echo "AUTH_BASE=$(git rev-parse HEAD)"
+
+      - name: Reconcile lifecycle and create authorization record
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          readme = Path('specs/README.md')
+          text = readme.read_text(encoding='utf-8')
+          old = '| 007 | SFT V1 | `AUTHORIZED_TO_PLAN` |'
+          new = '| 007 | SFT V1 | `AUTHORIZED_TO_START` |'
+          if text.count(old) != 1:
+              raise SystemExit(f'expected exactly one Spec 007 registry row, got {text.count(old)}')
+          text = text.replace(old, new, 1)
+          old_note = 'founder approved the complete non-executing planning package only. `TRAINING_AUTHORITY=NONE`. Model selection reserved to FOUNDER+CHATGPT; `BACKBONE_WINNER=NEEDS_EVIDENCE`. See authorization records below.'
+          new_note = 'planning package canonical via PR #51 / merge `947f3aba4d4316e21470ac26352d96e3bfb74ae6`; Founder authorized bounded offline implementation on 2026-08-27. `TRAINING_AUTHORITY=NONE`. Model selection reserved to FOUNDER+CHATGPT; `BACKBONE_WINNER=NEEDS_EVIDENCE`. See authorization records below.'
+          if text.count(old_note) != 1:
+              raise SystemExit(f'expected exactly one Spec 007 registry note, got {text.count(old_note)}')
+          text = text.replace(old_note, new_note, 1)
+          marker = '## Spec 007 implementation authorization record'
+          if marker in text:
+              raise SystemExit('Spec 007 implementation authorization record already exists')
+          text += '''\n\n## Spec 007 implementation authorization record\n\nFounder authorization on 2026-08-27 advances Spec 007 from `AUTHORIZED_TO_PLAN` to `AUTHORIZED_TO_START` for the bounded **offline deterministic implementation control plane only**.\n\n```text\nSPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START\nAUTHORIZATION_DATE=2026-08-27\nCANONICAL_PLANNING_PR=#51\nCANONICAL_PLANNING_MERGE=947f3aba4d4316e21470ac26352d96e3bfb74ae6\nCANONICAL_PLANNING_TREE=faa5c15c84dbd84d162b6ba6850bbc312584203b\nQUALIFIED_PLANNING_HEAD=701c933acdf84572f627446e5199231236f97988\nP013_VALIDATION_RUN=33040059680\nP013_COMPILEALL=PASS\nP013_PYTEST=627 passed + 128 subtests\nP013_GIT_DIFF_CHECK=PASS\nFINAL_QODO_REVIEW=MATERIAL_BLOCKER=NO\nFINAL_CODERABBIT_REVIEW=MATERIAL_BLOCKER=NO\nAUTHORIZED_IMPLEMENTATION_TASKS=I001-I045\nAUTHORIZED_SCOPE=OFFLINE_DETERMINISTIC_SPEC007_CONTROL_PLANE_ONLY\n```\n\nThis authorization permits implementation and qualification of the dependency-ordered I-phase validators, identity/serialization utilities, synthetic fixtures, quarantine/provenance composition, rendering/loss/packing policies, Arabic/language evidence shapes, checkpoint-selection policy enforcement, reproducibility/resume records, record/resource/efficiency/failure contracts, non-executing run-manifest composition, activation preflight, and their offline tests.\n\nIt does **not** authorize any E-phase external-evidence activity and grants none of the following:\n\n```text\nMODEL_CANDIDATE_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY\nBACKBONE_WINNER_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY\nPI_MODEL_SELECTION_AUTHORITY=NONE\nBACKBONE_WINNER=NEEDS_EVIDENCE\nMODEL_EXECUTION_AUTHORITY=NONE\nMODEL_WEIGHT_ACCESS_AUTHORITY=NONE\nMODEL_CONVERSION_AUTHORITY=NONE\nTRAINING_AUTHORITY=NONE\nBENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE\nBENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE\nPRIVATE_GOLD_AUTHORITY=NONE\nPHI_AUTHORITY=NONE\nDEVICE_EXECUTION_AUTHORITY=NONE\nEXTERNAL_CLINICAL_DATABASE_ACCESS_AUTHORITY=NONE\nCREDENTIAL_ACCESS_AUTHORITY=NONE\nSPEND_AUTHORITY=NONE\nCURRENT_AUTHORIZED_SPEND_USD=0\n```\n\n`E001-E015` remain blocked by their own explicit evidence/Founder/execution/data/access gates. A pilot, smoke-train, one-step gradient probe, adapter run, model load, benchmark execution, or empirical convergence test is a training/model-execution activity and is not authorized by this record.\n\nImplementation must remain fail-closed, offline, deterministic, synthetic-fixture based, and consistent with Specs 002, 003, 005, and 006. Exact-head implementation review and repository regression evidence remain required before any implementation merge.\n'''
+          readme.write_text(text, encoding='utf-8')
+
+          tasks = Path('specs/007-sft-v1/tasks.md')
+          t = tasks.read_text(encoding='utf-8')
+          replacements = {
+              '**Current lifecycle:** `AUTHORIZED_TO_PLAN`': '**Current lifecycle:** `AUTHORIZED_TO_START`',
+              '**Implementation authority:** NONE': '**Implementation authority:** `AUTHORIZED_TO_START` — offline deterministic I001-I045 only',
+              '- [ ] **P013** Run repository baseline checks on exact planning head and record actual results.': '- [x] **P013** Run repository baseline checks on exact planning head and record actual results. — Run `33040059680`: compileall PASS; 627 tests + 128 subtests PASS; diff-check PASS.',
+              '- [ ] **P014** Obtain fresh exact-head independent review of complete planning package.': '- [x] **P014** Obtain fresh exact-head independent review of complete planning package. — Qodo and CodeRabbit both `MATERIAL_BLOCKER=NO` on `701c933acdf84572f627446e5199231236f97988`.',
+              '- [ ] **P015** Repair every valid material finding and re-run checks/review.': '- [x] **P015** Repair every valid material finding and re-run checks/review. — All material review threads resolved before final qualification.',
+              '- [ ] **P016** Merge qualified planning package canonically without expanding authority.': '- [x] **P016** Merge qualified planning package canonically without expanding authority. — PR #51 merge `947f3aba4d4316e21470ac26352d96e3bfb74ae6`.',
+              '- [ ] **P017** Close parked carrier PR #48 as superseded after canonical recovery is proven.': '- [x] **P017** Close parked carrier PR #48 as superseded after canonical recovery is proven. — Closed without merge on 2026-08-27.',
+              'Blocked until separate `SPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START`.': 'Authorized by the canonical Spec 007 implementation authorization record. Scope is I001-I045 offline deterministic implementation only; E001-E015 remain separately blocked.'
+          }
+          for old_s, new_s in replacements.items():
+              if t.count(old_s) != 1:
+                  raise SystemExit(f'expected exactly one task text match: {old_s!r}, got {t.count(old_s)}')
+              t = t.replace(old_s, new_s, 1)
+          tasks.write_text(t, encoding='utf-8')
+
+          auth = Path('specs/007-sft-v1/implementation-authorization.md')
+          auth.write_text('''# Spec 007 — SFT V1 Implementation Authorization\n\n**Date:** 2026-08-27\n**Lifecycle:** `AUTHORIZED_TO_START`\n**Authorized scope:** offline deterministic Spec 007 control plane only\n**Training authority:** NONE\n**Model execution authority:** NONE\n\n## Canonical planning evidence\n\n```text\nCANONICAL_PLANNING_PR=#51\nCANONICAL_PLANNING_MERGE=947f3aba4d4316e21470ac26352d96e3bfb74ae6\nCANONICAL_PLANNING_TREE=faa5c15c84dbd84d162b6ba6850bbc312584203b\nQUALIFIED_PLANNING_HEAD=701c933acdf84572f627446e5199231236f97988\nP013_VALIDATION_RUN=33040059680\nP013_COMPILEALL=PASS\nP013_PYTEST=627 passed + 128 subtests\nP013_GIT_DIFF_CHECK=PASS\nFINAL_QODO_REVIEW=MATERIAL_BLOCKER=NO\nFINAL_CODERABBIT_REVIEW=MATERIAL_BLOCKER=NO\n```\n\n## Founder authorization\n\nThe Founder explicitly directed the project to proceed on 2026-08-27 after the planning package became canonical. This record interprets that direction narrowly and fail-closed: implementation may begin only for the I-phase offline deterministic control plane described by the canonical Spec 007 task graph.\n\n```text\nSPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START\nAUTHORIZED_IMPLEMENTATION_TASKS=I001-I045\nAUTHORIZED_SCOPE=OFFLINE_DETERMINISTIC_SPEC007_CONTROL_PLANE_ONLY\n```\n\n## Permitted implementation\n\nPermitted work includes only repository-local deterministic validators, canonical identity/serialization, strict record parsing, synthetic fixtures, provenance/quarantine composition, rendering/loss/packing contracts, language/Arabic evidence packet validation, selection-policy enforcement, reproducibility/resume records, resource/efficiency/failure contracts, non-executing run-manifest composition, activation preflight, and offline tests/review qualification.\n\nImplementation must prefer existing repository mechanisms and stdlib/native facilities over new frameworks or services. No network, credentials, model runtime, benchmark payload, PHI, Private Gold, device execution, or paid service is required or permitted.\n\n## Explicitly not authorized\n\n```text\nMODEL_CANDIDATE_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY\nBACKBONE_WINNER_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY\nPI_MODEL_SELECTION_AUTHORITY=NONE\nBACKBONE_WINNER=NEEDS_EVIDENCE\nMODEL_EXECUTION_AUTHORITY=NONE\nMODEL_WEIGHT_ACCESS_AUTHORITY=NONE\nMODEL_CONVERSION_AUTHORITY=NONE\nTRAINING_AUTHORITY=NONE\nBENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE\nBENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=NONE\nPRIVATE_GOLD_AUTHORITY=NONE\nPHI_AUTHORITY=NONE\nDEVICE_EXECUTION_AUTHORITY=NONE\nEXTERNAL_CLINICAL_DATABASE_ACCESS_AUTHORITY=NONE\nCREDENTIAL_ACCESS_AUTHORITY=NONE\nSPEND_AUTHORITY=NONE\nCURRENT_AUTHORIZED_SPEND_USD=0\n```\n\n`E001-E015` are not activated by this record. No candidate model may be selected, ranked, eliminated, recommended as canonical, downloaded, loaded, converted, inferred, benchmarked, trained, fine-tuned, or used in a pilot under this authority.\n\n## Exit discipline\n\nBefore implementation merge, the exact implementation head must satisfy the canonical I-phase task/evidence map, focused Spec 007 tests, full offline regression, compileall, diff-check, and fresh independent exact-head review with no unresolved material blocker. Any head movement invalidates prior exact-head qualification.\n''', encoding='utf-8')
+          PY
+
+          git diff --check
+
+      - name: Commit and push authorization branch
+        run: |
+          git config user.name "commandMed Governance"
+          git config user.email "governance@commandmed.invalid"
+          git add specs/README.md specs/007-sft-v1/tasks.md specs/007-sft-v1/implementation-authorization.md
+          git diff --cached --check
+          git commit -m "governance(spec007): authorize bounded offline implementation"
+          git push origin HEAD:auth/007-implementation-start
