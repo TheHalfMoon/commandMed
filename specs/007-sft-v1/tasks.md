@@ -20,7 +20,7 @@ Tasks are dependency ordered. `[x]` means the planning artifact exists in this b
 - [x] **P010** Author requirements checklist.
 - [x] **P011** Author dependency-ordered implementation/evidence tasks.
 - [x] **P012** Author static planning analysis.
-- [x] **P013** Run repository baseline checks on exact planning head and record actual results. — Run `33040059680`: compileall PASS; 627 tests + 128 subtests PASS; diff-check PASS.
+- [x] **P013** Run repository baseline checks on exact planning head and record actual results. — Subject `701c933acdf84572f627446e5199231236f97988` / tree `faa5c15c84dbd84d162b6ba6850bbc312584203b`; run `33040059680`, job `98411371329` explicitly checked out and verified that subject (carrier `65973326632d07bb63cab03d9ab696b5f1f0c375` is trigger-only); compileall PASS; 627 tests + 128 subtests PASS; diff-check PASS.
 - [x] **P014** Obtain fresh exact-head independent review of complete planning package. — Qodo and CodeRabbit both `MATERIAL_BLOCKER=NO` on `701c933acdf84572f627446e5199231236f97988`.
 - [x] **P015** Repair every valid material finding and re-run checks/review. — All material review threads resolved before final qualification.
 - [x] **P016** Merge qualified planning package canonically without expanding authority. — PR #51 merge `947f3aba4d4316e21470ac26352d96e3bfb74ae6`.
