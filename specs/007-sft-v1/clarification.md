@@ -2,15 +2,15 @@
 
 **Branch:** `spec/007-clarification-canonical`
 **Canonical base:** `703f8a688b5bd2599f51855c850f0281c755ef90` (PR #47 clarification authorization merge)
-**Status:** clarification candidate under canonical `AUTHORIZED_TO_CLARIFY`
+**Status:** CANONICAL via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`; clarification authority superseded 2026-08-27 by current `AUTHORIZED_TO_PLAN` in `specs/README.md`
 **Model selection authority:** FOUNDER+CHATGPT ONLY
 **Execution authority:** NONE
 
-> This artifact clarifies the canonical Spec 007 specification without selecting a model, entering the planning lifecycle, choosing a training backend, constructing a real dataset, accessing weights, running a tournament, or authorizing training. Planning remains a separate later gate.
+> This artifact canonically clarified the Spec 007 specification without selecting a model, choosing a training backend, constructing a real dataset, accessing weights, running a tournament, or authorizing training. Planning is now separately authorized by the dated Spec 007 planning authorization record; this clarification itself grants no planning or execution authority.
 
 ## 1. Clarification outcome
 
-The specification remains bounded to minimal multi-role SFT. This clarification freezes the training-mechanics boundaries required for a later plan while preserving all current no-execution authorities.
+The specification remains bounded to minimal multi-role SFT. This clarification freezes the training-mechanics boundaries required for the authorized planning package while preserving all no-execution authorities.
 
 ## 2. Clarified decisions
 
@@ -321,4 +321,4 @@ CLARIFIED=
   NO_PREAUTHORIZATION_PILOT
 ```
 
-The next lifecycle stage is planning, but this clarification does **not** authorize planning. A separate canonical founder authorization is required before `plan.md` or planning-stage contracts/tasks become canonical.
+The clarification stage is CANONICAL via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`. Its former `AUTHORIZED_TO_CLARIFY` state is superseded for current lifecycle purposes by the separate 2026-08-27 planning authorization record in `specs/README.md`. Planning may now create and qualify the complete non-executing planning package; implementation, model/tournament execution, weight/data/device access, training, credentials, and spend remain separately gated.

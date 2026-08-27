@@ -2,9 +2,9 @@
 
 **Planning Branch**: `spec/007-specify`
 **Created**: 2026-08-25
-**Status**: Specification CANONICAL at PR #46 merge `645da20`; originally drafted under `AUTHORIZED_TO_SPECIFY` [**superseded 2026-08-26** — current stage is `AUTHORIZED_TO_CLARIFY` per the "Spec 007 clarification authorization record" in `specs/README.md`]
+**Status**: Specification CANONICAL at PR #46 merge `645da20`; originally drafted under `AUTHORIZED_TO_SPECIFY` [**superseded 2026-08-27** — current stage is `AUTHORIZED_TO_PLAN` per the "Spec 007 planning authorization record" in `specs/README.md`]
 **Depends on**: Spec 003 `CLOSED_CANONICAL`, Spec 005 `CLOSED_CANONICAL`, Spec 006 `CLOSED_CANONICAL` (entry gate approved via the "Spec 007 specification authorization record" in `specs/README.md`)
-**Lifecycle authority**: CURRENT=`AUTHORIZED_TO_CLARIFY` per `specs/README.md`; historical specification-artifact boundary=`SPECIFY ONLY`
+**Lifecycle authority**: CURRENT=`AUTHORIZED_TO_PLAN` per `specs/README.md`; historical specification-artifact boundary=`SPECIFY ONLY`; clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`
 **Execution authority**: NONE — no training run, model execution, weight access, benchmark payload access/execution, Private Gold/PHI access, device execution, provider generation, credential use, or spend is authorized by this specification.
 
 > This specification defines the bounded problem for the minimal multi-role supervised fine-tuning candidate. It freezes what SFT V1 must prove, what it must not claim, and which inputs remain typed evidence prerequisites. It does NOT select a base model, a dataset, hyperparameters, or a budget, and it does not authorize any run.
@@ -118,4 +118,4 @@ Exit from the specification stage requires ALL of the following, merged canonica
 
 ## Lifecycle note
 
-[Historical snapshot at specification merge: this spec was `AUTHORIZED_TO_SPECIFY`. **Superseded 2026-08-26** — the founder approved the clarify stage per the "Spec 007 clarification authorization record" in `specs/README.md`, which is the authoritative current authority. Clarification advances only to a separately authorized planning step. Implementation start and any run require further explicit founder authorization recorded there. Model selection remains reserved to FOUNDER+CHATGPT with `BACKBONE_WINNER=NEEDS_EVIDENCE`.]
+[Historical snapshot at specification merge: this spec was `AUTHORIZED_TO_SPECIFY`; clarification was later `AUTHORIZED_TO_CLARIFY`. **Superseded 2026-08-27** — the founder approved the complete non-executing planning package per the "Spec 007 planning authorization record" in `specs/README.md`, which is the authoritative current authority. Planning may produce and qualify plan/data-model/contracts/quickstart/checklist/tasks/analyze only. Implementation start, model/tournament execution, and any training run require further explicit founder authorization recorded there. Model selection remains reserved to FOUNDER+CHATGPT with `BACKBONE_WINNER=NEEDS_EVIDENCE`.]
