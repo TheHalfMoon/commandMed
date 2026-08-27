@@ -13,6 +13,7 @@ from src.commandmed.spec007.foundation import (
     validate_canonical_sha256,
     validate_closed_object,
 )
+from src.commandmed.spec007.quarantine import evaluate_quarantine_source
 
 _SELECTION_FIELDS = (
     "policy_id",
@@ -40,6 +41,9 @@ _SELECTION_MODES = frozenset(
         "FIXED_PRE_REGISTERED_CHECKPOINT",
         "SEPARATELY_AUTHORIZED_NON_QUARANTINED_SELECTION",
     }
+)
+_PROHIBITED_RANKING_SOURCE_CLASSES = frozenset(
+    {"ABORT_SENTINEL", "PROTECTED_EVALUATION"}
 )
 
 _ENVIRONMENT_REQUIRED_FIELDS = (
@@ -259,7 +263,7 @@ def validate_checkpoint_selection_policy(policy: Any) -> list[str]:
 
 
 def validate_checkpoint_ranking_inputs(policy: Any, source_records: Any) -> dict[str, Any]:
-    """Fail closed on ranking inputs unless the exact source set is separately authorized."""
+    """Fail closed unless exact, canonical, non-protected ranking sources are authorized."""
     policy_errors = validate_checkpoint_selection_policy(policy)
     if policy_errors:
         return {
@@ -277,6 +281,7 @@ def validate_checkpoint_ranking_inputs(policy: Any, source_records: Any) -> dict
         return {"allowed": True, "reason_code": "NO_RANKING_INPUTS", "validation_errors": []}
 
     source_ids: list[str] = []
+    validated_records: list[dict[str, str]] = []
     record_errors: list[str] = []
     for index, record in enumerate(source_records):
         prefix = f"ranking_sources[{index}]"
@@ -288,12 +293,17 @@ def validate_checkpoint_ranking_inputs(policy: Any, source_records: Any) -> dict
         record_errors.extend(errors)
         if not isinstance(record, dict):
             continue
-        if not _nonempty(record.get("source_id")):
+        source_id = record.get("source_id")
+        source_class = record.get("source_class")
+        if not _nonempty(source_id):
             record_errors.append(f"{prefix}: source_id must be a non-empty string")
-        else:
-            source_ids.append(record["source_id"])
-        if not _nonempty(record.get("source_class")):
+        if not _nonempty(source_class):
             record_errors.append(f"{prefix}: source_class must be a non-empty string")
+        if _nonempty(source_id) and _nonempty(source_class):
+            source_ids.append(source_id)
+            validated_records.append(
+                {"source_id": source_id, "source_class": source_class}
+            )
     if record_errors:
         return {
             "allowed": False,
@@ -320,6 +330,28 @@ def validate_checkpoint_ranking_inputs(policy: Any, source_records: Any) -> dict
             "reason_code": "RANKING_SOURCE_SET_MISMATCH",
             "validation_errors": [],
         }
+
+    if any(
+        record["source_class"] in _PROHIBITED_RANKING_SOURCE_CLASSES
+        for record in validated_records
+    ):
+        return {
+            "allowed": False,
+            "reason_code": "RANKING_SOURCE_CLASS_PROHIBITED",
+            "validation_errors": [],
+        }
+
+    for record in validated_records:
+        quarantine = evaluate_quarantine_source(
+            record["source_id"], "CHECKPOINT_SELECTION"
+        )
+        if not quarantine["allowed"] or not quarantine["can_select_model"]:
+            return {
+                "allowed": False,
+                "reason_code": "RANKING_SOURCE_QUARANTINED",
+                "validation_errors": [],
+            }
+
     return {
         "allowed": True,
         "reason_code": "SEPARATELY_AUTHORIZED_RANKING_INPUTS",
@@ -468,13 +500,18 @@ def validate_non_executing_recipe_evidence(evidence: Any) -> list[str]:
     else:
         if len(classes) != len(set(item for item in classes if isinstance(item, str))):
             errors.append(f"{prefix}: evidence_classes must be unique")
-        invalid = sorted(
+        invalid = [
             item
             for item in classes
             if not isinstance(item, str) or item not in _STATIC_RECIPE_EVIDENCE_CLASSES
-        )
+        ]
         if invalid:
-            errors.append(f"{prefix}: evidence_classes contain forbidden or unknown values {invalid}")
+            rendered_invalid = sorted(
+                item if isinstance(item, str) else repr(item) for item in invalid
+            )
+            errors.append(
+                f"{prefix}: evidence_classes contain forbidden or unknown values {rendered_invalid}"
+            )
 
     for field in (
         "contains_execution_derived_evidence",
