@@ -118,7 +118,7 @@ Screened at sub-1B through ~4B, with sub-700MiB feasibility as the PRIMARY discr
 
 ### 4.1 Qwen/Qwen3-0.6B-Base — PRIMARY ultra-compact anchor
 
-- **Base identity:** `Qwen/Qwen3-0.6B-Base` — `LICENSE=apache-2.0` (HF `license` field, GitHub `LICENSE` Apache 2.0). Observed immutable revision at prior sweep: `d4e79cdcc24cc3dc566196f5af6ed5782c64e8f1` tree containing `model.safetensors`, `tokenizer.json`, `tokenizer_config.json`, `vocab.json`, `merges.txt`, `config.json`. Revision tree to be rebound at manifest freeze with exact verification (Xet metadata captured: `model.safetensors` ~1.19 GB, SHA256 `cd2a5120...`, Xet hash `2c465b...`).
+- **Base identity:** `Qwen/Qwen3-0.6B-Base` — `LICENSE=apache-2.0` (HF `license` field, GitHub `LICENSE` Apache 2.0). Fresh HF API verification 2026-08-27: `sha: da87bfb608c14b7cf20ba1ce41287e8de496c0cd`, `gated: false`, superseding prior sweep `d4e79cd...`. Tree contains `model.safetensors`, `tokenizer.json`, `tokenizer_config.json`, `vocab.json`, `merges.txt`, `config.json`. Revision to be rebound at manifest freeze (Xet metadata: `model.safetensors` ~1.19 GB, SHA256 `cd2a5120...`, Xet `2c465b...`).
 - **Base vs post-trained:** This is the **pretrained base checkpoint** (`BASE_PRETRAINED`). Family capabilities such as Qwen3 hybrid thinking / non-thinking mode, instruction following, and agent tool behavior are **post-trained capabilities of instruct/thinking variants**, not of this base checkpoint. Baseiz provides foundation knowledge and tokenization, not chat behavior.
 - **Params/structure:** ~0.6B (0.44B non-embedding), 28 layers, 16 Q / 8 KV GQA, tied embedding, RoPE, context 32,768 natively (see table: Qwen3-0.6B 32K; long-context extension via YARN/DCA to 4× at inference where runtime supports).
 - **Training:** Qwen3 family 36T tokens (30T foundation + knowledge-intensive + long-context stage) over 119 languages/dialects; Granite-style 4-stage not applicable. Provenance Alibaba Cloud Qwen Team; checkpoints on HF/Kaggle/ModelScope with Apache weights.
@@ -144,13 +144,31 @@ Screened at sub-1B through ~4B, with sub-700MiB feasibility as the PRIMARY discr
 - **GGUF feasibility (exact-base):** Official `ggml-org/Qwen3.5-0.8B-Base-GGUF` at observed inspection: `Q4_0` **563 MB** (SHA256 `0dabf7f0...`) — already **under 600 MiB engineering target** and well under 700 MiB hard ceiling. This is currently the cleanest mass-reach evidence among Apache candidates. Documented `llama.cpp` usage `YES`.
 - **Admission:** Same as 0.6B — publicly supported but not yet fully admitted (`SPEC003_LINEAGE_RESULT=NOT_YET_COMPUTED`).
 
+### 4.2 Qwen/Qwen3.5-0.8B-Base — PRIMARY ultra-compact challenger (vision-language foundation, corrected)
+
+- **Repository identity:** `Qwen/Qwen3.5-0.8B-Base` — HF API `sha: dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68`, `gated: false`, `pipeline_tag: image-text-to-text`, HF `license: apache-2.0`, Model card `Type: Causal Language Model with Vision Encoder`, `Context Length: 262,144 natively and extensible up to 1,010,000 tokens`. This is **not text-only** — correction of v2 §5 row that claimed `❌ text-only`. The official pipeline is `image-text-to-text` (`AutoProcessor` + `AutoModelForMultimodalLM`), example with `{"type":"image"}`.
+- **Model kind:** Pretrained-only base (card: pre-trained only model, compatible with HF Transformers `AutoProcessor`/`AutoModelForMultimodalLM`). Vision encoder is part of the upstream checkpoint.
+- **Params/arch (language + vision):** Language model ~0.8B (Hidden Dim 1024, 24 layers hybrid 6×(3×Gated DeltaNet →FFN →1×Gated Attention →FFN), 16 V /16 QK linear attention heads, 8 Q/2 KV gated attention, 3584 FFN, RoPE dim 64, tied embedding 248320), plus separate vision encoder/projector (size not included in 0.8B language count; complete artifact includes vision component). Native context 262,144, extensible to 1,010,000.
+- **Training:** Unified vision-language early fusion on multimodal tokens; RL at scale across million-agent envs; 201 languages/dialects (vs Qwen3 119). Not medical-specific.
+- **GGUF feasibility (exact-base):** Official `ggml-org/Qwen3.5-0.8B-Base-GGUF` observed Q4_0 563 MB (SHA 0dabf7f0...). **Package accounting concern:** The 563 MB file is the quantized language+vision artifact as converted by `ggml-org`? The repository file list shows a single `Qwen3.5-0.8B-Base-Q4_0.gguf`; its size (563 MB) is close to a 0.8B Q4. But the upstream checkpoint contains a vision encoder that must be accounted for in `COMPLETE_MINIMUM_TEXT_CORE_BUNDLE_BYTES`. Investigation required:
+  ```text
+  QWEN35_TEXT_CORE_PACKAGE_ACCOUNTING=NEEDS_EVIDENCE
+  GGUF_CONTAINS_VISION_ENCODER=NEEDS_EVIDENCE (does Q4_0 include vision projector/encoder or only LM?)
+  SEPARATE_VISION_ARTIFACT_REQUIRED=NEEDS_EVIDENCE
+  TOKENIZER_CONFIG_TEMPLATE_RUNTIME_BYTES=NEEDS_EVIDENCE (to be added to GGUF for bundle)
+  COMPLETE_BUNDLE_STILL_SUB_700MB=NEEDS_EVIDENCE
+  ```
+  Prior v1/v2 treated 563 MB alone as proof of compliance — corrected: 563 MB alone is not proof without complete bundle accounting. However, the language-only portion of a 0.8B model at Q4 is plausibly under 700 MiB even with vision excluded if vision is optional for `COMMON_CORE_PRIMARY_RANKING` (text/core ranking, vision secondary per `COMMON_CORE_PRIMARY_RANKING`). Correct accounting must prove vision is not required for text-only Core execution; if vision is required, its bytes must be included.
+
+- **Role:** PRIMARY ultra-compact challenger under `COMMON_CORE_PRIMARY_RANKING` (modality-specific vision is secondary/non-ranking; see Spec 005 session). Still eligible for PRIMARY, but bundle accounting must be completed.
+
 ### 4.3 ibm-granite/granite-4.0-350m-base — PRIMARY ultra-compact (new, Apache 2.0)
 
 **This candidate was missing from PR #55 v1 and is now deeply investigated as directed.**
 
-- **Repository identity:** `ibm-granite/granite-4.0-350m-base` — `HF license` field `apache-2.0`, GitHub `ibm-granite/granite-4.0-nano-language-models` `LICENSE` Apache 2.0, collection `Granite 4.0 Nano Language Models`. Release date 2025-10-28 (Nano announcement). No gated terms acceptance flow identified; HF card is ungated public.
+- **Repository identity:** `ibm-granite/granite-4.0-350m-base` — `HF license` field `apache-2.0`, HF API `sha: a50b46cef21c8a86b15f0496cb794487a78a910b`, `gated: false`, `pipeline_tag: text-generation`, `transformersInfo auto_model AutoModelForCausalLM`, collection `Granite 4.0 Nano Language Models`. Release date 2025-10-28 (Nano announcement). No gated terms acceptance flow identified; HF card is ungated public, config `model_type granitemoehybrid` (dense with 0 experts) per `config.json` and `safetensors total 352,379,904` BF16 params.
 - **Model kind:** **Base/pretrained checkpoint** (`granite-4.0-350m-base` vs instruct `granite-4.0-350m`). Dense traditional transformer (not hybrid Mamba-2). Dense alternative explicitly for workloads where hybrid lacks optimized support (llama.cpp, PEFT). Therefore correct for `GGUF_LLAMA_CPP_CANONICAL`.
-- **Params/arch:** 350M dense (340M hybrid variant). Config: embedding 1024, 28 layers (28 attention), 16 heads / 4 KV (GQA), head dim 64, SwiGLU, RoPE (dense), shared embeddings. Sequence length **32,768** natively (table: 32K for 350M dense, 128K for 1B dense). Training data ~15T tokens four-stage (10T + 2T + 2T + 0.5T) — enterprise GRC-cleared, ISO 42001 certified family, cryptographic signing.
+- **Params/arch (exact):** 350M, config `model_type: granitemoehybrid`, `architectures: [GraniteMoeHybridForCausalLM]`, `num_experts_per_tok: 0` (dense variant of MoE hybrid family with 0 active experts), embedding 1024, 28 layers (28 attention), 16 heads / 4 KV (GQA), head dim 64, SwiGLU, RoPE (dense), shared embeddings. Official table: Sequence length **32K** for 350M dense (128K for 1B dense). Training data ~15T tokens four-stage (10T + 2T + 2T + 0.5T) — enterprise GRC-cleared, ISO 42001 certified family, cryptographic signing. Immutable revision observed 2026-08-27 via HF API: `a50b46cef21c8a86b15f0496cb794487a78a910b` (repo `ibm-granite/granite-4.0-350m-base`, gated false).
 - **Supported languages (card):** English, German, Spanish, French, Japanese, Portuguese, **Arabic**, Czech, Italian, Korean, Dutch, Chinese — **Arabic is officially listed among 12**, not merely multilingual. Fine-tunable beyond list. This is stronger than SmolLM3's English-primary limitation.
 - **Instruction vs base:** Base is text-generation without safety alignment (`Ethical Considerations: not safety aligned, may produce problematic outputs`) — correct for `BASE_ONLY_PRIMARY`.
 - **Tokenizer identity:**
@@ -176,7 +194,7 @@ Screened at sub-1B through ~4B, with sub-700MiB feasibility as the PRIMARY discr
 
 ### 4.4 Qwen/Qwen3-4B-Base — SCALE/QUALITY CONTROL (not PRIMARY)
 
-- **Identity:** `Qwen/Qwen3-4B-Base` — Apache 2.0, pretrained base (control). Params 4.0B (3.6B non-embedding), 36 layers, 32 Q / 8 KV GQA, **context 128K** (per Qwen3 table: 4B is first with 128K; 0.6B/1.7B remain 32K — v1 incorrectly called 4B 32K, now corrected).
+- **Identity:** `Qwen/Qwen3-4B-Base` — HF API `sha: 906bfd4b4dc7f14ee4320094d8b41684abff8539`, `gated: false`, Apache 2.0, pretrained base (control). Params 4.0B (3.6B non-embedding), 36 layers, 32 Q / 8 KV GQA, **context 32,768** (per exact official `Qwen/Qwen3-4B-Base` model card `Context Length: 32,768`; earlier v2 incorrectly imported 128K from Qwen3 family table which applies to larger sizes/post-trained variants — corrected after fresh verification of the exact Base checkpoint and control still valid as scale control). `pipeline_tag: text-generation` (text-only, unlike Qwen3.5).
 - **GGUF feasibility:** `Q4_K_M` ~2.41 GB advert (or 2.65GB VRAM + 4.8GB KV @32K per Nodepedia) — **far above** `SUB_700MB`. Canonical bundle cannot satisfy mass-reach. Therefore `PRIMARY_ADMISSION=INELIGIBLE_FOR_MASS_REACH`. This is intentional: its purpose is to measure opportunity cost of the mass-reach constraint (`HOW_MUCH_QUALITY_IS_LOST_BY_FORCING_SUB_700MB`).
 - **Role in tournament:** `NON_WINNER_SCALE_CONTROL`. Tested under `DUAL_BUILD` (baseline vs deployable) but its deployable will necessarily fail package/RAM hard gates for V1 primary. It must not win the current tournament unless governance is explicitly amended later (`FOUNDER+CHATGPT_RESOURCE_CLASS_RECONSIDERATION_REQUIRED`).
 
@@ -231,9 +249,9 @@ Screened at sub-1B through ~4B, with sub-700MiB feasibility as the PRIMARY discr
 | **License** | Apache 2.0 | Apache 2.0 | Apache 2.0 | Apache 2.0 | Apache 2.0 | Apache 2.0 | Apache 2.0 |
 | **FD-001 fit** | ✅ | ✅ | ✅ | ✅ (but not mass-reach) | ✅ (but not mass-reach) | ✅ | ✅ |
 | **Params (total / active)** | 350M / 350M | 0.6B / 0.44B non-emb | 0.8B | 4.0B / 3.6B non-emb | 2B | ~5B total / 2.3B eff | 3.8B shipped (3.4+0.4) |
-| **Context (natively)** | 32,768 | 32,768 | 262,144 (natively per Qwen3.5 0.8B-swept 256K) *to freeze* | **128K** | 262,144? *to freeze* | 128K? *to freeze* | 256K (128K reasoning) |
-| **Architecture** | Dense RoPE GQA SwiGLU (traditional) | Dense RoPE GQA SwiGLU | Hybrid Gated Delta→FFN + Gated Attention | Dense RoPE GQA | Hybrid/delta | Edge dense (Gemini-derived) | Dense + vision cascade |
-| **Vision** | ❌ text-only | ❌ text-only | ❌ text-only (0.8B base) | ❌ text-only | ✅ (Qwen3.5 multimodal) | ✅ (3n multimodal) | ✅ native |
+| **Context (natively)** | 32,768 | 32,768 | 262,144 (natively, extends to 1,010,000) | **32,768** | 262,144? *to freeze* | 128K? *to freeze* | 256K (128K reasoning) |
+| **Architecture** | Dense RoPE GQA SwiGLU (traditional) | Dense RoPE GQA SwiGLU | Causal LM **with Vision Encoder** (hybrid Gated Delta + Gated Attention) | Dense RoPE GQA | Hybrid/delta | Edge dense (Gemini-derived) | Dense + vision cascade |
+| **Vision** | ❌ text-only | ❌ text-only | **✅ Vision Encoder (image-text-to-text per card, pipeline image-text-to-text)** | ❌ text-only | ✅ (Qwen3.5 multimodal) | ✅ (3n multimodal) | ✅ native |
 | **Training tokens** | 15T (4-stage: 10T+2T+2T+0.5T) | 36T family | ~Qwen3 36T family | 36T family | ~36T family | Not disclosed (Gemini) | 1–3T cascade |
 | **Arabic supported** | 12 official inc. ar | 119 inc. 7 Arabic dialects | 119 inc. 7 dialects | 119 inc. 7 dialects | 119 inc. 7 dialects | 140+ underst. | Dozens inc. ar (European strongest) |
 | **Arabic medical evidence** | `NEEDS_EVIDENCE` (supported, not specialized) | `NEEDS_EVIDENCE` (family-strong) | `NEEDS_EVIDENCE` | Strongest family (Belebele 51.78 family signal, not checkpoint) | `NEEDS_EVIDENCE` | 2.30 tok/wd measured family | `NEEDS_EVIDENCE` |
