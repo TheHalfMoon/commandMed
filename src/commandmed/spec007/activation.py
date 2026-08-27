@@ -11,6 +11,7 @@ import re
 from typing import Any, Mapping
 
 from src.commandmed.spec007.foundation import validate_closed_object
+from src.commandmed.spec007.snapshot import validate_dataset_snapshot
 
 _TRAINING_REQUIRED_FIELDS = (
     "config_id",
@@ -157,6 +158,15 @@ _REFERENCE_BINDINGS = {
         "non_executing_recipe_evidence",
         "evidence_id",
     ),
+}
+
+_TRAINING_TO_MANIFEST_REFERENCES = {
+    "base_checkpoint_binding_id": "base_checkpoint_binding_id",
+    "dataset_snapshot_id": "dataset_snapshot_id",
+    "rendering_policy_id": "prompt_rendering_policy_id",
+    "loss_mask_policy_id": "loss_mask_policy_id",
+    "packing_truncation_policy_id": "packing_truncation_policy_id",
+    "environment_manifest_id": "environment_manifest_id",
 }
 
 
@@ -376,6 +386,43 @@ def validate_run_manifest(
     return errors
 
 
+def _composition_validation_errors(
+    *,
+    run_manifest: Mapping[str, Any],
+    component_store: Mapping[str, Mapping[str, Mapping[str, Any]]],
+    backend_evidence: Mapping[str, Any],
+    base_checkpoint_binding: Mapping[str, Any],
+    training_configuration: Mapping[str, Any],
+) -> list[str]:
+    """Bind supplied planning records to the exact manifest/store identities."""
+    errors: list[str] = []
+
+    manifest_base_id = run_manifest.get("base_checkpoint_binding_id")
+    if base_checkpoint_binding.get("binding_id") != manifest_base_id:
+        errors.append("composition: supplied base binding does not match RunManifest")
+    store_base = _record_from_store(component_store, "base_checkpoint_bindings", manifest_base_id)
+    if store_base is None or dict(store_base) != dict(base_checkpoint_binding):
+        errors.append("composition: supplied base binding diverges from component store")
+
+    manifest_config_id = run_manifest.get("training_config_id")
+    if training_configuration.get("config_id") != manifest_config_id:
+        errors.append("composition: supplied training configuration does not match RunManifest")
+    store_config = _record_from_store(component_store, "training_configurations", manifest_config_id)
+    if store_config is None or dict(store_config) != dict(training_configuration):
+        errors.append("composition: supplied training configuration diverges from component store")
+
+    for config_field, manifest_field in _TRAINING_TO_MANIFEST_REFERENCES.items():
+        if training_configuration.get(config_field) != run_manifest.get(manifest_field):
+            errors.append(
+                f"composition: training configuration {config_field} does not match "
+                f"RunManifest {manifest_field}"
+            )
+
+    if training_configuration.get("backend_id") != backend_evidence.get("backend_candidate_id"):
+        errors.append("composition: training backend does not match backend evidence")
+    return errors
+
+
 def compose_non_executing_planning_fixture(
     *,
     run_manifest: Mapping[str, Any],
@@ -393,6 +440,13 @@ def compose_non_executing_planning_fixture(
         "base_checkpoint_binding": validate_base_checkpoint_binding(base_checkpoint_binding),
         "training_configuration": validate_training_configuration(
             training_configuration, planning_only=True
+        ),
+        "composition": _composition_validation_errors(
+            run_manifest=run_manifest,
+            component_store=component_store,
+            backend_evidence=backend_evidence,
+            base_checkpoint_binding=base_checkpoint_binding,
+            training_configuration=training_configuration,
         ),
     }
     valid = all(not errors for errors in validation.values())
@@ -432,27 +486,46 @@ def preflight_run_manifest(
             "base_checkpoint_bindings",
             manifest.get("base_checkpoint_binding_id"),
         )
-        if base is None or not _nonempty(base.get("weight_content_identity")):
-            reason_codes.append("BASE_WEIGHT_IDENTITY_MISSING")
+        if base is None:
+            reason_codes.append("BASE_CHECKPOINT_BINDING_INVALID")
+        else:
+            if validate_base_checkpoint_binding(dict(base)):
+                reason_codes.append("BASE_CHECKPOINT_BINDING_INVALID")
+            if not _nonempty(base.get("weight_content_identity")):
+                reason_codes.append("BASE_WEIGHT_IDENTITY_MISSING")
 
         dataset = _record_from_store(
             component_store,
             "dataset_snapshots",
             manifest.get("dataset_snapshot_id"),
         )
-        if dataset is None or not _nonempty(dataset.get("snapshot_sha256")):
+        if dataset is None:
+            reason_codes.append("DATASET_SNAPSHOT_INVALID")
             reason_codes.append("DATASET_SNAPSHOT_HASH_MISSING")
+        else:
+            if validate_dataset_snapshot(dict(dataset)):
+                reason_codes.append("DATASET_SNAPSHOT_INVALID")
+            if not _nonempty(dataset.get("snapshot_sha256")):
+                reason_codes.append("DATASET_SNAPSHOT_HASH_MISSING")
 
         quarantine_id = dataset.get("quarantine_verification_id") if dataset is not None else None
         quarantine = _record_from_store(
             component_store, "quarantine_verifications", quarantine_id
         )
-        if quarantine is None or quarantine.get("status") != "PASS":
+        if quarantine is None:
+            reason_codes.append("QUARANTINE_VERIFICATION_NOT_PASS")
+        elif quarantine.get("quarantine_verification_id") != quarantine_id:
+            reason_codes.append("QUARANTINE_VERIFICATION_IDENTITY_MISMATCH")
+        elif quarantine.get("status") != "PASS":
             reason_codes.append("QUARANTINE_VERIFICATION_NOT_PASS")
 
         license_id = base.get("license_evidence_id") if base is not None else None
         license_record = _record_from_store(component_store, "license_evidence", license_id)
-        if license_record is None or license_record.get("status") != "PASS":
+        if license_record is None:
+            reason_codes.append("LICENSE_EVIDENCE_NOT_PASS")
+        elif license_record.get("license_evidence_id") != license_id:
+            reason_codes.append("LICENSE_EVIDENCE_IDENTITY_MISMATCH")
+        elif license_record.get("status") != "PASS":
             reason_codes.append("LICENSE_EVIDENCE_NOT_PASS")
 
         manifest_training = manifest.get("training_authorization_id")
