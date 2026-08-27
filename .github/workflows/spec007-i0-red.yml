@@ -1,4 +1,4 @@
-name: Spec 007 I5 exact-head RED
+name: Spec 007 I5 exact-head GREEN
 
 on:
   push:
@@ -9,14 +9,14 @@ permissions:
   contents: read
 
 jobs:
-  focused-red:
+  focused-green:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout exact RED head
+      - name: Checkout exact GREEN head
         uses: actions/checkout@v4
         with:
-          ref: c455287fe862a012012c1fcb6ff5da90c571268f
+          ref: 53cd46334d43e7c0fb20ebec9dce2b944a21fe8c
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -24,9 +24,11 @@ jobs:
           python-version: '3.11'
       - name: Install pytest only
         run: python -m pip install --disable-pip-version-check pytest
-      - name: Verify exact RED subject
+      - name: Verify exact GREEN subject
         run: |
-          test "$(git rev-parse HEAD)" = "c455287fe862a012012c1fcb6ff5da90c571268f"
-          echo "RED_SUBJECT_SHA=$(git rev-parse HEAD)"
-      - name: Run focused I027-I031 RED tests
-        run: python3 -m pytest -q tests/spec007/test_intelligence_failure_contracts.py
+          test "$(git rev-parse HEAD)" = "53cd46334d43e7c0fb20ebec9dce2b944a21fe8c"
+          echo "GREEN_SUBJECT_SHA=$(git rev-parse HEAD)"
+      - name: Compile Spec 007
+        run: python3 -m compileall -q src/commandmed/spec007 tests/spec007
+      - name: Run focused Spec 007 tests
+        run: python3 -m pytest -q tests/spec007
