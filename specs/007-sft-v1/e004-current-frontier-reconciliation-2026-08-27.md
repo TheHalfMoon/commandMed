@@ -7,9 +7,9 @@
 **Execution performed:** NO  
 **Authority effect:** NONE
 
-This file reconciles the live E004 prerequisite frontier after corrective maintenance, bounded artifact research, A2 public-evidence discovery, and the A2 evidence-package workbench. It does **not** rewrite historical clarification/audit records whose status fields were correct at their capture time.
+This file reconciles the live E004 prerequisite frontier after corrective maintenance, bounded artifact research, A2 public-evidence discovery, and the A2 evidence-package workbench. It does **not** rewrite historical clarification/audit records whose status fields were correct at capture time.
 
-The purpose is to prevent stale historical states such as `A1_STATUS=BLOCKED`, the former device/A15 cycle, or the former Arabic V1 evidence-role conflict from being mistaken for current canonical truth.
+Its purpose is to prevent stale historical states such as `A1_STATUS=BLOCKED`, the former device/A15 cycle, or the former Arabic V1 evidence-role conflict from being mistaken for current canonical truth.
 
 ## 1. Current top-level state
 
@@ -27,7 +27,7 @@ TRAINING_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-Existing bounded E002/E003 authority remains exactly preserved:
+Existing bounded authority is preserved exactly:
 
 ```text
 MODEL_WEIGHT_ACCESS_AUTHORITY=AUTHORIZED_E002_FROZEN_PUBLIC_CANDIDATES_ONLY
@@ -37,7 +37,18 @@ BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=AUTHORIZED_E003_A15_BOUND_PUBLIC_TOURNAMEN
 DEVICE_EXECUTION_AUTHORITY=AUTHORIZED_E003_FROZEN_TOURNAMENT_QUALIFICATION_ONLY
 ```
 
-Those authorizations are not currently executable because E004 preflight has not reached PASS.
+Executability must be separated by authority source:
+
+```text
+E002_NON_EXECUTING_SOURCE_WEIGHT_ACQUISITION_AND_STATIC_INTEGRITY_WORK=CURRENTLY_AUTHORIZED_WITHIN_EXACT_E002_SCOPE
+E002_PRECONVERTED_BYTE_ACQUISITION=CURRENTLY_AUTHORIZED_FOR_EXACT_TWO_ENTRY_ALLOWLIST_ONLY
+
+E003_MODEL_EXECUTION=CANNOT_START_WHILE_E004_PREFLIGHT_BLOCKED
+E003_A15_BOUND_BENCHMARK_PAYLOAD_ACCESS_EXECUTION=CANNOT_START_WHILE_REQUIRED_A15_PREFLIGHT_BINDINGS_ARE_INCOMPLETE
+E003_DEVICE_QUALIFICATION_EXECUTION=CANNOT_START_WHILE_REQUIRED_E004_PREEXECUTION_STATE_IS_INCOMPLETE
+```
+
+E004 `BLOCKED_PREFLIGHT` therefore does **not** revoke or suspend the independently authorized non-executing E002 acquisition/static-inspection actions. E002 still prohibits loading weights into a runtime, inference, conversion, benchmark access/execution, and device execution.
 
 Authorities that remain absent:
 
@@ -53,58 +64,45 @@ SPEND_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-## 2. What has changed since the historical prerequisite frontier
+## 2. What changed since the historical prerequisite frontier
 
-The earlier frontier correctly identified several blockers at its audit base. Subsequent canonical work resolved or refined some of them.
+### 2.1 Spec 005 ↔ E004 corrective maintenance — structurally resolved
 
-### 2.1 Spec 005 ↔ E004 corrective maintenance — resolved structurally
-
-Canonical closeout:
-
-- authorization merge: `238d8a0b8cfed54356ca39bb892f94ebf12d89de`;
-- implementation qualified head: `53aa3ab29636563f11a82b72d4cfd940a2351792`;
-- implementation merge: `5bb6177dc7908dfb3a6a51d3c39db66a4e289fb1`.
-
-Current result:
+Canonical closeout records:
 
 ```text
+AUTHORIZATION_MERGE=238d8a0b8cfed54356ca39bb892f94ebf12d89de
+QUALIFIED_IMPLEMENTATION_HEAD=53aa3ab29636563f11a82b72d4cfd940a2351792
+IMPLEMENTATION_MERGE=5bb6177dc7908dfb3a6a51d3c39db66a4e289fb1
 E004_CORRECTIVE_MAINTENANCE=CLOSED_CANONICAL
 DEVICE_A15_STRUCTURAL_CYCLE=RESOLVED_BY_CONTROL_PLANE_REPAIR
 DEVICE_PACKAGE_WARMUP_CONTRACT=RECONCILED
 E004_NON_EXECUTING_REQUEST_ENVELOPE=IMPLEMENTED
 ```
 
-`evaluate_device_execution_readiness()` now separates static pre-execution readiness from post-execution measured qualification, and `src/commandmed/spec007/e004.py` provides the deterministic non-executing request envelope.
+`evaluate_device_execution_readiness()` now separates static pre-execution readiness from post-execution measured qualification. `src/commandmed/spec007/e004.py` provides a deterministic non-executing request envelope.
 
-This closes the former **structural** device circularity and missing-envelope defects. It does not provide the real runtime/build/tool/physical-device evidence needed for E004.
+The former structural cycle and missing-envelope defects are no longer blockers. Real runtime/build/tool/physical-device evidence remains unresolved.
 
 ### 2.2 A1 metrics-v2 — canonical implementation exists
 
-Historical Session 10/11 documents predate the canonical A1 implementation and therefore contain `A1_STATUS=BLOCKED` or pending pre-merge language.
+Historical Session 10/11 artifacts predate the canonical A1 implementation and retain historical `BLOCKED`/pending language.
 
-Current canonical repository truth contains:
+Current canonical truth contains:
 
 ```text
 V2_SCHEMA_ID=commandmed-metrics-catalog
 V2_SCHEMA_VERSION=2.0
 V2_CATALOG_PATH=data/eval/metrics-v2.json
 V2_METRICS_SHA256=bad51bffe30c0fb7de37afcaf8620ad1ad2deed2dd626a1ec6c2eb47c4107f4b
-```
-
-Spec 005 `tasks.md` records T003–T010 complete and permits all later implemented control-plane tasks only after the A1 merge/reverification gate.
-
-Current state for DAG node R1:
-
-```text
 R1_A1_METRICS_V2_CONTROL_PLANE=CANONICAL_COMPLETE
-R1_REAL_EXTERNAL_EXECUTION_ACTION=NOT_APPLICABLE
 ```
 
-This does not imply A2 or any downstream real gate is complete.
+Spec 005 `tasks.md` records T003–T010 complete and allows later implementation tasks only after the A1 merge/reverification stop gate.
 
 ### 2.3 Arabic parity V1 evidence-role conflict — resolved for V2 consumers
 
-Canonical metrics-v2 now separates:
+Canonical metrics-v2 separates:
 
 ```text
 SELECTION_DEV
@@ -130,8 +128,6 @@ Arabic parity remains scientifically incomplete because the real selection-safe 
 
 PRs #73 and #74 refined CONTROL provenance and closed the current bounded public artifact-research pass.
 
-Current result:
-
 ```text
 PUBLIC_PRECONVERTED_RESEARCH_RESULT=NO_EXPANSION_SUPPORTED_BY_CURRENT_EVIDENCE
 CURRENT_PUBLIC_ARTIFACT_RESEARCH_PASS=CLOSED
@@ -142,13 +138,11 @@ MODEL_CONVERSION_AUTHORITY=NONE
 ARTIFACT_AUTHORITY_DECISION=NOT_TAKEN
 ```
 
-Granite and CONTROL remain incomplete for exact E002-compatible preconverted artifact binding under current evidence. This is not a permanent rejection and does not authorize conversion.
+E002 still authorizes fetching the public source-model weights at the exact frozen revisions and the two exact allowlisted preconverted artifacts. Granite and CONTROL remain incomplete only for additional exact preconverted GGUF binding under current evidence. No new preconverted artifact or conversion authority is implied.
 
-### 2.5 A2 public evidence — research/workbench complete, real A2 still incomplete
+### 2.5 A2 public evidence — research/workbench complete, real A2 incomplete
 
-PR #75 canonically added the bounded public evidence discovery; PR #76 added the metadata-only evidence-package workbench.
-
-Current research result:
+PR #75 added the bounded public evidence discovery; PR #76 added the metadata-only evidence-package workbench.
 
 ```text
 A2_PUBLIC_EVIDENCE_DISCOVERY_RESULT=METHOD_AND_RISK_CONTEXT_FOUND_NO_TRANSFERABLE_NUMERIC_POLICY
@@ -167,7 +161,7 @@ The workbench is explicitly not validator input and cannot be promoted to PASS b
 
 ## 3. Current Spec 005 real-record inventory
 
-At this reconciliation base, `data/spec005/` contains exactly three policy/control-plane contract files:
+At this reconciliation base, `data/spec005/` contains exactly:
 
 ```text
 data/spec005/device_qualification_contract.json
@@ -175,9 +169,7 @@ data/spec005/preconstruction_contract.json
 data/spec005/selection_quality_contract.json
 ```
 
-No additional real A2–A14 evidence-record files are present under that canonical data directory.
-
-Therefore the correct distinction is:
+These are policy/control-plane contracts. No additional real A2–A14 evidence-record files are present under that canonical data directory.
 
 ```text
 SPEC005_VALIDATORS_AND_POLICY_CONTRACTS=CANONICAL_IMPLEMENTED
@@ -185,35 +177,97 @@ REAL_A2_TO_A14_EVIDENCE_SNAPSHOT=ABSENT
 REAL_A15_ACTIVATION=ABSENT
 ```
 
-Synthetic fixtures used by tests remain non-authoritative and cannot substitute for real records.
+Synthetic fixture records remain non-authoritative.
 
 ## 4. Current DAG state — structural capability versus real PASS
 
-The canonical preconstruction DAG is encoded in `data/spec005/preconstruction_contract.json`. This overlay evaluates only current repository evidence; it does not manufacture PASS.
+The canonical DAG is encoded in `data/spec005/preconstruction_contract.json`.
 
-| DAG node | Gate | Control-plane status | Real-gate status | Current reason |
+| Node | Gate | Control-plane status | Real-gate status | Current reason |
 |---|---|---|---|---|
 | `R1` | A1 metrics-v2 | `CANONICAL_COMPLETE` | `PASS_FOR_PRECONSTRUCTION_DEPENDENCY` | V2 contract/consumer binding exists canonically |
 | `T1` | A2 threshold/margin policy | `VALIDATOR_READY` | `INCOMPLETE` | 0/6 thresholds frozen; no qualified review dispositions |
-| `D34` | A3+A4 statistical design/allocation | `VALIDATOR_READY` | `BLOCKED_BY_T1` | exact threshold/margin must precede final N/allocation |
+| `D34` | A3+A4 statistical design/allocation | `VALIDATOR_READY` | `BLOCKED_BY_T1` | exact threshold/margin precedes final N/allocation |
 | `G1` | A5 rights instrument | `VALIDATOR/POLICY_ARCHITECTURE_READY` | `REAL_EVIDENCE_NOT_PROVEN` | no actual contributor/content-rights evidence set bound |
 | `G2` | A6 non-PHI policy | `VALIDATOR/POLICY_ARCHITECTURE_READY` | `REAL_EVIDENCE_NOT_PROVEN` | no actual author/source privacy attestations bound |
 | `G3` | A8 authoring/review protocol | `VALIDATOR/POLICY_ARCHITECTURE_READY` | `REAL_OPERATIONAL_BINDING_NOT_PROVEN` | no real author/reviewer assignments or review execution |
 | `G4` | A12 change control | `VALIDATOR/POLICY_ARCHITECTURE_READY` | `REAL_SUITE_IDENTITY_NOT_AVAILABLE` | no constructed/frozen suite exists to bind operational identity |
-| `S1` | A10 exact source route | `VALIDATOR_READY` | `INCOMPLETE` | no exact real selection-suite source route record admitted |
+| `S1` | A10 exact source route | `VALIDATOR_READY` | `INCOMPLETE` | no exact real selection-suite source-route record admitted |
 | `P1` | A9 provenance template/bindings | `VALIDATOR_READY` | `INCOMPLETE` | no real suite/root/pair metadata records exist |
-| `C1` | A11 contamination plan | `VALIDATOR_READY` | `INCOMPLETE` | exact real source/provenance identities absent; assessment authority also absent |
-| `H1` | A7 personnel roster/nonexposure | `VALIDATOR_READY` | `INCOMPLETE` | no real qualified roster/nonexposure evidence bound |
-| `I1` | A13 access/firewall | `VALIDATOR_READY` | `INCOMPLETE` | no real personnel/suite/storage/access binding |
-| `F1` | A14 spend/engagement | `VALIDATOR_READY` | `INCOMPLETE` | `$0`/absence cannot prove NOT_REQUIRED; real workload/personnel requirements unresolved |
-| `J1` | A1–A14 recheck | `VALIDATOR_READY` | `NOT_REACHED` | upstream real gates incomplete |
-| `ACT` | A15 activation | `VALIDATOR_READY` | `ABSENT_NOT_AUTHORIZED` | requires exact current PASS snapshot plus separate explicit activation |
+| `C1` | A11 contamination plan | `VALIDATOR_READY` | `INCOMPLETE` | real source/provenance identities absent; assessment authority absent |
+| `H1` | A7 personnel roster/nonexposure | `VALIDATOR_READY` | `INCOMPLETE` | mandatory predecessors and real qualified roster evidence incomplete |
+| `I1` | A13 access/firewall | `VALIDATOR_READY` | `INCOMPLETE` | mandatory predecessors and real suite/storage/access bindings incomplete |
+| `F1` | A14 spend/engagement | `VALIDATOR_READY` | `INCOMPLETE` | mandatory predecessors and real workload/personnel requirements incomplete |
+| `J1` | A1–A14 recheck | `VALIDATOR_READY` | `NOT_REACHED` | all incoming prerequisite branches are not PASS |
+| `ACT` | A15 activation | `VALIDATOR_READY` | `ABSENT_NOT_AUTHORIZED` | exact current PASS snapshot plus separate activation required |
 
-`VALIDATOR_READY` means only that repository code can validate a future record. It is not evidence that the real gate passed.
+`VALIDATOR_READY` is never equivalent to real evidence PASS.
 
-## 5. Arabic selection-suite construction remains prohibited
+## 5. Dependency-complete blocking graph
 
-Session 10 Q5 remains controlling for formal case construction:
+The current DAG must preserve **every** incoming edge rather than imply a simplified linear path.
+
+Scientific branch:
+
+```text
+R1 -> T1 -> D34
+```
+
+Governance/source/provenance branch:
+
+```text
+G1 -> S1
+G2 -> S1
+
+G1 -> P1
+G2 -> P1
+G3 -> P1
+G4 -> P1
+S1 -> P1
+
+S1 -> C1
+P1 -> C1
+```
+
+Personnel branch:
+
+```text
+G1 -> H1
+G2 -> H1
+G3 -> H1
+D34 -> H1
+```
+
+Access branch:
+
+```text
+G2 -> I1
+G3 -> I1
+G4 -> I1
+P1 -> I1
+H1 -> I1
+```
+
+Finance/engagement branch:
+
+```text
+D34 -> F1
+G3 -> F1
+H1 -> F1
+```
+
+Preactivation recheck:
+
+```text
+R1,T1,D34,G1,G2,G3,G4,S1,P1,C1,H1,I1,F1 -> J1
+J1 -> ACT
+```
+
+No subset of these edges may establish readiness.
+
+## 6. Arabic selection-suite construction remains prohibited
+
+Session 10 Q5 remains controlling:
 
 ```text
 ARABIC_SELECTION_PRECONSTRUCTION_GATE_RESULT=NOT_READY_TO_CONSTRUCT
@@ -223,9 +277,7 @@ ARABIC_SELECTION_PAIR_ADAPTATION_AUTHORITY=NONE
 ARABIC_SELECTION_REVIEW_EXECUTION_AUTHORITY=NONE
 ```
 
-The preferred source architecture and five coverage anchors are already frozen. Therefore a new public-dataset search does not authorize construction and does not replace the preconstruction gates.
-
-Current route preference remains:
+The preferred source architecture and five coverage anchors are already frozen. A new public-dataset search cannot replace the preconstruction gates.
 
 ```text
 PREFERRED_ROOT_ORIGIN_TYPE=ORIGINAL
@@ -233,11 +285,11 @@ PREFERRED_ROOT_CONTENT=INDEPENDENT_HUMAN_AUTHORED_CLINICAL_NON_PHI
 PREFERRED_PRIVATE_GOLD_PARENT_COUNT=0
 ```
 
-Public dev or derived components remain only conditional alternatives subject to exact split identity, immutable binding, rights, derivation permission, privacy, lineage, and contamination requirements.
+Public-dev or derived components remain only conditional alternatives subject to exact split identity, immutable binding, rights, derivation permission, privacy, lineage, and contamination requirements.
 
-## 6. Contamination frontier — two distinct stages
+## 7. Contamination frontier — plan versus assessment
 
-The preconstruction A11 **plan** and the postconstruction contamination **assessment** must not be conflated.
+A11 preconstruction planning and postconstruction contamination assessment are distinct:
 
 ```text
 A11_PRECONSTRUCTION_PLAN_VALIDATOR=AVAILABLE
@@ -246,28 +298,27 @@ POSTCONSTRUCTION_CONTAMINATION_ASSESSMENT_AUTHORITY=NONE
 POSTCONSTRUCTION_CONTAMINATION_ASSESSMENT_EXECUTION=NOT_AUTHORIZED
 ```
 
-Actual contamination results cannot be created for a suite that has not been constructed and frozen. Conversely, the exact method/identity/candidate-binding plan must be frozen before authoring under the canonical DAG.
+Actual contamination results cannot exist for a suite that has not been constructed/frozen. The exact assessment method/identity/candidate-binding plan must nevertheless be frozen before authoring under the canonical DAG.
 
-## 7. Artifact frontier remains a separate Founder decision
+## 8. Artifact frontier remains a separate Founder decision for expansion/conversion
 
-The current public research pass found no additional exact E002-compatible preconverted binding. The next artifact step remains a separate Founder authorization decision.
-
-This overlay does not take that decision.
+Current public research found no additional exact E002-compatible preconverted binding. Existing E002 actions remain usable within their exact scope; what remains undecided is any **expansion** needed for Granite/CONTROL preconverted qualification or a conversion route.
 
 ```text
-ARTIFACT_AUTHORITY_DECISION=NOT_TAKEN
-FOUNDER_SEPARATE_ARTIFACT_DECISION_REQUIRED=YES
-GENERIC_CONTINUATION_OF_REPOSITORY_WORK_DOES_NOT_AUTO_EXPAND_E002=YES
+EXISTING_E002_SOURCE_WEIGHT_ACCESS=AUTHORIZED_NON_EXECUTING
+EXISTING_E002_TWO_ENTRY_PRECONVERTED_ALLOWLIST_ACCESS=AUTHORIZED_NON_EXECUTING
+ARTIFACT_ALLOWLIST_EXPANSION_OR_CONVERSION_DECISION=NOT_TAKEN
+FOUNDER_SEPARATE_ARTIFACT_DECISION_REQUIRED_FOR_EXPANSION_OR_CONVERSION=YES
 MODEL_CONVERSION_AUTHORITY=NONE
 ```
 
-Possible future evidence may reopen read-only research without changing this boundary.
+Generic continuation does not expand E002.
 
-## 8. Scientific threshold frontier remains external-review bound
+## 9. Scientific threshold frontier remains external-review bound
 
-Public literature now supplies method/risk context, but not a transferable numeric policy.
+Public literature supplies method/risk context, not transferable numeric policy.
 
-Real T1/A2 completion still requires, per metric where applicable:
+Real T1/A2 completion still requires, where applicable:
 
 1. exact intended-use/population and stratum scope;
 2. exact identity-bound commandMed evaluation evidence;
@@ -277,46 +328,32 @@ Real T1/A2 completion still requires, per metric where applicable:
 6. conflict/dissent disposition;
 7. canonical governance adoption.
 
-D34 then requires exact candidate-neutral statistical design, numeric N, allocation, dependency/pairing, multiplicity, uncertainty/error parameters, and method identity.
+Only after T1 PASS may D34 freeze exact candidate-neutral statistical design, numeric N, allocation, dependency/pairing, multiplicity, uncertainty/error parameters, and method identity.
 
 No repository agent may impersonate required human clinical/statistical authority.
 
-## 9. Runtime/device/resource frontier after structural repair
+## 10. Runtime/device/resource frontier after structural repair
 
-The former control-plane circularity is gone, but real static execution readiness remains unproven.
-
-Required future evidence still includes exact, immutable, current identities for applicable:
-
-```text
-EXECUTABLE_CANDIDATE_ARTIFACT
-LLAMA_CPP_OR_OTHER_FROZEN_RUNTIME_COMMIT
-PLATFORM_BUILD_IDENTITY
-TOOLCHAIN_OR_WRAPPER_IDENTITY
-MEMORY_MEASUREMENT_METHOD
-TIMING_METHOD
-THERMAL_SIGNAL_IDENTITY
-ENERGY_SIGNAL_IDENTITY
-PHYSICAL_TARGET_BINDING
-ZERO_SPEND_RESOURCE_AVAILABILITY
-```
+The former structural circularity is gone, but real static execution readiness remains unproven. Future records still need exact identities for applicable executable artifacts, frozen runtime/build/toolchain, memory/timing/thermal/energy methods, physical targets, and zero-spend resource availability.
 
 A favorable static readiness result must be computed from real records. Post-execution device qualification still requires the frozen measured-run evidence and must not be fabricated pre-execution.
 
-## 10. Dependency-safe work remaining without new execution authority
+## 11. Dependency-safe work without new execution authority
 
-The following work classes remain safe in principle if they do not create prohibited content or impersonate external authorities:
+Safe in principle when bounded and non-executing:
 
-1. read-only source/evidence research;
-2. append-only current-state reconciliation;
-3. metadata/template design grounded in existing validators, without case content;
-4. rights/privacy/review/change-control policy extraction from already-frozen architecture, provided it creates no contributor signature, personnel assignment, access grant, spend commitment, or construction authority;
-5. statistical-method research that leaves numeric policy/N unresolved until qualified review;
-6. exact runtime/tool metadata research without device/model execution or artifact acquisition outside E002.
+1. E002-authorized exact public source-weight/two-allowlisted-artifact acquisition and static integrity/provenance work;
+2. read-only source/evidence research;
+3. append-only current-state reconciliation;
+4. metadata/template design grounded in existing validators without case content;
+5. rights/privacy/review/change-control policy extraction from frozen architecture without contributor acceptance, personnel assignment, access grant, spend commitment, or construction;
+6. statistical-method research that leaves numeric policy/N unresolved until qualified review;
+7. exact runtime/tool metadata research without model/device execution or unapproved artifact acquisition.
 
-The following cannot be completed by repository-only continuation:
+Repository-only continuation cannot fabricate or self-authorize:
 
 ```text
-ARTIFACT_AUTHORITY_DECISION
+ARTIFACT_ALLOWLIST_EXPANSION_OR_CONVERSION_DECISION
 QUALIFIED_CLINICAL_REVIEW_DISPOSITION
 QUALIFIED_STATISTICAL_REVIEW_DISPOSITION
 REAL_CONTRIBUTOR_OR_PERSONNEL_ATTESTATION
@@ -328,36 +365,10 @@ MODEL_CONVERSION
 TRAINING
 ```
 
-## 11. Current critical path
-
-The canonical DAG and live evidence yield this current critical path:
-
-```text
-R1=A1                         -> COMPLETE
-T1=A2                         -> INCOMPLETE_REAL_EVIDENCE_AND_REVIEW
-D34=A3+A4                     -> BLOCKED_BY_T1
-H1/A7                         -> BLOCKED_BY_D34_PLUS_REAL_PERSONNEL_EVIDENCE
-I1/A13                        -> BLOCKED_BY_H1_PLUS_REAL_SUITE/ACCESS_BINDING
-F1/A14                        -> BLOCKED_BY_D34/H1_AND_REAL_RESOURCE_REQUIREMENT
-J1=A1_TO_A14_RECHECK          -> NOT_REACHED
-ACT=A15                       -> NOT_REACHED_AND_SEPARATELY_AUTHORIZED_ONLY
-E004_FINAL_PREFLIGHT          -> BLOCKED
-E004_EXECUTION                -> NOT_REACHED
-```
-
-Parallel governance/source branches remain incomplete in real evidence terms:
-
-```text
-G1/A5,G2/A6,G3/A8,G4/A12 -> CONTROL_PLANE_READY_REAL_BINDINGS_INCOMPLETE
-S1/A10                     -> INCOMPLETE_EXACT_REAL_SOURCE_ROUTE
-P1/A9                      -> INCOMPLETE_REAL_PROVENANCE_BINDINGS
-C1/A11                     -> INCOMPLETE_REAL_PLAN_BINDING_AND_NO_ASSESSMENT_AUTHORITY
-```
-
 ## 12. Current decision/evidence frontier
 
 ```text
-NEXT_FOUNDER_DECISION_1=FROZEN_ARTIFACT_AUTHORITY_RECONCILIATION
+NEXT_FOUNDER_DECISION_1=FROZEN_ARTIFACT_ALLOWLIST_EXPANSION_OR_CONVERSION_RECONCILIATION
 NEXT_FOUNDER_DECISION_1_STATE=REQUIRED_NOT_TAKEN
 
 NEXT_SCIENTIFIC_EVIDENCE_NODE=T1_A2
@@ -366,9 +377,10 @@ NEXT_SCIENTIFIC_EVIDENCE_NODE_STATE=PUBLIC_RESEARCH_PREPARED_REAL_QUALIFIED_REVI
 NEXT_DOWNSTREAM_STATISTICAL_NODE=D34_A3_A4
 NEXT_DOWNSTREAM_STATISTICAL_NODE_STATE=BLOCKED_BY_A2
 
-NEXT_EXTERNAL_OPERATIONAL_EVIDENCE=
-RIGHTS_PRIVACY_PERSONNEL_ACCESS_RESOURCE_RUNTIME_DEVICE_BINDINGS
+PARALLEL_GOVERNANCE_BRANCHES=G1_G2_G3_G4
+PARALLEL_GOVERNANCE_BRANCH_STATE=DESIGN_CONTROL_PLANE_PRESENT_REAL_BINDINGS_INCOMPLETE
 
+NEXT_EXTERNAL_OPERATIONAL_EVIDENCE=RIGHTS_PRIVACY_PERSONNEL_ACCESS_RESOURCE_RUNTIME_DEVICE_BINDINGS
 CONTAMINATION_ASSESSMENT_AUTHORITY=SEPARATE_DECISION_REQUIRED
 A15_ACTIVATION=SEPARATE_DECISION_AFTER_A1_TO_A14_PASS
 ```
@@ -377,4 +389,4 @@ No single repository-only mutation can turn this frontier into E004 PASS.
 
 ## 13. Non-events
 
-No model, benchmark payload, selection-suite payload, physical device, contamination assessment, conversion, quantization, training, credential/gated asset, Private Gold, PHI, provider generation, personnel engagement, payment, or spend execution occurred in producing this reconciliation.
+No model execution, benchmark/selection payload execution, physical-device run, contamination assessment, conversion, quantization, training, credential/gated asset access, Private Gold access, PHI access, provider generation, personnel engagement, payment, or spend execution occurred in producing this reconciliation.
