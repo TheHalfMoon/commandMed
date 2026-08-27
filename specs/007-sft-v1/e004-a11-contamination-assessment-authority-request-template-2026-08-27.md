@@ -2,6 +2,7 @@
 
 **Spec:** 007 SFT V1  
 **Canonical base:** `57e7a172ca888333255d4c12a441dbe9fd97c811`  
+**Controlling design:** `specs/005-base-model-tournament/session-12-q4-exact-contamination-assessment-preconstruction-plan.md`  
 **Artifact class:** prospective exact-scope authority request template only  
 **Authority owner:** Founder  
 **Current authority state:** ABSENT  
@@ -9,7 +10,7 @@
 **Payload access performed:** NO  
 **Contamination assessment performed:** NO
 
-This document prepares the future separate A11 contamination-assessment payload-access and execution authorization required by the frozen Session 12 Q4 sequence. It intentionally cannot grant or activate that authority now because the exact frozen selection-suite identities and all required assessment bindings do not yet exist.
+This document prepares the future separate A11 contamination-assessment payload-access and execution authorization required by the frozen Session 12 Q4 sequence. It cannot grant or activate that authority now because the upstream preconstruction gates, A15 construction execution, exact frozen selection-suite identities, and assessment bindings do not yet exist as complete evidence.
 
 ```text
 CONTAMINATION_ASSESSMENT_PAYLOAD_ACCESS_AUTHORITY=NONE
@@ -28,23 +29,25 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 ## 1. Controlling temporal sequence
 
-The frozen A11 design requires this order:
+The frozen A11 design requires this exact order:
 
 ```text
 1_FREEZE_A11_PLAN_BEFORE_AUTHORING
 2_COMPLETE_ALL_OTHER_PRECONSTRUCTION_GATES
 3_RECEIVE_SEPARATE_A15_CONSTRUCTION_AUTHORITY
-4_CONSTRUCT_AND_FREEZE_EXACT_SELECTION_SUITE_IDENTITIES
+4_EXECUTE_AUTHORIZED_A15_CONSTRUCTION_AND_FREEZE_EXACT_SELECTION_SUITE_IDENTITIES
 5_RECEIVE_SEPARATE_CONTAMINATION_ASSESSMENT_PAYLOAD_ACCESS_AND_EXECUTION_AUTHORITY
 6_EXECUTE_PREDECLARED_A11_METHODS_ON_EXACT_FROZEN_IDENTITIES
 7_FREEZE_EVIDENCE_BOUND_CONTAMINATION_DISPOSITIONS
 8_ONLY_THEN_MAY_CONTAMINATION_PREREQUISITE_BE_SATISFIED_FOR_FUTURE_SELECTION
 ```
 
-This template prepares step 5 only. It cannot move step 5 before steps 3–4.
+This template prepares the shape of step 5 only. It cannot move step 5 before steps 2–4.
 
 ```text
+PROSPECTIVE_TEMPLATE_MAY_BYPASS_OTHER_PRECONSTRUCTION_GATES=NO
 PROSPECTIVE_TEMPLATE_MAY_BYPASS_A15_CONSTRUCTION_AUTHORITY=NO
+PROSPECTIVE_TEMPLATE_MAY_TREAT_A15_AUTHORITY_AS_COMPLETED_CONSTRUCTION=NO
 PROSPECTIVE_TEMPLATE_MAY_BIND_MUTABLE_FUTURE_SUITE=NO
 PROSPECTIVE_TEMPLATE_MAY_AUTHORIZE_UNKNOWN_PAYLOADS=NO
 ```
@@ -54,17 +57,38 @@ PROSPECTIVE_TEMPLATE_MAY_AUTHORIZE_UNKNOWN_PAYLOADS=NO
 ```text
 A11_PRECONSTRUCTION_OBJECT=ASSESSMENT_PLAN
 A11_PLAN_PASS_EQUALS_CONTAMINATION_PASS=NO
+A11_PLAN_PASS_GRANTS_ASSESSMENT_PAYLOAD_ACCESS_AUTHORITY=NO
 A11_PLAN_PASS_GRANTS_ASSESSMENT_EXECUTION_AUTHORITY=NO
 A11_PLAN_PASS_GRANTS_SELECTION_EXECUTION_AUTHORITY=NO
 ```
 
-Likewise, canonical merge of this request template is not a contamination-assessment authorization.
+Canonical merge of this request template is likewise not contamination-assessment authorization or evidence of a clean corpus/suite.
 
 ## 3. Future authority subject must be exact
 
-A future active authorization must bind one immutable request subject containing all required identities below. Any placeholder, mutable alias, `latest`, unresolved revision, or unknown universe keeps authority blocked.
+A future active authorization must bind one immutable request subject containing all required identities below. Any placeholder, mutable alias, `latest`, unresolved revision, unknown universe, or incomplete prerequisite evidence keeps authority blocked.
 
-### 3.1 Selection-suite identity
+### 3.1 Upstream prerequisite completion evidence
+
+Before an A11 authority request may even be presented as activatable, the request must bind evidence proving:
+
+```text
+A11_PLAN_FROZEN_BEFORE_AUTHORING=YES
+ALL_OTHER_REQUIRED_PRECONSTRUCTION_GATES_COMPLETE=YES
+PRECONSTRUCTION_SNAPSHOT_ID
+PRECONSTRUCTION_SNAPSHOT_SHA256
+A15_CONSTRUCTION_AUTHORITY_BOUND=YES
+A15_CONSTRUCTION_AUTHORITY_ID
+A15_CONSTRUCTION_AUTHORITY_SHA256
+A15_CONSTRUCTION_EXECUTION_COMPLETED=YES
+A15_CONSTRUCTION_EXECUTION_EVIDENCE_ID
+EXACT_SELECTION_SUITE_CONSTRUCTION_COMPLETED=YES
+EXACT_SELECTION_SUITE_FREEZE_COMPLETED=YES
+```
+
+`ALL_OTHER_REQUIRED_PRECONSTRUCTION_GATES_COMPLETE=YES` must be demonstrated by the exact then-canonical A1–A14/preconstruction snapshot rather than inferred from a shortened checklist in this template.
+
+### 3.2 Selection-suite identity
 
 ```text
 selection_suite_id
@@ -74,6 +98,8 @@ selection_suite_content_universe_sha256
 preconstruction_snapshot_sha256
 a15_construction_activation_id
 a15_construction_activation_sha256
+construction_execution_evidence_id
+construction_execution_evidence_sha256
 ```
 
 The selection universe must cover the full required leakage-bearing content universe, not a sample.
@@ -95,11 +121,20 @@ SCORING_OR_EXPECTED_BEHAVIOR_ARTIFACT_IDENTITIES_WHERE_CONTAMINATION_RELEVANT
 MATERIAL_EXTERNAL_OR_INTERNAL_PARENT_CONTENT_IDENTITIES
 ```
 
-## 4. Candidate/corpus binding required for every declared candidate
+## 4. Candidate/corpus binding covers every frozen E001 candidate
 
-The future request must bind every frozen E001 candidate and CONTROL that participates in the assessment protocol.
+The future request must bind **every declared candidate in the frozen E001 manifest, including CONTROL**, with no participation qualifier or protocol-membership escape hatch.
 
-For each candidate:
+```text
+REQUIRED_CANDIDATE_1=Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+REQUIRED_CANDIDATE_2=Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68
+REQUIRED_CANDIDATE_3=ibm-granite/granite-4.0-350m-base@a50b46cef21c8a86b15f0496cb794487a78a910b
+REQUIRED_CONTROL=Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539
+ALL_FROZEN_E001_CANDIDATES_MUST_BE_BOUND=YES
+CANDIDATE_OMISSION_BY_PROTOCOL_MEMBERSHIP=PROHIBITED
+```
+
+For each declared candidate/control:
 
 ```text
 candidate_id
@@ -123,6 +158,7 @@ AUTHORITATIVE_EXTERNAL_DECONTAMINATION_EVIDENCE
 PARTIALLY_BOUND_CAN_PROVE_GLOBAL_CHECKED_CLEAN=NO
 UNAVAILABLE_OR_UNKNOWN_CAN_PROVE_DIRECT_CORPUS_CHECKED_CLEAN=NO
 GENERIC_MODEL_CARD_OR_VENDOR_DECONTAMINATION_CLAIM_SUFFICIENT=NO
+SAME_ASSESSMENT_RULE_APPLIES_TO_EVERY_DECLARED_CANDIDATE=YES
 ```
 
 ## 5. Parent-aware scope
@@ -140,7 +176,7 @@ A prohibited Private Gold or public-test parent cannot be laundered by a clean c
 
 ## 6. Exact-axis authority binding
 
-The future authority request must bind an already-predeclared exact-axis implementation, not merely a method family name.
+The future authority request must bind an already-predeclared exact-axis implementation, not merely a method-family name.
 
 ```text
 exact_method_id
@@ -214,7 +250,7 @@ The future Founder authorization must distinguish payload access from assessment
 
 ### `A11_AUTHORITY_ACCESS`
 
-Permits only the exact bytes needed for the bound contamination assessment subject.
+Permits only exact bytes required by the fully bound contamination-assessment subject.
 
 ```text
 PURPOSE=CONTAMINATION_ASSESSMENT_ONLY
@@ -241,7 +277,7 @@ ASSESSMENT_OUTPUT_MAY_RANK_MODELS=NO
 ASSESSMENT_OUTPUT_MAY_AUTHORIZE_TRAINING=NO
 ```
 
-The Founder may grant access and execution together only if every exact subject field is already bound and review-qualified; otherwise the request remains blocked.
+The Founder may grant access and execution together only if every exact subject field and every upstream completion condition is already bound and review-qualified; otherwise the request remains blocked.
 
 ## 10. Minimum execution-boundary metadata
 
@@ -264,7 +300,7 @@ operator_or_executor_identity_if_required
 independent_verifier_identity_if_required
 ```
 
-No personal identity is invented by this template. If real personnel are required, their evidence remains external and identity-bound.
+No personal identity is invented by this template. Real personnel evidence, if required, remains external, opaque-reference-bound, and governed by A7/A13/A14.
 
 ## 11. Frozen adjudication semantics
 
@@ -284,17 +320,23 @@ NOT_ASSESSED=INCOMPLETE_CONTAMINATION_GATE
 INVALID_EVIDENCE=INVALID_EVIDENCE_INCOMPLETE
 ```
 
-A clean claim is bounded to the declared, evidenced coverage; it is never a metaphysical claim of no contamination anywhere.
+A clean claim is bounded to declared and evidenced coverage; it is never a claim of no contamination anywhere outside that evidence boundary.
 
 ## 12. Fail-closed activation predicate
 
-The prospective request becomes eligible to present for Founder authorization only if all conditions are true:
+The prospective request becomes eligible to present for Founder authorization only if **all** conditions are true:
 
 ```text
+A11_PLAN_FROZEN_BEFORE_AUTHORING=YES
+ALL_OTHER_REQUIRED_PRECONSTRUCTION_GATES_COMPLETE=YES
+PRECONSTRUCTION_SNAPSHOT_BOUND=YES
 A15_CONSTRUCTION_AUTHORITY_BOUND=YES
+A15_CONSTRUCTION_EXECUTION_COMPLETED=YES
+EXACT_SELECTION_SUITE_CONSTRUCTION_COMPLETED=YES
+EXACT_SELECTION_SUITE_FREEZE_COMPLETED=YES
 EXACT_SELECTION_SUITE_IDENTITY_BOUND=YES
 FULL_REQUIRED_SELECTION_CONTENT_UNIVERSE_BOUND=YES
-ALL_CANDIDATE_IDENTITIES_BOUND=YES
+ALL_FROZEN_E001_CANDIDATES_INCLUDING_CONTROL_BOUND=YES
 ALL_CANDIDATE_CORPUS_COVERAGE_STATES_BOUND=YES
 PARENT_CHAIN_SCOPE_BOUND=YES
 EXACT_METHOD_IDENTITY_BOUND=YES
@@ -305,6 +347,8 @@ RUNTIME_ENVIRONMENT_IDENTITY_BOUND=YES
 INPUT_AND_OUTPUT_IDENTITY_SCHEME_BOUND=YES
 ACCESS_CREDENTIAL_SPEND_BOUNDARIES_RESOLVED=YES
 ```
+
+The predicate is conjunctive. A15 authority by itself is not evidence that construction occurred, and a suite identifier by itself is not evidence that construction and freeze completed.
 
 If any condition is false:
 
@@ -332,4 +376,33 @@ TRAINING_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-The next A11 transition is not execution. It is completion of the upstream preconstruction/A15 construction sequence and identity binding required to make an exact authority request possible.
+The next A11 transition is not execution. It is completion of upstream preconstruction/A15 construction and exact identity binding required to make a real request possible.
+
+## Exclusions
+
+This bounded template explicitly excludes:
+
+- any current Founder authorization or inference of Founder approval;
+- construction or freezing of the Arabic selection suite;
+- access to selection payloads, candidate corpora, Private Gold, PHI, restricted or gated assets;
+- execution of exact-match, semantic, cross-lingual, model-based, or any other contamination assessment;
+- model loading, inference, benchmark execution, device execution, ranking, winner selection, training, provider generation, credential use, payment, procurement, or spend;
+- creation of contamination PASS/FAIL dispositions from placeholder or incomplete evidence;
+- mutation of closed Spec 005 contracts, validators, candidate manifest, or dependency ordering.
+
+## Exit Evidence
+
+This **template artifact** is eligible for repository-level closure only when all of the following are evidenced on one exact head:
+
+```text
+TEMPLATE_BINDS_FULL_FROZEN_E001_CANDIDATE_UNIVERSE_INCLUDING_CONTROL=YES
+TEMPLATE_ENCODES_ALL_OTHER_PRECONSTRUCTION_GATE_COMPLETION_BEFORE_A11_AUTHORITY=YES
+TEMPLATE_DISTINGUISHES_A15_AUTHORITY_FROM_COMPLETED_CONSTRUCTION=YES
+TEMPLATE_REQUIRES_EXACT_SUITE_CONSTRUCTION_AND_FREEZE_EVIDENCE=YES
+TEMPLATE_PRESERVES_FULL_UNIVERSE_PARENT_AWARE_EXACT_AND_SEMANTIC_SCOPE=YES
+TEMPLATE_PRESERVES_PRE_RESULT_THRESHOLD_AND_METHOD_FREEZE=YES
+TEMPLATE_GRANTS_CURRENT_AUTHORITY=NO
+TEMPLATE_EXECUTES_ASSESSMENT=NO
+```
+
+Repository closure additionally requires fresh exact-head review with no unresolved material findings, no active review threads, bounded documentation-only diff verification, guarded canonical merge, and post-merge main verification. Those repository checks close this **request-template artifact only**; they do not satisfy A11, create contamination evidence, or grant future payload-access/execution authority.
