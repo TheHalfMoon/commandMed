@@ -10,7 +10,7 @@
 **Storage/access provisioned:** NO  
 **Spend committed or paid:** NO
 
-This document converts the remaining E004 runtime/resource/personnel/access/finance evidence surface into exact intake questions using the already-frozen Spec 005 control plane. It creates no new schema or framework and does not mutate closed Spec 005 code, contracts, device targets, personnel governance, access rules, spend architecture, or the canonical request surfaces merged through PR #81.
+This document converts the remaining E004 runtime/resource/personnel/access/finance evidence surface into a bounded intake checklist using already-canonical Spec 005/007 controls. It creates no new execution framework, schema, authority, device target, personnel role, access grant, financial commitment, or scientific PASS.
 
 ```text
 RUNTIME_RESOURCE_PERSONNEL_INTAKE_TEMPLATE=PREPARED
@@ -49,13 +49,13 @@ A11_AUTHORITY_REQUEST_TEMPLATE=specs/007-sft-v1/e004-a11-contamination-assessmen
 CURRENT_FRONTIER=specs/007-sft-v1/e004-current-frontier-reconciliation-2026-08-27.md
 ```
 
-If any controlling source changes materially before evidence adoption, affected bindings must be re-read and requalified; mutable `latest` references are not evidence.
+Any material change to a controlling source requires affected evidence to be re-read and requalified. Mutable aliases such as `latest` are not accepted evidence identities.
 
-## 2. Frozen device target set
+## 2. Frozen five-target device set
 
-All five target identities remain required for pre-execution readiness for both `PRIMARY` and `CONTROL` candidate roles.
+Every executable `PRIMARY` and `CONTROL` candidate requires pre-execution target records for all five frozen targets.
 
-| Target ID | Frozen representative identity | Current real target binding |
+| Target ID | Frozen representative identity | Real binding now |
 |---|---|---|
 | `FLAGSHIP_REPRESENTATIVE` | `Apple_iPhone_17_Pro_12GB` | `NEEDS_EVIDENCE` |
 | `APPLE_LOW_RESOURCE_REPRESENTATIVE` | `Apple_iPhone_13_4GB` | `NEEDS_EVIDENCE` |
@@ -67,15 +67,23 @@ All five target identities remain required for pre-execution readiness for both 
 ALL_FIVE_TARGETS_REQUIRED=YES
 PHYSICAL_DEVICE_SUBSTITUTION_AFTER_RESULTS=PROHIBITED
 PRE_RESULT_SUBSTITUTION_REQUIRES_SEPARATE_REVIEWED_EQUAL_OR_STRICTER_CLARIFICATION=YES
+LOW_RESOURCE_LAPTOP_TARGET_OS=Windows_11_x64_OR_EQUIVALENT_LINUX_x86_64
 ```
 
 This checklist does not procure, reserve, borrow, enroll, substitute, or authorize any physical device.
 
-## 3. Candidate-level runtime/artifact binding intake
+## 3. Candidate-level runtime/artifact intake
 
-For every executable candidate role under the frozen device control plane, future evidence must bind the exact candidate/runtime artifact identity before device execution.
+The frozen candidate universe is unchanged:
 
-Required shared evidence slots:
+```text
+PRIMARY_1=Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+PRIMARY_2=Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68
+PRIMARY_3=ibm-granite/granite-4.0-350m-base@a50b46cef21c8a86b15f0496cb794487a78a910b
+CONTROL=Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539
+```
+
+For every executable candidate, accepted future runtime evidence must bind:
 
 ```text
 candidate_id=NEEDS_EVIDENCE
@@ -88,7 +96,7 @@ gguf_quantization=NEEDS_EVIDENCE
 llama_cpp_core_revision=NEEDS_EVIDENCE
 ```
 
-The current candidate universe remains exactly the frozen E001 PRIMARY set plus CONTROL; no candidate substitution is permitted by this intake document.
+Frozen package semantics remain:
 
 ```text
 PRIMARY_PACKAGE_HARD_CAP_BYTES=734003200
@@ -99,11 +107,11 @@ CONTROL_PRIMARY_PACKAGE_HARD_CAP_APPLIES=NO
 CONTROL_OTHER_DEVICE_PREEXECUTION_IDENTITY_REQUIREMENTS_APPLY=YES
 ```
 
-Existing public/E002 metadata does not automatically populate final E004 runtime bindings. Exact accepted artifact identity and provenance must be established separately under the applicable authority path. The PR #81 artifact decision request is a decision surface only and creates no artifact binding by itself.
+Existing public/E002 metadata and PR #81 request surfaces do not automatically create final E004 runtime artifact bindings.
 
-## 4. Per-target pre-execution identity intake
+## 4. Per-target identity intake
 
-For each candidate × each of the five targets, future pre-execution evidence must bind:
+For each candidate × each frozen target, pre-execution evidence must bind the applicable exact identities:
 
 ```text
 build_toolchain_identity=NEEDS_EVIDENCE
@@ -115,7 +123,7 @@ energy_signal_identity=NEEDS_EVIDENCE
 execution_plan_sha256=NEEDS_EVIDENCE
 ```
 
-The target identity record must also bind the shared candidate fields in Section 3. A record with a stale/different model artifact, GGUF identity, or llama.cpp core revision is not equivalent evidence.
+The target record must remain consistent with the candidate-level model artifact, GGUF quantization identity, and llama.cpp core revision.
 
 ```text
 SHARED_GGUF_MODEL_IDENTITY_ACROSS_TARGETS_REQUIRED=YES
@@ -125,9 +133,23 @@ MUTABLE_TAG_LATEST_BRANCH_OR_FAMILY_NAME_SUFFICIENT=NO
 RUNTIME_DRIFT_REQUIRES_NEW_EXACT_IDENTITY=YES
 ```
 
-## 5. Frozen protocol and unresolved pre-execution bindings
+## 5. Platform-conditional memory-method intake
 
-The common protocol already binds:
+The low-resource laptop target permits either Windows 11 x64 or an equivalent Linux x86-64 binding. The required primary memory method is therefore conditional on the exact target OS chosen before execution.
+
+```text
+LOW_RESOURCE_LAPTOP_EXACT_TARGET_OS=NEEDS_EVIDENCE
+IF_WINDOWS_TARGET_BOUND=WINDOWS_PRIMARY_MEMORY_MEASUREMENT_IDENTITY_NEEDS_EVIDENCE
+IF_EQUIVALENT_LINUX_TARGET_BOUND=CGROUP_V2_MEMORY_PEAK_APPLIES_PER_CANONICAL_CONTRACT
+WINDOWS_METHOD_REQUIRED_WHEN_LINUX_PATH_BOUND=NO
+TARGET_OS_SELECTION_AFTER_RESULTS=PROHIBITED
+```
+
+This document does not choose Windows versus Linux. Whichever path is bound must have its exact target, tool/runtime, and measurement identity frozen before execution.
+
+## 6. Frozen protocol and unresolved scientific/runtime bindings
+
+The frozen common protocol already includes:
 
 ```text
 CORE_CONTEXT_TOKENS=8192
@@ -144,26 +166,27 @@ MEASURED_RUNS=5
 AGGREGATION=MEDIAN_WITH_WORST_CASE
 NON_MEASURED_WARMUP_REQUESTS=0
 FRESH_PROCESS_PER_MEASURED_RUN_REQUIRED=YES
+ONE_MEASURED_REQUEST_PER_FRESH_PROCESS=YES
 ```
 
-The following real pre-execution evidence remains unresolved:
+Still unresolved before real device execution:
 
 ```text
 PERFORMANCE_THRESHOLD_POLICY_STATE=UNRESOLVED_PRE_EXECUTION
 PERFORMANCE_THRESHOLD_POLICY_RECORD_ID=NEEDS_EVIDENCE
 PERFORMANCE_THRESHOLD_POLICY_SHA256=NEEDS_EVIDENCE
-WINDOWS_PRIMARY_MEMORY_MEASUREMENT_IDENTITY=NEEDS_EVIDENCE
 EXACT_BUILD_TOOLCHAINS=NEEDS_EVIDENCE
 EXACT_RUNTIME_EXECUTABLES=NEEDS_EVIDENCE
 EXACT_WRAPPER_IDENTITIES=NEEDS_EVIDENCE
+EXACT_MEMORY_MEASUREMENT_IDENTITIES=NEEDS_EVIDENCE_PER_BOUND_PLATFORM
 EXACT_THERMAL_SIGNAL_METHODS=NEEDS_EVIDENCE
 EXACT_ENERGY_SIGNAL_METHODS=NEEDS_EVIDENCE
 EXACT_EXECUTION_PLAN_IDENTITIES=NEEDS_EVIDENCE
 ```
 
-The Windows memory method and performance-threshold policy must be separately bound before execution; this checklist selects neither.
+No observed candidate result may establish or relax the performance threshold policy or measurement method.
 
-## 6. Hard-gate facts this intake may not weaken
+## 7. Hard-gate invariants
 
 ```text
 CORE_8K_PEAK_MEMORY_HARD_CEILING_BYTES=2147483648
@@ -178,9 +201,7 @@ WRONG_MODEL_ARTIFACT_IDENTITY=HARD_FAIL
 RUNTIME_IDENTITY_DRIFT=HARD_FAIL
 ```
 
-Performance thresholds must be frozen before real device execution. No observed candidate result may set, loosen, or reinterpret them.
-
-## 7. Pre-execution evidence versus measured qualification
+## 8. Pre-execution readiness is not measured qualification
 
 ```text
 PRE_EXECUTION_READINESS_REQUIRES_MEASURED_RUNS=NO
@@ -188,9 +209,7 @@ POST_EXECUTION_QUALIFICATION_REQUIRES_FIVE_COMPLETE_MEASURED_RUNS=YES
 REAL_MEASURED_RUNS_CURRENTLY_PRESENT=0
 ```
 
-This intake is pre-execution only. It must not contain fabricated timing, memory, thermal, energy, package, crash, or throughput measurements.
-
-Future measured evidence, only after all separate authorities and preflight PASS, must preserve the frozen record families including:
+This intake contains no fabricated device measurements. Future measured evidence, only after all required authorities and preflight PASS, must preserve the frozen record families including:
 
 ```text
 TTFT_MS
@@ -203,11 +222,9 @@ THROTTLING_OBSERVED
 BATTERY_DELTA_OR_ENERGY_PROXY_PER_RUN
 ```
 
-No observed numeric values are recorded here.
+## 9. E004 execution-subject intake
 
-## 8. Runtime environment / E004 execution-subject intake
-
-Before E004 execution can start, the future exact execution subject must bind the applicable runtime/evaluation identities, including:
+Before E004 execution can start, the exact future execution subject must bind the applicable identities and dispositions, including:
 
 ```text
 canonical_repository_commit=NEEDS_EVIDENCE
@@ -227,11 +244,11 @@ credential_state=NEEDS_EVIDENCE
 spend_state=NEEDS_EVIDENCE_CURRENT_BOUNDARY_USD_0
 ```
 
-This section is an intake surface only; it does not construct an E004 execution manifest or imply admission. The canonical A11 request template remains non-activatable until its full upstream sequence is complete.
+This is an intake surface only; it neither constructs nor activates an E004 execution manifest.
 
-## 9. A7 personnel-governance intake
+## 10. A7 personnel-governance intake
 
-Personnel qualification, assignment, and payload access are distinct states.
+Qualification, assignment, and payload access remain separate states.
 
 ```text
 QUALIFIED_PERSON != ASSIGNED_PERSON
@@ -242,7 +259,7 @@ PUBLIC_REPO_RAW_PERSONNEL_EVIDENCE=PROHIBITED
 PUBLIC_REPO_PERSONNEL_REFERENCES=OPAQUE_ONLY
 ```
 
-For each function that future E004/preconstruction work actually requires, intake must classify the need without inventing a person:
+For each actually required future function:
 
 ```text
 FUNCTION_REQUIRED=NEEDS_EVIDENCE_OR_NOT_REQUIRED_WITH_CANONICAL_JUSTIFICATION
@@ -255,13 +272,13 @@ INDEPENDENCE_VALIDATION=NEEDS_EVIDENCE_IF_REQUIRED
 ASSIGNMENT_AUTHORITY_REFERENCE=NEEDS_EVIDENCE_IF_REQUIRED
 ```
 
-Potential role classes are governed by A7/A13 and may include `PAYLOAD_CUSTODIAN`, `CONTAMINATION_ASSESSOR`, `EVALUATION_EXECUTOR`, and other author/reviewer/adjudicator roles. This intake does not assert that a human must fill a function the frozen protocol can validly satisfy without new personnel.
+Potential functional classes are governed by A7/A13 and may include `PAYLOAD_CUSTODIAN`, `CONTAMINATION_ASSESSOR`, `EVALUATION_EXECUTOR`, and author/reviewer/adjudicator roles where the frozen protocol requires them.
 
-A7 `OPERATIONAL_PASS` cannot be inferred from design documents. Session 13 Q5 requires exact policy binding, protected personnel-evidence storage controls, opaque/public index integrity, state machines, independent evidence validation, steady-state handoff evidence, and bootstrap privilege revocation before operational PASS may be declared.
+A7 `OPERATIONAL_PASS` cannot be inferred from design documents. Protected evidence storage, state machines, independent verification, steady-state handoff, and bootstrap-privilege revocation evidence remain required by the canonical A7 design.
 
-## 10. A13 storage/access intake
+## 11. A13 storage/access intake
 
-A13 remains a three-zone least-privilege boundary:
+A13 retains the three-zone least-privilege design:
 
 ```text
 ZONE_1=METADATA_AND_GOVERNANCE
@@ -270,7 +287,7 @@ ZONE_3=CANDIDATE_OUTPUT_AND_RESULT
 PRIVATE_GOLD=SEPARATE_TRUST_DOMAIN
 ```
 
-Future A13 operational evidence must bind at least:
+Future operational evidence must bind:
 
 ```text
 exact_storage_boundary_identity=NEEDS_EVIDENCE
@@ -294,11 +311,11 @@ A13_PASS_EQUALS_A15_CONSTRUCTION_AUTHORITY=NO
 A13_PASS_EQUALS_MODEL_EXECUTION_AUTHORITY=NO
 ```
 
-Actual Zone 2 payload creation remains downstream of separate A15 construction authority. Candidate-result access cannot flow backward into active authoring/review for the same suite identity.
+Candidate-result access may not flow backward into active authoring/review for the same suite identity.
 
-## 11. A14 spend / engagement intake
+## 12. A14 spend / engagement intake
 
-Current hard boundary:
+Current boundary remains:
 
 ```text
 CURRENT_AUTHORIZED_SPEND_USD=0
@@ -308,18 +325,19 @@ A14_FINAL_REQUIREMENT_DETERMINATION=NOT_YET_FROZEN
 A14_OPERATIONAL_PASS=NO
 ```
 
-A14 final requirement determination is downstream of exact D34, A8, and A7 evidence:
+The final A14 requirement determination remains downstream of exact D34, A8, and A7 evidence.
 
 ```text
 D34_FINAL_REQUIRED_BEFORE_A14_FINAL_REQUIREMENT=YES
 A8_FINAL_REQUIRED_BEFORE_A14_FINAL_REQUIREMENT=YES
 A7_FINAL_REQUIRED_BEFORE_A14_FINAL_REQUIREMENT=YES
+A14_NOT_REQUIRED_BY_SILENCE=PROHIBITED
+A14_NOT_REQUIRED_BY_ASSUMPTION=PROHIBITED
 ```
 
-Therefore this intake may only record evidence needed to later determine whether a new commitment exists. It may not set `A14_NOT_REQUIRED_PASS` by assumption, silence, convenience, lack of invoice, or a zero-dollar label.
+This intake may not infer authority from an owned device, free service, volunteer labor, absent invoice, quote, or available funds.
 
 ```text
-AVAILABLE_PERSONAL_DEVICE_IMPLIES_NO_NEW_RESOURCE_COMMITMENT=NEEDS_EVIDENCE
 ALREADY_OWNED_INTERNAL_RESOURCE_IMPLIES_A14_NOT_REQUIRED=NO_BY_ITSELF
 ZERO_DOLLAR_EXTERNAL_SERVICE_IMPLIES_AUTHORITY=NO
 UNPAID_EXTERNAL_WORK_IMPLIES_AUTHORITY=NO
@@ -327,34 +345,23 @@ QUOTE_OR_ESTIMATE_EQUALS_SPEND_AUTHORITY=NO
 AVAILABLE_FUNDS_EQUALS_SPEND_AUTHORITY=NO
 ```
 
-Future evidence must distinguish separately:
+Financial commitment, payment execution, personnel engagement, resource provisioning, payload access, and technical execution authority remain distinct.
 
-```text
-financial_commitment_requirement
-payment_execution_requirement
-new_personnel_engagement_requirement
-resource_provisioning_requirement
-payload_access_requirement
-technical_execution_authority
-```
+## 13. Current blocker matrix
 
-These are not interchangeable booleans.
-
-## 12. Current blocker matrix
-
-| Evidence family | Current state | Can this intake close it? |
+| Evidence family | Current state | Intake may close it? |
 |---|---|---|
-| exact accepted runtime artifacts | `NEEDS_EVIDENCE` | NO — separate artifact authority/provenance path |
-| exact llama.cpp/runtime/build identities | `NEEDS_EVIDENCE` | NO — real identity binding required |
-| five-target device instances/identities | `NEEDS_EVIDENCE` | NO — real resource evidence required |
+| accepted runtime artifacts | `NEEDS_EVIDENCE` | NO — separate artifact authority/provenance path |
+| llama.cpp/runtime/build identities | `NEEDS_EVIDENCE` | NO — exact real bindings required |
+| five target device instances | `NEEDS_EVIDENCE` | NO — physical/resource evidence required |
+| laptop target OS + primary memory method | `NEEDS_EVIDENCE` | NO — bind Windows or equivalent Linux path before execution |
 | performance threshold policy | `UNRESOLVED_PRE_EXECUTION` | NO — scientific/governance freeze required |
-| Windows primary memory method | `NEEDS_EVIDENCE` | NO — exact method binding required |
-| A7 operational personnel governance | `BLOCKED` | NO — real protected evidence/verification required |
-| A13 operational storage/ACL | `BLOCKED` | NO — real enforceable implementation/audit required |
+| A7 operational personnel governance | `BLOCKED` | NO — protected evidence/verification required |
+| A13 operational storage/ACL | `BLOCKED` | NO — enforceable implementation/audit required |
 | A14 requirement/pass | `BLOCKED` | NO — upstream D34/A8/A7 and exact requirement evidence required |
-| measured device qualification | `NOT_STARTED` | NO — execution-only after preflight PASS |
+| measured device qualification | `NOT_STARTED` | NO — execution only after preflight PASS |
 
-## 13. Fail-closed intake rules
+## 14. Fail-closed rules
 
 ```text
 MISSING_EVIDENCE_MAY_BE_INFERRED_FROM_CONVENIENCE=NO
@@ -372,10 +379,10 @@ NO_MEASURED_RUN_COUNTS_AS_FAVORABLE_RESULT=NO
 This bounded intake explicitly excludes:
 
 - model/GGUF download, conversion, loading, inference, benchmark payload access/execution, contamination assessment, selection-suite construction, device execution, measured qualification, winner selection, training, or provider generation;
-- procurement, device reservation, account creation, credential use, storage provisioning, ACL changes, personnel recruitment/assignment/engagement, contracting, payment, reimbursement, or spend;
+- procurement, device reservation, account creation, credential use, storage provisioning, ACL mutation, personnel recruitment/assignment/engagement, contracting, payment, reimbursement, or spend;
 - PHI, restricted clinical data, Private Gold, raw personnel evidence, names, emails, phone numbers, license numbers, identity documents, or signed credential/attestation artifacts in the public repository;
-- selecting performance thresholds, Windows memory methods, runtime wrappers, thermal/energy methods, personnel, vendors, or services by convenience;
-- changing Spec 005 contracts, device target identities, package/memory gates, personnel separation rules, A13 firewall semantics, A14 ordering, PR #81 authority states, or any candidate identity.
+- choosing Windows versus Linux, performance thresholds, measurement tools, runtime wrappers, thermal/energy methods, personnel, vendors, or services by convenience;
+- changing Spec 005 contracts, device targets, package/memory gates, personnel-separation rules, A13 firewall semantics, A14 ordering, PR #81 authority states, or any frozen candidate identity.
 
 ## Exit Evidence
 
@@ -387,6 +394,7 @@ INTAKE_LISTS_ALL_FIVE_FROZEN_TARGETS=YES
 INTAKE_PRESERVES_PRIMARY_AND_CONTROL_DEVICE_ROLE_REQUIREMENTS=YES
 INTAKE_PRESERVES_PRIMARY_ONLY_PACKAGE_HARD_CAP=YES
 INTAKE_PRESERVES_ALL_TARGET_MEMORY_HARD_GATE=YES
+INTAKE_PRESERVES_PLATFORM_CONDITIONAL_LAPTOP_MEMORY_METHOD=YES
 INTAKE_DISTINGUISHES_PREEXECUTION_IDENTITY_FROM_MEASURED_QUALIFICATION=YES
 INTAKE_PRESERVES_A7_QUALIFICATION_ASSIGNMENT_ACCESS_SEPARATION=YES
 INTAKE_PRESERVES_A13_THREE_ZONE_AND_CANDIDATE_FEEDBACK_FIREWALL=YES
@@ -394,4 +402,4 @@ INTAKE_PRESERVES_A14_D34_A8_A7_DEPENDENCY_AND_ZERO_SPEND_BOUNDARY=YES
 INTAKE_CREATES_REAL_EVIDENCE_OR_AUTHORITY=NO
 ```
 
-Repository closure additionally requires fresh exact-head review with no unresolved material findings, no active review threads, bounded documentation-only diff verification, guarded canonical merge, and post-merge main verification. These checks close this checklist only; every real evidence slot remains `NEEDS_EVIDENCE` until separately produced and verified under its governing authority.
+Repository closure additionally requires fresh exact-head review with no unresolved material findings, no active review threads, a bounded documentation-only diff, guarded canonical merge, and post-merge `main` verification. Those checks close this checklist only; every real evidence slot remains `NEEDS_EVIDENCE` until separately produced and verified under its governing authority.
