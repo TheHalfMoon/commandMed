@@ -11,6 +11,18 @@ import re
 from typing import Any, Mapping
 
 from src.commandmed.spec007.foundation import validate_closed_object
+from src.commandmed.spec007.preservation import validate_capability_preservation_binding
+from src.commandmed.spec007.selection import (
+    validate_checkpoint_selection_policy,
+    validate_environment_manifest,
+    validate_frozen_evaluation_protocol_binding,
+    validate_non_executing_recipe_evidence,
+)
+from src.commandmed.spec007.sequence import (
+    validate_loss_mask_policy,
+    validate_packing_truncation_policy,
+    validate_prompt_rendering_policy,
+)
 from src.commandmed.spec007.snapshot import validate_dataset_snapshot
 
 _TRAINING_REQUIRED_FIELDS = (
@@ -469,6 +481,34 @@ def _record_from_store(
     return record if isinstance(record, Mapping) else None
 
 
+def _validate_component_record(manifest_field: str, record: Mapping[str, Any]) -> list[str]:
+    """Run the canonical validator for one directly referenced RunManifest component."""
+    materialized = dict(record)
+    if manifest_field == "base_checkpoint_binding_id":
+        return validate_base_checkpoint_binding(materialized)
+    if manifest_field == "dataset_snapshot_id":
+        return validate_dataset_snapshot(materialized)
+    if manifest_field == "prompt_rendering_policy_id":
+        return validate_prompt_rendering_policy(materialized)
+    if manifest_field == "loss_mask_policy_id":
+        return validate_loss_mask_policy(materialized)
+    if manifest_field == "packing_truncation_policy_id":
+        return validate_packing_truncation_policy(materialized)
+    if manifest_field == "training_config_id":
+        return validate_training_configuration(materialized, planning_only=False)
+    if manifest_field == "checkpoint_selection_policy_id":
+        return validate_checkpoint_selection_policy(materialized)
+    if manifest_field == "capability_preservation_binding_id":
+        return validate_capability_preservation_binding(materialized)
+    if manifest_field == "environment_manifest_id":
+        return validate_environment_manifest(materialized)
+    if manifest_field == "frozen_evaluation_protocol_binding_id":
+        return validate_frozen_evaluation_protocol_binding(materialized)
+    if manifest_field == "non_executing_recipe_evidence_id":
+        return validate_non_executing_recipe_evidence(materialized)
+    return [f"unsupported component validator for {manifest_field}"]
+
+
 def preflight_run_manifest(
     manifest: Any,
     component_store: Mapping[str, Mapping[str, Mapping[str, Any]]],
@@ -481,6 +521,11 @@ def preflight_run_manifest(
         reason_codes.append("RUN_MANIFEST_INVALID_OR_UNRESOLVED")
 
     if isinstance(manifest, dict):
+        for field, (category, _identity_field) in _REFERENCE_BINDINGS.items():
+            record = _record_from_store(component_store, category, manifest.get(field))
+            if record is not None and _validate_component_record(field, record):
+                reason_codes.append(f"COMPONENT_RECORD_INVALID:{field}")
+
         base = _record_from_store(
             component_store,
             "base_checkpoint_bindings",
