@@ -145,9 +145,11 @@ Using `src/commandmed/eval_contract/lineage.py` without weight bytes, the follow
 - `artifact_binding_state=IMMUTABLE_REVISION_LOCATOR`, `artifact_locator=https://huggingface.co/<repo>/tree/<sha>`
 - `access_class=PUBLIC` (verified `gated:false`), `rights_state=SUPPORTED`, `rights_evidence_uri=https://huggingface.co/<repo>/blob/<sha>/LICENSE`
 - `phi_privacy_state=NO_PHI_KNOWN`, `quarantine_state=NOT_QUARANTINED`, `purpose` per declared use, `origin_type=ORIGINAL` for base weights
-- `contamination_state` is the blocking field: public metadata inspection alone cannot assess benchmark overlap without corpus analysis. For `TRAINING_OR_ADAPTATION`, `MODIFICATION_OR_DERIVATION`, and `TEACHER_OR_SYNTHETIC_GENERATION` the contract requires `ASSESSED_CLEAN` or evidence-backed `NOT_APPLICABLE`. Here `NOT_APPLICABLE` is not justified (these are training uses) and no corpus assessment exists, so `PENDING`/`NOT_ASSESSED` is correct and evaluator correctly returns `BLOCKED`.
+- `contamination_state` is the field that previously blocked TRAIN uses. See reconciliation `reconciliation-contamination-semantics-2026-08-27.md`: `contamination_state` for `MODEL_OR_CHECKPOINT` with `TRAIN` purpose represents **model lineage** contamination (whether the base checkpoint itself as a lineage parent carries a prohibited optimization source), not `candidate × benchmark-slice` adjudication. For that lineage relation, `NOT_APPLICABLE` is valid when benchmark contamination is separately represented as exact `candidate × benchmark-slice` evidence per Spec 005 Q4 (dual-axis) and no benchmark-clean claim is inferred. Prior `NOT_ASSESSED` was therefore correctly fail-closed, but `NOT_APPLICABLE` is the correct lineage pass without implying benchmark cleanliness.
 
-Evaluator results (offline, 2026-08-27, contract `2b08533c...`):
+Evaluator results (offline, 2026-08-27, contract `2b08533c...`, initial run with `NOT_ASSESSED` — correctly BLOCKED, then recomputed with corrected `NOT_APPLICABLE` for lineage-only):
+
+Initial `NOT_ASSESSED` table (for audit, correctly BLOCKED):
 
 | Candidate | Declared use | Purpose mapping | Evaluator state | Reason codes |
 |---|---|---|---|---|
@@ -165,6 +167,19 @@ Evaluator results (offline, 2026-08-27, contract `2b08533c...`):
 | ibm-granite/granite-4.0-350m-base a50b46c | REDISTRIBUTION | — | **ELIGIBLE** | — |
 | Qwen/Qwen3-4B-Base 906bfd4 | DEVELOPMENT_EVALUATION | DEV | **ELIGIBLE** | — (CONTROL, not mass-reach) |
 
+Corrected lineage results with `contamination_state=NOT_APPLICABLE` (and all other fields identical, no benchmark claim) via `PYTHONPATH=src python -c "evaluate_lineage_admission(..., contamination_state='NOT_APPLICABLE')" ` — existing contract already returns ELIGIBLE:
+
+| Candidate | Declared use | Purpose | Evaluator state | Reason codes |
+|---|---|---|---|---|
+| Qwen/Qwen3-0.6B-Base da87bfb | TRAINING_OR_ADAPTATION | TRAIN | **ELIGIBLE** | — |
+| Qwen/Qwen3-0.6B-Base da87bfb | MODIFICATION_OR_DERIVATION | TRAIN | **ELIGIBLE** | — |
+| Qwen/Qwen3.5-0.8B-Base dc7cdfe | TRAINING_OR_ADAPTATION | TRAIN | **ELIGIBLE** | — |
+| Qwen/Qwen3.5-0.8B-Base dc7cdfe | MODIFICATION_OR_DERIVATION | TRAIN | **ELIGIBLE** | — |
+| ibm-granite/granite-4.0-350m-base a50b46c | TRAINING_OR_ADAPTATION | TRAIN | **ELIGIBLE** | — |
+| ibm-granite/granite-4.0-350m-base a50b46c | MODIFICATION_OR_DERIVATION | TRAIN | **ELIGIBLE** | — |
+
+All three PRIMARY are therefore **MODEL_LINEAGE_ELIGIBLE=YES** without implying `MEDXPERTQA_SELECTION_CONTAMINATION=ASSESSED_CLEAN`. Benchmark selection contamination remains `NOT_ASSESSED` → `INCOMPLETE` → `CANDIDATE_SLICE_NOT_SELECTION_ELIGIBLE` per Spec 005 Q5, and tournament execution remains blocked until contamination evidence for the required primary slices is separately bound. See `reconciliation-contamination-semantics-2026-08-27.md` §2–§6.
+
 No `PROHIBITED` or `REFERENCE_ONLY` due rights/gated terms — Apache 2.0 is correctly `SUPPORTED` where evaluated. The universal blocker is `CONTAMINATION_UNRESOLVED` for training-family uses, which is exactly the boundary between `PUBLIC_METADATA_RESOLVABLE` and the deeper benchmark-overlap assessment that Spec 005/003 reserve for post-tournament evaluation or contamination-mapping evidence.
 
 The following fields remain `PUBLIC_METADATA_RESOLVABLE` but not yet bound as evaluator inputs because they require a separate contamination-assessment artifact:
@@ -175,15 +190,19 @@ The following fields remain `PUBLIC_METADATA_RESOLVABLE` but not yet bound as ev
 
 ---
 
-## 6. What is complete vs blocked without E002
+## 6. What is complete vs blocked without E002 (after contamination semantics clarification)
 
 **PUBLIC_METADATA_RESOLVABLE — complete at this file:**
 
 - Repository identity, immutable revision (40-hex), gated false, pipeline tag, model_type, base status, source URI/evidence URI, license `apache-2.0` with evidence URI to LICENSE at same SHA, tokenizer/processor sibling set, access class PUBLIC, rights_state SUPPORTED, artifact binding IMMUTABLE_REVISION_LOCATOR.
+- **Corrected:** With `contamination_state=NOT_APPLICABLE` for `MODEL_OR_CHECKPOINT` lineage records where the contamination condition is genuinely outside the lineage relation (benchmark contamination is separately adjudicated per exact `candidate × benchmark-slice`), `TRAINING_OR_ADAPTATION` and `MODIFICATION_OR_DERIVATION` are now **ELIGIBLE** for lineage admission (see table above and `reconciliation-contamination-semantics-2026-08-27.md`). No benchmark-clean claim is inferred.
 
-**MODEL_WEIGHT_ACCESS_REQUIRED — blocked exactly as:**
+**STILL BLOCKED — benchmark contamination adjudication (separate evidence, not weight bytes):**
 
-- `contamination_state` for TRAIN-family uses (`TRAIN` purpose). No overlap/high-risk proof can be produced from public model-card metadata alone; requires corpus-aware benchmark overlap assessment without payload execution where possible, but with payload-aware tooling if needed — falls outside `MODEL_WEIGHT_ACCESS=NONE` if benchmark artifact inspection touches payload bytes. Per Spec 005 session 7 Q&A, `METADATA_FIRST_EXACT_ARTIFACT_BINDING_BEFORE_ACCESS` already requires `contamination_disposition` before payload access, but the assessment itself may need payload metadata.
+- `MEDXPERTQA_TEXT_DEV_CONTAMINATION_DISPOSITION=NOT_ASSESSED` → `INCOMPLETE_CONTAMINATION_GATE` → `CANDIDATE_SLICE_NOT_SELECTION_ELIGIBLE` per Spec 005 Q5. This is `candidate × benchmark-slice` evidence, not model lineage. It correctly blocks **selection/tournament execution**, not lineage. No `NOT_APPLICABLE` shortcut is allowed for this selection slice (Q4).
+
+**MODEL_WEIGHT_ACCESS_REQUIRED — blocked exactly as (unchanged):**
+
 - `MODIFICATION_OR_DERIVATION` for GGUF quantization provenance: exact transform/toolchain identity, frozen flags, and content SHA256 for the produced artifact. Public `ggml-org` and `ibm-granite/granite-4.0-350m-base-GGUF` Xet metadata provides preview sizes/SHAs (Qwen3.5 563 MB `0dabf...`, Granite Q4_K_M 237 MB), but commandMed's canonical conversion identity (pinned `llama.cpp` + convert flags) is not yet frozen — needs manifest, not weight download.
 - Derived GGUF `parent_asset_ids` linkage: the linkage proof needs the exact base `content_sha256` (weight SHA256) which is stored in Xet as `2c465b...` style but validated via HEAD without weight bytes — reachable without full download via HEAD/Xet preview, still within public metadata, to be completed in next admission pass after this file.
 
@@ -193,28 +212,25 @@ The following fields remain `PUBLIC_METADATA_RESOLVABLE` but not yet bound as ev
 
 ---
 
-## 7. PRIMARY admission consequence (FULLY_ADMITTED_PRIMARY_ONLY)
+## 7. PRIMARY admission consequence (FULLY_ADMITTED_PRIMARY_ONLY — corrected)
 
 ```text
 CANDIDATE_MANIFEST_FROZEN=NO
-FULLY_ADMITTED_PRIMARY_CANDIDATES=[]  (empty — TRAIN-family uses are BLOCKED on CONTAMINATION_UNRESOLVED)
-PUBLIC_METADATA_PRIMARY_LEAD=Qwen/Qwen3.5-0.8B-Base, Qwen/Qwen3-0.6B-Base, ibm-granite/granite-4.0-350m-base (all three share identical BLOCKED reason, no rights/gated disqualifier)
+FULLY_ADMITTED_PRIMARY_CANDIDATES (MODEL_LINEAGE)=[Qwen/Qwen3-0.6B-Base, Qwen/Qwen3.5-0.8B-Base, ibm-granite/granite-4.0-350m-base] — each ELIGIBLE for TRAINING_OR_ADAPTATION / MODIFICATION_OR_DERIVATION with contamination_state=NOT_APPLICABLE (no benchmark claim)
+FULLY_ADMITTED_FOR_BENCHMARK_SELECTION=[] (empty — benchmark selection contamination is separate and remains NOT_ASSESSED → INCOMPLETE)
+PUBLIC_METADATA_PRIMARY_LEAD=Qwen/Qwen3.5-0.8B-Base, Qwen/Qwen3-0.6B-Base, ibm-granite/granite-4.0-350m-base (all three lineage-ELIGIBLE, no rights/gated disqualifier)
 CONTROL_RETAINED=Qwen/Qwen3-4B-Base 32K (CONTROL_NON_WINNER, ELIGIBLE for DEVELOPMENT_EVALUATION)
-SPEC003_LINEAGE_RESULT=NOT_YET_ELIGIBLE_FOR_TRAIN (pending contamination assessment)
-PRIMARY_ADMISSION=BLOCKED_PENDING_CONTAMINATION_DISPOSITION
+SPEC003_LINEAGE_RESULT=ELIGIBLE_FOR_TRAIN_LINEAGE (with NOT_APPLICABLE where genuinely outside — see reconciliation)
+PRIMARY_ADMISSION=BLOCKED_PENDING_BENCHMARK_CONTAMINATION_EVIDENCE (lineage eligible, selection not)
 ```
 
-No candidate is `ELIGIBLE` for `TRAINING_OR_ADAPTATION` yet because the contract correctly fail-closes on unresolved contamination. No candidate failed a rights/gated hard gate — all three remain viable pending that single evidence class.
+No candidate failed a rights/gated hard gate or lineage contamination — all three are now **model-lineage ELIGIBLE**. Benchmark selection remains `INCOMPLETE` because `MEDXPERTQA_TEXT_DEV_CONTAMINATION_GATE=INCOMPLETE` — this correctly blocks **tournament execution / primary ranking**, not lineage. The next required evidence is therefore **not** a model-weight download, but separate exact `candidate × benchmark-slice` contamination evidence (dual-axis exact+semantic with resolved artifact binding) before any `REQUIRED_PRIMARY_SELECTION` slice can be used.
 
-Possible next authorized evidence (still within `MODEL_WEIGHT_ACCESS=NONE` where the benchmark overlap can be assessed from public benchmark registry without payload bytes, or with `SEPARATE_AUTHORIZATION` if payload touching is required):
-
-- Bind `BENCHMARKS_IDENTITY=7f58edb...` exact slices, run contamination overlap tooling that inspects only public benchmark IDs (metadata) vs public model-card-reported training corpora description, or request a narrow `BENCHMARK_PAYLOAD_ACCESS` authorization if the evaluator requires payload digests.
-
-Until then, the correct return per the mass-reach thesis is:
+Until benchmark contamination evidence for the required primary slices is bound, the correct return per Spec 005 Q5 is:
 
 ```text
-PRIMARY_RESULT=NO_SELECTION_YET (pending contamination disposition)
-FOUNDER+CHATGPT_RESOURCE_CLASS_RECONSIDERATION_REQUIRED=NO (mass-reach hypothesis not yet falsified — candidates not failed, evidence incomplete)
+PRIMARY_RESULT=NO_SELECTION_YET (benchmark selection contamination gate INCOMPLETE — lineage eligible, selection blocked)
+FOUNDER+CHATGPT_RESOURCE_CLASS_RECONSIDERATION_REQUIRED=NO (mass-reach hypothesis not yet falsified — candidates lineage-eligible, evidence incomplete on selection axis)
 ```
 
 ---
