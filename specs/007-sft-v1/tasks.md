@@ -37,12 +37,12 @@ Blocked until separate `SPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START`.
 
 ## Phase I1 — Curriculum / provenance / quarantine
 
-- [ ] **I005** Implement CurriculumRecord validator against full Spec 003 identity requirements. Depends on I003.
+- [ ] **I005** Implement CurriculumRecord validator against full Spec 003 identity requirements, including mandatory cross-field rendering invariants declared by the contract registry. Depends on I003.
 - [ ] **I006** Implement knowledge-placement validation. Depends on I005.
 - [ ] **I007** Implement raw duplicate/near-duplicate report contract. Depends on I005.
 - [ ] **I008** Implement purpose-aware canonical quarantine-matrix binding; never rely only on copied names. Depends on I005.
 - [ ] **I009** Add negative fixtures for every prohibited training/monitoring/recipe/checkpoint/model-selection purpose. Depends on I008.
-- [ ] **I010** Implement DatasetSnapshot and CurriculumCoverageReport generation over synthetic fixtures. Depends on I005-I009.
+- [ ] **I010** Implement DatasetSnapshot and CurriculumCoverageReport generation over synthetic fixtures, enforcing `record_count == len(record_ids)` and snapshot token-accounting cross-field invariants fail closed. Depends on I005-I009.
 
 ## Phase I2 — Rendering / loss / sequence semantics
 
@@ -54,7 +54,7 @@ Blocked until separate `SPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START`.
 
 ## Phase I3 — Arabic / behavior / safety preservation
 
-- [ ] **I016** Implement LanguageProfile validator for MSA, Saudi/Gulf, code-switch, transliteration and verification state. Depends on I005.
+- [ ] **I016** Implement LanguageProfile validator for MSA, Saudi/Gulf, code-switch, transliteration, terminology-normalization identity and verification state. Depends on I005.
 - [ ] **I017** Implement future candidate tokenizer-evidence packet shape; measurements remain `NEEDS_EVIDENCE`. Depends on I016.
 - [ ] **I018** Implement CapabilityPreservationBinding validator. Depends on I003.
 - [ ] **I019** Implement AbortSentinelPolicy validator with only CONTINUE/ABORT/DISQUALIFY effects. Depends on I008,I018.
@@ -62,11 +62,11 @@ Blocked until separate `SPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START`.
 
 ## Phase I4 — Selection / reproducibility / resume
 
-- [ ] **I021** Implement CheckpointSelectionPolicy default fixed-pre-registered rule. Depends on I003.
-- [ ] **I022** Reject protected evaluation, LLM-judge, human-inspection and sentinel evidence as ranking inputs absent separately canonical source/purpose authority. Depends on I008,I021.
+- [ ] **I021** Implement CheckpointSelectionPolicy default fixed-pre-registered rule and structured source-purpose authorization validation for any separately authorized mode. Depends on I003,I008.
+- [ ] **I022** Reject protected evaluation, LLM-judge, human-inspection and sentinel evidence as ranking inputs absent separately canonical source/purpose authority; require exact source-set equality with the structured authorization object. Depends on I008,I021.
 - [ ] **I023** Implement EnvironmentManifest validator. Depends on I003.
 - [ ] **I024** Implement TrainingCheckpointManifest validator and distinguish resumable checkpoint from export. Depends on I023.
-- [ ] **I025** Implement FrozenEvaluationProtocolBinding with `frozen_before_training_authorization=true`. Depends on I003.
+- [ ] **I025** Implement FrozenEvaluationProtocolBinding with `frozen_before_training_authorization=true` and provenance-complete manifests for every metric input, replay fixture, threshold, stratification, sample-size or other consumed evaluation asset. Depends on I003,I008.
 - [ ] **I026** Implement NonExecutingRecipeEvidence validator rejecting any execution-derived evidence. Depends on I003.
 
 ## Phase I5 — Intelligence-density / failure-development contracts
@@ -79,7 +79,7 @@ Blocked until separate `SPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START`.
 
 ## Phase I6 — Config / run activation composition
 
-- [ ] **I032** Implement TrainingConfigurationRecord validator; unresolved values remain typed `NEEDS_EVIDENCE`. Depends on I011-I026.
+- [ ] **I032** Implement TrainingConfigurationRecord validator; unresolved values remain typed `NEEDS_EVIDENCE`. Depends on I010,I011-I026.
 - [ ] **I033** Implement BackendCandidateEvidence validator; evidence-only and no backend selection. Depends on I032.
 - [ ] **I034** Implement CandidateEvidenceRecord with `pi_recommendation=NONE`. Depends on I003.
 - [ ] **I035** Implement BaseCheckpointBinding validator but leave concrete binding unavailable until Founder+ChatGPT winner decision. Depends on I034.
@@ -89,8 +89,8 @@ Blocked until separate `SPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START`.
 
 ## Phase I7 — Offline verification and implementation qualification
 
-- [ ] **I039** Add focused tests for all Spec 007 validators using synthetic fixtures. Depends on I038.
-- [ ] **I040** Add negative tests for malformed identity, undeclared fields, protected sources, execution-derived evidence, stale/mismatched bindings and authority gaps. Depends on I039.
+- [ ] **I039** Add focused tests for all Spec 007 validators using synthetic fixtures, including every `x-commandmed-cross-field-invariants` rule. Depends on I038.
+- [ ] **I040** Add negative tests for malformed identity, undeclared fields, protected sources, partial rendering bundles, rendered/supervised token-accounting violations, snapshot record-count mismatch, evaluation assets lacking complete provenance, checkpoint source-purpose mismatch, execution-derived evidence, stale/mismatched bindings and authority gaps. Depends on I039.
 - [ ] **I041** Run focused Spec 007 tests. Depends on I040.
 - [ ] **I042** Run full offline repository regression, compileall and diff-check. Depends on I041.
 - [ ] **I043** Open bounded implementation PR with exact task/evidence mapping. Depends on I042.
