@@ -92,7 +92,9 @@
     "package_hard_cap_bytes": 734003200,
     "package_target_bytes": 629145600,
     "package_stretch_bytes": 524288000,
-    "hard_cap_semantics": "NONCOMPENSABLE_QUALIFICATION_GATE",
+    "hard_cap_roles": ["PRIMARY"],
+    "control_semantics": "CONTROL_NOT_WINNER_ELIGIBLE_PACKAGE_CAP_NOT_REQUIRED_FOR_CONTROL_WINNING",
+    "hard_cap_semantics": "NONCOMPENSABLE_PRIMARY_QUALIFICATION_GATE",
     "target_semantics": "ENGINEERING_TARGET_NON_GATE",
     "stretch_semantics": "STRETCH_TARGET_NON_GATE"
   },
@@ -108,6 +110,7 @@
     "measured_runs_required": false,
     "required_target_identity_fields": [
       "candidate_id",
+      "candidate_role",
       "model_artifact_sha256",
       "complete_bundle_sha256",
       "complete_bundle_bytes",
@@ -153,7 +156,7 @@
   },
   "failure_semantics": {
     "hard_fail_conditions": [
-      "PACKAGE_HARD_CAP_EXCEEDED",
+      "PACKAGE_HARD_CAP_EXCEEDED_FOR_PRIMARY",
       "MEMORY_CEILING_EXCEEDED",
       "OS_MEMORY_TERMINATION_DURING_QUALIFICATION",
       "RUNTIME_CRASH_DURING_MEASURED_RUN",
@@ -178,6 +181,8 @@
     "POST_EXECUTION_QUALIFICATION_REQUIRES_FIVE_COMPLETE_MEASURED_RUNS=YES",
     "NO_NON_MEASURED_WARMUP_REQUESTS=YES",
     "PACKAGE_SCOPE_COMPLETE_MINIMUM_TEXT_CORE_BUNDLE=YES",
+    "PRIMARY_PACKAGE_HARD_CAP_NONCOMPENSABLE=YES",
+    "CONTROL_PACKAGE_CAP_NOT_REQUIRED_FOR_CONTROL_WINNING=YES",
     "PARAMETER_COUNT_AND_VENDOR_CLAIMS_ARE_DESCRIPTIVE_ONLY=YES"
   ],
   "canonical_sha256": null,
