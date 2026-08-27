@@ -17,7 +17,7 @@ These schemas freeze the planning boundary for future offline validators. They d
 | `abort-sentinel-policy.schema.json` | abort/disqualify-only safety monitoring | separately admissible sentinel source |
 | `environment-manifest.schema.json` | pinned runtime/software/device identity | selected backend/device |
 | `training-checkpoint-manifest.schema.json` | resumable checkpoint identity | authorized training run |
-| `frozen-evaluation-protocol-binding.schema.json` | D-001 pre-run evaluation freeze | exact accepted eval identities |
+| `frozen-evaluation-protocol-binding.schema.json` | D-001 pre-run evaluation freeze with provenance-complete consumed assets | exact accepted eval identities + Spec 003 admission |
 | `non-executing-recipe-evidence.schema.json` | static evidence allowed before training | no execution-derived evidence allowed |
 | `backend-candidate-evidence.schema.json` | backend compatibility evidence without selection | selected winner compatibility |
 | `run-manifest.schema.json` | fail-closed future activation root | all access/finance/training gates |
@@ -42,6 +42,8 @@ These schemas freeze the planning boundary for future offline validators. They d
 12. `LanguageProfile.terminology_normalization_id` is always present, with `null` meaning no normalization identity applies; omission is invalid.
 13. `SEPARATELY_AUTHORIZED_NON_QUARANTINED_SELECTION` MUST carry a structured source-purpose authorization proving the exact `SFT_CHECKPOINT_SELECTION` purpose, authority-record identity, provenance PASS, and non-quarantine disposition. A conforming validator MUST require the policy `selection_source_ids` set to equal the authorization `authorized_source_ids` set exactly; arbitrary or mismatched authorization identifiers fail closed.
 14. JSON Schema structural validity alone is insufficient where a schema declares `x-commandmed-cross-field-invariants`; every such invariant is mandatory validator behavior and must be covered by negative fixtures before implementation qualification.
+15. `DatasetSnapshot.record_count` MUST equal the number of unique `record_ids`; when rendered and supervised token totals are both present, supervised tokens MUST NOT exceed rendered tokens. Both are mandatory fail-closed validator invariants.
+16. Every asset consumed by `FrozenEvaluationProtocolBinding` MUST carry a provenance-complete manifest binding source authority, license, content hash, split, contamination state, verification state and review state, with `provenance_validation_status=PASS` before the protocol can be treated as frozen.
 
 ## Implementation discipline
 
