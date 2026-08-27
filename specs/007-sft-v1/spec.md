@@ -2,9 +2,9 @@
 
 **Planning Branch**: `spec/007-specify`
 **Created**: 2026-08-25
-**Status**: Specification CANONICAL at PR #46 merge `645da20`; originally drafted under `AUTHORIZED_TO_SPECIFY` [**superseded 2026-08-27** — current stage is `AUTHORIZED_TO_PLAN` per the "Spec 007 planning authorization record" in `specs/README.md`]
+**Status**: Specification CANONICAL at PR #46 merge `645da20`; originally drafted under `AUTHORIZED_TO_SPECIFY`; historical `AUTHORIZED_TO_PLAN` is now [**superseded 2026-08-27** — current stage is `AUTHORIZED_TO_START` per the "Spec 007 implementation authorization record" in `specs/README.md`]
 **Depends on**: Spec 003 `CLOSED_CANONICAL`, Spec 005 `CLOSED_CANONICAL`, Spec 006 `CLOSED_CANONICAL` (entry gate approved via the "Spec 007 specification authorization record" in `specs/README.md`)
-**Lifecycle authority**: CURRENT=`AUTHORIZED_TO_PLAN` per `specs/README.md`; historical specification-artifact boundary=`SPECIFY ONLY`; clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`
+**Lifecycle authority**: CURRENT=`AUTHORIZED_TO_START` per `specs/README.md`, limited to offline deterministic I001-I045 implementation; historical planning stage=`AUTHORIZED_TO_PLAN`; historical specification-artifact boundary=`SPECIFY ONLY`; clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`
 **Execution authority**: NONE — no training run, model execution, weight access, benchmark payload access/execution, Private Gold/PHI access, device execution, provider generation, credential use, or spend is authorized by this specification.
 
 > This specification defines the bounded problem for the minimal multi-role supervised fine-tuning candidate. It freezes what SFT V1 must prove, what it must not claim, and which inputs remain typed evidence prerequisites. It does NOT select a base model, a dataset, hyperparameters, or a budget, and it does not authorize any run.

@@ -1,6 +1,6 @@
 # Quickstart — Spec 007 SFT V1 Planning and Future Offline Control Plane
 
-**Current lifecycle:** `AUTHORIZED_TO_PLAN`
+**Current lifecycle:** `AUTHORIZED_TO_START` — offline deterministic I001-I045 only
 **Model execution:** NONE
 **Training:** NONE
 
@@ -36,10 +36,10 @@ specs/007-sft-v1/data-model.md
 
 Confirm current authority before doing anything else.
 
-Expected planning-stage boundary:
+Expected current implementation-stage boundary:
 
 ```text
-SPEC007=AUTHORIZED_TO_PLAN
+SPEC007=AUTHORIZED_TO_START
 TRAINING_AUTHORITY=NONE
 MODEL_EXECUTION_AUTHORITY=NONE
 MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
@@ -50,9 +50,9 @@ MODEL_SELECTION_AUTHORITY=FOUNDER+CHATGPT_ONLY
 
 If live repository truth differs, live truth wins.
 
-## 2. What planning may do
+## 2. What bounded implementation may do
 
-Permitted under current planning authority:
+Permitted under current `AUTHORIZED_TO_START` authority is limited to the offline deterministic I001-I045 control plane. Planning/documentation work remains allowed only as support for those authorized tasks:
 
 - edit planning/specification documentation;
 - define JSON schemas and logical data models;
