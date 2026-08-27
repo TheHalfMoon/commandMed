@@ -1,4 +1,4 @@
-name: Spec 007 post-merge canonical qualification
+name: Spec 007 implementation reconciliation qualification
 
 on:
   push:
@@ -9,14 +9,14 @@ permissions:
   contents: read
 
 jobs:
-  post-merge-canonical-green:
+  reconciliation-green:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout exact canonical main merge
+      - name: Checkout exact reconciliation head
         uses: actions/checkout@v4
         with:
-          ref: 469a56126ed63407a4a624218b06da106470741e
+          ref: beb55cc2babe4d31833c2ad19d465cea75b78f9b
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -28,35 +28,30 @@ jobs:
         run: |
           git config user.name "commandMed Validation"
           git config user.email "validation@commandmed.invalid"
-      - name: Verify exact canonical main merge
+      - name: Verify exact reconciliation head
         run: |
-          test "$(git rev-parse HEAD)" = "469a56126ed63407a4a624218b06da106470741e"
-          echo "EXACT_CANONICAL_MAIN=$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD)" = "beb55cc2babe4d31833c2ad19d465cea75b78f9b"
+          echo "EXACT_RECONCILIATION_HEAD=$(git rev-parse HEAD)"
       - name: Compile Python sources and tests
         run: |
           python3 -m compileall -q src tests
           echo "COMPILEALL=PASS"
-      - name: Run review regression fixtures
-        run: |
-          python3 -m pytest -q \
-            tests/spec007/test_review_repair_regressions.py \
-            tests/spec007/test_review_followup_regressions.py
       - name: Run focused Spec 007 tests
         run: python3 -m pytest -q tests/spec007
       - name: Run full repository test suite
         run: python3 -m pytest -q
-      - name: Check canonical merge diff whitespace
+      - name: Check reconciliation diff whitespace
         run: |
-          git diff --check 19bdffc28f20e52575922852dd3a8de2b9d0d312 469a56126ed63407a4a624218b06da106470741e
+          git diff --check 469a56126ed63407a4a624218b06da106470741e beb55cc2babe4d31833c2ad19d465cea75b78f9b
           echo "GIT_DIFF_CHECK=PASS"
-      - name: Enforce bounded canonical merge paths
+      - name: Enforce docs-only reconciliation scope
         shell: bash
         run: |
           set -euo pipefail
-          git diff --name-only 19bdffc28f20e52575922852dd3a8de2b9d0d312 469a56126ed63407a4a624218b06da106470741e | while IFS= read -r path; do
+          git diff --name-only 469a56126ed63407a4a624218b06da106470741e beb55cc2babe4d31833c2ad19d465cea75b78f9b | while IFS= read -r path; do
             case "$path" in
-              specs/007-sft-v1/*|src/commandmed/spec007/*|tests/spec007/*) ;;
+              specs/007-sft-v1/tasks.md|specs/007-sft-v1/implementation-reconciliation.md) ;;
               *) echo "OUT_OF_SCOPE_PATH=$path"; exit 1 ;;
             esac
           done
-          echo "BOUNDED_DIFF_SCOPE=PASS"
+          echo "DOCS_ONLY_RECONCILIATION_SCOPE=PASS"
