@@ -1,4 +1,4 @@
-name: Spec 007 implementation reconciliation qualification
+name: Spec 007 canonical reconciliation qualification
 
 on:
   push:
@@ -9,14 +9,14 @@ permissions:
   contents: read
 
 jobs:
-  reconciliation-green:
+  canonical-reconciliation-green:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout exact reconciliation head
+      - name: Checkout exact canonical reconciliation merge
         uses: actions/checkout@v4
         with:
-          ref: beb55cc2babe4d31833c2ad19d465cea75b78f9b
+          ref: 5c61e3b702270bc9aaaa28cf1a537ea6bf2cd5c4
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -28,10 +28,10 @@ jobs:
         run: |
           git config user.name "commandMed Validation"
           git config user.email "validation@commandmed.invalid"
-      - name: Verify exact reconciliation head
+      - name: Verify exact canonical main
         run: |
-          test "$(git rev-parse HEAD)" = "beb55cc2babe4d31833c2ad19d465cea75b78f9b"
-          echo "EXACT_RECONCILIATION_HEAD=$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD)" = "5c61e3b702270bc9aaaa28cf1a537ea6bf2cd5c4"
+          echo "EXACT_CANONICAL_MAIN=$(git rev-parse HEAD)"
       - name: Compile Python sources and tests
         run: |
           python3 -m compileall -q src tests
@@ -40,15 +40,15 @@ jobs:
         run: python3 -m pytest -q tests/spec007
       - name: Run full repository test suite
         run: python3 -m pytest -q
-      - name: Check reconciliation diff whitespace
+      - name: Check reconciliation merge diff whitespace
         run: |
-          git diff --check 469a56126ed63407a4a624218b06da106470741e beb55cc2babe4d31833c2ad19d465cea75b78f9b
+          git diff --check 469a56126ed63407a4a624218b06da106470741e 5c61e3b702270bc9aaaa28cf1a537ea6bf2cd5c4
           echo "GIT_DIFF_CHECK=PASS"
-      - name: Enforce docs-only reconciliation scope
+      - name: Enforce docs-only reconciliation merge scope
         shell: bash
         run: |
           set -euo pipefail
-          git diff --name-only 469a56126ed63407a4a624218b06da106470741e beb55cc2babe4d31833c2ad19d465cea75b78f9b | while IFS= read -r path; do
+          git diff --name-only 469a56126ed63407a4a624218b06da106470741e 5c61e3b702270bc9aaaa28cf1a537ea6bf2cd5c4 | while IFS= read -r path; do
             case "$path" in
               specs/007-sft-v1/tasks.md|specs/007-sft-v1/implementation-reconciliation.md) ;;
               *) echo "OUT_OF_SCOPE_PATH=$path"; exit 1 ;;
