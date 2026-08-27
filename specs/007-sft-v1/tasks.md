@@ -30,10 +30,10 @@ Tasks are dependency ordered. `[x]` means the planning artifact exists in this b
 
 Authorized by the canonical Spec 007 implementation authorization record. Scope is I001-I045 offline deterministic implementation only; E001-E015 remain separately blocked.
 
-- [ ] **I001** Create minimal `src/commandmed/spec007` package only if existing modules cannot own the contracts. Depends on P016 + implementation authority.
-- [ ] **I002** Implement deterministic canonical serialization/identity utilities using repository precedent; no duplicate framework. Depends on I001.
-- [ ] **I003** Implement closed vocabularies and strict record parsing. Depends on I001-I002.
-- [ ] **I004** Add synthetic fixtures proving undeclared/missing/invalid field rejection. Depends on I003.
+- [x] **I001** Create minimal `src/commandmed/spec007` package only if existing modules cannot own the contracts. Depends on P016 + implementation authority. — `src/commandmed/spec007/__init__.py`, `src/commandmed/spec007/foundation.py`; exact-head GREEN `a3ff3ce90d47c8615dd0047f80c0eb3ce61cb373`.
+- [x] **I002** Implement deterministic canonical serialization/identity utilities using repository precedent; no duplicate framework. Depends on I001. — Reuses `eval_contract.canonical` by identity; no second serializer; covered by `tests/spec007/test_foundation_canonical.py`.
+- [x] **I003** Implement closed vocabularies and strict record parsing. Depends on I001-I002. — Frozen three-role vocabulary, duplicate-key-safe JSON object parsing, closed-object and SHA-256 validation in `foundation.py`.
+- [x] **I004** Add synthetic fixtures proving undeclared/missing/invalid field rejection. Depends on I003. — RED run `33043673901` / job `98422681423` failed only because the package was absent; GREEN run `33043755992` / job `98422942429` compiled the new surface and passed 13 focused tests.
 
 ## Phase I1 — Curriculum / provenance / quarantine
 
