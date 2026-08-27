@@ -8,7 +8,7 @@
 
 This packet records a bounded read-only public-literature discovery pass for the six Spec 005 hard-gate population metrics. Its purpose is to identify useful scientific context and method candidates for later qualified clinical/statistical review.
 
-It does **not** freeze a numeric threshold, margin, target coverage, confidence level, sample size, power target, reviewer identity, suite identity, metric implementation, or Founder decision. It does not make any hard gate ready to freeze.
+It does **not** freeze a numeric threshold, margin, target coverage, confidence level, sample size, power target, reviewer identity, suite identity, metric implementation, or Founder decision. It does not make any hard gate ready to freeze and does not create, revoke, replace, or widen any existing E002/E003 authority.
 
 ```text
 A2_PUBLIC_EVIDENCE_DISCOVERY_ONLY=YES
@@ -18,17 +18,28 @@ A2_STATISTICAL_REVIEW_AUTHORITY_IDENTITIES=UNRESOLVED
 A2_CANONICAL_GOVERNANCE_ADOPTION=NOT_PERFORMED
 HARD_GATE_POPULATION_THRESHOLDS_READY_TO_FREEZE=0
 HARD_GATE_POPULATION_THRESHOLDS_NOT_READY_TO_FREEZE=6
-BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=NONE
+
+MODEL_WEIGHT_ACCESS_AUTHORITY=AUTHORIZED_E002_FROZEN_PUBLIC_CANDIDATES_ONLY
+MODEL_EXECUTION_AUTHORITY=AUTHORIZED_E003_FROZEN_TOURNAMENT_ONLY
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=AUTHORIZED_E003_A15_BOUND_PUBLIC_TOURNAMENT_INPUTS_ONLY
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=AUTHORIZED_E003_A15_BOUND_PUBLIC_TOURNAMENT_INPUTS_ONLY
+DEVICE_EXECUTION_AUTHORITY=AUTHORIZED_E003_FROZEN_TOURNAMENT_QUALIFICATION_ONLY
+
 CONTAMINATION_ASSESSMENT_PAYLOAD_ACCESS_AUTHORITY=NONE
-MODEL_EXECUTION_AUTHORITY=NONE
-MODEL_WEIGHT_ACCESS_AUTHORITY=NONE
 MODEL_CONVERSION_AUTHORITY=NONE
-DEVICE_EXECUTION_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
+PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+PROVIDER_GENERATION_AUTHORITY=NONE
+PHI_ACCESS_AUTHORITY=NONE
+GATED_ASSET_ACCESS_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
+
 E004_STATE=BLOCKED_PREFLIGHT
 E004_EXECUTION_OCCURRED=NO
 ```
+
+The bounded E002/E003 authorities above are **not currently executable** because the canonical E004 preflight is blocked. This packet records that blocked state; it does not reinterpret bounded authorization as revocation.
 
 ## 1. Canonical A2 question
 
@@ -442,16 +453,19 @@ Without expanding authority, later work may:
 4. research candidate selection-safe source classes for the future paired Arabic-English suite without accessing/creating payloads;
 5. reconcile any remaining stale documentation against canonical A1 metrics-v2 where needed.
 
-Outside current authority:
+Actions with **no current authority** remain prohibited:
 
-- inventing or freezing numeric thresholds;
+- freezing numeric thresholds without the required scientific/review evidence;
 - claiming qualified review without actual reviewers;
-- using candidate tournament results to calibrate thresholds;
-- creating or accessing benchmark/selection-suite payloads;
 - provider generation of a selection suite;
-- contamination execution;
-- model/device execution;
-- conversion, training, or spend.
+- contamination-assessment payload access/execution;
+- model conversion;
+- training;
+- Private Gold access;
+- PHI/gated asset access;
+- spend/payment execution.
+
+Separately, E002/E003 already provide bounded authority for model-weight access, frozen-tournament model execution, A15-bound public benchmark input access/execution, and frozen tournament device qualification. Those actions remain **non-executable while E004 preflight is blocked** and must not be performed by this research packet.
 
 ## 15. Research-pass result
 
