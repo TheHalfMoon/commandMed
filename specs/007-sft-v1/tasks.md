@@ -1,7 +1,7 @@
 # Tasks — Spec 007 SFT V1
 
-**Current lifecycle:** `AUTHORIZED_TO_PLAN`
-**Implementation authority:** NONE
+**Current lifecycle:** `AUTHORIZED_TO_START`
+**Implementation authority:** `AUTHORIZED_TO_START` — offline deterministic I001-I045 only
 **Training authority:** NONE
 
 Tasks are dependency ordered. `[x]` means the planning artifact exists in this branch; `[ ]` means future work. Implementation tasks MUST NOT begin until a separate canonical implementation authorization exists.
@@ -20,15 +20,15 @@ Tasks are dependency ordered. `[x]` means the planning artifact exists in this b
 - [x] **P010** Author requirements checklist.
 - [x] **P011** Author dependency-ordered implementation/evidence tasks.
 - [x] **P012** Author static planning analysis.
-- [ ] **P013** Run repository baseline checks on exact planning head and record actual results.
-- [ ] **P014** Obtain fresh exact-head independent review of complete planning package.
-- [ ] **P015** Repair every valid material finding and re-run checks/review.
-- [ ] **P016** Merge qualified planning package canonically without expanding authority.
-- [ ] **P017** Close parked carrier PR #48 as superseded after canonical recovery is proven.
+- [x] **P013** Run repository baseline checks on exact planning head and record actual results. — Run `33040059680`: compileall PASS; 627 tests + 128 subtests PASS; diff-check PASS.
+- [x] **P014** Obtain fresh exact-head independent review of complete planning package. — Qodo and CodeRabbit both `MATERIAL_BLOCKER=NO` on `701c933acdf84572f627446e5199231236f97988`.
+- [x] **P015** Repair every valid material finding and re-run checks/review. — All material review threads resolved before final qualification.
+- [x] **P016** Merge qualified planning package canonically without expanding authority. — PR #51 merge `947f3aba4d4316e21470ac26352d96e3bfb74ae6`.
+- [x] **P017** Close parked carrier PR #48 as superseded after canonical recovery is proven. — Closed without merge on 2026-08-27.
 
 ## Phase I0 — Future offline implementation foundation
 
-Blocked until separate `SPEC007_IMPLEMENTATION_AUTHORITY=AUTHORIZED_TO_START`.
+Authorized by the canonical Spec 007 implementation authorization record. Scope is I001-I045 offline deterministic implementation only; E001-E015 remain separately blocked.
 
 - [ ] **I001** Create minimal `src/commandmed/spec007` package only if existing modules cannot own the contracts. Depends on P016 + implementation authority.
 - [ ] **I002** Implement deterministic canonical serialization/identity utilities using repository precedent; no duplicate framework. Depends on I001.
