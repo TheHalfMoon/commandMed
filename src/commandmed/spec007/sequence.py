@@ -140,7 +140,8 @@ def validate_loss_mask_policy(policy: Any) -> list[str]:
         if undeclared:
             errors.append(f"{prefix}: token_class_rules undeclared {undeclared}")
         for token_class in sorted(expected & present):
-            if rules[token_class] not in _TOKEN_RULES:
+            rule = rules[token_class]
+            if not isinstance(rule, str) or rule not in _TOKEN_RULES:
                 errors.append(
                     f"{prefix}: token_class_rules.{token_class} must be SUPERVISED or MASKED"
                 )
