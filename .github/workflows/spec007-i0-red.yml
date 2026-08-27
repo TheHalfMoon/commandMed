@@ -24,6 +24,10 @@ jobs:
           python-version: '3.11'
       - name: Install pytest only
         run: python -m pip install --disable-pip-version-check pytest
+      - name: Configure ephemeral Git identity for fixture plumbing
+        run: |
+          git config user.name "commandMed Validation"
+          git config user.email "validation@commandmed.invalid"
       - name: Verify exact implementation head
         run: |
           test "$(git rev-parse HEAD)" = "b4b6c87fa55c1e66a5e4377a160172f3980d6d5c"
