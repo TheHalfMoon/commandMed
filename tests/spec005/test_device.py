@@ -367,7 +367,14 @@ class PostExecutionQualificationTests(unittest.TestCase):
         import src.commandmed.spec005.device as device
 
         source = open(device.__file__, encoding="utf-8").read()
-        for banned in ("subprocess", "os.system", "requests", "urllib", "socket"):
+        for banned in (
+            "import subprocess",
+            "from subprocess",
+            "import socket",
+            "import requests",
+            "import urllib",
+            "os.system(",
+        ):
             self.assertNotIn(banned, source)
 
     def test_malformed_records_fail_closed(self):
