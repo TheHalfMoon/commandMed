@@ -219,11 +219,15 @@ def test_protected_ranking_input_requires_exact_authorized_source_identity(sourc
 def test_environment_manifest_is_closed_and_requires_explicit_nondeterminism() -> None:
     manifest = environment_manifest()
     assert validate_environment_manifest(manifest) == []
-    bad = deepcopy(manifest)
-    bad["known_nondeterminism"] = "NONE"
-    bad["undeclared"] = True
-    errors = validate_environment_manifest(bad)
+
+    wrong_nondeterminism = deepcopy(manifest)
+    wrong_nondeterminism["known_nondeterminism"] = "NONE"
+    errors = validate_environment_manifest(wrong_nondeterminism)
     assert any("known_nondeterminism" in error for error in errors)
+
+    undeclared = deepcopy(manifest)
+    undeclared["undeclared"] = True
+    errors = validate_environment_manifest(undeclared)
     assert any("undeclared" in error for error in errors)
 
 
