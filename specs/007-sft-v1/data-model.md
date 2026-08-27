@@ -56,6 +56,14 @@ supervised_token_count
 loss_mask_policy_id
 ```
 
+These five rendered-state fields are an **all-or-none bundle**. An unrendered planning record may omit all five. If any one is present, all five are required. A conforming validator also enforces fail closed:
+
+```text
+supervised_token_count <= rendered_token_count
+```
+
+A partial rendered-state claim or token-accounting violation is invalid and cannot enter a rendered `DatasetSnapshot`.
+
 `role_class` is closed to:
 
 ```text
@@ -89,6 +97,8 @@ transliteration_state
 terminology_normalization_id|null
 qualified_review_state
 ```
+
+`terminology_normalization_id` is always present. Explicit `null` means no terminology-normalization identity applies; omission is invalid.
 
 Closed `translation_state`:
 
@@ -308,7 +318,16 @@ quarantine_verification_id
 knowledge_placement_summary
 ```
 
-A snapshot identity changes when admitted records, order, rendering, or semantically material metadata changes.
+Mandatory fail-closed invariants:
+
+```text
+record_count == len(record_ids)
+record_ids are unique
+if rendered_token_count != null and supervised_token_count != null:
+    supervised_token_count <= rendered_token_count
+```
+
+A snapshot identity changes when admitted records, order, rendering, or semantically material metadata changes. A snapshot with inconsistent count or token accounting is invalid.
 
 ## 11. DuplicateContaminationReport
 
@@ -454,6 +473,7 @@ policy_id
 selection_mode
 checkpoint_rule
 selection_source_ids[]
+selection_source_purpose_authorization|null
 evaluation_asset_ranking_allowed
 abort_sentinel_can_rank
 recipe_tuning_allowed
@@ -461,15 +481,36 @@ hyperparameter_tuning_allowed
 frozen_before_run
 ```
 
-Current default:
+For `FIXED_PRE_REGISTERED_CHECKPOINT`:
 
 ```text
-selection_mode = FIXED_PRE_REGISTERED_CHECKPOINT
+selection_source_ids = []
+selection_source_purpose_authorization = null
 evaluation_asset_ranking_allowed = false
 abort_sentinel_can_rank = false
 recipe_tuning_allowed = false
 hyperparameter_tuning_allowed = false
 ```
+
+For `SEPARATELY_AUTHORIZED_NON_QUARANTINED_SELECTION`, `selection_source_purpose_authorization` is a structured record requiring:
+
+```text
+authorization_id
+authority_record_id
+exact_purpose = SFT_CHECKPOINT_SELECTION
+authorized_source_ids[]
+quarantine_disposition = VERIFIED_NON_QUARANTINED_FOR_SFT_CHECKPOINT_SELECTION
+provenance_validation_status = PASS
+frozen_before_run = true
+```
+
+Mandatory fail-closed invariant:
+
+```text
+selection_source_ids == selection_source_purpose_authorization.authorized_source_ids
+```
+
+An arbitrary authorization identifier, wrong purpose, provenance failure, quarantine mismatch, or source-set mismatch is invalid. This record does not itself grant the separate authority it references.
 
 ## 17. AbortSentinelPolicy
 
@@ -573,8 +614,37 @@ stratification_identity
 sample_size_rationale_identity
 acceptance_threshold_identity
 quarantine_matrix_identity
+evaluation_asset_manifests[]
 frozen_before_training_authorization
 ```
+
+`evaluation_asset_manifests` is non-empty and binds every asset consumed by the frozen protocol. Each manifest requires:
+
+```text
+asset_id
+asset_role
+source_authority_id
+source_license_id
+content_sha256
+split_id
+contamination_status
+source_verification_status
+review_state
+provenance_validation_status = PASS
+```
+
+Allowed `asset_role` values are:
+
+```text
+METRIC_INPUT
+REPLAY_FIXTURE
+THRESHOLD_ASSET
+STRATIFICATION_ASSET
+SAMPLE_SIZE_EVIDENCE
+OTHER_PROTOCOL_ASSET
+```
+
+The binding cannot be treated as frozen unless every consumed evaluation asset has the complete inherited Spec 003 provenance/admission bundle and `provenance_validation_status=PASS`.
 
 Required:
 
@@ -683,7 +753,7 @@ derived_efficiency_metrics
 qualification_state
 ```
 
-A hard safety failure forces `qualification_state=DISQUALIFIED` regardless of derived efficiency.
+A hard safety failure forces `qualification_state=DISQUALIFIED` regardless of derived efficiency. `INSUFFICIENT_EVIDENCE` is also non-qualifying; `qualification_state=QUALIFIED` requires `hard_safety_disposition=PASS`.
 
 ## 26. FailureTaxonomyRecord
 
@@ -726,7 +796,7 @@ GENERAL_CAPABILITY_REGRESSION
 OTHER_REVIEW_REQUIRED
 ```
 
-If `source_is_protected_final_evidence=true`, the record cannot authorize optimization/training-data creation.
+If `source_is_protected_final_evidence=true`, the record requires `training_data_admission_allowed=false` and cannot authorize optimization/training-data creation.
 
 ## 27. Record relationships
 
@@ -775,12 +845,15 @@ EnvironmentManifest      CheckpointSelectionPolicy
 ## 28. Planning invariants
 
 1. No concrete backbone identity is valid until Founder+ChatGPT select it from authorized tournament evidence.
-2. No dataset snapshot can be valid with incomplete Spec 003 identities.
+2. No dataset snapshot can be valid with incomplete Spec 003 identities or inconsistent record/token accounting.
 3. No protected quarantine source can silently enter any prohibited SFT optimization surface.
 4. No backend default determines rendering or loss masking.
 5. No evaluation result may create execution authority.
-6. No record-class score can compensate for a hard safety failure.
+6. No record-class score can compensate for a hard safety failure or insufficient required safety evidence.
 7. No real resource value may be fabricated before measurement authority exists.
 8. No protected final failure becomes optimization data through `FailureTaxonomyRecord`.
 9. No model-only export may be represented as a resumable checkpoint.
 10. No planning record authorizes training.
+11. No partial rendered-state bundle is valid, and supervised tokens cannot exceed rendered tokens.
+12. No separately authorized checkpoint-selection policy is valid without a provenance-clean, non-quarantined, purpose-exact authority binding whose authorized source set exactly matches the policy source set.
+13. No frozen evaluation protocol is valid unless every consumed evaluation asset carries complete provenance and a PASS admission status.
