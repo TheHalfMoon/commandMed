@@ -1,4 +1,4 @@
-name: Reconcile Spec 007 current lifecycle surfaces
+name: Qualify fully reconciled Spec 007 authorization
 
 on:
   push:
@@ -6,123 +6,50 @@ on:
       - validation/007-auth-builder
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  reconcile:
+  exact-head-baseline:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout exact authorization head
+        uses: actions/checkout@v4
         with:
-          ref: auth/007-implementation-start
+          ref: 01ff5c1586804913b41599bf2f7466b0c6f323cd
           fetch-depth: 0
-      - name: Verify pre-reconciliation head
-        run: test "$(git rev-parse HEAD)" = "618c7b650463d1d8f639bdc162940542a4a94859"
-      - name: Reconcile current lifecycle claims only
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Configure fixture Git identity
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          def replace_once(path, old, new):
-              p = Path(path)
-              text = p.read_text(encoding='utf-8')
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(f'{path}: expected exactly one match for {old!r}, got {count}')
-              p.write_text(text.replace(old, new, 1), encoding='utf-8')
-
-          # Strategy: current lifecycle only; strategy remains planning provenance and grants no execution itself.
-          replace_once(
-              'docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1.md',
-              '**Current lifecycle:** Spec 007 `AUTHORIZED_TO_PLAN`',
-              '**Current lifecycle:** Spec 007 `AUTHORIZED_TO_START` — bounded offline deterministic I001-I045 implementation only; this strategy itself grants no execution authority'
-          )
-
-          # Quickstart: current operator boundary and section name must follow live authority.
-          replace_once(
-              'specs/007-sft-v1/quickstart.md',
-              '**Current lifecycle:** `AUTHORIZED_TO_PLAN`',
-              '**Current lifecycle:** `AUTHORIZED_TO_START` — offline deterministic I001-I045 only'
-          )
-          replace_once(
-              'specs/007-sft-v1/quickstart.md',
-              'Expected planning-stage boundary:\n\n```text\nSPEC007=AUTHORIZED_TO_PLAN',
-              'Expected current implementation-stage boundary:\n\n```text\nSPEC007=AUTHORIZED_TO_START'
-          )
-          replace_once(
-              'specs/007-sft-v1/quickstart.md',
-              '## 2. What planning may do\n\nPermitted under current planning authority:',
-              '## 2. What bounded implementation may do\n\nPermitted under current `AUTHORIZED_TO_START` authority is limited to the offline deterministic I001-I045 control plane. Planning/documentation work remains allowed only as support for those authorized tasks:'
-          )
-
-          # Static analysis remains a historical planning analysis, but its current lifecycle header must not lie.
-          replace_once(
-              'specs/007-sft-v1/analysis.md',
-              '**Lifecycle:** `AUTHORIZED_TO_PLAN`',
-              '**Current lifecycle:** `AUTHORIZED_TO_START`; this artifact is the historical static analysis of the canonical planning package and grants no implementation/execution authority by itself'
-          )
-
-          # Plan and data model are canonical planning artifacts now consumed by authorized implementation.
-          replace_once(
-              'specs/007-sft-v1/plan.md',
-              '**Lifecycle:** `AUTHORIZED_TO_PLAN`',
-              '**Current lifecycle:** `AUTHORIZED_TO_START` — this canonical plan was frozen under historical `AUTHORIZED_TO_PLAN` and now governs bounded offline deterministic I001-I045 implementation'
-          )
-          replace_once(
-              'specs/007-sft-v1/data-model.md',
-              '**Lifecycle:** `AUTHORIZED_TO_PLAN`',
-              '**Current lifecycle:** `AUTHORIZED_TO_START` — data model remains the canonical planning contract consumed by bounded offline deterministic I001-I045 implementation'
-          )
-
-          # Clarification: explicitly supersede planning as current state, preserving historical clarification/planning provenance.
-          replace_once(
-              'specs/007-sft-v1/clarification.md',
-              '**Status:** CANONICAL via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`; clarification authority superseded 2026-08-27 by current `AUTHORIZED_TO_PLAN` in `specs/README.md`',
-              '**Status:** CANONICAL via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`; clarification authority was superseded by historical `AUTHORIZED_TO_PLAN`, which is itself superseded 2026-08-27 by current `AUTHORIZED_TO_START` in `specs/README.md`'
-          )
-
-          # Specification: current lifecycle points to implementation authorization while retaining historical stage lineage.
-          replace_once(
-              'specs/007-sft-v1/spec.md',
-              '**Status**: Specification CANONICAL at PR #46 merge `645da20`; originally drafted under `AUTHORIZED_TO_SPECIFY` [**superseded 2026-08-27** — current stage is `AUTHORIZED_TO_PLAN` per the "Spec 007 planning authorization record" in `specs/README.md`]',
-              '**Status**: Specification CANONICAL at PR #46 merge `645da20`; originally drafted under `AUTHORIZED_TO_SPECIFY`; historical `AUTHORIZED_TO_PLAN` is now [**superseded 2026-08-27** — current stage is `AUTHORIZED_TO_START` per the "Spec 007 implementation authorization record" in `specs/README.md`]'
-          )
-          replace_once(
-              'specs/007-sft-v1/spec.md',
-              '**Lifecycle authority**: CURRENT=`AUTHORIZED_TO_PLAN` per `specs/README.md`; historical specification-artifact boundary=`SPECIFY ONLY`; clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`',
-              '**Lifecycle authority**: CURRENT=`AUTHORIZED_TO_START` per `specs/README.md`, limited to offline deterministic I001-I045 implementation; historical planning stage=`AUTHORIZED_TO_PLAN`; historical specification-artifact boundary=`SPECIFY ONLY`; clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`'
-          )
-
-          # Guard against the stale exact phrases identified by review. Historical mentions may remain only when explicitly labeled historical/superseded.
-          checks = {
-              'specs/007-sft-v1/quickstart.md': ['**Current lifecycle:** `AUTHORIZED_TO_PLAN`', 'SPEC007=AUTHORIZED_TO_PLAN', 'Permitted under current planning authority:'],
-              'specs/007-sft-v1/analysis.md': ['**Lifecycle:** `AUTHORIZED_TO_PLAN`'],
-              'specs/007-sft-v1/plan.md': ['**Lifecycle:** `AUTHORIZED_TO_PLAN`'],
-              'specs/007-sft-v1/data-model.md': ['**Lifecycle:** `AUTHORIZED_TO_PLAN`'],
-              'specs/007-sft-v1/clarification.md': ['by current `AUTHORIZED_TO_PLAN`'],
-              'specs/007-sft-v1/spec.md': ['CURRENT=`AUTHORIZED_TO_PLAN`', 'current stage is `AUTHORIZED_TO_PLAN`'],
-              'docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1.md': ['**Current lifecycle:** Spec 007 `AUTHORIZED_TO_PLAN`'],
-          }
-          for path, stale in checks.items():
-              text = Path(path).read_text(encoding='utf-8')
-              for token in stale:
-                  if token in text:
-                      raise SystemExit(f'{path}: stale current-authority token remains: {token}')
-          PY
-          git diff --check
-      - name: Commit lifecycle reconciliation
+          git config user.name "commandMed Validation"
+          git config user.email "validation@commandmed.invalid"
+      - name: Verify exact head
         run: |
-          git config user.name "commandMed Governance"
-          git config user.email "governance@commandmed.invalid"
-          git add \
-            docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1.md \
-            specs/007-sft-v1/quickstart.md \
-            specs/007-sft-v1/analysis.md \
-            specs/007-sft-v1/plan.md \
-            specs/007-sft-v1/data-model.md \
-            specs/007-sft-v1/clarification.md \
-            specs/007-sft-v1/spec.md
-          git diff --cached --check
-          git commit -m "fix(spec007): reconcile current implementation lifecycle surfaces"
-          git push origin HEAD:auth/007-implementation-start
+          test "$(git rev-parse HEAD)" = "01ff5c1586804913b41599bf2f7466b0c6f323cd"
+          echo "EXACT_HEAD=$(git rev-parse HEAD)"
+      - name: Compile
+        run: |
+          python3 -m compileall -q src tests
+          echo "COMPILEALL=PASS"
+      - name: Full tests
+        run: python3 -m pytest -q
+      - name: Diff check
+        run: |
+          git diff --check 947f3aba4d4316e21470ac26352d96e3bfb74ae6 01ff5c1586804913b41599bf2f7466b0c6f323cd
+          echo "GIT_DIFF_CHECK=PASS"
+      - name: Verify no stale current lifecycle claims
+        run: |
+          ! grep -F '**Current lifecycle:** `AUTHORIZED_TO_PLAN`' specs/007-sft-v1/quickstart.md
+          ! grep -F 'SPEC007=AUTHORIZED_TO_PLAN' specs/007-sft-v1/quickstart.md
+          ! grep -F '**Lifecycle:** `AUTHORIZED_TO_PLAN`' specs/007-sft-v1/analysis.md
+          ! grep -F '**Lifecycle:** `AUTHORIZED_TO_PLAN`' specs/007-sft-v1/plan.md
+          ! grep -F '**Lifecycle:** `AUTHORIZED_TO_PLAN`' specs/007-sft-v1/data-model.md
+          ! grep -F 'by current `AUTHORIZED_TO_PLAN`' specs/007-sft-v1/clarification.md
+          ! grep -F 'CURRENT=`AUTHORIZED_TO_PLAN`' specs/007-sft-v1/spec.md
+          ! grep -F 'current stage is `AUTHORIZED_TO_PLAN`' specs/007-sft-v1/spec.md
+          ! grep -F '**Current lifecycle:** Spec 007 `AUTHORIZED_TO_PLAN`' docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1.md
+          echo "STALE_CURRENT_LIFECYCLE_CLAIMS=0"
