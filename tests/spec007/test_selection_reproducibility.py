@@ -37,12 +37,12 @@ def separately_authorized_policy() -> dict[str, object]:
         "policy_id": "checkpoint-policy:authorized:v1",
         "selection_mode": "SEPARATELY_AUTHORIZED_NON_QUARANTINED_SELECTION",
         "checkpoint_rule": "MAXIMIZE_PRE_REGISTERED_DEV_METRIC",
-        "selection_source_ids": ["eval:dev-safe"],
+        "selection_source_ids": ["MODEL_SELECTION_DEV_SET"],
         "selection_source_purpose_authorization": {
             "authorization_id": "auth:sft-checkpoint-selection:v1",
             "authority_record_id": "authority:founder:v1",
             "exact_purpose": "SFT_CHECKPOINT_SELECTION",
-            "authorized_source_ids": ["eval:dev-safe"],
+            "authorized_source_ids": ["MODEL_SELECTION_DEV_SET"],
             "quarantine_disposition": "VERIFIED_NON_QUARANTINED_FOR_SFT_CHECKPOINT_SELECTION",
             "provenance_validation_status": "PASS",
             "frozen_before_run": True,
@@ -154,7 +154,7 @@ def test_fixed_checkpoint_selection_policy_is_default_fail_closed_mode() -> None
 
 def test_fixed_policy_rejects_any_ranking_source_or_authorization() -> None:
     policy = fixed_policy()
-    policy["selection_source_ids"] = ["eval:dev-safe"]
+    policy["selection_source_ids"] = ["MODEL_SELECTION_DEV_SET"]
     policy["selection_source_purpose_authorization"] = separately_authorized_policy()[
         "selection_source_purpose_authorization"
     ]
@@ -165,7 +165,7 @@ def test_fixed_policy_rejects_any_ranking_source_or_authorization() -> None:
 
 def test_separately_authorized_selection_requires_exact_source_set_equality() -> None:
     policy = separately_authorized_policy()
-    policy["selection_source_ids"] = ["eval:different"]
+    policy["selection_source_ids"] = ["PUBLIC_BENCHMARK_DEV_SPLITS"]
     errors = validate_checkpoint_selection_policy(policy)
     assert any("source set" in error.lower() for error in errors)
 
@@ -198,19 +198,14 @@ def test_protected_ranking_inputs_fail_without_separate_authority(source_class: 
     assert decision["reason_code"] == "RANKING_SOURCE_NOT_AUTHORIZED"
 
 
-@pytest.mark.parametrize(
-    "source_class",
-    ["PROTECTED_EVALUATION", "LLM_JUDGE", "HUMAN_INSPECTION", "ABORT_SENTINEL"],
-)
-def test_protected_ranking_input_requires_exact_authorized_source_identity(source_class: str) -> None:
+@pytest.mark.parametrize("source_class", ["LLM_JUDGE", "HUMAN_INSPECTION"])
+def test_nonprotected_ranking_input_requires_canonical_authorized_source_identity(
+    source_class: str,
+) -> None:
     policy = separately_authorized_policy()
-    policy["selection_source_ids"] = ["source:protected"]
-    authorization = policy["selection_source_purpose_authorization"]
-    assert isinstance(authorization, dict)
-    authorization["authorized_source_ids"] = ["source:protected"]
     decision = validate_checkpoint_ranking_inputs(
         policy,
-        [{"source_id": "source:protected", "source_class": source_class}],
+        [{"source_id": "MODEL_SELECTION_DEV_SET", "source_class": source_class}],
     )
     assert decision["allowed"] is True
     assert decision["reason_code"] == "SEPARATELY_AUTHORIZED_RANKING_INPUTS"
