@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"commandmed://spec007/candidate-evidence-record/v1",
+  "title":"Spec007 CandidateEvidenceRecord",
+  "type":"object","additionalProperties":false,
+  "required":["candidate_id","checkpoint_identity","license_evidence_id","parameter_accounting","package_accounting","medical_quality_evidence","patient_conversation_evidence","abstention_evidence","arabic_english_evidence","tool_use_evidence","general_capability_evidence","training_tooling_evidence","resource_evidence","runtime_compatibility_evidence","known_limitations","qualification_reason_codes","pi_recommendation"],
+  "properties":{"candidate_id":{"type":"string","minLength":1},"checkpoint_identity":{"type":"string","minLength":1},"license_evidence_id":{"type":"string","minLength":1},"parameter_accounting":{"type":"object"},"package_accounting":{"type":"object"},"medical_quality_evidence":{"type":"object"},"patient_conversation_evidence":{"type":"object"},"abstention_evidence":{"type":"object"},"arabic_english_evidence":{"type":"object"},"tool_use_evidence":{"type":"object"},"general_capability_evidence":{"type":"object"},"training_tooling_evidence":{"type":"object"},"resource_evidence":{"type":"object"},"runtime_compatibility_evidence":{"type":"object"},"known_limitations":{"type":"array","items":{"type":"string"}},"qualification_reason_codes":{"type":"array","items":{"type":"string","minLength":1}},"pi_recommendation":{"const":"NONE"}}
+}
