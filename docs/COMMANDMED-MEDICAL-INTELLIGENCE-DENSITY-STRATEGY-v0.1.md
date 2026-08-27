@@ -6,6 +6,9 @@
 **Current lifecycle:** Spec 007 `AUTHORIZED_TO_START` — bounded offline deterministic I001-I045 implementation only; this strategy itself grants no execution authority
 **Training authority:** NONE
 **Model selection authority:** FOUNDER + CHATGPT ONLY
+**Current Core/Nano interpretation:** `docs/COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1-EDITORIAL-AMENDMENT-2026-08-27.md` supersedes the approximate parameter-band interpretation in §4.1–§4.2 while preserving this original text as historical planning evidence.
+
+> **Editorial notice (2026-08-27):** Read §4.1–§4.2 together with the amendment above. `CORE=CAPABILITY_SAFETY_PRODUCT_CONTRACT`; `MASS_REACH_CORE=CANDIDATE_SATISFYING_CURRENT_FROZEN_SPEC005_CORE_CONTRACT`; `NANO` is a future separately scoped derived/distilled/compressed tier. Parameter bands are research hypotheses, not Core/Nano definitions and not overrides of frozen Spec 005 resource gates.
 
 ## 1. Purpose
 
@@ -66,6 +69,8 @@ A model belongs to a commandMed record class by **actual delivered resource foot
 
 ### 4.1 commandMed Core
 
+> **Historical wording notice:** the approximate `2–4B` phrase below is superseded for current interpretation by `COMMANDMED-MEDICAL-INTELLIGENCE-DENSITY-STRATEGY-v0.1-EDITORIAL-AMENDMENT-2026-08-27.md`. Core is defined by the capability/safety/product/resource contract, not a parameter-count band.
+
 Primary research target: the strongest compact general Health & Medical core that can plausibly live in the roughly 2–4B-class frontier or an equivalently small delivered-resource class.
 
 The exact backbone is not selected here.
@@ -84,6 +89,8 @@ Core must optimize simultaneously for:
 - safe quantization/compression headroom.
 
 ### 4.2 commandMed Nano
+
+> **Historical wording notice:** the approximate `0.6–1.5B` phrase below is superseded for current interpretation by the same editorial amendment. Nano is a future separately scoped tier defined by an explicit resource contract and capability-retention target, not parameter count alone.
 
 Nano is a later hypothesis, not part of Spec 007 SFT V1.
 
@@ -532,7 +539,7 @@ This strategy changes **what later specs should test**, not their current author
 | 012 | real-device Pareto frontier + QAD experiment |
 | 013 | Arabic gap closure and tokenizer-efficiency evidence |
 | 015 | human utility/communication validation |
-| 017 | independent claims/record audit + HF/paper evidence package |
+| 017 | independent claims/record/HF/paper audit |
 
 No downstream spec is authorized by this table.
 
