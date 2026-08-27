@@ -7,8 +7,6 @@ execution is performed.
 
 from __future__ import annotations
 
-from copy import deepcopy
-
 import pytest
 
 from src.commandmed.spec007.activation import (
@@ -17,10 +15,14 @@ from src.commandmed.spec007.activation import (
 )
 from src.commandmed.spec007.foundation import parse_json_object, validate_closed_object
 from src.commandmed.spec007.intelligence import validate_resource_accounting_record
-from src.commandmed.spec007.preservation import validate_capability_preservation_binding
+from src.commandmed.spec007.preservation import (
+    evaluate_abort_sentinel_effect,
+    validate_capability_preservation_binding,
+)
 from src.commandmed.spec007.selection import validate_checkpoint_ranking_inputs
 from src.commandmed.spec007.sequence import (
     evaluate_truncation_admission,
+    validate_loss_mask_policy,
     validate_packing_truncation_policy,
 )
 from src.commandmed.spec007.snapshot import build_dataset_snapshot
@@ -34,10 +36,13 @@ from tests.spec007.test_activation_control_plane import (
     training_config,
 )
 from tests.spec007.test_intelligence_failure_contracts import resource_record
-from tests.spec007.test_preservation_contracts import valid_capability_binding
+from tests.spec007.test_preservation_contracts import (
+    valid_abort_policy,
+    valid_capability_binding,
+)
 from tests.spec007.test_quarantine_snapshot import rendered_record
 from tests.spec007.test_selection_reproducibility import separately_authorized_policy
-from tests.spec007.test_sequence_contracts import valid_packing_policy
+from tests.spec007.test_sequence_contracts import valid_loss_policy, valid_packing_policy
 
 
 def _authorized_preflight_inputs() -> tuple[dict[str, object], dict[str, object]]:
@@ -60,7 +65,6 @@ def _authorized_preflight_inputs() -> tuple[dict[str, object], dict[str, object]
 def test_snapshot_rejects_prohibited_source_authority_even_with_allowed_split() -> None:
     record = rendered_record("gold-bypass")
     record["source_authority_id"] = "COMMANDMED_CLINICAL_GOLD"
-    # Keep the split apparently train-eligible to prove authority cannot hide behind it.
     record["split_id"] = "VERIFIED_SFT_CURRICULUM_DATA"
     from src.commandmed.spec007.curriculum import compute_curriculum_record_sha256
 
@@ -127,11 +131,21 @@ def test_nested_quarantine_identity_mismatch_blocks_preflight() -> None:
 def test_malformed_dataset_snapshot_blocks_authorized_preflight() -> None:
     manifest, authority = _authorized_preflight_inputs()
     store = component_store()
-    dataset = store["dataset_snapshots"]["dataset:synthetic:v1"]
-    dataset["snapshot_sha256"] = "not-a-canonical-digest"
+    assert preflight_run_manifest(manifest, store, authority)["allowed"] is True
+    store["dataset_snapshots"]["dataset:synthetic:v1"]["snapshot_sha256"] = "BAD"
     decision = preflight_run_manifest(manifest, store, authority)
     assert decision["allowed"] is False
     assert "DATASET_SNAPSHOT_INVALID" in decision["reason_codes"]
+
+
+def test_invalid_resolved_component_blocks_authorized_preflight() -> None:
+    manifest, authority = _authorized_preflight_inputs()
+    store = component_store()
+    assert preflight_run_manifest(manifest, store, authority)["allowed"] is True
+    store["environment_manifests"]["env:synthetic:v1"]["known_nondeterminism"] = "NONE"
+    decision = preflight_run_manifest(manifest, store, authority)
+    assert decision["allowed"] is False
+    assert "COMPONENT_RECORD_INVALID:environment_manifest_id" in decision["reason_codes"]
 
 
 def test_planning_composition_rejects_supplied_component_divergence() -> None:
@@ -178,12 +192,24 @@ def test_malformed_required_context_entries_fail_closed_without_exception() -> N
     assert decision["reason_codes"] == ["INVALID_PACKING_POLICY"]
 
 
+def test_malformed_loss_rule_value_fails_closed_without_exception() -> None:
+    policy = valid_loss_policy()
+    policy["token_class_rules"]["USER"] = ["MASKED"]
+    assert validate_loss_mask_policy(policy)
+
+
 def test_malformed_capability_slices_fail_closed_without_exception() -> None:
     binding = valid_capability_binding()
     binding["required_slices"] = ["SAFETY", ["ARABIC"]]
     errors = validate_capability_preservation_binding(binding)
     assert errors
     assert any("required_slices" in error for error in errors)
+
+
+def test_malformed_abort_effect_fails_closed_without_exception() -> None:
+    decision = evaluate_abort_sentinel_effect(valid_abort_policy(), ["ABORT_RUN"])
+    assert decision["allowed"] is False
+    assert decision["reason_code"] == "EFFECT_NOT_AUTHORIZED"
 
 
 @pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
