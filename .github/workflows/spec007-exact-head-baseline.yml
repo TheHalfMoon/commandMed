@@ -27,6 +27,11 @@ jobs:
       - name: Install pytest only
         run: python -m pip install --disable-pip-version-check pytest
 
+      - name: Configure ephemeral Git identity for fixture plumbing
+        run: |
+          git config user.name "commandMed Validation"
+          git config user.email "validation@commandmed.invalid"
+
       - name: Verify exact head
         run: |
           test "$(git rev-parse HEAD)" = "e69cd9163f36da81d6811184138cca782ce35f7b"
@@ -41,6 +46,7 @@ jobs:
         run: python3 -m pytest -q
 
       - name: Check full planning diff whitespace
+        if: always()
         run: |
           git diff --check 981987390f60302d4c38ae6d54c101aa78c12f4e e69cd9163f36da81d6811184138cca782ce35f7b
           echo "GIT_DIFF_CHECK=PASS"
