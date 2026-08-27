@@ -1,0 +1,622 @@
+# E004 Preconstruction Governance Foundation Candidate Pack — 2026-08-27
+
+**Spec:** 007 SFT V1  
+**Canonical base:** `89c6e177c77806529401a0e788991e5443b68bbd`  
+**Related Spec 005 DAG nodes:** `G1/A5`, `G2/A6`, `G3/A8`, `G4/A12`  
+**Artifact class:** review-only operational candidate extraction from already-frozen architecture  
+**Authority effect:** NONE  
+**Validator input:** NO  
+**Case/content construction:** NO  
+**Personnel assignment:** NO  
+**Acceptance/signature evidence:** NO
+
+This packet prepares a compact operational review surface for four parallel preconstruction-governance nodes. It is subordinate to the frozen Spec 005 Session 11/12 sources and does not replace, weaken, or reinterpret them.
+
+```text
+FROZEN_SPEC005_SOURCES_REMAIN_CONTROLLING=YES
+OMISSION_FROM_THIS_CANDIDATE_RELAXES_FROZEN_SOURCE=NO
+CANDIDATE_TEXT_MAY_OVERRIDE_FROZEN_SOURCE=NO
+CLOSED_SPEC005_CODE_OR_DATA_MUTATED=NO
+NEW_SCHEMA_CREATED=NO
+REAL_GATE_PASS_CREATED=NO
+```
+
+## 1. Current authority boundary
+
+The existing E002/E003 authority is preserved exactly; E004 preflight affects current executability, not the existence of bounded E003 authorization.
+
+```text
+MODEL_WEIGHT_ACCESS_AUTHORITY=AUTHORIZED_E002_FROZEN_PUBLIC_CANDIDATES_ONLY
+MODEL_EXECUTION_AUTHORITY=AUTHORIZED_E003_FROZEN_TOURNAMENT_ONLY
+BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=AUTHORIZED_E003_A15_BOUND_PUBLIC_TOURNAMENT_INPUTS_ONLY
+BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=AUTHORIZED_E003_A15_BOUND_PUBLIC_TOURNAMENT_INPUTS_ONLY
+DEVICE_EXECUTION_AUTHORITY=AUTHORIZED_E003_FROZEN_TOURNAMENT_QUALIFICATION_ONLY
+
+E003_MODEL_EXECUTION=CANNOT_START_WHILE_E004_PREFLIGHT_BLOCKED
+E003_A15_BOUND_BENCHMARK_PAYLOAD_ACCESS_EXECUTION=CANNOT_START_WHILE_REQUIRED_A15_PREFLIGHT_BINDINGS_ARE_INCOMPLETE
+E003_DEVICE_QUALIFICATION_EXECUTION=CANNOT_START_WHILE_REQUIRED_E004_PREEXECUTION_STATE_IS_INCOMPLETE
+```
+
+Authorities absent for this packet remain:
+
+```text
+ARABIC_SELECTION_EVIDENCE_CREATION_AUTHORITY=NONE
+ARABIC_SELECTION_CASE_CONSTRUCTION_AUTHORITY=NONE
+ARABIC_SELECTION_REVIEW_EXECUTION_AUTHORITY=NONE
+PAID_CONTRIBUTOR_OR_REVIEWER_ENGAGEMENT_AUTHORITY=NONE
+PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+PHI_ACCESS_AUTHORITY=NONE
+PROVIDER_GENERATION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+## 2. Candidate state
+
+```text
+G1_A5_OPERATIONAL_TEXT_CANDIDATE=PREPARED_FOR_GOVERNANCE_REVIEW_ONLY
+G2_A6_OPERATIONAL_TEXT_CANDIDATE=PREPARED_FOR_GOVERNANCE_REVIEW_ONLY
+G3_A8_OPERATIONAL_TEXT_CANDIDATE=PREPARED_FOR_GOVERNANCE_REVIEW_ONLY
+G4_A12_OPERATIONAL_TEXT_CANDIDATE=PREPARED_FOR_GOVERNANCE_REVIEW_ONLY
+
+G1_A5_REAL_GATE_PASS=NO
+G2_A6_REAL_GATE_PASS=NO
+G3_A8_REAL_GATE_PASS=NO
+G4_A12_REAL_GATE_PASS=NO
+```
+
+Repository/Qodo/CodeRabbit/Cubic/LLM review of this file is not governance, legal, privacy, clinical, or scientific adoption of any candidate below.
+
+## 3. Controlling sources
+
+```text
+A5_DESIGN=specs/005-base-model-tournament/session-11-q3-contributor-content-rights-instrument-design.md
+A6_DESIGN=specs/005-base-model-tournament/session-11-q4-non-phi-authoring-policy-attestation.md
+A8_DESIGN=specs/005-base-model-tournament/session-11-q5-authoring-review-disagreement-protocol.md
+A12_DESIGN=specs/005-base-model-tournament/session-12-q1-case-change-control-invalid-case-policy.md
+PRECONSTRUCTION_DAG=data/spec005/preconstruction_contract.json
+VALIDATION_SURFACE=src/commandmed/spec005/preconstruction.py
+```
+
+Candidate handles in this file are noncanonical review handles. They are not policy IDs, artifact hashes, signatures, or evidence identities.
+
+```text
+CANDIDATE_HANDLE_IS_CANONICAL_POLICY_ID=NO
+CANDIDATE_HANDLE_IS_CANONICAL_SHA256=NO
+MUTABLE_LATEST_BINDING=PROHIBITED
+```
+
+---
+
+# Part A — G1 / A5 Contributor and Content Rights
+
+## 4. Candidate scope
+
+```text
+A5_CANDIDATE_HANDLE=commandmed-selection-contributor-rights-candidate-v0
+RIGHTS_SCOPE_MUST_COVER_EXACT_DECLARED_USE=DEVELOPMENT_EVALUATION
+RIGHTS_SCOPE_MUST_COVER_PAIR_TRANSLATION_OR_ADAPTATION=YES
+RIGHTS_SCOPE_MUST_COVER_INTERNAL_REVIEW_AND_ADJUDICATION=YES
+CONTRIBUTOR_OWNERSHIP_TRANSFER_REQUIRED=NO
+NONEXCLUSIVE_GRANT_ACCEPTABLE=YES
+```
+
+The candidate grant is bounded to selection-development/evaluation use. It does not silently create broader rights.
+
+```text
+PUBLIC_REDISTRIBUTION_RIGHT_AUTO_GRANTED=NO
+TRAINING_OR_ADAPTATION_RIGHT_AUTO_GRANTED=NO
+TEACHER_OR_SYNTHETIC_GENERATION_RIGHT_AUTO_GRANTED=NO
+COMMERCIAL_DEPLOYMENT_RIGHT_AUTO_GRANTED=NO
+```
+
+## 5. Required contributor representations
+
+Before contributed content can enter a future governed authoring workspace intended for the selection suite, the executed instrument must require evidence equivalent to:
+
+```text
+CONTRIBUTOR_HAS_AUTHORITY_TO_SUBMIT=YES
+CONTENT_IS_NOT_COPIED_FROM_PRIVATE_GOLD=YES
+CONTENT_IS_NOT_DERIVED_FROM_PRIVATE_GOLD_CASE_CONTENT=YES
+CONTENT_IS_NOT_COPIED_FROM_A_PROHIBITED_PUBLIC_TEST_SPLIT=YES
+CONTENT_DOES_NOT_CONTAIN_REAL_PATIENT_PHI_OR_RESTRICTED_CLINICAL_DATA=YES
+CONTENT_DOES_NOT_CONTAIN_CONFIDENTIAL_EMPLOYER_OR_CLIENT_INFORMATION=YES
+THIRD_PARTY_MATERIAL_IS_IDENTIFIED_AND_RIGHTS_BOUND=YES_IF_PRESENT
+```
+
+False, missing, unresolved, or materially inconsistent evidence fails closed.
+
+## 6. Third-party, derivative, Gold, and rights-state rules
+
+```text
+UNDECLARED_THIRD_PARTY_MATERIAL=PROHIBITED
+THIRD_PARTY_SOURCE_WITH_UNRESOLVED_RIGHTS=BLOCKED
+THIRD_PARTY_SOURCE_WITH_INCOMPATIBLE_RIGHTS=PROHIBITED
+TRANSLATION_OR_PARAPHRASE_DOES_NOT_CREATE_NEW_RIGHTS=YES
+DERIVATION_RETAINS_PARENT_RIGHTS_RESTRICTIONS=YES
+
+PRIVATE_GOLD_CASE_CONTENT_MAY_BE_A_CONTRIBUTION_SOURCE=NO
+PRIVATE_GOLD_CASE_CONTENT_MAY_BE_A_DERIVATION_PARENT=NO
+PRIVATE_GOLD_CASE_CONTENT_MAY_BE_A_TRANSLATION_SEED=NO
+PRIVATE_GOLD_CASE_CONTENT_MAY_BE_A_PARAPHRASE_SEED=NO
+PRIVATE_GOLD_RUBRICS_OR_ANSWERS_MAY_BE_AUTHORING_SEEDS=NO
+```
+
+Future A5 evidence must map to the existing lineage rights vocabulary without inventing a parallel vocabulary:
+
+```text
+SUPPORTED=exact intended selection-development rights evidenced
+CONDITIONAL=rights depend on unresolved condition; construction use blocked until resolved
+UNRESOLVED=insufficient evidence; blocked
+INCOMPATIBLE=prohibited for intended use
+
+REQUIRED_RIGHTS_STATE=SUPPORTED
+CONDITIONAL_RIGHTS_ALLOWED_TO_ENTER_SCORABLE_SELECTION_SUITE=NO
+UNRESOLVED_RIGHTS_ALLOWED=NO
+INCOMPATIBLE_RIGHTS_ALLOWED=NO
+```
+
+## 7. Identity-bound acceptance evidence
+
+A future acceptance record must be auditable and bind at least:
+
+```text
+instrument_id
+instrument_version
+instrument_canonical_sha256
+contributor_or_participant_reference
+acceptance_evidence_id
+acceptance_timestamp_or_equivalent_audit_sequence
+accepted_declared_use
+rights_scope_codes
+privacy_attestation_state
+private_gold_nonuse_attestation_state
+third_party_material_disclosure_state
+review_status
+```
+
+```text
+PUBLIC_REPO_MUST_STORE_SIGNED_PERSONAL_DOCUMENT=NO
+AUDITABLE_ACCEPTANCE_EVIDENCE_REQUIRED=YES
+```
+
+## 8. A5 versioning, withdrawal, and dispute change control
+
+```text
+INSTRUMENT_VERSION_CHANGE_CREATES_NEW_INSTRUMENT_IDENTITY=YES
+SILENT_IN_PLACE_RIGHTS_SCOPE_REINTERPRETATION=PROHIBITED
+CONTRIBUTION_ACCEPTED_UNDER_OLD_INSTRUMENT_AUTOMATICALLY_INHERITS_BROADER_NEW_RIGHTS=NO
+```
+
+If accepted content later loses usable rights or a valid withdrawal/authority dispute exists:
+
+```text
+SILENT_DELETE_FROM_FROZEN_SUITE=PROHIBITED
+AFFECTED_CONTENT_STATUS=BLOCKED_PENDING_GOVERNED_DISPOSITION
+MATERIAL_SUITE_CHANGE_REQUIRES_NEW_ARTIFACT_IDENTITY=YES
+REVIEW_AND_SELECTION_EVIDENCE_REBIND_REQUIRED=YES
+```
+
+The candidate does not attempt to resolve general legal revocation questions; it only preserves the frozen scientific/governance identity consequences.
+
+## 9. A5 remaining exit evidence
+
+```text
+EXACT_INSTRUMENT_TEXT_CANONICAL=NEEDS_GOVERNANCE_ADOPTION
+EXACT_INSTRUMENT_VERSION_AND_SHA_BOUND=NEEDS_EVIDENCE
+EXACT_DECLARED_SELECTION_USE_COVERED=NEEDS_EVIDENCE
+PAIR_TRANSLATION_ADAPTATION_RIGHTS_COVERED=NEEDS_EVIDENCE
+PRIVATE_GOLD_NONUSE_CLAUSE_PRESENT=NEEDS_EVIDENCE
+NO_PHI_RESTRICTED_DATA_CLAUSE_PRESENT=NEEDS_EVIDENCE
+THIRD_PARTY_PARENT_DISCLOSURE_RULE_PRESENT=NEEDS_EVIDENCE
+IDENTITY_BOUND_ACCEPTANCE_MECHANISM_DEFINED=NEEDS_EVIDENCE
+CHANGE_CONTROL_DEFINED=NEEDS_GOVERNANCE_ADOPTION
+INDEPENDENT_GOVERNANCE_REVIEW_COMPLETE=NEEDS_EVIDENCE
+REAL_CONTRIBUTOR_ACCEPTANCE_RECORDS=NEEDS_EVIDENCE
+```
+
+No contributor recruitment, payment, or authoring is authorized by this candidate.
+
+---
+
+# Part B — G2 / A6 Non-PHI Authoring and Privacy Attestation
+
+## 10. Required privacy state
+
+```text
+A6_CANDIDATE_HANDLE=commandmed-selection-non-phi-authoring-policy-candidate-v0
+REQUIRED_PRIVACY_STATE=NO_PHI_KNOWN
+DEIDENTIFIED_REAL_PATIENT_SOURCE_AUTO_ELIGIBLE=NO
+RESTRICTED_OR_PHI=PROHIBITED
+UNRESOLVED=BLOCKED
+NOT_APPLICABLE_ALLOWED_FOR_CASE_CONTENT=NO
+```
+
+The preferred future route remains fictional/non-patient-identifying clinical scenarios authored from general professional knowledge, not copied real-patient records.
+
+## 11. Required author attestation
+
+```text
+NO_REAL_PATIENT_IDENTIFIER_INCLUDED=YES
+NO_REAL_PATIENT_RECORD_WAS_COPIED_OR_TRANSCRIBED=YES
+NO_RESTRICTED_CLINICAL_DATA_WAS_USED=YES
+NO_CONFIDENTIAL_EMPLOYER_OR_CLIENT_RECORD_WAS_USED=YES
+NO_PRIVATE_GOLD_CASE_CONTENT_WAS_USED=YES
+NO_PROHIBITED_PUBLIC_TEST_CASE_WAS_USED=YES
+THIRD_PARTY_SOURCE_MATERIAL_DISCLOSED=YES_IF_PRESENT
+```
+
+Missing, ambiguous, or conflicting attestation fails closed.
+
+## 12. Prohibited payload/origin classes and clinical-realism boundary
+
+The future policy must prohibit direct or reasonably identifying patient information, including patient names, medical-record identifiers, contact details, precise addresses/locations, patient-specific account/record identifiers, identifying images, patient-specific report/document images, unique record locators, and raw PHI.
+
+```text
+ABSENCE_OF_NAME_ALONE_PROVES_NON_PHI=NO
+PUBLICLY_VISIBLE_CLINICAL_STORY_AUTO_SAFE=NO
+PSEUDONYMIZATION_OF_ONE_REAL_PATIENT_EQUALS_ORIGINAL_FICTIONAL_CASE=NO
+MINOR_DETAIL_PERTURBATION_OF_REAL_CASE_ALLOWED=NO
+```
+
+Permitted future design methods, only after separate construction authorization, may include original fictional scenarios from general clinical knowledge, independently authored composites with no patient traceability, abstracted clinical patterns without source-patient details, and public non-case clinical standards/guidelines with rights provenance.
+
+## 13. Arabic/English pair privacy rule
+
+```text
+ROOT_TASK_PRIVACY_ATTESTATION_REQUIRED=YES
+ARABIC_VARIANT_PRIVACY_CHECK_REQUIRED=YES
+ENGLISH_VARIANT_PRIVACY_CHECK_REQUIRED=YES
+TRANSLATION_MAY_REINTRODUCE_IDENTIFYING_DETAIL=YES_POSSIBLE_AND_MUST_BE_REVIEWED
+PAIR_ACCEPTANCE_REQUIRES_BOTH_VARIANTS_PRIVACY_CLEAR=YES
+```
+
+## 14. Incident/discovery rule
+
+If suspected PHI, restricted data, or patient-identifying provenance is discovered:
+
+```text
+STOP_USE_OF_AFFECTED_CONTENT=REQUIRED
+AFFECTED_CONTENT_STATUS=BLOCKED
+NO_SCORING_OR_SELECTION_USE=REQUIRED
+NO_FURTHER_PROPAGATION=REQUIRED
+INCIDENT_METADATA_MUST_NOT_REPEAT_THE_PHI=YES
+GOVERNED_PRIVACY_REVIEW_REQUIRED=YES
+```
+
+If removal or replacement materially changes a frozen suite:
+
+```text
+SILENT_PATCH=PROHIBITED
+NEW_SUITE_ARTIFACT_IDENTITY_REQUIRED=YES
+AFFECTED_REVIEW_BINDINGS_MUST_BE_RECOMPUTED=YES
+FRESH_ALL_CANDIDATE_EVALUATION_REQUIRED_IF_SELECTION_EVIDENCE_ALREADY_EXISTS=YES
+```
+
+The rerun rule is comparative and suite-wide when prior selection evidence exists; it is not satisfied by rerunning only an affected or preferred candidate.
+
+## 15. Gold/provider boundaries
+
+```text
+PRIVATE_GOLD_CASE_CONTENT_AS_AUTHORING_SOURCE=PROHIBITED
+PRIVATE_GOLD_CASE_CONTENT_AS_PRIVACY_CLEARED_SOURCE=PROHIBITED
+PRIVATE_GOLD_TRANSLATION_OR_PARAPHRASE_AS_SELECTION_CASE=PROHIBITED
+
+EXTERNAL_MODEL_OR_PROVIDER_CASE_AUTHORING=NOT_AUTHORIZED
+EXTERNAL_MODEL_OR_PROVIDER_PHI_SCREENING=NOT_AUTHORIZED
+MODEL_OUTPUT_AS_AUTHORING_SOURCE=NOT_AUTHORIZED
+PROVIDER_GENERATION_AUTHORITY=NONE
+```
+
+## 16. A6 remaining exit evidence
+
+```text
+EXACT_NON_PHI_POLICY_CANONICAL=NEEDS_GOVERNANCE_ADOPTION
+POLICY_VERSION_AND_CANONICAL_SHA256=NEEDS_EVIDENCE
+AUTHOR_ATTESTATION_MECHANISM_IMPLEMENTED=NEEDS_EVIDENCE
+PAIR_LEVEL_PRIVACY_REVIEW_OPERATIONAL=NEEDS_EVIDENCE
+INDEPENDENT_GOVERNANCE_OR_PRIVACY_REVIEW=NEEDS_EVIDENCE
+REAL_ATTESTATION_RECORDS=NEEDS_EVIDENCE
+```
+
+---
+
+# Part C — G3 / A8 Authoring, Review, Acceptance, and Disagreement
+
+## 17. Independence and minimum review structure
+
+```text
+A8_CANDIDATE_HANDLE=commandmed-selection-pair-review-protocol-candidate-v0
+AUTHOR_MAY_SOLE_ACCEPT_OWN_CASE=NO
+PAIR_ADAPTER_MAY_SOLE_ACCEPT_OWN_PAIR=NO
+AUTHOR_MAY_SERVE_AS_FINAL_REVIEWER_FOR_OWN_CASE=NO
+PAIR_ADAPTER_MAY_SERVE_AS_FINAL_REVIEWER_FOR_OWN_PAIR=NO
+
+MINIMUM_INDEPENDENT_FINAL_CLINICAL_REVIEWERS_PER_PAIR=2
+REVIEWER_1_INDEPENDENT_OF_AUTHOR=YES
+REVIEWER_2_INDEPENDENT_OF_AUTHOR=YES
+REVIEWER_1_INDEPENDENT_OF_PAIR_ADAPTER=YES
+REVIEWER_2_INDEPENDENT_OF_PAIR_ADAPTER=YES
+AT_LEAST_ONE_REVIEWER_NATIVE_ARABIC_SPEAKING_CLINICAL_PROFESSIONAL=YES
+BILINGUAL_CLINICAL_COMPARISON_COMPETENCE_REQUIRED_ACROSS_REVIEW_PAIR=YES
+REGIONAL_OR_DIALECT_COMPETENCE_REQUIRED_WHERE_SEMANTICALLY_APPLICABLE=YES
+```
+
+Exact reviewer identities remain unresolved. This packet appoints nobody.
+
+## 18. Gold and candidate-result firewalls
+
+```text
+PRIOR_PRIVATE_GOLD_CASE_CONTENT_EXPOSURE_FOR_SELECTION_AUTHOR=PROHIBITED
+PRIOR_PRIVATE_GOLD_CASE_CONTENT_EXPOSURE_FOR_PAIR_ADAPTER=PROHIBITED
+PRIOR_PRIVATE_GOLD_CASE_CONTENT_EXPOSURE_FOR_FINAL_REVIEWER=PROHIBITED
+PRIOR_PRIVATE_GOLD_CASE_CONTENT_EXPOSURE_FOR_ADJUDICATOR=PROHIBITED
+ACTUAL_PRIVATE_GOLD_CASE_CONTENT_EXPOSURE_IS_CONTROLLING=YES
+
+CANDIDATE_RESULTS_AVAILABLE_DURING_INITIAL_AUTHORING=NO
+CANDIDATE_RESULTS_AVAILABLE_DURING_INITIAL_PAIR_REVIEW=NO
+CANDIDATE_RESULTS_AVAILABLE_TO_ADJUDICATOR_BEFORE_SUITE_FREEZE=NO
+CANDIDATE_ERROR_ANALYSIS_USED_TO_REWRITE_INITIAL_SUITE=PROHIBITED
+PREFERRED_CANDIDATE_WEAKNESS_USED_TO_ADD_OR_REMOVE_CASES=PROHIBITED
+```
+
+## 19. Required review dimensions
+
+Each final reviewer must independently assess at least clinical correctness, clinical plausibility/internal coherence, intended role/use-context fit, primary coverage-anchor fit, Arabic-English clinical semantic equivalence, safety-relevant meaning equivalence, no material information gain/loss, register/language appropriateness, local medication/clinical nomenclature where applicable, rights/privacy/provenance prerequisites, no Private-Gold derivation indicator, and scoring/expected-behavior clarity where applicable.
+
+Clinical review does not replace rights/privacy/provenance review.
+
+## 20. Individual reviewer dispositions and pair acceptance
+
+The frozen individual-review vocabulary is:
+
+```text
+ACCEPT
+REVISE
+REJECT
+BLOCKED
+```
+
+```text
+FINAL_PAIR_ACCEPTANCE_REQUIRES_TWO_INDEPENDENT_ACCEPT_DISPOSITIONS=YES
+ONE_ACCEPT_PLUS_ONE_REVISE=NOT_ACCEPTED
+ONE_ACCEPT_PLUS_ONE_REJECT=NOT_ACCEPTED
+ONE_ACCEPT_PLUS_ONE_BLOCKED=NOT_ACCEPTED
+TWO_REVISE=NOT_ACCEPTED
+ANY_REJECT=NOT_ACCEPTED_PENDING_GOVERNED_DISPOSITION
+ANY_BLOCKED=BLOCKED
+```
+
+Materially revised content requires fresh review on the revised identity; prior `ACCEPT` does not silently transfer.
+
+## 21. Disagreement and adjudication
+
+```text
+INITIAL_MATERIAL_DISAGREEMENT=NOT_ACCEPTED
+ONE_BOUNDED_REVIEWER_CLARIFICATION_EXCHANGE_ALLOWED=YES
+UNRESOLVED_MATERIAL_DISAGREEMENT_REQUIRES_INDEPENDENT_ADJUDICATOR=YES
+ADJUDICATOR_INDEPENDENT_OF_AUTHOR=YES
+ADJUDICATOR_INDEPENDENT_OF_PAIR_ADAPTER=YES
+ADJUDICATOR_PRIVATE_GOLD_CASE_EXPOSURE_PROHIBITED=YES
+```
+
+The adjudicator may choose only:
+
+```text
+ACCEPT_AFTER_REASONED_RECONCILIATION
+REVISE
+REJECT
+BLOCKED
+```
+
+`ACCEPT_AFTER_REASONED_RECONCILIATION` is valid only when a recorded rationale addresses the material disagreement and binds the exact content identity reviewed.
+
+```text
+ADJUDICATED_ACCEPTANCE_RECORDED_RATIONALE_REQUIRED=YES
+ADJUDICATED_ACCEPTANCE_EXACT_CONTENT_IDENTITY_BINDING_REQUIRED=YES
+SIMPLE_MAJORITY_VOTE_WITHOUT_REASONED_RECONCILIATION=PROHIBITED
+FOUNDER_TIE_BREAK_ON_CLINICAL_CORRECTNESS=PROHIBITED
+AUTHOR_TIE_BREAK=PROHIBITED
+```
+
+## 22. Distinct final `ReviewBinding` vocabulary
+
+The existing `src/commandmed/spec005/preconstruction.py` final binding vocabulary remains separate:
+
+```text
+ACCEPTED
+REJECTED
+ESCALATED_FOR_ADJUDICATION
+```
+
+This candidate does not create or silently define a mapping between individual reviewer/adjudicator outcomes and final `ReviewBinding` values. Any future mapping must follow then-canonical governance and validator semantics.
+
+## 23. A8 remaining exit evidence
+
+```text
+EXACT_REVIEW_PROTOCOL_CANONICAL=NEEDS_GOVERNANCE_ADOPTION
+REVIEW_PROTOCOL_VERSION_AND_CANONICAL_SHA256=NEEDS_EVIDENCE
+REVIEWER_ASSIGNMENT_IDENTITIES=NEEDS_EVIDENCE
+PRIVATE_GOLD_NONEXPOSURE_BINDINGS=NEEDS_EVIDENCE
+TWO_INDEPENDENT_REAL_REVIEW_DISPOSITIONS_PER_PAIR=NEEDS_EVIDENCE
+ADJUDICATION_RECORDS_IF_REQUIRED=NEEDS_EVIDENCE
+FINAL_REVIEW_BINDINGS=NEEDS_EVIDENCE
+```
+
+---
+
+# Part D — G4 / A12 Case Change Control and Invalid-Case Policy
+
+## 24. Objective invalidity only
+
+A case cannot be invalidated because a model found it difficult, a preferred candidate failed, or a score was surprising.
+
+```text
+INVALIDITY_REASON_OTHER_WITHOUT_RECORDED_JUSTIFICATION=PROHIBITED
+INVALIDITY_REASON_MODEL_FOUND_IT_HARD=PROHIBITED
+INVALIDITY_REASON_PREFERRED_CANDIDATE_FAILED=PROHIBITED
+INVALIDITY_REASON_SCORE_WAS_SURPRISING=PROHIBITED
+```
+
+## 25. Lifecycle and scoring admission
+
+Minimum lifecycle states remain:
+
+```text
+DRAFT
+UNDER_REVIEW
+ACCEPTED_UNFROZEN
+FROZEN_ACTIVE
+BLOCKED_INVALID
+SUPERSEDED
+RETIRED_WITHOUT_REPLACEMENT
+```
+
+Fail-closed scoring rules:
+
+```text
+DRAFT_OR_UNDER_REVIEW_MAY_ENTER_SELECTION_SCORING=NO
+BLOCKED_INVALID_MAY_ENTER_SELECTION_SCORING=NO
+SUPERSEDED_MAY_ENTER_NEW_SELECTION_SCORING=NO
+RETIRED_WITHOUT_REPLACEMENT_MAY_ENTER_SELECTION_SCORING=NO
+FROZEN_ACTIVE_REQUIRES_ALL_PREDECLARED_ACCEPTANCE_GATES=YES
+```
+
+## 26. Material change and identity
+
+A change is material if it may affect scientific, clinical, scoring, provenance, privacy, rights, contamination, language-pair, coverage-anchor, statistical-stratum, root/pair relationship, or governance meaning.
+
+For every material change:
+
+```text
+NEW_CONTENT_ARTIFACT_IDENTITY_REQUIRED=YES
+NEW_CASE_OR_PAIR_VERSION_REQUIRED=YES
+PRIOR_FINAL_REVIEW_ACCEPTANCE_AUTO_TRANSFER=NO
+FRESH_REQUIRED_REVIEW_ON_NEW_IDENTITY=YES
+PROVENANCE_CHANGE_RECORD_REQUIRED=YES
+```
+
+Only a separately canonical deterministic normalization rule proven not to alter semantics may preserve identity.
+
+```text
+FREE_TEXT_EDIT_PRESERVES_CONTENT_IDENTITY_BY_DEFAULT=NO
+TRANSLATION_EDIT_PRESERVES_PAIR_IDENTITY_BY_DEFAULT=NO
+PUNCTUATION_CHANGE_ALWAYS_NONMATERIAL=NO
+```
+
+## 27. Pre-freeze and post-freeze correction
+
+```text
+PRE_FREEZE_MATERIAL_REPAIR_ALLOWED_IN_PRINCIPLE=YES
+PRE_FREEZE_MATERIAL_REPAIR_REQUIRES_NEW_CONTENT_IDENTITY=YES
+PRE_FREEZE_MATERIAL_REPAIR_REQUIRES_FRESH_REQUIRED_REVIEW=YES
+PRE_FREEZE_MATERIAL_REPAIR_MAY_BYPASS_RIGHTS_PRIVACY_PROVENANCE_RECHECK=NO
+```
+
+After suite freeze and before candidate-result exposure, objective defects require fail-closed disposition:
+
+```text
+SILENT_IN_PLACE_PATCH=PROHIBITED
+SILENT_CASE_REMOVAL=PROHIBITED
+SILENT_REPLACEMENT=PROHIBITED
+AFFECTED_CASE_STATUS=BLOCKED_INVALID
+INVALIDITY_RECORD_REQUIRED=YES
+POST_FREEZE_CONTENT_SET_CHANGE_REQUIRES_NEW_SUITE_IDENTITY=YES
+POST_FREEZE_STATISTICAL_RECHECK_REQUIRED=YES
+POST_FREEZE_COVERAGE_RECHECK_REQUIRED=YES
+```
+
+A replacement must satisfy the same predeclared statistical slot, coverage anchor, role/use context, full rights/privacy/provenance gates, and full authoring/review gates, and receive new content/suite identities.
+
+```text
+CANDIDATE_SPECIFIC_REPLACEMENT=PROHIBITED
+REPLACEMENT_CHOSEN_TO_HELP_PREFERRED_CANDIDATE=PROHIBITED
+REPLACEMENT_CHOSEN_TO_REDUCE_OBSERVED_FAILURE_RATE=PROHIBITED
+REPLACEMENT_CHOSEN_AFTER_COMPARING_CANDIDATE_RESULTS=PROHIBITED
+```
+
+If no replacement satisfies the frozen slot without changing the statistical design, governed redesign is required; requirements cannot be reduced for convenience.
+
+## 28. Post-result invalidity
+
+```text
+POST_RESULT_INVALIDITY_DISCOVERY_MAY_BE_IGNORED=NO
+POST_RESULT_SILENT_CASE_REMOVAL=PROHIBITED
+POST_RESULT_SILENT_CASE_REPAIR=PROHIBITED
+POST_RESULT_CANDIDATE_SPECIFIC_EXCLUSION=PROHIBITED
+POST_RESULT_RESULT_AWARE_REPLACEMENT=PROHIBITED
+POST_RESULT_INVALIDITY_REVIEW_MUST_USE_CASE_CONTRACT_EVIDENCE=YES
+PREFERRED_CANDIDATE_IDENTITY_MAY_JUSTIFY_INVALIDITY=NO
+CANDIDATE_SCORE_DIRECTION_MAY_JUSTIFY_INVALIDITY=NO
+```
+
+If objective invalidity is confirmed after results exist:
+
+```text
+AFFECTED_FROZEN_SUITE_IDENTITY_REMAINS_HISTORICAL_AND_REPRODUCIBLE=YES
+NEW_CORRECTED_SUITE_IDENTITY_REQUIRED=YES
+OLD_RESULTS_AUTOMATICALLY_TRANSFER_TO_NEW_SUITE=NO
+FRESH_ALL_CANDIDATE_EVALUATION_ON_NEW_SUITE_REQUIRED=YES
+SELECTIVE_RERUN_OF_ONLY_AFFECTED_OR_PREFERRED_CANDIDATE=PROHIBITED
+```
+
+Candidate output failure does not by itself prove case invalidity or authorize replacement/sample replenishment.
+
+## 29. Rights/privacy/provenance/contamination degradation
+
+```text
+RIGHTS_STATE_BECOMES_CONDITIONAL_OR_UNRESOLVED=BLOCKED_PENDING_RESOLUTION
+RIGHTS_STATE_BECOMES_INCOMPATIBLE=PROHIBITED_FOR_SELECTION_USE
+PRIVACY_STATE_BECOMES_UNRESOLVED=BLOCKED
+PRIVACY_STATE_BECOMES_RESTRICTED_OR_PHI=PROHIBITED_FOR_CURRENT_SELECTION_ROUTE
+PROVENANCE_OR_BINDING_BECOMES_UNRESOLVED=BLOCKED
+PRIVATE_GOLD_DERIVATION_DISCOVERED=PROHIBITED
+CONTAMINATION_BLOCK_DISCOVERED=BLOCKED
+```
+
+No downstream score, reviewer preference, or candidate result can waive these blockers.
+
+## 30. A12 remaining exit evidence
+
+```text
+EXACT_CHANGE_CONTROL_POLICY_CANONICAL=NEEDS_GOVERNANCE_ADOPTION
+POLICY_VERSION_AND_CANONICAL_SHA256=NEEDS_EVIDENCE
+INVALIDITY_RECORD_MECHANISM=NEEDS_EVIDENCE
+LIFECYCLE_STATE_BINDING_MECHANISM=NEEDS_EVIDENCE
+MATERIAL_CHANGE_IDENTITY_REBINDING_MECHANISM=NEEDS_EVIDENCE
+STATISTICAL_AND_COVERAGE_RECHECK_BINDING=NEEDS_EVIDENCE
+INDEPENDENT_GOVERNANCE_REVIEW_COMPLETE=NEEDS_EVIDENCE
+REAL_CASE_CHANGE_CONTROL_RECORDS=NEEDS_EVIDENCE
+```
+
+---
+
+# Part E — Combined fail-closed result
+
+## 31. What this packet changes
+
+It reduces ambiguity by making the already-frozen operational constraints easy to review together. It does not create executable evidence or satisfy any real preconstruction gate.
+
+```text
+G1_A5_CANDIDATE_PREPARED=YES
+G2_A6_CANDIDATE_PREPARED=YES
+G3_A8_CANDIDATE_PREPARED=YES
+G4_A12_CANDIDATE_PREPARED=YES
+
+G1_A5_REAL_GATE_PASS=NO
+G2_A6_REAL_GATE_PASS=NO
+G3_A8_REAL_GATE_PASS=NO
+G4_A12_REAL_GATE_PASS=NO
+
+CONTRIBUTOR_ACCEPTANCE_EVIDENCE_CREATED=0
+PRIVACY_ATTESTATION_EVIDENCE_CREATED=0
+REAL_REVIEW_BINDINGS_CREATED=0
+REAL_INVALIDITY_OR_CHANGE_CONTROL_RECORDS_CREATED=0
+REAL_CASES_CREATED=0
+REAL_PAIRS_CREATED=0
+CASE_CONSTRUCTION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+The next valid transition for these four governance nodes is qualified governance/legal/privacy/clinical review and canonical adoption where required, followed by real identity-bound evidence only under separate authority. It is not simulated acceptance, invented reviewer identity, case construction, model execution, or training.
