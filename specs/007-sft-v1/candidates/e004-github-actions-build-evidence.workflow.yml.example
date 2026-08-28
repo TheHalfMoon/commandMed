@@ -64,8 +64,9 @@ jobs:
           setpriv --version
 
           for tool in bash env id git cmake ninja cc c++ python3 sudo unshare setpriv; do
-            resolved="$(readlink -f "$(command -v "$tool")")"
-            printf '%s=%s\n' "${tool}_path" "$resolved"
+            command_path="$(command -v "$tool")"
+            resolved="$(readlink -f "$command_path")"
+            printf '%s_command=%s\n%s_path=%s\n' "$tool" "$command_path" "$tool" "$resolved"
             sha256sum "$resolved"
           done
 
@@ -112,30 +113,68 @@ jobs:
           set -Eeuo pipefail
 
           # Resolve exact executable identities before crossing the privilege and
-          # reset-env boundary. The same paths and a deterministic PATH derived
-          # from their directories are then used inside the isolated build.
+          # reset-env boundary.
           runner_uid="$(id -u)"
           runner_gid="$(id -g)"
-          sudo_path="$(readlink -f "$(command -v sudo)")"
-          unshare_path="$(readlink -f "$(command -v unshare)")"
-          setpriv_path="$(readlink -f "$(command -v setpriv)")"
-          env_path="$(readlink -f "$(command -v env)")"
-          bash_path="$(readlink -f "$(command -v bash)")"
-          id_path="$(readlink -f "$(command -v id)")"
-          git_path="$(readlink -f "$(command -v git)")"
-          cmake_path="$(readlink -f "$(command -v cmake)")"
-          ninja_path="$(readlink -f "$(command -v ninja)")"
-          cc_path="$(readlink -f "$(command -v cc)")"
-          cxx_path="$(readlink -f "$(command -v c++)")"
-          python3_path="$(readlink -f "$(command -v python3)")"
-          sha256sum_path="$(readlink -f "$(command -v sha256sum)")"
-          build_path="${bash_path%/*}:${env_path%/*}:${id_path%/*}:${git_path%/*}:${cmake_path%/*}:${ninja_path%/*}:${cc_path%/*}:${cxx_path%/*}:${python3_path%/*}:${sha256sum_path%/*}"
+
+          bash_command="$(command -v bash)"
+          env_command="$(command -v env)"
+          id_command="$(command -v id)"
+          git_command="$(command -v git)"
+          cmake_command="$(command -v cmake)"
+          ninja_command="$(command -v ninja)"
+          cc_command="$(command -v cc)"
+          cxx_command="$(command -v c++)"
+          python3_command="$(command -v python3)"
+          sha256sum_command="$(command -v sha256sum)"
+          readlink_command="$(command -v readlink)"
+          sudo_command="$(command -v sudo)"
+          unshare_command="$(command -v unshare)"
+          setpriv_command="$(command -v setpriv)"
+
+          bash_path="$(readlink -f "$bash_command")"
+          env_path="$(readlink -f "$env_command")"
+          id_path="$(readlink -f "$id_command")"
+          git_path="$(readlink -f "$git_command")"
+          cmake_path="$(readlink -f "$cmake_command")"
+          ninja_path="$(readlink -f "$ninja_command")"
+          cc_path="$(readlink -f "$cc_command")"
+          cxx_path="$(readlink -f "$cxx_command")"
+          python3_path="$(readlink -f "$python3_command")"
+          sha256sum_path="$(readlink -f "$sha256sum_command")"
+          readlink_path="$(readlink -f "$readlink_command")"
+          sudo_path="$(readlink -f "$sudo_command")"
+          unshare_path="$(readlink -f "$unshare_command")"
+          setpriv_path="$(readlink -f "$setpriv_command")"
+
+          # Preserve only the original PATH directories needed to resolve the
+          # premeasured build tools, retaining their original precedence.
+          declare -A required_path_dirs=()
+          for command_path in \
+            "$bash_command" "$env_command" "$id_command" "$git_command" \
+            "$cmake_command" "$ninja_command" "$cc_command" "$cxx_command" \
+            "$python3_command" "$sha256sum_command" "$readlink_command"; do
+            required_path_dirs["${command_path%/*}"]=1
+          done
+
+          build_path=""
+          IFS=: read -r -a original_path_dirs <<< "$PATH"
+          for dir in "${original_path_dirs[@]}"; do
+            if [[ -n "$dir" && -n "${required_path_dirs[$dir]+present}" ]]; then
+              if [[ -z "$build_path" ]]; then
+                build_path="$dir"
+              else
+                build_path="$build_path:$dir"
+              fi
+            fi
+          done
+          test -n "$build_path"
 
           # Root privilege is used only to create the network namespace.
-          # Every privilege-boundary executable is an exact absolute path.
-          # setpriv drops UID/GID, supplementary groups and Linux capabilities,
-          # enables no_new_privs, and resets inherited environment. The explicit
-          # PATH below is rebuilt only from already-resolved tool directories.
+          # Privilege-boundary executables use exact absolute paths. setpriv
+          # drops UID/GID, supplementary groups and capabilities, enables
+          # no_new_privs, and resets inherited environment. PATH is then rebuilt
+          # only from premeasured tool directories in original resolution order.
           "$sudo_path" -n "$unshare_path" --net -- \
             "$setpriv_path" \
               --reuid "$runner_uid" \
@@ -170,6 +209,7 @@ jobs:
               cxx_path="${14}"
               python3_path="${15}"
               sha256sum_path="${16}"
+              readlink_path="${17}"
 
               uid="$("$id_path" -u)"
               gid="$("$id_path" -g)"
@@ -214,6 +254,27 @@ jobs:
               done < <("$env_path")
               test "$sensitive_platform_env_present" = "NO"
 
+              assert_resolution() {
+                command_name="$1"
+                expected="$2"
+                command_path="$(command -v "$command_name")"
+                test -n "$command_path"
+                actual="$("$readlink_path" -f "$command_path")"
+                test "$actual" = "$expected"
+              }
+
+              assert_resolution bash "$bash_path"
+              assert_resolution env "$env_path"
+              assert_resolution id "$id_path"
+              assert_resolution git "$git_path"
+              assert_resolution cmake "$cmake_path"
+              assert_resolution ninja "$ninja_path"
+              assert_resolution cc "$cc_path"
+              assert_resolution c++ "$cxx_path"
+              assert_resolution python3 "$python3_path"
+              assert_resolution sha256sum "$sha256sum_path"
+              assert_resolution readlink "$readlink_path"
+
               {
                 printf "%s\n" \
                   "configure_build_uid=$uid" \
@@ -249,9 +310,6 @@ jobs:
                 -S "$source_dir" \
                 -B "$build_dir" \
                 -G Ninja \
-                -DCMAKE_MAKE_PROGRAM="$ninja_path" \
-                -DCMAKE_C_COMPILER="$cc_path" \
-                -DCMAKE_CXX_COMPILER="$cxx_path" \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DBUILD_SHARED_LIBS=OFF \
                 -DLLAMA_BUILD_COMMON=ON \
@@ -278,7 +336,7 @@ jobs:
             ' _ \
               "$SOURCE_DIR" "$BUILD_DIR" "$E004_HOME" "$RUNNER_TEMP" "$build_path" "$SECURITY_EVIDENCE" \
               "$id_path" "$env_path" "$bash_path" "$git_path" "$cmake_path" "$ninja_path" \
-              "$cc_path" "$cxx_path" "$python3_path" "$sha256sum_path"
+              "$cc_path" "$cxx_path" "$python3_path" "$sha256sum_path" "$readlink_path"
 
           test -f "$SECURITY_EVIDENCE"
           cat "$SECURITY_EVIDENCE"
