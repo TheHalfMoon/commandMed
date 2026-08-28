@@ -58,8 +58,8 @@ jobs:
           cc --version
           c++ --version
           python3 --version
-          ldd --version | head -n 1
-          sudo --version | head -n 1
+          ldd --version
+          sudo --version
           unshare --version
           setpriv --version
 
@@ -101,7 +101,7 @@ jobs:
             "TOOL_COMMIT=$actual_commit" \
             "TOOL_TREE=$actual_tree"
 
-      - name: Configure and build unprivileged in network-isolated namespace
+      - name: Configure and build with exact tools in isolated namespace
         shell: bash
         env:
           SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
@@ -111,15 +111,29 @@ jobs:
         run: |
           set -Eeuo pipefail
 
-          # Root privilege is used only to create the network namespace.
-          # setpriv drops UID/GID, supplementary groups, Linux capabilities,
-          # enables no_new_privs, and resets inherited environment before any
-          # CMake or compiler process starts. Failure is fail-closed.
+          # Resolve exact executable identities before crossing the privilege and
+          # reset-env boundary. The same absolute paths are then invoked inside
+          # the isolated build so preflight hashes bind the tools actually used.
           runner_uid="$(id -u)"
           runner_gid="$(id -g)"
+          sudo_path="$(readlink -f "$(command -v sudo)")"
+          unshare_path="$(readlink -f "$(command -v unshare)")"
+          setpriv_path="$(readlink -f "$(command -v setpriv)")"
+          env_path="$(readlink -f "$(command -v env)")"
+          bash_path="$(readlink -f "$(command -v bash)")"
+          id_path="$(readlink -f "$(command -v id)")"
+          cmake_path="$(readlink -f "$(command -v cmake)")"
+          ninja_path="$(readlink -f "$(command -v ninja)")"
+          cc_path="$(readlink -f "$(command -v cc)")"
+          cxx_path="$(readlink -f "$(command -v c++)")"
+          sha256sum_path="$(readlink -f "$(command -v sha256sum)")"
 
-          sudo -n unshare --net -- \
-            setpriv \
+          # Root privilege is used only to create the network namespace.
+          # Every subsequent program is an exact absolute path. setpriv drops
+          # UID/GID, supplementary groups, Linux capabilities, enables
+          # no_new_privs, and resets inherited environment before build tools run.
+          "$sudo_path" -n "$unshare_path" --net -- \
+            "$setpriv_path" \
               --reuid "$runner_uid" \
               --regid "$runner_gid" \
               --clear-groups \
@@ -129,20 +143,28 @@ jobs:
               --no-new-privs \
               --reset-env \
               -- \
-            env \
+            "$env_path" \
               HOME="$E004_HOME" \
               TMPDIR="$RUNNER_TEMP" \
               LC_ALL=C \
               LANG=C \
-            bash -Eeuo pipefail -c '
+            "$bash_path" -Eeuo pipefail -c '
               source_dir="$1"
               build_dir="$2"
               expected_home="$3"
               expected_tmp="$4"
               security_evidence="$5"
+              id_path="$6"
+              env_path="$7"
+              bash_path="$8"
+              cmake_path="$9"
+              ninja_path="${10}"
+              cc_path="${11}"
+              cxx_path="${12}"
+              sha256sum_path="${13}"
 
-              uid="$(id -u)"
-              gid="$(id -g)"
+              uid="$("$id_path" -u)"
+              gid="$("$id_path" -g)"
               cap_inh=""
               cap_prm=""
               cap_eff=""
@@ -180,7 +202,7 @@ jobs:
                     sensitive_platform_env_present=YES
                     ;;
                 esac
-              done < <(env)
+              done < <("$env_path")
               test "$sensitive_platform_env_present" = "NO"
 
               {
@@ -197,13 +219,26 @@ jobs:
                   "TMPDIR=$TMPDIR" \
                   "LC_ALL=$LC_ALL" \
                   "LANG=$LANG" \
-                  "sensitive_platform_env_present=$sensitive_platform_env_present"
+                  "sensitive_platform_env_present=$sensitive_platform_env_present" \
+                  "build_bash_path=$bash_path" \
+                  "build_env_path=$env_path" \
+                  "build_id_path=$id_path" \
+                  "build_cmake_path=$cmake_path" \
+                  "build_ninja_path=$ninja_path" \
+                  "build_cc_path=$cc_path" \
+                  "build_cxx_path=$cxx_path"
+                "$sha256sum_path" \
+                  "$bash_path" "$env_path" "$id_path" "$cmake_path" \
+                  "$ninja_path" "$cc_path" "$cxx_path"
               } > "$security_evidence"
 
-              cmake \
+              "$cmake_path" \
                 -S "$source_dir" \
                 -B "$build_dir" \
                 -G Ninja \
+                -DCMAKE_MAKE_PROGRAM="$ninja_path" \
+                -DCMAKE_C_COMPILER="$cc_path" \
+                -DCMAKE_CXX_COMPILER="$cxx_path" \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DBUILD_SHARED_LIBS=OFF \
                 -DLLAMA_BUILD_COMMON=ON \
@@ -223,11 +258,14 @@ jobs:
                 -DGGML_CCACHE=OFF \
                 -DGGML_OPENMP=OFF
 
-              cmake --build "$build_dir" \
+              "$cmake_path" --build "$build_dir" \
                 --target llama-quantize \
                 --parallel 2 \
                 --verbose
-            ' _ "$SOURCE_DIR" "$BUILD_DIR" "$E004_HOME" "$RUNNER_TEMP" "$SECURITY_EVIDENCE"
+            ' _ \
+              "$SOURCE_DIR" "$BUILD_DIR" "$E004_HOME" "$RUNNER_TEMP" "$SECURITY_EVIDENCE" \
+              "$id_path" "$env_path" "$bash_path" "$cmake_path" "$ninja_path" \
+              "$cc_path" "$cxx_path" "$sha256sum_path"
 
           test -f "$SECURITY_EVIDENCE"
           cat "$SECURITY_EVIDENCE"
