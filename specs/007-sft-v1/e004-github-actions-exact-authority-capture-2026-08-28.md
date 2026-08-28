@@ -32,7 +32,7 @@ The review subject remains outside `.github/workflows`:
 
 ```text
 CANDIDATE_PATH=specs/007-sft-v1/candidates/e004-github-actions-build-evidence.workflow.yml.example
-CANDIDATE_GIT_BLOB_SHA1=abe6b51fc575c5e446ad73e1ad1c2a65f8380e8b
+CANDIDATE_GIT_BLOB_SHA1=73cfdb744fddb48004047b441cf4a3f08b4385b3
 CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
 CANDIDATE_DIGEST_EVIDENCE_SOURCE=PENDING_FRESH_EXACT_HEAD_REVIEW
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
@@ -40,9 +40,11 @@ LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
 ```
 
-The candidate was hardened before authority capture to make both network and privilege boundaries operationally fail-closed. It permits network only during exact public source materialization. For configure/build, bounded root privilege creates a separate Linux network namespace; `setpriv` then drops to the original runner UID/GID, clears supplementary groups, removes inheritable/ambient/bounding capabilities, enables `no_new_privs`, and resets inherited environment before any CMake or compiler process starts.
+The candidate was hardened before authority capture to make network, credential, privilege, capability, inherited-environment, and runtime-security assertions operationally fail-closed. It permits network only during exact public source materialization. For configure/build, bounded root privilege creates a separate Linux network namespace; `setpriv` then drops to the original runner UID/GID, clears supplementary groups, removes inheritable/ambient/bounding capabilities, enables `no_new_privs`, and resets inherited environment before any CMake or compiler process starts.
 
-The prior candidate digest was invalidated by this final hardening commit and is not inherited. The SHA-256 above must be independently recomputed from exact candidate bytes on the current reviewed head and bound before qualification. Any later candidate-byte change invalidates this capture and requires a new exact authority capture.
+The inner shell reads `/proc/self/status` with shell built-ins, verifies all required capability sets are zero and `NoNewPrivs=1`, rejects UID 0, verifies bounded environment values, rejects leaked `GITHUB_*`, `ACTIONS_*`, `RUNNER_*`, `GITHUB_TOKEN`, or `GH_TOKEN` variables, and emits a hashed security-boundary evidence file before build evidence can qualify.
+
+All prior candidate digests were invalidated by later hardening and are not inherited. The SHA-256 above must be independently recomputed from exact candidate bytes on the current reviewed head and bound before qualification. Any later candidate-byte change invalidates this capture and requires a new exact authority capture.
 
 ## 3. Exact environment and run envelope
 
@@ -96,7 +98,7 @@ credential.helper=EMPTY
 http.extraHeader=EMPTY
 ```
 
-This does not claim that the platform token is absent. It requires that the workflow never reference or use it.
+This does not claim that the platform token is absent. It requires that the workflow never reference or use it. The isolated configure/build environment must additionally prove that no `GITHUB_*`, `ACTIONS_*`, `RUNNER_*`, `GITHUB_TOKEN`, or `GH_TOKEN` variable is present.
 
 ## 6. Network and privilege boundary
 
@@ -134,19 +136,22 @@ sudo -n unshare --net -- \
   bash ...
 ```
 
-The inner script must assert that its effective UID is nonzero before configure/build. The runner/log process remains outside that namespace. The CMake/compiler process tree is unprivileged, has cleared supplementary groups and Linux capability sets, cannot gain new privileges through exec, receives a reset/minimized environment, and has no normal host network interface.
+The inner script must assert that its effective UID is nonzero before configure/build. It must parse `/proc/self/status` without shell-expanding field references and verify `CapInh`, `CapPrm`, `CapEff`, `CapBnd`, and `CapAmb` are all zero and `NoNewPrivs=1`. The runner/log process remains outside that namespace. The CMake/compiler process tree is unprivileged, has cleared supplementary groups and Linux capability sets, cannot gain new privileges through exec, receives a reset/minimized environment, and has no normal host network interface.
 
-If passwordless `sudo`, `unshare`, `setpriv`, namespace creation, identity drop, capability drop, `no_new_privs`, environment reset, or the nonroot assertion is unavailable, the job fails closed before configure/build.
+If passwordless `sudo`, `unshare`, `setpriv`, namespace creation, identity drop, capability drop, `no_new_privs`, environment reset, security assertion collection, or the nonroot assertion is unavailable, the job fails closed before configure/build.
 
 ```text
 ROOT_PRIVILEGE_PURPOSE=NETWORK_NAMESPACE_CREATION_ONLY
 CONFIGURE_BUILD_PRIVILEGE=UNPRIVILEGED
 SUPPLEMENTARY_GROUPS=CLEARED_BEFORE_BUILD
 INHERITABLE_CAPABILITIES=NONE
+PERMITTED_CAPABILITIES=NONE
+EFFECTIVE_CAPABILITIES=NONE
 AMBIENT_CAPABILITIES=NONE
 BOUNDING_CAPABILITIES=NONE
 NO_NEW_PRIVS=REQUIRED
 INHERITED_ENVIRONMENT=RESET_BEFORE_BUILD
+SENSITIVE_PLATFORM_ENVIRONMENT=ABSENT_BEFORE_BUILD_REQUIRED
 CONFIGURE_BUILD_NETWORK_EGRESS=TECHNICALLY_ISOLATED_BY_NETWORK_NAMESPACE
 UNEXPECTED_CONFIGURE_BUILD_NETWORK_DEPENDENCY=FAIL_CLOSED
 PACKAGE_INSTALLATION=PROHIBITED
@@ -280,6 +285,8 @@ privilege_drop_assertion
 capability_drop_assertion
 no_new_privs_assertion
 environment_reset_assertion
+sensitive_platform_environment_absence_assertion
+security_evidence_sha256
 llama_quantize_output_path
 llama_quantize_executable_sha256
 llama_quantize_exact_integer_bytes
@@ -310,6 +317,8 @@ PRIVILEGE_DROP_UNAVAILABLE
 CAPABILITY_DROP_UNAVAILABLE
 NO_NEW_PRIVS_UNAVAILABLE
 ENVIRONMENT_RESET_UNAVAILABLE
+SECURITY_ASSERTION_COLLECTION_FAILURE
+SENSITIVE_PLATFORM_ENVIRONMENT_PRESENT
 CONFIGURE_BUILD_EFFECTIVE_UID_IS_ROOT
 SOURCE_FETCH_REQUIRES_CREDENTIAL
 SOURCE_COMMIT_MISMATCH
@@ -339,7 +348,7 @@ The intended live workflow may be promoted only when all of the following are tr
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION_B=CANONICAL
 EXACT_AUTHORITY_CAPTURE=CANONICAL
-QUALIFIED_CANDIDATE_GIT_BLOB_SHA1=NEEDS_EVIDENCE_CURRENT_HEAD
+QUALIFIED_CANDIDATE_GIT_BLOB_SHA1=73cfdb744fddb48004047b441cf4a3f08b4385b3
 QUALIFIED_CANDIDATE_SHA256=NEEDS_EVIDENCE_CURRENT_HEAD
 PROMOTED_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 PROMOTED_WORKFLOW_BYTES_EQUAL_QUALIFIED_CANDIDATE_BYTES=YES
@@ -402,7 +411,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
 EXACT_AUTHORITY_CAPTURE=PENDING_FRESH_EXACT_HEAD_REVIEW_AFTER_FINAL_HARDENING
-CANDIDATE_GIT_BLOB_SHA1=abe6b51fc575c5e446ad73e1ad1c2a65f8380e8b
+CANDIDATE_GIT_BLOB_SHA1=73cfdb744fddb48004047b441cf4a3f08b4385b3
 CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
 LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
@@ -430,6 +439,8 @@ PRIVILEGE_BOUNDARY_IS_LEAST_PRIVILEGE_FAIL_CLOSED=YES
 CAPABILITY_BOUNDARY_IS_FAIL_CLOSED=YES
 NO_NEW_PRIVS_BOUNDARY_IS_FAIL_CLOSED=YES
 ENVIRONMENT_RESET_BOUNDARY_IS_FAIL_CLOSED=YES
+SENSITIVE_PLATFORM_ENVIRONMENT_IS_ABSENT=YES
+SECURITY_EVIDENCE_IS_HASHED_AND_BOUND=YES
 CREDENTIAL_BOUNDARY_IS_FAIL_CLOSED=YES
 ONLY_ONE_RUN_CLASS_IS_BOUND=YES
 ONLY_ONE_LIVE_WORKFLOW_PATH_IS_BOUND=YES
