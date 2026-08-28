@@ -42,7 +42,6 @@ jobs:
             command -v "$tool" >/dev/null
           done
 
-          sudo -n true
           mkdir -p "$E004_HOME"
 
           printf '%s\n' \
