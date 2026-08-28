@@ -27,7 +27,7 @@ The roadmap is not execution authority. Only one bounded spec becomes active at 
 | 004 | Tournament Harness | `CLOSED_CANONICAL` | 001, 002, 003 | Qualified implementation merge `9ab91850f7cb7a5b7d8bfa4de8f006e9e669c89d`, tree `7e37fa626f825ee25271e0bf21a627a2e64e49da`; exact implementation head `cf6158ea4193aa7db895607c6fac5a3a1442f708`; closure merge `3dc705a1de09347f3574b305afb1bfaa6d46ecff`. Final 48 focused / 9 hard-gate / 276 full tests. Fixture/precomputed-results-only; no model or benchmark-payload execution authority. |
 | 005 | Base Model Tournament | `CLOSED_CANONICAL` | 004 `CLOSED_CANONICAL` | Implementation `5e35cd4` (tree `5b823d20`, head `d4caf94`) + planning reconciliation `799c36a` (tree `eaa8942`, head `83d7612`); closure `CLOSED_CANONICAL` via this closeout. Deterministic control plane only; no model/benchmark/Private Gold/PHI/device/spend execution. 513 tests + exact-head reviews `d4caf94`/`83d7612` MATERIAL_BLOCKER=NO. |
 | 006 | Patient Safety Scaffold & Deterministic Tools | `CLOSED_CANONICAL` | 002 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL` | Implementation merge `4df3dc4eab5d3160d88b2f296dea62a8dd884b60` (tree `b5a88fa89c52335a2343d37d33bde32fb42d5082`, final head `09da2d1b4f6d21a1053967df0b4c3a68ea6078f3`) under founder authorization PR #40; planning reconciliation `a9d7f37ea1abc537e99bbb75dda2a5b1f8625a8f`. Final 114+51 focused / 627+128 full tests; exact-head reviews no remaining material blocker. Offline deterministic scope only; T017-T020 remain typed `NEEDS_EVIDENCE` fail-closed gates. See closeout for full binding. |
-| 007 | SFT V1 | `AUTHORIZED_TO_START` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Specification canonical via PR #46 (`645da20`, final head `07fb71e`); clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`, qualified head `1919779ba87725b7d529ba35465dc546f61fbc13`; planning package canonical via PR #51 / merge `947f3aba4d4316e21470ac26352d96e3bfb74ae6`; bounded offline implementation closed; E001 candidate manifest frozen; E002 bounded public/ungated artifact access authorized; E003 bounded live-tournament execution authorized only under the frozen protocol and PASS A15/preflight. E004 remains `BLOCKED_PREFLIGHT` and unexecuted, but the former device/A15 structural cycle is repaired canonically by PR #67 / merge `5bb6177dc7908dfb3a6a51d3c39db66a4e289fb1`; current blockers are the separately gated artifact, contamination, scientific/governance, runtime/resource, A1–A14 snapshot and A15 prerequisites recorded in `specs/007-sft-v1/e004-corrective-maintenance-closeout-2026-08-27.md`. E005 winner selection remains Founder+ChatGPT-only. `TRAINING_AUTHORITY=NONE`; `BACKBONE_WINNER=NEEDS_EVIDENCE`. |
+| 007 | SFT V1 | `AUTHORIZED_TO_START` | 003 `CLOSED_CANONICAL`, 005 `CLOSED_CANONICAL`, 006 `CLOSED_CANONICAL` | Specification canonical via PR #46 (`645da20`, final head `07fb71e`); clarification canonical via PR #49 / merge `16ae16b50680469fe14f44c1e3fdcb655d34b822`, qualified head `1919779ba87725b7d529ba35465dc546f61fbc13`; planning package canonical via PR #51 / merge `947f3aba4d4316e21470ac26352d96e3bfb74ae6`; bounded offline implementation closed; E001 candidate manifest frozen; E002 bounded public/ungated artifact access authorized with canonical local source-integrity PASS; E003 bounded live-tournament execution authorized only under the frozen protocol and PASS A15/preflight. E004 remains `BLOCKED_PREFLIGHT` and unexecuted. The former device/A15 structural cycle is repaired canonically by PR #67 / merge `5bb6177dc7908dfb3a6a51d3c39db66a4e289fb1`; the sole bounded build-evidence allowance was consumed successfully by workflow-dispatch run `33187438094` and the remaining allowance is `0`; Founder FD-004 is canonically `LOCKED` to `FD004_DECISION_B / BALANCED_BURDEN_WITH_NONCOMPENSABLE_SAFETY` without a numeric threshold. Current blockers remain the incomplete persistent conversion subject/workspace and `MODEL_CONVERSION_AUTHORITY=NONE`, contamination-assessment authority/evidence, T1/A2 numeric policy plus qualified clinical/statistical review, G1-G4 real governance evidence, runtime/device/personnel/access/finance resource bindings, real A1-A14 PASS snapshot, and separate A15 activation. See `specs/007-sft-v1/e004-registry-current-state-reconciliation-v4-2026-08-28.md`, `specs/007-sft-v1/e004-fd004-over-triage-founder-decision-2026-08-28.md`, and `specs/007-sft-v1/tasks.md`. E005 winner selection remains Founder+ChatGPT-only and `NOT_REACHED`. `TRAINING_AUTHORITY=NONE`; `BACKBONE_WINNER=NEEDS_EVIDENCE`. |
 | 008 | Knowledge Strategy Ablation | `BLOCKED` | 007 | CPT vs no-CPT/distillation+retrieval. |
 | 009 | Distillation V1 | `BLOCKED` | 008 | Minimum license-clean distillation; on-policy candidate. |
 | 010 | RLVR V1 | `BLOCKED` | 009 | Verifiable tasks only; optional NO-GO outcome. |
@@ -334,7 +334,7 @@ Decision-register T-001 remains `TEST_BEFORE_LOCK`. Planning may define the cand
 
 ## Execution and training authority
 
-This is the repository-wide **current-state** authority summary. It supersedes earlier historical lifecycle/grant snapshots below only for current authority. E002 authorizes bounded access to the exact frozen E001 public/ungated candidate artifacts; E003 additionally authorizes bounded live-tournament model, qualified benchmark-input, and required device/runtime execution only under the frozen protocol and a PASS A15/preflight. E004 remains `BLOCKED_PREFLIGHT` and no E004 model, benchmark, or device execution has occurred. The former device/A15 structural cycle was repaired by the separately authorized corrective maintenance merged through PR #67, but that repair does not create a PASS A15/preflight. The current blocker frontier is the separate artifact, contamination-assessment, scientific/governance, runtime/resource, real A1–A14 snapshot and A15 evidence/authority sequence. Neither E002 nor E003 authorizes training, conversion, credentials/gated assets, Private Gold/PHI, provider generation, spend, contamination assessment by implication, or the E005 winner decision.
+This is the repository-wide **current-state** authority summary. It supersedes earlier historical lifecycle/grant snapshots below only for current authority. E002 authorizes bounded access to the exact frozen E001 public/ungated candidate artifacts and has canonical local source-integrity PASS evidence. E003 additionally authorizes bounded live-tournament model, qualified benchmark-input, and required device/runtime execution only under the frozen protocol and a PASS A15/preflight. E004 remains `BLOCKED_PREFLIGHT` and no E004 tournament model, benchmark, or device execution has occurred. The former device/A15 structural cycle was repaired by the separately authorized corrective maintenance merged through PR #67. The sole bounded build-evidence allowance was subsequently consumed successfully by workflow-dispatch run `33187438094`; that is build-evidence-lane PASS only, and the remaining allowance is `0`, so no rerun is authorized. Founder FD-004 is canonically `LOCKED` to `FD004_DECISION_B / BALANCED_BURDEN_WITH_NONCOMPENSABLE_SAFETY`, without selecting a numeric over-triage threshold or satisfying T1/A2. The current blocker frontier is the incomplete persistent conversion subject/workspace and absent conversion authority, contamination-assessment authority/evidence, T1/A2 qualified clinical/statistical review and numeric policy, G1-G4 real governance evidence, runtime/device/personnel/access/finance resource bindings, real A1-A14 PASS snapshot, and separate A15 activation. E005 remains `NOT_REACHED`. Neither E002 nor E003 authorizes training, conversion, credentials/gated assets, Private Gold/PHI, provider generation, spend, contamination assessment by implication, external reviewer outreach, A15 activation, or the E005 winner decision.
 
 ```text
 SPEC_005=CLOSED_CANONICAL
@@ -346,13 +346,20 @@ E001=CLOSED_CANONICAL
 E002_AUTHORITY=AUTHORIZED_E002_FROZEN_PUBLIC_CANDIDATES_ONLY
 MODEL_WEIGHT_ACCESS_AUTHORITY=AUTHORIZED_E002_FROZEN_PUBLIC_CANDIDATES_ONLY
 MODEL_WEIGHT_ACCESS_SCOPE=PUBLIC_UNGATED_EXACT_FROZEN_E001_CANDIDATES_ONLY
+E002_LOCAL_SOURCE_INTEGRITY=PASS
 E003_AUTHORITY=AUTHORIZED_E003_FROZEN_TOURNAMENT_ONLY
 E004_AUTHORITY=AUTHORIZED_BY_E003_SUBJECT_TO_PREFLIGHT
 E004_CORRECTIVE_MAINTENANCE=CLOSED_CANONICAL
 E004_CORRECTIVE_MAINTENANCE_IMPLEMENTATION_MERGE=5bb6177dc7908dfb3a6a51d3c39db66a4e289fb1
+E004_BOUNDED_BUILD_EVIDENCE=PASS_ON_RUN_33187438094
+BUILD_PASS=YES_BOUNDED_BUILD_EVIDENCE_LANE_ONLY
+AUTHORIZED_BUILD_MANUAL_RUN_ALLOWANCE_REMAINING=0
+FD004_DECISION=FD004_DECISION_B
+FD004_STATE=LOCKED
 E004_STATE=BLOCKED_PREFLIGHT
 E004_EXECUTION_OCCURRED=NO
-E004_CURRENT_FRONTIER_RECORD=specs/007-sft-v1/e004-corrective-maintenance-closeout-2026-08-27.md
+E004_CURRENT_FRONTIER_RECORD=specs/007-sft-v1/e004-registry-current-state-reconciliation-v4-2026-08-28.md
+E004_CURRENT_FD004_RECORD=specs/007-sft-v1/e004-fd004-over-triage-founder-decision-2026-08-28.md
 E005_STATE=NOT_REACHED
 MODEL_EXECUTION_AUTHORITY=AUTHORIZED_E003_FROZEN_TOURNAMENT_ONLY
 MODEL_CONVERSION_AUTHORITY=NONE
@@ -362,7 +369,9 @@ BENCHMARK_PAYLOAD_ACCESS_AUTHORITY=AUTHORIZED_E003_A15_BOUND_PUBLIC_TOURNAMENT_I
 BENCHMARK_PAYLOAD_EXECUTION_AUTHORITY=AUTHORIZED_E003_A15_BOUND_PUBLIC_TOURNAMENT_INPUTS_ONLY
 TOURNAMENT_EXECUTION_AGAINST_MODELS=AUTHORIZED_E003_FROZEN_PROTOCOL_ONLY
 DEVICE_EXECUTION_AUTHORITY=AUTHORIZED_E003_FROZEN_TOURNAMENT_QUALIFICATION_ONLY
+A15_ACTIVATION_AUTHORITY=NONE
 TRAINING_AUTHORITY=NONE
+EXTERNAL_REVIEWER_OUTREACH_AUTHORITY=NONE
 PROVIDER_API_GENERATION_AUTHORITY=NONE
 PHI_RESTRICTED_DATA_ACCESS_AUTHORITY=NONE
 PRIVATE_GOLD_PAYLOAD_ACCESS_AUTHORITY=NONE
@@ -373,7 +382,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 BACKBONE_WINNER=NEEDS_EVIDENCE
 ```
 
-Current E002 scope is defined by `specs/007-sft-v1/e002-model-access-authorization-2026-08-27.md`; current E003 scope is defined by `specs/007-sft-v1/e003-live-tournament-execution-authorization-2026-08-27.md`; current E004 frontier is defined by `specs/007-sft-v1/e004-corrective-maintenance-closeout-2026-08-27.md`, which supersedes the old device-cycle conclusion of the earlier blocker audit while preserving its unresolved separate prerequisites. Historical blocks below remain evidence of what their specific earlier grants did and did not authorize; they are not the current aggregate authority state.
+Current E002 scope is defined by `specs/007-sft-v1/e002-model-access-authorization-2026-08-27.md`; current E003 scope is defined by `specs/007-sft-v1/e003-live-tournament-execution-authorization-2026-08-27.md`. The current E004 state is defined by the append-only V4 reconciliation `specs/007-sft-v1/e004-registry-current-state-reconciliation-v4-2026-08-28.md`, the locked Founder FD-004 record `specs/007-sft-v1/e004-fd004-over-triage-founder-decision-2026-08-28.md`, and the live task ledger `specs/007-sft-v1/tasks.md`. The earlier corrective-maintenance closeout remains controlling evidence for the resolved device/A15 structural repair, but it no longer represents the entire live E004 frontier. Historical blocks below remain evidence of what their specific earlier grants did and did not authorize; they are not the current aggregate authority state.
 
 ## Spec 007 implementation authorization record
 
@@ -429,7 +438,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 P013 exact-subject binding: workflow carrier `65973326632d07bb63cab03d9ab696b5f1f0c375` is trigger-only. Job `98411371329` explicitly checked out and verified `701c933acdf84572f627446e5199231236f97988` (tree `faa5c15c84dbd84d162b6ba6850bbc312584203b`) before compileall, full pytest, and diff-check. The validated subject tree equals the canonical planning merge tree.
 
-The implementation authorization above is a historical grant-specific boundary. Its statement that `E001-E015` were blocked and model-weight access was `NONE` remains true for that grant. Current Phase E authority is governed by the current-state summary above and the later E001/E002/E003 decision records: E001, E002, and E003 are closed; E004 is authorized only as the evidence-producing execution task after PASS preflight and remains `BLOCKED_PREFLIGHT` on the post-corrective-maintenance prerequisite frontier; E005-E015 remain separately gated or evidence-dependent.
+The implementation authorization above is a historical grant-specific boundary. Its statement that `E001-E015` were blocked and model-weight access was `NONE` remains true for that grant. Current Phase E authority is governed by the current-state summary above, the later E001/E002/E003 decision records, the V4 E004 reconciliation, the locked FD-004 decision record, and the live task ledger: E001, E002, and E003 are closed; E004 is authorized only as the evidence-producing execution task after PASS preflight and remains `BLOCKED_PREFLIGHT`; E005-E015 remain separately gated or evidence-dependent.
 
 A pilot, smoke-train, one-step gradient probe, adapter run, or empirical convergence test remains unauthorized. Model loading and benchmark/device execution are authorized only by the later E003 overlay for the exact frozen tournament after PASS A15/preflight; E002 alone does not authorize them.
 
