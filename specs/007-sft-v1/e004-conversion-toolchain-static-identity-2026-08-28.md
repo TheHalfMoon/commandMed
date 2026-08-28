@@ -10,20 +10,20 @@
 **Model/source-weight acquisition performed by this record:** NO  
 **Model execution performed:** NO
 
-This record reduces the remaining conversion-subject ambiguity by binding the exact public source identities for the proposed conversion and quantization toolchain at the already-reviewed `llama.cpp` candidate revision. It does not build the toolchain, freeze an executable, authorize conversion, or claim that source support proves successful conversion or runtime/device qualification.
+This record binds the repository-verifiable source identities for the proposed conversion and quantization toolchain. It does not build the toolchain, freeze an executable, authorize conversion, or treat source support as conversion/runtime/device evidence.
 
 ```text
 FOUNDER_ARTIFACT_DECISION=ARTIFACT_DECISION_B
 EXACT_CONVERSION_SUBJECT_PREPARATION_AUTHORIZED=YES
-CONVERSION_EXECUTION_AUTHORITY=NONE
 CONVERTER_BUILD_EXECUTION_AUTHORITY=NONE
+CONVERSION_EXECUTION_AUTHORITY=NONE
 E004=INCOMPLETE
 E004_STATE=BLOCKED_PREFLIGHT
 TRAINING_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-## 1. Exact proposed upstream source revision
+## 1. Proposed upstream source revision
 
 ```text
 TOOL_REPOSITORY=ggml-org/llama.cpp
@@ -32,7 +32,7 @@ REVISION_ROLE=CONVERSION_TOOLCHAIN_SOURCE_CANDIDATE
 FINAL_COMMANDMED_INFERENCE_RUNTIME_REVISION=NEEDS_EVIDENCE
 ```
 
-This revision was already recorded by canonical E004 runtime research as containing the relevant Qwen3 and Granite conversion/runtime source mappings. This record narrows only the conversion-tool source surface.
+This exact revision was already recorded by canonical E004 runtime research as containing the relevant Qwen3 and Granite mappings.
 
 ```text
 TOOL_REVISION_EQUALS_BUILT_EXECUTABLE_IDENTITY=NO
@@ -41,9 +41,9 @@ SOURCE_SUPPORT_EQUALS_CONVERSION_SUCCESS=NO
 SOURCE_SUPPORT_EQUALS_DEVICE_QUALIFICATION=NO
 ```
 
-## 2. Hugging Face -> GGUF conversion entrypoint
+## 2. Hugging Face to GGUF entrypoint
 
-At the exact revision above:
+At the exact revision:
 
 ```text
 CONVERSION_ENTRYPOINT=convert_hf_to_gguf.py
@@ -51,26 +51,17 @@ CONVERSION_ENTRYPOINT_GIT_BLOB=78ad26c6563062e2a801c9f76f77a7ce196dd195
 CONVERSION_ENTRYPOINT_BYTES=12798
 ```
 
-Static source inspection establishes that this entrypoint:
+Static source inspection establishes that the script accepts a local model directory, exposes `--outfile`, supports `--outtype` values including `f16`, `bf16`, `q8_0`, and `auto`, resolves architecture from Hugging Face configuration, and writes GGUF when executed.
 
-- accepts a local model directory as its model argument;
-- exposes `--outfile`;
-- exposes `--outtype` including `f16`, `bf16`, `q8_0`, and `auto`;
-- resolves the model architecture from local Hugging Face configuration;
-- writes a GGUF output when executed.
-
-For the Decision B subjects, commandMed proposes the local-directory path only. The script's `--remote` mode is not part of the prepared conversion subject because source acquisition and conversion execution are separate authority/evidence steps.
+Decision B keeps conversion in local-directory mode after separate E002 acquisition and integrity verification. The script's `--remote` mode is not selected for the prepared subject.
 
 ```text
-PREPARED_SUBJECT_SOURCE_MODE=EXACT_LOCAL_DIRECTORY_AFTER_SEPARATE_E002_ACQUISITION_AND_INTEGRITY_VERIFICATION
+PREPARED_SUBJECT_SOURCE_MODE=EXACT_LOCAL_DIRECTORY_AFTER_E002_ACQUISITION_AND_INTEGRITY_VERIFICATION
 REMOTE_CONVERSION_MODE_SELECTED=NO
+CONVERSION_ENTRYPOINT_EXECUTED=NO
 ```
 
-No invocation occurred while preparing this evidence.
-
-## 3. Python conversion dependency surface
-
-The exact revision contains:
+## 3. Python dependency source identities
 
 ```text
 CONVERSION_REQUIREMENTS_FILE=requirements/requirements-convert_hf_to_gguf.txt
@@ -82,34 +73,33 @@ LEGACY_REQUIREMENTS_GIT_BLOB=28221fad0ce9790f91dc6adfbc893010454bdfe5
 LEGACY_REQUIREMENTS_BYTES=102
 ```
 
-The recorded dependency constraints are:
+The exact files declare:
 
 ```text
-PYTORCH=torch==2.11.0
-NUMPY=numpy~=1.26.4
-SENTENCEPIECE=>=0.1.98,<0.3.0
-TRANSFORMERS=4.57.6
-GGUF=>=0.1.0
-PROTOBUF=>=4.21.0,<5.0.0
-PYTORCH_INDEX=https://download.pytorch.org/whl/cpu
+DEPENDENCY_CONSTRAINT_TORCH=torch==2.11.0
+DEPENDENCY_CONSTRAINT_NUMPY=numpy~=1.26.4
+DEPENDENCY_CONSTRAINT_SENTENCEPIECE=sentencepiece>=0.1.98,<0.3.0
+DEPENDENCY_CONSTRAINT_TRANSFORMERS=transformers==4.57.6
+DEPENDENCY_CONSTRAINT_GGUF=gguf>=0.1.0
+DEPENDENCY_CONSTRAINT_PROTOBUF=protobuf>=4.21.0,<5.0.0
+PYTORCH_EXTRA_INDEX=https://download.pytorch.org/whl/cpu
 ```
 
-These requirement files are **not an exact dependency lock**. Multiple dependencies permit ranges, and an index URL is mutable. Therefore they cannot satisfy the future reproducible build/environment identity by themselves.
+These requirements are not an exact reproducibility lock. Several dependencies permit ranges and the index is mutable.
 
 ```text
 DEPENDENCY_REQUIREMENT_SOURCE_IDENTITY=BOUND_STATICALLY
 EXACT_RESOLVED_DEPENDENCY_SET=NEEDS_EVIDENCE
-DEPENDENCY_WHEEL_OR_PACKAGE_HASH_SET=NEEDS_EVIDENCE
+DEPENDENCY_PACKAGE_HASH_SET=NEEDS_EVIDENCE
 PYTHON_RUNTIME_IDENTITY=NEEDS_EVIDENCE
 DEPENDENCY_LOCK_OR_EXACT_DEPENDENCY_SET_SHA256=NEEDS_EVIDENCE
 BUILD_ENVIRONMENT_MANIFEST_SHA256=NEEDS_EVIDENCE
+PACKAGE_INSTALLATION_PERFORMED=NO
 ```
 
-No package installation is authorized or performed by this record.
+## 4. `llama-quantize` source identities
 
-## 4. Quantization executable source surface
-
-The exact revision defines the `llama-quantize` executable under `tools/quantize/`.
+At the same revision:
 
 ```text
 QUANTIZE_CMAKE_FILE=tools/quantize/CMakeLists.txt
@@ -129,7 +119,7 @@ QUANTIZE_README_GIT_BLOB=27384bebf697fec4e22df899fdbc345da4e89e91
 QUANTIZE_README_BYTES=12406
 ```
 
-The exact `CMakeLists.txt` creates the executable target:
+The exact CMake source creates the executable target:
 
 ```text
 CMAKE_EXECUTABLE_TARGET=llama-quantize
@@ -137,7 +127,7 @@ CXX_STANDARD=cxx_std_17
 LINKS_TO=llama-quantize-impl
 ```
 
-The source identity is now bounded, but the future executable is not.
+This binds source only:
 
 ```text
 LLAMA_QUANTIZE_EXECUTABLE_SHA256=NEEDS_EVIDENCE
@@ -147,26 +137,26 @@ BUILD_FLAGS=NEEDS_EVIDENCE
 BUILD_OUTPUT_PATH=NEEDS_EVIDENCE
 ```
 
-## 5. Q4_K_M method support at the exact source revision
+## 5. Q4_K_M support
 
-The exact-revision quantization documentation describes the two-phase path:
+The exact-revision quantization documentation describes the two-stage path:
 
 ```text
 SOURCE_MODEL -> HIGH_PRECISION_GGUF -> QUANTIZED_GGUF
 ```
 
-and explicitly documents `llama-quantize` use with `Q4_K_M` as the quantization type. This supports keeping the prepared Decision B subject policy:
+and documents `llama-quantize` with `Q4_K_M`. This supports the already-prepared Decision B policy:
 
 ```text
 PROPOSED_QUANTIZATION_METHOD=Q4_K_M
 PROPOSED_INTERMEDIATE_OUTPUT=HIGH_PRECISION_GGUF
 PROPOSED_FINAL_OUTPUT=GGUF_Q4_K_M
+Q4_K_M_SOURCE_SUPPORT_OBSERVED=YES
 ```
 
-This is method/CLI support evidence only.
+It does not prove output quality or qualification:
 
 ```text
-Q4_K_M_SOURCE_SUPPORT_OBSERVED=YES
 Q4_K_M_CONVERSION_EXECUTED=NO
 Q4_K_M_OUTPUT_BYTES=NEEDS_EVIDENCE
 Q4_K_M_OUTPUT_SHA256=NEEDS_EVIDENCE
@@ -174,11 +164,9 @@ Q4_K_M_MEDICAL_EQUIVALENCE=NEEDS_EVIDENCE
 Q4_K_M_DEVICE_PASS=NEEDS_EVIDENCE
 ```
 
-The upstream documentation itself notes that quantization may reduce model quality. Therefore commandMed must not infer medical equivalence from successful quantization even after a future conversion succeeds.
+The upstream documentation notes that quantization may reduce model quality. commandMed therefore must not infer medical equivalence from successful quantization.
 
-## 6. Prepared argv semantics after static source verification
-
-The already-canonical Decision B preparation may retain the following **non-executable** command shapes:
+## 6. Non-executable argv shape
 
 ```text
 CONVERT_ARGV_SHAPE=
@@ -194,11 +182,9 @@ QUANTIZE_ARGV_SHAPE=
     Q4_K_M
 ```
 
-The placeholders remain deliberate blockers. They must not be converted to an executable request until each exact identity is bound to verified evidence and separate execution authority exists.
+These placeholders are blockers, not an executable manifest.
 
-## 7. Remaining exact toolchain blockers
-
-Static public-source research can reduce no further than:
+## 7. Remaining toolchain blockers
 
 ```text
 TOOL_REPOSITORY=BOUND
@@ -220,21 +206,16 @@ BUILD_FLAGS=NEEDS_EVIDENCE
 BUILD_ENVIRONMENT_MANIFEST_SHA256=NEEDS_EVIDENCE
 ```
 
-Those remaining fields require an exact build/runtime environment and evidence collection. PR #85 explicitly did not grant converter-build or conversion-execution authority, so this record does not attempt either.
+Those unresolved fields require an exact build/runtime environment. PR #85 did not grant converter-build or conversion-execution authority, so neither is attempted here.
 
-## 8. Source-model acquisition boundary remains separate
+## 8. Source-model acquisition remains separate
 
-Canonical E002 authorizes non-executing acquisition and integrity verification of the exact frozen public source-model revisions. Decision B does not replace or widen E002.
+Canonical E002 authorizes non-executing acquisition and integrity verification of the exact frozen public source-model revisions. Decision B neither replaces nor widens E002.
 
 ```text
 SOURCE_MODEL_ACQUISITION_AUTHORITY=E002_FROZEN_PUBLIC_CANDIDATES_ONLY
 SOURCE_MODEL_LOCAL_INTEGRITY_EVIDENCE_REQUIRED_BEFORE_CONVERSION=YES
 PRECONVERTED_GGUF_ALLOWLIST_EXPANDED_BY_DECISION_B=NO
-```
-
-Public Hugging Face metadata recorded in the Decision B preparation is not equivalent to locally materialized byte verification.
-
-```text
 PUBLIC_METADATA_SHA256_EQUALS_LOCAL_BYTE_VERIFICATION=NO
 LOCAL_SOURCE_BUNDLE_IDENTITY_FOR_GRANITE=NEEDS_EVIDENCE
 LOCAL_SOURCE_BUNDLE_IDENTITY_FOR_QWEN_CONTROL=NEEDS_EVIDENCE
@@ -245,8 +226,8 @@ LOCAL_SOURCE_BUNDLE_IDENTITY_FOR_QWEN_CONTROL=NEEDS_EVIDENCE
 ```text
 CONVERSION_TOOLCHAIN_STATIC_IDENTITY=PREPARED_FOR_REVIEW
 CONVERSION_TOOLCHAIN_EXECUTABLE_IDENTITY=NEEDS_EVIDENCE
-CONVERSION_EXECUTION_AUTHORITY=NONE
 CONVERTER_BUILD_EXECUTION_AUTHORITY=NONE
+CONVERSION_EXECUTION_AUTHORITY=NONE
 E004=INCOMPLETE
 E004_STATE=BLOCKED_PREFLIGHT
 E004_EXECUTION_OCCURRED=NO
@@ -258,20 +239,11 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 ## Exclusions
 
-This record excludes:
-
-- installing converter dependencies;
-- cloning/building `llama.cpp` for execution;
-- producing or hashing built executables;
-- downloading source-model weights as part of this artifact;
-- running `convert_hf_to_gguf.py` or `llama-quantize`;
-- conversion, quantization, requantization, model loading, inference, benchmark access/execution, device execution, contamination assessment, selection-suite construction, winner selection, training, PHI, Private Gold, gated assets, credentials, provider generation, personnel engagement, procurement, or spend;
-- treating Git blob IDs as executable SHA-256 identities;
-- treating static support as conversion success or medical equivalence.
+This record excludes package installation, cloning/building `llama.cpp` for execution, executable hashing, source-model acquisition as part of this artifact, converter/quantizer execution, conversion, quantization, model loading, inference, benchmark access/execution, device execution, contamination assessment, selection-suite construction, winner selection, training, PHI, Private Gold, gated assets, credentials, provider generation, personnel engagement, procurement, and spend. Git blob IDs are not executable SHA-256 identities.
 
 ## Exit Evidence
 
-This static-evidence artifact is repository-level complete only after exact-head independent review confirms:
+Repository-level completion requires exact-head independent review confirming:
 
 ```text
 EXACT_LLAMA_CPP_SOURCE_REVISION_BOUND=YES
