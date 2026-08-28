@@ -117,7 +117,9 @@ PREDECESSOR_CANDIDATE_SHA256=b422568fa535a29f6887cad2b158c3bbad059c8bbb4999c3ca5
 INTERMEDIATE_RUNNER_CONTEXT_FIXED_BLOB_SHA1=c5bc77cce1cdf23cb4fe5c4adc4f12713072eca7
 INTERMEDIATE_RUNNER_CONTEXT_FIXED_SHA256=55d28ec4e9c6319482bf0b3147797ace6b525c3cbd5e85f43f8741819cdb663a
 NEW_CANDIDATE_GIT_BLOB_SHA1=15d915aab40e53daf7e6937b01e021ae97ccbbe8
-NEW_CANDIDATE_SHA256=NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH
+NEW_CANDIDATE_SHA256=47c4c1217f9b56415840ac1475f4a3d8ae24b8f967d9cad702cc9c5e4880357f
+DIGEST_BINDING_EVIDENCE=LOCAL_BYTE_LEVEL_CROSSCHECK_MATCHED_GITHUB_GIT_BLOB
+INDEPENDENT_DIGEST_RECOMPUTE=PENDING_EXACT_HEAD_REVIEW
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 ```
 
@@ -149,7 +151,7 @@ The second correction adds only `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` to the alre
 
 GitHub independently reports the final corrected candidate as Git blob `15d915aab40e53daf7e6937b01e021ae97ccbbe8` on candidate commit `f00f678d2f5818ab288bbfe22d1e238c39b1ed4b`.
 
-The previous SHA-256 `55d28ec4...` applies only to the intermediate runner-context-only candidate and is not inherited. The final candidate SHA-256 remains `NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH` until independently recomputed against blob `15d915aa...` and bound in this record.
+A local byte-level reconstruction of the final candidate produced Git blob SHA-1 `15d915aab40e53daf7e6937b01e021ae97ccbbe8`, matching GitHub exactly, and SHA-256 `47c4c1217f9b56415840ac1475f4a3d8ae24b8f967d9cad702cc9c5e4880357f`. Fresh independent exact-head review must recompute and confirm that digest before this recapture can qualify.
 
 ## 4. Runtime/security invariants preserved
 
@@ -224,8 +226,7 @@ A fresh exact-head review must explicitly confirm an evidence-bound disposition 
 No live workflow may be created from these final corrected bytes until this recapture becomes canonical after fresh exact-head review.
 
 ```text
-FINAL_CANDIDATE_SHA256_INDEPENDENTLY_RECOMPUTED_AND_BOUND
--> THIS_RECAPTURE_EXACT_HEAD_REVIEW_MATERIAL_BLOCKER=NO
+THIS_RECAPTURE_EXACT_HEAD_REVIEW_MATERIAL_BLOCKER=NO
 -> THIS_RECAPTURE_CANONICAL
 -> FRESH_PROMOTION_BRANCH_FROM_THEN_CURRENT_CANONICAL_MAIN
 -> PROMOTED_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
@@ -246,9 +247,10 @@ Any further candidate-byte change requires another exact authority capture.
 
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
-SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_FINAL_CANDIDATE_HASH_AND_REVIEW
+SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_FINAL_EXACT_HEAD_REVIEW
 NEW_CANDIDATE_GIT_BLOB_SHA1=15d915aab40e53daf7e6937b01e021ae97ccbbe8
-NEW_CANDIDATE_SHA256=NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH
+NEW_CANDIDATE_SHA256=47c4c1217f9b56415840ac1475f4a3d8ae24b8f967d9cad702cc9c5e4880357f
+INDEPENDENT_DIGEST_RECOMPUTE=PENDING_EXACT_HEAD_REVIEW
 LIVE_WORKFLOW_ON_CANONICAL_MAIN=NO
 CURRENT_RECAPTURE_BRANCH_WORKFLOW_RUNS=0
 BUILD_EXECUTION_OCCURRED=NO
