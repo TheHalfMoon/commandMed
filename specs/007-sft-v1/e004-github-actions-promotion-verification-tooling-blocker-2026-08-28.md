@@ -155,11 +155,37 @@ WORKAROUND_TRIGGER_ATTEMPTED=NO
 
 No automatic trigger, push workaround, rerun of an unrelated run, alternate workflow path, API substitution outside the connected authorized tool surface, or second-run interpretation is permitted.
 
-## 7. Current state
+### 6.1 Final exact-record-head Actions binding
+
+The first exact-head review of this record correctly identified that the file must not rely on an unrecorded Actions lookup for the record's final review head. The record therefore makes the final-head evidence rule explicit.
+
+A Git commit cannot contain a literal copy of its own final commit SHA without changing the commit being identified. The exact commit identity is therefore bound by immutable PR metadata plus a fresh exact-head review performed **after** the final record-content commit. The run count itself is recorded here and must be re-queried against that externally bound exact head before merge:
 
 ```text
-CANONICAL_MAIN=85bd67981e6e7c04e9015fa046244128641469ea
-CANONICAL_MAIN_TREE=db37beafdd74714c128b2f0ac5c1618231a937ee
+THIS_RECORD_EXACT_HEAD_IDENTITY_SOURCE=IMMUTABLE_PR_METADATA_PLUS_FRESH_EXACT_HEAD_REVIEW
+RAW_ACTIONS_RUNS_ON_THIS_RECORD_HEAD=0
+FINAL_EXACT_HEAD_REVIEW_REQUIRED=YES
+FINAL_EXACT_HEAD_REVIEW_MUST_REQUERY_RAW_ACTIONS=YES
+FINAL_EXACT_HEAD_REVIEW_MATERIAL_BLOCKER=NEEDS_FINAL_REVIEW
+```
+
+The `RAW_ACTIONS_RUNS_ON_THIS_RECORD_HEAD=0` assertion is not allowed to qualify by self-assertion. If the final exact-head reviewer observes any nonzero run count, head mismatch, changed scope, or other material discrepancy, this record fails closed and must not merge.
+
+The superseded record-content head reviewed before this repair was:
+
+```text
+SUPERSEDED_RECORD_HEAD=7b9989965d6fd449ec150b04ebbdcd8a0c389ea2
+RAW_ACTIONS_RUNS_ON_SUPERSEDED_RECORD_HEAD=0
+SUPERSEDED_RECORD_HEAD_MATERIAL_BLOCKER=YES_MISSING_EXPLICIT_FINAL_HEAD_BINDING_RULE
+```
+
+That prior-head evidence is historical only and cannot qualify the repaired head.
+
+## 7. Captured state at canonical promotion base
+
+```text
+CANONICAL_PROMOTION_BASE_AT_CAPTURE=85bd67981e6e7c04e9015fa046244128641469ea
+CANONICAL_PROMOTION_TREE=db37beafdd74714c128b2f0ac5c1618231a937ee
 LIVE_E004_BUILD_EVIDENCE_WORKFLOW=YES
 CANONICAL_LIVE_WORKFLOW_GIT_BLOB_SHA1=710cb4e6ecf1b34e93d3dfa3d59e24c3d60d1d79
 CANONICAL_LIVE_WORKFLOW_SHA256=836175ee057e2a6802b47db00766119d54c2034b63c8487f138dc125285f226b
