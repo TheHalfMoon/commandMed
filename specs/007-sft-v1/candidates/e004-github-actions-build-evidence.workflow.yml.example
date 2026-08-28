@@ -1,0 +1,164 @@
+# NON-EXECUTABLE REVIEW CANDIDATE.
+# This file is stored outside .github/workflows and MUST NOT be copied, renamed,
+# promoted, dispatched, or otherwise executed without a separately captured
+# Founder BUILD_ENVIRONMENT_DECISION_B and fresh exact-subject review.
+
+name: E004 llama-quantize build evidence
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  TOOL_REPOSITORY_URL: https://github.com/ggml-org/llama.cpp.git
+  TOOL_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  TOOL_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
+  BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
+  GIT_TERMINAL_PROMPT: "0"
+
+jobs:
+  build-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Fail-closed runner preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          required_tools=(
+            git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
+          )
+          for tool in "${required_tools[@]}"; do
+            command -v "$tool" >/dev/null
+          done
+
+          printf '%s\n' \
+            "RUNNER_OS=${RUNNER_OS:-UNSET}" \
+            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" \
+            "ImageOS=${ImageOS:-UNSET}" \
+            "ImageVersion=${ImageVersion:-UNSET}"
+
+          uname -a
+          cat /etc/os-release
+          git --version
+          cmake --version
+          ninja --version
+          cc --version
+          c++ --version
+          python3 --version
+          ldd --version | head -n 1
+
+          for tool in git cmake ninja cc c++ python3; do
+            resolved="$(readlink -f "$(command -v "$tool")")"
+            printf '%s=%s\n' "${tool}_path" "$resolved"
+            sha256sum "$resolved"
+          done
+
+      - name: Materialize and verify exact public source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          rm -rf "$SOURCE_DIR" "$BUILD_DIR"
+          git init "$SOURCE_DIR"
+          git -C "$SOURCE_DIR" remote add origin "$TOOL_REPOSITORY_URL"
+          git -C "$SOURCE_DIR" -c credential.helper= fetch \
+            --no-tags --depth=1 origin "$TOOL_COMMIT"
+          git -C "$SOURCE_DIR" checkout --detach FETCH_HEAD
+
+          actual_commit="$(git -C "$SOURCE_DIR" rev-parse HEAD)"
+          actual_tree="$(git -C "$SOURCE_DIR" rev-parse 'HEAD^{tree}')"
+
+          test "$actual_commit" = "$TOOL_COMMIT"
+          test "$actual_tree" = "$TOOL_TREE"
+          test -z "$(git -C "$SOURCE_DIR" status --porcelain)"
+
+          printf '%s\n' \
+            "TOOL_COMMIT=$actual_commit" \
+            "TOOL_TREE=$actual_tree"
+
+      - name: Configure bounded build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          cmake \
+            -S "$SOURCE_DIR" \
+            -B "$BUILD_DIR" \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DLLAMA_BUILD_COMMON=ON \
+            -DLLAMA_BUILD_TESTS=OFF \
+            -DLLAMA_BUILD_TOOLS=ON \
+            -DLLAMA_BUILD_EXAMPLES=OFF \
+            -DLLAMA_BUILD_SERVER=OFF \
+            -DLLAMA_BUILD_APP=OFF \
+            -DLLAMA_BUILD_UI=OFF \
+            -DLLAMA_USE_PREBUILT_UI=OFF \
+            -DLLAMA_TOOLS_INSTALL=OFF \
+            -DLLAMA_TESTS_INSTALL=OFF \
+            -DLLAMA_OPENSSL=OFF \
+            -DLLAMA_SUBPROCESS=OFF \
+            -DLLAMA_LLGUIDANCE=OFF \
+            -DGGML_NATIVE=OFF \
+            -DGGML_CCACHE=OFF \
+            -DGGML_OPENMP=OFF
+
+          sha256sum "$BUILD_DIR/CMakeCache.txt"
+          sha256sum "$BUILD_DIR/compile_commands.json"
+
+      - name: Build llama-quantize only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          cmake --build "$BUILD_DIR" \
+            --target llama-quantize \
+            --parallel 2 \
+            --verbose
+
+      - name: Emit build evidence to log only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          binary="$BUILD_DIR/bin/llama-quantize"
+          test -x "$binary"
+
+          binary_sha256="$(sha256sum "$binary" | awk '{print $1}')"
+          binary_bytes="$(stat -c '%s' "$binary")"
+
+          printf '%s\n' \
+            "LLAMA_QUANTIZE_PATH=$binary" \
+            "LLAMA_QUANTIZE_SHA256=$binary_sha256" \
+            "LLAMA_QUANTIZE_BYTES=$binary_bytes"
+
+          file "$binary"
+          ldd "$binary" || true
+
+          {
+            printf '%s\n' \
+              "tool_repository=$TOOL_REPOSITORY_URL" \
+              "tool_commit=$(git -C "$SOURCE_DIR" rev-parse HEAD)" \
+              "tool_tree=$(git -C "$SOURCE_DIR" rev-parse 'HEAD^{tree}')" \
+              "runner_os=${RUNNER_OS:-UNSET}" \
+              "runner_arch=${RUNNER_ARCH:-UNSET}" \
+              "image_os=${ImageOS:-UNSET}" \
+              "image_version=${ImageVersion:-UNSET}" \
+              "binary_sha256=$binary_sha256" \
+              "binary_bytes=$binary_bytes"
+            printf 'cmake_cache_sha256='
+            sha256sum "$BUILD_DIR/CMakeCache.txt" | awk '{print $1}'
+            printf 'compile_commands_sha256='
+            sha256sum "$BUILD_DIR/compile_commands.json" | awk '{print $1}'
+          } | tee "$RUNNER_TEMP/e004-build-evidence-manifest.txt"
+
+          printf 'BUILD_EVIDENCE_MANIFEST_SHA256='
+          sha256sum "$RUNNER_TEMP/e004-build-evidence-manifest.txt" | awk '{print $1}'
+
+          # No upload/cache/release/package step is permitted.
