@@ -3,6 +3,7 @@
 **Spec:** 007 SFT V1  
 **Canonical base:** `1a66efb145b8850c326d3a54dcfde7a6ef6314df`  
 **Initial probe head:** `dfe3fefa7be2286bf91f9b35e444d45595ff5567`  
+**Superseded hash-binding head:** `d0cd6d288c8271d26ac552600059538369dcb772`  
 **Artifact class:** non-executing static converter-input analysis plus exact frozen-provider raw-byte provenance  
 **Authority effect:** NONE  
 **Model/source-weight download performed by commandMed:** NO  
@@ -40,9 +41,19 @@ GRANITE_CONVERTER_GIT_BLOB=796d37cca269a71e014759cb0f6c5c1342c7615b
 QWEN_CONVERTER_SOURCE=conversion/qwen.py
 QWEN_CONVERTER_GIT_BLOB=cdba8a63e9c919232e2ec80e88b01afec7967dc4
 MAMBA_CONVERTER_SOURCE=conversion/mamba.py
-MAMBA_CONVERTER_GIT_BLOB=0a4dd73982df9dc92fbe98d87c0094199bddeb43
+MAMBA_CONVERTER_GIT_BLOB=8a2a4637529a4f8140836ab089654684f85f96c9
 SPECIAL_VOCAB_SOURCE=gguf-py/gguf/vocab.py
 SPECIAL_VOCAB_GIT_BLOB=d93b94f2d792147276be21db004dbd8d4edef82c
+```
+
+The superseded hash-binding head incorrectly recorded `conversion/mamba.py` as Git blob `0a4dd73982df9dc92fbe98d87c0094199bddeb43`. Fresh exact-head review independently queried the pinned Git tree and found the correct blob `8a2a4637529a4f8140836ab089654684f85f96c9`; the connected GitHub contents API independently confirmed the same identity. No other provider-byte or source-classification finding was reported on that head.
+
+```text
+SUPERSEDED_MAMBA_CONVERTER_GIT_BLOB=0a4dd73982df9dc92fbe98d87c0094199bddeb43
+CORRECT_MAMBA_CONVERTER_GIT_BLOB=8a2a4637529a4f8140836ab089654684f85f96c9
+PRIOR_FINAL_REVIEW_PROVIDER_ROW_FINDINGS=NONE
+PRIOR_FINAL_REVIEW_LOCAL_MATERIALIZATION_BOUNDARY_FINDING=NONE
+PRIOR_FINAL_REVIEW_CONVERSION_AUTHORITY_BOUNDARY_FINDING=NONE
 ```
 
 Observed source behavior:
@@ -239,21 +250,27 @@ LOCAL_BUNDLE_PROVIDER_IDENTITY_RECONCILIATION=NEEDS_EVIDENCE
 
 ## 7. Final exact-head review gate
 
-The initial evidence probe is historical and cannot qualify this hash-binding commit for canonical merge. This updated head requires a new independent exact-head review that recomputes or re-verifies the bound values and checks the source classification and authority boundary.
+The initial evidence probe and the superseded hash-binding review are historical and cannot qualify this repaired commit for canonical merge.
+
+The superseded hash-binding head was reviewed independently and found exactly one material identity defect: the Mamba source Git blob. All 13 provider raw-byte rows, provider OIDs, embedded merge counts, local-materialization boundary, conversion-authority boundary, and zero exact-head Actions runs otherwise matched the record. This repaired head corrects that source identity and therefore requires another fresh exact-head review.
 
 ```text
 INITIAL_HEAD_MERGE_ELIGIBLE=NO
 INITIAL_PROBE_RESULT_REUSED_AS_FINAL_MERGE_QUALIFICATION=NO
+SUPERSEDED_HASH_BINDING_HEAD=d0cd6d288c8271d26ac552600059538369dcb772
+SUPERSEDED_HASH_BINDING_HEAD_MATERIAL_BLOCKER=YES_MAMBA_SOURCE_BLOB_IDENTITY
 HASH_BINDING_COMPLETE=YES
-POST_HASH_BINDING_FRESH_EXACT_HEAD_REVIEW_REQUIRED=YES
+MAMBA_SOURCE_IDENTITY_REPAIRED=YES
+FRESH_EXACT_HEAD_REVIEW_REQUIRED=YES
 CURRENT_HEAD_MERGE_ELIGIBILITY=PENDING_FRESH_EXACT_HEAD_REVIEW
 ```
 
-The final review must verify at least:
+The fresh review must verify at least:
 
 ```text
 RECORD_ONLY_SCOPE=YES
 SOURCE_CLASSIFICATION_MATCHES_PINNED_CONVERTER=YES
+PINNED_SOURCE_BLOB_SET_BOUND_CORRECTLY=YES
 GRANITE_PROVIDER_RAW_HASH_SET_BOUND_CORRECTLY=YES
 QWEN_PROVIDER_RAW_HASH_SET_BOUND_CORRECTLY=YES
 QWEN_MODEL_INDEX_PROVIDER_RAW_SHA256_BOUND_CORRECTLY=YES
@@ -289,7 +306,7 @@ E005_STATE=NOT_REACHED
 ## 9. Current state
 
 ```text
-DECISION_B_NON_WEIGHT_INPUT_SURFACE=HASH_BOUND_PENDING_FINAL_EXACT_HEAD_REVIEW
+DECISION_B_NON_WEIGHT_INPUT_SURFACE=HASH_BOUND_SOURCE_IDENTITY_REPAIRED_PENDING_FRESH_EXACT_HEAD_REVIEW
 GRANITE_PROVIDER_NON_WEIGHT_RAW_SHA256_SET=BOUND
 QWEN_PROVIDER_NON_WEIGHT_RAW_SHA256_SET=BOUND
 QWEN_EXACT_MODEL_INDEX_PROVIDER_RAW_SHA256=BOUND
