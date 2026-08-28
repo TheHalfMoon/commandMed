@@ -33,7 +33,8 @@ The review subject remains outside `.github/workflows`:
 ```text
 CANDIDATE_PATH=specs/007-sft-v1/candidates/e004-github-actions-build-evidence.workflow.yml.example
 CANDIDATE_GIT_BLOB_SHA1=bc6fa5f009214d97d37bcdb9a96ca9a1cfbac3e5
-CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
+CANDIDATE_SHA256=fe71688929a8fe89d6dc3755bab67084e484843e49f077df6dbe8c618534c847
+CANDIDATE_DIGEST_EVIDENCE_SOURCE=CODERABBIT_INDEPENDENT_EXACT_REPOSITORY_HASH
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
@@ -41,7 +42,7 @@ LIVE_TRIGGER_CREATED=NO
 
 The candidate was hardened on this branch before authority capture because the prior canonical candidate declared fail-closed handling for unexpected network dependencies without technically isolating configure/build network egress. The revised subject permits network only during exact public source materialization, creates a separate Linux network namespace with bounded root privilege, and drops to the original runner UID/GID with cleared supplementary groups before any CMake or compiler process starts.
 
-The SHA-256 above is intentionally not guessed. It must be independently recomputed from the exact candidate bytes on the reviewed head and then bound before this record can qualify.
+The candidate identity above is now bound from independent exact-repository hashing performed during PR #93 review. Any later candidate-byte change invalidates this capture and requires a new exact authority capture; a changed blob or SHA-256 must not inherit this record.
 
 ## 3. Exact environment and run envelope
 
@@ -314,14 +315,17 @@ The intended live workflow may be promoted only when all of the following are tr
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION_B=CANONICAL
 EXACT_AUTHORITY_CAPTURE=CANONICAL
+QUALIFIED_CANDIDATE_GIT_BLOB_SHA1=bc6fa5f009214d97d37bcdb9a96ca9a1cfbac3e5
+QUALIFIED_CANDIDATE_SHA256=fe71688929a8fe89d6dc3755bab67084e484843e49f077df6dbe8c618534c847
 PROMOTED_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 PROMOTED_WORKFLOW_BYTES_EQUAL_QUALIFIED_CANDIDATE_BYTES=YES
+PROMOTED_WORKFLOW_GIT_BLOB_EQUALS_QUALIFIED_CANDIDATE_GIT_BLOB=YES
 PROMOTED_WORKFLOW_SHA256_EQUALS_QUALIFIED_CANDIDATE_SHA256=YES
 PROMOTION_PR_CHANGED_WORKFLOW_SCOPE_IS_EXACT=YES
 FRESH_EXACT_HEAD_REVIEW_MATERIAL_BLOCKER=NO
 ```
 
-Canonical merge of that exact promotion PR is the promotion event. No other workflow path is authorized.
+Canonical merge of that exact promotion PR is the promotion event. No other workflow path is authorized. Any candidate-byte change requires a new exact authority capture rather than an amendment-by-inference.
 
 The at-most-one manual build-evidence run becomes exercisable only after post-merge verification proves the live workflow on canonical `main` is byte-identical to the qualified subject and all pre-run conditions in this record remain satisfied.
 
@@ -373,8 +377,9 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
-EXACT_AUTHORITY_CAPTURE=PENDING_EXACT_HEAD_REVIEW
-CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
+EXACT_AUTHORITY_CAPTURE=PENDING_FRESH_EXACT_HEAD_REVIEW_AFTER_DIGEST_BINDING
+CANDIDATE_GIT_BLOB_SHA1=bc6fa5f009214d97d37bcdb9a96ca9a1cfbac3e5
+CANDIDATE_SHA256=fe71688929a8fe89d6dc3755bab67084e484843e49f077df6dbe8c618534c847
 LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
 WORKFLOW_RUN_EXECUTED=NO
