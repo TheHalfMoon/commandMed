@@ -112,8 +112,8 @@ jobs:
           set -Eeuo pipefail
 
           # Resolve exact executable identities before crossing the privilege and
-          # reset-env boundary. The same absolute paths are then invoked inside
-          # the isolated build so preflight hashes bind the tools actually used.
+          # reset-env boundary. The same paths and a deterministic PATH derived
+          # from their directories are then used inside the isolated build.
           runner_uid="$(id -u)"
           runner_gid="$(id -g)"
           sudo_path="$(readlink -f "$(command -v sudo)")"
@@ -122,16 +122,20 @@ jobs:
           env_path="$(readlink -f "$(command -v env)")"
           bash_path="$(readlink -f "$(command -v bash)")"
           id_path="$(readlink -f "$(command -v id)")"
+          git_path="$(readlink -f "$(command -v git)")"
           cmake_path="$(readlink -f "$(command -v cmake)")"
           ninja_path="$(readlink -f "$(command -v ninja)")"
           cc_path="$(readlink -f "$(command -v cc)")"
           cxx_path="$(readlink -f "$(command -v c++)")"
+          python3_path="$(readlink -f "$(command -v python3)")"
           sha256sum_path="$(readlink -f "$(command -v sha256sum)")"
+          build_path="${bash_path%/*}:${env_path%/*}:${id_path%/*}:${git_path%/*}:${cmake_path%/*}:${ninja_path%/*}:${cc_path%/*}:${cxx_path%/*}:${python3_path%/*}:${sha256sum_path%/*}"
 
           # Root privilege is used only to create the network namespace.
-          # Every subsequent program is an exact absolute path. setpriv drops
-          # UID/GID, supplementary groups, Linux capabilities, enables
-          # no_new_privs, and resets inherited environment before build tools run.
+          # Every privilege-boundary executable is an exact absolute path.
+          # setpriv drops UID/GID, supplementary groups and Linux capabilities,
+          # enables no_new_privs, and resets inherited environment. The explicit
+          # PATH below is rebuilt only from already-resolved tool directories.
           "$sudo_path" -n "$unshare_path" --net -- \
             "$setpriv_path" \
               --reuid "$runner_uid" \
@@ -146,6 +150,7 @@ jobs:
             "$env_path" \
               HOME="$E004_HOME" \
               TMPDIR="$RUNNER_TEMP" \
+              PATH="$build_path" \
               LC_ALL=C \
               LANG=C \
             "$bash_path" -Eeuo pipefail -c '
@@ -153,15 +158,18 @@ jobs:
               build_dir="$2"
               expected_home="$3"
               expected_tmp="$4"
-              security_evidence="$5"
-              id_path="$6"
-              env_path="$7"
-              bash_path="$8"
-              cmake_path="$9"
-              ninja_path="${10}"
-              cc_path="${11}"
-              cxx_path="${12}"
-              sha256sum_path="${13}"
+              expected_path="$5"
+              security_evidence="$6"
+              id_path="$7"
+              env_path="$8"
+              bash_path="$9"
+              git_path="${10}"
+              cmake_path="${11}"
+              ninja_path="${12}"
+              cc_path="${13}"
+              cxx_path="${14}"
+              python3_path="${15}"
+              sha256sum_path="${16}"
 
               uid="$("$id_path" -u)"
               gid="$("$id_path" -g)"
@@ -192,6 +200,7 @@ jobs:
               test "$no_new_privs" = "1"
               test "$HOME" = "$expected_home"
               test "$TMPDIR" = "$expected_tmp"
+              test "$PATH" = "$expected_path"
               test "$LC_ALL" = "C"
               test "$LANG" = "C"
 
@@ -217,19 +226,23 @@ jobs:
                   "NoNewPrivs=$no_new_privs" \
                   "HOME=$HOME" \
                   "TMPDIR=$TMPDIR" \
+                  "PATH=$PATH" \
                   "LC_ALL=$LC_ALL" \
                   "LANG=$LANG" \
                   "sensitive_platform_env_present=$sensitive_platform_env_present" \
                   "build_bash_path=$bash_path" \
                   "build_env_path=$env_path" \
                   "build_id_path=$id_path" \
+                  "build_git_path=$git_path" \
                   "build_cmake_path=$cmake_path" \
                   "build_ninja_path=$ninja_path" \
                   "build_cc_path=$cc_path" \
-                  "build_cxx_path=$cxx_path"
+                  "build_cxx_path=$cxx_path" \
+                  "build_python3_path=$python3_path"
                 "$sha256sum_path" \
-                  "$bash_path" "$env_path" "$id_path" "$cmake_path" \
-                  "$ninja_path" "$cc_path" "$cxx_path"
+                  "$bash_path" "$env_path" "$id_path" "$git_path" \
+                  "$cmake_path" "$ninja_path" "$cc_path" "$cxx_path" \
+                  "$python3_path"
               } > "$security_evidence"
 
               "$cmake_path" \
@@ -263,9 +276,9 @@ jobs:
                 --parallel 2 \
                 --verbose
             ' _ \
-              "$SOURCE_DIR" "$BUILD_DIR" "$E004_HOME" "$RUNNER_TEMP" "$SECURITY_EVIDENCE" \
-              "$id_path" "$env_path" "$bash_path" "$cmake_path" "$ninja_path" \
-              "$cc_path" "$cxx_path" "$sha256sum_path"
+              "$SOURCE_DIR" "$BUILD_DIR" "$E004_HOME" "$RUNNER_TEMP" "$build_path" "$SECURITY_EVIDENCE" \
+              "$id_path" "$env_path" "$bash_path" "$git_path" "$cmake_path" "$ninja_path" \
+              "$cc_path" "$cxx_path" "$python3_path" "$sha256sum_path"
 
           test -f "$SECURITY_EVIDENCE"
           cat "$SECURITY_EVIDENCE"
