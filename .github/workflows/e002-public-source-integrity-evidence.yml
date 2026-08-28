@@ -1,0 +1,344 @@
+# E002 PUBLIC SOURCE INTEGRITY EVIDENCE WORKFLOW.
+#
+# This lane is bounded to the exact frozen public/ungated Decision B source
+# subjects already covered by canonical E002 authority. It only downloads
+# exact immutable-revision files, materializes them as inert bytes, verifies
+# exact byte counts and SHA-256 values, and emits a small manifest to logs.
+#
+# It MUST NOT load model weights, import a model runtime, execute provider code,
+# convert or quantize weights, access benchmark payloads, use credentials,
+# upload/cache model artifacts, train, contact reviewers, or spend money.
+#
+# The reviewed workflow is intentionally inert on main. Execution is one-shot
+# through an exact branch + marker-path push after this workflow is separately
+# reviewed and merged canonically.
+
+name: E002 public source integrity evidence
+
+on:
+  push:
+    branches:
+      - evidence/e002-source-integrity-run-v1
+    paths:
+      - .github/e002-source-integrity-run-v1.txt
+
+permissions: {}
+
+concurrency:
+  group: e002-public-source-integrity-v1
+  cancel-in-progress: false
+
+env:
+  GRANITE_REPOSITORY: ibm-granite/granite-4.0-350m-base
+  GRANITE_REVISION: a50b46cef21c8a86b15f0496cb794487a78a910b
+  QWEN_REPOSITORY: Qwen/Qwen3-4B-Base
+  QWEN_REVISION: 906bfd4b4dc7f14ee4320094d8b41684abff8539
+
+jobs:
+  granite-integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Fail-closed E002 preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          required_tools=(bash curl sha256sum stat find sort wc awk df)
+          for tool in "${required_tools[@]}"; do
+            command -v "$tool" >/dev/null
+          done
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          for credential_name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN; do
+            test -z "${!credential_name:-}"
+          done
+
+          available_kb="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          test "$available_kb" -ge 2097152
+
+          printf '%s\n' \
+            "E002_SCOPE=FROZEN_PUBLIC_CANDIDATES_ONLY" \
+            "MODEL_LOAD=PROHIBITED" \
+            "MODEL_CONVERSION=PROHIBITED" \
+            "MODEL_INFERENCE=PROHIBITED" \
+            "BENCHMARK_ACCESS=PROHIBITED" \
+            "CREDENTIAL_USE=PROHIBITED" \
+            "ARTIFACT_UPLOAD=PROHIBITED" \
+            "TRAINING=PROHIBITED" \
+            "SPEND_USD=0" \
+            "RUNNER_OS=${RUNNER_OS:-UNSET}" \
+            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" \
+            "ImageOS=${ImageOS:-UNSET}" \
+            "ImageVersion=${ImageVersion:-UNSET}" \
+            "AVAILABLE_KB=$available_kb"
+
+          curl --version
+          sha256sum --version | head -n 1
+          stat --version | head -n 1
+
+      - name: Materialize and verify exact Granite source bundle
+        shell: bash
+        env:
+          E002_ROOT: ${{ runner.temp }}/e002-source-integrity
+        run: |
+          set -Eeuo pipefail
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+
+          source_dir="$E002_ROOT/granite-4.0-350m-base"
+          manifest="$E002_ROOT/granite-local-integrity.tsv"
+          rm -rf "$E002_ROOT"
+          mkdir -p "$source_dir"
+          : > "$manifest"
+
+          test "${source_dir##*/}" = "granite-4.0-350m-base"
+
+          download_and_verify() {
+            local repository="$1"
+            local revision="$2"
+            local relative_path="$3"
+            local expected_bytes="$4"
+            local expected_sha256="$5"
+            local destination="$source_dir/$relative_path"
+            local temporary="$destination.part"
+            local actual_bytes=""
+            local actual_sha256=""
+            local url="https://huggingface.co/${repository}/resolve/${revision}/${relative_path}?download=true"
+
+            mkdir -p "$(dirname "$destination")"
+            rm -f "$temporary" "$destination"
+
+            curl --disable \
+              --fail \
+              --location \
+              --silent \
+              --show-error \
+              --retry 4 \
+              --retry-all-errors \
+              --retry-delay 2 \
+              --connect-timeout 30 \
+              --output "$temporary" \
+              "$url"
+
+            actual_bytes="$(stat -c '%s' "$temporary")"
+            actual_sha256="$(sha256sum "$temporary" | awk '{print $1}')"
+
+            test "$actual_bytes" = "$expected_bytes"
+            test "$actual_sha256" = "$expected_sha256"
+
+            mv "$temporary" "$destination"
+            printf '%s\t%s\t%s\n' "$relative_path" "$actual_bytes" "$actual_sha256" >> "$manifest"
+          }
+
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            model.safetensors 704786224 \
+            a65363c0803a05c1c74e114c692c57f35b2641aeffce24d5a8ee8fad3b34dcf0
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            config.json 1764 \
+            089690e22b9eafadcdd385afa5b6f3ea2446674ff5398c71df23be059d7c795d
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            tokenizer.json 7153421 \
+            e2bad66439538cb4d5a7580680932432ed9ece9d3b8577e675512bdf11599253
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            tokenizer_config.json 17659 \
+            a5ec5daab12ba090a90f3dd169c8f9c275557013a87b9c1258dc7cb497a35c86
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            merges.txt 916646 \
+            b6fe424e334903f7fb84d3a106d9730455f4744b9fe3c21ee136d97a00e72502
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            vocab.json 1612704 \
+            8af71076de8b0b626eed0f4c984faf0a7c062479164b2a31308a948524d4f69c
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            special_tokens_map.json 579 \
+            c08676c49fd7969a3130f72be6d4bf34da66aa484a6e21dffe359893a1bd5f2e
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            README.md 26418 \
+            e0786791023161d3f6dbc7e20a4efb278a1ef09a6a0abb9599bdba2e47a89378
+          download_and_verify "$GRANITE_REPOSITORY" "$GRANITE_REVISION" \
+            generation_config.json 147 \
+            7c04cb9d2ba771f7528fba5a7104999cdaf7566d02b5fbd58472829f62716177
+
+          sort -o "$manifest" "$manifest"
+
+          test -z "$(find "$source_dir" -type l -print -quit)"
+          file_count="$(find "$source_dir" -type f | wc -l | tr -d ' ')"
+          test "$file_count" = "9"
+
+          manifest_sha256="$(sha256sum "$manifest" | awk '{print $1}')"
+
+          printf '%s\n' \
+            "SUBJECT=E004-CONVERT-GRANITE-350M-Q4_K_M-V1" \
+            "SOURCE_REPOSITORY=$GRANITE_REPOSITORY" \
+            "SOURCE_REVISION=$GRANITE_REVISION" \
+            "LOCAL_SOURCE_DIRECTORY_BASENAME=${source_dir##*/}" \
+            "LOCAL_SELECTED_FILE_COUNT=$file_count" \
+            "LOCAL_SOURCE_BUNDLE_BYTE_INTEGRITY=PASS_ON_THIS_EPHEMERAL_RUNNER" \
+            "MODEL_LOAD_OCCURRED=NO" \
+            "MODEL_CONVERSION_OCCURRED=NO" \
+            "MODEL_INFERENCE_OCCURRED=NO" \
+            "ARTIFACT_UPLOAD_OCCURRED=NO" \
+            "CREDENTIAL_USE_OCCURRED=NO" \
+            "RETENTION=EPHEMERAL_RUNNER_ONLY" \
+            "LOCAL_INTEGRITY_MANIFEST_SHA256=$manifest_sha256"
+
+          cat "$manifest"
+
+  qwen-control-integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Fail-closed E002 preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          required_tools=(bash curl sha256sum stat find sort wc awk df)
+          for tool in "${required_tools[@]}"; do
+            command -v "$tool" >/dev/null
+          done
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          for credential_name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN; do
+            test -z "${!credential_name:-}"
+          done
+
+          available_kb="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          test "$available_kb" -ge 9437184
+
+          printf '%s\n' \
+            "E002_SCOPE=FROZEN_PUBLIC_CANDIDATES_ONLY" \
+            "CONTROL_WINNER_ELIGIBLE=NO" \
+            "MODEL_LOAD=PROHIBITED" \
+            "MODEL_CONVERSION=PROHIBITED" \
+            "MODEL_INFERENCE=PROHIBITED" \
+            "BENCHMARK_ACCESS=PROHIBITED" \
+            "CREDENTIAL_USE=PROHIBITED" \
+            "ARTIFACT_UPLOAD=PROHIBITED" \
+            "TRAINING=PROHIBITED" \
+            "SPEND_USD=0" \
+            "RUNNER_OS=${RUNNER_OS:-UNSET}" \
+            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" \
+            "ImageOS=${ImageOS:-UNSET}" \
+            "ImageVersion=${ImageVersion:-UNSET}" \
+            "AVAILABLE_KB=$available_kb"
+
+          curl --version
+          sha256sum --version | head -n 1
+          stat --version | head -n 1
+
+      - name: Materialize and verify exact Qwen3-4B CONTROL source bundle
+        shell: bash
+        env:
+          E002_ROOT: ${{ runner.temp }}/e002-source-integrity
+        run: |
+          set -Eeuo pipefail
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+
+          source_dir="$E002_ROOT/Qwen3-4B-Base"
+          manifest="$E002_ROOT/qwen3-4b-control-local-integrity.tsv"
+          rm -rf "$E002_ROOT"
+          mkdir -p "$source_dir"
+          : > "$manifest"
+
+          test "${source_dir##*/}" = "Qwen3-4B-Base"
+
+          download_and_verify() {
+            local repository="$1"
+            local revision="$2"
+            local relative_path="$3"
+            local expected_bytes="$4"
+            local expected_sha256="$5"
+            local destination="$source_dir/$relative_path"
+            local temporary="$destination.part"
+            local actual_bytes=""
+            local actual_sha256=""
+            local url="https://huggingface.co/${repository}/resolve/${revision}/${relative_path}?download=true"
+
+            mkdir -p "$(dirname "$destination")"
+            rm -f "$temporary" "$destination"
+
+            curl --disable \
+              --fail \
+              --location \
+              --silent \
+              --show-error \
+              --retry 4 \
+              --retry-all-errors \
+              --retry-delay 2 \
+              --connect-timeout 30 \
+              --output "$temporary" \
+              "$url"
+
+            actual_bytes="$(stat -c '%s' "$temporary")"
+            actual_sha256="$(sha256sum "$temporary" | awk '{print $1}')"
+
+            test "$actual_bytes" = "$expected_bytes"
+            test "$actual_sha256" = "$expected_sha256"
+
+            mv "$temporary" "$destination"
+            printf '%s\t%s\t%s\n' "$relative_path" "$actual_bytes" "$actual_sha256" >> "$manifest"
+          }
+
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            model-00001-of-00003.safetensors 3957900840 \
+            4c807e2503d68ae373d508689d00a41f4b33f33c2536da97ab81a20caddc1241
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            model-00002-of-00003.safetensors 3987450520 \
+            f4707585548b2fc75a6b1d732e8465c62040a8699903c32850781beeb9b27826
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            model-00003-of-00003.safetensors 99630640 \
+            c7b1aa8fb672de2e00423c99876926022e50b18d4f0d140670788510a27f9965
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            config.json 727 \
+            304b2545a258d35620f1d4bf46940c0471d9baa00715ff8e77f84c2fca5057c1
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            model.safetensors.index.json 32819 \
+            d6c42883a895dfef5b0080ed2116a1bcd764f558406b98923d675978a1abf29c
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            tokenizer.json 7031645 \
+            c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            tokenizer_config.json 9678 \
+            3c04ed3ca964ea2f6b2b5faf0dc4d31aec1cb1e8b4bcf63f402d295046b422b5
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            merges.txt 1671853 \
+            8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            vocab.json 2776833 \
+            ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            README.md 2937 \
+            9fd20ab531a1dc75ae18fcde658dd69d04173fdb93311091c38a7098e3d4b4a1
+          download_and_verify "$QWEN_REPOSITORY" "$QWEN_REVISION" \
+            generation_config.json 138 \
+            8c970692323e3ea0e9b8b0a4dca79388d31226e41f83c9fd6014804280ebf6e8
+
+          sort -o "$manifest" "$manifest"
+
+          test -z "$(find "$source_dir" -type l -print -quit)"
+          file_count="$(find "$source_dir" -type f | wc -l | tr -d ' ')"
+          test "$file_count" = "11"
+
+          manifest_sha256="$(sha256sum "$manifest" | awk '{print $1}')"
+
+          printf '%s\n' \
+            "SUBJECT=E004-CONVERT-QWEN3-4B-CONTROL-Q4_K_M-V1" \
+            "SOURCE_REPOSITORY=$QWEN_REPOSITORY" \
+            "SOURCE_REVISION=$QWEN_REVISION" \
+            "CONTROL_WINNER_ELIGIBLE=NO" \
+            "LOCAL_SOURCE_DIRECTORY_BASENAME=${source_dir##*/}" \
+            "LOCAL_SELECTED_FILE_COUNT=$file_count" \
+            "LOCAL_SOURCE_BUNDLE_BYTE_INTEGRITY=PASS_ON_THIS_EPHEMERAL_RUNNER" \
+            "MODEL_LOAD_OCCURRED=NO" \
+            "MODEL_CONVERSION_OCCURRED=NO" \
+            "MODEL_INFERENCE_OCCURRED=NO" \
+            "ARTIFACT_UPLOAD_OCCURRED=NO" \
+            "CREDENTIAL_USE_OCCURRED=NO" \
+            "RETENTION=EPHEMERAL_RUNNER_ONLY" \
+            "LOCAL_INTEGRITY_MANIFEST_SHA256=$manifest_sha256"
+
+          cat "$manifest"
