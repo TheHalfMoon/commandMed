@@ -147,8 +147,8 @@ jobs:
           unshare_path="$(readlink -f "$unshare_command")"
           setpriv_path="$(readlink -f "$setpriv_command")"
 
-          # Preserve only the original PATH directories needed to resolve the
-          # premeasured build tools, retaining their original precedence.
+          # Preserve only original PATH directories needed by premeasured build
+          # tools, in original precedence order.
           declare -A required_path_dirs=()
           for command_path in \
             "$bash_command" "$env_command" "$id_command" "$git_command" \
@@ -328,6 +328,35 @@ jobs:
                 -DGGML_NATIVE=OFF \
                 -DGGML_CCACHE=OFF \
                 -DGGML_OPENMP=OFF
+
+              cmake_generator=""
+              cmake_make_program=""
+              cmake_c_compiler=""
+              cmake_cxx_compiler=""
+              while IFS="=" read -r key value; do
+                case "$key" in
+                  CMAKE_GENERATOR:*) cmake_generator="$value" ;;
+                  CMAKE_MAKE_PROGRAM:*) cmake_make_program="$value" ;;
+                  CMAKE_C_COMPILER:*) cmake_c_compiler="$value" ;;
+                  CMAKE_CXX_COMPILER:*) cmake_cxx_compiler="$value" ;;
+                esac
+              done < "$build_dir/CMakeCache.txt"
+
+              test "$cmake_generator" = "Ninja"
+              test -n "$cmake_make_program"
+              test -n "$cmake_c_compiler"
+              test -n "$cmake_cxx_compiler"
+              test "$("$readlink_path" -f "$cmake_make_program")" = "$ninja_path"
+              test "$("$readlink_path" -f "$cmake_c_compiler")" = "$cc_path"
+              test "$("$readlink_path" -f "$cmake_cxx_compiler")" = "$cxx_path"
+
+              {
+                printf "%s\n" \
+                  "cmake_generator=$cmake_generator" \
+                  "cmake_make_program=$cmake_make_program" \
+                  "cmake_c_compiler=$cmake_c_compiler" \
+                  "cmake_cxx_compiler=$cmake_cxx_compiler"
+              } >> "$security_evidence"
 
               "$cmake_path" --build "$build_dir" \
                 --target llama-quantize \
