@@ -16,10 +16,6 @@ env:
   TOOL_REPOSITORY_URL: https://github.com/ggml-org/llama.cpp.git
   TOOL_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
   TOOL_TREE: 2255f4747492109298a5c997f374d49c2af3113d
-  SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
-  BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
-  E004_HOME: ${{ runner.temp }}/e004-home
-  SECURITY_EVIDENCE: ${{ runner.temp }}/e004-security-boundary.txt
   GIT_TERMINAL_PROMPT: "0"
   GIT_CONFIG_NOSYSTEM: "1"
   GIT_ASKPASS: /bin/false
@@ -33,6 +29,8 @@ jobs:
     steps:
       - name: Fail-closed runner preflight
         shell: bash
+        env:
+          E004_HOME: ${{ runner.temp }}/e004-home
         run: |
           set -Eeuo pipefail
 
@@ -76,6 +74,9 @@ jobs:
         shell: bash
         env:
           HOME: ${{ runner.temp }}/e004-home
+          SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
+          BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
+          SECURITY_EVIDENCE: ${{ runner.temp }}/e004-security-boundary.txt
         run: |
           set -Eeuo pipefail
 
@@ -103,6 +104,11 @@ jobs:
 
       - name: Configure and build unprivileged in network-isolated namespace
         shell: bash
+        env:
+          SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
+          BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
+          E004_HOME: ${{ runner.temp }}/e004-home
+          SECURITY_EVIDENCE: ${{ runner.temp }}/e004-security-boundary.txt
         run: |
           set -Eeuo pipefail
 
@@ -234,6 +240,10 @@ jobs:
 
       - name: Emit build evidence to log only
         shell: bash
+        env:
+          SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
+          BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
+          SECURITY_EVIDENCE: ${{ runner.temp }}/e004-security-boundary.txt
         run: |
           set -Eeuo pipefail
 
