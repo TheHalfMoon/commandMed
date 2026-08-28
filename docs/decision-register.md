@@ -163,10 +163,20 @@ Set a real budget/access strategy for clinician adjudication, Arabic clinical re
 
 ### FD-004 — Acceptable over-triage policy
 
-**State:** FOUNDER_REQUIRED
+**State:** LOCKED
+**Founder decision:** `BALANCED_BURDEN_WITH_NONCOMPENSABLE_SAFETY`
+**Decision ID:** `FD004_DECISION_B`
+**Decision date:** 2026-08-28
 **Needed before:** patient release gate freeze
 
-Set the product/ethics tradeoff for escalation on clearly benign cases while preserving required emergency sensitivity. Exact thresholds require evidence and clinical governance, but the acceptable product posture is an owner decision.
+Intent:
+
+- reduce unnecessary escalation burden only after frozen noncompensable safety gates are satisfied;
+- require benign over-triage burden to be measured and bounded;
+- never allow convenience, engagement, average utility, or lower over-triage to compensate for a safety-gate failure;
+- require qualified clinical/statistical evidence before any numeric benign over-triage ceiling is proposed or frozen.
+
+This decision fixes the product/ethics posture only. It does not select a numeric threshold, satisfy `T1_A2`, complete E004, advance E005, authorize model conversion or contamination assessment, activate A15, authorize training or external reviewer outreach, or authorize spend.
 
 ### FD-005 — Failed-mode release policy
 
