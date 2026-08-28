@@ -17,6 +17,7 @@ env:
   SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
   BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
   E004_HOME: ${{ runner.temp }}/e004-home
+  SECURITY_EVIDENCE: ${{ runner.temp }}/e004-security-boundary.txt
   GIT_TERMINAL_PROMPT: "0"
   GIT_CONFIG_NOSYSTEM: "1"
   GIT_ASKPASS: /bin/false
@@ -34,7 +35,7 @@ jobs:
           set -Eeuo pipefail
 
           required_tools=(
-            bash env id git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
+            bash env id awk git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
             sudo unshare setpriv
           )
           for tool in "${required_tools[@]}"; do
@@ -63,7 +64,7 @@ jobs:
           unshare --version
           setpriv --version
 
-          for tool in bash env id git cmake ninja cc c++ python3 sudo unshare setpriv; do
+          for tool in bash env id awk git cmake ninja cc c++ python3 sudo unshare setpriv; do
             resolved="$(readlink -f "$(command -v "$tool")")"
             printf '%s=%s\n' "${tool}_path" "$resolved"
             sha256sum "$resolved"
@@ -77,6 +78,7 @@ jobs:
           set -Eeuo pipefail
 
           rm -rf "$SOURCE_DIR" "$BUILD_DIR"
+          rm -f "$SECURITY_EVIDENCE"
           mkdir -p "$HOME"
           git init "$SOURCE_DIR"
           git -C "$SOURCE_DIR" remote add origin "$TOOL_REPOSITORY_URL"
@@ -128,8 +130,57 @@ jobs:
             bash -Eeuo pipefail -c '
               source_dir="$1"
               build_dir="$2"
+              expected_home="$3"
+              expected_tmp="$4"
+              security_evidence="$5"
 
-              test "$(id -u)" != "0"
+              uid="$(id -u)"
+              gid="$(id -g)"
+              cap_inh="$(awk "$1 == \"CapInh:\" { print $2 }" /proc/self/status)"
+              cap_prm="$(awk "$1 == \"CapPrm:\" { print $2 }" /proc/self/status)"
+              cap_eff="$(awk "$1 == \"CapEff:\" { print $2 }" /proc/self/status)"
+              cap_bnd="$(awk "$1 == \"CapBnd:\" { print $2 }" /proc/self/status)"
+              cap_amb="$(awk "$1 == \"CapAmb:\" { print $2 }" /proc/self/status)"
+              no_new_privs="$(awk "$1 == \"NoNewPrivs:\" { print $2 }" /proc/self/status)"
+
+              test "$uid" != "0"
+              test "$cap_inh" = "0000000000000000"
+              test "$cap_prm" = "0000000000000000"
+              test "$cap_eff" = "0000000000000000"
+              test "$cap_bnd" = "0000000000000000"
+              test "$cap_amb" = "0000000000000000"
+              test "$no_new_privs" = "1"
+              test "$HOME" = "$expected_home"
+              test "$TMPDIR" = "$expected_tmp"
+              test "$LC_ALL" = "C"
+              test "$LANG" = "C"
+
+              sensitive_platform_env_present=NO
+              while IFS="=" read -r name _; do
+                case "$name" in
+                  GITHUB_*|ACTIONS_*|RUNNER_*|GITHUB_TOKEN|GH_TOKEN)
+                    sensitive_platform_env_present=YES
+                    ;;
+                esac
+              done < <(env)
+              test "$sensitive_platform_env_present" = "NO"
+
+              {
+                printf "%s\n" \
+                  "configure_build_uid=$uid" \
+                  "configure_build_gid=$gid" \
+                  "CapInh=$cap_inh" \
+                  "CapPrm=$cap_prm" \
+                  "CapEff=$cap_eff" \
+                  "CapBnd=$cap_bnd" \
+                  "CapAmb=$cap_amb" \
+                  "NoNewPrivs=$no_new_privs" \
+                  "HOME=$HOME" \
+                  "TMPDIR=$TMPDIR" \
+                  "LC_ALL=$LC_ALL" \
+                  "LANG=$LANG" \
+                  "sensitive_platform_env_present=$sensitive_platform_env_present"
+              } > "$security_evidence"
 
               cmake \
                 -S "$source_dir" \
@@ -158,7 +209,12 @@ jobs:
                 --target llama-quantize \
                 --parallel 2 \
                 --verbose
-            ' _ "$SOURCE_DIR" "$BUILD_DIR"
+            ' _ "$SOURCE_DIR" "$BUILD_DIR" "$E004_HOME" "$RUNNER_TEMP" "$SECURITY_EVIDENCE"
+
+          test -f "$SECURITY_EVIDENCE"
+          cat "$SECURITY_EVIDENCE"
+          printf 'SECURITY_EVIDENCE_SHA256='
+          sha256sum "$SECURITY_EVIDENCE" | awk '{print $1}'
 
           sha256sum "$BUILD_DIR/CMakeCache.txt"
           sha256sum "$BUILD_DIR/compile_commands.json"
@@ -170,14 +226,17 @@ jobs:
 
           binary="$BUILD_DIR/bin/llama-quantize"
           test -x "$binary"
+          test -f "$SECURITY_EVIDENCE"
 
           binary_sha256="$(sha256sum "$binary" | awk '{print $1}')"
           binary_bytes="$(stat -c '%s' "$binary")"
+          security_evidence_sha256="$(sha256sum "$SECURITY_EVIDENCE" | awk '{print $1}')"
 
           printf '%s\n' \
             "LLAMA_QUANTIZE_PATH=$binary" \
             "LLAMA_QUANTIZE_SHA256=$binary_sha256" \
-            "LLAMA_QUANTIZE_BYTES=$binary_bytes"
+            "LLAMA_QUANTIZE_BYTES=$binary_bytes" \
+            "SECURITY_EVIDENCE_SHA256=$security_evidence_sha256"
 
           file "$binary"
           ldd "$binary" || true
@@ -193,6 +252,7 @@ jobs:
               "image_version=${ImageVersion:-UNSET}" \
               "configure_build_network_namespace=isolated" \
               "configure_build_privilege=unprivileged_no_new_privs_no_capabilities" \
+              "security_evidence_sha256=$security_evidence_sha256" \
               "binary_sha256=$binary_sha256" \
               "binary_bytes=$binary_bytes"
             printf 'cmake_cache_sha256='
