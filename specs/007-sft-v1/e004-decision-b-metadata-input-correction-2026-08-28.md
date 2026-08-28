@@ -1,16 +1,16 @@
 # E004 Decision B Metadata Input Correction — 2026-08-28
 
 **Spec:** 007 SFT V1  
-**Canonical base:** `39f8e8a1793376cde7d6b8a0213e9e7f9b9b1a46`  
-**Artifact class:** non-executing static correction / raw-hash probe candidate  
+**Canonical base at correction start:** `39f8e8a1793376cde7d6b8a0213e9e7f9b9b1a46`  
+**Artifact class:** non-executing static correction / provider raw-byte binding  
 **Authority effect:** NONE  
-**Model/source-weight download performed:** NO  
+**Model/source-weight download by commandMed executor:** NO  
 **Model load performed:** NO  
 **Converter execution performed:** NO  
 **Conversion/quantization performed:** NO  
 **Spend:** USD 0
 
-This record corrects the canonical Decision B non-weight input classification after a deeper exact-source inspection found additional metadata inputs consumed by the pinned local conversion path. It does not authorize conversion and does not claim raw-file SHA-256 values that have not yet been independently recomputed from exact frozen-revision bytes.
+This record corrects the canonical Decision B non-weight input classification after exact pinned-source inspection found metadata inputs omitted from PR #106. An independent reviewer subsequently fetched the three missing small provider files at the exact frozen revisions, computed raw byte counts and SHA-256 values, and returned provider object identities. Those provider-side probes do **not** equal commandMed local source-bundle materialization or local-byte verification.
 
 ```text
 ARTIFACT_DECISION_B_SCOPE=GRANITE_PRIMARY_PLUS_QWEN3_4B_CONTROL
@@ -23,11 +23,7 @@ REMOTE_CONVERSION_MODE_SELECTED=NO
 MODEL_CONVERSION_AUTHORITY=NONE
 ```
 
-## 1. Why this correction is required
-
-PR #106 / canonical merge `39f8e8a1793376cde7d6b8a0213e9e7f9b9b1a46` correctly bound the tokenizer/config/index provider-byte surface identified through `conversion/base.py`, architecture-specific converter code, and `gguf-py/gguf/vocab.py`. A subsequent pinned-source inspection identified an additional always-invoked metadata path that was not included in that review scope.
-
-Pinned source identities:
+## 1. Pinned source identity and metadata call chain
 
 ```text
 CONVERSION_ENTRYPOINT_GIT_BLOB=78ad26c6563062e2a801c9f76f77a7ce196dd195
@@ -45,29 +41,34 @@ SPECIAL_VOCAB_SOURCE=gguf-py/gguf/vocab.py
 SPECIAL_VOCAB_GIT_BLOB=d93b94f2d792147276be21db004dbd8d4edef82c
 ```
 
-The pinned `ModelBase.write()` path executes:
+The independent probe verified the selected local path:
 
 ```text
-prepare_tensors()
-prepare_metadata(vocab_only=False)
-write_header_to_file(...)
-write_kv_data_to_file()
-write_tensors_to_file(...)
+ModelBase.write()
+ -> prepare_tensors()
+ -> prepare_metadata(vocab_only=False)
+ -> gguf.Metadata.load(...)
 ```
 
-`ModelBase.prepare_metadata()` calls `gguf.Metadata.load(...)` using the local model directory as the model-card directory. The pinned `Metadata.load()` implementation in `gguf-py/gguf/metadata.py` calls all three of:
+The pinned `Metadata.load()` conditionally reads:
 
 ```text
-Metadata.load_model_card(model_path)          -> README.md when present
-Metadata.load_hf_parameters(model_path)       -> config.json when present
-Metadata.load_generation_config(model_path)  -> generation_config.json when present
+README.md
+config.json
+generation_config.json
 ```
 
-Therefore the local conversion path reads model-card and generation metadata in addition to the tokenizer/config/index surface previously bound.
+The pinned metadata heuristic also consumes `model_path.name`, and `ModelBase.prepare_metadata()` may fall back to `self.dir_model.name`. Therefore the local source-directory basename is a semantic conversion input.
 
-## 2. Canonical #106 finding and correction semantics
+```text
+METADATA_CALL_CHAIN_VERIFIED=YES
+DIRECTORY_BASENAME_IS_SEMANTIC_INPUT=YES
+ADDITIONAL_MISSING_SELECTED_METADATA_INPUT=NONE
+```
 
-The following prior classifications are incomplete and must not be used as an execution-complete local input set:
+## 2. Correction to PR #106 classifications
+
+The following PR #106 classifications are incomplete and must not be treated as an execution-complete local input set:
 
 ```text
 PR106_GRANITE_README_CLASSIFICATION=NOT_SELECTED_CONVERSION_INPUT_FOR_GRANITE
@@ -75,7 +76,7 @@ PR106_GRANITE_GENERATION_CONFIG_CLASSIFICATION=NOT_SELECTED_CONVERSION_INPUT
 PR106_QWEN_GENERATION_CONFIG_CLASSIFICATION=NOT_SELECTED_CONVERSION_INPUT
 ```
 
-Corrected classification:
+Corrected classifications:
 
 ```text
 GRANITE_README_CLASSIFICATION=OPTIONAL_READ_IF_PRESENT_METADATA_INPUT
@@ -84,169 +85,108 @@ QWEN_README_CLASSIFICATION=OPTIONAL_READ_IF_PRESENT_METADATA_INPUT
 QWEN_GENERATION_CONFIG_CLASSIFICATION=OPTIONAL_READ_IF_PRESENT_METADATA_INPUT
 ```
 
-`OPTIONAL_READ_IF_PRESENT_METADATA_INPUT` means the pinned converter reads the file when it exists in the exact local source directory; absence is tolerated by the source code, but when the file is present at the frozen provider revision its exact bytes belong to the deterministic local conversion subject and must be identity-bound before execution authorization can be considered.
+`OPTIONAL_READ_IF_PRESENT_METADATA_INPUT` means absence is tolerated by pinned source, but when the file exists at the frozen provider revision its exact bytes belong to the deterministic conversion subject and must be identity-bound before execution authorization can be considered. Already-bound `config.json` rows remain required inputs and are not reopened here.
 
-The already-bound `config.json` rows remain hard converter/metadata inputs and are not reopened by this correction.
+## 3. Bound missing provider-byte identities
 
-## 3. Non-file metadata input: local directory basename
-
-The pinned `Metadata.apply_metadata_heuristic(...)` also uses `model_path.name` as a directory-name fallback when source metadata does not already establish all naming fields. Therefore the exact same file bytes placed under a different local directory basename can produce different GGUF metadata.
-
-This makes the source-directory basename a semantic conversion input, not an operationally irrelevant path detail.
-
-```text
-EXACT_LOCAL_SOURCE_DIRECTORY_PARENT=CONTENT_OR_STORAGE_LOCATION_MAY_VARY_ONLY_IF_OTHER_BOUNDARIES_ALLOW
-EXACT_LOCAL_SOURCE_DIRECTORY_BASENAME=REQUIRES_PREEXECUTION_FREEZE
-GRANITE_REQUIRED_DIRECTORY_BASENAME=granite-4.0-350m-base
-QWEN_REQUIRED_DIRECTORY_BASENAME=Qwen3-4B-Base
-DIRECTORY_BASENAME_NORMALIZATION=PROHIBITED
-HASH_OR_RANDOM_BASENAME_SUBSTITUTION=PROHIBITED
-```
-
-The required basename values above preserve the frozen provider repository leaf names. They do not grant source materialization or conversion authority. A future exact local content address may bind the parent/location independently while preserving this basename.
-
-Because the prepared argv currently contains `<EXACT_LOCAL_SOURCE_DIRECTORY>`, this finding also means an execution-authoritative argv cannot be frozen until both the exact location/content identity and basename semantics are bound.
-
-```text
-EXACT_LOCAL_SOURCE_DIRECTORY=NEEDS_EVIDENCE
-EXACT_LOCAL_SOURCE_DIRECTORY_BASENAME_POLICY=STATICALLY_IDENTIFIED_PENDING_FINAL_POLICY_REVIEW
-EXACT_CONVERSION_ARGV_WITHOUT_PLACEHOLDERS=NEEDS_EVIDENCE
-```
-
-## 4. Missing frozen-provider byte identities
+Independent reviewer probe evidence was produced from exact `resolve/<frozen-revision>/<path>` bytes. The response header `X-Repo-Commit` matched the requested frozen revision for each row. Hugging Face exposed the 40-hex provider object identity through `ETag` / `X-Linked-Etag`; no Xet identity was exposed for these small files.
 
 ### Granite PRIMARY
 
 ```text
 SOURCE_REPOSITORY=ibm-granite/granite-4.0-350m-base
 SOURCE_REVISION=a50b46cef21c8a86b15f0496cb794487a78a910b
-MISSING_METADATA_HASH_PROBE_PATHS=
-  README.md
-  generation_config.json
 ```
-
-Required independent raw-byte probe:
 
 | Path | Raw bytes | Raw SHA-256 | Provider OID |
 |---|---:|---|---|
-| `README.md` | `NEEDS_INDEPENDENT_RAW_BYTE_PROBE` | `NEEDS_INDEPENDENT_RAW_BYTE_PROBE` | `NEEDS_INDEPENDENT_PROVIDER_IDENTITY` |
-| `generation_config.json` | `NEEDS_INDEPENDENT_RAW_BYTE_PROBE` | `NEEDS_INDEPENDENT_RAW_BYTE_PROBE` | `NEEDS_INDEPENDENT_PROVIDER_IDENTITY` |
-
-Public Hugging Face page evidence currently corroborates, but does not replace the raw-byte probe:
-
-```text
-GRANITE_PUBLIC_TREE_CURRENT_COMMIT_PREFIX=a50b46c
-GRANITE_PUBLIC_TREE_CURRENT_COMMIT_MATCHES_FROZEN_REVISION_PREFIX=YES
-GRANITE_PUBLIC_README_DISPLAY_SIZE=26.4_kB_NON_INTEGER_DISPLAY_ONLY
-GRANITE_PUBLIC_GENERATION_CONFIG_DISPLAY_BYTES=147
-GRANITE_PUBLIC_PAGE_EVIDENCE_EQUALS_RAW_SHA256_PROBE=NO
-```
-
-No SHA-256 is inferred from rendered HTML, parsed page text, or reconstructed JSON formatting.
+| `README.md` | `26418` | `e0786791023161d3f6dbc7e20a4efb278a1ef09a6a0abb9599bdba2e47a89378` | `9b8c0ebb687792889ff8cf9d862302138320cf08` |
+| `generation_config.json` | `147` | `7c04cb9d2ba771f7528fba5a7104999cdaf7566d02b5fbd58472829f62716177` | `2eed7ca2d26ec1a753b8800e0bae20c824e8b015` |
 
 ### Qwen3-4B CONTROL
 
 ```text
 SOURCE_REPOSITORY=Qwen/Qwen3-4B-Base
 SOURCE_REVISION=906bfd4b4dc7f14ee4320094d8b41684abff8539
-MISSING_METADATA_HASH_PROBE_PATHS=
-  generation_config.json
 ```
-
-`README.md` for Qwen was already included and provider-byte-bound by #106 because the Qwen converter also has optional reranker-detection behavior. It does not need a second binding here.
-
-Required independent raw-byte probe:
 
 | Path | Raw bytes | Raw SHA-256 | Provider OID |
 |---|---:|---|---|
-| `generation_config.json` | `NEEDS_INDEPENDENT_RAW_BYTE_PROBE` | `NEEDS_INDEPENDENT_RAW_BYTE_PROBE` | `NEEDS_INDEPENDENT_PROVIDER_IDENTITY` |
+| `generation_config.json` | `138` | `8c970692323e3ea0e9b8b0a4dca79388d31226e41f83c9fd6014804280ebf6e8` | `cbbb3133034e192527e5321b4c679154e4819ab8` |
 
-Exact frozen-revision Hugging Face page evidence corroborates:
+`README.md` for Qwen was already provider-byte-bound by canonical PR #106 and is retained rather than duplicated here.
 
 ```text
-QWEN_PUBLIC_PAGE_REVISION=906bfd4b4dc7f14ee4320094d8b41684abff8539
-QWEN_PUBLIC_GENERATION_CONFIG_DISPLAY_BYTES=138
-QWEN_PUBLIC_GENERATION_CONFIG_FILE_COMMIT_PREFIX=2fcc0a0
-QWEN_PUBLIC_PAGE_EVIDENCE_EQUALS_RAW_SHA256_PROBE=NO
+THREE_MISSING_PROVIDER_ROWS_PROBED=YES
+GRANITE_MISSING_METADATA_PROVIDER_RAW_SHA256_SET=BOUND_PROVIDER_SIDE
+QWEN_MISSING_METADATA_PROVIDER_RAW_SHA256_SET=BOUND_PROVIDER_SIDE
+PROVIDER_RAW_BYTE_BINDING_EQUALS_LOCAL_SOURCE_MATERIALIZATION=NO
 ```
 
-Again, no raw SHA-256 is inferred from the rendered/blame page.
+## 4. Exact local-directory basename policy
 
-## 5. Metadata/normalization policy implication
-
-The pinned converter does not merely copy all source metadata bytes into GGUF. It parses model-card YAML frontmatter, config JSON, and generation configuration, applies converter-defined heuristics/field mapping, and writes GGUF key/value metadata. The source itself also contains narrowly defined parsing normalization, including model-card YAML handling and model/directory-name heuristics.
-
-A future exact Decision B metadata policy must therefore distinguish:
+The same frozen provider bytes under a different local directory basename can change converter-derived GGUF metadata. The subject therefore freezes the repository leaf names as semantic basenames:
 
 ```text
-SOURCE_BYTES=
-  immutable exact frozen-revision input bytes whose identities are bound before execution
-
-SOURCE_DIRECTORY_BASENAME=
-  immutable semantic input because pinned metadata heuristics consume model_path.name
-
-CONVERTER_DEFINED_METADATA_MAPPING=
-  deterministic behavior of the exact pinned converter source and exact dependency/runtime set
-
-COMMANDMED_MANUAL_METADATA_MUTATION=
-  PROHIBITED unless separately frozen and reviewed before execution
-
-METADATA_OVERRIDE_FILE=
-  NOT_SELECTED; no --metadata override is present in the prepared argv
-
-MODEL_NAME_OVERRIDE=
-  NOT_SELECTED; no --model-name override is present in the prepared argv
-
-REMOTE_HF_MODEL_ID=
-  NOT_SELECTED
+GRANITE_REQUIRED_DIRECTORY_BASENAME=granite-4.0-350m-base
+QWEN_REQUIRED_DIRECTORY_BASENAME=Qwen3-4B-Base
+DIRECTORY_BASENAME_NORMALIZATION=PROHIBITED
+HASH_OR_RANDOM_BASENAME_SUBSTITUTION=PROHIBITED
+EXACT_LOCAL_SOURCE_DIRECTORY_PARENT=NEEDS_EVIDENCE
+EXACT_LOCAL_SOURCE_DIRECTORY=NEEDS_EVIDENCE
+EXACT_CONVERSION_ARGV_WITHOUT_PLACEHOLDERS=NEEDS_EVIDENCE
 ```
 
-The pinned model-card parser itself performs defined parsing normalization before YAML decoding, including quoting an exact `- no` sequence and replacing tabs with two spaces in the YAML frontmatter buffer. These are converter-defined parse semantics; they are not permission for commandMed to modify the source file before conversion.
+This basename binding does not grant source acquisition, storage provisioning, model loading, or conversion authority.
+
+## 5. Metadata / normalization policy implication
+
+The pinned converter parses source metadata and applies converter-defined mappings and heuristics; it does not byte-copy all source metadata into GGUF.
 
 ```text
+SOURCE_BYTES=IMMUTABLE_EXACT_FROZEN_REVISION_PROVIDER_IDENTITIES
+SOURCE_DIRECTORY_BASENAME=IMMUTABLE_SEMANTIC_INPUT
+CONVERTER_DEFINED_METADATA_MAPPING=PINNED_SOURCE_BEHAVIOR_ONLY
+COMMANDMED_MANUAL_METADATA_MUTATION=PROHIBITED
+METADATA_OVERRIDE_FILE=NOT_SELECTED
+MODEL_NAME_OVERRIDE=NOT_SELECTED
+REMOTE_HF_MODEL_ID=NOT_SELECTED
 SOURCE_FILE_PREPROCESSING_BY_COMMANDMED=PROHIBITED
 CONVERTER_INTERNAL_PARSE_NORMALIZATION=PERMITTED_ONLY_AS_IMPLEMENTED_BY_PINNED_SOURCE
 METADATA_HEURISTIC_BYPASS=PROHIBITED
 ```
 
-This correction does not yet close `NORMALIZATION_OR_METADATA_POLICY`; it removes false assumptions about the complete source input surface so that a later policy can be exact.
+The pinned model-card parser includes internal parse normalization before YAML decoding. That implementation behavior is not authority for commandMed to alter source bytes before conversion.
 
-## 6. Reviewer raw-hash probe requirements
+This correction closes the missing **provider-side metadata-input identity** gap only. It does not by itself establish the final `NORMALIZATION_OR_METADATA_POLICY`, because exact installed runtime/dependency identity, local source materialization, exact local directory identity, and any execution-authoritative environment remain unresolved.
 
-A fresh independent review of this exact head is requested to query Hugging Face at the exact frozen revisions and calculate SHA-256 over the raw bytes returned for exactly these three missing files:
+## 6. Probe provenance and review lifecycle
+
+Historical probe heads remain non-merge evidence:
 
 ```text
-ibm-granite/granite-4.0-350m-base|a50b46cef21c8a86b15f0496cb794487a78a910b|README.md
-ibm-granite/granite-4.0-350m-base|a50b46cef21c8a86b15f0496cb794487a78a910b|generation_config.json
-Qwen/Qwen3-4B-Base|906bfd4b4dc7f14ee4320094d8b41684abff8539|generation_config.json
+INITIAL_PROBE_HEAD=2a146fae2222588880d86d4cb434a683696db3d1
+SECOND_PROBE_HEAD=5d9514e5a1e49ea775780730fd54b9efcb4c0c72
+SECOND_PROBE_RAW_ACTIONS_RUNS=0
+SECOND_PROBE_CURRENT_HEAD_ELIGIBLE_FOR_MERGE=NO
 ```
 
-For each path return:
+The independent probe on `5d9514e5a1e49ea775780730fd54b9efcb4c0c72` returned:
 
 ```text
-repository
-revision
-path
-raw_integer_bytes
-raw_sha256
-provider_oid_or_xet_identity_if_exposed
+METADATA_CALL_CHAIN_VERIFIED=YES
+THREE_MISSING_PROVIDER_ROWS_PROBED=YES
+DIRECTORY_BASENAME_IS_SEMANTIC_INPUT=YES
+ADDITIONAL_MISSING_SELECTED_METADATA_INPUT=NONE
+RAW_ACTIONS_RUNS_ON_EXACT_HEAD=0
 ```
 
-The reviewer must independently verify:
-
-1. the pinned `ModelBase.write() -> prepare_metadata() -> Metadata.load()` call chain;
-2. `metadata.py` Git blob identity;
-3. that `Metadata.apply_metadata_heuristic(...)` consumes `model_path.name` as a fallback;
-4. whether any other file or path-derived value on the exact selected local conversion path remains unbound by #106 plus this correction.
-
-The first CodeRabbit request on the prior probe head could not execute because the service reported an hourly chat-message rate limit. Qodo was billing-blocked and Cubic reported its monthly review-line quota exhausted. Those service states are not review PASS evidence and do not relax this gate.
-
-The initial and current correction heads remain evidence-probe material, not final qualification. After reviewer raw hashes are returned, this branch must be updated to bind those exact values and receive a new exact-head review before merge.
+This hash-bound update creates a new head and therefore **must receive a fresh exact-head review**. The probe verdict cannot qualify this new head.
 
 ```text
-INITIAL_HEAD_ELIGIBLE_FOR_CANONICAL_MERGE=NO
-REVIEWER_HASH_PROBE_REQUIRED=YES
+REVIEWER_HASH_PROBE_REQUIRED=NO_COMPLETED
 POST_HASH_BINDING_FRESH_EXACT_HEAD_REVIEW_REQUIRED=YES
+CURRENT_HASH_BOUND_HEAD_REVIEW_STATE=PENDING
 REVIEW_SERVICE_UNAVAILABLE_EQUALS_REVIEW_PASS=NO
 ```
 
@@ -256,9 +196,9 @@ REVIEW_SERVICE_UNAVAILABLE_EQUALS_REVIEW_PASS=NO
 PUBLIC_PROVIDER_METADATA_EQUALS_LOCAL_BYTE_VERIFICATION=NO
 REVIEWER_RAW_DOWNLOAD_EQUALS_COMMANDMED_LOCAL_SOURCE_BUNDLE_MATERIALIZATION=NO
 LOCAL_SOURCE_BUNDLE_BYTE_INTEGRITY=INCOMPLETE
-EXACT_LOCAL_SOURCE_DIRECTORY=NEEDS_EVIDENCE
 MODEL_SOURCE_WEIGHT_LOCAL_INTEGRITY=INCOMPLETE
-NORMALIZATION_OR_METADATA_POLICY=INCOMPLETE_PENDING_CORRECTED_INPUT_BINDING
+EXACT_LOCAL_SOURCE_DIRECTORY=NEEDS_EVIDENCE
+NORMALIZATION_OR_METADATA_POLICY=INCOMPLETE_PENDING_RUNTIME_AND_LOCAL_BINDINGS
 CONVERSION_EXECUTION_AUTHORITY=NONE
 MODEL_CONVERSION_AUTHORITY=NONE
 QUANTIZATION_OF_MODEL_WEIGHTS_AUTHORITY=NONE
@@ -278,10 +218,10 @@ E005_STATE=NOT_REACHED
 ## 8. Current state
 
 ```text
-DECISION_B_METADATA_INPUT_CORRECTION=IDENTIFIED_PENDING_RAW_HASH_BINDING
-GRANITE_MISSING_METADATA_PROVIDER_RAW_SHA256_SET=INCOMPLETE_PENDING_RAW_HASH_PROBE
-QWEN_MISSING_METADATA_PROVIDER_RAW_SHA256_SET=INCOMPLETE_PENDING_RAW_HASH_PROBE
-DIRECTORY_BASENAME_SEMANTIC_INPUT=IDENTIFIED
+DECISION_B_METADATA_INPUT_CORRECTION=HASH_BOUND_PENDING_FRESH_EXACT_HEAD_REVIEW
+GRANITE_METADATA_PROVIDER_RAW_SHA256_SET=BOUND_PROVIDER_SIDE
+QWEN_METADATA_PROVIDER_RAW_SHA256_SET=BOUND_PROVIDER_SIDE
+DIRECTORY_BASENAME_SEMANTIC_INPUT=BOUND_STATIC_POLICY
 PR106_PROVIDER_BINDINGS_OTHERWISE_RETAINED=YES
 LOCAL_SOURCE_BUNDLE_BYTE_INTEGRITY=INCOMPLETE
 CONVERSION_EXECUTION_AUTHORITY=NONE
@@ -291,4 +231,4 @@ E004_STATE=BLOCKED_PREFLIGHT
 
 ## Exclusions
 
-This artifact performs no model/source-weight download, model loading, converter execution, model conversion, quantization, inference, benchmark/device execution, contamination assessment, selection-suite construction, Private Gold/PHI access, credential use, provider generation, training, procurement, personnel engagement, payment, or spend. It creates no workflow and consumes no authorized workflow run.
+This artifact performs no commandMed model/source-weight download, model loading, converter execution, model conversion, quantization, inference, benchmark/device execution, contamination assessment, selection-suite construction, Private Gold/PHI access, credential use, provider generation, training, procurement, personnel engagement, payment, or spend. It creates no workflow and consumes no authorized workflow run.
