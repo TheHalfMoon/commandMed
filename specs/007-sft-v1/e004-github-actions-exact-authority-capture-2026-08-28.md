@@ -32,17 +32,17 @@ The review subject remains outside `.github/workflows`:
 
 ```text
 CANDIDATE_PATH=specs/007-sft-v1/candidates/e004-github-actions-build-evidence.workflow.yml.example
-CANDIDATE_GIT_BLOB_SHA1=bc6fa5f009214d97d37bcdb9a96ca9a1cfbac3e5
-CANDIDATE_SHA256=fe71688929a8fe89d6dc3755bab67084e484843e49f077df6dbe8c618534c847
-CANDIDATE_DIGEST_EVIDENCE_SOURCE=CODERABBIT_INDEPENDENT_EXACT_REPOSITORY_HASH
+CANDIDATE_GIT_BLOB_SHA1=abe6b51fc575c5e446ad73e1ad1c2a65f8380e8b
+CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
+CANDIDATE_DIGEST_EVIDENCE_SOURCE=PENDING_FRESH_EXACT_HEAD_REVIEW
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
 ```
 
-The candidate was hardened on this branch before authority capture because the prior canonical candidate declared fail-closed handling for unexpected network dependencies without technically isolating configure/build network egress. The revised subject permits network only during exact public source materialization, creates a separate Linux network namespace with bounded root privilege, and drops to the original runner UID/GID with cleared supplementary groups before any CMake or compiler process starts.
+The candidate was hardened before authority capture to make both network and privilege boundaries operationally fail-closed. It permits network only during exact public source materialization. For configure/build, bounded root privilege creates a separate Linux network namespace; `setpriv` then drops to the original runner UID/GID, clears supplementary groups, removes inheritable/ambient/bounding capabilities, enables `no_new_privs`, and resets inherited environment before any CMake or compiler process starts.
 
-The candidate identity above is now bound from independent exact-repository hashing performed during PR #93 review. Any later candidate-byte change invalidates this capture and requires a new exact authority capture; a changed blob or SHA-256 must not inherit this record.
+The prior candidate digest was invalidated by this final hardening commit and is not inherited. The SHA-256 above must be independently recomputed from exact candidate bytes on the current reviewed head and bound before qualification. Any later candidate-byte change invalidates this capture and requires a new exact authority capture.
 
 ## 3. Exact environment and run envelope
 
@@ -100,7 +100,7 @@ This does not claim that the platform token is absent. It requires that the work
 
 ## 6. Network and privilege boundary
 
-The future job has two distinct phases:
+The future job has two distinct phases.
 
 ### 6.1 Exact public source materialization
 
@@ -116,7 +116,7 @@ No model repository, model-provider endpoint, package registry, benchmark source
 
 ### 6.2 Configure/build
 
-Root privilege is permitted only to create the Linux network namespace. Before any CMake or compiler process starts, the workflow must drop to the original runner UID/GID and clear supplementary groups:
+Root privilege is permitted only to create the Linux network namespace. Before any CMake or compiler process starts, the workflow must execute the equivalent of:
 
 ```text
 sudo -n unshare --net -- \
@@ -124,18 +124,29 @@ sudo -n unshare --net -- \
     --reuid <RUNNER_UID> \
     --regid <RUNNER_GID> \
     --clear-groups \
+    --inh-caps=-all \
+    --ambient-caps=-all \
+    --bounding-set=-all \
+    --no-new-privs \
+    --reset-env \
     -- \
+  env HOME=<E004_HOME> TMPDIR=<RUNNER_TEMP> LC_ALL=C LANG=C \
   bash ...
 ```
 
-The inner script must assert that its effective UID is nonzero before configure/build. The runner process itself remains outside that namespace so GitHub can maintain the job/log channel, while the unprivileged CMake/compiler subprocess tree has no normal host network interface.
+The inner script must assert that its effective UID is nonzero before configure/build. The runner/log process remains outside that namespace. The CMake/compiler process tree is unprivileged, has cleared supplementary groups and Linux capability sets, cannot gain new privileges through exec, receives a reset/minimized environment, and has no normal host network interface.
 
-If passwordless `sudo`, `unshare`, `setpriv`, network namespace creation, or privilege drop is unavailable, the job fails closed before configure/build.
+If passwordless `sudo`, `unshare`, `setpriv`, namespace creation, identity drop, capability drop, `no_new_privs`, environment reset, or the nonroot assertion is unavailable, the job fails closed before configure/build.
 
 ```text
 ROOT_PRIVILEGE_PURPOSE=NETWORK_NAMESPACE_CREATION_ONLY
 CONFIGURE_BUILD_PRIVILEGE=UNPRIVILEGED
 SUPPLEMENTARY_GROUPS=CLEARED_BEFORE_BUILD
+INHERITABLE_CAPABILITIES=NONE
+AMBIENT_CAPABILITIES=NONE
+BOUNDING_CAPABILITIES=NONE
+NO_NEW_PRIVS=REQUIRED
+INHERITED_ENVIRONMENT=RESET_BEFORE_BUILD
 CONFIGURE_BUILD_NETWORK_EGRESS=TECHNICALLY_ISOLATED_BY_NETWORK_NAMESPACE
 UNEXPECTED_CONFIGURE_BUILD_NETWORK_DEPENDENCY=FAIL_CLOSED
 PACKAGE_INSTALLATION=PROHIBITED
@@ -146,6 +157,9 @@ PACKAGE_INSTALLATION=PROHIBITED
 The exact subject requires preinstalled:
 
 ```text
+bash
+env
+id
 git
 cmake
 ninja
@@ -164,7 +178,7 @@ setpriv
 
 Missing tools fail closed. The workflow must not install or download replacements.
 
-Before build, it captures versions/paths and SHA-256 where applicable for Git, CMake, Ninja, C/C++ compilers, Python, sudo, unshare, and setpriv, plus runner/image/kernel/libc identity.
+Before build, it captures versions/paths and SHA-256 where applicable for shell/core execution tools, Git, CMake, Ninja, C/C++ compilers, Python, sudo, unshare, and setpriv, plus runner/image/kernel/libc identity.
 
 ## 8. Bounded build configuration
 
@@ -241,6 +255,9 @@ runner_image_os
 runner_image_version
 kernel_identity
 libc_identity
+bash_path_sha256
+env_path_sha256
+id_path_sha256
 git_path_version_sha256
 cmake_path_version_sha256
 ninja_path_version_sha256
@@ -259,6 +276,10 @@ cmake_cache_sha256
 compile_commands_sha256
 network_namespace_assertion
 configure_build_effective_uid_assertion
+privilege_drop_assertion
+capability_drop_assertion
+no_new_privs_assertion
+environment_reset_assertion
 llama_quantize_output_path
 llama_quantize_executable_sha256
 llama_quantize_exact_integer_bytes
@@ -286,6 +307,9 @@ REQUIRED_TOOL_MISSING
 PASSWORDLESS_SUDO_UNAVAILABLE
 NETWORK_NAMESPACE_UNAVAILABLE
 PRIVILEGE_DROP_UNAVAILABLE
+CAPABILITY_DROP_UNAVAILABLE
+NO_NEW_PRIVS_UNAVAILABLE
+ENVIRONMENT_RESET_UNAVAILABLE
 CONFIGURE_BUILD_EFFECTIVE_UID_IS_ROOT
 SOURCE_FETCH_REQUIRES_CREDENTIAL
 SOURCE_COMMIT_MISMATCH
@@ -315,8 +339,8 @@ The intended live workflow may be promoted only when all of the following are tr
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION_B=CANONICAL
 EXACT_AUTHORITY_CAPTURE=CANONICAL
-QUALIFIED_CANDIDATE_GIT_BLOB_SHA1=bc6fa5f009214d97d37bcdb9a96ca9a1cfbac3e5
-QUALIFIED_CANDIDATE_SHA256=fe71688929a8fe89d6dc3755bab67084e484843e49f077df6dbe8c618534c847
+QUALIFIED_CANDIDATE_GIT_BLOB_SHA1=NEEDS_EVIDENCE_CURRENT_HEAD
+QUALIFIED_CANDIDATE_SHA256=NEEDS_EVIDENCE_CURRENT_HEAD
 PROMOTED_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 PROMOTED_WORKFLOW_BYTES_EQUAL_QUALIFIED_CANDIDATE_BYTES=YES
 PROMOTED_WORKFLOW_GIT_BLOB_EQUALS_QUALIFIED_CANDIDATE_GIT_BLOB=YES
@@ -377,9 +401,9 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
-EXACT_AUTHORITY_CAPTURE=PENDING_FRESH_EXACT_HEAD_REVIEW_AFTER_DIGEST_BINDING
-CANDIDATE_GIT_BLOB_SHA1=bc6fa5f009214d97d37bcdb9a96ca9a1cfbac3e5
-CANDIDATE_SHA256=fe71688929a8fe89d6dc3755bab67084e484843e49f077df6dbe8c618534c847
+EXACT_AUTHORITY_CAPTURE=PENDING_FRESH_EXACT_HEAD_REVIEW_AFTER_FINAL_HARDENING
+CANDIDATE_GIT_BLOB_SHA1=abe6b51fc575c5e446ad73e1ad1c2a65f8380e8b
+CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
 LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
 WORKFLOW_RUN_EXECUTED=NO
@@ -403,6 +427,9 @@ REVISED_CANDIDATE_SHA256_RECOMPUTED_AND_BOUND=YES
 REVISED_CANDIDATE_GIT_BLOB_MATCHES=YES
 NETWORK_BOUNDARY_IS_FAIL_CLOSED=YES
 PRIVILEGE_BOUNDARY_IS_LEAST_PRIVILEGE_FAIL_CLOSED=YES
+CAPABILITY_BOUNDARY_IS_FAIL_CLOSED=YES
+NO_NEW_PRIVS_BOUNDARY_IS_FAIL_CLOSED=YES
+ENVIRONMENT_RESET_BOUNDARY_IS_FAIL_CLOSED=YES
 CREDENTIAL_BOUNDARY_IS_FAIL_CLOSED=YES
 ONLY_ONE_RUN_CLASS_IS_BOUND=YES
 ONLY_ONE_LIVE_WORKFLOW_PATH_IS_BOUND=YES
