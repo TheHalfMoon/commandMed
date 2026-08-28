@@ -32,14 +32,14 @@ The review subject remains outside `.github/workflows`:
 
 ```text
 CANDIDATE_PATH=specs/007-sft-v1/candidates/e004-github-actions-build-evidence.workflow.yml.example
-CANDIDATE_GIT_BLOB_SHA1=d048c68cf5b5eaa7c8971ab5a4698d432e6a00e9
+CANDIDATE_GIT_BLOB_SHA1=bc6fa5f009214d97d37bcdb9a96ca9a1cfbac3e5
 CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
 ```
 
-The candidate was hardened on this branch before authority capture because the prior canonical candidate declared fail-closed handling for unexpected network dependencies without technically isolating configure/build network egress. The revised subject permits network only during exact public source materialization and runs configure/build in a separate Linux network namespace.
+The candidate was hardened on this branch before authority capture because the prior canonical candidate declared fail-closed handling for unexpected network dependencies without technically isolating configure/build network egress. The revised subject permits network only during exact public source materialization, creates a separate Linux network namespace with bounded root privilege, and drops to the original runner UID/GID with cleared supplementary groups before any CMake or compiler process starts.
 
 The SHA-256 above is intentionally not guessed. It must be independently recomputed from the exact candidate bytes on the reviewed head and then bound before this record can qualify.
 
@@ -97,7 +97,7 @@ http.extraHeader=EMPTY
 
 This does not claim that the platform token is absent. It requires that the workflow never reference or use it.
 
-## 6. Network boundary
+## 6. Network and privilege boundary
 
 The future job has two distinct phases:
 
@@ -115,15 +115,26 @@ No model repository, model-provider endpoint, package registry, benchmark source
 
 ### 6.2 Configure/build
 
-Configure and build must run inside a Linux network namespace created with:
+Root privilege is permitted only to create the Linux network namespace. Before any CMake or compiler process starts, the workflow must drop to the original runner UID/GID and clear supplementary groups:
 
 ```text
-sudo -n unshare --net -- ...
+sudo -n unshare --net -- \
+  setpriv \
+    --reuid <RUNNER_UID> \
+    --regid <RUNNER_GID> \
+    --clear-groups \
+    -- \
+  bash ...
 ```
 
-The runner process itself remains outside that namespace so GitHub can maintain the job/log channel, while CMake and the build subprocess tree have no normal host network interface. If passwordless `sudo`, `unshare`, or namespace creation is unavailable, the job fails closed before configure/build.
+The inner script must assert that its effective UID is nonzero before configure/build. The runner process itself remains outside that namespace so GitHub can maintain the job/log channel, while the unprivileged CMake/compiler subprocess tree has no normal host network interface.
+
+If passwordless `sudo`, `unshare`, `setpriv`, network namespace creation, or privilege drop is unavailable, the job fails closed before configure/build.
 
 ```text
+ROOT_PRIVILEGE_PURPOSE=NETWORK_NAMESPACE_CREATION_ONLY
+CONFIGURE_BUILD_PRIVILEGE=UNPRIVILEGED
+SUPPLEMENTARY_GROUPS=CLEARED_BEFORE_BUILD
 CONFIGURE_BUILD_NETWORK_EGRESS=TECHNICALLY_ISOLATED_BY_NETWORK_NAMESPACE
 UNEXPECTED_CONFIGURE_BUILD_NETWORK_DEPENDENCY=FAIL_CLOSED
 PACKAGE_INSTALLATION=PROHIBITED
@@ -147,11 +158,12 @@ file
 stat
 sudo
 unshare
+setpriv
 ```
 
 Missing tools fail closed. The workflow must not install or download replacements.
 
-Before build, it captures versions/paths and SHA-256 where applicable for Git, CMake, Ninja, C/C++ compilers, Python, sudo, and unshare, plus runner/image/kernel/libc identity.
+Before build, it captures versions/paths and SHA-256 where applicable for Git, CMake, Ninja, C/C++ compilers, Python, sudo, unshare, and setpriv, plus runner/image/kernel/libc identity.
 
 ## 8. Bounded build configuration
 
@@ -236,6 +248,7 @@ cxx_compiler_path_version_sha256
 python_path_version_sha256
 sudo_path_version_sha256
 unshare_path_version_sha256
+setpriv_path_version_sha256
 source_repository
 source_commit
 source_tree
@@ -244,6 +257,7 @@ build_argv
 cmake_cache_sha256
 compile_commands_sha256
 network_namespace_assertion
+configure_build_effective_uid_assertion
 llama_quantize_output_path
 llama_quantize_executable_sha256
 llama_quantize_exact_integer_bytes
@@ -270,6 +284,8 @@ TOKEN_OR_SECRET_REFERENCE_REQUIRED
 REQUIRED_TOOL_MISSING
 PASSWORDLESS_SUDO_UNAVAILABLE
 NETWORK_NAMESPACE_UNAVAILABLE
+PRIVILEGE_DROP_UNAVAILABLE
+CONFIGURE_BUILD_EFFECTIVE_UID_IS_ROOT
 SOURCE_FETCH_REQUIRES_CREDENTIAL
 SOURCE_COMMIT_MISMATCH
 SOURCE_TREE_MISMATCH
@@ -381,6 +397,7 @@ FOUNDER_DECISION_B_AND_BUILD_AUTHORITY_COMPOSITION_IS_NON_EXPANSIVE=YES
 REVISED_CANDIDATE_SHA256_RECOMPUTED_AND_BOUND=YES
 REVISED_CANDIDATE_GIT_BLOB_MATCHES=YES
 NETWORK_BOUNDARY_IS_FAIL_CLOSED=YES
+PRIVILEGE_BOUNDARY_IS_LEAST_PRIVILEGE_FAIL_CLOSED=YES
 CREDENTIAL_BOUNDARY_IS_FAIL_CLOSED=YES
 ONLY_ONE_RUN_CLASS_IS_BOUND=YES
 ONLY_ONE_LIVE_WORKFLOW_PATH_IS_BOUND=YES
