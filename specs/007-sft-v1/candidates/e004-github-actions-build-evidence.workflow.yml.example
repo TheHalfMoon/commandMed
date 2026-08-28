@@ -35,7 +35,7 @@ jobs:
           set -Eeuo pipefail
 
           required_tools=(
-            bash env id awk git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
+            bash env id git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
             sudo unshare setpriv
           )
           for tool in "${required_tools[@]}"; do
@@ -64,7 +64,7 @@ jobs:
           unshare --version
           setpriv --version
 
-          for tool in bash env id awk git cmake ninja cc c++ python3 sudo unshare setpriv; do
+          for tool in bash env id git cmake ninja cc c++ python3 sudo unshare setpriv; do
             resolved="$(readlink -f "$(command -v "$tool")")"
             printf '%s=%s\n' "${tool}_path" "$resolved"
             sha256sum "$resolved"
@@ -136,12 +136,23 @@ jobs:
 
               uid="$(id -u)"
               gid="$(id -g)"
-              cap_inh="$(awk "$1 == \"CapInh:\" { print $2 }" /proc/self/status)"
-              cap_prm="$(awk "$1 == \"CapPrm:\" { print $2 }" /proc/self/status)"
-              cap_eff="$(awk "$1 == \"CapEff:\" { print $2 }" /proc/self/status)"
-              cap_bnd="$(awk "$1 == \"CapBnd:\" { print $2 }" /proc/self/status)"
-              cap_amb="$(awk "$1 == \"CapAmb:\" { print $2 }" /proc/self/status)"
-              no_new_privs="$(awk "$1 == \"NoNewPrivs:\" { print $2 }" /proc/self/status)"
+              cap_inh=""
+              cap_prm=""
+              cap_eff=""
+              cap_bnd=""
+              cap_amb=""
+              no_new_privs=""
+
+              while read -r key value _; do
+                case "$key" in
+                  CapInh:) cap_inh="$value" ;;
+                  CapPrm:) cap_prm="$value" ;;
+                  CapEff:) cap_eff="$value" ;;
+                  CapBnd:) cap_bnd="$value" ;;
+                  CapAmb:) cap_amb="$value" ;;
+                  NoNewPrivs:) no_new_privs="$value" ;;
+                esac
+              done < /proc/self/status
 
               test "$uid" != "0"
               test "$cap_inh" = "0000000000000000"
