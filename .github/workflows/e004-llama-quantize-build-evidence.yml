@@ -1,0 +1,280 @@
+# E004 BUILD-EVIDENCE WORKFLOW SUBJECT.
+# While stored outside .github/workflows this file is non-executable review material.
+# It may be promoted only to the sole authorized live path under canonical Founder
+# BUILD_ENVIRONMENT_DECISION_B, exact authority capture, and fresh exact-subject review.
+# Presence at the live path does not itself authorize dispatch; canonical promotion,
+# post-merge byte verification, and all pre-run conditions remain required.
+
+name: E004 llama-quantize build evidence
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  TOOL_REPOSITORY_URL: https://github.com/ggml-org/llama.cpp.git
+  TOOL_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  TOOL_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
+  BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
+  E004_HOME: ${{ runner.temp }}/e004-home
+  SECURITY_EVIDENCE: ${{ runner.temp }}/e004-security-boundary.txt
+  GIT_TERMINAL_PROMPT: "0"
+  GIT_CONFIG_NOSYSTEM: "1"
+  GIT_ASKPASS: /bin/false
+  SSH_ASKPASS: /bin/false
+
+jobs:
+  build-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Fail-closed runner preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          required_tools=(
+            bash env id git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
+            sudo unshare setpriv
+          )
+          for tool in "${required_tools[@]}"; do
+            command -v "$tool" >/dev/null
+          done
+
+          sudo -n true
+          mkdir -p "$E004_HOME"
+
+          printf '%s\n' \
+            "RUNNER_OS=${RUNNER_OS:-UNSET}" \
+            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" \
+            "ImageOS=${ImageOS:-UNSET}" \
+            "ImageVersion=${ImageVersion:-UNSET}"
+
+          uname -a
+          cat /etc/os-release
+          git --version
+          cmake --version
+          ninja --version
+          cc --version
+          c++ --version
+          python3 --version
+          ldd --version | head -n 1
+          sudo --version | head -n 1
+          unshare --version
+          setpriv --version
+
+          for tool in bash env id git cmake ninja cc c++ python3 sudo unshare setpriv; do
+            resolved="$(readlink -f "$(command -v "$tool")")"
+            printf '%s=%s\n' "${tool}_path" "$resolved"
+            sha256sum "$resolved"
+          done
+
+      - name: Materialize and verify exact public source
+        shell: bash
+        env:
+          HOME: ${{ runner.temp }}/e004-home
+        run: |
+          set -Eeuo pipefail
+
+          rm -rf "$SOURCE_DIR" "$BUILD_DIR"
+          rm -f "$SECURITY_EVIDENCE"
+          mkdir -p "$HOME"
+          git init "$SOURCE_DIR"
+          git -C "$SOURCE_DIR" remote add origin "$TOOL_REPOSITORY_URL"
+          git -C "$SOURCE_DIR" \
+            -c credential.helper= \
+            -c http.extraHeader= \
+            fetch --no-tags --depth=1 origin "$TOOL_COMMIT"
+          git -C "$SOURCE_DIR" checkout --detach FETCH_HEAD
+
+          actual_commit="$(git -C "$SOURCE_DIR" rev-parse HEAD)"
+          actual_tree="$(git -C "$SOURCE_DIR" rev-parse 'HEAD^{tree}')"
+
+          test "$actual_commit" = "$TOOL_COMMIT"
+          test "$actual_tree" = "$TOOL_TREE"
+          test -z "$(git -C "$SOURCE_DIR" status --porcelain)"
+
+          printf '%s\n' \
+            "TOOL_COMMIT=$actual_commit" \
+            "TOOL_TREE=$actual_tree"
+
+      - name: Configure and build unprivileged in network-isolated namespace
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          # Root privilege is used only to create the network namespace.
+          # setpriv drops UID/GID, supplementary groups, Linux capabilities,
+          # enables no_new_privs, and resets inherited environment before any
+          # CMake or compiler process starts. Failure is fail-closed.
+          runner_uid="$(id -u)"
+          runner_gid="$(id -g)"
+
+          sudo -n unshare --net -- \
+            setpriv \
+              --reuid "$runner_uid" \
+              --regid "$runner_gid" \
+              --clear-groups \
+              --inh-caps=-all \
+              --ambient-caps=-all \
+              --bounding-set=-all \
+              --no-new-privs \
+              --reset-env \
+              -- \
+            env \
+              HOME="$E004_HOME" \
+              TMPDIR="$RUNNER_TEMP" \
+              LC_ALL=C \
+              LANG=C \
+            bash -Eeuo pipefail -c '
+              source_dir="$1"
+              build_dir="$2"
+              expected_home="$3"
+              expected_tmp="$4"
+              security_evidence="$5"
+
+              uid="$(id -u)"
+              gid="$(id -g)"
+              cap_inh=""
+              cap_prm=""
+              cap_eff=""
+              cap_bnd=""
+              cap_amb=""
+              no_new_privs=""
+
+              while read -r key value _; do
+                case "$key" in
+                  CapInh:) cap_inh="$value" ;;
+                  CapPrm:) cap_prm="$value" ;;
+                  CapEff:) cap_eff="$value" ;;
+                  CapBnd:) cap_bnd="$value" ;;
+                  CapAmb:) cap_amb="$value" ;;
+                  NoNewPrivs:) no_new_privs="$value" ;;
+                esac
+              done < /proc/self/status
+
+              test "$uid" != "0"
+              test "$cap_inh" = "0000000000000000"
+              test "$cap_prm" = "0000000000000000"
+              test "$cap_eff" = "0000000000000000"
+              test "$cap_bnd" = "0000000000000000"
+              test "$cap_amb" = "0000000000000000"
+              test "$no_new_privs" = "1"
+              test "$HOME" = "$expected_home"
+              test "$TMPDIR" = "$expected_tmp"
+              test "$LC_ALL" = "C"
+              test "$LANG" = "C"
+
+              sensitive_platform_env_present=NO
+              while IFS="=" read -r name _; do
+                case "$name" in
+                  GITHUB_*|ACTIONS_*|RUNNER_*|GITHUB_TOKEN|GH_TOKEN)
+                    sensitive_platform_env_present=YES
+                    ;;
+                esac
+              done < <(env)
+              test "$sensitive_platform_env_present" = "NO"
+
+              {
+                printf "%s\n" \
+                  "configure_build_uid=$uid" \
+                  "configure_build_gid=$gid" \
+                  "CapInh=$cap_inh" \
+                  "CapPrm=$cap_prm" \
+                  "CapEff=$cap_eff" \
+                  "CapBnd=$cap_bnd" \
+                  "CapAmb=$cap_amb" \
+                  "NoNewPrivs=$no_new_privs" \
+                  "HOME=$HOME" \
+                  "TMPDIR=$TMPDIR" \
+                  "LC_ALL=$LC_ALL" \
+                  "LANG=$LANG" \
+                  "sensitive_platform_env_present=$sensitive_platform_env_present"
+              } > "$security_evidence"
+
+              cmake \
+                -S "$source_dir" \
+                -B "$build_dir" \
+                -G Ninja \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DBUILD_SHARED_LIBS=OFF \
+                -DLLAMA_BUILD_COMMON=ON \
+                -DLLAMA_BUILD_TESTS=OFF \
+                -DLLAMA_BUILD_TOOLS=ON \
+                -DLLAMA_BUILD_EXAMPLES=OFF \
+                -DLLAMA_BUILD_SERVER=OFF \
+                -DLLAMA_BUILD_APP=OFF \
+                -DLLAMA_BUILD_UI=OFF \
+                -DLLAMA_USE_PREBUILT_UI=OFF \
+                -DLLAMA_TOOLS_INSTALL=OFF \
+                -DLLAMA_TESTS_INSTALL=OFF \
+                -DLLAMA_OPENSSL=OFF \
+                -DLLAMA_SUBPROCESS=OFF \
+                -DLLAMA_LLGUIDANCE=OFF \
+                -DGGML_NATIVE=OFF \
+                -DGGML_CCACHE=OFF \
+                -DGGML_OPENMP=OFF
+
+              cmake --build "$build_dir" \
+                --target llama-quantize \
+                --parallel 2 \
+                --verbose
+            ' _ "$SOURCE_DIR" "$BUILD_DIR" "$E004_HOME" "$RUNNER_TEMP" "$SECURITY_EVIDENCE"
+
+          test -f "$SECURITY_EVIDENCE"
+          cat "$SECURITY_EVIDENCE"
+          printf 'SECURITY_EVIDENCE_SHA256='
+          sha256sum "$SECURITY_EVIDENCE" | awk '{print $1}'
+
+          sha256sum "$BUILD_DIR/CMakeCache.txt"
+          sha256sum "$BUILD_DIR/compile_commands.json"
+
+      - name: Emit build evidence to log only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          binary="$BUILD_DIR/bin/llama-quantize"
+          test -x "$binary"
+          test -f "$SECURITY_EVIDENCE"
+
+          binary_sha256="$(sha256sum "$binary" | awk '{print $1}')"
+          binary_bytes="$(stat -c '%s' "$binary")"
+          security_evidence_sha256="$(sha256sum "$SECURITY_EVIDENCE" | awk '{print $1}')"
+
+          printf '%s\n' \
+            "LLAMA_QUANTIZE_PATH=$binary" \
+            "LLAMA_QUANTIZE_SHA256=$binary_sha256" \
+            "LLAMA_QUANTIZE_BYTES=$binary_bytes" \
+            "SECURITY_EVIDENCE_SHA256=$security_evidence_sha256"
+
+          file "$binary"
+          ldd "$binary" || true
+
+          {
+            printf '%s\n' \
+              "tool_repository=$TOOL_REPOSITORY_URL" \
+              "tool_commit=$(git -C "$SOURCE_DIR" rev-parse HEAD)" \
+              "tool_tree=$(git -C "$SOURCE_DIR" rev-parse 'HEAD^{tree}')" \
+              "runner_os=${RUNNER_OS:-UNSET}" \
+              "runner_arch=${RUNNER_ARCH:-UNSET}" \
+              "image_os=${ImageOS:-UNSET}" \
+              "image_version=${ImageVersion:-UNSET}" \
+              "configure_build_network_namespace=isolated" \
+              "configure_build_privilege=unprivileged_no_new_privs_no_capabilities" \
+              "security_evidence_sha256=$security_evidence_sha256" \
+              "binary_sha256=$binary_sha256" \
+              "binary_bytes=$binary_bytes"
+            printf 'cmake_cache_sha256='
+            sha256sum "$BUILD_DIR/CMakeCache.txt" | awk '{print $1}'
+            printf 'compile_commands_sha256='
+            sha256sum "$BUILD_DIR/compile_commands.json" | awk '{print $1}'
+          } | tee "$RUNNER_TEMP/e004-build-evidence-manifest.txt"
+
+          printf 'BUILD_EVIDENCE_MANIFEST_SHA256='
+          sha256sum "$RUNNER_TEMP/e004-build-evidence-manifest.txt" | awk '{print $1}'
+
+          # No upload/cache/release/package step is permitted.
