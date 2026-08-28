@@ -33,8 +33,9 @@ The review subject remains outside `.github/workflows`:
 ```text
 CANDIDATE_PATH=specs/007-sft-v1/candidates/e004-github-actions-build-evidence.workflow.yml.example
 CANDIDATE_GIT_BLOB_SHA1=73cfdb744fddb48004047b441cf4a3f08b4385b3
-CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
-CANDIDATE_DIGEST_EVIDENCE_SOURCE=PENDING_FRESH_EXACT_HEAD_REVIEW
+CANDIDATE_SHA256=c50a94993a8ec7e412346d3b26806ef4472360a7fac90cc7da33b6409ee4f63b
+CANDIDATE_DIGEST_EVIDENCE_SOURCE=CODERABBIT_EXACT_HEAD_RECOMPUTE_PLUS_LOCAL_GIT_BLOB_CROSSCHECK
+DIGEST_EVIDENCE_HEAD=b7faa5e7ba2e8dc2e2328a0fc58d37d15dfdb43f
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
@@ -44,7 +45,7 @@ The candidate was hardened before authority capture to make network, credential,
 
 The inner shell reads `/proc/self/status` with shell built-ins, verifies all required capability sets are zero and `NoNewPrivs=1`, rejects UID 0, verifies bounded environment values, rejects leaked `GITHUB_*`, `ACTIONS_*`, `RUNNER_*`, `GITHUB_TOKEN`, or `GH_TOKEN` variables, and emits a hashed security-boundary evidence file before build evidence can qualify.
 
-All prior candidate digests were invalidated by later hardening and are not inherited. The SHA-256 above must be independently recomputed from exact candidate bytes on the current reviewed head and bound before qualification. Any later candidate-byte change invalidates this capture and requires a new exact authority capture.
+CodeRabbit independently recomputed the candidate Git blob and SHA-256 on exact head `b7faa5e7ba2e8dc2e2328a0fc58d37d15dfdb43f` and returned `MATERIAL_BLOCKER=NO_EXCEPT_UNBOUND_SHA256`; a separate local byte-level recomputation reproduced both the Git blob SHA-1 and SHA-256. This commit binds that sole previously-unbound digest without changing the candidate bytes. Any later candidate-byte change invalidates this capture and requires a new exact authority capture.
 
 ## 3. Exact environment and run envelope
 
@@ -349,7 +350,7 @@ The intended live workflow may be promoted only when all of the following are tr
 FOUNDER_BUILD_ENVIRONMENT_DECISION_B=CANONICAL
 EXACT_AUTHORITY_CAPTURE=CANONICAL
 QUALIFIED_CANDIDATE_GIT_BLOB_SHA1=73cfdb744fddb48004047b441cf4a3f08b4385b3
-QUALIFIED_CANDIDATE_SHA256=NEEDS_EVIDENCE_CURRENT_HEAD
+QUALIFIED_CANDIDATE_SHA256=c50a94993a8ec7e412346d3b26806ef4472360a7fac90cc7da33b6409ee4f63b
 PROMOTED_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 PROMOTED_WORKFLOW_BYTES_EQUAL_QUALIFIED_CANDIDATE_BYTES=YES
 PROMOTED_WORKFLOW_GIT_BLOB_EQUALS_QUALIFIED_CANDIDATE_GIT_BLOB=YES
@@ -410,9 +411,9 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
-EXACT_AUTHORITY_CAPTURE=PENDING_FRESH_EXACT_HEAD_REVIEW_AFTER_FINAL_HARDENING
+EXACT_AUTHORITY_CAPTURE=PENDING_FINAL_EXACT_HEAD_REVIEW_AFTER_DIGEST_BINDING
 CANDIDATE_GIT_BLOB_SHA1=73cfdb744fddb48004047b441cf4a3f08b4385b3
-CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
+CANDIDATE_SHA256=c50a94993a8ec7e412346d3b26806ef4472360a7fac90cc7da33b6409ee4f63b
 LIVE_WORKFLOW_CREATED=NO
 LIVE_TRIGGER_CREATED=NO
 WORKFLOW_RUN_EXECUTED=NO
