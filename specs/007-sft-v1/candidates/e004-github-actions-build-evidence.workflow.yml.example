@@ -206,6 +206,7 @@ jobs:
                 -B "$build_dir" \
                 -G Ninja \
                 -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
                 -DBUILD_SHARED_LIBS=OFF \
                 -DLLAMA_BUILD_COMMON=ON \
                 -DLLAMA_BUILD_TESTS=OFF \
