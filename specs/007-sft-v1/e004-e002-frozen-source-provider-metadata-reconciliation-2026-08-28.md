@@ -28,12 +28,11 @@ No other model, revision, artifact family, preconverted GGUF, credentialed sourc
 
 ## 1. Evidence semantics
 
-The following distinctions are mandatory:
-
 ```text
 PUBLIC_PROVIDER_METADATA=REMOTE_PROVIDER_REPORTED_EVIDENCE
 PUBLIC_PROVIDER_LFS_POINTER=REMOTE_GIT_LFS_POINTER_EVIDENCE
 PUBLIC_PROVIDER_XET_METADATA=REMOTE_XET_METADATA_EVIDENCE
+PUBLIC_PROVIDER_RESOLVE_HEADER=REMOTE_EXACT_REVISION_HTTP_METADATA
 LOCAL_BYTE_VERIFICATION=CRYPTOGRAPHIC_HASH_OVER_LOCALLY_MATERIALIZED_BYTES
 ```
 
@@ -41,87 +40,64 @@ LOCAL_BYTE_VERIFICATION=CRYPTOGRAPHIC_HASH_OVER_LOCALLY_MATERIALIZED_BYTES
 PUBLIC_PROVIDER_METADATA_EQUALS_LOCAL_BYTE_VERIFICATION=NO
 PUBLIC_PROVIDER_SHA256_EQUALS_LOCALLY_RECOMPUTED_SHA256=NO
 PUBLIC_PROVIDER_DISPLAY_SIZE_EQUALS_EXACT_INTEGER_BYTES=NO
-CURRENT_PROVIDER_TREE_HEAD_EQUALS_FROZEN_REVISION_ONLY_WHEN_EXACT_IDENTITY_IS_PROVEN=NO
+PUBLIC_PROVIDER_RESOLVE_INTEGER_SIZE_EQUALS_LOCAL_FILE_STAT=NO
 ```
 
-A provider-reported digest is useful provenance evidence but does not become a locally recomputed digest by transcription.
+A provider-reported digest or integer size is provenance evidence. It does not become a locally recomputed digest or local file-size observation by transcription.
 
-## 2. Granite PRIMARY provider state
-
-Frozen identity:
+## 2. Granite PRIMARY — exact frozen-revision provider state
 
 ```text
 SOURCE_REPOSITORY=ibm-granite/granite-4.0-350m-base
 SOURCE_REVISION=a50b46cef21c8a86b15f0496cb794487a78a910b
 ROLE=PRIMARY
 SOURCE_LICENSE=Apache-2.0
-```
-
-Current public Hugging Face tree metadata reports the verified repository head prefix `a50b46c`, matching the frozen revision prefix, and exposes this file inventory:
-
-```text
-.gitattributes
-README.md
-config.json
-generation_config.json
-merges.txt
-model.safetensors
-model.sig
-special_tokens_map.json
-tokenizer.json
-tokenizer_config.json
-vocab.json
-```
-
-Provider tree source:
-
-```text
-https://huggingface.co/ibm-granite/granite-4.0-350m-base/tree/main
-```
-
-The current public weight-file page reports:
-
-```text
 SOURCE_WEIGHT_FILE=model.safetensors
+```
+
+Exact-revision public metadata surface:
+
+```text
+https://huggingface.co/api/models/ibm-granite/granite-4.0-350m-base/tree/a50b46cef21c8a86b15f0496cb794487a78a910b?recursive=true&expand=true
+```
+
+Exact-revision resolve surface used only for metadata/headers, not model download:
+
+```text
+https://huggingface.co/ibm-granite/granite-4.0-350m-base/resolve/a50b46cef21c8a86b15f0496cb794487a78a910b/model.safetensors
+```
+
+Independent exact-head review of the prior PR head queried those exact frozen-revision surfaces and reported:
+
+```text
 PUBLIC_PROVIDER_SHA256=a65363c0803a05c1c74e114c692c57f35b2641aeffce24d5a8ee8fad3b34dcf0
 PUBLIC_PROVIDER_XET_HASH=ad623156f038ecd3f840ab101a5e3a7e465bce27b2201348c2d8e786d9c54043
-PUBLIC_PROVIDER_DISPLAY_SIZE=705_MB
+PUBLIC_PROVIDER_INTEGER_WEIGHT_BYTES=704786224
+INTEGER_SIZE_EVIDENCE_FIELD=X-Linked-Size
 ```
 
-Provider weight source:
+The exact SHA-256 and Xet values match the already-canonical Decision B conversion-subject preparation record. The exact integer byte count is newly bound provider evidence; it is not a local file observation.
+
+A separate public Hugging Face mirror commit with the same SHA-256 independently exposes the corresponding Git-LFS pointer size `704786224`. That mirror is corroboration only and is not substituted for the IBM frozen-source identity:
 
 ```text
-https://huggingface.co/ibm-granite/granite-4.0-350m-base/blob/main/model.safetensors
+CORROBORATING_MIRROR=unsloth/granite-4.0-350m-base@b40bdaac3b7ddf381a937e92302522e55fd1ebfb
+CORROBORATING_LFS_SHA256=a65363c0803a05c1c74e114c692c57f35b2641aeffce24d5a8ee8fad3b34dcf0
+CORROBORATING_LFS_INTEGER_BYTES=704786224
+CORROBORATING_MIRROR_IS_AUTHORIZED_SOURCE_SUBSTITUTE=NO
 ```
-
-The digest/Xet identity matches the already-canonical Decision B preparation record. This reconciliation does not upgrade it to a local-byte digest.
 
 ```text
 GRANITE_PUBLIC_PROVIDER_WEIGHT_SHA256=BOUND
 GRANITE_PUBLIC_PROVIDER_WEIGHT_XET_HASH=BOUND
-GRANITE_PUBLIC_PROVIDER_WEIGHT_DISPLAY_SIZE=BOUND
-GRANITE_PUBLIC_PROVIDER_INTEGER_WEIGHT_BYTES=NEEDS_EVIDENCE
+GRANITE_PUBLIC_PROVIDER_INTEGER_WEIGHT_BYTES=BOUND
 GRANITE_LOCAL_SOURCE_WEIGHT_BYTES_MATERIALIZED=NO
 GRANITE_LOCAL_SOURCE_WEIGHT_SHA256_RECOMPUTED=NO
 ```
 
-The public tree also reports the following display sizes for relevant non-weight repository files:
+The frozen-revision tree contains the source-model metadata/tokenizer assets needed for later subject completion, including `config.json`, `generation_config.json`, `merges.txt`, `model.safetensors`, `model.sig`, `special_tokens_map.json`, `tokenizer.json`, `tokenizer_config.json`, and `vocab.json`. This record does not claim an exact local hash set for those non-weight inputs.
 
-```text
-config.json=1.76_kB_DISPLAY
-merges.txt=917_kB_DISPLAY
-model.sig=9.67_kB_DISPLAY
-special_tokens_map.json=579_BYTES_DISPLAY
-tokenizer.json=7.15_MB_DISPLAY
-tokenizer_config.json=17.7_kB_DISPLAY
-vocab.json=1.61_MB_DISPLAY
-```
-
-Those display values are inventory evidence only, not exact integer byte bindings unless an exact integer value is separately obtained.
-
-## 3. Qwen3 4B CONTROL provider state
-
-Frozen identity:
+## 3. Qwen3 4B CONTROL — exact frozen-revision provider state
 
 ```text
 SOURCE_REPOSITORY=Qwen/Qwen3-4B-Base
@@ -132,39 +108,21 @@ PURPOSE=SCALE_QUALITY_OPPORTUNITY_COST
 SOURCE_LICENSE=Apache-2.0
 ```
 
-The exact frozen-revision `config.json` is publicly readable at:
+Exact-revision provider metadata surface:
 
 ```text
-https://huggingface.co/Qwen/Qwen3-4B-Base/blob/906bfd4b4dc7f14ee4320094d8b41684abff8539/config.json
+https://huggingface.co/api/models/Qwen/Qwen3-4B-Base/tree/906bfd4b4dc7f14ee4320094d8b41684abff8539?recursive=true&expand=true
 ```
 
-Current public tree metadata reports verified repository head prefix `906bfd4`, matching the frozen revision prefix, and exposes this inventory:
+Exact-revision index source:
 
 ```text
-.gitattributes
-LICENSE
-README.md
-config.json
-generation_config.json
-merges.txt
-model-00001-of-00003.safetensors
-model-00002-of-00003.safetensors
-model-00003-of-00003.safetensors
-model.safetensors.index.json
-tokenizer.json
-tokenizer_config.json
-vocab.json
+https://huggingface.co/Qwen/Qwen3-4B-Base/raw/906bfd4b4dc7f14ee4320094d8b41684abff8539/model.safetensors.index.json
 ```
 
-Provider tree source:
+The frozen tree contains three source-weight shards plus `model.safetensors.index.json`, tokenizer/configuration assets, README, and LICENSE.
 
-```text
-https://huggingface.co/Qwen/Qwen3-4B-Base/tree/main
-```
-
-## 4. Qwen exact public LFS pointer evidence
-
-Hugging Face public Git-LFS blame/pointer surfaces expose exact integer byte sizes for all three frozen CONTROL weight shards.
+## 4. Qwen CONTROL exact provider weight evidence
 
 ### Shard 1
 
@@ -173,13 +131,6 @@ FILE=model-00001-of-00003.safetensors
 PUBLIC_PROVIDER_LFS_SHA256=4c807e2503d68ae373d508689d00a41f4b33f33c2536da97ab81a20caddc1241
 PUBLIC_PROVIDER_LFS_INTEGER_BYTES=3957900840
 PUBLIC_PROVIDER_XET_HASH=5ce2c21cd6643568258b5f339a1069bd27bc74f4e10db9732bd0795fd67f2c0e
-```
-
-Sources:
-
-```text
-https://huggingface.co/Qwen/Qwen3-4B-Base/blame/main/model-00001-of-00003.safetensors
-https://huggingface.co/Qwen/Qwen3-4B-Base/blob/main/model-00001-of-00003.safetensors
 ```
 
 ### Shard 2
@@ -191,13 +142,6 @@ PUBLIC_PROVIDER_LFS_INTEGER_BYTES=3987450520
 PUBLIC_PROVIDER_XET_HASH=06334f44342b0ca51d6a936fd4ddc69b6bef1a52aef8e2887531207afd724ca7
 ```
 
-Sources:
-
-```text
-https://huggingface.co/Qwen/Qwen3-4B-Base/blame/main/model-00002-of-00003.safetensors
-https://huggingface.co/Qwen/Qwen3-4B-Base/blob/main/model-00002-of-00003.safetensors
-```
-
 ### Shard 3
 
 ```text
@@ -207,61 +151,41 @@ PUBLIC_PROVIDER_LFS_INTEGER_BYTES=99630640
 PUBLIC_PROVIDER_XET_HASH=91ccda833766cc1b12e03e1126e75fe5a968f51ae0854c7e90335ab9b0491217
 ```
 
-Sources:
-
-```text
-https://huggingface.co/Qwen/Qwen3-4B-Base/blame/main/model-00003-of-00003.safetensors
-https://huggingface.co/Qwen/Qwen3-4B-Base/blob/main/model-00003-of-00003.safetensors
-```
-
-The exact sum of the three provider LFS remote-file byte counts is:
+The exact provider remote-container byte sum is:
 
 ```text
 PUBLIC_PROVIDER_LFS_WEIGHT_CONTAINER_BYTES_SUM=8044982000
 ```
 
-This is a mathematical sum of the three provider pointer sizes only. It is not a locally observed directory size and is not a model-runtime memory estimate.
+This is only the arithmetic sum of the three exact provider file sizes. It is not a local directory size, tensor-size statement, or runtime-memory estimate.
 
 ## 5. Qwen index metadata is a distinct quantity
 
-The public `model.safetensors.index.json` blame surface reports:
+The exact frozen-revision `model.safetensors.index.json` reports:
 
 ```text
-INDEX_FILE=model.safetensors.index.json
-PUBLIC_PROVIDER_INDEX_FILE_DISPLAY_BYTES=32819
 PUBLIC_PROVIDER_INDEX_METADATA_TOTAL_SIZE=8045591552
 ```
 
-Source:
-
 ```text
-https://huggingface.co/Qwen/Qwen3-4B-Base/blame/main/model.safetensors.index.json
-```
-
-The index `metadata.total_size` value is not silently interpreted as the same semantic quantity as the sum of remote safetensors container-file byte counts.
-
-```text
-INDEX_METADATA_TOTAL_SIZE_EQUALS_REMOTE_CONTAINER_BYTE_SUM=NOT_ASSUMED
+INDEX_METADATA_TOTAL_SIZE_EQUALS_REMOTE_CONTAINER_BYTE_SUM=NO_ASSUMPTION
 INDEX_METADATA_TOTAL_SIZE_SEMANTICS_INDEPENDENTLY_VALIDATED_BY_THIS_RECORD=NO
 ```
 
-Because the two provider-reported quantities differ, downstream code or governance must use the exact field required by the relevant contract rather than substituting one for the other.
-
-No defect is inferred from the difference by this record.
+The provider's index `metadata.total_size` and the remote container-file byte sum differ. Downstream contracts must select the exact intended quantity rather than substitute one for the other. This record infers no defect merely from the difference.
 
 ## 6. Decision B subject-field effect
 
-The prior conversion-subject record used fail-closed fields such as:
+The prior conversion-subject record correctly left local/execution-authoritative integrity fields fail closed. This provider reconciliation narrows only remote-provider metadata:
 
 ```text
-EXACT_INTEGER_SOURCE_WEIGHT_BYTES_PER_SHARD=NEEDS_EVIDENCE
-EXACT_MODEL_INDEX_SHA256=NEEDS_EVIDENCE
-EXACT_NON_WEIGHT_REQUIRED_INPUT_FILE_SHA256_SET=NEEDS_EVIDENCE
-```
+GRANITE_PUBLIC_PROVIDER_INTEGER_SOURCE_WEIGHT_BYTES=BOUND
+GRANITE_PUBLIC_PROVIDER_WEIGHT_SHA256=BOUND
+GRANITE_PUBLIC_PROVIDER_WEIGHT_XET_HASH=BOUND
+GRANITE_LOCAL_INTEGER_SOURCE_WEIGHT_BYTES=NEEDS_EVIDENCE
+GRANITE_LOCAL_SOURCE_WEIGHT_SHA256=NEEDS_EVIDENCE
+GRANITE_EXACT_NON_WEIGHT_REQUIRED_INPUT_FILE_SHA256_SET=NEEDS_EVIDENCE
 
-This provider reconciliation narrows those fields without overstating closure:
-
-```text
 QWEN_PUBLIC_PROVIDER_INTEGER_SOURCE_WEIGHT_BYTES_PER_SHARD=BOUND
 QWEN_PUBLIC_PROVIDER_WEIGHT_SHA256_PER_SHARD=BOUND
 QWEN_PUBLIC_PROVIDER_XET_HASH_PER_SHARD=BOUND
@@ -269,17 +193,25 @@ QWEN_LOCAL_INTEGER_SOURCE_WEIGHT_BYTES_PER_SHARD=NEEDS_EVIDENCE
 QWEN_LOCAL_SOURCE_WEIGHT_SHA256_PER_SHARD=NEEDS_EVIDENCE
 QWEN_EXACT_MODEL_INDEX_SHA256=NEEDS_EVIDENCE
 QWEN_EXACT_NON_WEIGHT_REQUIRED_INPUT_FILE_SHA256_SET=NEEDS_EVIDENCE
-
-GRANITE_PUBLIC_PROVIDER_WEIGHT_SHA256=BOUND
-GRANITE_PUBLIC_PROVIDER_WEIGHT_XET_HASH=BOUND
-GRANITE_PUBLIC_PROVIDER_INTEGER_SOURCE_WEIGHT_BYTES=NEEDS_EVIDENCE
-GRANITE_LOCAL_SOURCE_WEIGHT_SHA256=NEEDS_EVIDENCE
-GRANITE_EXACT_NON_WEIGHT_REQUIRED_INPUT_FILE_SHA256_SET=NEEDS_EVIDENCE
 ```
 
-A future execution-authoritative conversion subject still requires the local/integrity fields required by then-current governance. Provider transcription alone does not satisfy those requirements.
+A future execution-authoritative conversion subject still requires the local/integrity fields required by then-current governance. Provider metadata alone does not make either subject executable.
 
-## 7. No authority expansion
+## 7. Prior-head review provenance
+
+The first exact head of this record was:
+
+```text
+PR=104
+PRIOR_HEAD=37c222b482352e11c6cc8f7e37204375ac549f32
+PRIOR_HEAD_RAW_ACTIONS_RUNS=0
+```
+
+CodeRabbit independently re-read canonical E001/E002/Decision B records, queried exact frozen-revision Hugging Face API/resolve surfaces, verified every Qwen shard field and arithmetic, verified the Granite SHA-256/Xet identity, obtained the direct Granite `X-Linked-Size: 704786224`, confirmed no local-byte verification claim, and reported no material blocker on that prior head.
+
+This commit changes the record to bind the new Granite exact integer provider evidence. Therefore the prior-head review is historical and a fresh exact-head review is required before merge.
+
+## 8. No authority expansion
 
 ```text
 E002_AUTHORITY=AUTHORIZED_EXISTING_FROZEN_PUBLIC_CANDIDATES_ONLY
@@ -314,29 +246,26 @@ E005_STATE=NOT_REACHED
 BACKBONE_WINNER=NEEDS_EVIDENCE
 ```
 
-## 8. Review requirements
+## 9. Fresh review requirements
 
-Fresh exact-head review must independently verify at least:
+Fresh exact-head review must independently verify:
 
-1. the repository/revision identities exactly match the canonical E001/E002/Decision B scope;
-2. current Hugging Face provider tree prefixes match the frozen revision prefixes but are not misrepresented as a full exact-revision proof;
-3. the Granite provider SHA-256/Xet metadata matches the previously canonical preparation record;
-4. all three Qwen CONTROL LFS pointer SHA-256 values and exact integer byte counts are correct;
-5. all three Qwen Xet hashes are correct;
-6. `PUBLIC_PROVIDER_LFS_WEIGHT_CONTAINER_BYTES_SUM=8044982000` is arithmetically correct;
-7. the index `metadata.total_size=8045591552` is recorded as a distinct provider field and is not silently equated to remote container bytes;
-8. no provider digest or display size is described as a locally recomputed value;
-9. no model bytes were loaded, converted, quantized, inferred, benchmarked, or trained;
-10. no build workflow allowance, conversion authority, training authority, credential authority, procurement, or spend is expanded.
+1. the repository/revision identities exactly match canonical E001/E002/Decision B scope;
+2. Granite exact frozen-revision metadata reports SHA-256 `a65363c0803a05c1c74e114c692c57f35b2641aeffce24d5a8ee8fad3b34dcf0`, Xet `ad623156f038ecd3f840ab101a5e3a7e465bce27b2201348c2d8e786d9c54043`, and integer bytes `704786224`;
+3. all three Qwen CONTROL SHA-256, Xet, and exact integer byte values are correct at revision `906bfd4b...`;
+4. `PUBLIC_PROVIDER_LFS_WEIGHT_CONTAINER_BYTES_SUM=8044982000` is arithmetically correct;
+5. Qwen index `metadata.total_size=8045591552` remains distinct from the container-byte sum;
+6. provider evidence is not described as locally recomputed evidence;
+7. no model bytes were loaded, converted, quantized, inferred, benchmarked, or trained;
+8. no workflow-run allowance, conversion authority, training authority, credential authority, procurement, or spend is expanded;
+9. raw Actions on the new exact head remain zero.
 
-If an independent reviewer can obtain a trustworthy exact integer provider size for Granite `model.safetensors`, it should report the value and source as a concrete finding. That value must not be inserted by assumption.
-
-## 9. Current lifecycle effect
+## 10. Current lifecycle effect
 
 ```text
-E002_FROZEN_SOURCE_PROVIDER_METADATA_RECONCILIATION=PREPARED_FOR_REVIEW
+E002_FROZEN_SOURCE_PROVIDER_METADATA_RECONCILIATION=PREPARED_FOR_FINAL_EXACT_HEAD_REVIEW
+GRANITE_PROVIDER_INTEGER_WEIGHT_BYTES=BOUND_FOR_REVIEW
 QWEN_CONTROL_PROVIDER_SHARD_INTEGER_BYTES=BOUND_FOR_REVIEW
-GRANITE_PROVIDER_INTEGER_WEIGHT_BYTES=NEEDS_EVIDENCE
 LOCAL_SOURCE_BUNDLE_BYTE_INTEGRITY=INCOMPLETE
 CONVERSION_EXECUTION_AUTHORITY=NONE
 BUILD_PASS=NO
