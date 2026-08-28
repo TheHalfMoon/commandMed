@@ -1,7 +1,9 @@
-# NON-EXECUTABLE REVIEW CANDIDATE.
-# This file is stored outside .github/workflows and MUST NOT be copied, renamed,
-# promoted, dispatched, or otherwise executed without the canonical Founder
+# E004 BUILD-EVIDENCE WORKFLOW SUBJECT.
+# While stored outside .github/workflows this file is non-executable review material.
+# It may be promoted only to the sole authorized live path under canonical Founder
 # BUILD_ENVIRONMENT_DECISION_B, exact authority capture, and fresh exact-subject review.
+# Presence at the live path does not itself authorize dispatch; canonical promotion,
+# post-merge byte verification, and all pre-run conditions remain required.
 
 name: E004 llama-quantize build evidence
 
