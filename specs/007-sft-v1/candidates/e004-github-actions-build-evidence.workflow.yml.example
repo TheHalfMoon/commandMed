@@ -1,7 +1,7 @@
 # NON-EXECUTABLE REVIEW CANDIDATE.
 # This file is stored outside .github/workflows and MUST NOT be copied, renamed,
-# promoted, dispatched, or otherwise executed without a separately captured
-# Founder BUILD_ENVIRONMENT_DECISION_B and fresh exact-subject review.
+# promoted, dispatched, or otherwise executed without the canonical Founder
+# BUILD_ENVIRONMENT_DECISION_B, exact authority capture, and fresh exact-subject review.
 
 name: E004 llama-quantize build evidence
 
@@ -16,7 +16,11 @@ env:
   TOOL_TREE: 2255f4747492109298a5c997f374d49c2af3113d
   SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
   BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
+  E004_HOME: ${{ runner.temp }}/e004-home
   GIT_TERMINAL_PROMPT: "0"
+  GIT_CONFIG_NOSYSTEM: "1"
+  GIT_ASKPASS: /bin/false
+  SSH_ASKPASS: /bin/false
 
 jobs:
   build-evidence:
@@ -31,10 +35,14 @@ jobs:
 
           required_tools=(
             git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
+            sudo unshare
           )
           for tool in "${required_tools[@]}"; do
             command -v "$tool" >/dev/null
           done
+
+          sudo -n true
+          mkdir -p "$E004_HOME"
 
           printf '%s\n' \
             "RUNNER_OS=${RUNNER_OS:-UNSET}" \
@@ -51,8 +59,10 @@ jobs:
           c++ --version
           python3 --version
           ldd --version | head -n 1
+          sudo --version | head -n 1
+          unshare --version
 
-          for tool in git cmake ninja cc c++ python3; do
+          for tool in git cmake ninja cc c++ python3 sudo unshare; do
             resolved="$(readlink -f "$(command -v "$tool")")"
             printf '%s=%s\n' "${tool}_path" "$resolved"
             sha256sum "$resolved"
@@ -60,14 +70,19 @@ jobs:
 
       - name: Materialize and verify exact public source
         shell: bash
+        env:
+          HOME: ${{ runner.temp }}/e004-home
         run: |
           set -Eeuo pipefail
 
           rm -rf "$SOURCE_DIR" "$BUILD_DIR"
+          mkdir -p "$HOME"
           git init "$SOURCE_DIR"
           git -C "$SOURCE_DIR" remote add origin "$TOOL_REPOSITORY_URL"
-          git -C "$SOURCE_DIR" -c credential.helper= fetch \
-            --no-tags --depth=1 origin "$TOOL_COMMIT"
+          git -C "$SOURCE_DIR" \
+            -c credential.helper= \
+            -c http.extraHeader= \
+            fetch --no-tags --depth=1 origin "$TOOL_COMMIT"
           git -C "$SOURCE_DIR" checkout --detach FETCH_HEAD
 
           actual_commit="$(git -C "$SOURCE_DIR" rev-parse HEAD)"
@@ -81,46 +96,51 @@ jobs:
             "TOOL_COMMIT=$actual_commit" \
             "TOOL_TREE=$actual_tree"
 
-      - name: Configure bounded build
+      - name: Configure and build in network-isolated namespace
         shell: bash
         run: |
           set -Eeuo pipefail
 
-          cmake \
-            -S "$SOURCE_DIR" \
-            -B "$BUILD_DIR" \
-            -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DBUILD_SHARED_LIBS=OFF \
-            -DLLAMA_BUILD_COMMON=ON \
-            -DLLAMA_BUILD_TESTS=OFF \
-            -DLLAMA_BUILD_TOOLS=ON \
-            -DLLAMA_BUILD_EXAMPLES=OFF \
-            -DLLAMA_BUILD_SERVER=OFF \
-            -DLLAMA_BUILD_APP=OFF \
-            -DLLAMA_BUILD_UI=OFF \
-            -DLLAMA_USE_PREBUILT_UI=OFF \
-            -DLLAMA_TOOLS_INSTALL=OFF \
-            -DLLAMA_TESTS_INSTALL=OFF \
-            -DLLAMA_OPENSSL=OFF \
-            -DLLAMA_SUBPROCESS=OFF \
-            -DLLAMA_LLGUIDANCE=OFF \
-            -DGGML_NATIVE=OFF \
-            -DGGML_CCACHE=OFF \
-            -DGGML_OPENMP=OFF
+          # Only the exact public source-fetch step above is network-enabled.
+          # Configure/build run in a separate network namespace. If the runner
+          # cannot create that namespace, this step fails closed before build.
+          sudo -n unshare --net -- bash -Eeuo pipefail -c '
+            source_dir="$1"
+            build_dir="$2"
+
+            cmake \
+              -S "$source_dir" \
+              -B "$build_dir" \
+              -G Ninja \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DBUILD_SHARED_LIBS=OFF \
+              -DLLAMA_BUILD_COMMON=ON \
+              -DLLAMA_BUILD_TESTS=OFF \
+              -DLLAMA_BUILD_TOOLS=ON \
+              -DLLAMA_BUILD_EXAMPLES=OFF \
+              -DLLAMA_BUILD_SERVER=OFF \
+              -DLLAMA_BUILD_APP=OFF \
+              -DLLAMA_BUILD_UI=OFF \
+              -DLLAMA_USE_PREBUILT_UI=OFF \
+              -DLLAMA_TOOLS_INSTALL=OFF \
+              -DLLAMA_TESTS_INSTALL=OFF \
+              -DLLAMA_OPENSSL=OFF \
+              -DLLAMA_SUBPROCESS=OFF \
+              -DLLAMA_LLGUIDANCE=OFF \
+              -DGGML_NATIVE=OFF \
+              -DGGML_CCACHE=OFF \
+              -DGGML_OPENMP=OFF
+
+            cmake --build "$build_dir" \
+              --target llama-quantize \
+              --parallel 2 \
+              --verbose
+          ' _ "$SOURCE_DIR" "$BUILD_DIR"
+
+          sudo -n chown -R "$(id -u):$(id -g)" "$BUILD_DIR"
 
           sha256sum "$BUILD_DIR/CMakeCache.txt"
           sha256sum "$BUILD_DIR/compile_commands.json"
-
-      - name: Build llama-quantize only
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-
-          cmake --build "$BUILD_DIR" \
-            --target llama-quantize \
-            --parallel 2 \
-            --verbose
 
       - name: Emit build evidence to log only
         shell: bash
@@ -150,6 +170,7 @@ jobs:
               "runner_arch=${RUNNER_ARCH:-UNSET}" \
               "image_os=${ImageOS:-UNSET}" \
               "image_version=${ImageVersion:-UNSET}" \
+              "configure_build_network_namespace=isolated" \
               "binary_sha256=$binary_sha256" \
               "binary_bytes=$binary_bytes"
             printf 'cmake_cache_sha256='
