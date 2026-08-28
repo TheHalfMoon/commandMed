@@ -34,7 +34,9 @@ The candidate remains at:
 ```text
 CANDIDATE_PATH=specs/007-sft-v1/candidates/e004-github-actions-build-evidence.workflow.yml.example
 CANDIDATE_GIT_BLOB_SHA1=b9ebaa40fa48d41bc2dfecab57368e0fe5647d4a
-CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
+CANDIDATE_SHA256=b422568fa535a29f6887cad2b158c3bbad059c8bbb4999c3ca5a75e5e840332f
+DIGEST_EVIDENCE_HEAD=ffd84716d126cbafa37b9ad9f42a9cbefe4eab28
+DIGEST_EVIDENCE_SOURCE=LOCAL_BYTE_LEVEL_GIT_BLOB_CROSSCHECK_PLUS_CUBIC_EXACT_HEAD_SEMANTIC_REVIEW
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 ```
 
@@ -45,9 +47,11 @@ The new header is location-neutral:
 - it states that presence at the live path does not itself authorize dispatch;
 - it preserves post-merge byte verification and pre-run gates.
 
+A byte-level recomputation of the exact candidate content reproduced Git blob SHA-1 `b9ebaa40fa48d41bc2dfecab57368e0fe5647d4a` and SHA-256 `b422568fa535a29f6887cad2b158c3bbad059c8bbb4999c3ca5a75e5e840332f`. Cubic's exact-head summary for `ffd84716d126cbafa37b9ad9f42a9cbefe4eab28` independently confirmed that the candidate delta is comment-only, executable YAML after the header is unchanged, the new header fixes the location-truthfulness defect, no `.github/workflows` file is created or modified, and no workflow run is dispatched. CodeRabbit manual review was requested but its chat surface hit a rate limit; no CodeRabbit PASS is claimed for this head.
+
 ## 3. Runtime-semantic invariance
 
-Repository compare evidence from canonical base `80bfdd08...` to candidate-correction commit `459f9e88...` shows exactly one changed file with 5 additions and 3 deletions, all in the opening comment block.
+Repository compare evidence from canonical base `80bfdd08...` to candidate-correction commit `459f9e88...` shows exactly one changed file with 5 additions and 3 deletions, all in the opening comment block. Cubic independently summarized the exact PR head as comment-only and confirmed the executable YAML following the header remains unchanged.
 
 ```text
 RUNTIME_YAML_CHANGED=NO
@@ -64,8 +68,6 @@ ENVIRONMENT_BOUNDARY_CHANGED=NO
 SECURITY_EVIDENCE_CHANGED=NO
 PERSISTENCE_POLICY_CHANGED=NO
 ```
-
-The executable YAML content following the opening comment block is unchanged from the predecessor subject. Exact-head review must independently confirm this statement; it is not self-qualifying.
 
 ## 4. Inherited bounded envelope
 
@@ -110,9 +112,9 @@ Any further candidate-byte change requires another exact authority capture.
 
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
-SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_EXACT_HEAD_REVIEW
+SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_FINAL_EXACT_HEAD_REVIEW_AFTER_DIGEST_BINDING
 NEW_CANDIDATE_GIT_BLOB_SHA1=b9ebaa40fa48d41bc2dfecab57368e0fe5647d4a
-NEW_CANDIDATE_SHA256=NEEDS_EVIDENCE_EXACT_HEAD_RECOMPUTE
+NEW_CANDIDATE_SHA256=b422568fa535a29f6887cad2b158c3bbad059c8bbb4999c3ca5a75e5e840332f
 LIVE_WORKFLOW_CREATED=NO
 WORKFLOW_RUN_EXECUTED=NO
 BUILD_PASS=NO
@@ -127,7 +129,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 ## Exit evidence required
 
-Fresh exact-head review must independently confirm:
+Fresh exact-head review after digest binding must independently confirm:
 
 ```text
 COMMENT_ONLY_DELTA=YES
