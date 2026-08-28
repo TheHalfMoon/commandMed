@@ -71,13 +71,7 @@ The canonical controlling authority states:
 ROOT_PRIVILEGE_PURPOSE=NETWORK_NAMESPACE_CREATION_ONLY
 ```
 
-The probe therefore created unnecessary root execution outside the sole authorized root purpose. It is removed. Passwordless sudo and namespace capability are now exercised only by the authorized operation itself:
-
-```text
-<exact-sudo-path> -n <exact-unshare-path> --net -- ...
-```
-
-If that operation is unavailable, execution fails closed before configure/build.
+The probe therefore created unnecessary root execution outside the sole authorized root purpose. It is removed. Passwordless sudo and namespace capability are exercised only by exact namespace creation. If unavailable, execution fails closed before configure/build.
 
 ```text
 SUDO_TRUE_PREFLIGHT_PRESENT=NO
@@ -87,42 +81,45 @@ ROOT_PRIVILEGE_PURPOSE=NETWORK_NAMESPACE_CREATION_ONLY
 
 ## 4. Defect C — post-reset tool identity was not guaranteed
 
-Canonical authority requires both environment reset and path/version/SHA-256 evidence for the shell/core tools, Git, CMake, Ninja, C/C++ compilers, Python, sudo, unshare, and setpriv.
+Canonical authority requires both environment reset and path/version/SHA-256 evidence for shell/core tools, Git, CMake, Ninja, C/C++ compilers, Python, sudo, unshare, and setpriv.
 
-`setpriv --reset-env` resets `PATH`. Upstream util-linux documentation states that the reset PATH is reconstructed from `/etc/login.defs` or a built-in default rather than preserving the caller PATH:
+`setpriv --reset-env` resets `PATH`. Upstream util-linux documentation states that reset PATH is reconstructed from `/etc/login.defs` or a built-in default rather than preserving the caller PATH:
 
 ```text
 https://man7.org/linux/man-pages/man1/setpriv.1.html
 ```
 
-Therefore preflight hashes alone did not prove that name-based commands resolved after `--reset-env` were the same executables that had been measured before the boundary.
+Therefore preflight hashes alone did not prove that commands resolved after `--reset-env` were the same executables measured before the boundary.
 
-The successor now:
+The final successor now:
 
-1. resolves exact absolute paths before the privilege/reset boundary;
-2. invokes absolute paths for `sudo`, `unshare`, `setpriv`, `env`, `bash`, `id`, and CMake;
-3. passes the exact Git, Ninja, C/C++, Python, and SHA-256 tool paths through the boundary;
-4. reconstructs an explicit post-reset `PATH` only from directories of those already-resolved tools;
-5. asserts the post-reset `PATH` exactly matches that bounded value;
-6. pins `CMAKE_MAKE_PROGRAM`, `CMAKE_C_COMPILER`, and `CMAKE_CXX_COMPILER` to the measured absolute paths; and
-7. records the actual build-time tool paths and SHA-256 values inside the hashed security-evidence record.
+1. captures each required command path and fully resolved executable path before the boundary;
+2. invokes `sudo`, `unshare`, `setpriv`, `env`, `bash`, `id`, and CMake by measured absolute path where they are directly executed;
+3. rebuilds post-reset `PATH` only from original PATH directories that contain required premeasured build tools, preserving original directory precedence;
+4. asserts the rebuilt PATH exactly after reset;
+5. resolves `bash`, `env`, `id`, `git`, `cmake`, `ninja`, `cc`, `c++`, `python3`, `sha256sum`, and `readlink` inside the isolated environment and requires each normalized path to match the premeasured executable;
+6. records build-time paths and SHA-256 values inside the hashed security-evidence record;
+7. preserves the canonical CMake configure argv without adding compiler or make-program override flags; and
+8. after configure but before target build, parses `CMakeCache.txt` and requires the selected generator, make program, C compiler, and C++ compiler to normalize to the measured Ninja/C/C++ identities.
 
 ```text
-POST_RESET_TOOL_SELECTION=EXACT_PATH_BOUND
-POST_RESET_PATH=EXPLICIT_FROM_PREMEASURED_TOOL_DIRECTORIES
-CMAKE_MAKE_PROGRAM=EXACT_PREMEASURED_NINJA_PATH
-CMAKE_C_COMPILER=EXACT_PREMEASURED_CC_PATH
-CMAKE_CXX_COMPILER=EXACT_PREMEASURED_CXX_PATH
+POST_RESET_TOOL_SELECTION=FAIL_CLOSED_EXACT_IDENTITY_ASSERTION
+POST_RESET_PATH=FILTERED_FROM_ORIGINAL_PREMEASURED_TOOL_DIRECTORIES
+FROZEN_CMAKE_CONFIGURE_ARGV_PRESERVED=YES
+CMAKE_SELECTED_GENERATOR=Ninja_REQUIRED
+CMAKE_SELECTED_MAKE_PROGRAM=MUST_MATCH_PREMEASURED_NINJA
+CMAKE_SELECTED_C_COMPILER=MUST_MATCH_PREMEASURED_CC
+CMAKE_SELECTED_CXX_COMPILER=MUST_MATCH_PREMEASURED_CXX
 BUILD_TIME_TOOL_IDENTITY_EVIDENCE=BOUND_IN_SECURITY_EVIDENCE
 ```
 
-This is reproducibility/evidence hardening. It does not add a package, executable target, external endpoint, model operation, persistence mechanism, or authority.
+This is reproducibility/evidence hardening only. It adds no package, executable target, external endpoint, model operation, persistence mechanism, or authority.
 
-## 5. Fail-closed probe hardening
+## 5. One-shot fail-closed reliability hardening
 
-The predecessor used version probes such as `command --version | head -n 1` under `set -o pipefail`. A producer can receive a closed pipe when `head` exits early, causing an avoidable false failure unrelated to tool availability.
+The predecessor used version probes such as `command --version | head -n 1` under `set -o pipefail`. A producer can receive a closed pipe when `head` exits early, creating an avoidable false failure unrelated to tool availability.
 
-The successor emits the full `ldd --version` and `sudo --version` outputs instead. This changes no authority or build behavior; it removes an unnecessary one-shot failure mode.
+The final successor emits full `ldd --version` and `sudo --version` output instead. Build purpose and authority are unchanged.
 
 ## 6. Final successor candidate identity
 
@@ -130,12 +127,10 @@ The successor emits the full `ldd --version` and `sudo --version` outputs instea
 CANDIDATE_PATH=specs/007-sft-v1/candidates/e004-github-actions-build-evidence.workflow.yml.example
 PREDECESSOR_PR95_GIT_BLOB_SHA1=b9ebaa40fa48d41bc2dfecab57368e0fe5647d4a
 PREDECESSOR_PR95_SHA256=b422568fa535a29f6887cad2b158c3bbad059c8bbb4999c3ca5a75e5e840332f
-RUNNER_CONTEXT_ONLY_INTERMEDIATE_GIT_BLOB_SHA1=c5bc77cce1cdf23cb4fe5c4adc4f12713072eca7
-RUNNER_CONTEXT_ONLY_INTERMEDIATE_SHA256=55d28ec4e9c6319482bf0b3147797ace6b525c3cbd5e85f43f8741819cdb663a
 ROOT_PURPOSE_FIXED_INTERMEDIATE_GIT_BLOB_SHA1=e8f1a069f88037d2ba139c697bbdffaf6b43ef2a
 ROOT_PURPOSE_FIXED_INTERMEDIATE_SHA256=2cc172dfb09efff239ec8e87bfe03adcbe4fdb340e1c229c87561ece4d40f202
 ROOT_PURPOSE_FIXED_INTERMEDIATE_DIGEST_SOURCE=CODERABBIT_EXACT_HEAD_RECOMPUTE
-FINAL_SUCCESSOR_GIT_BLOB_SHA1=fec1f5908f6b0ec3a87b52af9f3e7f0d4d07f4ca
+FINAL_SUCCESSOR_GIT_BLOB_SHA1=710cb4e6ecf1b34e93d3dfa3d59e24c3d60d1d79
 FINAL_SUCCESSOR_SHA256=NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 ```
@@ -153,12 +148,7 @@ TOOL_TREE=2255f4747492109298a5c997f374d49c2af3113d
 BUILD_TARGET=llama-quantize
 ```
 
-Exact pinned-source review confirms:
-
-- root `CMakeLists.txt` already contains `set(CMAKE_EXPORT_COMPILE_COMMANDS ON)`;
-- `tools/quantize/CMakeLists.txt` defines executable target `llama-quantize`.
-
-A temporary PR #98 revision that added `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` was redundant and is absent from the final subject.
+Exact pinned-source review confirms root `CMakeLists.txt` already contains `set(CMAKE_EXPORT_COMPILE_COMMANDS ON)` and `tools/quantize/CMakeLists.txt` defines executable target `llama-quantize`. A temporary PR #98 compile-command override was redundant and is absent from the final subject.
 
 ```text
 PINNED_SOURCE_ALREADY_EXPORTS_COMPILE_COMMANDS=YES
@@ -203,11 +193,11 @@ NO_TRAINING
 NO_PROCUREMENT
 ```
 
-No static candidate claim is runtime PASS evidence. Tool availability, sudo/namespace behavior, compiler/build behavior, and all emitted identities remain runtime evidence requirements.
+No static candidate claim is runtime PASS evidence. Tool availability, sudo/namespace behavior, compiler/build behavior, and emitted identities remain runtime evidence requirements.
 
 ## 9. PR #96 run-allowance disposition and exact source attribution
 
-The controlling source for this disposition is not the PR #95 location-neutral recapture. It is the canonical exact authority record:
+The controlling source is the canonical exact authority record, not the PR #95 location-neutral recapture:
 
 ```text
 SOURCE_PATH=specs/007-sft-v1/e004-github-actions-exact-authority-capture-2026-08-28.md
@@ -241,7 +231,7 @@ AUTHORIZED_MANUAL_RUN_ALLOWANCE_REMAINING=1_CONDITIONAL_NOT_YET_EXERCISABLE
 FUTURE_MANUAL_DISPATCH_EXERCISABLE=NO
 ```
 
-This interprets already-canonical exact authority and creates no second run or new authority. Fresh independent exact-head review must verify both the source attribution and disposition.
+This interprets already-canonical exact authority and creates no second run or new authority. Fresh independent exact-head review must verify source attribution and disposition.
 
 ## 10. Promotion sequence after qualification
 
@@ -267,7 +257,7 @@ The connected GitHub action surface still does not expose workflow-dispatch init
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
 SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_FINAL_SHA256_AND_EXACT_HEAD_REVIEW
-FINAL_SUCCESSOR_GIT_BLOB_SHA1=fec1f5908f6b0ec3a87b52af9f3e7f0d4d07f4ca
+FINAL_SUCCESSOR_GIT_BLOB_SHA1=710cb4e6ecf1b34e93d3dfa3d59e24c3d60d1d79
 FINAL_SUCCESSOR_SHA256=NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH
 LIVE_WORKFLOW_ON_CANONICAL_MAIN=NO
 BUILD_EXECUTION_OCCURRED=NO
@@ -292,8 +282,10 @@ PR96_INCIDENT_EVIDENCE_BOUND=YES
 RUNNER_CONTEXT_DEFECT_REPAIRED=YES
 UNAUTHORIZED_SUDO_TRUE_PREFLIGHT_REMOVED=YES
 ROOT_PRIVILEGE_PURPOSE_MATCHES_CANONICAL_AUTHORITY=YES
-POST_RESET_TOOL_SELECTION_IS_EXACT_PATH_BOUND=YES
-POST_RESET_PATH_IS_EXPLICIT_AND_BOUNDED=YES
+POST_RESET_TOOL_SELECTION_IS_FAIL_CLOSED_AND_IDENTITY_BOUND=YES
+POST_RESET_PATH_IS_EXPLICIT_FILTERED_AND_PRECEDENCE_PRESERVING=YES
+FROZEN_CMAKE_CONFIGURE_ARGV_PRESERVED=YES
+CMAKE_SELECTED_BUILD_TOOL_IDENTITIES_ARE_ASSERTED_BEFORE_TARGET_BUILD=YES
 BUILD_TIME_TOOL_IDENTITIES_ARE_EVIDENCE_BOUND=YES
 PIPEFAIL_VERSION_PROBE_FALSE_FAILURE_REMOVED=YES
 FINAL_SUCCESSOR_GIT_BLOB_MATCHES=YES
