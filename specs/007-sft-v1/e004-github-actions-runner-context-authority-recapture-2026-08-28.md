@@ -5,7 +5,7 @@
 **Predecessor exact-subject recapture:** `specs/007-sft-v1/e004-github-actions-location-neutral-authority-recapture-2026-08-28.md` / PR #95  
 **Abandoned promotion:** PR #96 / CLOSED_UNMERGED  
 **Founder environment decision:** `BUILD_ENVIRONMENT_DECISION_B`  
-**Authority class:** successor exact-subject recapture after workflow-validation defect  
+**Authority class:** successor exact-subject recapture after workflow-validation and evidence-generation defects  
 **Runtime/model authority expansion:** NONE  
 **Live workflow on canonical main:** NO  
 **Build execution occurred:** NO  
@@ -46,7 +46,9 @@ BUILD_PASS=NO
 
 No provider run or job created by PR #96 is treated as evidence of toolchain readiness, runtime qualification, model authority, benchmark authority, or spend.
 
-## 2. Root cause
+## 2. Defects found before recapture qualification
+
+### 2.1 Invalid workflow-level `runner` context
 
 The PR #95 candidate used the `runner` context inside workflow-level `env`:
 
@@ -77,6 +79,33 @@ https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#cont
 
 The observed zero-job failed push run is consistent with workflow validation failing before job scheduling. No stronger provider error message is fabricated because no workflow job/log exists.
 
+### 2.2 Required compile-command evidence was not explicitly generated
+
+The predecessor subject requires both of the following evidence reads:
+
+```text
+sha256sum "$BUILD_DIR/compile_commands.json"
+compile_commands_sha256=<sha256 of compile_commands.json>
+```
+
+However, its exact CMake configure argv did not explicitly enable compile-command database generation.
+
+CMake documentation states that `CMAKE_EXPORT_COMPILE_COMMANDS`, when enabled, generates `compile_commands.json`, and that this is supported by the Ninja generator used by the authorized subject.
+
+Primary documentation:
+
+```text
+https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html
+```
+
+The successor subject therefore adds exactly:
+
+```text
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+```
+
+This does not authorize another executable target, package, dependency, network endpoint, model operation, persistence mechanism, or spend. It makes an already-required build-evidence field deterministically generatable under the already-authorized Ninja configure step.
+
 ## 3. Corrected exact subject
 
 Candidate path remains non-live:
@@ -85,12 +114,14 @@ Candidate path remains non-live:
 CANDIDATE_PATH=specs/007-sft-v1/candidates/e004-github-actions-build-evidence.workflow.yml.example
 PREDECESSOR_CANDIDATE_GIT_BLOB_SHA1=b9ebaa40fa48d41bc2dfecab57368e0fe5647d4a
 PREDECESSOR_CANDIDATE_SHA256=b422568fa535a29f6887cad2b158c3bbad059c8bbb4999c3ca5a75e5e840332f
-NEW_CANDIDATE_GIT_BLOB_SHA1=c5bc77cce1cdf23cb4fe5c4adc4f12713072eca7
-NEW_CANDIDATE_SHA256=55d28ec4e9c6319482bf0b3147797ace6b525c3cbd5e85f43f8741819cdb663a
+INTERMEDIATE_RUNNER_CONTEXT_FIXED_BLOB_SHA1=c5bc77cce1cdf23cb4fe5c4adc4f12713072eca7
+INTERMEDIATE_RUNNER_CONTEXT_FIXED_SHA256=55d28ec4e9c6319482bf0b3147797ace6b525c3cbd5e85f43f8741819cdb663a
+NEW_CANDIDATE_GIT_BLOB_SHA1=15d915aab40e53daf7e6937b01e021ae97ccbbe8
+NEW_CANDIDATE_SHA256=NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 ```
 
-The correction removes all `runner.temp` expressions from workflow-level `env` and binds the same derived paths only in step-level `env`, where the `runner` context is permitted.
+The first correction removes all `runner.temp` expressions from workflow-level `env` and binds the same derived paths only in step-level `env`, where the `runner` context is permitted.
 
 Static workflow-level values remain at workflow scope:
 
@@ -114,13 +145,15 @@ SECURITY_EVIDENCE
 HOME
 ```
 
-A local byte-level reconstruction reproduced the predecessor Git blob and SHA-256 before applying the bounded correction, then produced the new identities above. GitHub independently reports the corrected candidate as Git blob `c5bc77cce1cdf23cb4fe5c4adc4f12713072eca7` on candidate commit `3c57d5d9b088d89ac2271a560796bc58da633f65`.
+The second correction adds only `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` to the already-bounded CMake configure argv so that the already-required `compile_commands.json` evidence exists under Ninja.
 
-Local YAML parsing of the corrected subject succeeds. Static review confirms every remaining `${{ runner.temp }}` occurrence is under `jobs.<job_id>.steps.env`, not workflow-level or job-level `env`.
+GitHub independently reports the final corrected candidate as Git blob `15d915aab40e53daf7e6937b01e021ae97ccbbe8` on candidate commit `f00f678d2f5818ab288bbfe22d1e238c39b1ed4b`.
+
+The previous SHA-256 `55d28ec4...` applies only to the intermediate runner-context-only candidate and is not inherited. The final candidate SHA-256 remains `NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH` until independently recomputed against blob `15d915aa...` and bound in this record.
 
 ## 4. Runtime/security invariants preserved
 
-This recapture does not authorize new runtime behavior. The intended values and boundaries remain unchanged:
+This recapture does not authorize a new runtime purpose. The intended values and boundaries remain unchanged except for the explicit evidence-only CMake export flag described above:
 
 ```text
 PROVIDER=GitHub_Actions
@@ -131,12 +164,13 @@ TOOL_REPOSITORY_URL=https://github.com/ggml-org/llama.cpp.git
 TOOL_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
 TOOL_TREE=2255f4747492109298a5c997f374d49c2af3113d
 BUILD_TARGET=llama-quantize
+CMAKE_EXPORT_COMPILE_COMMANDS=ON
 TIMEOUT_MINUTES=30
 PAID_OR_LARGER_RUNNER=PROHIBITED
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-The correction does not weaken:
+The corrections do not weaken:
 
 ```text
 PUBLIC_SOURCE_FETCH_ONLY
@@ -160,7 +194,7 @@ NO_TRAINING
 NO_PROCUREMENT
 ```
 
-The path-binding correction is not itself evidence that the future hosted runner has the required tools, namespace behavior, or build compatibility. Those remain runtime evidence requirements.
+The corrections are not evidence that the future hosted runner has the required tools, namespace behavior, or build compatibility. Those remain runtime evidence requirements.
 
 ## 5. Unexpected-run disposition boundary
 
@@ -187,10 +221,11 @@ A fresh exact-head review must explicitly confirm an evidence-bound disposition 
 
 ## 6. Successor promotion sequence
 
-No live workflow may be created from these new bytes until this recapture becomes canonical after fresh exact-head review.
+No live workflow may be created from these final corrected bytes until this recapture becomes canonical after fresh exact-head review.
 
 ```text
-THIS_RECAPTURE_EXACT_HEAD_REVIEW_MATERIAL_BLOCKER=NO
+FINAL_CANDIDATE_SHA256_INDEPENDENTLY_RECOMPUTED_AND_BOUND
+-> THIS_RECAPTURE_EXACT_HEAD_REVIEW_MATERIAL_BLOCKER=NO
 -> THIS_RECAPTURE_CANONICAL
 -> FRESH_PROMOTION_BRANCH_FROM_THEN_CURRENT_CANONICAL_MAIN
 -> PROMOTED_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
@@ -211,9 +246,9 @@ Any further candidate-byte change requires another exact authority capture.
 
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
-SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_REVIEW
-NEW_CANDIDATE_GIT_BLOB_SHA1=c5bc77cce1cdf23cb4fe5c4adc4f12713072eca7
-NEW_CANDIDATE_SHA256=55d28ec4e9c6319482bf0b3147797ace6b525c3cbd5e85f43f8741819cdb663a
+SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_FINAL_CANDIDATE_HASH_AND_REVIEW
+NEW_CANDIDATE_GIT_BLOB_SHA1=15d915aab40e53daf7e6937b01e021ae97ccbbe8
+NEW_CANDIDATE_SHA256=NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH
 LIVE_WORKFLOW_ON_CANONICAL_MAIN=NO
 CURRENT_RECAPTURE_BRANCH_WORKFLOW_RUNS=0
 BUILD_EXECUTION_OCCURRED=NO
@@ -236,9 +271,12 @@ PR96_INCIDENT_EVIDENCE_BOUND=YES
 ROOT_CAUSE_RUNNER_CONTEXT_AVAILABILITY_DEFECT_CONFIRMED=YES
 WORKFLOW_LEVEL_RUNNER_CONTEXT_REFERENCES=0
 ALL_RUNNER_CONTEXT_REFERENCES_ARE_IN_ALLOWED_STEP_SCOPE=YES
+COMPILE_COMMANDS_EVIDENCE_IS_REQUIRED=YES
+COMPILE_COMMANDS_GENERATION_IS_EXPLICIT=YES
+CMAKE_EXPORT_COMPILE_COMMANDS_FLAG_IS_EVIDENCE_ONLY=YES
 NEW_CANDIDATE_GIT_BLOB_MATCHES=YES
 NEW_CANDIDATE_SHA256_RECOMPUTED_AND_BOUND=YES
-CORRECTION_IS_LIMITED_TO_CONTEXT_SCOPE_BINDING=YES
+CORRECTIONS_ARE_LIMITED_TO_CONTEXT_SCOPE_AND_REQUIRED_EVIDENCE_GENERATION=YES
 PREDECESSOR_RUNTIME_SECURITY_LIMITS_UNCHANGED=YES
 NO_LIVE_WORKFLOW_CREATED_BY_THIS_RECAPTURE=YES
 NO_WORKFLOW_RUN_CREATED_BY_THIS_RECAPTURE=YES
