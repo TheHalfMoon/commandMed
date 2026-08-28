@@ -34,7 +34,7 @@ jobs:
           set -Eeuo pipefail
 
           required_tools=(
-            git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
+            bash env id git cmake ninja cc c++ python3 sha256sum readlink ldd file stat
             sudo unshare setpriv
           )
           for tool in "${required_tools[@]}"; do
@@ -63,7 +63,7 @@ jobs:
           unshare --version
           setpriv --version
 
-          for tool in git cmake ninja cc c++ python3 sudo unshare setpriv; do
+          for tool in bash env id git cmake ninja cc c++ python3 sudo unshare setpriv; do
             resolved="$(readlink -f "$(command -v "$tool")")"
             printf '%s=%s\n' "${tool}_path" "$resolved"
             sha256sum "$resolved"
@@ -103,9 +103,9 @@ jobs:
           set -Eeuo pipefail
 
           # Root privilege is used only to create the network namespace.
-          # setpriv drops UID/GID and supplementary groups before any CMake or
-          # compiler process starts. Failure to isolate or drop privileges is
-          # fail-closed before configure/build.
+          # setpriv drops UID/GID, supplementary groups, Linux capabilities,
+          # enables no_new_privs, and resets inherited environment before any
+          # CMake or compiler process starts. Failure is fail-closed.
           runner_uid="$(id -u)"
           runner_gid="$(id -g)"
 
@@ -114,7 +114,17 @@ jobs:
               --reuid "$runner_uid" \
               --regid "$runner_gid" \
               --clear-groups \
+              --inh-caps=-all \
+              --ambient-caps=-all \
+              --bounding-set=-all \
+              --no-new-privs \
+              --reset-env \
               -- \
+            env \
+              HOME="$E004_HOME" \
+              TMPDIR="$RUNNER_TEMP" \
+              LC_ALL=C \
+              LANG=C \
             bash -Eeuo pipefail -c '
               source_dir="$1"
               build_dir="$2"
@@ -182,7 +192,7 @@ jobs:
               "image_os=${ImageOS:-UNSET}" \
               "image_version=${ImageVersion:-UNSET}" \
               "configure_build_network_namespace=isolated" \
-              "configure_build_privilege=unprivileged" \
+              "configure_build_privilege=unprivileged_no_new_privs_no_capabilities" \
               "binary_sha256=$binary_sha256" \
               "binary_bytes=$binary_bytes"
             printf 'cmake_cache_sha256='
