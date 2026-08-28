@@ -131,9 +131,12 @@ ROOT_PURPOSE_FIXED_INTERMEDIATE_GIT_BLOB_SHA1=e8f1a069f88037d2ba139c697bbdffaf6b
 ROOT_PURPOSE_FIXED_INTERMEDIATE_SHA256=2cc172dfb09efff239ec8e87bfe03adcbe4fdb340e1c229c87561ece4d40f202
 ROOT_PURPOSE_FIXED_INTERMEDIATE_DIGEST_SOURCE=CODERABBIT_EXACT_HEAD_RECOMPUTE
 FINAL_SUCCESSOR_GIT_BLOB_SHA1=710cb4e6ecf1b34e93d3dfa3d59e24c3d60d1d79
-FINAL_SUCCESSOR_SHA256=NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH
+FINAL_SUCCESSOR_SHA256=836175ee057e2a6802b47db00766119d54c2034b63c8487f138dc125285f226b
+FINAL_SUCCESSOR_DIGEST_SOURCE=CODERABBIT_EXACT_HEAD_RECOMPUTE_AT_17daaaac54cd3a09c30b147662875969a98a5d89
 INTENDED_LIVE_WORKFLOW_PATH=.github/workflows/e004-llama-quantize-build-evidence.yml
 ```
+
+The final candidate digest was independently recomputed by CodeRabbit on exact head `17daaaac54cd3a09c30b147662875969a98a5d89`, which returned `MATERIAL_BLOCKER=NO_EXCEPT_UNBOUND_SHA256`; the sole unresolved item was this record's unbound digest field. This record-only commit binds that reviewed digest without changing candidate bytes.
 
 Any further candidate-byte change invalidates the final identity and requires fresh exact-head review.
 
@@ -231,7 +234,7 @@ AUTHORIZED_MANUAL_RUN_ALLOWANCE_REMAINING=1_CONDITIONAL_NOT_YET_EXERCISABLE
 FUTURE_MANUAL_DISPATCH_EXERCISABLE=NO
 ```
 
-This interprets already-canonical exact authority and creates no second run or new authority. Fresh independent exact-head review must verify source attribution and disposition.
+This interprets already-canonical exact authority and creates no second run or new authority. Fresh exact-head review of this record-only digest bind remains required before canonical merge.
 
 ## 10. Promotion sequence after qualification
 
@@ -256,9 +259,9 @@ The connected GitHub action surface still does not expose workflow-dispatch init
 
 ```text
 FOUNDER_BUILD_ENVIRONMENT_DECISION=BUILD_ENVIRONMENT_DECISION_B
-SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_FINAL_SHA256_AND_EXACT_HEAD_REVIEW
+SUCCESSOR_EXACT_AUTHORITY_RECAPTURE=PENDING_POST_DIGEST_EXACT_HEAD_REVIEW
 FINAL_SUCCESSOR_GIT_BLOB_SHA1=710cb4e6ecf1b34e93d3dfa3d59e24c3d60d1d79
-FINAL_SUCCESSOR_SHA256=NEEDS_FRESH_INDEPENDENT_EXACT_HEAD_HASH
+FINAL_SUCCESSOR_SHA256=836175ee057e2a6802b47db00766119d54c2034b63c8487f138dc125285f226b
 LIVE_WORKFLOW_ON_CANONICAL_MAIN=NO
 BUILD_EXECUTION_OCCURRED=NO
 BUILD_PASS=NO
