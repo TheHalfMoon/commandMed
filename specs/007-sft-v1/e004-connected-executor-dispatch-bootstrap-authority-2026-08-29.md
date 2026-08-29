@@ -2,7 +2,7 @@
 
 **Spec:** 007 SFT V1  
 **Authority class:** bounded execution-blocker remediation  
-**Authority effect:** authorizes exactly one transient native GitHub Actions dispatch bootstrap plus one transient immutable Git ref used only to bind that dispatch; does not authorize model conversion, contamination assessment, A15 activation, training, or downstream execution  
+**Authority effect:** authorizes exactly one transient native GitHub Actions dispatch bootstrap plus one transient SHA-named Git branch used only to reduce and detect ref-resolution races; does not authorize model conversion, contamination assessment, A15 activation, training, or downstream execution  
 **Current authorized spend:** USD 0
 
 ## Founder directive capture
@@ -34,9 +34,10 @@ TARGET_REQUIRED_GIT_BLOB_SHA1=591317f1f570480b9ac68e7956d070db8ed5ef45
 TARGET_REQUIRED_RAW_SHA256=95512021832788d5cd6362e6fa9ea0c7771bf81f5725ae4ab18b4d5199967327
 TARGET_TRIGGER_REMAINS=workflow_dispatch_only
 TARGET_CANONICAL_SOURCE_SHA=then-current_canonical_main_sha
-TARGET_EXECUTION_REF=transient_immutable_branch_at_TARGET_CANONICAL_SOURCE_SHA
-TARGET_EXECUTION_REF_PATTERN=e004-runtime-evidence-lock-<40_lower_hex_sha>
-MAX_AUTHORIZED_TRANSIENT_LOCK_REFS=1
+TARGET_EXECUTION_REF=transient_sha_named_branch_initially_pointing_to_TARGET_CANONICAL_SOURCE_SHA
+TARGET_EXECUTION_REF_PATTERN=e004-runtime-evidence-bind-<40_lower_hex_sha>
+TARGET_EXECUTION_REF_IMMUTABLE=NO
+MAX_AUTHORIZED_TRANSIENT_BINDING_REFS=1
 TARGET_RUNTIME_EVIDENCE_RUN_ALLOWANCE_REMAINS=1
 BOOTSTRAP_GITHUB_API_VERSION=2026-03-10
 DISPATCH_REQUEST_BODY_FIELDS=ref_only
@@ -45,10 +46,12 @@ DISPATCH_RESPONSE_RUN_ID_BINDING=REQUIRED
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-The bootstrap is not a substitute execution surface for E004 runtime evidence. It is a transport-only control step whose sole permitted mutations are:
+GitHub's current workflow-dispatch endpoint accepts a branch or tag name as `ref`; it does not provide a raw commit-SHA execution-ref parameter. A normal Git ref can be moved or deleted unless separately protected. No such repository-wide exclusion control is available to this bounded bootstrap.
 
-1. create one transient Git branch ref that points exactly to the then-current canonical `main` SHA; and
-2. create the already-authorized native `workflow_dispatch` event for the exact target workflow using that immutable branch name as the dispatch ref.
+The bootstrap is therefore a transport-only, fail-closed control step whose sole permitted mutations are:
+
+1. create one transient SHA-named Git branch that initially points exactly to the then-current canonical `main` SHA; and
+2. create the already-authorized native `workflow_dispatch` event for the exact target workflow using that branch name as the dispatch ref.
 
 No repository file content may be changed by the bootstrap.
 
@@ -62,39 +65,47 @@ Before creating the target dispatch, the bootstrap must fail closed unless all o
 4. The target workflow Git blob is exactly `591317f1f570480b9ac68e7956d070db8ed5ef45`.
 5. The target workflow remains active and its target trigger is unchanged from the already-reviewed canonical workflow.
 6. Workflow-specific GitHub Actions history across all refs reports zero prior target `workflow_dispatch` runs.
-7. The bootstrap creates exactly one branch named `e004-runtime-evidence-lock-<canonical-main-sha>` and requires the created Git ref object to resolve exactly to the verified canonical `main` SHA.
-8. The target workflow is re-read through that immutable lock ref and must have the same required Git blob identity before dispatch.
-9. The bootstrap uses only the ephemeral repository `GITHUB_TOKEN`, with `actions: write` solely for the target dispatch and `contents: write` solely because GitHub requires repository-content write permission to create/delete Git refs. No file create/update/delete operation is permitted.
-10. Under GitHub REST API version `2026-03-10`, the dispatch request body contains only the immutable `ref`. The bootstrap requires the default `200` response containing `workflow_run_id`, `run_url`, and `html_url`, binds those returned details, reads that exact run back from GitHub, and requires its `head_sha`, `head_branch`, event, and workflow path to match the verified canonical SHA, exact immutable lock branch, `workflow_dispatch`, and exact target path.
-11. The bootstrap then requires workflow-specific target history across all refs to contain exactly one `workflow_dispatch` and requires that sole run to be the returned run ID.
+7. The bootstrap creates exactly one branch named `e004-runtime-evidence-bind-<canonical-main-sha>` and requires the created Git ref object to resolve exactly to the verified canonical `main` SHA.
+8. The target workflow is re-read through that SHA-named binding ref and must have the same required Git blob identity before dispatch.
+9. The binding ref is read back again immediately before dispatch and must still resolve to the verified canonical `main` SHA.
+10. The bootstrap uses only the ephemeral repository `GITHUB_TOKEN`, with `actions: write` solely for the target dispatch and `contents: write` solely because GitHub requires repository-content write permission to create/delete Git refs. No file create/update/delete operation is permitted.
+11. Under GitHub REST API version `2026-03-10`, the dispatch request body contains only the binding branch `ref`. The bootstrap requires the default `200` response containing `workflow_run_id`, `run_url`, and `html_url`, binds those returned details, reads that exact run back from GitHub, and requires its `head_sha`, `head_branch`, event, and workflow path to match the verified canonical SHA, exact binding branch, `workflow_dispatch`, and exact target path.
+12. The bootstrap then requires workflow-specific target history across all refs to contain exactly one `workflow_dispatch` and requires that sole run to be the returned run ID.
 
 If any prerequisite fails before the dispatch POST, the bootstrap must not dispatch. If any post-dispatch identity/cardinality check fails, the bootstrap must fail visibly and no rerun is authorized; any already-created run must be classified from live evidence rather than silently repeated.
 
-## External concurrent-dispatch residual risk
+## Residual external-interference risks
 
-A workflow-level concurrency group can serialize bootstrap executions but cannot atomically lock every human, REST client, GitHub App, or other workflow that might independently dispatch the same target workflow between the zero-run precheck and this bootstrap's dispatch request.
+Two race classes cannot be made impossible by this bootstrap because it does not possess or create repository-wide administrative exclusion controls:
 
-The Founder remediation directive authorizes proceeding with this bounded transport fix under the following explicit fail-closed residual-risk disposition:
+1. another actor can independently dispatch the target workflow between the final zero-run check and this bootstrap's dispatch request; and
+2. another actor with sufficient repository authority can move/delete the SHA-named binding ref between its final read-back and GitHub resolving that branch for dispatch.
+
+The Founder remediation directive authorizes proceeding with this bounded transport fix under the following explicit detection-only, fail-closed disposition:
 
 ```text
 CONCURRENT_EXTERNAL_TARGET_DISPATCH_EXCLUSION=NOT_ENFORCEABLE_BY_THIS_BOOTSTRAP
-RESIDUAL_EXTERNAL_DISPATCH_RACE_ACCEPTED_FOR_ONE_SHOT_TRANSPORT_REMEDIATION=YES
-AUTHORIZED_TARGET_RUN=EXACT_BOOTSTRAP_RETURNED_WORKFLOW_RUN_ID_ONLY
+BINDING_REF_MOVE_OR_DELETE_EXCLUSION=NOT_ENFORCEABLE_BY_THIS_BOOTSTRAP
+RESIDUAL_EXTERNAL_INTERFERENCE_RISK_ACCEPTED_FOR_ONE_SHOT_TRANSPORT_REMEDIATION=YES
+AUTHORIZED_TARGET_RUN=EXACT_BOOTSTRAP_RETURNED_WORKFLOW_RUN_ID_ONLY_IF_ALL_POSTCHECKS_PASS
 ANY_OTHER_CONCURRENT_TARGET_DISPATCH=UNAUTHORIZED_EXTERNAL_INTERFERENCE
+BINDING_REF_MOVED_OR_DELETED_BEFORE_DISPATCH_RESOLUTION=UNAUTHORIZED_EXTERNAL_INTERFERENCE
+RETURNED_RUN_HEAD_SHA_MUST_EQUAL_VERIFIED_CANONICAL_SHA=YES
+RETURNED_RUN_HEAD_BRANCH_MUST_EQUAL_SHA_NAMED_BINDING_BRANCH=YES
 POST_DISPATCH_TOTAL_TARGET_WORKFLOW_DISPATCH_COUNT_MUST_EQUAL=1
-IF_POST_DISPATCH_TOTAL_COUNT_GT_1=INCIDENT_FAIL_CLOSED
+ANY_POSTCHECK_MISMATCH=INCIDENT_FAIL_CLOSED
 INCIDENT_FAIL_CLOSED_EFFECT=NO_RERUN_NO_RUNTIME_EVIDENCE_PROMOTION_E004_REMAINS_BLOCKED
-EXTRA_RUN_EXISTENCE_MAY_NOT_BE_ERASED_OR_RELABELED_AS_AUTHORIZED=YES
+EXTRA_OR_MISMATCHED_RUN_EXISTENCE_MAY_NOT_BE_ERASED_OR_RELABELED_AS_AUTHORIZED=YES
 ```
 
-This acceptance does **not** authorize a second target dispatch. It recognizes that external interference cannot be made impossible by this bootstrap alone and requires detection to invalidate evidence promotion rather than conceal or compensate for the incident.
+This acceptance does **not** authorize a second target dispatch or a moved-ref execution. It recognizes that external interference cannot be made impossible by this bootstrap alone and requires exact returned-run verification to invalidate evidence promotion rather than conceal or compensate for an incident.
 
 ## Supersession boundary
 
-The prior V5 reconciliation correctly prohibited alternate execution routes while no exact Founder remediation authority existed. This record supersedes that prohibition only for the exact one-shot bootstrap and exact transient immutable ref defined here:
+The prior V5 reconciliation correctly prohibited alternate execution routes while no exact Founder remediation authority existed. This record supersedes that prohibition only for the exact one-shot bootstrap and exact transient SHA-named binding ref defined here:
 
 ```text
-V5_ALTERNATE_EXECUTION_ROUTE_PROHIBITION_SUPERSEDED=YES_EXACT_BOOTSTRAP_AND_LOCK_REF_ONLY
+V5_ALTERNATE_EXECUTION_ROUTE_PROHIBITION_SUPERSEDED=YES_EXACT_BOOTSTRAP_AND_BINDING_REF_ONLY
 RERUN_AS_SUBSTITUTE_FOR_FRESH_DISPATCH=PROHIBITED
 TARGET_TRIGGER_MUTATION=PROHIBITED
 PUSH_OR_SCHEDULE_TRIGGER_ADDITION_TO_TARGET=PROHIBITED
@@ -132,7 +143,7 @@ This authority does not satisfy T1/A2, G1-G4, personnel/access/finance evidence,
 
 After the bootstrap has either created the single authorized target dispatch or terminally failed, no second bootstrap execution is authorized.
 
-If the transient immutable lock branch was created, it must remain unchanged while the exact returned target run is non-terminal so the execution binding stays auditable. After the target run is terminal and its result has been captured, the lock branch and bootstrap workflow must be removed through ordinary reviewed cleanup. Cleanup must not alter the target runtime-evidence workflow or rewrite history.
+If the transient SHA-named binding branch was created, it must not be intentionally mutated by project automation. After the target run is terminal and its result has been captured, the binding branch and bootstrap workflow must be removed through ordinary reviewed cleanup. Cleanup must not alter the target runtime-evidence workflow or rewrite history.
 
 ## Exit evidence
 
@@ -144,15 +155,17 @@ BOOTSTRAP_SCOPE_TRANSIENT_AND_ONE_SHOT=YES
 TARGET_WORKFLOW_IDENTITY_UNCHANGED=YES
 TARGET_TRIGGER_REMAINS_WORKFLOW_DISPATCH_ONLY=YES
 CANONICAL_MAIN_SHA_CAPTURE_REQUIRED=YES
-IMMUTABLE_LOCK_REF_REQUIRED=YES
-LOCK_REF_MUST_EQUAL_VERIFIED_CANONICAL_MAIN_SHA=YES
+SHA_NAMED_BINDING_REF_REQUIRED=YES
+BINDING_REF_INITIAL_SHA_MUST_EQUAL_VERIFIED_CANONICAL_MAIN_SHA=YES
+BINDING_REF_FINAL_PRE_DISPATCH_READBACK_REQUIRED=YES
+BINDING_REF_IMMUTABILITY_FALSE_CLAIMED=NO
 PRE_DISPATCH_ZERO_RUN_CHECK_REQUIRED=YES
 CURRENT_API_DISPATCH_BODY_REF_ONLY=YES
 DISPATCH_DEFAULT_200_RUN_DETAILS_REQUIRED=YES
 DISPATCH_RETURNED_RUN_ID_BOUND=YES
 POST_DISPATCH_EXACT_RUN_IDENTITY_CHECK_REQUIRED=YES
 POST_DISPATCH_CARDINALITY_EQUALS_ONE_REQUIRED=YES
-RESIDUAL_EXTERNAL_RACE_FAIL_CLOSED_DISPOSITION_EXPLICIT=YES
+RESIDUAL_EXTERNAL_INTERFERENCE_FAIL_CLOSED_DISPOSITION_EXPLICIT=YES
 MAX_TARGET_DISPATCHES_CREATED_BY_BOOTSTRAP=1
 GITHUB_TOKEN_SCOPE_MINIMIZED_TO_REQUIRED_API_PERMISSIONS=YES
 NO_REPOSITORY_FILE_CONTENT_MUTATION_BY_BOOTSTRAP=YES
