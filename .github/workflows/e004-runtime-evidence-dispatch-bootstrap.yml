@@ -107,7 +107,7 @@ jobs:
           pre_dispatch_total="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])' <<<"$pre_dispatch_json")"
           test "$pre_dispatch_total" -eq 0
 
-          dispatch_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"return_run_details":True}, separators=(",",":")))' "$lock_branch")"
+          dispatch_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1]}, separators=(",",":")))' "$lock_branch")"
           dispatch_file=/tmp/e004-dispatch-response.json
           dispatch_status="$(curl --fail-with-body --silent --show-error --output "$dispatch_file" --write-out '%{http_code}' \
             --request POST \
