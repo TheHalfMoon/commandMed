@@ -113,9 +113,24 @@ LIVE_REPOSITORY_VISIBILITY=private
 
 This contradicts the earlier current-state/runtime authority assumption that described a standard GitHub-hosted **public-repository** runner class. The contradiction does not prove that the bootstrap failure was caused by repository visibility or billing, and it does not prove that any incremental charge occurred. It does invalidate treating the public-repository runner/cost assumption as established evidence.
 
+Current GitHub Actions billing documentation distinguishes these cases explicitly:
+
+- standard GitHub-hosted runners are free for public repositories;
+- private repositories consume plan-included GitHub Actions minutes and may incur billing after the included quota is exhausted;
+- `ubuntu-24.04` is a standard GitHub-hosted private-repository runner label.
+
+Authoritative references checked on 2026-08-29:
+
+- [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions)
+- [GitHub-hosted runners reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
+
+These product rules still do not reveal this repository owner's current included-minute balance, metered usage, payment state, or the exact reason run `33256775421` failed. Those are real account/runtime facts and remain unresolved.
+
 ```text
 PREVIOUS_PUBLIC_REPOSITORY_RUNNER_ASSUMPTION=INVALIDATED_BY_LIVE_REPOSITORY_METADATA
 PRIVATE_REPOSITORY_STANDARD_RUNNER_ZERO_INCREMENTAL_SPEND=NOT_PROVEN
+PRIVATE_REPOSITORY_INCLUDED_MINUTES_AVAILABLE=NEEDS_EVIDENCE
+PRIVATE_REPOSITORY_CURRENT_METERED_USAGE=NEEDS_EVIDENCE
 ACTUAL_INCREMENTAL_SPEND_USD_FOR_BOOTSTRAP=NEEDS_EVIDENCE
 CURRENT_AUTHORIZED_SPEND_USD=0
 SPEND_AUTHORITY_EXPANDED=NO
