@@ -28,13 +28,13 @@ jobs:
       TARGET_WORKFLOW_FILE: e004-conversion-runtime-evidence.yml
       TARGET_WORKFLOW_PATH: .github/workflows/e004-conversion-runtime-evidence.yml
       EXPECTED_TARGET_BLOB_SHA1: 591317f1f570480b9ac68e7956d070db8ed5ef45
-      LOCK_BRANCH_PREFIX: e004-runtime-evidence-lock
+      BIND_BRANCH_PREFIX: e004-runtime-evidence-bind
       MAX_TARGET_DISPATCHES: '1'
-      MAX_TRANSIENT_LOCK_REFS: '1'
+      MAX_TRANSIENT_BIND_REFS: '1'
       AUTHORIZED_SPEND_USD: '0'
       GITHUB_API_VERSION: '2026-03-10'
     steps:
-      - name: Reverify canonical target, bind immutable ref, and create one fresh dispatch
+      - name: Reverify canonical target, bind SHA-named ref, and create one fresh dispatch
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -45,7 +45,7 @@ jobs:
           test "${GITHUB_REF:-}" = "refs/heads/main"
           test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
           test "$MAX_TARGET_DISPATCHES" = "1"
-          test "$MAX_TRANSIENT_LOCK_REFS" = "1"
+          test "$MAX_TRANSIENT_BIND_REFS" = "1"
           test "$AUTHORIZED_SPEND_USD" = "0"
 
           api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
@@ -79,35 +79,41 @@ jobs:
           before_total="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])' <<<"$before_json")"
           test "$before_total" -eq 0
 
-          lock_branch="${LOCK_BRANCH_PREFIX}-${main_sha}"
-          lock_ref="refs/heads/${lock_branch}"
-          lock_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"sha":sys.argv[2]}, separators=(",",":")))' "$lock_ref" "$main_sha")"
-          lock_file=/tmp/e004-lock-ref.json
-          lock_status="$(curl --fail-with-body --silent --show-error --output "$lock_file" --write-out '%{http_code}' \
+          bind_branch="${BIND_BRANCH_PREFIX}-${main_sha}"
+          bind_ref="refs/heads/${bind_branch}"
+          bind_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"sha":sys.argv[2]}, separators=(",",":")))' "$bind_ref" "$main_sha")"
+          bind_file=/tmp/e004-bind-ref.json
+          bind_status="$(curl --fail-with-body --silent --show-error --output "$bind_file" --write-out '%{http_code}' \
             --request POST \
             -H "$accept_header" -H "$auth_header" -H "$version_header" \
             -H 'Content-Type: application/json' \
             "$api/git/refs" \
-            --data "$lock_body")"
-          test "$lock_status" = "201"
+            --data "$bind_body")"
+          test "$bind_status" = "201"
 
-          read -r created_lock_ref created_lock_sha < <(
-            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["ref"], d["object"]["sha"])' < "$lock_file"
+          read -r created_bind_ref created_bind_sha < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["ref"], d["object"]["sha"])' < "$bind_file"
           )
-          test "$created_lock_ref" = "$lock_ref"
-          test "$created_lock_sha" = "$main_sha"
+          test "$created_bind_ref" = "$bind_ref"
+          test "$created_bind_sha" = "$main_sha"
 
-          lock_target_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${lock_branch}")"
-          lock_target_blob="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["sha"])' <<<"$lock_target_json")"
-          lock_target_path="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["path"])' <<<"$lock_target_json")"
-          test "$lock_target_path" = "$TARGET_WORKFLOW_PATH"
-          test "$lock_target_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
+          bind_target_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${bind_branch}")"
+          bind_target_blob="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["sha"])' <<<"$bind_target_json")"
+          bind_target_path="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["path"])' <<<"$bind_target_json")"
+          test "$bind_target_path" = "$TARGET_WORKFLOW_PATH"
+          test "$bind_target_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
 
           pre_dispatch_json="$(api_get "$runs_url")"
           pre_dispatch_total="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])' <<<"$pre_dispatch_json")"
           test "$pre_dispatch_total" -eq 0
 
-          dispatch_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1]}, separators=(",",":")))' "$lock_branch")"
+          bind_readback_json="$(api_get "$api/git/ref/heads/${bind_branch}")"
+          bind_readback_ref="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["ref"])' <<<"$bind_readback_json")"
+          bind_readback_sha="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])' <<<"$bind_readback_json")"
+          test "$bind_readback_ref" = "$bind_ref"
+          test "$bind_readback_sha" = "$main_sha"
+
+          dispatch_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1]}, separators=(",",":")))' "$bind_branch")"
           dispatch_file=/tmp/e004-dispatch-response.json
           dispatch_status="$(curl --fail-with-body --silent --show-error --output "$dispatch_file" --write-out '%{http_code}' \
             --request POST \
@@ -130,7 +136,7 @@ jobs:
           )
           test "$created_id" = "$dispatch_run_id"
           test "$created_head" = "$main_sha"
-          test "$created_branch" = "$lock_branch"
+          test "$created_branch" = "$bind_branch"
           test "$created_event" = "workflow_dispatch"
           test "$created_path" = "$TARGET_WORKFLOW_PATH"
 
@@ -150,7 +156,7 @@ jobs:
               and run.get("id") == expected_id
           ]
           print(data.get("total_count", 0), len(matches), matches[0]["id"] if matches else "")
-          ' "$main_sha" "$lock_branch" "$TARGET_WORKFLOW_PATH" "$dispatch_run_id" <<<"$after_json"
+          ' "$main_sha" "$bind_branch" "$TARGET_WORKFLOW_PATH" "$dispatch_run_id" <<<"$after_json"
           )
           test "$after_total" -eq 1
           test "$matching_count" -eq 1
@@ -161,11 +167,12 @@ jobs:
             "BOOTSTRAP_EVENT=${GITHUB_EVENT_NAME}" \
             "BOOTSTRAP_HEAD_SHA=${GITHUB_SHA}" \
             "TARGET_CANONICAL_MAIN_SHA=${main_sha}" \
-            "TARGET_IMMUTABLE_LOCK_REF=${lock_ref}" \
-            "TARGET_IMMUTABLE_LOCK_SHA=${created_lock_sha}" \
+            "TARGET_SHA_NAMED_BINDING_REF=${bind_ref}" \
+            "TARGET_BINDING_REF_INITIAL_SHA=${created_bind_sha}" \
+            "TARGET_BINDING_REF_FINAL_PRE_DISPATCH_SHA=${bind_readback_sha}" \
             "TARGET_WORKFLOW_PATH=${TARGET_WORKFLOW_PATH}" \
             "TARGET_WORKFLOW_BLOB_SHA1=${target_blob}" \
-            "TARGET_LOCK_REF_WORKFLOW_BLOB_SHA1=${lock_target_blob}" \
+            "TARGET_BINDING_REF_WORKFLOW_BLOB_SHA1=${bind_target_blob}" \
             "TARGET_PREEXISTING_WORKFLOW_DISPATCH_COUNT=${before_total}" \
             "TARGET_PRE_DISPATCH_RECHECK_COUNT=${pre_dispatch_total}" \
             "TARGET_FRESH_WORKFLOW_DISPATCH_CREATED=YES" \
