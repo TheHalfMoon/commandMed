@@ -1,0 +1,460 @@
+# E004 CONVERSION-RUNTIME EVIDENCE WORKFLOW SUBJECT.
+#
+# This file is non-executable review material while stored outside
+# `.github/workflows`. It implements only the bounded runtime-evidence authority
+# selected by the Founder on 2026-08-29.
+#
+# It MUST NOT acquire model/source-weight/GGUF bytes, load or convert models,
+# run inference or benchmarks, perform device qualification or contamination
+# assessment, contact external reviewers, train, use credentials, upload
+# artifacts/caches, use paid/larger runners, or spend money.
+
+name: E004 conversion runtime evidence
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: e004-conversion-runtime-evidence-v1
+  cancel-in-progress: false
+
+env:
+  TOOL_REPOSITORY_URL: https://github.com/ggml-org/llama.cpp.git
+  TOOL_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  TOOL_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  GIT_TERMINAL_PROMPT: "0"
+  GIT_CONFIG_NOSYSTEM: "1"
+  GIT_ASKPASS: /bin/false
+  SSH_ASKPASS: /bin/false
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_INPUT: "1"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  runtime-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Fail-closed runner preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          required_tools=(
+            bash env id git cmake ninja cc c++ python3 sha256sum readlink ldd
+            file stat find sort awk sed grep tee wc sudo unshare setpriv df
+          )
+          for tool in "${required_tools[@]}"; do
+            command -v "$tool" >/dev/null
+          done
+
+          python3 -m pip --version
+          python3 -m venv --help >/dev/null
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN NO_LOCAL_GGUF
+          for credential_name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN; do
+            test -z "${!credential_name:-}"
+          done
+          test -z "${NO_LOCAL_GGUF:-}"
+
+          available_kb="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          test "$available_kb" -ge 12582912
+
+          printf '%s\n' \
+            "AUTHORITY=E004_CONVERSION_RUNTIME_EVIDENCE_AUTHORITY_AUTHORIZED_BOUNDED" \
+            "PURPOSE=RESOLVE_AND_BIND_EXACT_CONVERSION_RUNTIME_DEPENDENCY_AND_REBUILD_EVIDENCE_ONLY" \
+            "MODEL_SOURCE_WEIGHT_ACQUISITION=PROHIBITED" \
+            "MODEL_CONVERSION=PROHIBITED" \
+            "MODEL_INFERENCE=PROHIBITED" \
+            "BENCHMARK_ACCESS=PROHIBITED" \
+            "CONTAMINATION_ASSESSMENT=PROHIBITED" \
+            "A15_ACTIVATION=PROHIBITED" \
+            "TRAINING=PROHIBITED" \
+            "EXTERNAL_REVIEWER_OUTREACH=PROHIBITED" \
+            "CREDENTIAL_USE=PROHIBITED" \
+            "ARTIFACT_UPLOAD=PROHIBITED" \
+            "CACHE_UPLOAD=PROHIBITED" \
+            "PAID_OR_LARGER_RUNNER=PROHIBITED" \
+            "SPEND_USD=0" \
+            "RUNNER_OS=${RUNNER_OS:-UNSET}" \
+            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" \
+            "ImageOS=${ImageOS:-UNSET}" \
+            "ImageVersion=${ImageVersion:-UNSET}" \
+            "AVAILABLE_KB=$available_kb"
+
+          uname -a
+          cat /etc/os-release
+          ldd --version | head -n 1
+
+          for tool in bash env id git cmake ninja cc c++ python3 sudo unshare setpriv; do
+            resolved="$(readlink -f "$(command -v "$tool")")"
+            printf '%s_path=%s\n' "$tool" "$resolved"
+            sha256sum "$resolved"
+          done
+
+          python3 - <<'PY'
+          import hashlib
+          import pathlib
+          import pip
+          path = pathlib.Path(pip.__file__).resolve()
+          print("RESOLVER_NAME=pip")
+          print(f"RESOLVER_VERSION={pip.__version__}")
+          print(f"RESOLVER_MODULE_PATH={path}")
+          print(f"RESOLVER_MODULE_SHA256={hashlib.sha256(path.read_bytes()).hexdigest()}")
+          PY
+
+      - name: Phase A - exact public source and dependency staging
+        shell: bash
+        env:
+          E004_ROOT: ${{ runner.temp }}/e004-runtime-evidence
+        run: |
+          set -Eeuo pipefail
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN NO_LOCAL_GGUF
+          export PIP_INDEX_URL="https://pypi.org/simple"
+          export PIP_EXTRA_INDEX_URL="https://download.pytorch.org/whl/cpu"
+          export PIP_TRUSTED_HOST=""
+          export PIP_CONFIG_FILE=/dev/null
+
+          source_dir="$E004_ROOT/llama.cpp"
+          wheelhouse="$E004_ROOT/wheelhouse"
+          pip_log="$E004_ROOT/pip-download.log"
+          package_manifest="$E004_ROOT/dependency-artifacts.tsv"
+          source_manifest="$E004_ROOT/tool-source.tsv"
+
+          rm -rf "$E004_ROOT"
+          mkdir -p "$source_dir" "$wheelhouse"
+          : > "$package_manifest"
+          : > "$source_manifest"
+
+          git init "$source_dir"
+          git -C "$source_dir" remote add origin "$TOOL_REPOSITORY_URL"
+          git -C "$source_dir" -c credential.helper= -c http.extraHeader= \
+            fetch --no-tags --depth=1 origin "$TOOL_COMMIT"
+          git -C "$source_dir" checkout --detach FETCH_HEAD
+
+          actual_commit="$(git -C "$source_dir" rev-parse HEAD)"
+          actual_tree="$(git -C "$source_dir" rev-parse 'HEAD^{tree}')"
+          test "$actual_commit" = "$TOOL_COMMIT"
+          test "$actual_tree" = "$TOOL_TREE"
+          test -z "$(git -C "$source_dir" status --porcelain)"
+
+          verify_blob() {
+            local path="$1"
+            local expected="$2"
+            local actual
+            actual="$(git -C "$source_dir" rev-parse "HEAD:$path")"
+            test "$actual" = "$expected"
+            printf '%s\t%s\n' "$path" "$actual" >> "$source_manifest"
+          }
+
+          verify_blob pyproject.toml 46cf68ca1a398d40dc71f0eff043c03ceeaa73fe
+          verify_blob requirements.txt f2a18d62879b4e37249b566d6d85fd9485fb20e2
+          verify_blob requirements/requirements-convert_hf_to_gguf.txt b1f7c863e27e184e55408c9e5792158301c86547
+          verify_blob requirements/requirements-convert_legacy_llama.txt 28221fad0ce9790f91dc6adfbc893010454bdfe5
+          verify_blob gguf-py/pyproject.toml d11c34a2186d7180345f0050c746df51043b5620
+          sort -o "$source_manifest" "$source_manifest"
+
+          python3 -m pip download -vv \
+            --dest "$wheelhouse" \
+            --index-url "$PIP_INDEX_URL" \
+            --extra-index-url "$PIP_EXTRA_INDEX_URL" \
+            "torch==2.11.0" \
+            "numpy~=1.26.4" \
+            "sentencepiece>=0.1.98,<0.3.0" \
+            "transformers==4.57.6" \
+            "protobuf>=4.21.0,<5.0.0" \
+            "tqdm>=4.27" \
+            "PyYAML>=5.1" \
+            "requests>=2.25" \
+            2>&1 | tee "$pip_log"
+
+          python3 - "$pip_log" <<'PY'
+          import re
+          import sys
+          import urllib.parse
+          from pathlib import Path
+
+          allowed = {"pypi.org", "files.pythonhosted.org", "download.pytorch.org"}
+          text = Path(sys.argv[1]).read_text(errors="strict")
+          urls = re.findall(r"https://[^\\s'\"<>]+", text)
+          hosts = set()
+          for raw in urls:
+              host = (urllib.parse.urlsplit(raw.rstrip("),.;]")).hostname or "").lower()
+              if host:
+                  hosts.add(host)
+          if not hosts:
+              raise SystemExit("no HTTPS resolver hosts observed")
+          unexpected = sorted(hosts - allowed)
+          if unexpected:
+              raise SystemExit(f"undeclared resolver hosts observed: {unexpected}")
+          print("PHASE_A_OBSERVED_RESOLVER_HOSTS=" + ",".join(sorted(hosts)))
+          PY
+
+          file_count="$(find "$wheelhouse" -maxdepth 1 -type f | wc -l | tr -d ' ')"
+          test "$file_count" -gt 0
+
+          while IFS= read -r path; do
+            printf '%s\t%s\t%s\n' \
+              "$(basename "$path")" \
+              "$(stat -c '%s' "$path")" \
+              "$(sha256sum "$path" | awk '{print $1}')" \
+              >> "$package_manifest"
+          done < <(find "$wheelhouse" -maxdepth 1 -type f -print | sort)
+          sort -o "$package_manifest" "$package_manifest"
+
+          printf '%s\n' \
+            "TOOL_COMMIT=$actual_commit" \
+            "TOOL_TREE=$actual_tree" \
+            "SOURCE_MANIFEST_SHA256=$(sha256sum "$source_manifest" | awk '{print $1}')" \
+            "DEPENDENCY_ARTIFACT_COUNT=$file_count" \
+            "DEPENDENCY_SET_MANIFEST_SHA256=$(sha256sum "$package_manifest" | awk '{print $1}')" \
+            "PIP_DOWNLOAD_LOG_SHA256=$(sha256sum "$pip_log" | awk '{print $1}')" \
+            "PHASE_A_MODEL_ENDPOINT_ACCESS=PROHIBITED" \
+            "PHASE_A_CREDENTIAL_USE=NO"
+          cat "$source_manifest"
+          cat "$package_manifest"
+
+      - name: Phase B - offline environment, local GGUF attestation, and rebuild
+        shell: bash
+        env:
+          E004_ROOT: ${{ runner.temp }}/e004-runtime-evidence
+        run: |
+          set -Eeuo pipefail
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN NO_LOCAL_GGUF
+          source_dir="$E004_ROOT/llama.cpp"
+          wheelhouse="$E004_ROOT/wheelhouse"
+          venv_dir="$E004_ROOT/venv"
+          build_dir="$E004_ROOT/llama.cpp-build"
+          evidence_dir="$E004_ROOT/evidence"
+          mkdir -p "$evidence_dir"
+
+          runner_uid="$(id -u)"
+          runner_gid="$(id -g)"
+          sudo_path="$(readlink -f "$(command -v sudo)")"
+          unshare_path="$(readlink -f "$(command -v unshare)")"
+          setpriv_path="$(readlink -f "$(command -v setpriv)")"
+          env_path="$(readlink -f "$(command -v env)")"
+          bash_path="$(readlink -f "$(command -v bash)")"
+
+          "$sudo_path" -n "$unshare_path" --net -- \
+            "$setpriv_path" \
+              --reuid "$runner_uid" \
+              --regid "$runner_gid" \
+              --clear-groups \
+              --inh-caps=-all \
+              --ambient-caps=-all \
+              --bounding-set=-all \
+              --no-new-privs \
+              --reset-env \
+              -- \
+            "$env_path" \
+              HOME="$E004_ROOT/home" \
+              TMPDIR="$RUNNER_TEMP" \
+              PATH="/usr/local/bin:/usr/bin:/bin" \
+              LC_ALL=C \
+              LANG=C \
+              PYTHONHASHSEED=0 \
+              PIP_DISABLE_PIP_VERSION_CHECK=1 \
+              PIP_NO_INPUT=1 \
+              PIP_CONFIG_FILE=/dev/null \
+            "$bash_path" -Eeuo pipefail -c '
+              source_dir="$1"
+              wheelhouse="$2"
+              venv_dir="$3"
+              build_dir="$4"
+              evidence_dir="$5"
+
+              test "$(id -u)" != "0"
+              test -z "${NO_LOCAL_GGUF:-}"
+
+              cap_inh=""; cap_prm=""; cap_eff=""; cap_bnd=""; cap_amb=""; no_new_privs=""
+              while read -r key value _; do
+                case "$key" in
+                  CapInh:) cap_inh="$value" ;;
+                  CapPrm:) cap_prm="$value" ;;
+                  CapEff:) cap_eff="$value" ;;
+                  CapBnd:) cap_bnd="$value" ;;
+                  CapAmb:) cap_amb="$value" ;;
+                  NoNewPrivs:) no_new_privs="$value" ;;
+                esac
+              done < /proc/self/status
+              for value in "$cap_inh" "$cap_prm" "$cap_eff" "$cap_bnd" "$cap_amb"; do
+                test "$value" = "0000000000000000"
+              done
+              test "$no_new_privs" = "1"
+
+              sensitive=NO
+              while IFS="=" read -r name _; do
+                case "$name" in
+                  GITHUB_*|ACTIONS_*|RUNNER_*|GITHUB_TOKEN|GH_TOKEN|HF_TOKEN|HUGGING_FACE_HUB_TOKEN)
+                    sensitive=YES ;;
+                esac
+              done < <(env)
+              test "$sensitive" = "NO"
+
+              {
+                printf "%s\n" \
+                  "PHASE_B_NETWORK_POLICY=DEFAULT_DENY_NETWORK_NAMESPACE" \
+                  "PHASE_B_UID=$(id -u)" \
+                  "CapInh=$cap_inh" \
+                  "CapPrm=$cap_prm" \
+                  "CapEff=$cap_eff" \
+                  "CapBnd=$cap_bnd" \
+                  "CapAmb=$cap_amb" \
+                  "NoNewPrivs=$no_new_privs" \
+                  "SENSITIVE_PLATFORM_ENV_PRESENT=$sensitive" \
+                  "NO_LOCAL_GGUF_STATE=UNSET"
+              } > "$evidence_dir/security-boundary.txt"
+
+              python3 -m venv "$venv_dir"
+              venv_python="$venv_dir/bin/python"
+              venv_pip="$venv_dir/bin/pip"
+
+              "$venv_pip" install \
+                --no-index \
+                --find-links "$wheelhouse" \
+                "torch==2.11.0" \
+                "numpy~=1.26.4" \
+                "sentencepiece>=0.1.98,<0.3.0" \
+                "transformers==4.57.6" \
+                "protobuf>=4.21.0,<5.0.0" \
+                "tqdm>=4.27" \
+                "PyYAML>=5.1" \
+                "requests>=2.25" \
+                > "$evidence_dir/offline-install.log" 2>&1
+
+              "$venv_pip" freeze --all | LC_ALL=C sort > "$evidence_dir/installed-environment.txt"
+
+              PYTHONPATH="$source_dir/gguf-py" "$venv_python" - "$source_dir" > "$evidence_dir/gguf-attestation.txt" <<'PY'
+              import hashlib
+              import os
+              import pathlib
+              import sys
+
+              source_dir = pathlib.Path(sys.argv[1]).resolve()
+              if "NO_LOCAL_GGUF" in os.environ:
+                  raise SystemExit("NO_LOCAL_GGUF must be unset")
+              import gguf
+              imported = pathlib.Path(gguf.__file__).resolve()
+              local_root = (source_dir / "gguf-py").resolve()
+              if local_root != imported and local_root not in imported.parents:
+                  raise SystemExit(f"external gguf runtime selected: {imported}")
+              print(f"GGUF_IMPORTED_FILE_PATH={imported}")
+              print(f"GGUF_IMPORTED_SOURCE_IDENTITY={local_root}")
+              print(f"GGUF_IMPORTED_FILE_SHA256={hashlib.sha256(imported.read_bytes()).hexdigest()}")
+              print("NO_LOCAL_GGUF_UNSET_ATTESTATION=PASS")
+              PY
+
+              cmake \
+                -S "$source_dir" \
+                -B "$build_dir" \
+                -G Ninja \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DBUILD_SHARED_LIBS=OFF \
+                -DLLAMA_BUILD_COMMON=ON \
+                -DLLAMA_BUILD_TESTS=OFF \
+                -DLLAMA_BUILD_TOOLS=ON \
+                -DLLAMA_BUILD_EXAMPLES=OFF \
+                -DLLAMA_BUILD_SERVER=OFF \
+                -DLLAMA_BUILD_APP=OFF \
+                -DLLAMA_BUILD_UI=OFF \
+                -DLLAMA_USE_PREBUILT_UI=OFF \
+                -DLLAMA_TOOLS_INSTALL=OFF \
+                -DLLAMA_TESTS_INSTALL=OFF \
+                -DLLAMA_OPENSSL=OFF \
+                -DLLAMA_SUBPROCESS=OFF \
+                -DLLAMA_LLGUIDANCE=OFF \
+                -DGGML_NATIVE=OFF \
+                -DGGML_CCACHE=OFF \
+                -DGGML_OPENMP=OFF
+
+              cmake --build "$build_dir" --target llama-quantize --parallel 2 --verbose
+              llama_quantize="$build_dir/bin/llama-quantize"
+              test -x "$llama_quantize"
+
+              {
+                printf "%s\n" \
+                  "PYTHON_RUNTIME_PATH=$(readlink -f "$venv_python")" \
+                  "PYTHON_RUNTIME_VERSION=$($venv_python --version 2>&1)" \
+                  "VENV_PIP_VERSION=$($venv_pip --version)" \
+                  "LLAMA_QUANTIZE_PATH=$llama_quantize"
+                sha256sum "$venv_python" "$llama_quantize" "$build_dir/CMakeCache.txt"
+              } > "$evidence_dir/build-manifest.txt"
+            ' _ "$source_dir" "$wheelhouse" "$venv_dir" "$build_dir" "$evidence_dir"
+
+          for file in security-boundary.txt offline-install.log installed-environment.txt gguf-attestation.txt build-manifest.txt; do
+            test -f "$evidence_dir/$file"
+            printf '%s_SHA256=' "${file^^}"
+            sha256sum "$evidence_dir/$file" | awk '{print $1}'
+          done
+
+          cat "$evidence_dir/security-boundary.txt"
+          cat "$evidence_dir/gguf-attestation.txt"
+          cat "$evidence_dir/build-manifest.txt"
+
+      - name: Emit runtime evidence manifest to logs only
+        shell: bash
+        env:
+          E004_ROOT: ${{ runner.temp }}/e004-runtime-evidence
+        run: |
+          set -Eeuo pipefail
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN NO_LOCAL_GGUF
+          evidence_dir="$E004_ROOT/evidence"
+          llama_quantize="$E004_ROOT/llama.cpp-build/bin/llama-quantize"
+          runtime_manifest="$evidence_dir/runtime-evidence-manifest.txt"
+
+          test -x "$llama_quantize"
+
+          {
+            printf '%s\n' \
+              "AUTHORITY=E004_CONVERSION_RUNTIME_EVIDENCE_AUTHORITY_AUTHORIZED_BOUNDED" \
+              "TOOL_REPOSITORY=ggml-org/llama.cpp" \
+              "TOOL_COMMIT=$TOOL_COMMIT" \
+              "TOOL_TREE=$TOOL_TREE" \
+              "LOCAL_GGUF_SOURCE_MODE=REQUIRED" \
+              "NO_LOCAL_GGUF_MUST_BE_UNSET=YES" \
+              "REMOTE_HF_CONVERSION_MODE=PROHIBITED" \
+              "MODEL_SOURCE_WEIGHT_ACQUISITION_OCCURRED=NO" \
+              "MODEL_LOADING_OCCURRED=NO" \
+              "MODEL_CONVERSION_OCCURRED=NO" \
+              "MODEL_INFERENCE_OCCURRED=NO" \
+              "BENCHMARK_EXECUTION_OCCURRED=NO" \
+              "DEVICE_QUALIFICATION_OCCURRED=NO" \
+              "CONTAMINATION_ASSESSMENT_OCCURRED=NO" \
+              "TRAINING_OCCURRED=NO" \
+              "CREDENTIAL_USE_OCCURRED=NO" \
+              "ARTIFACT_UPLOAD_OCCURRED=NO" \
+              "CACHE_UPLOAD_OCCURRED=NO" \
+              "PAID_OR_LARGER_RUNNER_USED=NO" \
+              "AUTHORIZED_SPEND_USD=0"
+            printf 'SOURCE_MANIFEST_SHA256=%s\n' "$(sha256sum "$E004_ROOT/tool-source.tsv" | awk '{print $1}')"
+            printf 'DEPENDENCY_SET_MANIFEST_SHA256=%s\n' "$(sha256sum "$E004_ROOT/dependency-artifacts.tsv" | awk '{print $1}')"
+            printf 'SECURITY_EVIDENCE_SHA256=%s\n' "$(sha256sum "$evidence_dir/security-boundary.txt" | awk '{print $1}')"
+            printf 'INSTALLED_ENVIRONMENT_MANIFEST_SHA256=%s\n' "$(sha256sum "$evidence_dir/installed-environment.txt" | awk '{print $1}')"
+            printf 'GGUF_ATTESTATION_SHA256=%s\n' "$(sha256sum "$evidence_dir/gguf-attestation.txt" | awk '{print $1}')"
+            printf 'BUILD_MANIFEST_SHA256=%s\n' "$(sha256sum "$evidence_dir/build-manifest.txt" | awk '{print $1}')"
+            printf 'LLAMA_QUANTIZE_SHA256=%s\n' "$(sha256sum "$llama_quantize" | awk '{print $1}')"
+            printf 'LLAMA_QUANTIZE_INTEGER_BYTES=%s\n' "$(stat -c '%s' "$llama_quantize")"
+          } > "$runtime_manifest"
+
+          printf 'RUNTIME_EVIDENCE_MANIFEST_SHA256='
+          sha256sum "$runtime_manifest" | awk '{print $1}'
+          cat "$runtime_manifest"
+
+          printf '%s\n' \
+            "RUNTIME_EVIDENCE_PASS_EQUALS_MODEL_CONVERSION_AUTHORITY=NO" \
+            "RUNTIME_EVIDENCE_PASS_EQUALS_E004_TOURNAMENT_START=NO" \
+            "RUNTIME_EVIDENCE_PASS_EQUALS_A15_ACTIVATION=NO" \
+            "RUNTIME_EVIDENCE_PASS_EQUALS_TRAINING_AUTHORITY=NO" \
+            "MODEL_CONVERSION_AUTHORITY=NONE" \
+            "CONTAMINATION_ASSESSMENT_AUTHORITY=NONE" \
+            "A15_ACTIVATION=ABSENT_NOT_AUTHORIZED" \
+            "TRAINING_AUTHORITY=NONE" \
+            "E004_STATE=BLOCKED_PREFLIGHT" \
+            "E005_STATE=NOT_REACHED"
