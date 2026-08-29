@@ -35,6 +35,9 @@ TARGET_REQUIRED_RAW_SHA256=95512021832788d5cd6362e6fa9ea0c7771bf81f5725ae4ab18b4
 TARGET_TRIGGER_REMAINS=workflow_dispatch_only
 TARGET_REQUIRED_REF=then-current_canonical_main
 TARGET_RUNTIME_EVIDENCE_RUN_ALLOWANCE_REMAINS=1
+BOOTSTRAP_GITHUB_API_VERSION=2026-03-10
+DISPATCH_REQUEST_RETURN_RUN_DETAILS=true
+DISPATCH_RESPONSE_RUN_ID_BINDING=REQUIRED
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
@@ -51,9 +54,10 @@ Before creating the target dispatch, the bootstrap must fail closed unless all o
 5. The target workflow remains active and its trigger remains unchanged from the already-reviewed canonical workflow.
 6. Workflow-specific GitHub Actions history reports zero prior `workflow_dispatch` runs for the target workflow on `main`.
 7. The bootstrap uses only the ephemeral repository `GITHUB_TOKEN`, with `actions: write` solely for the target dispatch and `contents: read` for identity checks.
-8. The bootstrap creates exactly one target `workflow_dispatch` with `ref=main` and then verifies that exactly one matching target run appears.
+8. The bootstrap requests `return_run_details=true`, binds the returned run ID and URLs, reads that exact run back from GitHub, and requires its `head_sha`, `head_branch`, event, and workflow path to match the then-current canonical `main` and exact target.
+9. The bootstrap then requires workflow-specific history to contain exactly one `workflow_dispatch` and requires that sole run to be the returned run ID.
 
-If any prerequisite fails, the bootstrap must not dispatch.
+If any prerequisite fails before the dispatch POST, the bootstrap must not dispatch. If any post-dispatch identity/cardinality check fails, the bootstrap must fail visibly and no rerun is authorized; the already-created run must be classified from live evidence rather than silently repeated.
 
 ## Supersession boundary
 
@@ -107,6 +111,9 @@ BOOTSTRAP_SCOPE_TRANSIENT_AND_ONE_SHOT=YES
 TARGET_WORKFLOW_IDENTITY_UNCHANGED=YES
 TARGET_TRIGGER_REMAINS_WORKFLOW_DISPATCH_ONLY=YES
 PRE_DISPATCH_ZERO_RUN_CHECK_REQUIRED=YES
+DISPATCH_RETURNED_RUN_ID_BOUND=YES
+POST_DISPATCH_EXACT_RUN_IDENTITY_CHECK_REQUIRED=YES
+POST_DISPATCH_CARDINALITY_EQUALS_ONE_REQUIRED=YES
 MAX_TARGET_DISPATCHES=1
 GITHUB_TOKEN_SCOPE_MINIMIZED=YES
 NO_MODEL_CONVERSION_OR_TRAINING_AUTHORITY_CREATED=YES
