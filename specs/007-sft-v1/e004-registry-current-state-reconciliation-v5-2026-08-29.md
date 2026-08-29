@@ -108,18 +108,20 @@ POST_MERGE_BYTE_IDENTITY_MATCH=YES
 
 No runtime-evidence dispatch has occurred.
 
-Repository-level GitHub Actions queries report zero `workflow_dispatch` runs for both the exact promotion head and the canonical post-merge main head:
+Workflow-specific GitHub Actions queries for `.github/workflows/e004-conversion-runtime-evidence.yml` report zero `workflow_dispatch` runs for both the exact promotion head and canonical post-merge main. The repository separately contains historical workflow-dispatch run `33187438094` for `.github/workflows/e004-llama-quantize-build-evidence.yml`; that distinct build-only run remains preserved and does not consume the runtime-evidence allowance.
 
 ```text
-PROMOTION_HEAD_WORKFLOW_DISPATCH_RUN_COUNT=0
-POST_MERGE_MAIN_WORKFLOW_DISPATCH_RUN_COUNT=0
+PROMOTION_HEAD_RUNTIME_EVIDENCE_WORKFLOW_DISPATCH_RUN_COUNT=0
+POST_MERGE_MAIN_RUNTIME_EVIDENCE_WORKFLOW_DISPATCH_RUN_COUNT=0
+HISTORICAL_DISTINCT_BUILD_EVIDENCE_WORKFLOW_DISPATCH_RUN=33187438094
+HISTORICAL_DISTINCT_BUILD_EVIDENCE_RUN_COUNTS_AS_RUNTIME_EVIDENCE_RUN=NO
 AUTHORIZED_RUNTIME_EVIDENCE_RUNS_EXECUTED=0
 AUTHORIZED_RUNTIME_EVIDENCE_RUNS_REMAINING=1
 RUNTIME_EVIDENCE_EXECUTION_OCCURRED=NO
 RUNTIME_EVIDENCE_RESULT=NOT_STARTED
 ```
 
-A zero run count is not a PASS result. The one authorized run remains available only for the exact canonical workflow and exact `workflow_dispatch` trigger.
+A zero runtime-evidence workflow run count is not a PASS result. The one authorized run remains available only for the exact canonical runtime-evidence workflow and exact `workflow_dispatch` trigger.
 
 ## Connected-executor tooling frontier
 
@@ -243,7 +245,7 @@ MAX_RUNS_REMAINING=1
 ALTERNATE_TRIGGER_OR_RERUN_SUBSTITUTION=PROHIBITED
 ```
 
-If a connected fresh-dispatch action becomes available, pre-run checks must re-verify canonical main, exact live blob identity, zero prior authorized runtime-evidence runs, and unchanged authority before dispatch.
+If a connected fresh-dispatch action becomes available, pre-run checks must re-verify canonical main, exact live blob identity, zero prior authorized runtime-evidence workflow runs, and unchanged authority before dispatch.
 
 ## Exclusions
 
