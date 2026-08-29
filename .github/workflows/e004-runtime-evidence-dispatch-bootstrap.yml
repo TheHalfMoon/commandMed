@@ -87,18 +87,35 @@ jobs:
           test ! -s /tmp/e004-dispatch-response.txt
 
           observed=""
+          after_file=/tmp/e004-after-runs.json
           for _ in $(seq 1 60); do
-            after_json="$(api_get "$runs_url")"
+            api_get "$runs_url" > "$after_file"
             read -r total matching run_id run_head run_event run_path < <(
-              python3 - "$main_sha" "$TARGET_WORKFLOW_PATH" <<'PY' <<<"$after_json"
-          import json, sys
-          expected_sha, expected_path = sys.argv[1], sys.argv[2]
-          data = json.load(sys.stdin)
+              python3 - "$main_sha" "$TARGET_WORKFLOW_PATH" "$after_file" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          expected_sha, expected_path, json_path = sys.argv[1], sys.argv[2], sys.argv[3]
+          data = json.loads(pathlib.Path(json_path).read_text(encoding="utf-8"))
           runs = data.get("workflow_runs", [])
-          matches = [r for r in runs if r.get("head_sha") == expected_sha and r.get("event") == "workflow_dispatch" and r.get("path") == expected_path]
+          matches = [
+              run
+              for run in runs
+              if run.get("head_sha") == expected_sha
+              and run.get("event") == "workflow_dispatch"
+              and run.get("path") == expected_path
+          ]
           if matches:
-              r = matches[0]
-              print(data.get("total_count", 0), len(matches), r.get("id", ""), r.get("head_sha", ""), r.get("event", ""), r.get("path", ""))
+              run = matches[0]
+              print(
+                  data.get("total_count", 0),
+                  len(matches),
+                  run.get("id", ""),
+                  run.get("head_sha", ""),
+                  run.get("event", ""),
+                  run.get("path", ""),
+              )
           else:
               print(data.get("total_count", 0), 0, "", "", "", "")
           PY
