@@ -39,7 +39,7 @@ The Founder then responded directly:
 FOUNDER_RESPONSE=go ahead do not stop until finish the project , you have all approvals fro me
 ```
 
-Because that response immediately followed the exact decision surface, it validly selects the bounded decision class below. This record does not retroactively expand any earlier generic continuation instruction.
+Because that response immediately followed the exact decision surface, it selects the bounded decision class below. This record does not retroactively expand any earlier generic continuation instruction.
 
 ```text
 E004_CONVERSION_RUNTIME_EVIDENCE_AUTHORITY=AUTHORIZED_BOUNDED
@@ -51,6 +51,39 @@ TRIGGER=workflow_dispatch_only
 PURPOSE=RESOLVE_AND_BIND_EXACT_CONVERSION_RUNTIME_DEPENDENCY_AND_REBUILD_EVIDENCE_ONLY
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
+
+### 1.1 Verifiable decision-order evidence
+
+The canonical decision request presented to the Founder is immutable in Git history:
+
+```text
+DECISION_REQUEST_PATH=specs/007-sft-v1/e004-conversion-runtime-evidence-authority-decision-request-2026-08-29.md
+DECISION_REQUEST_CANONICAL_COMMIT=8b41051801c004cd85179dee3f26b4210b31de95
+DECISION_REQUEST_GIT_BLOB_SHA1=ec743c2650c39867f6323a31ffda97fb82648964
+```
+
+The exact Founder response is content-bound as:
+
+```text
+FOUNDER_RESPONSE=go ahead do not stop until finish the project , you have all approvals fro me
+FOUNDER_RESPONSE_SHA256=1b7c31a818ea7b50d0fe1e12b159d328afa11a9b0d74359cca19951e9fd75eab
+FOUNDER_RESPONSE_RECEIVED_AT_LOCAL_MINUTE=2026-08-29T14:07+03:00
+FOUNDER_RESPONSE_TIMESTAMP_PRECISION=MINUTE_PRODUCT_CONTEXT_SECONDS_UNAVAILABLE
+```
+
+Because the controlling Founder exchange occurred outside GitHub, PR #130 does not contain the response. The repository therefore records an explicit Founder-authenticated post-hoc attestation of the external conversation order on PR #131:
+
+```text
+FOUNDER_ATTESTATION_PR=131
+FOUNDER_ATTESTATION_COMMENT_ID=5462041475
+FOUNDER_ATTESTATION_URL=https://github.com/TheHalfMoon/commandMed/pull/131#issuecomment-5462041475
+FOUNDER_ATTESTATION_TYPE=POST_HOC_REPOSITORY_ATTESTATION_OF_EXTERNAL_CONVERSATION_ORDER
+FOUNDER_ATTESTS_EXACT_DECISION_SURFACE_IMMEDIATELY_PRECEDED_RESPONSE=YES
+FOUNDER_ATTESTS_RESPONSE_TEXT_IS_EXACT=YES
+PR130_TIMELINE_CONTAINS_FOUNDER_RESPONSE=NO
+```
+
+This record does not claim that GitHub independently observed the original conversation. It binds the immutable canonical decision-request identity, the response content hash/time evidence available from the controlling product context, and the Founder-authenticated repository attestation so reviewers can verify exactly what is being asserted without inventing a PR #130 event.
 
 ## 2. Prior build-evidence allowance remains exhausted
 
@@ -225,6 +258,7 @@ This decision-record artifact is repository-level complete only after fresh exac
 
 ```text
 FOUNDER_RESPONSE_BOUND_TO_IMMEDIATELY_PRECEDING_EXACT_DECISION_SURFACE=YES
+FOUNDER_DECISION_ORDER_EVIDENCE_BOUND=YES
 DECISION_CLASS=E004_CONVERSION_RUNTIME_EVIDENCE_AUTHORITY
 AUTHORITY=AUTHORIZED_BOUNDED
 MAX_AUTHORIZED_WORKFLOW_RUNS=1
