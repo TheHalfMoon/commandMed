@@ -1,0 +1,135 @@
+# One-shot transport-only bootstrap for the already-authorized E004 runtime-evidence workflow.
+# This workflow must not execute model, conversion, inference, benchmark, device,
+# contamination, A15, training, outreach, provider-generation, or spend surfaces.
+
+name: E004 runtime evidence dispatch bootstrap
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-runtime-evidence-dispatch-bootstrap.yml
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: e004-runtime-evidence-dispatch-bootstrap-v1
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      TARGET_WORKFLOW_FILE: e004-conversion-runtime-evidence.yml
+      TARGET_WORKFLOW_PATH: .github/workflows/e004-conversion-runtime-evidence.yml
+      EXPECTED_TARGET_BLOB_SHA1: 591317f1f570480b9ac68e7956d070db8ed5ef45
+      AUTHORITY_RECORD: specs/007-sft-v1/e004-connected-executor-dispatch-bootstrap-authority-2026-08-29.md
+      MAX_TARGET_DISPATCHES: '1'
+      AUTHORIZED_SPEND_USD: '0'
+    steps:
+      - name: Reverify canonical target and create one fresh workflow dispatch
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -Eeuo pipefail
+
+          test "${GITHUB_EVENT_NAME:-}" = "push"
+          test "${GITHUB_REF:-}" = "refs/heads/main"
+          test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
+          test "$MAX_TARGET_DISPATCHES" = "1"
+          test "$AUTHORIZED_SPEND_USD" = "0"
+
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+          auth_header="Authorization: Bearer ${GITHUB_TOKEN}"
+          accept_header="Accept: application/vnd.github+json"
+          version_header="X-GitHub-Api-Version: 2022-11-28"
+
+          api_get() {
+            curl --fail-with-body --silent --show-error \
+              -H "$accept_header" -H "$auth_header" -H "$version_header" "$1"
+          }
+
+          main_json="$(api_get "$api/branches/main")"
+          main_sha="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["sha"])' <<<"$main_json")"
+          test -n "$main_sha"
+
+          target_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${main_sha}")"
+          target_blob="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["sha"])' <<<"$target_json")"
+          target_path="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["path"])' <<<"$target_json")"
+          test "$target_path" = "$TARGET_WORKFLOW_PATH"
+          test "$target_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
+
+          workflow_json="$(api_get "$api/actions/workflows/${TARGET_WORKFLOW_FILE}")"
+          workflow_path="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["path"])' <<<"$workflow_json")"
+          workflow_state="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["state"])' <<<"$workflow_json")"
+          test "$workflow_path" = "$TARGET_WORKFLOW_PATH"
+          test "$workflow_state" = "active"
+
+          runs_url="$api/actions/workflows/${TARGET_WORKFLOW_FILE}/runs?event=workflow_dispatch&branch=main&per_page=100"
+          before_json="$(api_get "$runs_url")"
+          before_total="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])' <<<"$before_json")"
+          test "$before_total" -eq 0
+
+          dispatch_body='{"ref":"main"}'
+          dispatch_status="$(curl --silent --show-error --output /tmp/e004-dispatch-response.txt --write-out '%{http_code}' \
+            --request POST \
+            -H "$accept_header" -H "$auth_header" -H "$version_header" \
+            -H 'Content-Type: application/json' \
+            "$api/actions/workflows/${TARGET_WORKFLOW_FILE}/dispatches" \
+            --data "$dispatch_body")"
+          test "$dispatch_status" = "204"
+          test ! -s /tmp/e004-dispatch-response.txt
+
+          observed=""
+          for _ in $(seq 1 60); do
+            after_json="$(api_get "$runs_url")"
+            read -r total matching run_id run_head run_event run_path < <(
+              python3 - "$main_sha" "$TARGET_WORKFLOW_PATH" <<'PY' <<<"$after_json"
+          import json, sys
+          expected_sha, expected_path = sys.argv[1], sys.argv[2]
+          data = json.load(sys.stdin)
+          runs = data.get("workflow_runs", [])
+          matches = [r for r in runs if r.get("head_sha") == expected_sha and r.get("event") == "workflow_dispatch" and r.get("path") == expected_path]
+          if matches:
+              r = matches[0]
+              print(data.get("total_count", 0), len(matches), r.get("id", ""), r.get("head_sha", ""), r.get("event", ""), r.get("path", ""))
+          else:
+              print(data.get("total_count", 0), 0, "", "", "", "")
+          PY
+            )
+            if test "$total" -gt 1; then
+              echo "FAIL: more than one target workflow_dispatch exists after bootstrap" >&2
+              exit 1
+            fi
+            if test "$total" -eq 1 && test "$matching" -eq 1; then
+              test "$run_head" = "$main_sha"
+              test "$run_event" = "workflow_dispatch"
+              test "$run_path" = "$TARGET_WORKFLOW_PATH"
+              observed="$run_id"
+              break
+            fi
+            sleep 2
+          done
+
+          test -n "$observed"
+          printf '%s\n' \
+            "BOOTSTRAP_AUTHORITY=E004_CONNECTED_EXECUTOR_BLOCKER_REMEDIATION_AUTHORITY_AUTHORIZED_BOUNDED" \
+            "BOOTSTRAP_EVENT=${GITHUB_EVENT_NAME}" \
+            "BOOTSTRAP_HEAD_SHA=${GITHUB_SHA}" \
+            "TARGET_CANONICAL_MAIN_SHA=${main_sha}" \
+            "TARGET_WORKFLOW_PATH=${TARGET_WORKFLOW_PATH}" \
+            "TARGET_WORKFLOW_BLOB_SHA1=${target_blob}" \
+            "TARGET_PREEXISTING_WORKFLOW_DISPATCH_COUNT=${before_total}" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_CREATED=YES" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_RUN_ID=${observed}" \
+            "MODEL_CONVERSION_AUTHORITY=NONE" \
+            "CONTAMINATION_ASSESSMENT_AUTHORITY=NONE" \
+            "A15_ACTIVATION=ABSENT_NOT_AUTHORIZED" \
+            "TRAINING_AUTHORITY=NONE" \
+            "AUTHORIZED_SPEND_USD=0"
