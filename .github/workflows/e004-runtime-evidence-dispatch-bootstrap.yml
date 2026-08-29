@@ -113,10 +113,8 @@ jobs:
 
           after_json="$(api_get "$runs_url")"
           read -r after_total matching_count matching_id < <(
-            python3 - "$main_sha" "$TARGET_WORKFLOW_PATH" "$dispatch_run_id" <<'PY' <<<"$after_json"
-          import json
-          import sys
-
+            python3 -c '
+          import json, sys
           expected_sha, expected_path, expected_id = sys.argv[1], sys.argv[2], int(sys.argv[3])
           data = json.load(sys.stdin)
           matches = [
@@ -128,7 +126,7 @@ jobs:
               and run.get("id") == expected_id
           ]
           print(data.get("total_count", 0), len(matches), matches[0]["id"] if matches else "")
-          PY
+          ' "$main_sha" "$TARGET_WORKFLOW_PATH" "$dispatch_run_id" <<<"$after_json"
           )
           test "$after_total" -eq 1
           test "$matching_count" -eq 1
