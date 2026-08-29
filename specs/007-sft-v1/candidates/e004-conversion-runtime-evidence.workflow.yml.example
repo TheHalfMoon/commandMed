@@ -1,13 +1,8 @@
 # E004 CONVERSION-RUNTIME EVIDENCE WORKFLOW SUBJECT.
-#
-# This file is non-executable review material while stored outside
-# `.github/workflows`. It implements only the bounded runtime-evidence authority
-# selected by the Founder on 2026-08-29.
-#
-# It MUST NOT acquire model/source-weight/GGUF bytes, load or convert models,
-# run inference or benchmarks, perform device qualification or contamination
-# assessment, contact external reviewers, train, use credentials, upload
-# artifacts/caches, use paid/larger runners, or spend money.
+# Non-executable while stored outside `.github/workflows`.
+# Promotion and one workflow_dispatch remain separately gated.
+# No model bytes, conversion, inference, benchmark/device execution, contamination,
+# A15, training, outreach, credentials, artifact/cache upload, paid runner, or spend.
 
 name: E004 conversion runtime evidence
 
@@ -46,6 +41,7 @@ jobs:
           required_tools=(
             bash env id git cmake ninja cc c++ python3 sha256sum readlink ldd
             file stat find sort awk sed grep tee wc sudo unshare setpriv df sleep
+            cat seq tr basename head chmod cmp
           )
           for tool in "${required_tools[@]}"; do
             command -v "$tool" >/dev/null
@@ -64,8 +60,15 @@ jobs:
           test "$available_kb" -ge 12582912
 
           printf '%s\n' \
+            "RUN_ID=${GITHUB_RUN_ID:-UNSET}" \
+            "RUN_ATTEMPT=${GITHUB_RUN_ATTEMPT:-UNSET}" \
+            "RUN_HEAD_SHA=${GITHUB_SHA:-UNSET}" \
+            "RUNNER_OS=${RUNNER_OS:-UNSET}" \
+            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" \
+            "ImageOS=${ImageOS:-UNSET}" \
+            "ImageVersion=${ImageVersion:-UNSET}" \
+            "AVAILABLE_KB=$available_kb" \
             "AUTHORITY=E004_CONVERSION_RUNTIME_EVIDENCE_AUTHORITY_AUTHORIZED_BOUNDED" \
-            "PURPOSE=RESOLVE_AND_BIND_EXACT_CONVERSION_RUNTIME_DEPENDENCY_AND_REBUILD_EVIDENCE_ONLY" \
             "MODEL_SOURCE_WEIGHT_ACQUISITION=PROHIBITED" \
             "MODEL_CONVERSION=PROHIBITED" \
             "MODEL_INFERENCE=PROHIBITED" \
@@ -78,17 +81,11 @@ jobs:
             "ARTIFACT_UPLOAD=PROHIBITED" \
             "CACHE_UPLOAD=PROHIBITED" \
             "PAID_OR_LARGER_RUNNER=PROHIBITED" \
-            "SPEND_USD=0" \
-            "RUNNER_OS=${RUNNER_OS:-UNSET}" \
-            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" \
-            "ImageOS=${ImageOS:-UNSET}" \
-            "ImageVersion=${ImageVersion:-UNSET}" \
-            "AVAILABLE_KB=$available_kb"
+            "SPEND_USD=0"
 
           uname -a
           cat /etc/os-release
           ldd --version | head -n 1
-
           for tool in bash env id git cmake ninja cc c++ python3 sudo unshare setpriv; do
             resolved="$(readlink -f "$(command -v "$tool")")"
             printf '%s_path=%s\n' "$tool" "$resolved"
@@ -140,12 +137,7 @@ jobs:
           import threading
           from pathlib import Path
 
-          ALLOWED = {
-              "github.com",
-              "pypi.org",
-              "files.pythonhosted.org",
-              "download.pytorch.org",
-          }
+          ALLOWED = {"github.com", "pypi.org", "files.pythonhosted.org", "download.pytorch.org"}
           ready = Path(sys.argv[1])
           log_path = Path(sys.argv[2])
           log_lock = threading.Lock()
@@ -157,7 +149,6 @@ jobs:
 
           class Handler(socketserver.StreamRequestHandler):
               timeout = 45
-
               def handle(self) -> None:
                   first = self.rfile.readline(65537).decode("ascii", "strict").strip()
                   parts = first.split()
@@ -200,8 +191,7 @@ jobs:
                               data = src.recv(65536)
                               if not data:
                                   return
-                              dst = remote if src is self.connection else self.connection
-                              dst.sendall(data)
+                              (remote if src is self.connection else self.connection).sendall(data)
                   finally:
                       remote.close()
 
@@ -217,35 +207,25 @@ jobs:
           python3 "$proxy_script" "$proxy_ready" "$proxy_log" &
           proxy_pid=$!
           trap 'kill "$proxy_pid" 2>/dev/null || true; wait "$proxy_pid" 2>/dev/null || true' EXIT
-
           for _ in $(seq 1 100); do
             test -s "$proxy_ready" && break
             sleep 0.1
           done
           test -s "$proxy_ready"
           proxy_port="$(cat "$proxy_ready")"
-          case "$proxy_port" in
-            ''|*[!0-9]*) exit 1 ;;
-          esac
+          case "$proxy_port" in ''|*[!0-9]*) exit 1 ;; esac
           proxy_url="http://127.0.0.1:$proxy_port"
 
           export HOME="$phase_a_home"
           export GIT_CONFIG_GLOBAL=/dev/null
-          export HTTPS_PROXY="$proxy_url"
-          export https_proxy="$proxy_url"
-          export HTTP_PROXY="$proxy_url"
-          export http_proxy="$proxy_url"
-          export ALL_PROXY="$proxy_url"
-          export all_proxy="$proxy_url"
-          export NO_PROXY=""
-          export no_proxy=""
+          export HTTPS_PROXY="$proxy_url" https_proxy="$proxy_url"
+          export HTTP_PROXY="$proxy_url" http_proxy="$proxy_url"
+          export ALL_PROXY="$proxy_url" all_proxy="$proxy_url"
+          export NO_PROXY="" no_proxy=""
 
           git init "$source_dir"
           git -C "$source_dir" remote add origin "$TOOL_REPOSITORY_URL"
-          git -C "$source_dir" \
-            -c credential.helper= \
-            -c http.extraHeader= \
-            -c http.proxy="$proxy_url" \
+          git -C "$source_dir" -c credential.helper= -c http.extraHeader= -c http.proxy="$proxy_url" \
             fetch --no-tags --depth=1 origin "$TOOL_COMMIT"
           git -C "$source_dir" checkout --detach FETCH_HEAD
 
@@ -256,14 +236,15 @@ jobs:
           test -z "$(git -C "$source_dir" status --porcelain)"
 
           verify_blob() {
-            local path="$1"
-            local expected="$2"
-            local actual
+            local path="$1" expected="$2" actual bytes digest
             actual="$(git -C "$source_dir" rev-parse "HEAD:$path")"
             test "$actual" = "$expected"
-            printf '%s\t%s\n' "$path" "$actual" >> "$source_manifest"
+            bytes="$(stat -c '%s' "$source_dir/$path")"
+            digest="$(sha256sum "$source_dir/$path" | awk '{print $1}')"
+            printf '%s\t%s\t%s\t%s\n' "$path" "$actual" "$bytes" "$digest" >> "$source_manifest"
           }
 
+          verify_blob convert_hf_to_gguf.py 78ad26c6563062e2a801c9f76f77a7ce196dd195
           verify_blob pyproject.toml 46cf68ca1a398d40dc71f0eff043c03ceeaa73fe
           verify_blob requirements.txt f2a18d62879b4e37249b566d6d85fd9485fb20e2
           verify_blob requirements/requirements-convert_hf_to_gguf.txt b1f7c863e27e184e55408c9e5792158301c86547
@@ -276,7 +257,7 @@ jobs:
             --dest "$wheelhouse" \
             --index-url https://pypi.org/simple \
             --extra-index-url https://download.pytorch.org/whl/cpu \
-            "torch==2.11.0" \
+            "torch==2.11.0+cpu" \
             "numpy~=1.26.4" \
             "sentencepiece>=0.1.98,<0.3.0" \
             "transformers==4.57.6" \
@@ -287,28 +268,26 @@ jobs:
             2>&1 | tee "$pip_log"
 
           test -s "$proxy_log"
-          if grep -q '^DENY ' "$proxy_log"; then
-            cat "$proxy_log"
-            exit 1
-          fi
+          if grep -q '^DENY ' "$proxy_log"; then cat "$proxy_log"; exit 1; fi
           grep -q '^ALLOW host=github.com port=443$' "$proxy_log"
           grep -Eq '^ALLOW host=(pypi.org|files.pythonhosted.org|download.pytorch.org) port=443$' "$proxy_log"
 
           file_count="$(find "$wheelhouse" -maxdepth 1 -type f | wc -l | tr -d ' ')"
           test "$file_count" -gt 0
-
           while IFS= read -r path; do
-            printf '%s\t%s\t%s\n' \
-              "$(basename "$path")" \
-              "$(stat -c '%s' "$path")" \
-              "$(sha256sum "$path" | awk '{print $1}')" \
-              >> "$package_manifest"
+            printf '%s\t%s\t%s\n' "$(basename "$path")" "$(stat -c '%s' "$path")" \
+              "$(sha256sum "$path" | awk '{print $1}')" >> "$package_manifest"
           done < <(find "$wheelhouse" -maxdepth 1 -type f -print | sort)
           sort -o "$package_manifest" "$package_manifest"
+
+          chmod -R a-w "$wheelhouse"
+          chmod a-w "$package_manifest" "$source_manifest"
+          test -z "$(find "$wheelhouse" -maxdepth 1 -type f -perm /222 -print -quit)"
 
           printf '%s\n' \
             "TOOL_COMMIT=$actual_commit" \
             "TOOL_TREE=$actual_tree" \
+            "TORCH_RUNTIME_TARGET=2.11.0+cpu" \
             "SOURCE_MANIFEST_SHA256=$(sha256sum "$source_manifest" | awk '{print $1}')" \
             "DEPENDENCY_ARTIFACT_COUNT=$file_count" \
             "DEPENDENCY_SET_MANIFEST_SHA256=$(sha256sum "$package_manifest" | awk '{print $1}')" \
@@ -329,13 +308,13 @@ jobs:
           unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN NO_LOCAL_GGUF
           source_dir="$E004_ROOT/llama.cpp"
           wheelhouse="$E004_ROOT/wheelhouse"
+          package_manifest="$E004_ROOT/dependency-artifacts.tsv"
           venv_dir="$E004_ROOT/venv"
           build_dir="$E004_ROOT/llama.cpp-build"
           evidence_dir="$E004_ROOT/evidence"
           mkdir -p "$evidence_dir" "$E004_ROOT/home"
 
-          runner_uid="$(id -u)"
-          runner_gid="$(id -g)"
+          runner_uid="$(id -u)"; runner_gid="$(id -g)"
           sudo_path="$(readlink -f "$(command -v sudo)")"
           unshare_path="$(readlink -f "$(command -v unshare)")"
           setpriv_path="$(readlink -f "$(command -v setpriv)")"
@@ -343,92 +322,54 @@ jobs:
           bash_path="$(readlink -f "$(command -v bash)")"
 
           "$sudo_path" -n "$unshare_path" --net -- \
-            "$setpriv_path" \
-              --reuid "$runner_uid" \
-              --regid "$runner_gid" \
-              --clear-groups \
-              --inh-caps=-all \
-              --ambient-caps=-all \
-              --bounding-set=-all \
-              --no-new-privs \
-              --reset-env \
-              -- \
-            "$env_path" \
-              HOME="$E004_ROOT/home" \
-              TMPDIR="$RUNNER_TEMP" \
-              PATH="/usr/local/bin:/usr/bin:/bin" \
-              LC_ALL=C \
-              LANG=C \
-              PYTHONHASHSEED=0 \
-              PIP_DISABLE_PIP_VERSION_CHECK=1 \
-              PIP_NO_INPUT=1 \
+            "$setpriv_path" --reuid "$runner_uid" --regid "$runner_gid" --clear-groups \
+              --inh-caps=-all --ambient-caps=-all --bounding-set=-all --no-new-privs --reset-env -- \
+            "$env_path" HOME="$E004_ROOT/home" TMPDIR="$RUNNER_TEMP" PATH="/usr/local/bin:/usr/bin:/bin" \
+              LC_ALL=C LANG=C PYTHONHASHSEED=0 PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_NO_INPUT=1 \
               PIP_CONFIG_FILE=/dev/null \
             "$bash_path" -Eeuo pipefail -c '
-              source_dir="$1"
-              wheelhouse="$2"
-              venv_dir="$3"
-              build_dir="$4"
-              evidence_dir="$5"
-
+              source_dir="$1"; wheelhouse="$2"; package_manifest="$3"; venv_dir="$4"; build_dir="$5"; evidence_dir="$6"
               test "$(id -u)" != "0"
               test -z "${NO_LOCAL_GGUF:-}"
+              test -z "$(find "$wheelhouse" -maxdepth 1 -type f -perm /222 -print -quit)"
 
               cap_inh=""; cap_prm=""; cap_eff=""; cap_bnd=""; cap_amb=""; no_new_privs=""
               while read -r key value _; do
                 case "$key" in
-                  CapInh:) cap_inh="$value" ;;
-                  CapPrm:) cap_prm="$value" ;;
-                  CapEff:) cap_eff="$value" ;;
-                  CapBnd:) cap_bnd="$value" ;;
-                  CapAmb:) cap_amb="$value" ;;
-                  NoNewPrivs:) no_new_privs="$value" ;;
+                  CapInh:) cap_inh="$value" ;; CapPrm:) cap_prm="$value" ;; CapEff:) cap_eff="$value" ;;
+                  CapBnd:) cap_bnd="$value" ;; CapAmb:) cap_amb="$value" ;; NoNewPrivs:) no_new_privs="$value" ;;
                 esac
               done < /proc/self/status
-              for value in "$cap_inh" "$cap_prm" "$cap_eff" "$cap_bnd" "$cap_amb"; do
-                test "$value" = "0000000000000000"
-              done
+              for value in "$cap_inh" "$cap_prm" "$cap_eff" "$cap_bnd" "$cap_amb"; do test "$value" = "0000000000000000"; done
               test "$no_new_privs" = "1"
 
               sensitive=NO
               while IFS="=" read -r name _; do
-                case "$name" in
-                  GITHUB_*|ACTIONS_*|RUNNER_*|GITHUB_TOKEN|GH_TOKEN|HF_TOKEN|HUGGING_FACE_HUB_TOKEN)
-                    sensitive=YES ;;
-                esac
+                case "$name" in GITHUB_*|ACTIONS_*|RUNNER_*|GITHUB_TOKEN|GH_TOKEN|HF_TOKEN|HUGGING_FACE_HUB_TOKEN) sensitive=YES ;; esac
               done < <(env)
               test "$sensitive" = "NO"
 
               {
-                printf "%s\n" \
-                  "PHASE_B_NETWORK_POLICY=DEFAULT_DENY_NETWORK_NAMESPACE" \
-                  "PHASE_B_UID=$(id -u)" \
-                  "CapInh=$cap_inh" \
-                  "CapPrm=$cap_prm" \
-                  "CapEff=$cap_eff" \
-                  "CapBnd=$cap_bnd" \
-                  "CapAmb=$cap_amb" \
-                  "NoNewPrivs=$no_new_privs" \
-                  "SENSITIVE_PLATFORM_ENV_PRESENT=$sensitive" \
-                  "NO_LOCAL_GGUF_STATE=UNSET"
+                printf "%s\n" "PHASE_B_NETWORK_POLICY=DEFAULT_DENY_NETWORK_NAMESPACE" "PHASE_B_UID=$(id -u)" \
+                  "CapInh=$cap_inh" "CapPrm=$cap_prm" "CapEff=$cap_eff" "CapBnd=$cap_bnd" "CapAmb=$cap_amb" \
+                  "NoNewPrivs=$no_new_privs" "SENSITIVE_PLATFORM_ENV_PRESENT=$sensitive" "NO_LOCAL_GGUF_STATE=UNSET"
               } > "$evidence_dir/security-boundary.txt"
 
+              recomputed="$evidence_dir/dependency-artifacts-recomputed.tsv"
+              : > "$recomputed"
+              while IFS= read -r path; do
+                printf "%s\t%s\t%s\n" "$(basename "$path")" "$(stat -c "%s" "$path")" \
+                  "$(sha256sum "$path" | awk "{print \$1}")" >> "$recomputed"
+              done < <(find "$wheelhouse" -maxdepth 1 -type f -print | sort)
+              sort -o "$recomputed" "$recomputed"
+              cmp -s "$package_manifest" "$recomputed"
+
               python3 -m venv "$venv_dir"
-              venv_python="$venv_dir/bin/python"
-              venv_pip="$venv_dir/bin/pip"
-
-              "$venv_pip" install \
-                --no-index \
-                --find-links "$wheelhouse" \
-                "torch==2.11.0" \
-                "numpy~=1.26.4" \
-                "sentencepiece>=0.1.98,<0.3.0" \
-                "transformers==4.57.6" \
-                "protobuf>=4.21.0,<5.0.0" \
-                "tqdm>=4.27" \
-                "PyYAML>=5.1" \
-                "requests>=2.25" \
-                > "$evidence_dir/offline-install.log" 2>&1
-
+              venv_python="$venv_dir/bin/python"; venv_pip="$venv_dir/bin/pip"
+              "$venv_pip" install --no-index --find-links "$wheelhouse" \
+                "torch==2.11.0+cpu" "numpy~=1.26.4" "sentencepiece>=0.1.98,<0.3.0" \
+                "transformers==4.57.6" "protobuf>=4.21.0,<5.0.0" "tqdm>=4.27" \
+                "PyYAML>=5.1" "requests>=2.25" > "$evidence_dir/offline-install.log" 2>&1
               "$venv_pip" freeze --all | LC_ALL=C sort > "$evidence_dir/installed-environment.txt"
 
               PYTHONPATH="$source_dir/gguf-py" "$venv_python" - "$source_dir" > "$evidence_dir/gguf-attestation.txt" <<PY
@@ -436,7 +377,6 @@ jobs:
               import os
               import pathlib
               import sys
-
               source_dir = pathlib.Path(sys.argv[1]).resolve()
               if "NO_LOCAL_GGUF" in os.environ:
                   raise SystemExit("NO_LOCAL_GGUF must be unset")
@@ -451,50 +391,29 @@ jobs:
               print("NO_LOCAL_GGUF_UNSET_ATTESTATION=PASS")
               PY
 
-              cmake \
-                -S "$source_dir" \
-                -B "$build_dir" \
-                -G Ninja \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DBUILD_SHARED_LIBS=OFF \
-                -DLLAMA_BUILD_COMMON=ON \
-                -DLLAMA_BUILD_TESTS=OFF \
-                -DLLAMA_BUILD_TOOLS=ON \
-                -DLLAMA_BUILD_EXAMPLES=OFF \
-                -DLLAMA_BUILD_SERVER=OFF \
-                -DLLAMA_BUILD_APP=OFF \
-                -DLLAMA_BUILD_UI=OFF \
-                -DLLAMA_USE_PREBUILT_UI=OFF \
-                -DLLAMA_TOOLS_INSTALL=OFF \
-                -DLLAMA_TESTS_INSTALL=OFF \
-                -DLLAMA_OPENSSL=OFF \
-                -DLLAMA_SUBPROCESS=OFF \
-                -DLLAMA_LLGUIDANCE=OFF \
-                -DGGML_NATIVE=OFF \
-                -DGGML_CCACHE=OFF \
-                -DGGML_OPENMP=OFF
-
+              cmake -S "$source_dir" -B "$build_dir" -G Ninja -DCMAKE_BUILD_TYPE=Release \
+                -DBUILD_SHARED_LIBS=OFF -DLLAMA_BUILD_COMMON=ON -DLLAMA_BUILD_TESTS=OFF \
+                -DLLAMA_BUILD_TOOLS=ON -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=OFF \
+                -DLLAMA_BUILD_APP=OFF -DLLAMA_BUILD_UI=OFF -DLLAMA_USE_PREBUILT_UI=OFF \
+                -DLLAMA_TOOLS_INSTALL=OFF -DLLAMA_TESTS_INSTALL=OFF -DLLAMA_OPENSSL=OFF \
+                -DLLAMA_SUBPROCESS=OFF -DLLAMA_LLGUIDANCE=OFF -DGGML_NATIVE=OFF \
+                -DGGML_CCACHE=OFF -DGGML_OPENMP=OFF
               cmake --build "$build_dir" --target llama-quantize --parallel 2 --verbose
-              llama_quantize="$build_dir/bin/llama-quantize"
-              test -x "$llama_quantize"
+              llama_quantize="$build_dir/bin/llama-quantize"; test -x "$llama_quantize"
 
               {
-                printf "%s\n" \
-                  "PYTHON_RUNTIME_PATH=$(readlink -f "$venv_python")" \
-                  "PYTHON_RUNTIME_VERSION=$($venv_python --version 2>&1)" \
-                  "VENV_PIP_VERSION=$($venv_pip --version)" \
-                  "CMAKE_CONFIG=Release_Ninja_static_llama_quantize_only" \
+                printf "%s\n" "PYTHON_RUNTIME_PATH=$(readlink -f "$venv_python")" \
+                  "PYTHON_RUNTIME_VERSION=$($venv_python --version 2>&1)" "VENV_PIP_VERSION=$($venv_pip --version)" \
+                  "TORCH_RUNTIME_TARGET=2.11.0+cpu" "CMAKE_CONFIG=Release_Ninja_static_llama_quantize_only" \
                   "BUILD_ARGV=cmake --build <build_dir> --target llama-quantize --parallel 2 --verbose" \
                   "LLAMA_QUANTIZE_PATH=$llama_quantize"
                 sha256sum "$venv_python" "$llama_quantize" "$build_dir/CMakeCache.txt"
               } > "$evidence_dir/build-manifest.txt"
-            ' _ "$source_dir" "$wheelhouse" "$venv_dir" "$build_dir" "$evidence_dir"
+            ' _ "$source_dir" "$wheelhouse" "$package_manifest" "$venv_dir" "$build_dir" "$evidence_dir"
 
-          for file in security-boundary.txt offline-install.log installed-environment.txt gguf-attestation.txt build-manifest.txt; do
-            test -f "$evidence_dir/$file"
-            sha256sum "$evidence_dir/$file"
+          for file in security-boundary.txt dependency-artifacts-recomputed.tsv offline-install.log installed-environment.txt gguf-attestation.txt build-manifest.txt; do
+            test -f "$evidence_dir/$file"; sha256sum "$evidence_dir/$file"
           done
-
           cat "$evidence_dir/security-boundary.txt"
           cat "$evidence_dir/gguf-attestation.txt"
           cat "$evidence_dir/build-manifest.txt"
@@ -505,36 +424,24 @@ jobs:
           E004_ROOT: ${{ runner.temp }}/e004-runtime-evidence
         run: |
           set -Eeuo pipefail
-
           unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN NO_LOCAL_GGUF
           evidence_dir="$E004_ROOT/evidence"
           llama_quantize="$E004_ROOT/llama.cpp-build/bin/llama-quantize"
           runtime_manifest="$evidence_dir/runtime-evidence-manifest.txt"
-
           test -x "$llama_quantize"
 
           {
             printf '%s\n' \
               "AUTHORITY=E004_CONVERSION_RUNTIME_EVIDENCE_AUTHORITY_AUTHORIZED_BOUNDED" \
-              "TOOL_REPOSITORY=ggml-org/llama.cpp" \
-              "TOOL_COMMIT=$TOOL_COMMIT" \
-              "TOOL_TREE=$TOOL_TREE" \
-              "LOCAL_GGUF_SOURCE_MODE=REQUIRED" \
-              "NO_LOCAL_GGUF_MUST_BE_UNSET=YES" \
-              "REMOTE_HF_CONVERSION_MODE=PROHIBITED" \
-              "MODEL_SOURCE_WEIGHT_ACQUISITION_OCCURRED=NO" \
-              "MODEL_LOADING_OCCURRED=NO" \
-              "MODEL_CONVERSION_OCCURRED=NO" \
-              "MODEL_INFERENCE_OCCURRED=NO" \
-              "BENCHMARK_EXECUTION_OCCURRED=NO" \
-              "DEVICE_QUALIFICATION_OCCURRED=NO" \
-              "CONTAMINATION_ASSESSMENT_OCCURRED=NO" \
-              "TRAINING_OCCURRED=NO" \
-              "CREDENTIAL_USE_OCCURRED=NO" \
-              "ARTIFACT_UPLOAD_OCCURRED=NO" \
-              "CACHE_UPLOAD_OCCURRED=NO" \
-              "PAID_OR_LARGER_RUNNER_USED=NO" \
-              "AUTHORIZED_SPEND_USD=0"
+              "TOOL_REPOSITORY=ggml-org/llama.cpp" "TOOL_COMMIT=$TOOL_COMMIT" "TOOL_TREE=$TOOL_TREE" \
+              "TORCH_RUNTIME_TARGET=2.11.0+cpu" "LOCAL_GGUF_SOURCE_MODE=REQUIRED" \
+              "NO_LOCAL_GGUF_MUST_BE_UNSET=YES" "REMOTE_HF_CONVERSION_MODE=PROHIBITED" \
+              "MODEL_SOURCE_WEIGHT_ACQUISITION_OCCURRED=NO" "MODEL_LOADING_OCCURRED=NO" \
+              "MODEL_CONVERSION_OCCURRED=NO" "MODEL_INFERENCE_OCCURRED=NO" \
+              "BENCHMARK_EXECUTION_OCCURRED=NO" "DEVICE_QUALIFICATION_OCCURRED=NO" \
+              "CONTAMINATION_ASSESSMENT_OCCURRED=NO" "TRAINING_OCCURRED=NO" \
+              "CREDENTIAL_USE_OCCURRED=NO" "ARTIFACT_UPLOAD_OCCURRED=NO" "CACHE_UPLOAD_OCCURRED=NO" \
+              "PAID_OR_LARGER_RUNNER_USED=NO" "AUTHORIZED_SPEND_USD=0"
             printf 'SOURCE_MANIFEST_SHA256=%s\n' "$(sha256sum "$E004_ROOT/tool-source.tsv" | awk '{print $1}')"
             printf 'DEPENDENCY_SET_MANIFEST_SHA256=%s\n' "$(sha256sum "$E004_ROOT/dependency-artifacts.tsv" | awk '{print $1}')"
             printf 'PHASE_A_ALLOWLIST_PROXY_LOG_SHA256=%s\n' "$(sha256sum "$E004_ROOT/allowlist-proxy.log" | awk '{print $1}')"
@@ -546,18 +453,13 @@ jobs:
             printf 'LLAMA_QUANTIZE_INTEGER_BYTES=%s\n' "$(stat -c '%s' "$llama_quantize")"
           } > "$runtime_manifest"
 
-          printf 'RUNTIME_EVIDENCE_MANIFEST_SHA256='
-          sha256sum "$runtime_manifest" | awk '{print $1}'
+          printf 'RUNTIME_EVIDENCE_MANIFEST_SHA256='; sha256sum "$runtime_manifest" | awk '{print $1}'
           cat "$runtime_manifest"
-
           printf '%s\n' \
             "RUNTIME_EVIDENCE_PASS_EQUALS_MODEL_CONVERSION_AUTHORITY=NO" \
             "RUNTIME_EVIDENCE_PASS_EQUALS_E004_TOURNAMENT_START=NO" \
             "RUNTIME_EVIDENCE_PASS_EQUALS_A15_ACTIVATION=NO" \
             "RUNTIME_EVIDENCE_PASS_EQUALS_TRAINING_AUTHORITY=NO" \
-            "MODEL_CONVERSION_AUTHORITY=NONE" \
-            "CONTAMINATION_ASSESSMENT_AUTHORITY=NONE" \
-            "A15_ACTIVATION=ABSENT_NOT_AUTHORIZED" \
-            "TRAINING_AUTHORITY=NONE" \
-            "E004_STATE=BLOCKED_PREFLIGHT" \
-            "E005_STATE=NOT_REACHED"
+            "MODEL_CONVERSION_AUTHORITY=NONE" "CONTAMINATION_ASSESSMENT_AUTHORITY=NONE" \
+            "A15_ACTIVATION=ABSENT_NOT_AUTHORIZED" "TRAINING_AUTHORITY=NONE" \
+            "E004_STATE=BLOCKED_PREFLIGHT" "E005_STATE=NOT_REACHED"
