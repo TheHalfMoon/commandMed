@@ -199,8 +199,10 @@ jobs:
               "$(sha256sum "$path" | awk '{print $1}')" >> "$package_manifest"
           done < <(find "$wheelhouse" -maxdepth 1 -type f -print | sort)
           sort -o "$package_manifest" "$package_manifest"
-          chmod -R a-w "$wheelhouse"; chmod a-w "$package_manifest" "$source_manifest"
+          chmod -R a-w "$wheelhouse" "$source_dir"
+          chmod a-w "$package_manifest" "$source_manifest"
           test -z "$(find "$wheelhouse" -maxdepth 1 -type f -perm /222 -print -quit)"
+          test -z "$(find "$source_dir" -type f -perm /222 -print -quit)"
 
           converter_sha="$(awk -F '\t' '$1=="convert_hf_to_gguf.py" {print $4}' "$source_manifest")"
           dependency_surface_sha="$(grep -v '^convert_hf_to_gguf.py' "$source_manifest" | sha256sum | awk '{print $1}')"
@@ -224,9 +226,9 @@ jobs:
         run: |
           set -Eeuo pipefail
           unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN NO_LOCAL_GGUF
-          source_dir="$E004_ROOT/llama.cpp"; wheelhouse="$E004_ROOT/wheelhouse"
-          package_manifest="$E004_ROOT/dependency-artifacts.tsv"; venv_dir="$E004_ROOT/venv"
-          build_dir="$E004_ROOT/llama.cpp-build"; evidence_dir="$E004_ROOT/evidence"
+          source_dir="$E004_ROOT/llama.cpp"; source_manifest="$E004_ROOT/tool-source.tsv"
+          wheelhouse="$E004_ROOT/wheelhouse"; package_manifest="$E004_ROOT/dependency-artifacts.tsv"
+          venv_dir="$E004_ROOT/venv"; build_dir="$E004_ROOT/llama.cpp-build"; evidence_dir="$E004_ROOT/evidence"
           attest_script="$E004_ROOT/gguf_attest.py"
           mkdir -p "$evidence_dir" "$E004_ROOT/home"
 
@@ -257,10 +259,12 @@ jobs:
               LC_ALL=C LANG=C PYTHONHASHSEED=0 PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_NO_INPUT=1 \
               PIP_CONFIG_FILE=/dev/null \
             "$bash_path" -Eeuo pipefail -c '
-              source_dir="$1"; wheelhouse="$2"; package_manifest="$3"; venv_dir="$4"
-              build_dir="$5"; evidence_dir="$6"; attest_script="$7"
+              source_dir="$1"; source_manifest="$2"; wheelhouse="$3"; package_manifest="$4"
+              venv_dir="$5"; build_dir="$6"; evidence_dir="$7"; attest_script="$8"
+              expected_commit="$9"; expected_tree="${10}"
               test "$(id -u)" != "0"; test -z "${NO_LOCAL_GGUF:-}"
               test -z "$(find "$wheelhouse" -maxdepth 1 -type f -perm /222 -print -quit)"
+              test -z "$(find "$source_dir" -type f -perm /222 -print -quit)"
               cap_inh=""; cap_prm=""; cap_eff=""; cap_bnd=""; cap_amb=""; no_new_privs=""
               while read -r key value _; do
                 case "$key" in
@@ -280,12 +284,25 @@ jobs:
                 "NoNewPrivs=$no_new_privs" "SENSITIVE_PLATFORM_ENV_PRESENT=$sensitive" "NO_LOCAL_GGUF_STATE=UNSET" \
                 > "$evidence_dir/security-boundary.txt"
 
-              recomputed="$evidence_dir/dependency-artifacts-recomputed.tsv"; : > "$recomputed"
+              actual_commit="$(git -C "$source_dir" rev-parse HEAD)"; actual_tree="$(git -C "$source_dir" rev-parse "HEAD^{tree}")"
+              test "$actual_commit" = "$expected_commit"; test "$actual_tree" = "$expected_tree"
+              test -z "$(git -C "$source_dir" status --porcelain)"
+              source_recomputed="$evidence_dir/tool-source-recomputed.tsv"; : > "$source_recomputed"
+              while read -r path expected_blob expected_bytes expected_sha; do
+                actual_blob="$(git -C "$source_dir" rev-parse "HEAD:$path")"
+                actual_bytes="$(stat -c "%s" "$source_dir/$path")"
+                actual_sha="$(sha256sum "$source_dir/$path" | awk "{print \$1}")"
+                test "$actual_blob" = "$expected_blob"; test "$actual_bytes" = "$expected_bytes"; test "$actual_sha" = "$expected_sha"
+                printf "%s\t%s\t%s\t%s\n" "$path" "$actual_blob" "$actual_bytes" "$actual_sha" >> "$source_recomputed"
+              done < "$source_manifest"
+              cmp -s "$source_manifest" "$source_recomputed"
+
+              dependency_recomputed="$evidence_dir/dependency-artifacts-recomputed.tsv"; : > "$dependency_recomputed"
               while IFS= read -r path; do
                 printf "%s\t%s\t%s\n" "$(basename "$path")" "$(stat -c "%s" "$path")" \
-                  "$(sha256sum "$path" | awk "{print \$1}")" >> "$recomputed"
+                  "$(sha256sum "$path" | awk "{print \$1}")" >> "$dependency_recomputed"
               done < <(find "$wheelhouse" -maxdepth 1 -type f -print | sort)
-              sort -o "$recomputed" "$recomputed"; cmp -s "$package_manifest" "$recomputed"
+              sort -o "$dependency_recomputed" "$dependency_recomputed"; cmp -s "$package_manifest" "$dependency_recomputed"
 
               python3 -m venv "$venv_dir"; venv_python="$venv_dir/bin/python"; venv_pip="$venv_dir/bin/pip"
               "$venv_pip" install --no-index --find-links "$wheelhouse" \
@@ -306,16 +323,19 @@ jobs:
               llama_quantize="$build_dir/bin/llama-quantize"; test -x "$llama_quantize"
               printf "%s\n" "PYTHON_RUNTIME_PATH=$(readlink -f "$venv_python")" \
                 "PYTHON_RUNTIME_VERSION=$($venv_python --version 2>&1)" "VENV_PIP_VERSION=$($venv_pip --version)" \
-                "TORCH_RUNTIME_TARGET=2.11.0+cpu" "CMAKE_CONFIG=Release_Ninja_static_llama_quantize_only" \
+                "TORCH_RUNTIME_TARGET=2.11.0+cpu" "SOURCE_REBIND_COMMIT=$actual_commit" "SOURCE_REBIND_TREE=$actual_tree" \
+                "CMAKE_CONFIG=Release_Ninja_static_llama_quantize_only" \
                 "BUILD_ARGV=cmake --build <build_dir> --target llama-quantize --parallel 2 --verbose" \
                 "LLAMA_QUANTIZE_PATH=$llama_quantize" > "$evidence_dir/build-manifest.txt"
               sha256sum "$venv_python" "$llama_quantize" "$build_dir/CMakeCache.txt" >> "$evidence_dir/build-manifest.txt"
-            ' _ "$source_dir" "$wheelhouse" "$package_manifest" "$venv_dir" "$build_dir" "$evidence_dir" "$attest_script"
+            ' _ "$source_dir" "$source_manifest" "$wheelhouse" "$package_manifest" "$venv_dir" "$build_dir" \
+              "$evidence_dir" "$attest_script" "$TOOL_COMMIT" "$TOOL_TREE"
 
-          for file in security-boundary.txt dependency-artifacts-recomputed.tsv offline-install.log installed-environment.txt gguf-attestation.txt build-manifest.txt; do
+          for file in security-boundary.txt tool-source-recomputed.tsv dependency-artifacts-recomputed.tsv offline-install.log installed-environment.txt gguf-attestation.txt build-manifest.txt; do
             test -f "$evidence_dir/$file"; sha256sum "$evidence_dir/$file"
           done
-          cat "$evidence_dir/security-boundary.txt"; cat "$evidence_dir/gguf-attestation.txt"; cat "$evidence_dir/build-manifest.txt"
+          cat "$evidence_dir/security-boundary.txt"; cat "$evidence_dir/tool-source-recomputed.tsv"
+          cat "$evidence_dir/gguf-attestation.txt"; cat "$evidence_dir/build-manifest.txt"
 
       - name: Emit runtime evidence manifest to logs only
         shell: bash
@@ -343,6 +363,7 @@ jobs:
               "AUTHORIZED_SPEND_USD=0" "PROVIDER_BILLING_LEDGER_ROW_EXPOSED_TO_WORKFLOW=NO" \
               "INFERRED_HIDDEN_BILLING_VALUE=PROHIBITED"
             printf 'SOURCE_MANIFEST_SHA256=%s\n' "$(sha256sum "$E004_ROOT/tool-source.tsv" | awk '{print $1}')"
+            printf 'SOURCE_RECOMPUTED_MANIFEST_SHA256=%s\n' "$(sha256sum "$evidence_dir/tool-source-recomputed.tsv" | awk '{print $1}')"
             printf 'DEPENDENCY_SET_MANIFEST_SHA256=%s\n' "$(sha256sum "$E004_ROOT/dependency-artifacts.tsv" | awk '{print $1}')"
             printf 'PHASE_A_ALLOWLIST_PROXY_LOG_SHA256=%s\n' "$(sha256sum "$E004_ROOT/allowlist-proxy.log" | awk '{print $1}')"
             printf 'SECURITY_EVIDENCE_SHA256=%s\n' "$(sha256sum "$evidence_dir/security-boundary.txt" | awk '{print $1}')"
