@@ -39,7 +39,8 @@ TARGET_EXECUTION_REF_PATTERN=e004-runtime-evidence-lock-<40_lower_hex_sha>
 MAX_AUTHORIZED_TRANSIENT_LOCK_REFS=1
 TARGET_RUNTIME_EVIDENCE_RUN_ALLOWANCE_REMAINS=1
 BOOTSTRAP_GITHUB_API_VERSION=2026-03-10
-DISPATCH_REQUEST_RETURN_RUN_DETAILS=true
+DISPATCH_REQUEST_BODY_FIELDS=ref_only
+DISPATCH_RESPONSE_HTTP_STATUS=200
 DISPATCH_RESPONSE_RUN_ID_BINDING=REQUIRED
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
@@ -64,7 +65,7 @@ Before creating the target dispatch, the bootstrap must fail closed unless all o
 7. The bootstrap creates exactly one branch named `e004-runtime-evidence-lock-<canonical-main-sha>` and requires the created Git ref object to resolve exactly to the verified canonical `main` SHA.
 8. The target workflow is re-read through that immutable lock ref and must have the same required Git blob identity before dispatch.
 9. The bootstrap uses only the ephemeral repository `GITHUB_TOKEN`, with `actions: write` solely for the target dispatch and `contents: write` solely because GitHub requires repository-content write permission to create/delete Git refs. No file create/update/delete operation is permitted.
-10. The bootstrap requests `return_run_details=true`, binds the returned run ID and URLs, reads that exact run back from GitHub, and requires its `head_sha`, `head_branch`, event, and workflow path to match the verified canonical SHA, exact immutable lock branch, `workflow_dispatch`, and exact target path.
+10. Under GitHub REST API version `2026-03-10`, the dispatch request body contains only the immutable `ref`. The bootstrap requires the default `200` response containing `workflow_run_id`, `run_url`, and `html_url`, binds those returned details, reads that exact run back from GitHub, and requires its `head_sha`, `head_branch`, event, and workflow path to match the verified canonical SHA, exact immutable lock branch, `workflow_dispatch`, and exact target path.
 11. The bootstrap then requires workflow-specific target history across all refs to contain exactly one `workflow_dispatch` and requires that sole run to be the returned run ID.
 
 If any prerequisite fails before the dispatch POST, the bootstrap must not dispatch. If any post-dispatch identity/cardinality check fails, the bootstrap must fail visibly and no rerun is authorized; any already-created run must be classified from live evidence rather than silently repeated.
@@ -146,6 +147,8 @@ CANONICAL_MAIN_SHA_CAPTURE_REQUIRED=YES
 IMMUTABLE_LOCK_REF_REQUIRED=YES
 LOCK_REF_MUST_EQUAL_VERIFIED_CANONICAL_MAIN_SHA=YES
 PRE_DISPATCH_ZERO_RUN_CHECK_REQUIRED=YES
+CURRENT_API_DISPATCH_BODY_REF_ONLY=YES
+DISPATCH_DEFAULT_200_RUN_DETAILS_REQUIRED=YES
 DISPATCH_RETURNED_RUN_ID_BOUND=YES
 POST_DISPATCH_EXACT_RUN_IDENTITY_CHECK_REQUIRED=YES
 POST_DISPATCH_CARDINALITY_EQUALS_ONE_REQUIRED=YES
