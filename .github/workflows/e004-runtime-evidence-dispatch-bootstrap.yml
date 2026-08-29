@@ -13,7 +13,7 @@ on:
 
 permissions:
   actions: write
-  contents: read
+  contents: write
 
 concurrency:
   group: e004-runtime-evidence-dispatch-bootstrap-v1
@@ -28,12 +28,13 @@ jobs:
       TARGET_WORKFLOW_FILE: e004-conversion-runtime-evidence.yml
       TARGET_WORKFLOW_PATH: .github/workflows/e004-conversion-runtime-evidence.yml
       EXPECTED_TARGET_BLOB_SHA1: 591317f1f570480b9ac68e7956d070db8ed5ef45
-      AUTHORITY_RECORD: specs/007-sft-v1/e004-connected-executor-dispatch-bootstrap-authority-2026-08-29.md
+      LOCK_BRANCH_PREFIX: e004-runtime-evidence-lock
       MAX_TARGET_DISPATCHES: '1'
+      MAX_TRANSIENT_LOCK_REFS: '1'
       AUTHORIZED_SPEND_USD: '0'
       GITHUB_API_VERSION: '2026-03-10'
     steps:
-      - name: Reverify canonical target and create one fresh workflow dispatch
+      - name: Reverify canonical target, bind immutable ref, and create one fresh dispatch
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -44,6 +45,7 @@ jobs:
           test "${GITHUB_REF:-}" = "refs/heads/main"
           test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
           test "$MAX_TARGET_DISPATCHES" = "1"
+          test "$MAX_TRANSIENT_LOCK_REFS" = "1"
           test "$AUTHORIZED_SPEND_USD" = "0"
 
           api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
@@ -58,7 +60,7 @@ jobs:
 
           main_json="$(api_get "$api/branches/main")"
           main_sha="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["sha"])' <<<"$main_json")"
-          test -n "$main_sha"
+          [[ "$main_sha" =~ ^[0-9a-f]{40}$ ]]
 
           target_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${main_sha}")"
           target_blob="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["sha"])' <<<"$target_json")"
@@ -72,12 +74,40 @@ jobs:
           test "$workflow_path" = "$TARGET_WORKFLOW_PATH"
           test "$workflow_state" = "active"
 
-          runs_url="$api/actions/workflows/${TARGET_WORKFLOW_FILE}/runs?event=workflow_dispatch&branch=main&per_page=100"
+          runs_url="$api/actions/workflows/${TARGET_WORKFLOW_FILE}/runs?event=workflow_dispatch&per_page=100"
           before_json="$(api_get "$runs_url")"
           before_total="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])' <<<"$before_json")"
           test "$before_total" -eq 0
 
-          dispatch_body='{"ref":"main","return_run_details":true}'
+          lock_branch="${LOCK_BRANCH_PREFIX}-${main_sha}"
+          lock_ref="refs/heads/${lock_branch}"
+          lock_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"sha":sys.argv[2]}, separators=(",",":")))' "$lock_ref" "$main_sha")"
+          lock_file=/tmp/e004-lock-ref.json
+          lock_status="$(curl --fail-with-body --silent --show-error --output "$lock_file" --write-out '%{http_code}' \
+            --request POST \
+            -H "$accept_header" -H "$auth_header" -H "$version_header" \
+            -H 'Content-Type: application/json' \
+            "$api/git/refs" \
+            --data "$lock_body")"
+          test "$lock_status" = "201"
+
+          read -r created_lock_ref created_lock_sha < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["ref"], d["object"]["sha"])' < "$lock_file"
+          )
+          test "$created_lock_ref" = "$lock_ref"
+          test "$created_lock_sha" = "$main_sha"
+
+          lock_target_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${lock_branch}")"
+          lock_target_blob="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["sha"])' <<<"$lock_target_json")"
+          lock_target_path="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["path"])' <<<"$lock_target_json")"
+          test "$lock_target_path" = "$TARGET_WORKFLOW_PATH"
+          test "$lock_target_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
+
+          pre_dispatch_json="$(api_get "$runs_url")"
+          pre_dispatch_total="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])' <<<"$pre_dispatch_json")"
+          test "$pre_dispatch_total" -eq 0
+
+          dispatch_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"return_run_details":True}, separators=(",",":")))' "$lock_branch")"
           dispatch_file=/tmp/e004-dispatch-response.json
           dispatch_status="$(curl --fail-with-body --silent --show-error --output "$dispatch_file" --write-out '%{http_code}' \
             --request POST \
@@ -88,14 +118,7 @@ jobs:
           test "$dispatch_status" = "200"
 
           read -r dispatch_run_id dispatch_run_url dispatch_html_url < <(
-            python3 - "$dispatch_file" <<'PY'
-          import json
-          import pathlib
-          import sys
-
-          data = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
-          print(data["workflow_run_id"], data["run_url"], data["html_url"])
-          PY
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["workflow_run_id"], d["run_url"], d["html_url"])' < "$dispatch_file"
           )
           test -n "$dispatch_run_id"
           test -n "$dispatch_run_url"
@@ -107,7 +130,7 @@ jobs:
           )
           test "$created_id" = "$dispatch_run_id"
           test "$created_head" = "$main_sha"
-          test "$created_branch" = "main"
+          test "$created_branch" = "$lock_branch"
           test "$created_event" = "workflow_dispatch"
           test "$created_path" = "$TARGET_WORKFLOW_PATH"
 
@@ -115,18 +138,19 @@ jobs:
           read -r after_total matching_count matching_id < <(
             python3 -c '
           import json, sys
-          expected_sha, expected_path, expected_id = sys.argv[1], sys.argv[2], int(sys.argv[3])
+          expected_sha, expected_branch, expected_path, expected_id = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4])
           data = json.load(sys.stdin)
           matches = [
               run
               for run in data.get("workflow_runs", [])
               if run.get("head_sha") == expected_sha
+              and run.get("head_branch") == expected_branch
               and run.get("event") == "workflow_dispatch"
               and run.get("path") == expected_path
               and run.get("id") == expected_id
           ]
           print(data.get("total_count", 0), len(matches), matches[0]["id"] if matches else "")
-          ' "$main_sha" "$TARGET_WORKFLOW_PATH" "$dispatch_run_id" <<<"$after_json"
+          ' "$main_sha" "$lock_branch" "$TARGET_WORKFLOW_PATH" "$dispatch_run_id" <<<"$after_json"
           )
           test "$after_total" -eq 1
           test "$matching_count" -eq 1
@@ -137,9 +161,13 @@ jobs:
             "BOOTSTRAP_EVENT=${GITHUB_EVENT_NAME}" \
             "BOOTSTRAP_HEAD_SHA=${GITHUB_SHA}" \
             "TARGET_CANONICAL_MAIN_SHA=${main_sha}" \
+            "TARGET_IMMUTABLE_LOCK_REF=${lock_ref}" \
+            "TARGET_IMMUTABLE_LOCK_SHA=${created_lock_sha}" \
             "TARGET_WORKFLOW_PATH=${TARGET_WORKFLOW_PATH}" \
             "TARGET_WORKFLOW_BLOB_SHA1=${target_blob}" \
+            "TARGET_LOCK_REF_WORKFLOW_BLOB_SHA1=${lock_target_blob}" \
             "TARGET_PREEXISTING_WORKFLOW_DISPATCH_COUNT=${before_total}" \
+            "TARGET_PRE_DISPATCH_RECHECK_COUNT=${pre_dispatch_total}" \
             "TARGET_FRESH_WORKFLOW_DISPATCH_CREATED=YES" \
             "TARGET_FRESH_WORKFLOW_DISPATCH_RUN_ID=${dispatch_run_id}" \
             "TARGET_FRESH_WORKFLOW_DISPATCH_RUN_URL=${dispatch_html_url}" \
