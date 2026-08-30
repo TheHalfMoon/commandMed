@@ -78,7 +78,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 Decision B prospectively supersedes PR #117 only for the exact bounded pre-screen action class. It does not restore any broader historical interpretation.
 
-The authorized candidate set remains limited to the canonical PR #116 priority screening set:
+The historical PR #116 priority screening set is:
 
 ```text
 C-EM-02=Anas A. Khan, King Saud University
@@ -88,6 +88,8 @@ C-EVID-01=Carl Heneghan, University of Oxford
 C-LAB-01=Christopher Naugler, University of Calgary
 S-01=Rafael Perera, University of Oxford
 ```
+
+That historical list is not, by itself, executable authority. Immediately before any later authorized Decision B contact, each candidate MUST be reverified as a member of the then-current canonical public candidate slate and the repository record MUST bind the candidate identifier to that current-slate evidence. If membership is absent, stale, ambiguous, or cannot be verified, no message may be sent to that candidate.
 
 Only a current first-party public professional contact route may be used. If none can be reverified, no message is sent to that candidate.
 
@@ -139,7 +141,7 @@ This recommendation is not a Founder decision.
 
 ## 4. Exact Founder response required
 
-To select Decision B, the Founder must respond unambiguously after this decision surface is presented, for example:
+To select Decision B, the Founder must respond unambiguously after this decision surface is canonical and presented, for example:
 
 ```text
 FOUNDER_OUTREACH_DECISION=E004_OUTREACH_DECISION_B
@@ -151,7 +153,19 @@ To preserve the prohibition:
 FOUNDER_OUTREACH_DECISION=E004_OUTREACH_DECISION_A
 ```
 
-A later record may capture that exact response only when its ordering and content are verifiable. The current generic continuation instruction predating this exact canonical decision surface is not retroactively treated as either decision.
+No later decision record may make either option effective from response text alone. Before an outreach decision becomes effective, the canonical record MUST bind all of the following evidence:
+
+```text
+FOUNDER_IDENTITY=ATTRIBUTABLE_AND_VERIFIED
+FOUNDER_RESPONSE_SOURCE=TRUSTED_FIRST_PARTY_CHANNEL_OR_CANONICALLY_VERIFIABLE_SOURCE
+FOUNDER_RESPONSE_CONTENT=EXACT_CAPTURE
+FOUNDER_RESPONSE_TIMESTAMP=VERIFIABLE
+FOUNDER_RESPONSE_ORDERING=AFTER_THIS_DECISION_SURFACE_BECAME_CANONICAL
+```
+
+If identity, trusted source/channel, exact content, timestamp, or ordering evidence is absent or ambiguous, the response is non-operative and PR #117 remains controlling. Decision B cannot supersede PR #117 without all of that provenance evidence.
+
+The current generic continuation instruction predating this exact canonical decision surface is not retroactively treated as either decision.
 
 ## 5. Lifecycle boundaries unchanged by this request
 
@@ -178,6 +192,9 @@ PR117_NO_OUTREACH_BOUNDARY_REPRESENTED_ACCURATELY=YES
 PR116_HISTORICAL_PRESCREEN_SCOPE_REPRESENTED_ACCURATELY=YES
 DECISION_A_PRESERVES_PROHIBITION=YES
 DECISION_B_REOPENS_ONLY_PR116_PRESCREEN_SCOPE=YES
+DECISION_B_REQUIRES_CURRENT_CANONICAL_SLATE_MEMBERSHIP_EVIDENCE_PER_CANDIDATE=YES
+DECISION_EFFECT_REQUIRES_ATTRIBUTABLE_FOUNDER_IDENTITY=YES
+DECISION_EFFECT_REQUIRES_TRUSTED_SOURCE_EXACT_CONTENT_TIMESTAMP_AND_ORDERING=YES
 FOLLOW_UP_AUTHORITY_CREATED=NO
 REVIEWER_APPOINTMENT_AUTHORITY_CREATED=NO
 SCIENTIFIC_REVIEW_AUTHORITY_CREATED=NO
