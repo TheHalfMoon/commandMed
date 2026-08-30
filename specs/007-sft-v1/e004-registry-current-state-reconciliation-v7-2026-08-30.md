@@ -105,7 +105,12 @@ SPEND_AUTHORITY_EXPANDED=NO
 LARGER_OR_PAID_RUNNER_AUTHORIZED=NO
 ```
 
-This conclusion is deliberately narrow. It does not claim anything about larger runners, artifact/cache storage charges outside the prohibited persistence surface, other products, account payment configuration, or future repository visibility. Any material visibility or runner-class change requires fresh reconciliation before execution.
+This conclusion is deliberately narrow. It does not claim anything about larger runners, artifact/cache storage charges outside the prohibited persistence surface, other products, account payment configuration, or future repository visibility. It also does not resolve any separate finance/resource evidence required for later E004 tournament, model/device, personnel, access, or other operational work outside this exact bounded runtime-evidence standard-runner lane. Any material visibility or runner-class change requires fresh reconciliation before execution.
+
+```text
+BOUND_RUNTIME_EVIDENCE_RUNNER_MINUTE_FINANCE_PREFLIGHT=PASS_WHILE_PUBLIC_AND_RUNNER_CLASS_UNCHANGED
+OTHER_E004_FINANCE_RESOURCE_EVIDENCE=INCOMPLETE_UNLESS_SEPARATELY_PROVEN
+```
 
 ## Exact target workflow remains unchanged
 
@@ -156,7 +161,7 @@ ALTERNATE_TRIGGER_WORKAROUND_AUTHORIZED=NO
 LOCAL_EXECUTION_SUBSTITUTE_AUTHORIZED=NO
 ```
 
-The public-visibility transition removes the V6 private-runner finance blocker; it does **not** manufacture a dispatch transport.
+The public-visibility transition removes the V6 private-runner finance blocker for the exact bounded runtime-evidence lane; it does **not** manufacture a dispatch transport or resolve finance/resource evidence outside that lane.
 
 ## Remaining scientific, governance, and execution blockers
 
@@ -173,6 +178,7 @@ G1_A5_REAL_GATE_PASS=NO
 G2_A6_REAL_GATE_PASS=NO
 G3_A8_REAL_GATE_PASS=NO
 G4_A12_REAL_GATE_PASS=NO
+REAL_PERSONNEL_ACCESS_FINANCE_EVIDENCE=INCOMPLETE_OUTSIDE_BOUND_RUNTIME_EVIDENCE_LANE
 REAL_A1_TO_A14_PASS_SNAPSHOT=ABSENT
 
 PERSISTENT_CONVERSION_SUBJECT_WORKSPACE=INCOMPLETE
@@ -200,6 +206,7 @@ AUTHORIZED_STANDARD_PUBLIC_RUNNER_FINANCE_PREFLIGHT=PASS_WHILE_REPOSITORY_PUBLIC
 CONNECTED_AUTHORIZED_FRESH_DISPATCH_PATH=ABSENT
 TARGET_RUNTIME_EXECUTION=NOT_STARTED
 NO_RERUN_OR_TRIGGER_WORKAROUND=YES
+OTHER_E004_FINANCE_RESOURCE_EVIDENCE=INCOMPLETE_UNLESS_SEPARATELY_PROVEN
 ```
 
 A future target runtime-evidence dispatch may be considered only if a genuine fresh `workflow_dispatch` creator becomes connected and all then-current exact pre-run conditions remain true, including repository visibility, workflow byte identity, trigger identity, allowance cardinality, runner class, zero-spend boundary, and every other canonical runtime authority condition.
@@ -211,7 +218,7 @@ No target dispatch may be inferred from this reconciliation itself.
 V7 supersedes V6 only for **current-state interpretation** of:
 
 1. repository visibility; and
-2. the resulting private-repository standard-runner finance blocker.
+2. the resulting private-repository standard-runner finance blocker for this exact bounded runtime-evidence lane.
 
 V6 remains immutable historical evidence for the failed bootstrap and the state observed on 2026-08-29.
 
@@ -219,9 +226,9 @@ V6 remains immutable historical evidence for the failed bootstrap and the state 
 CURRENT_E004_FRONTIER_RECORD=e004-registry-current-state-reconciliation-v7-2026-08-30.md
 V6_HISTORICAL_RECORD_RETAINED=YES
 V6_FAILED_BOOTSTRAP_EVIDENCE_RETAINED=YES
-PRIVATE_REPOSITORY_FINANCE_BLOCKER_SUPERSEDED=YES
+PRIVATE_REPOSITORY_BOUND_RUNTIME_RUNNER_FINANCE_BLOCKER_SUPERSEDED=YES
 CONNECTED_FRESH_DISPATCH_TRANSPORT_BLOCKER_REMAINS=YES
-ALL_NON_FINANCE_E004_BLOCKERS_REMAIN_UNLESS_SEPARATELY_PROVEN=YES
+ALL_OTHER_E004_BLOCKERS_REMAIN_UNLESS_SEPARATELY_PROVEN=YES
 ```
 
 ## Exit evidence
@@ -234,6 +241,7 @@ LIVE_REPOSITORY_VISIBILITY_PUBLIC_RECORDED=YES
 VISIBILITY_CHANGE_CAUSE_NOT_FABRICATED=YES
 V6_PRIVATE_VISIBILITY_HISTORY_RETAINED=YES
 PUBLIC_STANDARD_RUNNER_FINANCE_CONCLUSION_NARROWLY_SCOPED=YES
+OTHER_FINANCE_RESOURCE_BINDINGS_NOT_DECLARED_RESOLVED=YES
 TARGET_WORKFLOW_BLOB_UNCHANGED=YES
 TARGET_TRIGGER_WORKFLOW_DISPATCH_ONLY=YES
 TARGET_RUNTIME_WORKFLOW_DISPATCH_COUNT=0
