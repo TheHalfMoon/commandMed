@@ -103,7 +103,7 @@ jobs:
           cat > "$proxy_script" <<'PY'
           import select, socket, socketserver, sys, threading
           from pathlib import Path
-          ALLOWED = {"github.com", "pypi.org", "files.pythonhosted.org", "download.pytorch.org"}
+          ALLOWED = {"github.com", "pypi.org", "files.pythonhosted.org", "download.pytorch.org", "download-r2.pytorch.org"}
           ready, log_path = Path(sys.argv[1]), Path(sys.argv[2])
           lock = threading.Lock()
           def record(line):
