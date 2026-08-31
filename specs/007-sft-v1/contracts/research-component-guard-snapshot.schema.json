@@ -68,6 +68,12 @@
       "on_failure": "REJECT_SNAPSHOT"
     },
     {
+      "id": "EXACT_FROZEN_SENTINEL_SET",
+      "expression": "the set of fixture_results.sentinel_fixture_sha256 equals the exact sentinel_fixture_sha256s frozen by the referenced scope binding",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_SNAPSHOT"
+    },
+    {
       "id": "EXACT_SEVEN_ZERO_VIOLATION_RESULTS",
       "expression": "fixture_results resolve seven content-addressed sentinel fixtures covering each frozen guard exactly once with violation_count == 0 and disposition == PASS",
       "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
