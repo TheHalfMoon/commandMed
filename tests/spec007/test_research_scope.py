@@ -353,6 +353,7 @@ def test_guard_snapshot_is_content_addressed_and_zero_violation_only() -> None:
         snapshot,
         scope_binding_sha256=bundle["binding"]["binding_sha256"],
         run_manifest_sha256=compute_run_manifest_sha256(bundle["manifest"]),
+        expected_sentinel_fixture_sha256s=bundle["binding"]["sentinel_fixture_sha256s"],
         sentinel_fixture_store=bundle["fixture_store"],
     ) == []
 
@@ -362,10 +363,41 @@ def test_guard_snapshot_is_content_addressed_and_zero_violation_only() -> None:
         tampered,
         scope_binding_sha256=bundle["binding"]["binding_sha256"],
         run_manifest_sha256=compute_run_manifest_sha256(bundle["manifest"]),
+        expected_sentinel_fixture_sha256s=bundle["binding"]["sentinel_fixture_sha256s"],
         sentinel_fixture_store=bundle["fixture_store"],
     )
     assert any("violation_count must equal integer 0" in error for error in errors)
     assert any("snapshot_sha256 mismatch" in error for error in errors)
+
+
+def test_guard_snapshot_cannot_substitute_a_different_valid_fixture_set() -> None:
+    bundle = valid_bundle()
+    snapshot = guard_snapshot(bundle)
+    original_sha = snapshot["fixture_results"][0]["sentinel_fixture_sha256"]
+    original_fixture = bundle["fixture_store"][original_sha]
+
+    replacement = deepcopy(original_fixture)
+    replacement["fixture_id"] = replacement["fixture_id"] + ":replacement"
+    replacement["prompt_text"] = replacement["prompt_text"] + " Replacement."
+    replacement["fixture_sha256"] = compute_research_component_sentinel_fixture_sha256(
+        replacement
+    )
+    replacement_sha = replacement["fixture_sha256"]
+    bundle["fixture_store"][replacement_sha] = replacement
+    snapshot["fixture_results"][0]["sentinel_fixture_sha256"] = replacement_sha
+    snapshot["snapshot_sha256"] = compute_research_component_guard_snapshot_sha256(
+        snapshot
+    )
+
+    errors = validate_research_component_guard_snapshot(
+        snapshot,
+        scope_binding_sha256=bundle["binding"]["binding_sha256"],
+        run_manifest_sha256=compute_run_manifest_sha256(bundle["manifest"]),
+        expected_sentinel_fixture_sha256s=bundle["binding"]["sentinel_fixture_sha256s"],
+        sentinel_fixture_store=bundle["fixture_store"],
+    )
+
+    assert any("exact sentinel fixture set" in error for error in errors)
 
 
 def test_global_execution_authority_does_not_imply_successor_execution_authority() -> None:
