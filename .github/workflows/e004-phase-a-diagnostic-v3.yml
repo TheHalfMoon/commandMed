@@ -43,7 +43,7 @@ jobs:
       AUTHORIZED_SPEND_USD: '0'
       MAX_INDEX_BYTES: '8388608'
       MAX_RELEVANT_WHEELS: '8'
-      MAX_REDIRECTS_PER_WHEEL: '5'
+      MAX_REDIRECTS_PER_REQUEST: '5'
 
     steps:
       - name: Collect bounded Phase A route evidence
@@ -101,9 +101,9 @@ jobs:
           )
           MAX_INDEX_BYTES = int(os.environ["MAX_INDEX_BYTES"])
           MAX_RELEVANT_WHEELS = int(os.environ["MAX_RELEVANT_WHEELS"])
-          MAX_REDIRECTS = int(os.environ["MAX_REDIRECTS_PER_WHEEL"])
+          MAX_REDIRECTS = int(os.environ["MAX_REDIRECTS_PER_REQUEST"])
           REDIRECT_CODES = {301, 302, 303, 307, 308}
-          USER_AGENT = "commandMed-e004-v3-diagnostic/3"
+          USER_AGENT = "commandMed-e004-v3-diagnostic/4"
 
           if REQUIREMENT != "torch==2.11.0+cpu":
               raise SystemExit("unexpected exact requirement")
@@ -145,6 +145,27 @@ jobs:
                   (parsed.scheme.lower(), netloc, path, "", "")
               )
 
+          def safe_redirect_target(current_url, location):
+              resolved = urllib.parse.urljoin(current_url, location)
+              scheme = urllib.parse.urlsplit(resolved).scheme.lower()
+              if scheme not in {"http", "https"}:
+                  raise ValueError("unsafe redirect scheme")
+              return resolved
+
+          class NoFollowRedirectHandler(urllib.request.HTTPRedirectHandler):
+              def redirect_request(
+                  self, req, fp, code, msg, headers, newurl
+              ):
+                  if req.get_method() not in {"GET", "HEAD"}:
+                      raise RuntimeError("unexpected method reached redirect handler")
+                  # Returning None makes HTTPRedirectHandler return before its
+                  # inherited fp.read(). The caller receives HTTPError, captures
+                  # headers, and closes the response without reading its body.
+                  return None
+
+          def no_follow_opener():
+              return urllib.request.build_opener(NoFollowRedirectHandler())
+
           class LinkParser(html.parser.HTMLParser):
               def __init__(self):
                   super().__init__()
@@ -157,22 +178,101 @@ jobs:
                   if href:
                       self.hrefs.append(href)
 
-          index_request = urllib.request.Request(
-              INDEX_URL,
-              headers={"User-Agent": USER_AGENT},
-              method="GET",
-          )
-          with urllib.request.urlopen(index_request, timeout=30) as response:
-              index_status = int(getattr(response, "status", response.getcode()))
-              index_final_url = response.geturl()
-              index_bytes = response.read(MAX_INDEX_BYTES + 1)
+          def bounded_index_fetch(start_url):
+              """Follow bounded GET redirects; read only final metadata body."""
+              current_url = start_url
+              redirects = []
 
-          if len(index_bytes) > MAX_INDEX_BYTES:
-              raise SystemExit("PyTorch index metadata exceeded bounded byte limit")
-          if index_status != 200:
-              raise SystemExit(f"unexpected PyTorch index status: {index_status}")
+              for _ in range(MAX_REDIRECTS + 1):
+                  request = urllib.request.Request(
+                      current_url,
+                      headers={"User-Agent": USER_AGENT},
+                      method="GET",
+                  )
+                  if request.get_method() != "GET":
+                      raise RuntimeError("index metadata request is not GET")
+
+                  opener = no_follow_opener()
+                  try:
+                      response = opener.open(request, timeout=30)
+                  except urllib.error.HTTPError as exc:
+                      status = int(exc.code)
+                      response_url = exc.geturl()
+                      location = (
+                          exc.headers.get("Location")
+                          or exc.headers.get("URI")
+                      )
+                      # Never read redirect/error response bodies.
+                      exc.close()
+
+                      if status in REDIRECT_CODES and location:
+                          if len(redirects) >= MAX_REDIRECTS:
+                              raise RuntimeError(
+                                  "index metadata redirect bound exceeded"
+                              )
+                          try:
+                              resolved = safe_redirect_target(
+                                  current_url, location
+                              )
+                          except ValueError as error:
+                              raise RuntimeError(
+                                  "index metadata redirect scheme rejected"
+                              ) from error
+                          redirects.append((status, resolved))
+                          current_url = resolved
+                          continue
+
+                      raise RuntimeError(
+                          f"unexpected PyTorch index HTTP status: {status}"
+                      )
+                  except urllib.error.URLError as exc:
+                      raise RuntimeError(
+                          "PyTorch index metadata route unresolved: "
+                          f"{type(exc.reason).__name__}"
+                      ) from exc
+                  else:
+                      try:
+                          status = int(
+                              getattr(response, "status", response.getcode())
+                          )
+                          response_url = response.geturl()
+                          # This is the only body read in the index path and it
+                          # is bounded to MAX_INDEX_BYTES + 1 for overflow proof.
+                          body = response.read(MAX_INDEX_BYTES + 1)
+                      finally:
+                          response.close()
+
+                      if status != 200:
+                          raise RuntimeError(
+                              f"unexpected PyTorch index status: {status}"
+                          )
+                      if len(body) > MAX_INDEX_BYTES:
+                          raise RuntimeError(
+                              "PyTorch index metadata exceeded bounded byte limit"
+                          )
+                      return status, response_url, body, redirects
+
+              raise RuntimeError("index metadata redirect loop exhausted")
+
+          (
+              index_status,
+              index_final_url,
+              index_bytes,
+              index_redirects,
+          ) = bounded_index_fetch(INDEX_URL)
 
           print(f"INDEX_HTTP_STATUS={index_status}")
+          print(f"INDEX_REDIRECT_COUNT={len(index_redirects)}")
+          for redirect_index, (status, redirect_url) in enumerate(
+              index_redirects, start=1
+          ):
+              print(
+                  f"INDEX_REDIRECT_{redirect_index}_STATUS={status}"
+              )
+              print(
+                  f"INDEX_REDIRECT_{redirect_index}_ROUTE="
+                  f"{sanitized_url(redirect_url)}"
+              )
           print(f"INDEX_FINAL_ROUTE={sanitized_url(index_final_url)}")
           print(f"INDEX_METADATA_BYTES={len(index_bytes)}")
           print(
@@ -221,19 +321,6 @@ jobs:
           if len(relevant) > MAX_RELEVANT_WHEELS:
               raise SystemExit("relevant wheel set exceeded bounded cardinality")
 
-          class NoFollowHeadRedirectHandler(
-              urllib.request.HTTPRedirectHandler
-          ):
-              def redirect_request(
-                  self, req, fp, code, msg, headers, newurl
-              ):
-                  if req.get_method() != "HEAD":
-                      raise RuntimeError("non-HEAD request reached redirect handler")
-                  # Returning None stops HTTPRedirectHandler before its fp.read().
-                  # The caller catches HTTPError, records Location, closes the
-                  # response without reading, and issues the next HEAD manually.
-                  return None
-
           observed_hosts = set()
           denied_hosts = set()
           route_probe_failures = 0
@@ -262,9 +349,7 @@ jobs:
                   if request.get_method() != "HEAD":
                       raise RuntimeError("route probe is not HEAD")
 
-                  opener = urllib.request.build_opener(
-                      NoFollowHeadRedirectHandler()
-                  )
+                  opener = no_follow_opener()
                   try:
                       response = opener.open(request, timeout=30)
                   except urllib.error.HTTPError as exc:
@@ -286,13 +371,11 @@ jobs:
                                   redirects,
                                   "MAX_REDIRECTS_EXCEEDED",
                               )
-                          resolved = urllib.parse.urljoin(
-                              current_url, location
-                          )
-                          scheme = urllib.parse.urlsplit(
-                              resolved
-                          ).scheme.lower()
-                          if scheme not in {"http", "https"}:
+                          try:
+                              resolved = safe_redirect_target(
+                                  current_url, location
+                              )
+                          except ValueError:
                               return (
                                   None,
                                   None,
@@ -316,7 +399,7 @@ jobs:
                           getattr(response, "status", response.getcode())
                       )
                       response_url = response.geturl()
-                      # A successful HEAD response is also closed without read.
+                      # A successful HEAD response is closed without read.
                       response.close()
                       return status, response_url, redirects, None
 
