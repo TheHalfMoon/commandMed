@@ -103,7 +103,7 @@ jobs:
           MAX_RELEVANT_WHEELS = int(os.environ["MAX_RELEVANT_WHEELS"])
           MAX_REDIRECTS = int(os.environ["MAX_REDIRECTS_PER_REQUEST"])
           REDIRECT_CODES = {301, 302, 303, 307, 308}
-          USER_AGENT = "commandMed-e004-v3-diagnostic/6"
+          USER_AGENT = "commandMed-e004-v3-diagnostic/7"
 
           if REQUIREMENT != "torch==2.11.0+cpu":
               raise SystemExit("unexpected exact requirement")
@@ -134,7 +134,7 @@ jobs:
               try:
                   explicit_port = parsed.port
               except ValueError:
-                  explicit_port = None
+                  return host, scheme, None, False
               if explicit_port is not None:
                   port = explicit_port
               elif scheme == "https":
@@ -143,7 +143,7 @@ jobs:
                   port = 80
               else:
                   port = None
-              return host, scheme, port
+              return host, scheme, port, True
 
           def sanitized_url(url):
               """Return scheme/host/port/path only; never log query or fragment."""
@@ -167,27 +167,35 @@ jobs:
           denied_hosts = set()
 
           def record_route_decision(url):
-              host, scheme, port = route_components(url)
+              host, scheme, port, port_valid = route_components(url)
               if not host:
                   print(
                       "ALLOWLIST_DECISION host=INVALID scheme="
-                      f"{scheme or 'NONE'} port={port or 'NONE'} result=DENY"
+                      f"{scheme or 'NONE'} port="
+                      f"{'INVALID' if not port_valid else (port or 'NONE')} "
+                      "result=DENY"
                   )
                   return ""
 
               # Exact historical Phase A proxy semantics: only CONNECT to an
-              # allowlisted canonical host on port 443 is allowed. A URL can
-              # map to that CONNECT decision only when it is HTTPS on port 443.
+              # allowlisted canonical host on port 443 is allowed. Invalid
+              # explicit ports remain invalid; they never fall back to 443.
               allowed = (
-                  host in ALLOWLIST and scheme == "https" and port == 443
+                  port_valid
+                  and host in ALLOWLIST
+                  and scheme == "https"
+                  and port == 443
               )
               result = "ALLOW" if allowed else "DENY"
               observed_hosts.add(host)
               if not allowed:
                   denied_hosts.add(host)
+              port_text = "INVALID" if not port_valid else (
+                  str(port) if port is not None else "NONE"
+              )
               print(
                   f"ALLOWLIST_DECISION host={host} scheme={scheme or 'NONE'} "
-                  f"port={port if port is not None else 'NONE'} result={result}"
+                  f"port={port_text} result={result}"
               )
               return host
 
