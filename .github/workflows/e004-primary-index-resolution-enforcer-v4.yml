@@ -1,0 +1,697 @@
+# Reusable identity enforcer and bounded diagnostic body for E004 V4.
+# Inert unless called by a separately reviewed successor workflow.
+# No credentials, checkout, dependency installation, package artifact-body download,
+# target workflow execution/mutation, model execution, benchmark/contamination/A15/training,
+# artifact/cache upload, repository mutation, paid runner, procurement, payment, or spend.
+
+name: E004 primary-index resolution enforcer V4
+
+on:
+  workflow_call:
+    inputs:
+      expected_predecessor_sha:
+        description: Exact canonical V4 enforcer merge SHA expected as the caller merge predecessor.
+        required: true
+        type: string
+      successor_pr_number:
+        description: Exact successor diagnostic caller PR number bound before final review.
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  enforce-and-diagnose:
+    # The called workflow inherits the caller push event context. Reject every event
+    # except the one-shot successor merge push before starting a network-capable job.
+    if: >-
+      github.event_name == 'push' &&
+      github.repository == 'TheHalfMoon/commandMed' &&
+      github.ref == 'refs/heads/main' &&
+      github.event.before == inputs.expected_predecessor_sha &&
+      github.event.after == github.sha &&
+      github.event.head_commit.id == github.sha &&
+      github.event.forced == false &&
+      github.event.created == false &&
+      github.event.deleted == false &&
+      github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      EXPECTED_PREDECESSOR_SHA: ${{ inputs.expected_predecessor_sha }}
+      SUCCESSOR_PR_NUMBER: ${{ inputs.successor_pr_number }}
+      AUTHORIZED_SPEND_USD: '0'
+      PRIMARY_INDEX_URL: https://pypi.org/simple/torch/
+      EXTRA_INDEX_URL: https://download.pytorch.org/whl/cpu/torch/
+      EXACT_REQUIREMENT: torch==2.11.0+cpu
+      HISTORICAL_TARGET_HEAD_SHA: ef1be50f4a076d9f03abfffee342d2c244b0d199
+      HISTORICAL_TARGET_WORKFLOW_BLOB_SHA1: 591317f1f570480b9ac68e7956d070db8ed5ef45
+      HISTORICAL_TARGET_WORKFLOW_RAW_SHA256: 95512021832788d5cd6362e6fa9ea0c7771bf81f5725ae4ab18b4d5199967327
+      TARGET_ALLOWLIST: github.com,pypi.org,files.pythonhosted.org,download.pytorch.org
+      MAX_GITHUB_METADATA_BYTES: '2097152'
+      MAX_INDEX_BYTES: '16777216'
+      MAX_INDEX_LINKS: '12000'
+      MAX_EXACT_CANDIDATES_PER_INDEX: '64'
+      MAX_INDEX_REDIRECTS: '3'
+
+    steps:
+      - name: Enforce merge identity then collect bounded index evidence
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          # Local fail-closed checks precede every network request.
+          test "${GITHUB_EVENT_NAME:-}" = "push"
+          test "${GITHUB_REF:-}" = "refs/heads/main"
+          test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
+          [[ "${GITHUB_SHA:-}" =~ ^[0-9a-f]{40}$ ]]
+          [[ "${EXPECTED_PREDECESSOR_SHA:-}" =~ ^[0-9a-f]{40}$ ]]
+          case "${SUCCESSOR_PR_NUMBER:-}" in ''|*[!0-9]*) exit 1 ;; esac
+          test "${SUCCESSOR_PR_NUMBER}" -gt 0
+          test "${GITHUB_RUN_ATTEMPT:-}" = "1"
+          test "${AUTHORIZED_SPEND_USD}" = "0"
+          test -r "${GITHUB_EVENT_PATH:?missing GITHUB_EVENT_PATH}"
+          command -v python3 >/dev/null
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+          unset GOOGLE_APPLICATION_CREDENTIALS AZURE_CLIENT_SECRET
+
+          for name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN \
+                      AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN \
+                      GOOGLE_APPLICATION_CREDENTIALS AZURE_CLIENT_SECRET; do
+            test -z "${!name:-}"
+          done
+
+          python3 <<'PY'
+          import hashlib
+          import html.parser
+          import json
+          import os
+          import platform
+          import re
+          import sys
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          from pip._vendor.packaging.specifiers import InvalidSpecifier, SpecifierSet
+          from pip._vendor.packaging.tags import sys_tags
+          from pip._vendor.packaging.utils import (
+              InvalidSdistFilename,
+              InvalidWheelFilename,
+              canonicalize_name,
+              parse_sdist_filename,
+              parse_wheel_filename,
+          )
+          from pip._vendor.packaging.version import Version
+
+          REPOSITORY = "TheHalfMoon/commandMed"
+          EXPECTED_PREDECESSOR = os.environ["EXPECTED_PREDECESSOR_SHA"]
+          SUCCESSOR_PR_TEXT = os.environ["SUCCESSOR_PR_NUMBER"]
+          GITHUB_SHA = os.environ["GITHUB_SHA"]
+          GITHUB_EVENT_PATH = os.environ["GITHUB_EVENT_PATH"]
+          PRIMARY_INDEX_URL = os.environ["PRIMARY_INDEX_URL"]
+          EXTRA_INDEX_URL = os.environ["EXTRA_INDEX_URL"]
+          REQUIREMENT = os.environ["EXACT_REQUIREMENT"]
+          ALLOWLIST = tuple(
+              item.strip().lower().rstrip(".")
+              for item in os.environ["TARGET_ALLOWLIST"].split(",")
+              if item.strip()
+          )
+          MAX_GITHUB_BYTES = int(os.environ["MAX_GITHUB_METADATA_BYTES"])
+          MAX_INDEX_BYTES = int(os.environ["MAX_INDEX_BYTES"])
+          MAX_INDEX_LINKS = int(os.environ["MAX_INDEX_LINKS"])
+          MAX_EXACT = int(os.environ["MAX_EXACT_CANDIDATES_PER_INDEX"])
+          MAX_REDIRECTS = int(os.environ["MAX_INDEX_REDIRECTS"])
+          AUTHORIZED_SPEND = os.environ["AUTHORIZED_SPEND_USD"]
+          EXPECTED_VERSION = Version("2.11.0+cpu")
+          PYTHON_VERSION = Version(platform.python_version())
+          REDIRECT_CODES = {301, 302, 303, 307, 308}
+
+          if not re.fullmatch(r"[0-9a-f]{40}", EXPECTED_PREDECESSOR):
+              raise SystemExit("invalid expected predecessor identity")
+          if not re.fullmatch(r"[0-9a-f]{40}", GITHUB_SHA):
+              raise SystemExit("invalid github sha identity")
+          if not SUCCESSOR_PR_TEXT.isdigit() or int(SUCCESSOR_PR_TEXT) <= 0:
+              raise SystemExit("invalid successor PR number")
+          SUCCESSOR_PR = int(SUCCESSOR_PR_TEXT)
+          if REQUIREMENT != "torch==2.11.0+cpu":
+              raise SystemExit("unexpected exact requirement")
+          if AUTHORIZED_SPEND != "0":
+              raise SystemExit("unexpected spend authority")
+          if ALLOWLIST != (
+              "github.com",
+              "pypi.org",
+              "files.pythonhosted.org",
+              "download.pytorch.org",
+          ):
+              raise SystemExit("unexpected historical allowlist")
+          if MAX_REDIRECTS != 3:
+              raise SystemExit("unexpected index redirect bound")
+
+          # Re-read the original caller push event from the local runner file before network.
+          with open(GITHUB_EVENT_PATH, "rb") as fh:
+              raw_event = fh.read(MAX_GITHUB_BYTES + 1)
+          if len(raw_event) > MAX_GITHUB_BYTES:
+              raise SystemExit("local event payload exceeded bound")
+          try:
+              event = json.loads(raw_event)
+          except json.JSONDecodeError as exc:
+              raise SystemExit("invalid local push event JSON") from exc
+          if not isinstance(event, dict):
+              raise SystemExit("local event payload must be an object")
+          if event.get("before") != EXPECTED_PREDECESSOR:
+              raise SystemExit("event predecessor mismatch")
+          if event.get("after") != GITHUB_SHA:
+              raise SystemExit("event after mismatch")
+          head_commit = event.get("head_commit")
+          if not isinstance(head_commit, dict) or head_commit.get("id") != GITHUB_SHA:
+              raise SystemExit("event head commit mismatch")
+          if event.get("forced") is not False:
+              raise SystemExit("forced push prohibited")
+          if event.get("created") is not False:
+              raise SystemExit("ref creation prohibited")
+          if event.get("deleted") is not False:
+              raise SystemExit("ref deletion prohibited")
+          repository = event.get("repository")
+          if not isinstance(repository, dict) or repository.get("full_name") != REPOSITORY:
+              raise SystemExit("event repository mismatch")
+          if os.environ.get("GITHUB_EVENT_NAME") != "push":
+              raise SystemExit("event name mismatch")
+          if os.environ.get("GITHUB_REPOSITORY") != REPOSITORY:
+              raise SystemExit("runtime repository mismatch")
+          if os.environ.get("GITHUB_REF") != "refs/heads/main":
+              raise SystemExit("runtime ref mismatch")
+          if os.environ.get("GITHUB_RUN_ATTEMPT") != "1":
+              raise SystemExit("rerun prohibited")
+
+          print("V4_LOCAL_EVENT_GATE=PASS")
+          print(f"V4_EXPECTED_PREDECESSOR_SHA={EXPECTED_PREDECESSOR}")
+          print(f"V4_SUCCESSOR_PR_NUMBER={SUCCESSOR_PR}")
+          print(f"V4_PUSH_HEAD_SHA={GITHUB_SHA}")
+          print(f"V4_RUN_ID={os.environ.get('GITHUB_RUN_ID', 'UNSET')}")
+          print("V4_RUN_ATTEMPT=1")
+          print("V4_AUTHORIZED_SPEND_USD=0")
+
+          class NoRedirectHandler(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+
+          def direct_opener():
+              # Do not inherit environment proxy credentials or proxy routing.
+              return urllib.request.build_opener(
+                  urllib.request.ProxyHandler({}),
+                  NoRedirectHandler(),
+              )
+
+          def route_parts(url):
+              parsed = urllib.parse.urlsplit(url)
+              host = (parsed.hostname or "").lower().rstrip(".")
+              try:
+                  explicit_port = parsed.port
+              except ValueError:
+                  return parsed, host, None, False
+              if explicit_port is not None:
+                  port = explicit_port
+              elif parsed.scheme.lower() == "https":
+                  port = 443
+              elif parsed.scheme.lower() == "http":
+                  port = 80
+              else:
+                  port = None
+              return parsed, host, port, True
+
+          def assert_exact_github_api_url(url):
+              parsed, host, port, valid_port = route_parts(url)
+              if (
+                  not valid_port
+                  or parsed.scheme.lower() != "https"
+                  or host != "api.github.com"
+                  or port != 443
+                  or parsed.username is not None
+                  or parsed.password is not None
+                  or parsed.fragment
+              ):
+                  raise RuntimeError("GitHub identity URL outside authorized route")
+
+          def public_github_json(url):
+              assert_exact_github_api_url(url)
+              request = urllib.request.Request(
+                  url,
+                  headers={
+                      "User-Agent": "commandMed-e004-v4-identity/1",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                  },
+                  method="GET",
+              )
+              if request.has_header("Authorization"):
+                  raise RuntimeError("authorization header prohibited")
+              opener = direct_opener()
+              try:
+                  response = opener.open(request, timeout=30)
+              except urllib.error.HTTPError as exc:
+                  status = int(exc.code)
+                  exc.close()
+                  if status in REDIRECT_CODES:
+                      raise RuntimeError("GitHub identity redirect prohibited") from exc
+                  raise RuntimeError(f"GitHub identity HTTP status {status}") from exc
+              except urllib.error.URLError as exc:
+                  raise RuntimeError(
+                      "GitHub identity route unresolved: " + type(exc.reason).__name__
+                  ) from exc
+              try:
+                  status = int(getattr(response, "status", response.getcode()))
+                  final_url = response.geturl()
+                  assert_exact_github_api_url(final_url)
+                  if final_url != url:
+                      raise RuntimeError("GitHub identity URL changed")
+                  content_type = response.headers.get("Content-Type", "")
+                  if not (
+                      content_type.lower().startswith("application/json")
+                      or content_type.lower().startswith("application/vnd.github+json")
+                  ):
+                      raise RuntimeError("unexpected GitHub identity content type")
+                  body = response.read(MAX_GITHUB_BYTES + 1)
+              finally:
+                  response.close()
+              if status != 200:
+                  raise RuntimeError(f"GitHub identity HTTP status {status}")
+              if len(body) > MAX_GITHUB_BYTES:
+                  raise RuntimeError("GitHub identity response exceeded byte bound")
+              try:
+                  value = json.loads(body)
+              except json.JSONDecodeError as exc:
+                  raise RuntimeError("invalid GitHub identity JSON") from exc
+              if not isinstance(value, dict):
+                  raise RuntimeError("GitHub identity response must be an object")
+              return value, hashlib.sha256(body).hexdigest(), len(body)
+
+          # Exactly three public unauthenticated GitHub REST reads are performed.
+          pull_url = f"https://api.github.com/repos/{REPOSITORY}/pulls/{SUCCESSOR_PR}"
+          merge_url = f"https://api.github.com/repos/{REPOSITORY}/commits/{GITHUB_SHA}"
+          pull, pull_sha256, pull_bytes = public_github_json(pull_url)
+
+          if pull.get("number") != SUCCESSOR_PR:
+              raise SystemExit("pull number mismatch")
+          if pull.get("state") != "closed" or pull.get("merged") is not True:
+              raise SystemExit("successor pull is not merged")
+          base = pull.get("base")
+          head = pull.get("head")
+          if not isinstance(base, dict) or not isinstance(head, dict):
+              raise SystemExit("pull base/head metadata missing")
+          base_repo = base.get("repo")
+          head_repo = head.get("repo")
+          if not isinstance(base_repo, dict) or base_repo.get("full_name") != REPOSITORY:
+              raise SystemExit("pull base repository mismatch")
+          if base.get("ref") != "main" or base.get("sha") != EXPECTED_PREDECESSOR:
+              raise SystemExit("pull base identity mismatch")
+          if not isinstance(head_repo, dict) or head_repo.get("full_name") != REPOSITORY:
+              raise SystemExit("fork head provenance prohibited")
+          pr_head_sha = head.get("sha")
+          if not isinstance(pr_head_sha, str) or not re.fullmatch(r"[0-9a-f]{40}", pr_head_sha):
+              raise SystemExit("invalid pull head SHA")
+          if pull.get("merge_commit_sha") != GITHUB_SHA:
+              raise SystemExit("pull merge commit mismatch")
+
+          merge, merge_sha256, merge_bytes = public_github_json(merge_url)
+          if merge.get("sha") != GITHUB_SHA:
+              raise SystemExit("merge commit response SHA mismatch")
+          parents = merge.get("parents")
+          if not isinstance(parents, list) or len(parents) != 2:
+              raise SystemExit("merge-commit semantics required")
+          if parents[0].get("sha") != EXPECTED_PREDECESSOR:
+              raise SystemExit("merge first parent mismatch")
+          if parents[1].get("sha") != pr_head_sha:
+              raise SystemExit("merge second parent mismatch")
+          merge_commit = merge.get("commit")
+          if not isinstance(merge_commit, dict):
+              raise SystemExit("merge commit metadata missing")
+          merge_tree = merge_commit.get("tree")
+          if not isinstance(merge_tree, dict):
+              raise SystemExit("merge tree metadata missing")
+          merge_tree_sha = merge_tree.get("sha")
+          if not isinstance(merge_tree_sha, str) or not re.fullmatch(r"[0-9a-f]{40}", merge_tree_sha):
+              raise SystemExit("invalid merge tree SHA")
+
+          head_url = f"https://api.github.com/repos/{REPOSITORY}/commits/{pr_head_sha}"
+          pull_head, head_sha256, head_bytes = public_github_json(head_url)
+          if pull_head.get("sha") != pr_head_sha:
+              raise SystemExit("pull-head commit response SHA mismatch")
+          pull_head_commit = pull_head.get("commit")
+          if not isinstance(pull_head_commit, dict):
+              raise SystemExit("pull-head commit metadata missing")
+          pull_head_tree = pull_head_commit.get("tree")
+          if not isinstance(pull_head_tree, dict):
+              raise SystemExit("pull-head tree metadata missing")
+          pull_head_tree_sha = pull_head_tree.get("sha")
+          if merge_tree_sha != pull_head_tree_sha:
+              raise SystemExit("merge tree does not equal reviewed pull-head tree")
+
+          print("V4_GITHUB_IDENTITY_GATE=PASS")
+          print("V4_GITHUB_IDENTITY_REQUEST_COUNT=3")
+          print(f"V4_SUCCESSOR_PR_HEAD_SHA={pr_head_sha}")
+          print(f"V4_MERGE_TREE_SHA={merge_tree_sha}")
+          print(f"V4_PULL_HEAD_TREE_SHA={pull_head_tree_sha}")
+          print(f"V4_PULL_METADATA_BYTES={pull_bytes}")
+          print(f"V4_PULL_METADATA_SHA256={pull_sha256}")
+          print(f"V4_MERGE_METADATA_BYTES={merge_bytes}")
+          print(f"V4_MERGE_METADATA_SHA256={merge_sha256}")
+          print(f"V4_HEAD_METADATA_BYTES={head_bytes}")
+          print(f"V4_HEAD_METADATA_SHA256={head_sha256}")
+          print("V4_GITHUB_IDENTITY_AUTHENTICATION=NONE")
+          print("V4_GITHUB_IDENTITY_REDIRECTS=NONE")
+
+          # The existing V4 scientific diagnostic surface begins only after identity PASS.
+          def canonical_host(url):
+              return (urllib.parse.urlsplit(url).hostname or "").lower().rstrip(".")
+
+          def sanitized_url(url):
+              parsed, host, port, valid_port = route_parts(url)
+              if not valid_port or not host:
+                  return "INVALID_URL"
+              rendered_host = f"[{host}]" if ":" in host and not host.startswith("[") else host
+              netloc = rendered_host if parsed.port is None else f"{rendered_host}:{parsed.port}"
+              return urllib.parse.urlunsplit(
+                  (parsed.scheme.lower(), netloc, parsed.path or "/", "", "")
+              )
+
+          def allowlist_result(url):
+              parsed, host, port, valid_port = route_parts(url)
+              allowed = (
+                  valid_port
+                  and bool(host)
+                  and parsed.username is None
+                  and parsed.password is None
+                  and host in ALLOWLIST
+                  and parsed.scheme.lower() == "https"
+                  and port == 443
+              )
+              return {
+                  "host": host or "INVALID",
+                  "scheme": parsed.scheme.lower() or "NONE",
+                  "port": "INVALID" if not valid_port else (port if port is not None else "NONE"),
+                  "result": "ALLOW" if allowed else "DENY",
+              }
+
+          class SimpleLinkParser(html.parser.HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.links = []
+
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() != "a":
+                      return
+                  values = dict(attrs)
+                  href = values.get("href")
+                  if href:
+                      self.links.append(
+                          {
+                              "href": href,
+                              "requires_python": values.get("data-requires-python"),
+                              "yanked": "data-yanked" in values,
+                          }
+                      )
+
+          def fetch_index(label, start_url, required_host):
+              current_url = start_url
+              redirects = []
+              for _ in range(MAX_REDIRECTS + 1):
+                  route = allowlist_result(current_url)
+                  print(
+                      f"{label}_METADATA_ROUTE_DECISION="
+                      + json.dumps(route, sort_keys=True, separators=(",", ":"))
+                  )
+                  if (
+                      route["result"] != "ALLOW"
+                      or route["host"] != required_host
+                      or route["scheme"] != "https"
+                      or route["port"] != 443
+                  ):
+                      raise RuntimeError(f"{label} metadata route outside exact authorized endpoint")
+                  request = urllib.request.Request(
+                      current_url,
+                      headers={
+                          "User-Agent": "commandMed-e004-v4-diagnostic/2",
+                          "Accept": "application/vnd.pypi.simple.v1+html, text/html",
+                      },
+                      method="GET",
+                  )
+                  opener = direct_opener()
+                  try:
+                      response = opener.open(request, timeout=30)
+                  except urllib.error.HTTPError as exc:
+                      status = int(exc.code)
+                      location = exc.headers.get("Location") or exc.headers.get("URI")
+                      exc.close()
+                      if status in REDIRECT_CODES and location:
+                          resolved = urllib.parse.urljoin(current_url, location)
+                          target = allowlist_result(resolved)
+                          if (
+                              target["result"] != "ALLOW"
+                              or target["host"] != required_host
+                              or target["scheme"] != "https"
+                              or target["port"] != 443
+                          ):
+                              raise RuntimeError(f"{label} redirect left exact endpoint host")
+                          redirects.append((status, resolved))
+                          if len(redirects) > MAX_REDIRECTS:
+                              raise RuntimeError(f"{label} redirect bound exceeded")
+                          current_url = resolved
+                          continue
+                      raise RuntimeError(f"{label} unexpected HTTP status {status}") from exc
+                  except urllib.error.URLError as exc:
+                      raise RuntimeError(
+                          f"{label} metadata route unresolved: {type(exc.reason).__name__}"
+                      ) from exc
+                  try:
+                      status = int(getattr(response, "status", response.getcode()))
+                      response_url = response.geturl()
+                      final = allowlist_result(response_url)
+                      if (
+                          final["result"] != "ALLOW"
+                          or final["host"] != required_host
+                          or final["scheme"] != "https"
+                          or final["port"] != 443
+                      ):
+                          raise RuntimeError(f"{label} final metadata route left exact endpoint host")
+                      content_type = response.headers.get("Content-Type", "")
+                      if "html" not in content_type.lower():
+                          raise RuntimeError(f"{label} unexpected index content type")
+                      body = response.read(MAX_INDEX_BYTES + 1)
+                  finally:
+                      response.close()
+                  if status != 200:
+                      raise RuntimeError(f"{label} unexpected metadata status {status}")
+                  if len(body) > MAX_INDEX_BYTES:
+                      raise RuntimeError(f"{label} metadata exceeded byte bound")
+                  return status, response_url, body, redirects
+              raise RuntimeError(f"{label} redirect loop exhausted")
+
+          compatible_tags = set(sys_tags())
+          tag_identity = "\n".join(sorted(str(tag) for tag in compatible_tags)).encode()
+          print(f"DIAGNOSTIC_PYTHON_VERSION={PYTHON_VERSION}")
+          print(f"DIAGNOSTIC_MACHINE={platform.machine().lower()}")
+          print(f"DIAGNOSTIC_COMPATIBLE_TAG_COUNT={len(compatible_tags)}")
+          print(
+              "DIAGNOSTIC_COMPATIBLE_TAG_SET_SHA256="
+              + hashlib.sha256(tag_identity).hexdigest()
+          )
+
+          def requires_python_allows(value):
+              if value is None or value == "":
+                  return True, "UNSPECIFIED"
+              try:
+                  specifier = SpecifierSet(value)
+              except InvalidSpecifier:
+                  return None, "INVALID"
+              return PYTHON_VERSION in specifier, "VALID"
+
+          def exact_like_name(basename):
+              return basename.lower().replace("_", "-").startswith("torch-2.11.0+cpu")
+
+          def analyze_index(label, start_url, required_host):
+              status, final_url, body, redirects = fetch_index(label, start_url, required_host)
+              print(f"{label}_INDEX_HTTP_STATUS={status}")
+              print(f"{label}_INDEX_REDIRECT_COUNT={len(redirects)}")
+              print(f"{label}_INDEX_FINAL_ROUTE={sanitized_url(final_url)}")
+              print(f"{label}_INDEX_FINAL_HOST={canonical_host(final_url)}")
+              print(f"{label}_INDEX_METADATA_BYTES={len(body)}")
+              print(f"{label}_INDEX_METADATA_SHA256={hashlib.sha256(body).hexdigest()}")
+
+              parser = SimpleLinkParser()
+              parser.feed(body.decode("utf-8", errors="strict"))
+              if len(parser.links) > MAX_INDEX_LINKS:
+                  raise RuntimeError(f"{label} index link bound exceeded")
+              print(f"{label}_INDEX_LINK_COUNT={len(parser.links)}")
+
+              exact = []
+              exact_wheels = 0
+              exact_sdists = 0
+              compatible_wheels = 0
+              viable_sdists = 0
+              allowlisted_viable = 0
+              denied_viable = 0
+              unresolved_exact_like = 0
+              invalid_requires_python = 0
+
+              for link in parser.links:
+                  full_url = urllib.parse.urljoin(final_url, link["href"])
+                  parsed = urllib.parse.urlsplit(full_url)
+                  basename = urllib.parse.unquote(parsed.path.rsplit("/", 1)[-1])
+                  kind = None
+                  version = None
+                  wheel_tags = None
+
+                  if basename.endswith(".whl"):
+                      try:
+                          distribution, parsed_version, _, parsed_tags = parse_wheel_filename(basename)
+                      except InvalidWheelFilename:
+                          if exact_like_name(basename):
+                              unresolved_exact_like += 1
+                          continue
+                      if canonicalize_name(str(distribution)) != "torch":
+                          continue
+                      version = parsed_version
+                      kind = "WHEEL"
+                      wheel_tags = parsed_tags
+                  elif basename.endswith((".tar.gz", ".zip")):
+                      try:
+                          distribution, parsed_version = parse_sdist_filename(basename)
+                      except InvalidSdistFilename:
+                          if exact_like_name(basename):
+                              unresolved_exact_like += 1
+                          continue
+                      if canonicalize_name(str(distribution)) != "torch":
+                          continue
+                      version = parsed_version
+                      kind = "SDIST"
+                  else:
+                      if exact_like_name(basename):
+                          unresolved_exact_like += 1
+                      continue
+
+                  if version != EXPECTED_VERSION:
+                      continue
+
+                  python_ok, requires_state = requires_python_allows(link["requires_python"])
+                  if python_ok is None:
+                      invalid_requires_python += 1
+                  route = allowlist_result(full_url)
+                  record = {
+                      "allowlist_result": route["result"],
+                      "basename": basename,
+                      "host": route["host"],
+                      "kind": kind,
+                      "port": route["port"],
+                      "requires_python_state": requires_state,
+                      "route": sanitized_url(full_url),
+                      "scheme": route["scheme"],
+                      "yanked": bool(link["yanked"]),
+                  }
+
+                  viable = False
+                  if kind == "WHEEL":
+                      exact_wheels += 1
+                      tag_ok = not compatible_tags.isdisjoint(wheel_tags)
+                      record["wheel_tag_compatible"] = tag_ok
+                      record["python_compatible"] = python_ok
+                      viable = tag_ok and python_ok is True and not link["yanked"]
+                      if viable:
+                          compatible_wheels += 1
+                  else:
+                      exact_sdists += 1
+                      record["wheel_tag_compatible"] = None
+                      record["python_compatible"] = python_ok
+                      viable = python_ok is True and not link["yanked"]
+                      if viable:
+                          viable_sdists += 1
+
+                  record["viable_exact_candidate"] = viable
+                  if viable:
+                      if route["result"] == "ALLOW":
+                          allowlisted_viable += 1
+                      else:
+                          denied_viable += 1
+                  exact.append(record)
+
+              if len(exact) > MAX_EXACT:
+                  raise RuntimeError(f"{label} exact candidate bound exceeded")
+              exact.sort(key=lambda item: (item["kind"], item["basename"], item["route"]))
+              for index, item in enumerate(exact, start=1):
+                  print(
+                      f"{label}_EXACT_CANDIDATE_{index}="
+                      + json.dumps(item, sort_keys=True, separators=(",", ":"))
+                  )
+
+              print(f"{label}_EXACT_VERSION_CANDIDATE_COUNT={len(exact)}")
+              print(f"{label}_EXACT_WHEEL_COUNT={exact_wheels}")
+              print(f"{label}_COMPATIBLE_WHEEL_COUNT={compatible_wheels}")
+              print(f"{label}_EXACT_SDIST_COUNT={exact_sdists}")
+              print(f"{label}_VIABLE_SDIST_COUNT={viable_sdists}")
+              print(f"{label}_ALLOWLISTED_VIABLE_ROUTE_COUNT={allowlisted_viable}")
+              print(f"{label}_DENIED_VIABLE_ROUTE_COUNT={denied_viable}")
+              print(f"{label}_UNRESOLVED_EXACT_LIKE_COUNT={unresolved_exact_like}")
+              print(f"{label}_INVALID_REQUIRES_PYTHON_COUNT={invalid_requires_python}")
+              return {
+                  "candidate_count": len(exact),
+                  "allowlisted_viable": allowlisted_viable,
+                  "denied_viable": denied_viable,
+                  "unresolved": unresolved_exact_like + invalid_requires_python,
+              }
+
+          primary = analyze_index("PRIMARY", PRIMARY_INDEX_URL, "pypi.org")
+          extra = analyze_index("EXTRA", EXTRA_INDEX_URL, "download.pytorch.org")
+
+          total_candidates = primary["candidate_count"] + extra["candidate_count"]
+          total_allowlisted = primary["allowlisted_viable"] + extra["allowlisted_viable"]
+          total_denied = primary["denied_viable"] + extra["denied_viable"]
+          total_unresolved = primary["unresolved"] + extra["unresolved"]
+
+          if primary["unresolved"]:
+              primary_state = "NEEDS_EVIDENCE"
+          elif primary["candidate_count"] == 0:
+              primary_state = "OBSERVED_EMPTY"
+          else:
+              primary_state = "OBSERVED_NONEMPTY"
+
+          if total_unresolved:
+              combined_state = "NEEDS_EVIDENCE"
+          elif total_allowlisted > 0:
+              combined_state = "OBSERVED_ALLOWLISTED_COMPATIBLE_ROUTE"
+          elif total_candidates > 0 and total_denied > 0:
+              combined_state = "OBSERVED_NO_ALLOWLISTED_COMPATIBLE_ROUTE"
+          elif total_candidates == 0:
+              combined_state = "OBSERVED_NO_EXACT_CANDIDATE"
+          else:
+              combined_state = "NEEDS_EVIDENCE"
+
+          print(f"COMBINED_EXACT_VERSION_CANDIDATE_COUNT={total_candidates}")
+          print(f"COMBINED_ALLOWLISTED_VIABLE_ROUTE_COUNT={total_allowlisted}")
+          print(f"COMBINED_DENIED_VIABLE_ROUTE_COUNT={total_denied}")
+          print(f"COMBINED_UNRESOLVED_EXACT_LIKE_COUNT={total_unresolved}")
+          print(f"PRIMARY_PYPI_INDEX_EXACT_CANDIDATE_SET={primary_state}")
+          print(f"COMBINED_PIP_INDEX_RESOLUTION_EXCLUSION={combined_state}")
+          print("STATIC_WORKFLOW_DEFECT_PROVEN_BY_V4=NEEDS_RECONCILIATION")
+          print("PHASE_A_FAILURE_CAUSE=NEEDS_RECONCILIATION")
+          print("HISTORICAL_FAILURE_CAUSE_ATTRIBUTED_TO_DOWNLOAD_R2=NO")
+          print("HISTORICAL_EXACT_DENY_LINE_CLAIMED=NO")
+          print("V4_DIAGNOSTIC_COMPLETED=YES")
+          print("TARGET_WORKFLOW_EXECUTED=NO")
+          print("TARGET_WORKFLOW_MUTATED=NO")
+          print("PIP_DOWNLOAD_EXECUTED=NO")
+          print("PIP_INSTALL_EXECUTED=NO")
+          print("DEPENDENCY_ARTIFACT_BODY_DOWNLOADED=NO")
+          print("MODEL_WEIGHT_DOWNLOADED=NO")
+          print("MODEL_EXECUTION=NO")
+          print("BENCHMARK_EXECUTION=NO")
+          print("CONTAMINATION_ASSESSMENT_EXECUTION=NO")
+          print("A15_ACTIVATION=NO")
+          print("TRAINING_EXECUTION=NO")
+          print("ARTIFACT_UPLOAD=NO")
+          print("CACHE_UPLOAD=NO")
+          print("CREDENTIAL_USE=NO")
+          print("REPOSITORY_MUTATION_BY_RUNTIME=NO")
+          print("SPEND_USD=0")
+          PY
