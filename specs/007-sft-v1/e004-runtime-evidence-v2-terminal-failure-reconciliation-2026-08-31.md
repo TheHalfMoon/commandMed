@@ -154,7 +154,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 ## 7. Current component frontier
 
-The real E004 component remains incomplete. This failure is genuine runtime evidence of an infrastructure defect or dependency-resolution failure inside Phase A, not evidence that any scientific prerequisite passed.
+The real E004 component remains incomplete. This failure is genuine runtime evidence of a Phase A infrastructure or dependency-resolution failure, not evidence that any scientific prerequisite passed.
 
 ```text
 COMPONENT_RUNTIME_EVIDENCE=FAILED_PHASE_A
