@@ -24,6 +24,17 @@ from src.commandmed.spec007.quarantine import (
     evaluate_quarantine_source,
     validate_quarantine_binding,
 )
+from src.commandmed.spec007.research_scope import (
+    RESEARCH_COMPONENT_ADMITTED_CAPABILITIES,
+    RESEARCH_COMPONENT_CLAIM_CLASS,
+    RESEARCH_COMPONENT_EXCLUDED_CAPABILITIES,
+    RESEARCH_COMPONENT_REQUIRED_GUARDS,
+    RESEARCH_COMPONENT_ROLE_CLASS,
+    RESEARCH_COMPONENT_SCOPE_CLASS,
+    RESEARCH_COMPONENT_SCOPE_ID,
+    preflight_research_component_run_manifest,
+    validate_research_component_scope_binding,
+)
 from src.commandmed.spec007.snapshot import (
     build_curriculum_coverage_report,
     build_dataset_snapshot,
@@ -33,6 +44,13 @@ from src.commandmed.spec007.snapshot import (
 
 __all__ = [
     "KNOWLEDGE_PLACEMENTS",
+    "RESEARCH_COMPONENT_ADMITTED_CAPABILITIES",
+    "RESEARCH_COMPONENT_CLAIM_CLASS",
+    "RESEARCH_COMPONENT_EXCLUDED_CAPABILITIES",
+    "RESEARCH_COMPONENT_REQUIRED_GUARDS",
+    "RESEARCH_COMPONENT_ROLE_CLASS",
+    "RESEARCH_COMPONENT_SCOPE_CLASS",
+    "RESEARCH_COMPONENT_SCOPE_ID",
     "ROLE_CLASSES",
     "build_curriculum_coverage_report",
     "build_dataset_snapshot",
@@ -44,6 +62,7 @@ __all__ = [
     "evaluate_quarantine_source",
     "is_canonical_sha256",
     "parse_json_object",
+    "preflight_research_component_run_manifest",
     "validate_canonical_sha256",
     "validate_closed_object",
     "validate_curriculum_record",
@@ -51,5 +70,6 @@ __all__ = [
     "validate_duplicate_contamination_report",
     "validate_knowledge_placement",
     "validate_quarantine_binding",
+    "validate_research_component_scope_binding",
     "validate_role_class",
 ]
