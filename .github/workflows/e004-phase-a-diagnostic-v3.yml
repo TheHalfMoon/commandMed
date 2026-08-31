@@ -20,11 +20,20 @@ concurrency:
 
 jobs:
   diagnose:
-    if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main'
+    # Lifetime execution guard: the diagnostic body can execute only for the
+    # canonical implementation merge whose push starts from the V3 authority
+    # merge, and only on run attempt 1. Later matching pushes and re-runs skip.
+    if: >-
+      github.repository == 'TheHalfMoon/commandMed' &&
+      github.ref == 'refs/heads/main' &&
+      github.event.before == 'ff354f76262475d9be9f168731d228b4893223e4' &&
+      github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
       AUTHORITY_MERGE_SHA: ff354f76262475d9be9f168731d228b4893223e4
+      EXPECTED_EVENT_BEFORE_SHA: ff354f76262475d9be9f168731d228b4893223e4
+      EVENT_BEFORE_SHA: ${{ github.event.before }}
       HISTORICAL_TARGET_HEAD_SHA: ef1be50f4a076d9f03abfffee342d2c244b0d199
       HISTORICAL_TARGET_WORKFLOW_BLOB_SHA1: 591317f1f570480b9ac68e7956d070db8ed5ef45
       HISTORICAL_TARGET_WORKFLOW_RAW_SHA256: 95512021832788d5cd6362e6fa9ea0c7771bf81f5725ae4ab18b4d5199967327
@@ -45,12 +54,16 @@ jobs:
           test "${GITHUB_REF:-}" = "refs/heads/main"
           test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
           [[ "${GITHUB_SHA:-}" =~ ^[0-9a-f]{40}$ ]]
+          test "${GITHUB_RUN_ATTEMPT:-}" = "1"
+          test "${EVENT_BEFORE_SHA:-}" = "${EXPECTED_EVENT_BEFORE_SHA}"
+          test "${EXPECTED_EVENT_BEFORE_SHA}" = "${AUTHORITY_MERGE_SHA}"
           test "${AUTHORIZED_SPEND_USD}" = "0"
           command -v python3 >/dev/null
 
           printf '%s\n' \
             "V3_AUTHORITY_MERGE_SHA=${AUTHORITY_MERGE_SHA}" \
             "V3_EVENT=${GITHUB_EVENT_NAME}" \
+            "V3_EVENT_BEFORE_SHA=${EVENT_BEFORE_SHA}" \
             "V3_HEAD_SHA=${GITHUB_SHA}" \
             "V3_RUN_ID=${GITHUB_RUN_ID}" \
             "V3_RUN_ATTEMPT=${GITHUB_RUN_ATTEMPT}" \
@@ -104,6 +117,28 @@ jobs:
               + hashlib.sha256(allowlist_identity).hexdigest()
           )
 
+          def canonical_host(url):
+              host = urllib.parse.urlsplit(url).hostname
+              return (host or "").strip().lower().rstrip(".")
+
+          def sanitized_url(url):
+              """Return scheme/host/port/path only; never log query or fragment."""
+              parsed = urllib.parse.urlsplit(url)
+              host = (parsed.hostname or "").strip().lower().rstrip(".")
+              if not host:
+                  return "INVALID_URL"
+              if ":" in host and not host.startswith("["):
+                  host = f"[{host}]"
+              try:
+                  port = parsed.port
+              except ValueError:
+                  return "INVALID_URL"
+              netloc = host if port is None else f"{host}:{port}"
+              path = parsed.path or "/"
+              return urllib.parse.urlunsplit(
+                  (parsed.scheme.lower(), netloc, path, "", "")
+              )
+
           class LinkParser(html.parser.HTMLParser):
               def __init__(self):
                   super().__init__()
@@ -118,7 +153,7 @@ jobs:
 
           index_request = urllib.request.Request(
               INDEX_URL,
-              headers={"User-Agent": "commandMed-e004-v3-diagnostic/1"},
+              headers={"User-Agent": "commandMed-e004-v3-diagnostic/2"},
               method="GET",
           )
           with urllib.request.urlopen(index_request, timeout=30) as response:
@@ -132,7 +167,7 @@ jobs:
               raise SystemExit(f"unexpected PyTorch index status: {index_status}")
 
           print(f"INDEX_HTTP_STATUS={index_status}")
-          print(f"INDEX_FINAL_URL={index_final_url}")
+          print(f"INDEX_FINAL_ROUTE={sanitized_url(index_final_url)}")
           print(f"INDEX_METADATA_BYTES={len(index_bytes)}")
           print(
               "INDEX_METADATA_SHA256="
@@ -180,7 +215,9 @@ jobs:
           if len(relevant) > MAX_RELEVANT_WHEELS:
               raise SystemExit("relevant wheel set exceeded bounded cardinality")
 
-          class RecordingRedirectHandler(urllib.request.HTTPRedirectHandler):
+          class RecordingHeadRedirectHandler(
+              urllib.request.HTTPRedirectHandler
+          ):
               def __init__(self):
                   super().__init__()
                   self.redirects = []
@@ -188,19 +225,26 @@ jobs:
               def redirect_request(
                   self, req, fp, code, msg, headers, newurl
               ):
+                  if req.get_method() != "HEAD":
+                      raise RuntimeError("non-HEAD request reached redirect handler")
                   resolved = urllib.parse.urljoin(req.full_url, newurl)
                   self.redirects.append((int(code), resolved))
-                  return super().redirect_request(
+                  redirected = super().redirect_request(
                       req, fp, code, msg, headers, newurl
                   )
+                  if redirected is None:
+                      return None
+                  # Python's default redirect handler reconstructs a Request
+                  # without preserving HEAD. Restore and verify HEAD explicitly
+                  # so no redirect can broaden this probe into artifact GET.
+                  redirected.method = "HEAD"
+                  if redirected.get_method() != "HEAD":
+                      raise RuntimeError("redirect did not preserve HEAD")
+                  return redirected
 
           observed_hosts = set()
           denied_hosts = set()
           route_probe_failures = 0
-
-          def canonical_host(url):
-              host = urllib.parse.urlsplit(url).hostname
-              return (host or "").strip().lower().rstrip(".")
 
           def record_decision(host):
               canonical = host.strip().lower().rstrip(".")
@@ -214,7 +258,10 @@ jobs:
 
           for index, (basename, wheel_url) in enumerate(relevant, start=1):
               print(f"RELEVANT_WHEEL_{index}_BASENAME={basename}")
-              print(f"RELEVANT_WHEEL_{index}_INDEX_URL={wheel_url}")
+              print(
+                  f"RELEVANT_WHEEL_{index}_INDEX_ROUTE="
+                  f"{sanitized_url(wheel_url)}"
+              )
 
               initial_host = canonical_host(wheel_url)
               if initial_host:
@@ -223,13 +270,15 @@ jobs:
                   )
                   record_decision(initial_host)
 
-              handler = RecordingRedirectHandler()
+              handler = RecordingHeadRedirectHandler()
               opener = urllib.request.build_opener(handler)
               head_request = urllib.request.Request(
                   wheel_url,
-                  headers={"User-Agent": "commandMed-e004-v3-diagnostic/1"},
+                  headers={"User-Agent": "commandMed-e004-v3-diagnostic/2"},
                   method="HEAD",
               )
+              if head_request.get_method() != "HEAD":
+                  raise RuntimeError("initial route probe is not HEAD")
 
               final_url = None
               final_status = None
@@ -259,7 +308,7 @@ jobs:
                   )
                   print(
                       f"RELEVANT_WHEEL_{index}_REDIRECT_{redirect_index}_"
-                      f"URL={redirect_url}"
+                      f"ROUTE={sanitized_url(redirect_url)}"
                   )
                   if redirect_host:
                       print(
@@ -274,7 +323,8 @@ jobs:
                       f"RELEVANT_WHEEL_{index}_HEAD_STATUS={final_status}"
                   )
                   print(
-                      f"RELEVANT_WHEEL_{index}_FINAL_URL={final_url}"
+                      f"RELEVANT_WHEEL_{index}_FINAL_ROUTE="
+                      f"{sanitized_url(final_url)}"
                   )
                   if final_host:
                       print(
