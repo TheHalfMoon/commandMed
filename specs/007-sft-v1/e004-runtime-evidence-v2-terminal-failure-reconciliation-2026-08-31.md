@@ -172,7 +172,7 @@ COMPONENT_TRAINING_AUTHORITY=NONE
 
 ## 8. Next dependency-ordered unit
 
-The smallest technically justified successor is a **separate founder-authorized diagnostic-only V3 unit** that, if canonically admitted, may execute exactly one zero-spend public-runner diagnostic intended only to identify and retain the Phase A dependency-resolution/network route responsible for failure.
+The smallest technically justified successor is a **separate founder-authorized diagnostic-only V3 unit** that, if canonically admitted, may execute exactly one zero-spend public-runner diagnostic intended only to collect and retain direct Phase A diagnostic evidence sufficient to determine the failure mechanism, including evaluation of the existing dependency/network-route hypothesis without presuming it is causal.
 
 Such a diagnostic must not execute the target runtime-evidence workflow, consume or reopen the exhausted V2 target allowance, download or load model weights, perform model conversion or inference, access benchmark payloads, perform contamination assessment, activate A15, train, use private credentials, upload artifacts/caches, or authorize spend.
 
