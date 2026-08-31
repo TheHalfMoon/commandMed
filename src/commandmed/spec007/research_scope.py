@@ -559,6 +559,7 @@ def validate_research_component_guard_snapshot(
     *,
     scope_binding_sha256: str,
     run_manifest_sha256: str,
+    expected_sentinel_fixture_sha256s: list[str],
     sentinel_fixture_store: Mapping[str, Mapping[str, Any]],
 ) -> list[str]:
     """Validate a real-result snapshot shape without creating any result."""
@@ -637,6 +638,11 @@ def validate_research_component_guard_snapshot(
             errors.append(
                 f"{prefix}: every canonical successor guard must have exactly one PASS result"
             )
+        if seen_fixtures != set(expected_sentinel_fixture_sha256s):
+            errors.append(
+                f"{prefix}: fixture_results must equal the exact sentinel fixture set "
+                "frozen by the scope binding"
+            )
 
     errors.extend(
         _validate_self_hash(
@@ -670,10 +676,12 @@ def preflight_research_component_run_manifest(
     materialized_manifest = dict(manifest) if isinstance(manifest, Mapping) else {}
     run_manifest_sha256 = compute_run_manifest_sha256(materialized_manifest)
 
-    scope_binding = scope_binding_store.get(scope_binding_sha256)
-    if not is_canonical_sha256(scope_binding_sha256) or not isinstance(
-        scope_binding, Mapping
-    ):
+    scope_binding = (
+        scope_binding_store.get(scope_binding_sha256)
+        if is_canonical_sha256(scope_binding_sha256)
+        else None
+    )
+    if not isinstance(scope_binding, Mapping):
         scope_errors.append("ResearchComponentScopeBinding: unresolved by canonical sha256")
     else:
         if scope_binding.get("binding_sha256") != scope_binding_sha256:
@@ -719,6 +727,11 @@ def preflight_research_component_run_manifest(
                     dict(snapshot),
                     scope_binding_sha256=scope_binding_sha256,
                     run_manifest_sha256=run_manifest_sha256,
+                    expected_sentinel_fixture_sha256s=(
+                        list(scope_binding.get("sentinel_fixture_sha256s", []))
+                        if isinstance(scope_binding, Mapping)
+                        else []
+                    ),
                     sentinel_fixture_store=sentinel_fixture_store,
                 )
             )
