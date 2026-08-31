@@ -1,0 +1,230 @@
+# One-shot transport-only V2 bootstrap for the already-authorized E004 runtime-evidence workflow.
+# This workflow must not execute model, conversion, inference, benchmark, device,
+# contamination, A15, training, outreach, provider-generation, or spend surfaces.
+
+name: E004 runtime evidence dispatch bootstrap V2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-runtime-evidence-dispatch-bootstrap-v2.yml
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: e004-runtime-evidence-dispatch-bootstrap-v2
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      TARGET_WORKFLOW_FILE: e004-conversion-runtime-evidence.yml
+      TARGET_WORKFLOW_PATH: .github/workflows/e004-conversion-runtime-evidence.yml
+      EXPECTED_TARGET_BLOB_SHA1: 591317f1f570480b9ac68e7956d070db8ed5ef45
+      EXPECTED_TARGET_RAW_SHA256: 95512021832788d5cd6362e6fa9ea0c7771bf81f5725ae4ab18b4d5199967327
+      EXPECTED_TARGET_RAW_BYTES: '24581'
+      BIND_BRANCH_PREFIX: e004-runtime-evidence-v2-bind
+      MAX_TARGET_DISPATCHES: '1'
+      MAX_TRANSIENT_BIND_REFS: '1'
+      AUTHORIZED_SPEND_USD: '0'
+      GITHUB_API_VERSION: '2026-03-10'
+    steps:
+      - name: Reverify public canonical target, bind SHA ref, and create one fresh dispatch
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -Eeuo pipefail
+
+          test "${GITHUB_EVENT_NAME:-}" = "push"
+          test "${GITHUB_REF:-}" = "refs/heads/main"
+          test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
+          [[ "${GITHUB_SHA:-}" =~ ^[0-9a-f]{40}$ ]]
+          test "$MAX_TARGET_DISPATCHES" = "1"
+          test "$MAX_TRANSIENT_BIND_REFS" = "1"
+          test "$AUTHORIZED_SPEND_USD" = "0"
+
+          for tool in curl python3; do command -v "$tool" >/dev/null; done
+
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+          auth_header="Authorization: Bearer ${GITHUB_TOKEN}"
+          accept_header="Accept: application/vnd.github+json"
+          version_header="X-GitHub-Api-Version: ${GITHUB_API_VERSION}"
+
+          api_get() {
+            curl --fail-with-body --silent --show-error \
+              -H "$accept_header" -H "$auth_header" -H "$version_header" "$1"
+          }
+
+          parse_content_identity() {
+            python3 -c '
+          import base64, hashlib, json, sys
+          d = json.load(sys.stdin)
+          if d.get("encoding") != "base64":
+              raise SystemExit("contents API did not return base64 content")
+          raw = base64.b64decode(d["content"])
+          print(d["sha"], d["path"], hashlib.sha256(raw).hexdigest(), len(raw))
+          '
+          }
+
+          repo_json="$(api_get "$api")"
+          read -r visibility archived default_branch < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["visibility"], str(d["archived"]).lower(), d["default_branch"])' <<<"$repo_json"
+          )
+          test "$visibility" = "public"
+          test "$archived" = "false"
+          test "$default_branch" = "main"
+
+          main_json="$(api_get "$api/branches/main")"
+          main_sha="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["sha"])' <<<"$main_json")"
+          [[ "$main_sha" =~ ^[0-9a-f]{40}$ ]]
+          test "$main_sha" = "$GITHUB_SHA"
+
+          target_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${main_sha}")"
+          read -r target_blob target_path target_raw_sha target_raw_bytes < <(parse_content_identity <<<"$target_json")
+          test "$target_path" = "$TARGET_WORKFLOW_PATH"
+          test "$target_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
+          test "$target_raw_sha" = "$EXPECTED_TARGET_RAW_SHA256"
+          test "$target_raw_bytes" = "$EXPECTED_TARGET_RAW_BYTES"
+
+          workflow_json="$(api_get "$api/actions/workflows/${TARGET_WORKFLOW_FILE}")"
+          workflow_path="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["path"])' <<<"$workflow_json")"
+          workflow_state="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["state"])' <<<"$workflow_json")"
+          test "$workflow_path" = "$TARGET_WORKFLOW_PATH"
+          test "$workflow_state" = "active"
+
+          runs_url="$api/actions/workflows/${TARGET_WORKFLOW_FILE}/runs?event=workflow_dispatch&per_page=100"
+          before_json="$(api_get "$runs_url")"
+          before_total="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])' <<<"$before_json")"
+          test "$before_total" -eq 0
+
+          bind_branch="${BIND_BRANCH_PREFIX}-${main_sha}"
+          bind_ref="refs/heads/${bind_branch}"
+          bind_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"sha":sys.argv[2]}, separators=(",",":")))' "$bind_ref" "$main_sha")"
+          bind_file=/tmp/e004-v2-bind-ref.json
+          bind_status="$(curl --fail-with-body --silent --show-error --output "$bind_file" --write-out '%{http_code}' \
+            --request POST \
+            -H "$accept_header" -H "$auth_header" -H "$version_header" \
+            -H 'Content-Type: application/json' \
+            "$api/git/refs" \
+            --data "$bind_body")"
+          test "$bind_status" = "201"
+
+          read -r created_bind_ref created_bind_sha < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["ref"], d["object"]["sha"])' < "$bind_file"
+          )
+          test "$created_bind_ref" = "$bind_ref"
+          test "$created_bind_sha" = "$main_sha"
+
+          bind_target_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${bind_branch}")"
+          read -r bind_target_blob bind_target_path bind_target_raw_sha bind_target_raw_bytes < <(parse_content_identity <<<"$bind_target_json")
+          test "$bind_target_path" = "$TARGET_WORKFLOW_PATH"
+          test "$bind_target_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
+          test "$bind_target_raw_sha" = "$EXPECTED_TARGET_RAW_SHA256"
+          test "$bind_target_raw_bytes" = "$EXPECTED_TARGET_RAW_BYTES"
+
+          pre_dispatch_json="$(api_get "$runs_url")"
+          pre_dispatch_total="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["total_count"])' <<<"$pre_dispatch_json")"
+          test "$pre_dispatch_total" -eq 0
+
+          bind_readback_json="$(api_get "$api/git/ref/heads/${bind_branch}")"
+          bind_readback_ref="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["ref"])' <<<"$bind_readback_json")"
+          bind_readback_sha="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])' <<<"$bind_readback_json")"
+          test "$bind_readback_ref" = "$bind_ref"
+          test "$bind_readback_sha" = "$main_sha"
+
+          dispatch_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"return_run_details":True}, separators=(",",":")))' "$bind_branch")"
+          dispatch_file=/tmp/e004-v2-dispatch-response.json
+          dispatch_status="$(curl --fail-with-body --silent --show-error --output "$dispatch_file" --write-out '%{http_code}' \
+            --request POST \
+            -H "$accept_header" -H "$auth_header" -H "$version_header" \
+            -H 'Content-Type: application/json' \
+            "$api/actions/workflows/${TARGET_WORKFLOW_FILE}/dispatches" \
+            --data "$dispatch_body")"
+          test "$dispatch_status" = "200"
+
+          read -r dispatch_run_id dispatch_run_url dispatch_html_url < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["workflow_run_id"], d["run_url"], d["html_url"])' < "$dispatch_file"
+          )
+          [[ "$dispatch_run_id" =~ ^[0-9]+$ ]]
+          test -n "$dispatch_run_url"
+          test -n "$dispatch_html_url"
+
+          created_json=""
+          for _ in $(seq 1 30); do
+            if created_json="$(api_get "$dispatch_run_url" 2>/dev/null)"; then break; fi
+            sleep 1
+          done
+          test -n "$created_json"
+          read -r created_id created_head created_branch created_event created_path < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["id"], d["head_sha"], d["head_branch"], d["event"], d["path"])' <<<"$created_json"
+          )
+          test "$created_id" = "$dispatch_run_id"
+          test "$created_head" = "$main_sha"
+          test "$created_branch" = "$bind_branch"
+          test "$created_event" = "workflow_dispatch"
+          test "$created_path" = "$TARGET_WORKFLOW_PATH"
+
+          after_json=""
+          after_total=-1
+          matching_count=0
+          matching_id=""
+          for _ in $(seq 1 30); do
+            after_json="$(api_get "$runs_url")"
+            read -r after_total matching_count matching_id < <(
+              python3 -c '
+          import json, sys
+          expected_sha, expected_branch, expected_path, expected_id = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4])
+          data = json.load(sys.stdin)
+          matches = [
+              run for run in data.get("workflow_runs", [])
+              if run.get("head_sha") == expected_sha
+              and run.get("head_branch") == expected_branch
+              and run.get("event") == "workflow_dispatch"
+              and run.get("path") == expected_path
+              and run.get("id") == expected_id
+          ]
+          print(data.get("total_count", 0), len(matches), matches[0]["id"] if matches else "")
+          ' "$main_sha" "$bind_branch" "$TARGET_WORKFLOW_PATH" "$dispatch_run_id" <<<"$after_json"
+            )
+            if test "$after_total" -eq 1 && test "$matching_count" -eq 1 && test "$matching_id" = "$dispatch_run_id"; then break; fi
+            sleep 1
+          done
+          test "$after_total" -eq 1
+          test "$matching_count" -eq 1
+          test "$matching_id" = "$dispatch_run_id"
+
+          printf '%s\n' \
+            "V2_AUTHORITY=E004_CONNECTED_EXECUTOR_DISPATCH_REMEDIATION_V2_AUTHORITY_AUTHORIZED_BOUNDED" \
+            "V2_EVENT=${GITHUB_EVENT_NAME}" \
+            "V2_HEAD_SHA=${GITHUB_SHA}" \
+            "LIVE_REPOSITORY_VISIBILITY=${visibility}" \
+            "LIVE_REPOSITORY_ARCHIVED=${archived}" \
+            "TARGET_CANONICAL_MAIN_SHA=${main_sha}" \
+            "TARGET_SHA_NAMED_BINDING_REF=${bind_ref}" \
+            "TARGET_BINDING_REF_INITIAL_SHA=${created_bind_sha}" \
+            "TARGET_BINDING_REF_FINAL_PRE_DISPATCH_SHA=${bind_readback_sha}" \
+            "TARGET_WORKFLOW_PATH=${TARGET_WORKFLOW_PATH}" \
+            "TARGET_WORKFLOW_BLOB_SHA1=${target_blob}" \
+            "TARGET_WORKFLOW_RAW_SHA256=${target_raw_sha}" \
+            "TARGET_WORKFLOW_RAW_BYTES=${target_raw_bytes}" \
+            "TARGET_BINDING_REF_WORKFLOW_BLOB_SHA1=${bind_target_blob}" \
+            "TARGET_BINDING_REF_WORKFLOW_RAW_SHA256=${bind_target_raw_sha}" \
+            "TARGET_PREEXISTING_WORKFLOW_DISPATCH_COUNT=${before_total}" \
+            "TARGET_PRE_DISPATCH_RECHECK_COUNT=${pre_dispatch_total}" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_CREATED=YES" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_RUN_ID=${dispatch_run_id}" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_RUN_URL=${dispatch_html_url}" \
+            "TARGET_POST_DISPATCH_WORKFLOW_DISPATCH_COUNT=${after_total}" \
+            "MODEL_CONVERSION_AUTHORITY=NONE" \
+            "CONTAMINATION_ASSESSMENT_AUTHORITY=NONE" \
+            "A15_ACTIVATION=ABSENT_NOT_AUTHORIZED" \
+            "TRAINING_AUTHORITY=NONE" \
+            "AUTHORIZED_SPEND_USD=0"
