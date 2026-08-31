@@ -24,7 +24,7 @@ jobs:
   dispatch:
     if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main' && github.run_attempt == 1
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 45
     env:
       TARGET_WORKFLOW_FILE: e004-conversion-runtime-evidence.yml
       TARGET_WORKFLOW_PATH: .github/workflows/e004-conversion-runtime-evidence.yml
