@@ -18,4 +18,4 @@ jobs:
     uses: TheHalfMoon/commandMed/.github/workflows/e004-primary-index-resolution-enforcer-v4.yml@fcb84a483d62cde9aeb506c3469498b494b5086d
     with:
       expected_predecessor_sha: fcb84a483d62cde9aeb506c3469498b494b5086d
-      successor_pr_number: "0"
+      successor_pr_number: "156"
