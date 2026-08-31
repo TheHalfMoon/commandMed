@@ -15,7 +15,7 @@
 
 ## 1. Purpose
 
-Reconcile the terminal evidence from the one V2 transport remediation and the one target E004 conversion-runtime evidence run that it successfully created. This record preserves the observed failure, identifies a deterministic Phase A workflow defect using public authoritative dependency metadata, consumes the V2/target allowances exactly as executed, and leaves all downstream scientific and execution gates fail-closed.
+Reconcile the terminal evidence from the one V2 transport remediation and the one target E004 conversion-runtime evidence run that it successfully created. This record preserves the observed failure, records the strongest currently reviewable Phase A diagnostic hypothesis without promoting it to proven historical cause, consumes the V2/target allowances exactly as executed, and leaves all downstream scientific and execution gates fail-closed.
 
 This record is evidence reconciliation only. It creates no V3 authority, rerun authority, model/conversion authority, contamination authority, A15 authority, training authority, or spend authority.
 
@@ -64,7 +64,7 @@ FINAL_RUNTIME_EVIDENCE_MANIFEST=SKIPPED
 
 Therefore the run produced no Phase B evidence and no final runtime evidence manifest. No inference may be made that conversion prerequisites passed.
 
-## 4. Deterministic Phase A defect evidence
+## 4. Phase A static diagnostic hypothesis
 
 The exact target workflow executed at `ef1be50f4a076d9f03abfffee342d2c244b0d199` defines the Phase A CONNECT proxy allowlist as:
 
@@ -82,25 +82,18 @@ TORCH_REQUIREMENT=torch==2.11.0+cpu
 TORCH_INDEX=https://download.pytorch.org/whl/cpu
 ```
 
-The official PyTorch CPU wheel index currently publishes the Linux x86_64 `torch==2.11.0+cpu` artifacts for supported CPython versions through the artifact host `download-r2.pytorch.org`, including CPython 3.10, 3.11, 3.12, 3.13, and 3.14 entries.
+During reconciliation, one connected public-source inspection returned PyTorch CPU-index entries whose `torch-2.11.0+cpu` Linux x86_64 artifact links used `download-r2.pytorch.org`. However the independent exact-head repository reviewer could not reproduce or retain authoritative evidence sufficient to accept that artifact-host route as canonical proof of the historical job failure.
 
-Authoritative public source:
-
-```text
-https://download.pytorch.org/whl/cpu/torch/
-```
-
-Because the workflow routes all HTTP(S) traffic through its local CONNECT proxy, while `download-r2.pytorch.org` is not in the exact allowlist, the workflow cannot retrieve the required Linux x86_64 PyTorch wheel through its own Phase A network policy. This is a deterministic workflow defect independent of candidate model bytes, benchmark data, conversion execution, or training.
+Accordingly this record does not promote the host mismatch to proven cause.
 
 ```text
-PHASE_A_STATIC_DEFECT=PROVEN
-PHASE_A_STATIC_DEFECT_CLASS=DEPENDENCY_ARTIFACT_HOST_MISSING_FROM_EXACT_ALLOWLIST
-MISSING_REQUIRED_HOST=download-r2.pytorch.org
-TORCH_VERSION_AVAILABILITY=CONFIRMED
-LLAMA_CPP_SOURCE_COMMIT_AVAILABILITY=CONFIRMED
+PHASE_A_FAILURE_CAUSE=NEEDS_EVIDENCE
+PHASE_A_DIAGNOSTIC_HYPOTHESIS=DEPENDENCY_ARTIFACT_HOST_MISSING_FROM_EXACT_ALLOWLIST
+PHASE_A_DIAGNOSTIC_CANDIDATE_HOST=download-r2.pytorch.org
+PYTORCH_ARTIFACT_ROUTE_CANONICAL_PROOF=ABSENT
 ```
 
-The upstream llama.cpp commit bound by the workflow also remains publicly resolvable with the exact expected tree:
+The upstream llama.cpp commit bound by the workflow remains publicly resolvable with the exact expected tree:
 
 ```text
 TOOL_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
@@ -108,22 +101,25 @@ TOOL_TREE=2255f4747492109298a5c997f374d49c2af3113d
 TOOL_COMMIT_AVAILABILITY=PASS_PUBLIC_GITHUB
 ```
 
+That source-commit availability does not prove that source staging completed in the failed run.
+
 ## 5. Evidence precision boundary
 
-The connector available during reconciliation did not expose a retained per-command stderr/log payload for historical job `99409197359`. Therefore this record does **not** claim that a particular historical `DENY host=download-r2.pytorch.org` log line was recovered from that job.
+The connector available during reconciliation did not expose a retained per-command stderr/log payload for historical job `99409197359`. Therefore this record does **not** claim that a particular historical dependency-resolution error or `DENY` log line was recovered from that job.
 
-The evidence claims are narrower:
+The admitted evidence is narrower:
 
 1. GitHub observed Phase A fail after runner preflight passed.
-2. The exact executed workflow requires `torch==2.11.0+cpu` through the official CPU index.
-3. The official CPU index resolves applicable Linux x86_64 PyTorch 2.11.0 CPU wheels to `download-r2.pytorch.org`.
-4. The exact executed proxy policy rejects every host not in its four-host allowlist, which omits `download-r2.pytorch.org`.
-5. Therefore the exact workflow has a proven dependency-host policy defect that must be repaired before another equivalent runtime-evidence attempt can be eligible.
+2. Phase B and final manifest were skipped.
+3. The exact executed workflow requires `torch==2.11.0+cpu` through its bounded proxy/index configuration.
+4. `download-r2.pytorch.org` is a concrete diagnostic candidate because it was observed during connected public-source inspection, but the independent reviewer did not establish it as canonical historical cause.
+5. A successor must collect direct, retained diagnostic evidence before changing the target workflow or authorizing another target runtime-evidence attempt on this hypothesis.
 
 ```text
 HISTORICAL_STDERR_RECOVERED=NO
 HISTORICAL_EXACT_DENY_LINE_CLAIMED=NO
-STATIC_WORKFLOW_DEFECT_PROVEN=YES
+STATIC_WORKFLOW_DEFECT_PROVEN=NO
+PHASE_A_FAILURE_CAUSE=NEEDS_EVIDENCE
 ```
 
 ## 6. Authority and state effect
@@ -158,7 +154,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 ## 7. Current component frontier
 
-The real E004 component remains incomplete. This failure is genuine runtime evidence of an infrastructure defect, not evidence that any scientific prerequisite passed.
+The real E004 component remains incomplete. This failure is genuine runtime evidence of an infrastructure defect or dependency-resolution failure inside Phase A, not evidence that any scientific prerequisite passed.
 
 ```text
 COMPONENT_RUNTIME_EVIDENCE=FAILED_PHASE_A
@@ -169,16 +165,18 @@ COMPONENT_A1_A14_EQUIVALENT_EXACT_PASS_SNAPSHOT=ABSENT
 COMPONENT_A15=ABSENT_NOT_AUTHORIZED
 COMPONENT_BACKBONE_WINNER=NEEDS_EVIDENCE
 COMPONENT_E004=INCOMPLETE
-COMPONENT_E004_STATE=BLOCKED_RUNTIME_REMEDIATION
+COMPONENT_E004_STATE=BLOCKED_RUNTIME_DIAGNOSTIC_EVIDENCE
 COMPONENT_E005_STATE=NOT_REACHED
 COMPONENT_TRAINING_AUTHORITY=NONE
 ```
 
 ## 8. Next dependency-ordered unit
 
-The smallest technically justified successor is a **separate** founder-authorized V3 remediation that, if canonically admitted, may permit a reviewed target-workflow revision adding only the required official PyTorch artifact host to the Phase A allowlist, preserving all other network and scientific boundaries, and may separately authorize exactly one new zero-spend target run through an independently admitted transport mechanism.
+The smallest technically justified successor is a **separate founder-authorized diagnostic-only V3 unit** that, if canonically admitted, may execute exactly one zero-spend public-runner diagnostic intended only to identify and retain the Phase A dependency-resolution/network route responsible for failure.
 
-That successor must bind new exact target workflow bytes after review. It must not reinterpret the consumed V2 target run allowance, reuse V2 authority, or widen model/conversion/benchmark/contamination/A15/training/spend scope.
+Such a diagnostic must not execute the target runtime-evidence workflow, consume or reopen the exhausted V2 target allowance, download or load model weights, perform model conversion or inference, access benchmark payloads, perform contamination assessment, activate A15, train, use private credentials, upload artifacts/caches, or authorize spend.
+
+Only after direct retained diagnostic evidence exists may a later separately reviewed authority decide whether a target-workflow repair and a new target runtime-evidence attempt are justified.
 
 This record does not create that successor authority.
 
@@ -190,8 +188,8 @@ This reconciliation is eligible for canonical merge only when exact-head review 
 V2_TERMINAL_RUN_IDENTITIES_BOUND=YES
 OBSERVED_PHASE_A_FAILURE_PRESERVED=YES
 PHASE_B_AND_FINAL_MANIFEST_SKIPPED_PRESERVED=YES
-TORCH_2_11_CPU_PUBLIC_AVAILABILITY_CONFIRMED=YES
-PYTORCH_ARTIFACT_HOST_MISMATCH_PROVEN=YES
+PHASE_A_FAILURE_CAUSE_REMAINS_NEEDS_EVIDENCE=YES
+DIAGNOSTIC_HOST_HYPOTHESIS_NOT_PROMOTED_TO_PROOF=YES
 HISTORICAL_STDERR_NOT_FABRICATED=YES
 V2_ALLOWANCES_REOPENED=NO
 V3_AUTHORITY_CREATED=NO
