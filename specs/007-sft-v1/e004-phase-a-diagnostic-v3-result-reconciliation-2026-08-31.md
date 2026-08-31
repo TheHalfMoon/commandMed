@@ -13,7 +13,7 @@
 
 ## 1. Purpose
 
-Reconcile the single authorized E004 Phase A Diagnostic V3 execution against the canonical V3 authority and the historical target workflow without converting a current reproducible configuration finding into an unsupported claim about the exact historical failure line or historical causal mechanism.
+Reconcile the single authorized E004 Phase A Diagnostic V3 execution against the canonical V3 authority and the historical target workflow without converting a current reproducible route observation into an unsupported claim about the exact historical failure line, historical causal mechanism, or combined pip-index resolution.
 
 This record is evidence reconciliation only. It does not repair, mutate, dispatch, or rerun the target workflow. It creates no model, conversion, inference, benchmark, contamination, A15, training, credential, artifact/cache, procurement, payment, or spend authority.
 
@@ -160,7 +160,7 @@ RELEVANT_WHEEL_1_FINAL_HOST=download-r2.pytorch.org
 HEAD_ROUTE_PROBE_FAILURES=0
 ```
 
-The final deterministic observation was:
+The final deterministic workflow-emitted observation was:
 
 ```text
 DISCOVERED_ROUTE_HOSTS=download-r2.pytorch.org,download.pytorch.org
@@ -169,32 +169,37 @@ V3_DIAGNOSTIC_OBSERVATION=DENIED_ROUTE_HOST_OBSERVED
 V3_DENIED_REQUIRED_ROUTE_OBSERVED=YES
 ```
 
+`V3_DENIED_REQUIRED_ROUTE_OBSERVED=YES` is retained as the exact emitted field name from the V3 workflow. This reconciliation does not interpret that field as proof that the route is required by the historical combined-index pip command.
+
 ## 6. Reconciliation finding
 
-The V3 authority permits a specific target-workflow defect to be classified as proven only when direct retained evidence establishes that the exact required dependency route cannot satisfy the target workflow's exact Phase A allowlist/configuration for the relevant runtime subject and no observed compliant route satisfies that exact requirement.
+The retained V3 evidence proves a bounded route observation for the explicitly configured PyTorch CPU extra index, not a complete resolution result for the historical pip command.
 
-That criterion is satisfied narrowly for the target workflow's explicitly configured PyTorch CPU route and the V3 runtime subject:
+The evidence directly establishes:
 
-1. the target workflow explicitly requests `torch==2.11.0+cpu` and explicitly configures `https://download.pytorch.org/whl/cpu` as an index;
-2. V3 read the current bounded metadata for that exact PyTorch CPU index;
-3. V3 found 28 exact-version links and, using the live pip wheel-tag model, exactly one link compatible with the live Ubuntu 24.04 / Python 3.12 runtime subject;
-4. that compatible wheel route is `download-r2.pytorch.org:443`;
-5. the exact historical Phase A CONNECT policy deterministically returns `DENY` for that host because it is absent from the allowlist;
-6. the HEAD probe succeeded on that route, so the route observation itself was not unresolved;
-7. no compliant compatible wheel route was observed for that exact requirement from the explicitly configured PyTorch CPU index.
+1. the target workflow requests `torch==2.11.0+cpu` and configures both `https://pypi.org/simple` as the primary index and `https://download.pytorch.org/whl/cpu` as an extra index;
+2. V3 read bounded metadata for the PyTorch CPU extra index only;
+3. V3 found 28 exact-version links there and, using the live pip wheel-tag model, exactly one link compatible with the live Ubuntu 24.04 / Python 3.12 runtime subject;
+4. that observed compatible extra-index route is `download-r2.pytorch.org:443`;
+5. the exact historical Phase A CONNECT policy deterministically returns `DENY` for that observed host because it is absent from the allowlist;
+6. the HEAD probe succeeded on that route, so the route observation itself was not unresolved.
 
-Therefore the narrow static configuration finding is:
+V3 did **not** enumerate the primary PyPI `torch` index and did **not** retain combined-index pip resolver output. It therefore cannot exclude a compatible allowlisted candidate from the primary index and cannot prove that `download-r2.pytorch.org` was a required download host for the exact historical pip command.
+
+The supported reconciliation is therefore:
 
 ```text
-TARGET_PYTORCH_CPU_ROUTE_ALLOWLIST_DEFECT=PROVEN_FOR_V3_RUNTIME_SUBJECT
-STATIC_WORKFLOW_DEFECT_PROVEN=YES_BOUNDED_PYTORCH_CPU_ROUTE
-STATIC_DEFECT=TARGET_PHASE_A_CONNECT_ALLOWLIST_OMITS_OBSERVED_REQUIRED_DOWNLOAD_HOST
-OBSERVED_REQUIRED_DOWNLOAD_HOST=download-r2.pytorch.org
-OBSERVED_REQUIRED_DOWNLOAD_PORT=443
-OBSERVED_REQUIRED_DOWNLOAD_HOST_ALLOWLIST_RESULT=DENY
+PYTORCH_CPU_EXTRA_INDEX_COMPATIBLE_ROUTE_OBSERVED=YES
+PYTORCH_CPU_EXTRA_INDEX_COMPATIBLE_ROUTE_HOST=download-r2.pytorch.org
+PYTORCH_CPU_EXTRA_INDEX_COMPATIBLE_ROUTE_PORT=443
+PYTORCH_CPU_EXTRA_INDEX_COMPATIBLE_ROUTE_ALLOWLIST_RESULT=DENY
+PRIMARY_PYPI_INDEX_EXACT_CANDIDATE_SET=NEEDS_EVIDENCE
+COMBINED_PIP_INDEX_RESOLUTION_EXCLUSION=NEEDS_EVIDENCE
+OBSERVED_REQUIRED_DOWNLOAD_HOST=NEEDS_EVIDENCE
+STATIC_WORKFLOW_DEFECT_PROVEN=NO_NEEDS_PRIMARY_INDEX_EVIDENCE
 ```
 
-This finding does **not** assert that every possible pip candidate source or every future runtime subject has the same route. It proves the incompatibility observed for the target workflow's explicit PyTorch CPU route and the exact V3 runtime subject only.
+No stronger static-defect or required-route conclusion is authorized from V3.
 
 ## 7. Historical causal boundary remains unresolved
 
@@ -213,7 +218,7 @@ HISTORICAL_STDERR_RECOVERED=NO
 HISTORICAL_EXACT_DENY_LINE_CLAIMED=NO
 ```
 
-A reproducible static defect does not retroactively prove the exact historical causal chain. Preserve:
+The current extra-index route observation does not retroactively prove the exact historical causal chain. Preserve:
 
 ```text
 PHASE_A_FAILURE_CAUSE=NEEDS_EVIDENCE
@@ -250,19 +255,23 @@ No evidence in V3 creates any broader scientific or execution authority.
 
 Until this reconciliation is independently reviewed and canonically merged, it is only a candidate interpretation of the retained V3 evidence.
 
-If this record becomes canonical with no material review blocker, it may support a **separate later authority candidate** whose maximum purpose is to authorize the smallest exact target-workflow repair for the proven static PyTorch-route allowlist defect, bind a new exact target-workflow identity, and authorize at most one new zero-spend runtime-evidence attempt under the existing scientific exclusions.
+If this record becomes canonical with no material review blocker, it may support a **separate later diagnostic-authority candidate** whose maximum purpose is to collect the missing direct evidence needed to resolve the primary-PyPI candidate set and/or the historical command's combined-index resolution behavior without downloading dependency artifact bodies or executing the target workflow.
 
-This reconciliation does not itself grant that repair or execution authority.
+This reconciliation does not itself grant that diagnostic execution, target repair, or new target-attempt authority. A target-workflow repair remains premature unless later direct evidence proves a specific repairable defect.
 
 ```text
 V3_DIAGNOSTIC_EXECUTION_STATE=CONSUMED_COMPLETE
 V3_DIAGNOSTIC_EXECUTION_ALLOWANCE_REMAINING=0
+PRIMARY_PYPI_INDEX_EXACT_CANDIDATE_SET=NEEDS_EVIDENCE
+COMBINED_PIP_INDEX_RESOLUTION_EXCLUSION=NEEDS_EVIDENCE
+STATIC_WORKFLOW_DEFECT_PROVEN=NO_NEEDS_PRIMARY_INDEX_EVIDENCE
 COMPONENT_RUNTIME_EVIDENCE=FAILED_PHASE_A_HISTORICAL
 COMPONENT_E004=INCOMPLETE
-COMPONENT_E004_STATE=BLOCKED_PENDING_V3_RESULT_RECONCILIATION_AND_SEPARATE_REPAIR_AUTHORITY
+COMPONENT_E004_STATE=BLOCKED_PENDING_V3_RESULT_RECONCILIATION_AND_PRIMARY_INDEX_EVIDENCE
 COMPONENT_E005_STATE=NOT_REACHED
 BACKBONE_WINNER=NEEDS_EVIDENCE
 
+FOLLOW_ON_DIAGNOSTIC_AUTHORITY=NONE
 TARGET_WORKFLOW_REPAIR_AUTHORITY=NONE
 NEW_TARGET_RUNTIME_EVIDENCE_ATTEMPT_AUTHORITY=NONE
 MODEL_SOURCE_WEIGHT_ACQUISITION_AUTHORITY=NONE
@@ -285,10 +294,11 @@ This record may become canonical only after a fresh exact-head independent repos
 - exact V3 run/job/head/attempt identities;
 - the one-shot V3 allowance is consumed and not reopened;
 - the target workflow's exact Phase A CONNECT semantics are represented correctly;
-- the exact current runtime-subject wheel compatibility evidence is represented correctly;
-- the static-defect claim is bounded to the directly proven PyTorch CPU route/runtime subject;
+- the exact current runtime-subject PyTorch CPU extra-index wheel compatibility evidence is represented correctly;
+- the primary PyPI exact candidate set and combined-index resolution remain explicitly unresolved;
+- `STATIC_WORKFLOW_DEFECT_PROVEN=NO_NEEDS_PRIMARY_INDEX_EVIDENCE` is preserved;
 - the historical failure cause remains `NEEDS_EVIDENCE`;
-- no repair, rerun, model, conversion, inference, benchmark, contamination, A15, training, credential, artifact/cache, or spend authority is created.
+- no follow-on diagnostic execution, repair, rerun, model, conversion, inference, benchmark, contamination, A15, training, credential, artifact/cache, or spend authority is created.
 
 Required reviewer output:
 
@@ -296,4 +306,4 @@ Required reviewer output:
 MATERIAL_BLOCKER=NO
 ```
 
-Only after guarded canonical merge of that exact reviewed head may a separate target-repair/new-runtime-attempt authority candidate be created.
+Only after guarded canonical merge of that exact reviewed head may a separate follow-on diagnostic-authority candidate be created.
