@@ -92,6 +92,12 @@ jobs:
           import urllib.parse
           import urllib.request
 
+          from pip._vendor.packaging.tags import sys_tags
+          from pip._vendor.packaging.utils import (
+              InvalidWheelFilename,
+              parse_wheel_filename,
+          )
+
           INDEX_URL = os.environ["PYTORCH_INDEX_URL"]
           REQUIREMENT = os.environ["EXACT_REQUIREMENT"]
           ALLOWLIST = tuple(
@@ -103,7 +109,7 @@ jobs:
           MAX_RELEVANT_WHEELS = int(os.environ["MAX_RELEVANT_WHEELS"])
           MAX_REDIRECTS = int(os.environ["MAX_REDIRECTS_PER_REQUEST"])
           REDIRECT_CODES = {301, 302, 303, 307, 308}
-          USER_AGENT = "commandMed-e004-v3-diagnostic/7"
+          USER_AGENT = "commandMed-e004-v3-diagnostic/8"
 
           if REQUIREMENT != "torch==2.11.0+cpu":
               raise SystemExit("unexpected exact requirement")
@@ -365,25 +371,34 @@ jobs:
           exact_links = sorted(set(exact_links))
           print(f"INDEX_EXACT_VERSION_LINK_COUNT={len(exact_links)}")
 
-          py_tag = f"cp{sys.version_info.major}{sys.version_info.minor}"
-          machine = platform.machine().lower()
-          arch_tokens = {
-              "x86_64": ("x86_64",),
-              "amd64": ("x86_64",),
-              "aarch64": ("aarch64", "arm64"),
-              "arm64": ("aarch64", "arm64"),
-          }.get(machine, (machine,))
+          compatible_tags = set(sys_tags())
+          compatible_tag_text = sorted(str(tag) for tag in compatible_tags)
+          compatible_tag_identity = "\n".join(compatible_tag_text).encode("utf-8")
+          print(f"DIAGNOSTIC_PYTHON_TAG=cp{sys.version_info.major}{sys.version_info.minor}")
+          print(f"DIAGNOSTIC_MACHINE={platform.machine().lower()}")
+          print(f"DIAGNOSTIC_COMPATIBLE_TAG_COUNT={len(compatible_tags)}")
+          print(
+              "DIAGNOSTIC_COMPATIBLE_TAG_SET_SHA256="
+              + hashlib.sha256(compatible_tag_identity).hexdigest()
+          )
 
           relevant = []
+          invalid_wheel_name_count = 0
           for basename, full_url in exact_links:
-              if f"-{py_tag}-{py_tag}-" not in basename:
+              try:
+                  distribution, version, _, wheel_tags = parse_wheel_filename(
+                      basename
+                  )
+              except InvalidWheelFilename:
+                  invalid_wheel_name_count += 1
                   continue
-              if not any(token in basename.lower() for token in arch_tokens):
+              if str(distribution) != "torch" or str(version) != "2.11.0+cpu":
+                  continue
+              if compatible_tags.isdisjoint(wheel_tags):
                   continue
               relevant.append((basename, full_url))
 
-          print(f"DIAGNOSTIC_PYTHON_TAG={py_tag}")
-          print(f"DIAGNOSTIC_MACHINE={machine}")
+          print(f"INVALID_EXACT_WHEEL_FILENAME_COUNT={invalid_wheel_name_count}")
           print(f"RELEVANT_EXACT_WHEEL_COUNT={len(relevant)}")
 
           if len(relevant) > MAX_RELEVANT_WHEELS:
