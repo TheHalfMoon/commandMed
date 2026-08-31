@@ -1,7 +1,7 @@
 # E004 Registry Current-State Reconciliation V8 — 2026-08-31
 
 **Spec:** 007 SFT V1  
-**Artifact class:** append-only current-state reconciliation  
+**Artifact class:** append-only component current-state reconciliation  
 **Canonical base:** `f8e85ed3e0cee3bf41786b2b2eb6c79972153cde`  
 **Authority effect:** NONE  
 **Runtime-evidence execution effect:** NONE  
@@ -11,14 +11,25 @@
 **Training authority:** NONE  
 **Current authorized spend:** USD 0
 
-## 1. Purpose
+## 1. Purpose and authoritative-record relationship
 
-Record the exact E004 frontier after two canonical governance changes:
+Record the exact **component-scoped** E004 frontier after two canonical governance changes:
 
 1. PR #141 / merge `d7b2efcad8f84480ff1e43815b59b46430668e05` records the Founder's explicit decision not to use external clinical/statistical reviewers for the current research program while preserving PR #117's no-outreach boundary and preserving current Spec 002 blocking until a successor policy becomes canonical; and
 2. PR #142 / merge `f8e85ed3e0cee3bf41786b2b2eb6c79972153cde` canonically defines `SP007-RO-001`, one exact non-clinical `COMPONENT_QUALIFICATION` scope: `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`.
 
-V8 supersedes V7 only for current-state interpretation of the new research-only component scope. V7 remains immutable historical evidence for the full multi-role frontier, public-runner finance interpretation, failed bootstrap, target dispatch count, and all other then-current facts.
+V8 does **not** replace the repository-wide/full-multi-role E004 frontier. The authoritative relationship is:
+
+```text
+GLOBAL_FULL_MULTI_ROLE_E004_FRONTIER_RECORD=specs/007-sft-v1/e004-registry-current-state-reconciliation-v7-2026-08-30.md
+CURRENT_COMPONENT_E004_FRONTIER_RECORD=specs/007-sft-v1/e004-registry-current-state-reconciliation-v8-2026-08-31.md
+V8_SUPERSEDES_V7_GLOBALLY=NO
+V8_SUPPLEMENTS_V7_FOR_EXACT_COMPONENT_SCOPE=YES
+```
+
+Accordingly, `specs/README.md` and the existing `tasks.md` E004 entry remain correct as the **global/full-multi-role** authority summary until a later bounded reconciliation updates those records. Their full-scope T1/A2 reviewer blocker is not applied to the component as though it were a component blocker; the component-specific interpretation is governed only by this V8 record plus canonical `SP007-RO-001`.
+
+V7 remains the global/full-multi-role current-state record and immutable historical evidence for the public-runner finance interpretation, failed bootstrap, target dispatch count, and all other full-scope then-current facts.
 
 ## 2. Two scopes are now explicitly non-equivalent
 
@@ -58,9 +69,7 @@ The component cannot be promoted into a system or clinical PASS.
 
 ## 3. Reviewer/T1-A2 interpretation changes only for the component scope
 
-The old E004 T1/A2 blocker bundled population clinical/statistical threshold policy with qualified clinical/statistical review.
-
-For the full multi-role/clinical scope, that blocker remains unchanged.
+The global/full-multi-role E004 T1/A2 blocker bundles population clinical/statistical threshold policy with qualified clinical/statistical review. That full-scope blocker remains unchanged in V7, `specs/README.md`, and the global E004 task ledger.
 
 For `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`, the population/statistical metrics mapped by `SP007-RO-001` are `NOT_APPLICABLE_TO_DECLARED_SCOPE` only because their corresponding positive capabilities are explicitly excluded from the component.
 
@@ -195,7 +204,7 @@ COMPONENT_BACKBONE_WINNER=NEEDS_EVIDENCE
 COMPONENT_TRAINING_AUTHORITY=NONE
 ```
 
-The full multi-role state also remains:
+The global/full-multi-role state also remains:
 
 ```text
 FULL_MULTI_ROLE_E004=INCOMPLETE
@@ -233,10 +242,12 @@ SYSTEM_SAFETY_PASS=NO
 
 Spec 008 and later dependency edges are not satisfied by the component scope merely because it can eventually produce a bounded research candidate.
 
-## 12. V8 current-frontier summary
+## 12. V8 component-frontier summary
 
 ```text
-CURRENT_E004_FRONTIER_RECORD=e004-registry-current-state-reconciliation-v8-2026-08-31.md
+GLOBAL_FULL_MULTI_ROLE_E004_FRONTIER_RECORD=specs/007-sft-v1/e004-registry-current-state-reconciliation-v7-2026-08-30.md
+CURRENT_COMPONENT_E004_FRONTIER_RECORD=specs/007-sft-v1/e004-registry-current-state-reconciliation-v8-2026-08-31.md
+V8_SUPERSEDES_V7_GLOBALLY=NO
 PR141_FOUNDER_NO_EXTERNAL_REVIEWER_DECISION_CANONICAL=YES
 PR142_SP007_RO_001_CANONICAL=YES
 COMPONENT_REVIEWER_BLOCKER_REMOVED_BY_SCOPE_APPLICABILITY=YES
@@ -250,16 +261,17 @@ RESOURCE_ACCESS_FINANCE_BINDINGS_REMAIN_INCOMPLETE=YES
 A15_REMAINS_NOT_AUTHORIZED=YES
 SUCCESSOR_SCOPE_EXECUTION_AUTHORITY_REMAINS_UNRESOLVED=YES
 TRAINING_AUTHORITY=NONE
-E004_REMAINS_BLOCKED_PREFLIGHT=YES
-E005_REMAINS_NOT_REACHED=YES
+COMPONENT_E004_REMAINS_BLOCKED_PREFLIGHT=YES
+COMPONENT_E005_REMAINS_NOT_REACHED=YES
 ```
 
 ## Exit evidence
 
-This V8 reconciliation is ready for canonical merge only if fresh exact-head independent repository review confirms:
+This V8 component reconciliation is ready for canonical merge only if fresh exact-head independent repository review confirms:
 
 ```text
 PR141_AND_PR142_CANONICAL_IDENTITIES_CORRECT=YES
+GLOBAL_V7_AND_COMPONENT_V8_AUTHORITY_RELATIONSHIP_UNAMBIGUOUS=YES
 COMPONENT_SCOPE_DISTINGUISHED_FROM_FULL_MULTI_ROLE_SCOPE=YES
 COMPONENT_REVIEWER_REQUIREMENT_REMOVAL_IS_APPLICABILITY_NOT_PASS=YES
 NO_CLINICAL_OR_STATISTICAL_EVIDENCE_FABRICATED=YES
