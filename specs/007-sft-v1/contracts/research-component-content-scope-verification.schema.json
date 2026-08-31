@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "commandmed://spec007/research-component-content-scope-verification/v1",
+  "title": "Spec007 ResearchComponentContentScopeVerification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "verification_id",
+    "verification_sha256",
+    "scope_id",
+    "record_id",
+    "record_canonical_sha256",
+    "record_content_sha256",
+    "verified_target_capability_ids",
+    "excluded_capability_hits",
+    "verification_method",
+    "disposition"
+  ],
+  "properties": {
+    "schema_version": {"const": "1"},
+    "verification_id": {"type": "string", "minLength": 1},
+    "verification_sha256": {"$ref": "#/$defs/sha256"},
+    "scope_id": {"const": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1"},
+    "record_id": {"type": "string", "minLength": 1},
+    "record_canonical_sha256": {"$ref": "#/$defs/sha256"},
+    "record_content_sha256": {"$ref": "#/$defs/sha256"},
+    "verified_target_capability_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "GENERAL_INSTRUCTION_FOLLOWING",
+          "GENERAL_ENGLISH_LANGUAGE",
+          "GENERAL_ARABIC_LANGUAGE_NON_CLINICAL",
+          "NON_CLINICAL_RESEARCH_LEARNING_FORMATTING",
+          "UNCERTAINTY_AND_ABSTENTION",
+          "SYNTHETIC_NON_CLINICAL_TOOL_ROUTING",
+          "REPRODUCIBLE_TRAINING_CONTROL_MECHANICS",
+          "PROVENANCE_QUARANTINE_CONTAMINATION_ENFORCEMENT",
+          "GENERAL_CAPABILITY_PRESERVATION"
+        ]
+      }
+    },
+    "excluded_capability_hits": {"type": "array", "maxItems": 0},
+    "verification_method": {"const": "DETERMINISTIC_SCOPE_CLASSIFICATION"},
+    "disposition": {"const": "PASS"}
+  },
+  "x-commandmed-cross-field-invariants": [
+    {
+      "id": "SELF_CONTENT_IDENTITY",
+      "expression": "verification_sha256 == canonical_sha256(record excluding verification_sha256)",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_VERIFICATION"
+    },
+    {
+      "id": "EXACT_CURRICULUM_CONTENT_BINDING",
+      "expression": "record_id, record_canonical_sha256 and record_content_sha256 equal the exact referenced CurriculumRecord",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_VERIFICATION"
+    },
+    {
+      "id": "LEARNER_RESEARCHER_DURABLE_ONLY",
+      "expression": "referenced CurriculumRecord role_class == LEARNER_RESEARCHER and knowledge_placement == DURABLE_WEIGHT_ELIGIBLE",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_VERIFICATION"
+    },
+    {
+      "id": "NO_EXCLUDED_CAPABILITY_HITS",
+      "expression": "excluded_capability_hits == []",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_VERIFICATION"
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
