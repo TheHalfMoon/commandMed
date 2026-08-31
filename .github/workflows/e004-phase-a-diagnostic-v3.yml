@@ -43,6 +43,7 @@ jobs:
       AUTHORIZED_SPEND_USD: '0'
       MAX_INDEX_BYTES: '8388608'
       MAX_RELEVANT_WHEELS: '8'
+      MAX_REDIRECTS_PER_WHEEL: '5'
 
     steps:
       - name: Collect bounded Phase A route evidence
@@ -100,6 +101,9 @@ jobs:
           )
           MAX_INDEX_BYTES = int(os.environ["MAX_INDEX_BYTES"])
           MAX_RELEVANT_WHEELS = int(os.environ["MAX_RELEVANT_WHEELS"])
+          MAX_REDIRECTS = int(os.environ["MAX_REDIRECTS_PER_WHEEL"])
+          REDIRECT_CODES = {301, 302, 303, 307, 308}
+          USER_AGENT = "commandMed-e004-v3-diagnostic/3"
 
           if REQUIREMENT != "torch==2.11.0+cpu":
               raise SystemExit("unexpected exact requirement")
@@ -110,6 +114,8 @@ jobs:
               "download.pytorch.org",
           ):
               raise SystemExit("unexpected target allowlist")
+          if MAX_REDIRECTS != 5:
+              raise SystemExit("unexpected redirect bound")
 
           allowlist_identity = "\n".join(ALLOWLIST).encode("utf-8")
           print(
@@ -153,7 +159,7 @@ jobs:
 
           index_request = urllib.request.Request(
               INDEX_URL,
-              headers={"User-Agent": "commandMed-e004-v3-diagnostic/2"},
+              headers={"User-Agent": USER_AGENT},
               method="GET",
           )
           with urllib.request.urlopen(index_request, timeout=30) as response:
@@ -215,32 +221,18 @@ jobs:
           if len(relevant) > MAX_RELEVANT_WHEELS:
               raise SystemExit("relevant wheel set exceeded bounded cardinality")
 
-          class RecordingHeadRedirectHandler(
+          class NoFollowHeadRedirectHandler(
               urllib.request.HTTPRedirectHandler
           ):
-              def __init__(self):
-                  super().__init__()
-                  self.redirects = []
-
               def redirect_request(
                   self, req, fp, code, msg, headers, newurl
               ):
                   if req.get_method() != "HEAD":
                       raise RuntimeError("non-HEAD request reached redirect handler")
-                  resolved = urllib.parse.urljoin(req.full_url, newurl)
-                  self.redirects.append((int(code), resolved))
-                  redirected = super().redirect_request(
-                      req, fp, code, msg, headers, newurl
-                  )
-                  if redirected is None:
-                      return None
-                  # Python's default redirect handler reconstructs a Request
-                  # without preserving HEAD. Restore and verify HEAD explicitly
-                  # so no redirect can broaden this probe into artifact GET.
-                  redirected.method = "HEAD"
-                  if redirected.get_method() != "HEAD":
-                      raise RuntimeError("redirect did not preserve HEAD")
-                  return redirected
+                  # Returning None stops HTTPRedirectHandler before its fp.read().
+                  # The caller catches HTTPError, records Location, closes the
+                  # response without reading, and issues the next HEAD manually.
+                  return None
 
           observed_hosts = set()
           denied_hosts = set()
@@ -256,6 +248,80 @@ jobs:
                   denied_hosts.add(canonical)
               print(f"ALLOWLIST_DECISION host={canonical} result={result}")
 
+          def head_route_probe(start_url):
+              """Follow at most MAX_REDIRECTS via explicit HEAD, never read body."""
+              current_url = start_url
+              redirects = []
+
+              for _ in range(MAX_REDIRECTS + 1):
+                  request = urllib.request.Request(
+                      current_url,
+                      headers={"User-Agent": USER_AGENT},
+                      method="HEAD",
+                  )
+                  if request.get_method() != "HEAD":
+                      raise RuntimeError("route probe is not HEAD")
+
+                  opener = urllib.request.build_opener(
+                      NoFollowHeadRedirectHandler()
+                  )
+                  try:
+                      response = opener.open(request, timeout=30)
+                  except urllib.error.HTTPError as exc:
+                      status = int(exc.code)
+                      response_url = exc.geturl()
+                      location = (
+                          exc.headers.get("Location")
+                          or exc.headers.get("URI")
+                      )
+                      # Critical boundary: close the response directly. Never
+                      # call read(), peek(), iter_content(), or an equivalent.
+                      exc.close()
+
+                      if status in REDIRECT_CODES and location:
+                          if len(redirects) >= MAX_REDIRECTS:
+                              return (
+                                  None,
+                                  None,
+                                  redirects,
+                                  "MAX_REDIRECTS_EXCEEDED",
+                              )
+                          resolved = urllib.parse.urljoin(
+                              current_url, location
+                          )
+                          scheme = urllib.parse.urlsplit(
+                              resolved
+                          ).scheme.lower()
+                          if scheme not in {"http", "https"}:
+                              return (
+                                  None,
+                                  None,
+                                  redirects,
+                                  "UNSAFE_REDIRECT_SCHEME",
+                              )
+                          redirects.append((status, resolved))
+                          current_url = resolved
+                          continue
+
+                      return status, response_url, redirects, None
+                  except urllib.error.URLError as exc:
+                      return (
+                          None,
+                          None,
+                          redirects,
+                          f"UNRESOLVED:{type(exc.reason).__name__}",
+                      )
+                  else:
+                      status = int(
+                          getattr(response, "status", response.getcode())
+                      )
+                      response_url = response.geturl()
+                      # A successful HEAD response is also closed without read.
+                      response.close()
+                      return status, response_url, redirects, None
+
+              return None, None, redirects, "REDIRECT_BOUND_EXHAUSTED"
+
           for index, (basename, wheel_url) in enumerate(relevant, start=1):
               print(f"RELEVANT_WHEEL_{index}_BASENAME={basename}")
               print(
@@ -270,36 +336,12 @@ jobs:
                   )
                   record_decision(initial_host)
 
-              handler = RecordingHeadRedirectHandler()
-              opener = urllib.request.build_opener(handler)
-              head_request = urllib.request.Request(
-                  wheel_url,
-                  headers={"User-Agent": "commandMed-e004-v3-diagnostic/2"},
-                  method="HEAD",
+              final_status, final_url, redirects, probe_error = (
+                  head_route_probe(wheel_url)
               )
-              if head_request.get_method() != "HEAD":
-                  raise RuntimeError("initial route probe is not HEAD")
-
-              final_url = None
-              final_status = None
-              try:
-                  with opener.open(head_request, timeout=30) as response:
-                      final_status = int(
-                          getattr(response, "status", response.getcode())
-                      )
-                      final_url = response.geturl()
-              except urllib.error.HTTPError as exc:
-                  final_status = int(exc.code)
-                  final_url = exc.geturl()
-              except urllib.error.URLError as exc:
-                  route_probe_failures += 1
-                  print(
-                      f"RELEVANT_WHEEL_{index}_HEAD_PROBE="
-                      f"UNRESOLVED:{type(exc.reason).__name__}"
-                  )
 
               for redirect_index, (status, redirect_url) in enumerate(
-                  handler.redirects, start=1
+                  redirects, start=1
               ):
                   redirect_host = canonical_host(redirect_url)
                   print(
@@ -316,6 +358,12 @@ jobs:
                           f"HOST={redirect_host}"
                       )
                       record_decision(redirect_host)
+
+              if probe_error is not None:
+                  route_probe_failures += 1
+                  print(
+                      f"RELEVANT_WHEEL_{index}_HEAD_PROBE={probe_error}"
+                  )
 
               if final_url is not None:
                   final_host = canonical_host(final_url)
