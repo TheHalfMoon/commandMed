@@ -1,0 +1,326 @@
+# Bounded diagnostic-only V3 for E004 Phase A dependency routing.
+# No target workflow dispatch or mutation, model/dependency artifact body download,
+# model execution, benchmark/contamination/A15/training, credentials, artifact/cache
+# upload, repository mutation, or spend.
+
+name: E004 Phase A diagnostic V3
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-phase-a-diagnostic-v3.yml
+
+permissions: {}
+
+concurrency:
+  group: e004-phase-a-diagnostic-v3
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      AUTHORITY_MERGE_SHA: ff354f76262475d9be9f168731d228b4893223e4
+      HISTORICAL_TARGET_HEAD_SHA: ef1be50f4a076d9f03abfffee342d2c244b0d199
+      HISTORICAL_TARGET_WORKFLOW_BLOB_SHA1: 591317f1f570480b9ac68e7956d070db8ed5ef45
+      HISTORICAL_TARGET_WORKFLOW_RAW_SHA256: 95512021832788d5cd6362e6fa9ea0c7771bf81f5725ae4ab18b4d5199967327
+      PYTORCH_INDEX_URL: https://download.pytorch.org/whl/cpu/torch/
+      EXACT_REQUIREMENT: torch==2.11.0+cpu
+      TARGET_ALLOWLIST: github.com,pypi.org,files.pythonhosted.org,download.pytorch.org
+      AUTHORIZED_SPEND_USD: '0'
+      MAX_INDEX_BYTES: '8388608'
+      MAX_RELEVANT_WHEELS: '8'
+
+    steps:
+      - name: Collect bounded Phase A route evidence
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          test "${GITHUB_EVENT_NAME:-}" = "push"
+          test "${GITHUB_REF:-}" = "refs/heads/main"
+          test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
+          [[ "${GITHUB_SHA:-}" =~ ^[0-9a-f]{40}$ ]]
+          test "${AUTHORIZED_SPEND_USD}" = "0"
+          command -v python3 >/dev/null
+
+          printf '%s\n' \
+            "V3_AUTHORITY_MERGE_SHA=${AUTHORITY_MERGE_SHA}" \
+            "V3_EVENT=${GITHUB_EVENT_NAME}" \
+            "V3_HEAD_SHA=${GITHUB_SHA}" \
+            "V3_RUN_ID=${GITHUB_RUN_ID}" \
+            "V3_RUN_ATTEMPT=${GITHUB_RUN_ATTEMPT}" \
+            "V3_RUNNER_OS=${RUNNER_OS:-UNKNOWN}" \
+            "V3_RUNNER_ARCH=${RUNNER_ARCH:-UNKNOWN}" \
+            "V3_IMAGE_OS=${ImageOS:-UNKNOWN}" \
+            "V3_IMAGE_VERSION=${ImageVersion:-UNKNOWN}" \
+            "HISTORICAL_TARGET_HEAD_SHA=${HISTORICAL_TARGET_HEAD_SHA}" \
+            "HISTORICAL_TARGET_WORKFLOW_BLOB_SHA1=${HISTORICAL_TARGET_WORKFLOW_BLOB_SHA1}" \
+            "HISTORICAL_TARGET_WORKFLOW_RAW_SHA256=${HISTORICAL_TARGET_WORKFLOW_RAW_SHA256}" \
+            "EXACT_REQUIREMENT=${EXACT_REQUIREMENT}" \
+            "TARGET_ALLOWLIST=${TARGET_ALLOWLIST}" \
+            "AUTHORIZED_SPEND_USD=${AUTHORIZED_SPEND_USD}"
+
+          python3 --version
+          python3 -m pip --version
+
+          python3 <<'PY'
+          import hashlib
+          import html.parser
+          import os
+          import platform
+          import sys
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          INDEX_URL = os.environ["PYTORCH_INDEX_URL"]
+          REQUIREMENT = os.environ["EXACT_REQUIREMENT"]
+          ALLOWLIST = tuple(
+              item.strip().lower().rstrip(".")
+              for item in os.environ["TARGET_ALLOWLIST"].split(",")
+              if item.strip()
+          )
+          MAX_INDEX_BYTES = int(os.environ["MAX_INDEX_BYTES"])
+          MAX_RELEVANT_WHEELS = int(os.environ["MAX_RELEVANT_WHEELS"])
+
+          if REQUIREMENT != "torch==2.11.0+cpu":
+              raise SystemExit("unexpected exact requirement")
+          if ALLOWLIST != (
+              "github.com",
+              "pypi.org",
+              "files.pythonhosted.org",
+              "download.pytorch.org",
+          ):
+              raise SystemExit("unexpected target allowlist")
+
+          allowlist_identity = "\n".join(ALLOWLIST).encode("utf-8")
+          print(
+              "EXACT_TARGET_ALLOWLIST_SHA256="
+              + hashlib.sha256(allowlist_identity).hexdigest()
+          )
+
+          class LinkParser(html.parser.HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.hrefs = []
+
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() != "a":
+                      return
+                  href = dict(attrs).get("href")
+                  if href:
+                      self.hrefs.append(href)
+
+          index_request = urllib.request.Request(
+              INDEX_URL,
+              headers={"User-Agent": "commandMed-e004-v3-diagnostic/1"},
+              method="GET",
+          )
+          with urllib.request.urlopen(index_request, timeout=30) as response:
+              index_status = int(getattr(response, "status", response.getcode()))
+              index_final_url = response.geturl()
+              index_bytes = response.read(MAX_INDEX_BYTES + 1)
+
+          if len(index_bytes) > MAX_INDEX_BYTES:
+              raise SystemExit("PyTorch index metadata exceeded bounded byte limit")
+          if index_status != 200:
+              raise SystemExit(f"unexpected PyTorch index status: {index_status}")
+
+          print(f"INDEX_HTTP_STATUS={index_status}")
+          print(f"INDEX_FINAL_URL={index_final_url}")
+          print(f"INDEX_METADATA_BYTES={len(index_bytes)}")
+          print(
+              "INDEX_METADATA_SHA256="
+              + hashlib.sha256(index_bytes).hexdigest()
+          )
+
+          parser = LinkParser()
+          parser.feed(index_bytes.decode("utf-8", errors="strict"))
+
+          exact_links = []
+          for href in parser.hrefs:
+              full_url = urllib.parse.urljoin(index_final_url, href)
+              parsed = urllib.parse.urlsplit(full_url)
+              basename = urllib.parse.unquote(parsed.path.rsplit("/", 1)[-1])
+              if (
+                  basename.startswith("torch-2.11.0+cpu-")
+                  and basename.endswith(".whl")
+              ):
+                  exact_links.append((basename, full_url))
+
+          exact_links = sorted(set(exact_links))
+          print(f"INDEX_EXACT_VERSION_LINK_COUNT={len(exact_links)}")
+
+          py_tag = f"cp{sys.version_info.major}{sys.version_info.minor}"
+          machine = platform.machine().lower()
+          arch_tokens = {
+              "x86_64": ("x86_64",),
+              "amd64": ("x86_64",),
+              "aarch64": ("aarch64", "arm64"),
+              "arm64": ("aarch64", "arm64"),
+          }.get(machine, (machine,))
+
+          relevant = []
+          for basename, full_url in exact_links:
+              if f"-{py_tag}-{py_tag}-" not in basename:
+                  continue
+              if not any(token in basename.lower() for token in arch_tokens):
+                  continue
+              relevant.append((basename, full_url))
+
+          print(f"DIAGNOSTIC_PYTHON_TAG={py_tag}")
+          print(f"DIAGNOSTIC_MACHINE={machine}")
+          print(f"RELEVANT_EXACT_WHEEL_COUNT={len(relevant)}")
+
+          if len(relevant) > MAX_RELEVANT_WHEELS:
+              raise SystemExit("relevant wheel set exceeded bounded cardinality")
+
+          class RecordingRedirectHandler(urllib.request.HTTPRedirectHandler):
+              def __init__(self):
+                  super().__init__()
+                  self.redirects = []
+
+              def redirect_request(
+                  self, req, fp, code, msg, headers, newurl
+              ):
+                  resolved = urllib.parse.urljoin(req.full_url, newurl)
+                  self.redirects.append((int(code), resolved))
+                  return super().redirect_request(
+                      req, fp, code, msg, headers, newurl
+                  )
+
+          observed_hosts = set()
+          denied_hosts = set()
+          route_probe_failures = 0
+
+          def canonical_host(url):
+              host = urllib.parse.urlsplit(url).hostname
+              return (host or "").strip().lower().rstrip(".")
+
+          def record_decision(host):
+              canonical = host.strip().lower().rstrip(".")
+              if not canonical:
+                  return
+              result = "ALLOW" if canonical in ALLOWLIST else "DENY"
+              observed_hosts.add(canonical)
+              if result == "DENY":
+                  denied_hosts.add(canonical)
+              print(f"ALLOWLIST_DECISION host={canonical} result={result}")
+
+          for index, (basename, wheel_url) in enumerate(relevant, start=1):
+              print(f"RELEVANT_WHEEL_{index}_BASENAME={basename}")
+              print(f"RELEVANT_WHEEL_{index}_INDEX_URL={wheel_url}")
+
+              initial_host = canonical_host(wheel_url)
+              if initial_host:
+                  print(
+                      f"RELEVANT_WHEEL_{index}_INITIAL_HOST={initial_host}"
+                  )
+                  record_decision(initial_host)
+
+              handler = RecordingRedirectHandler()
+              opener = urllib.request.build_opener(handler)
+              head_request = urllib.request.Request(
+                  wheel_url,
+                  headers={"User-Agent": "commandMed-e004-v3-diagnostic/1"},
+                  method="HEAD",
+              )
+
+              final_url = None
+              final_status = None
+              try:
+                  with opener.open(head_request, timeout=30) as response:
+                      final_status = int(
+                          getattr(response, "status", response.getcode())
+                      )
+                      final_url = response.geturl()
+              except urllib.error.HTTPError as exc:
+                  final_status = int(exc.code)
+                  final_url = exc.geturl()
+              except urllib.error.URLError as exc:
+                  route_probe_failures += 1
+                  print(
+                      f"RELEVANT_WHEEL_{index}_HEAD_PROBE="
+                      f"UNRESOLVED:{type(exc.reason).__name__}"
+                  )
+
+              for redirect_index, (status, redirect_url) in enumerate(
+                  handler.redirects, start=1
+              ):
+                  redirect_host = canonical_host(redirect_url)
+                  print(
+                      f"RELEVANT_WHEEL_{index}_REDIRECT_{redirect_index}_"
+                      f"STATUS={status}"
+                  )
+                  print(
+                      f"RELEVANT_WHEEL_{index}_REDIRECT_{redirect_index}_"
+                      f"URL={redirect_url}"
+                  )
+                  if redirect_host:
+                      print(
+                          f"RELEVANT_WHEEL_{index}_REDIRECT_{redirect_index}_"
+                          f"HOST={redirect_host}"
+                      )
+                      record_decision(redirect_host)
+
+              if final_url is not None:
+                  final_host = canonical_host(final_url)
+                  print(
+                      f"RELEVANT_WHEEL_{index}_HEAD_STATUS={final_status}"
+                  )
+                  print(
+                      f"RELEVANT_WHEEL_{index}_FINAL_URL={final_url}"
+                  )
+                  if final_host:
+                      print(
+                          f"RELEVANT_WHEEL_{index}_FINAL_HOST={final_host}"
+                      )
+                      record_decision(final_host)
+
+          observed_csv = ",".join(sorted(observed_hosts)) or "NONE"
+          denied_csv = ",".join(sorted(denied_hosts)) or "NONE"
+          print(f"DISCOVERED_ROUTE_HOSTS={observed_csv}")
+          print(f"DISCOVERED_DENIED_HOSTS={denied_csv}")
+          print(f"HEAD_ROUTE_PROBE_FAILURES={route_probe_failures}")
+
+          if not relevant:
+              denied_required_route = "NEEDS_EVIDENCE"
+              observation = "NO_PLATFORM_RELEVANT_EXACT_WHEEL_LINK"
+          elif route_probe_failures == len(relevant):
+              denied_required_route = "NEEDS_EVIDENCE"
+              observation = "ROUTE_PROBES_UNRESOLVED"
+          elif denied_hosts:
+              denied_required_route = "YES"
+              observation = "DENIED_ROUTE_HOST_OBSERVED"
+          else:
+              denied_required_route = "NO"
+              observation = "NO_DENIED_ROUTE_HOST_OBSERVED"
+
+          print(f"V3_DIAGNOSTIC_OBSERVATION={observation}")
+          print(
+              "V3_DENIED_REQUIRED_ROUTE_OBSERVED="
+              + denied_required_route
+          )
+          print("STATIC_WORKFLOW_DEFECT_PROVEN_BY_V3=NEEDS_RECONCILIATION")
+          print("PHASE_A_FAILURE_CAUSE=NEEDS_RECONCILIATION")
+          print("V3_DIAGNOSTIC_COMPLETED=YES")
+          print("TARGET_WORKFLOW_EXECUTED=NO")
+          print("TARGET_WORKFLOW_MUTATED=NO")
+          print("MODEL_WEIGHT_DOWNLOADED=NO")
+          print("DEPENDENCY_ARTIFACT_BODY_DOWNLOADED=NO")
+          print("MODEL_EXECUTION=NO")
+          print("BENCHMARK_EXECUTION=NO")
+          print("CONTAMINATION_ASSESSMENT_EXECUTION=NO")
+          print("A15_ACTIVATION=NO")
+          print("TRAINING_EXECUTION=NO")
+          print("ARTIFACT_UPLOAD=NO")
+          print("CACHE_UPLOAD=NO")
+          print("CREDENTIAL_USE=NO")
+          print("REPOSITORY_MUTATION_BY_RUNTIME=NO")
+          print("SPEND_USD=0")
+          PY
