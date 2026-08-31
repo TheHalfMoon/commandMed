@@ -103,7 +103,7 @@ jobs:
           MAX_RELEVANT_WHEELS = int(os.environ["MAX_RELEVANT_WHEELS"])
           MAX_REDIRECTS = int(os.environ["MAX_REDIRECTS_PER_REQUEST"])
           REDIRECT_CODES = {301, 302, 303, 307, 308}
-          USER_AGENT = "commandMed-e004-v3-diagnostic/5"
+          USER_AGENT = "commandMed-e004-v3-diagnostic/6"
 
           if REQUIREMENT != "torch==2.11.0+cpu":
               raise SystemExit("unexpected exact requirement")
@@ -127,6 +127,24 @@ jobs:
               host = urllib.parse.urlsplit(url).hostname
               return (host or "").strip().lower().rstrip(".")
 
+          def route_components(url):
+              parsed = urllib.parse.urlsplit(url)
+              host = (parsed.hostname or "").strip().lower().rstrip(".")
+              scheme = parsed.scheme.lower()
+              try:
+                  explicit_port = parsed.port
+              except ValueError:
+                  explicit_port = None
+              if explicit_port is not None:
+                  port = explicit_port
+              elif scheme == "https":
+                  port = 443
+              elif scheme == "http":
+                  port = 80
+              else:
+                  port = None
+              return host, scheme, port
+
           def sanitized_url(url):
               """Return scheme/host/port/path only; never log query or fragment."""
               parsed = urllib.parse.urlsplit(url)
@@ -148,28 +166,36 @@ jobs:
           observed_hosts = set()
           denied_hosts = set()
 
-          def record_decision(host):
-              canonical = host.strip().lower().rstrip(".")
-              if not canonical:
-                  return
-              result = "ALLOW" if canonical in ALLOWLIST else "DENY"
-              observed_hosts.add(canonical)
-              if result == "DENY":
-                  denied_hosts.add(canonical)
-              print(f"ALLOWLIST_DECISION host={canonical} result={result}")
-
           def record_route_decision(url):
-              host = canonical_host(url)
-              if host:
-                  record_decision(host)
+              host, scheme, port = route_components(url)
+              if not host:
+                  print(
+                      "ALLOWLIST_DECISION host=INVALID scheme="
+                      f"{scheme or 'NONE'} port={port or 'NONE'} result=DENY"
+                  )
+                  return ""
+
+              # Exact historical Phase A proxy semantics: only CONNECT to an
+              # allowlisted canonical host on port 443 is allowed. A URL can
+              # map to that CONNECT decision only when it is HTTPS on port 443.
+              allowed = (
+                  host in ALLOWLIST and scheme == "https" and port == 443
+              )
+              result = "ALLOW" if allowed else "DENY"
+              observed_hosts.add(host)
+              if not allowed:
+                  denied_hosts.add(host)
+              print(
+                  f"ALLOWLIST_DECISION host={host} scheme={scheme or 'NONE'} "
+                  f"port={port if port is not None else 'NONE'} result={result}"
+              )
               return host
 
-          def safe_redirect_target(current_url, location):
-              resolved = urllib.parse.urljoin(current_url, location)
-              scheme = urllib.parse.urlsplit(resolved).scheme.lower()
-              if scheme not in {"http", "https"}:
-                  raise ValueError("unsafe redirect scheme")
-              return resolved
+          def resolve_redirect_target(current_url, location):
+              return urllib.parse.urljoin(current_url, location)
+
+          def is_network_redirect_target(url):
+              return urllib.parse.urlsplit(url).scheme.lower() in {"http", "https"}
 
           class NoFollowRedirectHandler(urllib.request.HTTPRedirectHandler):
               def redirect_request(
@@ -203,6 +229,9 @@ jobs:
               redirects = []
 
               for _ in range(MAX_REDIRECTS + 1):
+                  # Classify every route before attempting it so error paths
+                  # cannot omit an already-observed redirect decision.
+                  record_route_decision(current_url)
                   request = urllib.request.Request(
                       current_url,
                       headers={"User-Agent": USER_AGENT},
@@ -224,19 +253,22 @@ jobs:
                       exc.close()
 
                       if status in REDIRECT_CODES and location:
-                          if len(redirects) >= MAX_REDIRECTS:
+                          resolved = resolve_redirect_target(
+                              current_url, location
+                          )
+                          # The Location target has already been observed here;
+                          # classify it even if the redirect bound/scheme stops
+                          # traversal before another request is made.
+                          record_route_decision(resolved)
+                          redirects.append((status, resolved))
+                          if len(redirects) > MAX_REDIRECTS:
                               raise RuntimeError(
                                   "index metadata redirect bound exceeded"
                               )
-                          try:
-                              resolved = safe_redirect_target(
-                                  current_url, location
-                              )
-                          except ValueError as error:
+                          if not is_network_redirect_target(resolved):
                               raise RuntimeError(
                                   "index metadata redirect scheme rejected"
-                              ) from error
-                          redirects.append((status, resolved))
+                              )
                           current_url = resolved
                           continue
 
@@ -254,6 +286,7 @@ jobs:
                               getattr(response, "status", response.getcode())
                           )
                           response_url = response.geturl()
+                          record_route_decision(response_url)
                           # This is the only body read in the index path and it
                           # is bounded to MAX_INDEX_BYTES + 1 for overflow proof.
                           body = response.read(MAX_INDEX_BYTES + 1)
@@ -272,10 +305,6 @@ jobs:
 
               raise RuntimeError("index metadata redirect loop exhausted")
 
-          index_initial_host = record_route_decision(INDEX_URL)
-          if index_initial_host:
-              print(f"INDEX_INITIAL_HOST={index_initial_host}")
-
           (
               index_status,
               index_final_url,
@@ -288,7 +317,7 @@ jobs:
           for redirect_index, (status, redirect_url) in enumerate(
               index_redirects, start=1
           ):
-              redirect_host = record_route_decision(redirect_url)
+              redirect_host = canonical_host(redirect_url)
               print(
                   f"INDEX_REDIRECT_{redirect_index}_STATUS={status}"
               )
@@ -301,7 +330,7 @@ jobs:
                       f"INDEX_REDIRECT_{redirect_index}_HOST={redirect_host}"
                   )
 
-          index_final_host = record_route_decision(index_final_url)
+          index_final_host = canonical_host(index_final_url)
           print(f"INDEX_FINAL_ROUTE={sanitized_url(index_final_url)}")
           if index_final_host:
               print(f"INDEX_FINAL_HOST={index_final_host}")
@@ -360,6 +389,7 @@ jobs:
               redirects = []
 
               for _ in range(MAX_REDIRECTS + 1):
+                  record_route_decision(current_url)
                   request = urllib.request.Request(
                       current_url,
                       headers={"User-Agent": USER_AGENT},
@@ -383,25 +413,25 @@ jobs:
                       exc.close()
 
                       if status in REDIRECT_CODES and location:
-                          if len(redirects) >= MAX_REDIRECTS:
+                          resolved = resolve_redirect_target(
+                              current_url, location
+                          )
+                          record_route_decision(resolved)
+                          redirects.append((status, resolved))
+                          if len(redirects) > MAX_REDIRECTS:
                               return (
                                   None,
                                   None,
                                   redirects,
                                   "MAX_REDIRECTS_EXCEEDED",
                               )
-                          try:
-                              resolved = safe_redirect_target(
-                                  current_url, location
-                              )
-                          except ValueError:
+                          if not is_network_redirect_target(resolved):
                               return (
                                   None,
                                   None,
                                   redirects,
                                   "UNSAFE_REDIRECT_SCHEME",
                               )
-                          redirects.append((status, resolved))
                           current_url = resolved
                           continue
 
@@ -418,6 +448,7 @@ jobs:
                           getattr(response, "status", response.getcode())
                       )
                       response_url = response.geturl()
+                      record_route_decision(response_url)
                       # A successful HEAD response is closed without read.
                       response.close()
                       return status, response_url, redirects, None
@@ -431,7 +462,7 @@ jobs:
                   f"{sanitized_url(wheel_url)}"
               )
 
-              initial_host = record_route_decision(wheel_url)
+              initial_host = canonical_host(wheel_url)
               if initial_host:
                   print(
                       f"RELEVANT_WHEEL_{index}_INITIAL_HOST={initial_host}"
@@ -444,7 +475,7 @@ jobs:
               for redirect_index, (status, redirect_url) in enumerate(
                   redirects, start=1
               ):
-                  redirect_host = record_route_decision(redirect_url)
+                  redirect_host = canonical_host(redirect_url)
                   print(
                       f"RELEVANT_WHEEL_{index}_REDIRECT_{redirect_index}_"
                       f"STATUS={status}"
@@ -466,7 +497,7 @@ jobs:
                   )
 
               if final_url is not None:
-                  final_host = record_route_decision(final_url)
+                  final_host = canonical_host(final_url)
                   print(
                       f"RELEVANT_WHEEL_{index}_HEAD_STATUS={final_status}"
                   )
