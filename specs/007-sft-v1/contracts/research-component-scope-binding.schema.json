@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "commandmed://spec007/research-component-scope-binding/v1",
+  "title": "Spec007 ResearchComponentScopeBinding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "binding_id",
+    "scope_id",
+    "scope_class",
+    "claim_class",
+    "gradient_record_bindings",
+    "sentinel_fixture_bindings",
+    "excluded_capability_ids",
+    "required_guard_ids",
+    "system_qualification_created",
+    "clinical_qualification_created"
+  ],
+  "properties": {
+    "schema_version": {"const": "1"},
+    "binding_id": {"type": "string", "minLength": 1},
+    "scope_id": {"const": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1"},
+    "scope_class": {"const": "COMPONENT_QUALIFICATION"},
+    "claim_class": {"const": "NON_CLINICAL_RESEARCH_ENGINEERING_ONLY"},
+    "gradient_record_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record_id",
+          "target_capability_ids",
+          "content_scope_verification_state",
+          "optimization_feedback_allowed"
+        ],
+        "properties": {
+          "record_id": {"type": "string", "minLength": 1},
+          "target_capability_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "GENERAL_INSTRUCTION_FOLLOWING",
+                "GENERAL_ENGLISH_LANGUAGE",
+                "GENERAL_ARABIC_LANGUAGE_NON_CLINICAL",
+                "NON_CLINICAL_RESEARCH_LEARNING_FORMATTING",
+                "UNCERTAINTY_AND_ABSTENTION",
+                "SYNTHETIC_NON_CLINICAL_TOOL_ROUTING",
+                "REPRODUCIBLE_TRAINING_CONTROL_MECHANICS",
+                "PROVENANCE_QUARANTINE_CONTAMINATION_ENFORCEMENT",
+                "GENERAL_CAPABILITY_PRESERVATION"
+              ]
+            }
+          },
+          "content_scope_verification_state": {"const": "PASS"},
+          "optimization_feedback_allowed": {"const": true}
+        }
+      }
+    },
+    "sentinel_fixture_bindings": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_id",
+          "guard_id",
+          "expected_action",
+          "optimization_feedback_allowed"
+        ],
+        "properties": {
+          "fixture_id": {"type": "string", "minLength": 1},
+          "guard_id": {
+            "enum": [
+              "RO_GUARD_001_OUT_OF_SCOPE_PATIENT_ADVICE",
+              "RO_GUARD_002_OUT_OF_SCOPE_CLINICAL_PROFESSIONAL_ADVICE",
+              "RO_GUARD_003_EMERGENCY_SENTINEL",
+              "RO_GUARD_004_MEDICATION_SENTINEL",
+              "RO_GUARD_005_DETERMINISTIC_TOOL_BOUNDARY",
+              "RO_GUARD_006_UNSUPPORTED_CERTAINTY",
+              "RO_GUARD_007_SCOPE_ESCAPE"
+            ]
+          },
+          "expected_action": {"enum": ["ABSTAIN", "ASK_MORE", "ESCALATE"]},
+          "optimization_feedback_allowed": {"const": false}
+        }
+      }
+    },
+    "excluded_capability_ids": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "PATIENT_SPECIFIC_DIAGNOSIS",
+          "PATIENT_SPECIFIC_DIFFERENTIAL_DIAGNOSIS",
+          "PATIENT_OR_CAREGIVER_TREATMENT_ADVICE",
+          "PATIENT_OR_CAREGIVER_TRIAGE",
+          "EMERGENCY_DISPOSITION_OR_REASSURANCE",
+          "MEDICATION_OR_DOSE_RECOMMENDATION",
+          "ALLERGY_OR_INTERACTION_ADVICE",
+          "RENAL_HEPATIC_MEDICATION_ADVICE",
+          "PREGNANCY_OR_PEDIATRIC_CLINICAL_ADVICE",
+          "CLINICAL_PROFESSIONAL_DECISION_SUPPORT",
+          "CLINICAL_WORKFLOW_RECOMMENDATION",
+          "LAB_REPORT_CLINICAL_EXTRACTION_OR_INTERPRETATION",
+          "PATIENT_FACING_EVIDENCE_SUMMARY",
+          "MEDICAL_CITATION_SUPPORT_CLAIM",
+          "ARABIC_CLINICAL_PARITY_CLAIM",
+          "CLINICAL_SELECTIVE_RISK_OR_COVERAGE_CLAIM",
+          "BENIGN_CASE_OVER_TRIAGE_CLAIM",
+          "CLINICAL_SAFETY_RATE_CLAIM"
+        ]
+      }
+    },
+    "required_guard_ids": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "RO_GUARD_001_OUT_OF_SCOPE_PATIENT_ADVICE",
+          "RO_GUARD_002_OUT_OF_SCOPE_CLINICAL_PROFESSIONAL_ADVICE",
+          "RO_GUARD_003_EMERGENCY_SENTINEL",
+          "RO_GUARD_004_MEDICATION_SENTINEL",
+          "RO_GUARD_005_DETERMINISTIC_TOOL_BOUNDARY",
+          "RO_GUARD_006_UNSUPPORTED_CERTAINTY",
+          "RO_GUARD_007_SCOPE_ESCAPE"
+        ]
+      }
+    },
+    "system_qualification_created": {"const": false},
+    "clinical_qualification_created": {"const": false}
+  },
+  "x-commandmed-cross-field-invariants": [
+    {
+      "id": "EXACT_EXCLUDED_CAPABILITY_SET",
+      "expression": "excluded_capability_ids == frozen SP007-RO-001 excluded capability set",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_BINDING"
+    },
+    {
+      "id": "EXACT_REQUIRED_GUARD_SET",
+      "expression": "required_guard_ids == frozen SP007-RO-001 guard set and sentinel_fixture_bindings cover each guard exactly once",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_BINDING"
+    },
+    {
+      "id": "GRADIENT_RECORDS_LEARNER_RESEARCHER_ONLY",
+      "expression": "every gradient record resolves to a valid CurriculumRecord with role_class == LEARNER_RESEARCHER and knowledge_placement == DURABLE_WEIGHT_ELIGIBLE",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_BINDING"
+    },
+    {
+      "id": "SENTINELS_ABORT_DISQUALIFY_ONLY",
+      "expression": "every sentinel fixture has optimization_feedback_allowed == false",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_BINDING"
+    }
+  ]
+}
