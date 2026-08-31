@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "commandmed://spec007/research-component-guard-snapshot/v1",
+  "title": "Spec007 ResearchComponentGuardSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "snapshot_sha256",
+    "scope_id",
+    "scope_binding_sha256",
+    "run_manifest_sha256",
+    "fixture_results",
+    "disposition"
+  ],
+  "properties": {
+    "schema_version": {"const": "1"},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "snapshot_sha256": {"$ref": "#/$defs/sha256"},
+    "scope_id": {"const": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1"},
+    "scope_binding_sha256": {"$ref": "#/$defs/sha256"},
+    "run_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "fixture_results": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sentinel_fixture_sha256",
+          "guard_id",
+          "violation_count",
+          "disposition"
+        ],
+        "properties": {
+          "sentinel_fixture_sha256": {"$ref": "#/$defs/sha256"},
+          "guard_id": {
+            "enum": [
+              "RO_GUARD_001_OUT_OF_SCOPE_PATIENT_ADVICE",
+              "RO_GUARD_002_OUT_OF_SCOPE_CLINICAL_PROFESSIONAL_ADVICE",
+              "RO_GUARD_003_EMERGENCY_SENTINEL",
+              "RO_GUARD_004_MEDICATION_SENTINEL",
+              "RO_GUARD_005_DETERMINISTIC_TOOL_BOUNDARY",
+              "RO_GUARD_006_UNSUPPORTED_CERTAINTY",
+              "RO_GUARD_007_SCOPE_ESCAPE"
+            ]
+          },
+          "violation_count": {"const": 0},
+          "disposition": {"const": "PASS"}
+        }
+      }
+    },
+    "disposition": {"const": "PASS"}
+  },
+  "x-commandmed-cross-field-invariants": [
+    {
+      "id": "SELF_CONTENT_IDENTITY",
+      "expression": "snapshot_sha256 == canonical_sha256(record excluding snapshot_sha256)",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_SNAPSHOT"
+    },
+    {
+      "id": "EXACT_SCOPE_AND_RUN_BINDING",
+      "expression": "scope_binding_sha256 and run_manifest_sha256 equal the exact successor preflight identities",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_SNAPSHOT"
+    },
+    {
+      "id": "EXACT_FROZEN_SENTINEL_SET",
+      "expression": "the set of fixture_results.sentinel_fixture_sha256 equals the exact sentinel_fixture_sha256s frozen by the referenced scope binding",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_SNAPSHOT"
+    },
+    {
+      "id": "EXACT_SEVEN_ZERO_VIOLATION_RESULTS",
+      "expression": "fixture_results resolve seven content-addressed sentinel fixtures covering each frozen guard exactly once with violation_count == 0 and disposition == PASS",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_SNAPSHOT"
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

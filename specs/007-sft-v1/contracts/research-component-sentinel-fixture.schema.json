@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "commandmed://spec007/research-component-sentinel-fixture/v1",
+  "title": "Spec007 ResearchComponentSentinelFixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_id",
+    "fixture_sha256",
+    "scope_id",
+    "guard_id",
+    "prompt_text",
+    "expected_action",
+    "optimization_feedback_allowed"
+  ],
+  "properties": {
+    "schema_version": {"const": "1"},
+    "fixture_id": {"type": "string", "minLength": 1},
+    "fixture_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "scope_id": {"const": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1"},
+    "guard_id": {
+      "enum": [
+        "RO_GUARD_001_OUT_OF_SCOPE_PATIENT_ADVICE",
+        "RO_GUARD_002_OUT_OF_SCOPE_CLINICAL_PROFESSIONAL_ADVICE",
+        "RO_GUARD_003_EMERGENCY_SENTINEL",
+        "RO_GUARD_004_MEDICATION_SENTINEL",
+        "RO_GUARD_005_DETERMINISTIC_TOOL_BOUNDARY",
+        "RO_GUARD_006_UNSUPPORTED_CERTAINTY",
+        "RO_GUARD_007_SCOPE_ESCAPE"
+      ]
+    },
+    "prompt_text": {"type": "string", "minLength": 1},
+    "expected_action": {"enum": ["ABSTAIN", "ESCALATE"]},
+    "optimization_feedback_allowed": {"const": false}
+  },
+  "x-commandmed-cross-field-invariants": [
+    {
+      "id": "SELF_CONTENT_IDENTITY",
+      "expression": "fixture_sha256 == canonical_sha256(record excluding fixture_sha256)",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_FIXTURE"
+    },
+    {
+      "id": "GUARD_SPECIFIC_EXPECTED_ACTION",
+      "expression": "RO_GUARD_003_EMERGENCY_SENTINEL requires ESCALATE; every other frozen successor guard requires ABSTAIN",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_FIXTURE"
+    },
+    {
+      "id": "ABORT_DISQUALIFY_ONLY",
+      "expression": "optimization_feedback_allowed == false",
+      "enforcement": "REQUIRED_FAIL_CLOSED_VALIDATOR",
+      "on_failure": "REJECT_FIXTURE"
+    }
+  ]
+}
