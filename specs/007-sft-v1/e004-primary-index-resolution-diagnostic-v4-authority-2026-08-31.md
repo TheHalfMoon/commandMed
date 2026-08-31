@@ -90,7 +90,15 @@ RUNNER_CLASS=STANDARD_GITHUB_HOSTED_PUBLIC_REPOSITORY_RUNNER
 RUNNER_LABEL=ubuntu-24.04
 MAX_AUTHORIZED_V4_DIAGNOSTIC_RUNS=1
 V4_PURPOSE=COLLECT_PRIMARY_INDEX_AND_COMBINED_CANDIDATE_METADATA_EVIDENCE
-V4_TRIGGER=push_to_main_path_scoped_to_exact_v4_diagnostic_workflow_file
+V4_TRIGGER=push_to_main_path_scoped_to_.github/workflows/e004-primary-index-resolution-diagnostic-v4.yml
+V4_AUTHORITY_MERGE_SHA=DEPEND_ON_CANONICAL_V4_AUTHORITY_MERGE
+V4_IMPLEMENTATION_REQUIRED_EVENT=push
+V4_IMPLEMENTATION_REQUIRED_REF=refs/heads/main
+V4_IMPLEMENTATION_REQUIRED_PATH=.github/workflows/e004-primary-index-resolution-diagnostic-v4.yml
+V4_IMPLEMENTATION_REQUIRED_EVENT_BEFORE_SHA=V4_AUTHORITY_MERGE_SHA
+V4_IMPLEMENTATION_REQUIRED_RUN_ATTEMPT=1
+V4_LATER_MATCHING_PUSH_DIAGNOSTIC_BODY=SKIP
+V4_RERUN_DIAGNOSTIC_BODY=SKIP
 V4_AUTOMATIC_RETRY_AUTHORITY=NONE
 V4_FAILED_JOB_RERUN_AUTHORITY=NONE
 V4_TARGET_WORKFLOW_DISPATCH_AUTHORITY=NONE
@@ -105,7 +113,51 @@ PRIVATE_SECRET_ACCESS_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-The path-scoped push trigger is authorized only as the one-shot execution mechanism for the future V4 diagnostic implementation because the currently connected executor exposes no native fresh `workflow_dispatch` creator. The reviewed implementation merge itself may trigger the single authorized V4 run. A later push, rerun, alternate trigger, or second V4 execution is not authorized by this record.
+The path-scoped push trigger is authorized only as the one-shot execution mechanism for the future V4 diagnostic implementation because the currently connected executor exposes no native fresh `workflow_dispatch` creator. The reviewed implementation merge itself may trigger the single authorized V4 run. A later push, rerun, alternate trigger, or second V4 execution is not authorized by this record and MUST be mechanically prevented from executing the diagnostic body as specified below.
+
+### 4.1 Required mechanical one-shot guard
+
+The future V4 implementation MUST enforce the lifetime cardinality mechanically. This is a review-blocking conformance requirement, not advisory prose.
+
+The workflow MUST trigger only on `push` to `main` when the exact file `.github/workflows/e004-primary-index-resolution-diagnostic-v4.yml` changes. After this authority record is canonically merged, the implementation MUST bind the exact resulting authority merge SHA as both:
+
+```text
+V4_AUTHORITY_MERGE_SHA=<exact canonical merge SHA of this V4 authority PR>
+EXPECTED_EVENT_BEFORE_SHA=<same exact SHA>
+```
+
+The diagnostic job MUST use a job-level guard semantically equivalent to:
+
+```yaml
+if: >-
+  github.repository == 'TheHalfMoon/commandMed' &&
+  github.ref == 'refs/heads/main' &&
+  github.event.before == '<V4_AUTHORITY_MERGE_SHA>' &&
+  github.run_attempt == 1
+```
+
+The implementation MUST expose the event-before identity to the runtime with bindings semantically equivalent to:
+
+```yaml
+AUTHORITY_MERGE_SHA: <V4_AUTHORITY_MERGE_SHA>
+EXPECTED_EVENT_BEFORE_SHA: <V4_AUTHORITY_MERGE_SHA>
+EVENT_BEFORE_SHA: ${{ github.event.before }}
+```
+
+Before **any network request or diagnostic metadata fetch**, the job script MUST fail closed unless all of the following runtime assertions pass:
+
+```bash
+test "${GITHUB_EVENT_NAME:-}" = "push"
+test "${GITHUB_REF:-}" = "refs/heads/main"
+test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
+[[ "${GITHUB_SHA:-}" =~ ^[0-9a-f]{40}$ ]]
+test "${GITHUB_RUN_ATTEMPT:-}" = "1"
+test "${EVENT_BEFORE_SHA:-}" = "${EXPECTED_EVENT_BEFORE_SHA}"
+test "${EXPECTED_EVENT_BEFORE_SHA}" = "${AUTHORITY_MERGE_SHA}"
+test "${AUTHORIZED_SPEND_USD}" = "0"
+```
+
+The future implementation review MUST verify the exact canonical V4 authority merge SHA is bound into both the job-level predicate and the runtime assertions before guarded merge. A later matching push, every rerun, and every event whose predecessor is not the exact V4 authority merge SHA MUST skip the diagnostic body and MUST perform no V4 diagnostic network request. No fallback or alternate trigger is authorized.
 
 ## 5. Authorized diagnostic evidence surface
 
@@ -261,7 +313,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 
 If and only if this exact authority record passes fresh exact-head independent review with `MATERIAL_BLOCKER=NO` and is guarded-merged canonically, it authorizes creation and qualification of the separate minimal V4 diagnostic workflow implementation described above. It does not authorize execution before that implementation itself passes fresh exact-head independent review and is guarded-merged.
 
-The reviewed implementation merge may consume the exactly-one V4 execution allowance through the path-scoped push trigger. No other execution path is authorized.
+The reviewed implementation merge may consume the exactly-one V4 execution allowance only through the exact path-scoped push trigger and mechanical lifetime guard in Section 4.1. No other execution path is authorized.
 
 ## 12. Required review gate
 
@@ -273,6 +325,10 @@ Before canonical merge, an independent reviewer must verify at least:
 - metadata/index inspection does not permit dependency artifact-body download;
 - no `pip download`, `pip install`, target-workflow dispatch, repair, rerun, model, conversion, inference, benchmark, contamination, A15, training, credential, artifact/cache, or spend authority is created;
 - exactly one public `ubuntu-24.04` diagnostic execution is the maximum future allowance after the separate implementation review/merge gate;
+- the future implementation is required to trigger only on `push` to `main` for `.github/workflows/e004-primary-index-resolution-diagnostic-v4.yml`;
+- the future implementation is required to bind the exact canonical V4 authority merge SHA into both `github.event.before` and runtime predecessor assertions;
+- the future implementation is required to enforce `github.run_attempt == 1` at job and runtime levels before any network request;
+- later matching pushes, reruns, alternate events, and nonmatching predecessor SHAs must skip the diagnostic body and perform no V4 diagnostic network request;
 - the workflow cannot self-declare repair authority or historical causality;
 - all fail-closed states remain explicit.
 
