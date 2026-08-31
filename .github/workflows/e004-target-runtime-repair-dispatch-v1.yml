@@ -92,6 +92,12 @@ jobs:
 
           for tool in curl python3; do command -v "$tool" >/dev/null; done
 
+          # Every GitHub REST request has deterministic connection and total-transfer deadlines.
+          # No automatic retries are added, especially around irreversible POST operations.
+          curl() {
+            command curl --connect-timeout 10 --max-time 30 "$@"
+          }
+
           api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
           auth_header="Authorization: Bearer ${GITHUB_TOKEN}"
           accept_header="Accept: application/vnd.github+json"
