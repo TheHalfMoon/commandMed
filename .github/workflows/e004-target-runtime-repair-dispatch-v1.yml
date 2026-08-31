@@ -1,0 +1,337 @@
+# One-shot transport bootstrap for the independently reviewed repaired E004 runtime-evidence target.
+# This workflow may create exactly one transient binding ref and exactly one target workflow_dispatch.
+# It must not mutate repository file contents or execute model, conversion, inference, benchmark,
+# contamination, A15, training, provider-generation, paid-runner, procurement, payment, or spend surfaces.
+
+name: E004 repaired target runtime dispatch bootstrap V1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-target-runtime-repair-dispatch-v1.yml
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: e004-target-runtime-repair-dispatch-v1
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      TARGET_WORKFLOW_FILE: e004-conversion-runtime-evidence.yml
+      TARGET_WORKFLOW_PATH: .github/workflows/e004-conversion-runtime-evidence.yml
+      REPAIRED_TARGET_CANONICAL_MERGE_SHA: becf6282a4bd0fa99408c49ddcc65cd8ac6540b9
+      EXPECTED_TARGET_BLOB_SHA1: 72329f1c14261814561e7e704fc266d5a3cbf93c
+      EXPECTED_TARGET_RAW_SHA256: 12251332dcd2c2119fc1acd0f6a66f1323a8f9e810a06c52c4c39c62d0c5beaf
+      EXPECTED_TARGET_RAW_BYTES: '24608'
+      EXPECTED_BOOTSTRAP_PREDECESSOR_SHA: becf6282a4bd0fa99408c49ddcc65cd8ac6540b9
+      HISTORICAL_TARGET_RUN_ID: '33366859146'
+      HISTORICAL_TARGET_HEAD_SHA: ef1be50f4a076d9f03abfffee342d2c244b0d199
+      HISTORICAL_TARGET_HEAD_BRANCH: e004-runtime-evidence-v2-bind-ef1be50f4a076d9f03abfffee342d2c244b0d199
+      BIND_BRANCH_PREFIX: e004-runtime-evidence-route-repair-bind
+      MAX_TARGET_DISPATCHES: '1'
+      MAX_TRANSIENT_BIND_REFS: '1'
+      AUTHORIZED_SPEND_USD: '0'
+      GITHUB_API_VERSION: '2026-03-10'
+    steps:
+      - name: Bind exact repaired target and create one workflow dispatch
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -Eeuo pipefail
+
+          # Local fail-closed event checks happen before the first network request.
+          test "${GITHUB_EVENT_NAME:-}" = "push"
+          test "${GITHUB_REF:-}" = "refs/heads/main"
+          test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
+          test "${GITHUB_RUN_ATTEMPT:-}" = "1"
+          [[ "${GITHUB_SHA:-}" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$EXPECTED_BOOTSTRAP_PREDECESSOR_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$REPAIRED_TARGET_CANONICAL_MERGE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$EXPECTED_BOOTSTRAP_PREDECESSOR_SHA" = "$REPAIRED_TARGET_CANONICAL_MERGE_SHA"
+          test "$MAX_TARGET_DISPATCHES" = "1"
+          test "$MAX_TRANSIENT_BIND_REFS" = "1"
+          test "$AUTHORIZED_SPEND_USD" = "0"
+          test -r "${GITHUB_EVENT_PATH:?missing GITHUB_EVENT_PATH}"
+
+          python3 - <<'PY'
+          import json
+          import os
+
+          with open(os.environ["GITHUB_EVENT_PATH"], "rb") as fh:
+              event = json.load(fh)
+          expected_before = os.environ["EXPECTED_BOOTSTRAP_PREDECESSOR_SHA"]
+          github_sha = os.environ["GITHUB_SHA"]
+          if event.get("before") != expected_before:
+              raise SystemExit("bootstrap predecessor mismatch")
+          if event.get("after") != github_sha:
+              raise SystemExit("bootstrap after SHA mismatch")
+          head = event.get("head_commit")
+          if not isinstance(head, dict) or head.get("id") != github_sha:
+              raise SystemExit("bootstrap head commit mismatch")
+          if event.get("forced") is not False:
+              raise SystemExit("forced push prohibited")
+          if event.get("created") is not False:
+              raise SystemExit("ref creation event prohibited")
+          if event.get("deleted") is not False:
+              raise SystemExit("ref deletion event prohibited")
+          repo = event.get("repository")
+          if not isinstance(repo, dict) or repo.get("full_name") != "TheHalfMoon/commandMed":
+              raise SystemExit("bootstrap repository mismatch")
+          print("REPAIR_BOOTSTRAP_LOCAL_EVENT_GATE=PASS")
+          PY
+
+          for tool in curl python3; do command -v "$tool" >/dev/null; done
+
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+          auth_header="Authorization: Bearer ${GITHUB_TOKEN}"
+          accept_header="Accept: application/vnd.github+json"
+          version_header="X-GitHub-Api-Version: ${GITHUB_API_VERSION}"
+
+          api_get() {
+            curl --fail-with-body --silent --show-error \
+              -H "$accept_header" -H "$auth_header" -H "$version_header" "$1"
+          }
+
+          parse_content_identity() {
+            python3 -c '
+          import base64, hashlib, json, sys
+          d = json.load(sys.stdin)
+          if d.get("encoding") != "base64":
+              raise SystemExit("contents API did not return base64 content")
+          raw = base64.b64decode(d["content"])
+          print(d["sha"], d["path"], hashlib.sha256(raw).hexdigest(), len(raw))
+          '
+          }
+
+          assert_historical_only() {
+            python3 -c '
+          import json, os, sys
+          data = json.load(sys.stdin)
+          runs = data.get("workflow_runs", [])
+          if data.get("total_count") != 1 or len(runs) != 1:
+              raise SystemExit("target workflow_dispatch cardinality is not exactly one historical run")
+          run = runs[0]
+          expected = {
+              "id": int(os.environ["HISTORICAL_TARGET_RUN_ID"]),
+              "head_sha": os.environ["HISTORICAL_TARGET_HEAD_SHA"],
+              "head_branch": os.environ["HISTORICAL_TARGET_HEAD_BRANCH"],
+              "event": "workflow_dispatch",
+              "path": os.environ["TARGET_WORKFLOW_PATH"],
+              "run_attempt": 1,
+              "status": "completed",
+              "conclusion": "failure",
+          }
+          for key, value in expected.items():
+              if run.get(key) != value:
+                  raise SystemExit(f"historical run mismatch for {key}: {run.get(key)!r} != {value!r}")
+          if run.get("head_sha") == os.environ["REPAIRED_TARGET_CANONICAL_MERGE_SHA"]:
+              raise SystemExit("repaired target run already exists")
+          print(run["id"], run["head_sha"], run["head_branch"])
+          '
+          }
+
+          repo_json="$(api_get "$api")"
+          read -r visibility archived default_branch < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["visibility"], str(d["archived"]).lower(), d["default_branch"])' <<<"$repo_json"
+          )
+          test "$visibility" = "public"
+          test "$archived" = "false"
+          test "$default_branch" = "main"
+
+          main_json="$(api_get "$api/branches/main")"
+          main_sha="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["commit"]["sha"])' <<<"$main_json")"
+          [[ "$main_sha" =~ ^[0-9a-f]{40}$ ]]
+          test "$main_sha" = "$GITHUB_SHA"
+          test "$main_sha" != "$REPAIRED_TARGET_CANONICAL_MERGE_SHA"
+
+          # The bootstrap merge may advance main, but it must leave the repaired target bytes unchanged.
+          target_main_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${main_sha}")"
+          read -r target_main_blob target_main_path target_main_raw_sha target_main_raw_bytes < <(parse_content_identity <<<"$target_main_json")
+          test "$target_main_path" = "$TARGET_WORKFLOW_PATH"
+          test "$target_main_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
+          test "$target_main_raw_sha" = "$EXPECTED_TARGET_RAW_SHA256"
+          test "$target_main_raw_bytes" = "$EXPECTED_TARGET_RAW_BYTES"
+
+          # Independently reread the exact repaired target commit that the transient ref will bind.
+          repaired_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${REPAIRED_TARGET_CANONICAL_MERGE_SHA}")"
+          read -r repaired_blob repaired_path repaired_raw_sha repaired_raw_bytes < <(parse_content_identity <<<"$repaired_json")
+          test "$repaired_path" = "$TARGET_WORKFLOW_PATH"
+          test "$repaired_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
+          test "$repaired_raw_sha" = "$EXPECTED_TARGET_RAW_SHA256"
+          test "$repaired_raw_bytes" = "$EXPECTED_TARGET_RAW_BYTES"
+
+          workflow_json="$(api_get "$api/actions/workflows/${TARGET_WORKFLOW_FILE}")"
+          workflow_path="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["path"])' <<<"$workflow_json")"
+          workflow_state="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["state"])' <<<"$workflow_json")"
+          test "$workflow_path" = "$TARGET_WORKFLOW_PATH"
+          test "$workflow_state" = "active"
+
+          runs_url="$api/actions/workflows/${TARGET_WORKFLOW_FILE}/runs?event=workflow_dispatch&per_page=100"
+          before_json="$(api_get "$runs_url")"
+          read -r historical_before_id historical_before_sha historical_before_branch < <(assert_historical_only <<<"$before_json")
+          test "$historical_before_id" = "$HISTORICAL_TARGET_RUN_ID"
+
+          bind_branch="${BIND_BRANCH_PREFIX}-${REPAIRED_TARGET_CANONICAL_MERGE_SHA}"
+          bind_ref="refs/heads/${bind_branch}"
+          bind_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"sha":sys.argv[2]}, separators=(",",":")))' "$bind_ref" "$REPAIRED_TARGET_CANONICAL_MERGE_SHA")"
+          bind_file=/tmp/e004-route-repair-bind-ref.json
+          bind_status="$(curl --fail-with-body --silent --show-error --output "$bind_file" --write-out '%{http_code}' \
+            --request POST \
+            -H "$accept_header" -H "$auth_header" -H "$version_header" \
+            -H 'Content-Type: application/json' \
+            "$api/git/refs" \
+            --data "$bind_body")"
+          test "$bind_status" = "201"
+
+          read -r created_bind_ref created_bind_sha < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["ref"], d["object"]["sha"])' < "$bind_file"
+          )
+          test "$created_bind_ref" = "$bind_ref"
+          test "$created_bind_sha" = "$REPAIRED_TARGET_CANONICAL_MERGE_SHA"
+
+          bind_readback_json="$(api_get "$api/git/ref/heads/${bind_branch}")"
+          bind_readback_ref="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["ref"])' <<<"$bind_readback_json")"
+          bind_readback_sha="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])' <<<"$bind_readback_json")"
+          test "$bind_readback_ref" = "$bind_ref"
+          test "$bind_readback_sha" = "$REPAIRED_TARGET_CANONICAL_MERGE_SHA"
+
+          bind_target_json="$(api_get "$api/contents/${TARGET_WORKFLOW_PATH}?ref=${bind_branch}")"
+          read -r bind_target_blob bind_target_path bind_target_raw_sha bind_target_raw_bytes < <(parse_content_identity <<<"$bind_target_json")
+          test "$bind_target_path" = "$TARGET_WORKFLOW_PATH"
+          test "$bind_target_blob" = "$EXPECTED_TARGET_BLOB_SHA1"
+          test "$bind_target_raw_sha" = "$EXPECTED_TARGET_RAW_SHA256"
+          test "$bind_target_raw_bytes" = "$EXPECTED_TARGET_RAW_BYTES"
+
+          # Re-prove one-and-only-one historical dispatch immediately before the irreversible POST.
+          pre_dispatch_json="$(api_get "$runs_url")"
+          read -r historical_pre_id historical_pre_sha historical_pre_branch < <(assert_historical_only <<<"$pre_dispatch_json")
+          test "$historical_pre_id" = "$HISTORICAL_TARGET_RUN_ID"
+
+          dispatch_body="$(python3 -c 'import json,sys; print(json.dumps({"ref":sys.argv[1],"return_run_details":True}, separators=(",",":")))' "$bind_branch")"
+          dispatch_file=/tmp/e004-route-repair-dispatch-response.json
+          dispatch_status="$(curl --fail-with-body --silent --show-error --output "$dispatch_file" --write-out '%{http_code}' \
+            --request POST \
+            -H "$accept_header" -H "$auth_header" -H "$version_header" \
+            -H 'Content-Type: application/json' \
+            "$api/actions/workflows/${TARGET_WORKFLOW_FILE}/dispatches" \
+            --data "$dispatch_body")"
+          test "$dispatch_status" = "200"
+
+          read -r dispatch_run_id dispatch_run_url dispatch_html_url < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["workflow_run_id"], d["run_url"], d["html_url"])' < "$dispatch_file"
+          )
+          [[ "$dispatch_run_id" =~ ^[0-9]+$ ]]
+          test "$dispatch_run_id" != "$HISTORICAL_TARGET_RUN_ID"
+          test -n "$dispatch_run_url"
+          test -n "$dispatch_html_url"
+
+          created_json=""
+          for _ in $(seq 1 30); do
+            if created_json="$(api_get "$dispatch_run_url" 2>/dev/null)"; then break; fi
+            sleep 1
+          done
+          test -n "$created_json"
+          read -r created_id created_head created_branch created_event created_path created_attempt < <(
+            python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["id"], d["head_sha"], d["head_branch"], d["event"], d["path"], d["run_attempt"])' <<<"$created_json"
+          )
+          test "$created_id" = "$dispatch_run_id"
+          test "$created_head" = "$REPAIRED_TARGET_CANONICAL_MERGE_SHA"
+          test "$created_branch" = "$bind_branch"
+          test "$created_event" = "workflow_dispatch"
+          test "$created_path" = "$TARGET_WORKFLOW_PATH"
+          test "$created_attempt" = "1"
+
+          after_json=""
+          after_total=-1
+          historical_count=0
+          repaired_count=0
+          matched_new_id=""
+          for _ in $(seq 1 30); do
+            after_json="$(api_get "$runs_url")"
+            read -r after_total historical_count repaired_count matched_new_id < <(
+              python3 -c '
+          import json, os, sys
+          data = json.load(sys.stdin)
+          runs = data.get("workflow_runs", [])
+          historical_id = int(os.environ["HISTORICAL_TARGET_RUN_ID"])
+          historical = [
+              r for r in runs
+              if r.get("id") == historical_id
+              and r.get("head_sha") == os.environ["HISTORICAL_TARGET_HEAD_SHA"]
+              and r.get("head_branch") == os.environ["HISTORICAL_TARGET_HEAD_BRANCH"]
+              and r.get("event") == "workflow_dispatch"
+              and r.get("path") == os.environ["TARGET_WORKFLOW_PATH"]
+              and r.get("run_attempt") == 1
+              and r.get("status") == "completed"
+              and r.get("conclusion") == "failure"
+          ]
+          expected_new_id = int(sys.argv[1])
+          expected_branch = sys.argv[2]
+          repaired = [
+              r for r in runs
+              if r.get("id") == expected_new_id
+              and r.get("head_sha") == os.environ["REPAIRED_TARGET_CANONICAL_MERGE_SHA"]
+              and r.get("head_branch") == expected_branch
+              and r.get("event") == "workflow_dispatch"
+              and r.get("path") == os.environ["TARGET_WORKFLOW_PATH"]
+              and r.get("run_attempt") == 1
+          ]
+          print(data.get("total_count", 0), len(historical), len(repaired), repaired[0]["id"] if repaired else "")
+          ' "$dispatch_run_id" "$bind_branch" <<<"$after_json"
+            )
+            if test "$after_total" -eq 2 && test "$historical_count" -eq 1 && test "$repaired_count" -eq 1 && test "$matched_new_id" = "$dispatch_run_id"; then break; fi
+            sleep 1
+          done
+          test "$after_total" -eq 2
+          test "$historical_count" -eq 1
+          test "$repaired_count" -eq 1
+          test "$matched_new_id" = "$dispatch_run_id"
+
+          printf '%s\n' \
+            "REPAIR_BOOTSTRAP_AUTHORITY=E004_TARGET_ROUTE_REPAIR_RUNTIME_ATTEMPT_AUTHORITY_AUTHORIZED_BOUNDED" \
+            "REPAIR_BOOTSTRAP_EVENT=${GITHUB_EVENT_NAME}" \
+            "REPAIR_BOOTSTRAP_RUN_ATTEMPT=${GITHUB_RUN_ATTEMPT}" \
+            "REPAIR_BOOTSTRAP_HEAD_SHA=${GITHUB_SHA}" \
+            "REPAIR_BOOTSTRAP_EXPECTED_PREDECESSOR_SHA=${EXPECTED_BOOTSTRAP_PREDECESSOR_SHA}" \
+            "LIVE_REPOSITORY_VISIBILITY=${visibility}" \
+            "LIVE_REPOSITORY_ARCHIVED=${archived}" \
+            "REPAIRED_TARGET_CANONICAL_MERGE_SHA=${REPAIRED_TARGET_CANONICAL_MERGE_SHA}" \
+            "REPAIRED_TARGET_WORKFLOW_BLOB_SHA1=${repaired_blob}" \
+            "REPAIRED_TARGET_WORKFLOW_RAW_SHA256=${repaired_raw_sha}" \
+            "REPAIRED_TARGET_WORKFLOW_RAW_BYTES=${repaired_raw_bytes}" \
+            "CURRENT_MAIN_TARGET_WORKFLOW_BLOB_SHA1=${target_main_blob}" \
+            "CURRENT_MAIN_TARGET_WORKFLOW_RAW_SHA256=${target_main_raw_sha}" \
+            "TARGET_SHA_NAMED_BINDING_REF=${bind_ref}" \
+            "TARGET_BINDING_REF_INITIAL_SHA=${created_bind_sha}" \
+            "TARGET_BINDING_REF_FINAL_PRE_DISPATCH_SHA=${bind_readback_sha}" \
+            "TARGET_BINDING_REF_WORKFLOW_BLOB_SHA1=${bind_target_blob}" \
+            "TARGET_BINDING_REF_WORKFLOW_RAW_SHA256=${bind_target_raw_sha}" \
+            "TARGET_PREEXISTING_WORKFLOW_DISPATCH_COUNT=1" \
+            "TARGET_HISTORICAL_WORKFLOW_DISPATCH_RUN_ID=${historical_before_id}" \
+            "TARGET_PRE_DISPATCH_RECHECK_COUNT=1" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_CREATED=YES" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_RUN_ID=${dispatch_run_id}" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_RUN_URL=${dispatch_html_url}" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_HEAD_SHA=${created_head}" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_HEAD_BRANCH=${created_branch}" \
+            "TARGET_FRESH_WORKFLOW_DISPATCH_RUN_ATTEMPT=${created_attempt}" \
+            "TARGET_POST_DISPATCH_WORKFLOW_DISPATCH_COUNT=${after_total}" \
+            "HISTORICAL_TARGET_RUN_PRESERVED=YES" \
+            "MODEL_SOURCE_WEIGHT_ACQUISITION_AUTHORITY=NONE" \
+            "MODEL_CONVERSION_AUTHORITY=NONE" \
+            "MODEL_INFERENCE_AUTHORITY=NONE" \
+            "BENCHMARK_EXECUTION_AUTHORITY=NONE" \
+            "CONTAMINATION_ASSESSMENT_AUTHORITY=NONE" \
+            "A15_ACTIVATION=ABSENT_NOT_AUTHORIZED" \
+            "TRAINING_AUTHORITY=NONE" \
+            "AUTHORIZED_SPEND_USD=0"
