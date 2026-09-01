@@ -122,10 +122,22 @@ jobs:
           if not isinstance(head, dict) or head.get("id") != github_sha:
               raise SystemExit("head commit mismatch")
 
-          changed = set()
+          # GitHub caps the push-event commits array at 2048 entries. The exact-path
+          # gate must therefore prove that the payload is complete before trusting
+          # any commit-level added/modified/removed lists.
+          push_size = event.get("size")
+          if isinstance(push_size, bool) or not isinstance(push_size, int) or push_size < 1:
+              raise SystemExit("invalid push size")
+          if push_size > 2048:
+              raise SystemExit("push commit payload can be truncated")
+
           commits = event.get("commits")
           if not isinstance(commits, list) or not commits:
               raise SystemExit("push commits missing")
+          if len(commits) != push_size:
+              raise SystemExit("push commits payload is incomplete")
+
+          changed = set()
           for commit in commits:
               if not isinstance(commit, dict):
                   raise SystemExit("malformed push commit")
@@ -139,6 +151,8 @@ jobs:
               raise SystemExit(f"changed-path set is not exact: {sorted(changed)!r}")
 
           print("ONE_SHOT_PUSH_EVENT_GATE=PASS")
+          print(f"PUSH_COMMIT_PAYLOAD_COMPLETE={len(commits) == push_size}")
+          print(f"PUSH_SIZE={push_size}")
           print(f"AUTHORITY_PREDECESSOR={expected_before}")
           print(f"IMPLEMENTATION_MERGE_SHA={github_sha}")
           print(f"CHANGED_PATH_EXACT={expected_path}")
