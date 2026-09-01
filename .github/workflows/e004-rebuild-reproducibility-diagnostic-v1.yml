@@ -1,8 +1,7 @@
 # One-shot E004 toolchain-only rebuild reproducibility diagnostic.
 # Canonical authority: specs/007-sft-v1/e004-rebuild-reproducibility-diagnostic-authority-2026-09-01.md
-# This workflow must not access model weights, run model conversion/inference/benchmarks,
-# execute contamination assessment or A15, train, use credentials, upload artifacts,
-# use paid runners, procure, pay, or create spend.
+# No model weights, model conversion/inference, benchmark execution, contamination assessment,
+# A15 activation, training, credentials, uploads, paid runners, procurement, payment, or spend.
 
 name: E004 rebuild reproducibility diagnostic V1
 
@@ -57,10 +56,32 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Fail closed on exact one-shot push event
+      - name: Execute bounded one-shot diagnostic
         shell: bash
+        env:
+          STATE_DIR: ${{ runner.temp }}/e004-repro-state
+          SEED_SOURCE: ${{ runner.temp }}/e004-repro-source-seed
+          HISTORICAL_SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
+          HISTORICAL_BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
+          REPAIRED_SOURCE_DIR: ${{ runner.temp }}/e004-runtime-evidence/llama.cpp
+          REPAIRED_BUILD_DIR: ${{ runner.temp }}/e004-runtime-evidence/llama.cpp-build
+          REPAIRED_ROOT: ${{ runner.temp }}/e004-runtime-evidence
+          E004_HOME: ${{ runner.temp }}/e004-repro-home
         run: |
           set -Eeuo pipefail
+
+          cleanup() {
+            rm -rf "$SEED_SOURCE" "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" \
+              "$REPAIRED_ROOT" "$E004_HOME" "$STATE_DIR"
+            echo "TRANSIENT_BINARY_AND_SOURCE_CLEANUP=PASS"
+          }
+          trap cleanup EXIT
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN \
+            OPENAI_API_KEY ANTHROPIC_API_KEY GOOGLE_API_KEY GEMINI_API_KEY \
+            AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN \
+            AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_TENANT_ID \
+            NPM_TOKEN NODE_AUTH_TOKEN PYPI_TOKEN
 
           test "${GITHUB_EVENT_NAME:-}" = "push"
           test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
@@ -123,34 +144,22 @@ jobs:
           print(f"CHANGED_PATH_EXACT={expected_path}")
           PY
 
-      - name: Record runner and effective PATH identities
-        shell: bash
-        env:
-          STATE_DIR: ${{ runner.temp }}/e004-repro-state
-        run: |
-          set -Eeuo pipefail
-
-          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN \
-            OPENAI_API_KEY ANTHROPIC_API_KEY GOOGLE_API_KEY GEMINI_API_KEY \
-            AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN \
-            AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_TENANT_ID
-
           required_tools=(
             bash env git cmake ninja cc c++ python3 sha256sum readlink file stat
-            readelf sudo unshare setpriv cp rm awk
+            readelf sudo unshare setpriv cp rm
           )
           for tool in "${required_tools[@]}"; do
             command -v "$tool" >/dev/null
           done
 
-          rm -rf "$STATE_DIR"
-          mkdir -p "$STATE_DIR"
+          rm -rf "$STATE_DIR" "$SEED_SOURCE" "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" \
+            "$REPAIRED_ROOT" "$E004_HOME"
+          mkdir -p "$STATE_DIR" "$E004_HOME" "$(dirname "$REPAIRED_SOURCE_DIR")"
 
           normalize_path() {
             python3 - "$1" <<'PY'
           import os
           import sys
-
           result = []
           for raw in sys.argv[1].split(":"):
               if not raw:
@@ -164,10 +173,11 @@ jobs:
 
           command_identity() {
             local name="$1"
-            local command_path resolved digest
+            local command_path resolved line digest
             command_path="$(command -v "$name")"
             resolved="$(readlink -f "$command_path")"
-            digest="$(sha256sum "$resolved" | awk '{print $1}')"
+            line="$(sha256sum "$resolved")"
+            digest="${line%% *}"
             printf '%s|%s\n' "$resolved" "$digest"
           }
 
@@ -237,28 +247,7 @@ jobs:
           uname -a
           cat /etc/os-release
 
-      - name: Fetch exact public source once and stage local copies
-        shell: bash
-        env:
-          STATE_DIR: ${{ runner.temp }}/e004-repro-state
-          SEED_SOURCE: ${{ runner.temp }}/e004-repro-source-seed
-          HISTORICAL_SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
-          HISTORICAL_BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
-          REPAIRED_SOURCE_DIR: ${{ runner.temp }}/e004-runtime-evidence/llama.cpp
-          REPAIRED_BUILD_DIR: ${{ runner.temp }}/e004-runtime-evidence/llama.cpp-build
-          E004_HOME: ${{ runner.temp }}/e004-repro-home
-        run: |
-          set -Eeuo pipefail
-
-          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN \
-            OPENAI_API_KEY ANTHROPIC_API_KEY GOOGLE_API_KEY GEMINI_API_KEY \
-            AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN \
-            AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_TENANT_ID
-
-          rm -rf "$SEED_SOURCE" "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" \
-            "$REPAIRED_SOURCE_DIR" "$REPAIRED_BUILD_DIR" "$E004_HOME"
-          mkdir -p "$E004_HOME" "$(dirname "$REPAIRED_SOURCE_DIR")"
-
+          # The only external network operation in this diagnostic is this exact public source fetch.
           git init -q "$SEED_SOURCE"
           git -C "$SEED_SOURCE" remote add origin "$TOOL_REPOSITORY_URL"
           git -C "$SEED_SOURCE" \
@@ -275,7 +264,6 @@ jobs:
 
           cp -a "$SEED_SOURCE" "$HISTORICAL_SOURCE_DIR"
           cp -a "$SEED_SOURCE" "$REPAIRED_SOURCE_DIR"
-
           for source_dir in "$HISTORICAL_SOURCE_DIR" "$REPAIRED_SOURCE_DIR"; do
             test "$(git -C "$source_dir" rev-parse HEAD)" = "$TOOL_COMMIT"
             test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$TOOL_TREE"
@@ -288,64 +276,113 @@ jobs:
             "SOURCE_COMMIT=$source_commit" \
             "SOURCE_TREE=$source_tree" | tee "$STATE_DIR/source.env"
 
-      - name: Run four-cell offline diagnostic matrix
-        shell: bash
-        env:
-          STATE_DIR: ${{ runner.temp }}/e004-repro-state
-          HISTORICAL_SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
-          HISTORICAL_BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
-          REPAIRED_SOURCE_DIR: ${{ runner.temp }}/e004-runtime-evidence/llama.cpp
-          REPAIRED_BUILD_DIR: ${{ runner.temp }}/e004-runtime-evidence/llama.cpp-build
-          E004_HOME: ${{ runner.temp }}/e004-repro-home
-        run: |
-          set -Eeuo pipefail
-
-          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN \
-            OPENAI_API_KEY ANTHROPIC_API_KEY GOOGLE_API_KEY GEMINI_API_KEY \
-            AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN \
-            AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_TENANT_ID
-
-          runner_uid="$(id -u)"
-          runner_gid="$(id -g)"
           bash_path="$(readlink -f "$(command -v bash)")"
           env_path="$(readlink -f "$(command -v env)")"
-          cmake_path="$(readlink -f "$(command -v cmake)")"
           git_path="$(readlink -f "$(command -v git)")"
           sha256sum_path="$(readlink -f "$(command -v sha256sum)")"
           stat_path="$(readlink -f "$(command -v stat)")"
-          file_path="$(readlink -f "$(command -v file)")"
-          readelf_path="$(readlink -f "$(command -v readelf)")"
-          python_path="$(readlink -f "$(command -v python3)")"
           cp_path="$(readlink -f "$(command -v cp)")"
-          awk_path="$(readlink -f "$(command -v awk)")"
           sudo_path="$(readlink -f "$(command -v sudo)")"
           unshare_path="$(readlink -f "$(command -v unshare)")"
           setpriv_path="$(readlink -f "$(command -v setpriv)")"
+          runner_uid="$(id -u)"
+          runner_gid="$(id -g)"
 
-          normalize_path() {
-            "$python_path" - "$1" <<'PY'
-          import os
+          cell_script="$STATE_DIR/run-cell.sh"
+          cat > "$cell_script" <<'CELL'
+          #!/usr/bin/env bash
+          set -Eeuo pipefail
+
+          cell_id="$1"
+          source_dir="$2"
+          build_dir="$3"
+          path_value="$4"
+          normalized_path="$5"
+          cell_env="$6"
+          retained_binary="$7"
+          expected_commit="$8"
+          expected_tree="$9"
+
+          sensitive_env=NO
+          while IFS="=" read -r name _; do
+            case "$name" in
+              GITHUB_*|ACTIONS_*|HF_TOKEN|HUGGING_FACE_HUB_TOKEN|GH_TOKEN|GITHUB_TOKEN|*_API_KEY|AWS_*|AZURE_*|NPM_TOKEN|NODE_AUTH_TOKEN|PYPI_TOKEN)
+                sensitive_env=YES
+                ;;
+            esac
+          done < <(env)
+          test "$sensitive_env" = "NO"
+
+          source_commit="$("$GIT_PATH" -C "$source_dir" rev-parse HEAD)"
+          source_tree="$("$GIT_PATH" -C "$source_dir" rev-parse 'HEAD^{tree}')"
+          test "$source_commit" = "$expected_commit"
+          test "$source_tree" = "$expected_tree"
+          test -z "$("$GIT_PATH" -C "$source_dir" status --porcelain)"
+
+          "$CMAKE_PATH" -S "$source_dir" -B "$build_dir" -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF -DLLAMA_BUILD_COMMON=ON -DLLAMA_BUILD_TESTS=OFF \
+            -DLLAMA_BUILD_TOOLS=ON -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=OFF \
+            -DLLAMA_BUILD_APP=OFF -DLLAMA_BUILD_UI=OFF -DLLAMA_USE_PREBUILT_UI=OFF \
+            -DLLAMA_TOOLS_INSTALL=OFF -DLLAMA_TESTS_INSTALL=OFF -DLLAMA_OPENSSL=OFF \
+            -DLLAMA_SUBPROCESS=OFF -DLLAMA_LLGUIDANCE=OFF -DGGML_NATIVE=OFF \
+            -DGGML_CCACHE=OFF -DGGML_OPENMP=OFF
+          "$CMAKE_PATH" --build "$build_dir" --target llama-quantize --parallel 2 --verbose
+
+          binary="$build_dir/bin/llama-quantize"
+          test -x "$binary"
+          cache_line="$("$SHA256SUM_PATH" "$build_dir/CMakeCache.txt")"
+          cache_sha="${cache_line%% *}"
+          binary_line="$("$SHA256SUM_PATH" "$binary")"
+          binary_sha="${binary_line%% *}"
+          binary_bytes="$("$STAT_PATH" -c '%s' "$binary")"
+          binary_type="$("$FILE_PATH" -b "$binary")"
+
+          build_id=NONE
+          while IFS= read -r line; do
+            if [[ "$line" =~ Build\ ID:\ ([[:xdigit:]]+) ]]; then
+              build_id="${BASH_REMATCH[1]}"
+              break
+            fi
+          done < <("$READELF_PATH" -n "$binary" 2>/dev/null || true)
+
+          read -r source_path_present build_path_present < <(
+            "$PYTHON_PATH" - "$binary" "$source_dir" "$build_dir" <<'PY'
           import sys
-          result = []
-          for raw in sys.argv[1].split(":"):
-              if not raw:
-                  continue
-              resolved = os.path.realpath(raw)
-              if resolved not in result:
-                  result.append(resolved)
-          print(":".join(result))
+          data = open(sys.argv[1], "rb").read()
+          print("YES" if sys.argv[2].encode() in data else "NO", "YES" if sys.argv[3].encode() in data else "NO")
           PY
-          }
+          )
+
+          "$CP_PATH" "$binary" "$retained_binary"
+          printf '%s\n' \
+            "CELL_STATUS=PASS" \
+            "CELL_ID=$cell_id" \
+            "SOURCE_DIR=$source_dir" \
+            "BUILD_DIR=$build_dir" \
+            "PATH_VALUE=$path_value" \
+            "NORMALIZED_EFFECTIVE_PATH_IDENTITY=$normalized_path" \
+            "SOURCE_COMMIT=$source_commit" \
+            "SOURCE_TREE=$source_tree" \
+            "CMAKE_CACHE_SHA256=$cache_sha" \
+            "LLAMA_QUANTIZE_SHA256=$binary_sha" \
+            "LLAMA_QUANTIZE_INTEGER_BYTES=$binary_bytes" \
+            "LLAMA_QUANTIZE_FILE_TYPE=$binary_type" \
+            "ELF_BUILD_ID_IF_PRESENT=$build_id" \
+            "SOURCE_ABSOLUTE_PATH_PRESENT_IN_BINARY=$source_path_present" \
+            "BUILD_ABSOLUTE_PATH_PRESENT_IN_BINARY=$build_path_present" \
+            "BUILD_NETWORK_NAMESPACE=ISOLATED" \
+            "SENSITIVE_CREDENTIAL_ENV_PRESENT=$sensitive_env" > "$cell_env"
+          CELL
 
           build_cell() {
             local cell_id="$1"
             local source_dir="$2"
             local build_dir="$3"
             local path_value="$4"
-            local normalized_path
+            local normalized_path cell_env retained_binary
             normalized_path="$(normalize_path "$path_value")"
-            local cell_env="$STATE_DIR/${cell_id}.env"
-            local retained_binary="$STATE_DIR/${cell_id}.llama-quantize"
+            cell_env="$STATE_DIR/${cell_id}.env"
+            retained_binary="$STATE_DIR/${cell_id}.llama-quantize"
 
             rm -rf "$build_dir"
             rm -f "$cell_env" "$retained_binary"
@@ -367,93 +404,18 @@ jobs:
                 PATH="$path_value" \
                 LC_ALL=C \
                 LANG=C \
-              "$bash_path" -Eeuo pipefail -c '
-                cell_id="$1"
-                source_dir="$2"
-                build_dir="$3"
-                path_value="$4"
-                normalized_path="$5"
-                cell_env="$6"
-                retained_binary="$7"
-                expected_commit="$8"
-                expected_tree="$9"
-                git_path="${10}"
-                cmake_path="${11}"
-                sha256sum_path="${12}"
-                stat_path="${13}"
-                file_path="${14}"
-                readelf_path="${15}"
-                python_path="${16}"
-                cp_path="${17}"
-                awk_path="${18}"
-
-                sensitive_env=NO
-                while IFS="=" read -r name _; do
-                  case "$name" in
-                    GITHUB_*|ACTIONS_*|HF_TOKEN|HUGGING_FACE_HUB_TOKEN|GH_TOKEN|GITHUB_TOKEN|*_API_KEY|AWS_*|AZURE_*)
-                      sensitive_env=YES
-                      ;;
-                  esac
-                done < <(env)
-                test "$sensitive_env" = "NO"
-
-                source_commit="$("$git_path" -C "$source_dir" rev-parse HEAD)"
-                source_tree="$("$git_path" -C "$source_dir" rev-parse "HEAD^{tree}")"
-                test "$source_commit" = "$expected_commit"
-                test "$source_tree" = "$expected_tree"
-                test -z "$("$git_path" -C "$source_dir" status --porcelain)"
-
-                "$cmake_path" -S "$source_dir" -B "$build_dir" -G Ninja -DCMAKE_BUILD_TYPE=Release \
-                  -DBUILD_SHARED_LIBS=OFF -DLLAMA_BUILD_COMMON=ON -DLLAMA_BUILD_TESTS=OFF \
-                  -DLLAMA_BUILD_TOOLS=ON -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=OFF \
-                  -DLLAMA_BUILD_APP=OFF -DLLAMA_BUILD_UI=OFF -DLLAMA_USE_PREBUILT_UI=OFF \
-                  -DLLAMA_TOOLS_INSTALL=OFF -DLLAMA_TESTS_INSTALL=OFF -DLLAMA_OPENSSL=OFF \
-                  -DLLAMA_SUBPROCESS=OFF -DLLAMA_LLGUIDANCE=OFF -DGGML_NATIVE=OFF \
-                  -DGGML_CCACHE=OFF -DGGML_OPENMP=OFF
-                "$cmake_path" --build "$build_dir" --target llama-quantize --parallel 2 --verbose
-
-                binary="$build_dir/bin/llama-quantize"
-                test -x "$binary"
-                cache_sha="$("$sha256sum_path" "$build_dir/CMakeCache.txt" | "$awk_path" "{print \\$1}")"
-                binary_sha="$("$sha256sum_path" "$binary" | "$awk_path" "{print \\$1}")"
-                binary_bytes="$("$stat_path" -c "%s" "$binary")"
-                binary_type="$("$file_path" -b "$binary")"
-                build_id="$("$readelf_path" -n "$binary" 2>/dev/null | "$awk_path" "/Build ID:/ {print \\$3; exit}")"
-
-                read -r source_path_present build_path_present < <(
-                  "$python_path" - "$binary" "$source_dir" "$build_dir" <<"PY"
-          import sys
-          data = open(sys.argv[1], "rb").read()
-          print("YES" if sys.argv[2].encode() in data else "NO", "YES" if sys.argv[3].encode() in data else "NO")
-          PY
-                )
-
-                "$cp_path" "$binary" "$retained_binary"
-                {
-                  printf "%s\n" \
-                    "CELL_STATUS=PASS" \
-                    "CELL_ID=$cell_id" \
-                    "SOURCE_DIR=$source_dir" \
-                    "BUILD_DIR=$build_dir" \
-                    "PATH_VALUE=$path_value" \
-                    "NORMALIZED_EFFECTIVE_PATH_IDENTITY=$normalized_path" \
-                    "SOURCE_COMMIT=$source_commit" \
-                    "SOURCE_TREE=$source_tree" \
-                    "CMAKE_CACHE_SHA256=$cache_sha" \
-                    "LLAMA_QUANTIZE_SHA256=$binary_sha" \
-                    "LLAMA_QUANTIZE_INTEGER_BYTES=$binary_bytes" \
-                    "LLAMA_QUANTIZE_FILE_TYPE=$binary_type" \
-                    "ELF_BUILD_ID_IF_PRESENT=${build_id:-NONE}" \
-                    "SOURCE_ABSOLUTE_PATH_PRESENT_IN_BINARY=$source_path_present" \
-                    "BUILD_ABSOLUTE_PATH_PRESENT_IN_BINARY=$build_path_present" \
-                    "BUILD_NETWORK_NAMESPACE=ISOLATED" \
-                    "SENSITIVE_CREDENTIAL_ENV_PRESENT=$sensitive_env"
-                } | tee "$cell_env"
-              ' _ \
+                GIT_PATH="$git_path" \
+                CMAKE_PATH="$cmake_path" \
+                SHA256SUM_PATH="$sha256sum_path" \
+                STAT_PATH="$stat_path" \
+                FILE_PATH="$file_path" \
+                READELF_PATH="$readelf_path" \
+                PYTHON_PATH="$python_path" \
+                CP_PATH="$cp_path" \
+              "$bash_path" "$cell_script" \
                 "$cell_id" "$source_dir" "$build_dir" "$path_value" "$normalized_path" \
-                "$cell_env" "$retained_binary" "$TOOL_COMMIT" "$TOOL_TREE" \
-                "$git_path" "$cmake_path" "$sha256sum_path" "$stat_path" "$file_path" \
-                "$readelf_path" "$python_path" "$cp_path" "$awk_path"; then
+                "$cell_env" "$retained_binary" "$TOOL_COMMIT" "$TOOL_TREE"; then
+              cat "$cell_env"
               echo "${cell_id}_EXECUTION=PASS"
             else
               printf '%s\n' "CELL_STATUS=FAIL" "CELL_ID=$cell_id" > "$cell_env"
@@ -465,14 +427,6 @@ jobs:
           build_cell A2 "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" "$HISTORICAL_BUILD_PATH"
           build_cell B1 "$REPAIRED_SOURCE_DIR" "$REPAIRED_BUILD_DIR" "$REPAIRED_BUILD_PATH"
           build_cell B2 "$REPAIRED_SOURCE_DIR" "$REPAIRED_BUILD_DIR" "$REPAIRED_BUILD_PATH"
-
-      - name: Emit bounded deterministic diagnostic disposition
-        if: always()
-        shell: bash
-        env:
-          STATE_DIR: ${{ runner.temp }}/e004-repro-state
-        run: |
-          set -Eeuo pipefail
 
           python3 - <<'PY'
           from pathlib import Path
@@ -494,19 +448,19 @@ jobs:
           environment = read_env(state / "environment.env")
           records = {cell: read_env(state / f"{cell}.env") for cell in cells}
           statuses = {cell: records[cell].get("CELL_STATUS", "MISSING") for cell in cells}
+          hashes = {cell: records[cell].get("LLAMA_QUANTIZE_SHA256") for cell in cells}
+          sizes = {cell: records[cell].get("LLAMA_QUANTIZE_INTEGER_BYTES") for cell in cells}
+          build_ids = {cell: records[cell].get("ELF_BUILD_ID_IF_PRESENT", "MISSING") for cell in cells}
 
           for cell in cells:
               print(f"{cell}_STATUS={statuses[cell]}")
 
           execution_failure = any(statuses[cell] != "PASS" for cell in cells)
-          hashes = {cell: records[cell].get("LLAMA_QUANTIZE_SHA256") for cell in cells}
-          sizes = {cell: records[cell].get("LLAMA_QUANTIZE_INTEGER_BYTES") for cell in cells}
-
           if not execution_failure:
               for left_index, left in enumerate(cells):
                   for right in cells[left_index + 1:]:
-                      equal = "YES" if hashes[left] == hashes[right] else "NO"
-                      print(f"SHA_EQUAL_{left}_{right}={equal}")
+                      print(f"SHA_EQUAL_{left}_{right}={'YES' if hashes[left] == hashes[right] else 'NO'}")
+                      print(f"BUILD_ID_EQUAL_{left}_{right}={'YES' if build_ids[left] == build_ids[right] else 'NO'}")
 
               prior = os.environ["PRIOR_LLAMA_QUANTIZE_SHA256"]
               rebuilt = os.environ["REBUILT_LLAMA_QUANTIZE_SHA256"]
@@ -556,19 +510,3 @@ jobs:
           print("COMPONENT_E005_STATE=NOT_REACHED")
           print("CURRENT_AUTHORIZED_SPEND_USD=0")
           PY
-
-      - name: Remove transient source build and binary state
-        if: always()
-        shell: bash
-        env:
-          STATE_DIR: ${{ runner.temp }}/e004-repro-state
-          SEED_SOURCE: ${{ runner.temp }}/e004-repro-source-seed
-          HISTORICAL_SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
-          HISTORICAL_BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
-          REPAIRED_ROOT: ${{ runner.temp }}/e004-runtime-evidence
-          E004_HOME: ${{ runner.temp }}/e004-repro-home
-        run: |
-          set -Eeuo pipefail
-          rm -rf "$SEED_SOURCE" "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" \
-            "$REPAIRED_ROOT" "$E004_HOME" "$STATE_DIR"
-          echo "TRANSIENT_BINARY_AND_SOURCE_CLEANUP=PASS"
