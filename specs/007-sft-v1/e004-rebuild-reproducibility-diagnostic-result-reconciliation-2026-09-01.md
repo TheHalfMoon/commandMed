@@ -16,21 +16,18 @@
 
 ## 1. Purpose
 
-Reconcile the single bounded E004 rebuild-reproducibility diagnostic execution authorized by the canonical authority merge `2fd2915024182100be0e5ce6ffb261e5b76f03bb`.
+Reconcile the single bounded E004 rebuild-reproducibility diagnostic execution authorized by canonical authority merge `2fd2915024182100be0e5ce6ffb261e5b76f03bb`.
 
-This record is evidence reconciliation only. It does not execute or rerun the diagnostic, reopen its consumed allowance, repair or normalize a binary, prepare model conversion, accept execution-time identity binding as a policy substitute for byte reconstruction, access model weights or benchmark payloads, perform contamination assessment, activate A15, train, use credentials, upload artifacts, procure resources, make payment, or create spend authority.
+This record is evidence reconciliation only. It does not rerun the diagnostic, reopen its consumed one-shot allowance, modify or normalize a binary, accept execution-time identity binding as policy, access model weights or benchmark payloads, perform model conversion or inference, perform contamination assessment, activate A15, train, use protected data, authorize credentials, upload binaries, procure resources, make payment, or create spend authority.
 
-The canonical diagnostic authority required that same-path non-reproducibility remain a blocker and that any later repair/normalization experiment require separate authority.
+## 2. One-shot lifecycle and retained execution
 
-## 2. Completed lifecycle and one-shot consumption
-
-The authorized lifecycle reached its one execution exactly once:
+The bounded lifecycle reached its single execution exactly once:
 
 ```text
 DIAGNOSTIC_AUTHORITY_MERGE=2fd2915024182100be0e5ce6ffb261e5b76f03bb
 DIAGNOSTIC_IMPLEMENTATION_PR=167
 DIAGNOSTIC_IMPLEMENTATION_REVIEWED_HEAD=40f36acd949897f072fec4f1d51debbfc316d07f
-DIAGNOSTIC_IMPLEMENTATION_INDEPENDENT_REVIEW=MATERIAL_BLOCKER_NO
 DIAGNOSTIC_IMPLEMENTATION_GUARDED_MERGE=bc3ea6830fc0aaa674df2b439b74a98cda34bd20
 DIAGNOSTIC_EXECUTION_COUNT=1
 DIAGNOSTIC_EXECUTION_ALLOWANCE_REMAINING=0
@@ -39,11 +36,7 @@ FAILED_JOB_RERUN_USED=NO
 SECOND_DIAGNOSTIC_RUN_USED=NO
 ```
 
-The allowance was consumed when the merge-triggered run was created. Its successful conclusion does not reopen that allowance.
-
-## 3. Exact retained execution identity
-
-GitHub Actions records the retained execution as:
+The retained GitHub Actions identity is:
 
 ```text
 DIAGNOSTIC_RUN_ID=33507754943
@@ -52,252 +45,201 @@ DIAGNOSTIC_RUN_ATTEMPT=1
 DIAGNOSTIC_RUN_EVENT=push
 DIAGNOSTIC_RUN_HEAD_BRANCH=main
 DIAGNOSTIC_RUN_HEAD_SHA=bc3ea6830fc0aaa674df2b439b74a98cda34bd20
-DIAGNOSTIC_RUN_STATUS=completed
-DIAGNOSTIC_RUN_CONCLUSION=success
 DIAGNOSTIC_JOB_ID=99855785119
 DIAGNOSTIC_JOB_NAME=diagnostic
+DIAGNOSTIC_JOB_STATUS=completed
 DIAGNOSTIC_JOB_CONCLUSION=success
-RUNNER_LABEL=ubuntu-24.04
+BOUNDED_DIAGNOSTIC_STEP_CONCLUSION=success
 ```
 
-The terminal job logs are the retained diagnostic evidence. No diagnostic artifact upload was authorized or used.
+A successful job means only that the bounded diagnostic completed and retained its evidence. It does not authorize acceptance of the historical mismatch.
 
-## 4. Exact diagnostic subject and toolchain
+## 3. Frozen comparison subject
 
-The run used the exact public `llama.cpp` source identity frozen by the authority:
+The workflow and authority froze the public tool source and historical comparison identities as:
 
 ```text
-LLAMA_CPP_REPOSITORY=ggml-org/llama.cpp
-LLAMA_CPP_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
-LLAMA_CPP_TREE=2255f4747492109298a5c997f374d49c2af3113d
+TOOL_REPOSITORY=https://github.com/ggml-org/llama.cpp.git
+TOOL_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
+TOOL_TREE=2255f4747492109298a5c997f374d49c2af3113d
+TARGET=llama-quantize
+
+PRIOR_LLAMA_QUANTIZE_SHA256=e1d88ef6fee265fc6aba97f18b8cc268b0632de7cbcdaca9c94b2c5f078900a0
+REBUILT_LLAMA_QUANTIZE_SHA256=18ff27aab20ab7b4e239ac847be7636fb8e182ac9d1474efa7c4cfc915bbb4fc
+EXPECTED_LLAMA_QUANTIZE_BYTES=6513680
 ```
 
-The retained runtime/toolchain observations were:
+Those are the only historical full-file identities against which the diagnostic result is reconciled.
+
+## 4. Environment and PATH qualification
+
+The diagnostic recorded:
 
 ```text
-RUNNER_OS=Ubuntu 24.04.4 LTS
-RUNNER_IMAGE=ubuntu-24.04
-RUNNER_IMAGE_VERSION=20260823.283.1
-CMAKE_VERSION=cmake version 3.31.6
-CXX_COMPILER=Ubuntu clang version 18.1.3 (1ubuntu1)
-CXX_COMPILER_TARGET=x86_64-pc-linux-gnu
-LINKER_VERSION=Ubuntu LLD 18.1.3 (compatible with GNU linkers)
-GIT_VERSION=git version 2.53.0
-MAKE_VERSION=GNU Make 4.3
-NINJA_VERSION=1.11.1
-PYTHON_VERSION=Python 3.12.3
-```
-
-The workflow performed its one allowed public source fetch before the build cells. The build cells then ran in the authority-bounded network-isolated, dropped-privilege environment with sensitive platform environment removed.
-
-## 5. Historical comparison identities
-
-The diagnostic retained the frozen comparison identities:
-
-```text
-HISTORICAL_FULL_SHA256=421c19f0f26b1f20d71278944783f60f1768c17dfcf42b3a256bedd8d51bb59a
-HISTORICAL_REPAIRED_FULL_SHA256=bcd6d0088fc46a49a8582b6685fff11ac97387ae169d1a11437b080e064ac910
-REBUILT_DIAGNOSTIC_FULL_SHA256=88d687902384b7361e94a6c52867f572d6a49fc4082cd22c7db0863774b2b02b
-```
-
-The historical and repaired PATH strings emitted by this diagnostic normalized to the same effective executable-location identity:
-
-```text
-NORMALIZED_HISTORICAL_PATH=/opt/hostedtoolcache/Python/3.11.14/x64/bin:/opt/hostedtoolcache/Python/3.11.14/x64:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/bin:/usr/bin:/snap/bin
-NORMALIZED_REPAIRED_PATH=/opt/hostedtoolcache/Python/3.11.14/x64/bin:/opt/hostedtoolcache/Python/3.11.14/x64:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/bin:/usr/bin:/snap/bin
-ENVIRONMENT_IDENTITIES_MATCH=true
+HISTORICAL_PATH_VALUE=/usr/local/bin:/usr/bin
+REPAIRED_PATH_VALUE=/usr/local/bin:/usr/bin:/bin
+NORMALIZED_HISTORICAL_PATH_IDENTITY=/usr/local/bin:/usr/bin
+NORMALIZED_REPAIRED_PATH_IDENTITY=/usr/local/bin:/usr/bin
+EFFECTIVE_PATH_IDENTITIES_EQUAL=YES
+PATH_CONTEXT_CLASSIFICATION=REDUNDANT_USRMERGE_ENTRY_NOT_INDEPENDENT_VARIABLE
+ENVIRONMENT_IDENTITIES_MATCH=YES
 PATH_CAUSAL_ATTRIBUTION=PROHIBITED_EFFECTIVE_PATHS_EQUAL
 ```
 
-No PATH-causal conclusion is supported.
+Therefore the syntactic PATH difference is not an independent causal variable. The diagnostic's `ABSOLUTE_PATH_CONTEXT` terminology refers to the authority-defined absolute source/build directory layouts, not to the normalized executable search PATH.
 
-## 6. Direct A1/A2 same-path observations
+## 5. A1/A2 historical-layout observations
 
-A1 and A2 used the same authority-defined historical absolute source/build path layout.
+A1 and A2 repeated the authority-defined historical absolute source/build layout. Both completed successfully and produced the same full-file identity:
 
 ```text
-A1_STATUS=SUCCESS
-A1_FULL_SHA256=88d687902384b7361e94a6c52867f572d6a49fc4082cd22c7db0863774b2b02b
-A1_ELF_LOAD_SHA256=eaad61f5e1ca3d66fd0933c8642501363926269015704ea11f0ff0b84c460c5f
-A1_GNU_BUILD_ID=c6f21695207bc4c7ee373a8fd0b3b7ca4c200ceb
-A1_BYTES=4240416
+A1_STATUS=PASS
+A1_LLAMA_QUANTIZE_SHA256=e1d88ef6fee265fc6aba97f18b8cc268b0632de7cbcdaca9c94b2c5f078900a0
+A1_LLAMA_QUANTIZE_INTEGER_BYTES=6513680
+A1_ELF_BUILD_ID_IF_PRESENT=c3b1ffcb29aa0b069380b8aaf7aef6e4928f5738
+A1_CMAKE_CACHE_SHA256=0b499b1dfa63d0f3fcf80cb3c0f45b25b95de2b5cd128574cc3d1e5f49ad0599
+A1_SOURCE_ABSOLUTE_PATH_PRESENT_IN_BINARY=YES
+A1_BUILD_ABSOLUTE_PATH_PRESENT_IN_BINARY=NO
 
-A2_STATUS=SUCCESS
-A2_FULL_SHA256=8e8d282c45b49bc835681368397d027c87a521596463882c816521bcc2602330
-A2_ELF_LOAD_SHA256=eaad61f5e1ca3d66fd0933c8642501363926269015704ea11f0ff0b84c460c5f
-A2_GNU_BUILD_ID=812677355ccc31c51abfbd917822240b5744415a
-A2_BYTES=4240416
+A2_STATUS=PASS
+A2_LLAMA_QUANTIZE_SHA256=e1d88ef6fee265fc6aba97f18b8cc268b0632de7cbcdaca9c94b2c5f078900a0
+A2_LLAMA_QUANTIZE_INTEGER_BYTES=6513680
+A2_ELF_BUILD_ID_IF_PRESENT=c3b1ffcb29aa0b069380b8aaf7aef6e4928f5738
+A2_CMAKE_CACHE_SHA256=0b499b1dfa63d0f3fcf80cb3c0f45b25b95de2b5cd128574cc3d1e5f49ad0599
+A2_SOURCE_ABSOLUTE_PATH_PRESENT_IN_BINARY=YES
+A2_BUILD_ABSOLUTE_PATH_PRESENT_IN_BINARY=NO
 
-A_REPEATABLE_FULL_SHA256=false
-A_REPEATABLE_ELF_LOAD_SHA256=true
-A1_VS_A2_FULL_BYTE_DIFFERENCES=20
+SHA_EQUAL_A1_A2=YES
+BUILD_ID_EQUAL_A1_A2=YES
+BYTE_DIFFERENCE_COUNT_A1_A2=0
+A1_EQUALS_PRIOR_SHA=YES
+A2_EQUALS_PRIOR_SHA=YES
+A1_EQUALS_REBUILT_SHA=NO
+A2_EQUALS_REBUILT_SHA=NO
+A1_BYTES_EQUAL_HISTORICAL=YES
+A2_BYTES_EQUAL_HISTORICAL=YES
 ```
 
-The exact full binary is therefore not reproducible within the A layout, even though its measured ELF LOAD identity is repeatable.
+Result: the historical-layout build was byte-repeatable in this bounded run and exactly reproduced the frozen prior full-file SHA-256.
 
-A1 happens to equal the earlier `REBUILT_DIAGNOSTIC_FULL_SHA256`, but A2 does not:
+## 6. B1/B2 repaired-layout observations
+
+B1 and B2 repeated the authority-defined repaired absolute source/build layout. Both completed successfully and produced the same third full-file identity:
 
 ```text
-A1_MATCHES_REBUILT_DIAGNOSTIC_FULL_SHA256=true
-A2_MATCHES_REBUILT_DIAGNOSTIC_FULL_SHA256=false
-DETERMINISTIC_RECONSTRUCTION_FROM_A_LAYOUT=NO
+B1_STATUS=PASS
+B1_LLAMA_QUANTIZE_SHA256=1f5c96a6763656d439455fdd331097cd73e607031c19f465dedf0dd4cfadeca6
+B1_LLAMA_QUANTIZE_INTEGER_BYTES=6513680
+B1_ELF_BUILD_ID_IF_PRESENT=010b019c3e0733f4b09d9b8d0934412a0ffca5e0
+B1_CMAKE_CACHE_SHA256=5a2f8b139183dfba6d422db476cd8ad1b69388749199d909055744c082532bc3
+B1_SOURCE_ABSOLUTE_PATH_PRESENT_IN_BINARY=YES
+B1_BUILD_ABSOLUTE_PATH_PRESENT_IN_BINARY=NO
+
+B2_STATUS=PASS
+B2_LLAMA_QUANTIZE_SHA256=1f5c96a6763656d439455fdd331097cd73e607031c19f465dedf0dd4cfadeca6
+B2_LLAMA_QUANTIZE_INTEGER_BYTES=6513680
+B2_ELF_BUILD_ID_IF_PRESENT=010b019c3e0733f4b09d9b8d0934412a0ffca5e0
+B2_CMAKE_CACHE_SHA256=5a2f8b139183dfba6d422db476cd8ad1b69388749199d909055744c082532bc3
+B2_SOURCE_ABSOLUTE_PATH_PRESENT_IN_BINARY=YES
+B2_BUILD_ABSOLUTE_PATH_PRESENT_IN_BINARY=NO
+
+SHA_EQUAL_B1_B2=YES
+BUILD_ID_EQUAL_B1_B2=YES
+BYTE_DIFFERENCE_COUNT_B1_B2=0
+B1_EQUALS_PRIOR_SHA=NO
+B2_EQUALS_PRIOR_SHA=NO
+B1_EQUALS_REBUILT_SHA=NO
+B2_EQUALS_REBUILT_SHA=NO
+B1_BYTES_EQUAL_HISTORICAL=YES
+B2_BYTES_EQUAL_HISTORICAL=YES
 ```
 
-The single A1 equality cannot be promoted into reproducibility evidence.
+Result: the repaired-layout build was byte-repeatable in this bounded run, but it reproduced neither frozen historical full-file SHA-256.
 
-## 7. Direct B1/B2 same-path observations
+## 7. Cross-layout comparison
 
-B1 and B2 used the same authority-defined repaired absolute source/build path layout.
+The terminal evidence records the complete bounded comparison matrix as:
 
 ```text
-B1_STATUS=SUCCESS
-B1_FULL_SHA256=bf7cd9601caf64713348c208ef1bd7aaeb2f4c894ff6fcf7c52663a190ab312a
-B1_ELF_LOAD_SHA256=eaad61f5e1ca3d66fd0933c8642501363926269015704ea11f0ff0b84c460c5f
-B1_GNU_BUILD_ID=a4ea0a0a18d4735138890f325c1717830c3cd16d
-B1_BYTES=4240416
+SHA_EQUAL_A1_A2=YES
+SHA_EQUAL_A1_B1=NO
+SHA_EQUAL_A1_B2=NO
+SHA_EQUAL_A2_B1=NO
+SHA_EQUAL_A2_B2=NO
+SHA_EQUAL_B1_B2=YES
 
-B2_STATUS=SUCCESS
-B2_FULL_SHA256=3b4ddc91379f26146622961187b503575249475ffe342acd469f895335051cfe
-B2_ELF_LOAD_SHA256=eaad61f5e1ca3d66fd0933c8642501363926269015704ea11f0ff0b84c460c5f
-B2_GNU_BUILD_ID=d351aae65df39859928cf20aaba7bb2b654f3a03
-B2_BYTES=4240416
+BUILD_ID_EQUAL_A1_A2=YES
+BUILD_ID_EQUAL_A1_B1=NO
+BUILD_ID_EQUAL_A1_B2=NO
+BUILD_ID_EQUAL_A2_B1=NO
+BUILD_ID_EQUAL_A2_B2=NO
+BUILD_ID_EQUAL_B1_B2=YES
 
-B_REPEATABLE_FULL_SHA256=false
-B_REPEATABLE_ELF_LOAD_SHA256=true
-B1_VS_B2_FULL_BYTE_DIFFERENCES=20
+BYTE_DIFFERENCE_COUNT_A1_A2=0
+BYTE_DIFFERENCE_COUNT_A1_B1=760129
+BYTE_DIFFERENCE_COUNT_A1_B2=760129
+BYTE_DIFFERENCE_COUNT_A2_B1=760129
+BYTE_DIFFERENCE_COUNT_A2_B2=760129
+BYTE_DIFFERENCE_COUNT_B1_B2=0
 ```
 
-The exact full binary is therefore not reproducible within the B layout, even though its measured ELF LOAD identity is repeatable.
+The workflow measured full-file SHA-256, integer byte size, GNU Build-ID where present, exact-source/build-path string presence, and byte-difference counts. It did **not** compute an `ELF LOAD SHA-256`; this reconciliation therefore makes no ELF LOAD identity claim.
 
-## 8. A-versus-B comparison
+The different Build IDs and the large cross-layout byte-difference count are observations only. They do not independently localize the differing bytes to any ELF section and do not prove a Build-ID-only mechanism.
 
-The retained comparison is:
+## 8. Historical reconstruction result
 
-```text
-A_VS_B_FULL_SHA256_EQUAL=false
-A_VS_B_ELF_LOAD_SHA256_EQUAL=true
-A_VS_B_BUILD_IDS_EQUAL=false
-A1_VS_B1_FULL_BYTE_DIFFERENCES=20
-```
-
-All four cells produced the same measured ELF LOAD SHA-256:
+The diagnostic reproduced the frozen prior hash at A1/A2, but the repaired-layout B1/B2 result was a third hash rather than the frozen repaired-runtime hash:
 
 ```text
-ELF_LOAD_SHA256=eaad61f5e1ca3d66fd0933c8642501363926269015704ea11f0ff0b84c460c5f
-```
-
-All four cells produced different GNU Build IDs and different full-file SHA-256 identities.
-
-The workflow additionally searched the resulting binary bytes for the authority-defined historical/repaired source and build path strings and observed zero occurrences in every cell.
-
-These observations narrow the mismatch but do not prove a causal mechanism. In particular:
-
-```text
-BUILD_ID_CAUSALITY=NEEDS_EVIDENCE
-NON_LOADABLE_METADATA_CAUSALITY=NEEDS_EVIDENCE
-BYTE_OFFSET_TO_ELF_SECTION_MAPPING=NEEDS_EVIDENCE
-ABSOLUTE_PATH_LAYOUT_CAUSALITY=NOT_PROVEN
-```
-
-The observed 20 differing bytes in the three measured comparisons MUST NOT be asserted to be Build-ID bytes without a separately retained localization proof.
-
-## 9. Historical reconstruction result
-
-The bounded diagnostic did not reproduce either frozen historical full-file identity as a repeatable build result:
-
-```text
-A_MATCHES_HISTORICAL_FULL_SHA256=false
-B_MATCHES_HISTORICAL_FULL_SHA256=false
-B_MATCHES_HISTORICAL_REPAIRED_FULL_SHA256=false
-HISTORICAL_FULL_SHA_RECONSTRUCTED=NO
-HISTORICAL_REPAIRED_FULL_SHA_RECONSTRUCTED=NO
+A1_EQUALS_PRIOR_SHA=YES
+A2_EQUALS_PRIOR_SHA=YES
+B1_EQUALS_REBUILT_SHA=NO
+B2_EQUALS_REBUILT_SHA=NO
 HISTORICAL_TWO_HASH_SPLIT_REPRODUCED=NO
 ```
 
-Because A and B are each internally non-repeatable at the full-file level, an A-versus-B full-file difference cannot establish deterministic path-layout causality.
-
-The directly supported disposition from the run is:
+Because both layouts were internally byte-repeatable while their full-file outputs differed across layouts, the workflow selected the authority-permitted disposition:
 
 ```text
-DIAGNOSTIC_DISPOSITION=A_SAME_PATH_NOT_REPRODUCIBLE_RUNTIME_RECONSTRUCTION_REMAINS_BLOCKED
-REBUILD_BINARY_REPRODUCIBILITY=NOT_PROVEN
+DIAGNOSTIC_DISPOSITION=ABSOLUTE_PATH_CONTEXT_AFFECTS_BYTES_BUT_DOES_NOT_REPRODUCE_HISTORICAL_SPLIT
+DIAGNOSTIC_RUN_COMPLETED=YES
+```
+
+This disposition is narrow. It establishes that the authority-controlled source/build absolute layout changed output bytes in this run, while the previously observed `e1d88ef6...` versus `18ff27aa...` historical split was **not** reproduced.
+
+It does not establish that the absolute layout fully explains the earlier repaired-runtime hash, and it does not permit causal attribution to the syntactic PATH difference because the normalized effective PATH identities were equal.
+
+## 9. Canonical interpretation required by the authority
+
+Section 11 of the canonical authority requires that when the historical split is not reproduced, the cause remains `NEEDS_EVIDENCE` and later conversion authority remains blocked unless a separately reviewed policy disposition explicitly accepts execution-time identity binding without byte-for-byte reconstruction.
+
+Therefore this reconciliation records:
+
+```text
+REBUILD_BINARY_REPRODUCIBILITY=PARTIALLY_DEMONSTRATED_WITHIN_DIAGNOSTIC_LAYOUTS
+HISTORICAL_REPAIRED_HASH_RECONSTRUCTION=NOT_REPRODUCED
 REBUILD_MISMATCH_CAUSE=NEEDS_EVIDENCE
-RUNTIME_RECONSTRUCTION_READINESS=BLOCKED
-```
-
-This is consistent with the canonical authority rule that same-path non-byte-identity keeps runtime reconstruction blocked.
-
-## 10. Safety, cleanup, and authority boundary
-
-The terminal logs record the authority-preserving end state:
-
-```text
-DIAGNOSTIC_RETAINED_EVIDENCE=TERMINAL_JOB_LOGS_ONLY
-MODEL_CONVERSION_AUTHORITY=NONE
-CONVERSION_EXECUTION_AUTHORITY=NONE
-CONTAMINATION_ASSESSMENT_AUTHORITY=NONE
-A15_ACTIVATION=ABSENT_NOT_AUTHORIZED
-TRAINING_AUTHORITY=NONE
-COMPONENT_E004_STATE=BLOCKED_PREFLIGHT
-COMPONENT_E005_STATE=NOT_REACHED
-E004_REBUILD_REPRO_DIAGNOSTIC_AUTHORITY=CONSUMED_NOT_REUSABLE
-CURRENT_AUTHORIZED_SPEND_USD=0
-```
-
-The transient source/build directories were deleted before the job completed. No persistent diagnostic binary was retained by this run.
-
-No model source weight was acquired or loaded, no model conversion or quantization was performed, no inference or benchmark was executed, no contamination payload was accessed, no A15 activation occurred, no training occurred, no credential was used for the diagnostic body, and no diagnostic artifact/cache upload or paid runner was authorized.
-
-## 11. Evidence-backed next-resolution candidates
-
-The current evidence supports only narrow candidate questions for a later separately authorized decision or diagnostic. It does not authorize them.
-
-A technically bounded diagnostic candidate is:
-
-```text
-NEXT_DIAGNOSTIC_CANDIDATE_SCOPE=NON_LOADABLE_BINARY_METADATA_DIFFERENCE_LOCALIZATION_ONLY
-NEXT_DIAGNOSTIC_MODEL_WEIGHT_ACCESS=NONE
-NEXT_DIAGNOSTIC_MODEL_EXECUTION=NONE
-NEXT_DIAGNOSTIC_SPEND_USD=0
-BUILD_ID_CAUSALITY=NEEDS_EVIDENCE
-BYTE_OFFSET_TO_ELF_SECTION_MAPPING=NEEDS_EVIDENCE
-NORMALIZATION_EXPERIMENT_AUTHORITY=NONE
-```
-
-Such a later diagnostic would need separate reviewed authority before execution. Its purpose would be to localize the already-observed same-source build variation without accepting, rewriting, stripping, or normalizing the binary by policy in advance.
-
-The alternative policy path named by the parent authority also remains unselected:
-
-```text
+RUNTIME_RECONSTRUCTION_READINESS=INCOMPLETE_PENDING_SEPARATE_RESOLUTION
 EXECUTION_TIME_IDENTITY_BINDING_POLICY_DISPOSITION=NONE
 ```
 
-No policy record presently accepts execution-time identity binding as a substitute for byte-for-byte reconstruction.
+`PARTIALLY_DEMONSTRATED_WITHIN_DIAGNOSTIC_LAYOUTS` is descriptive reconciliation language, not a new execution state or authority. It means only that A1=A2 and B1=B2 in this one bounded matrix; it does not satisfy the unresolved requirement to reconstruct the frozen repaired-runtime identity.
 
-## 12. Post-reconciliation authority state
+## 10. Safety and authority boundary after the run
 
-Canonicalization of this result record may only establish the evidence interpretation below; it creates no successor execution authority.
+The terminal workflow state and controlling governance remain:
 
 ```text
 E004_REBUILD_REPRO_DIAGNOSTIC_EXECUTION_STATE=CONSUMED_COMPLETE
 E004_REBUILD_REPRO_DIAGNOSTIC_AUTHORITY=CONSUMED_NOT_REUSABLE
-REBUILD_NORMALIZATION_EXPERIMENT_AUTHORITY=NONE
-BINARY_METADATA_LOCALIZATION_DIAGNOSTIC_AUTHORITY=NONE
-EXECUTION_TIME_IDENTITY_BINDING_POLICY_DISPOSITION=NONE
-MODEL_SOURCE_WEIGHT_ACQUISITION_AUTHORITY=NONE
 MODEL_CONVERSION_AUTHORITY=NONE
 CONVERSION_EXECUTION_AUTHORITY=NONE
-MODEL_INFERENCE_AUTHORITY=NONE
-BENCHMARK_EXECUTION_AUTHORITY=NONE
-CONTAMINATION_ASSESSMENT_PAYLOAD_ACCESS_AUTHORITY=NONE
 CONTAMINATION_ASSESSMENT_AUTHORITY=NONE
 A15_ACTIVATION=ABSENT_NOT_AUTHORIZED
 TRAINING_AUTHORITY=NONE
-SPEND_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 
-COMPONENT_RUNTIME_RECONSTRUCTION=BLOCKED_SAME_PATH_FULL_BINARY_NONREPRODUCIBILITY
-COMPONENT_PERSISTENT_CONVERSION_SUBJECT=INCOMPLETE
 COMPONENT_E004=INCOMPLETE
 COMPONENT_E004_STATE=BLOCKED_PREFLIGHT
 COMPONENT_E005_STATE=NOT_REACHED
@@ -305,31 +247,51 @@ BACKBONE_WINNER=NEEDS_EVIDENCE
 PROJECT_FINISHED=NO
 ```
 
-E004 therefore remains unchecked in `tasks.md`.
+No rerun, retry, second diagnostic, normalization experiment, binary rewrite, execution-time identity-binding policy, model access, conversion, inference, benchmark execution, contamination assessment, A15 activation, training, protected-data access, credential use, paid compute, procurement, payment, or spend authority is created by this record.
 
-## 13. Required merge-exit gate
+## 11. Dependency-safe next frontier
 
-This reconciliation may become canonical only after a fresh exact-head independent repository review verifies at least:
+This result closes only the consumed one-shot diagnostic's evidence-reconciliation obligation after canonical merge of this document. It does not close E004.
 
-- authority merge `2fd2915024182100be0e5ce6ffb261e5b76f03bb`, reviewed implementation head `40f36acd949897f072fec4f1d51debbfc316d07f`, and guarded implementation merge `bc3ea6830fc0aaa674df2b439b74a98cda34bd20` are recorded exactly;
-- run `33507754943`, attempt `1`, job `99855785119`, and terminal success are recorded exactly;
-- the one-shot allowance is consumed and no retry/rerun/second execution is implied;
-- all A1/A2/B1/B2 full SHA-256, ELF LOAD SHA-256, GNU Build-ID, and byte-count observations are copied exactly from retained terminal logs;
-- A and B are both correctly classified as full-file non-repeatable while their measured ELF LOAD identities are repeatable;
-- the three directly measured pairwise full-file difference counts are each 20 bytes and are not generalized into unmeasured pairwise comparisons;
-- the one-time A1 equality to the earlier rebuilt-diagnostic full hash is not represented as deterministic reconstruction;
-- normalized PATH identities are equal and PATH-causal attribution remains prohibited;
-- no causal claim maps the 20-byte variation to GNU Build-ID or another ELF section without evidence;
-- neither historical full-file identity is represented as reconstructed;
-- the historical two-hash split is not represented as reproduced;
-- mismatch cause remains `NEEDS_EVIDENCE` and runtime reconstruction remains blocked;
-- Section 11 identifies only separately authorized candidate questions and creates no successor diagnostic, normalization, policy, model, conversion, inference, benchmark, contamination, A15, training, credential, upload, procurement/payment, or spend authority;
-- E004 remains incomplete and E005 remains `NOT_REACHED`.
+The evidence leaves two classes of later resolution named or permitted by existing governance, neither authorized by this document:
 
-Required reviewer output:
+1. a separately reviewed bounded diagnostic/repair authority that can explain or resolve why the repaired-layout build in this controlled run produced `1f5c96a6...` instead of the frozen repaired-runtime `18ff27aa...`; or
+2. a separately reviewed policy disposition deciding whether execution-time exact identity binding may be accepted without byte-for-byte reconstruction of the earlier repaired-runtime binary.
+
+Any successor execution must obtain its own canonical authority before implementation. In particular:
 
 ```text
-MATERIAL_BLOCKER=NO
+REBUILD_NORMALIZATION_EXPERIMENT_AUTHORITY=NONE
+BINARY_DIFFERENCE_LOCALIZATION_DIAGNOSTIC_AUTHORITY=NONE
+EXECUTION_TIME_IDENTITY_BINDING_POLICY_DISPOSITION=NONE
+MODEL_SOURCE_WEIGHT_ACQUISITION_AUTHORITY=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+CONVERSION_EXECUTION_AUTHORITY=NONE
+MODEL_INFERENCE_AUTHORITY=NONE
+BENCHMARK_EXECUTION_AUTHORITY=NONE
+CONTAMINATION_ASSESSMENT_AUTHORITY=NONE
+A15_ACTIVATION=ABSENT_NOT_AUTHORIZED
+TRAINING_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
 ```
 
-Only guarded canonical merge of the exact independently reviewed head may make this diagnostic-result interpretation canonical.
+## 12. Required merge-exit gate
+
+This reconciliation may become canonical only after a fresh independent exact-head review verifies the complete one-file diff against the authority, the merged workflow, and terminal run/job evidence and concludes that no material correctness, evidence-integrity, governance, reproducibility, or authority-boundary blocker remains.
+
+The review must verify at least:
+
+- exact run `33507754943`, attempt `1`, job `99855785119`, and merge head `bc3ea6830fc0aaa674df2b439b74a98cda34bd20`;
+- the one-shot allowance remains consumed with no rerun or replacement execution;
+- frozen historical identities are exactly `e1d88ef6...`, `18ff27aa...`, and `6513680` bytes;
+- A1/A2 are identical to each other and equal the frozen prior hash;
+- B1/B2 are identical to each other and equal `1f5c96a6...`, but not the frozen repaired-runtime hash;
+- cross-layout full-file byte-difference count is `760129` for every A/B pair and `0` within A/A and B/B;
+- normalized effective PATH identities are equal and PATH causal attribution remains prohibited;
+- no unsupported ELF LOAD measurement or other unexecuted evidence appears in the record;
+- the exact workflow disposition is `ABSOLUTE_PATH_CONTEXT_AFFECTS_BYTES_BUT_DOES_NOT_REPRODUCE_HISTORICAL_SPLIT`;
+- `REBUILD_MISMATCH_CAUSE=NEEDS_EVIDENCE` remains in force;
+- no successor execution or model/scientific/spend authority is created;
+- E004 remains incomplete and blocked preflight, E005 remains not reached, and the project is not declared finished.
+
+Until that exact-head review succeeds and a guarded canonical merge is completed, this file is only a PR candidate and has no canonical authority effect.
