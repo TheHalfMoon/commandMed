@@ -1,0 +1,505 @@
+# One-shot E004 toolchain-only rebuild reproducibility diagnostic.
+# Canonical authority: specs/007-sft-v1/e004-rebuild-reproducibility-diagnostic-authority-2026-09-01.md
+# No model weights, model conversion/inference, benchmark execution, contamination assessment,
+# A15 activation, training, credentials, uploads, paid runners, procurement, payment, or spend.
+
+name: E004 rebuild reproducibility diagnostic V1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-rebuild-reproducibility-diagnostic-v1.yml
+
+permissions: {}
+
+concurrency:
+  group: e004-rebuild-reproducibility-diagnostic-v1-one-shot
+  cancel-in-progress: false
+
+env:
+  AUTHORITY_MERGE_SHA: 2fd2915024182100be0e5ce6ffb261e5b76f03bb
+  TARGET_WORKFLOW_PATH: .github/workflows/e004-rebuild-reproducibility-diagnostic-v1.yml
+  TOOL_REPOSITORY_URL: https://github.com/ggml-org/llama.cpp.git
+  TOOL_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  TOOL_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  PRIOR_LLAMA_QUANTIZE_SHA256: e1d88ef6fee265fc6aba97f18b8cc268b0632de7cbcdaca9c94b2c5f078900a0
+  REBUILT_LLAMA_QUANTIZE_SHA256: 18ff27aab20ab7b4e239ac847be7636fb8e182ac9d1474efa7c4cfc915bbb4fc
+  EXPECTED_LLAMA_QUANTIZE_BYTES: '6513680'
+  EXPECTED_IMAGE_OS: ubuntu24
+  EXPECTED_IMAGE_VERSION: 20260823.283.1
+  EXPECTED_PYTHON_PATH: /usr/bin/python3.12
+  EXPECTED_PYTHON_SHA256: 1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118
+  EXPECTED_CMAKE_PATH: /usr/local/bin/cmake
+  EXPECTED_CMAKE_SHA256: c4b3b237dc7a013590db9e90f70fca2dfdedde09521e920d3339569ea364230a
+  EXPECTED_NINJA_PATH: /usr/local/bin/ninja
+  EXPECTED_NINJA_SHA256: 607e668f90dd6cd82e1a42ae572647ad1b1fd43063964295b9547836d8c15d99
+  EXPECTED_CC_PATH: /usr/bin/x86_64-linux-gnu-gcc-13
+  EXPECTED_CC_SHA256: 1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26
+  EXPECTED_CXX_PATH: /usr/bin/x86_64-linux-gnu-g++-13
+  EXPECTED_CXX_SHA256: 1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769
+  HISTORICAL_BUILD_PATH: /usr/local/bin:/usr/bin
+  REPAIRED_BUILD_PATH: /usr/local/bin:/usr/bin:/bin
+  MAX_AUTHORIZED_DIAGNOSTIC_RUNS: '1'
+  MAX_AUTHORIZED_RUN_ATTEMPTS: '1'
+  CURRENT_AUTHORIZED_SPEND_USD: '0'
+  GIT_TERMINAL_PROMPT: '0'
+  GIT_CONFIG_NOSYSTEM: '1'
+  GIT_ASKPASS: /bin/false
+  SSH_ASKPASS: /bin/false
+
+jobs:
+  diagnostic:
+    if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main' && github.event.before == '2fd2915024182100be0e5ce6ffb261e5b76f03bb' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Execute bounded one-shot diagnostic
+        shell: bash
+        env:
+          STATE_DIR: ${{ runner.temp }}/e004-repro-state
+          SEED_SOURCE: ${{ runner.temp }}/e004-repro-source-seed
+          HISTORICAL_SOURCE_DIR: ${{ runner.temp }}/e004-llama.cpp
+          HISTORICAL_BUILD_DIR: ${{ runner.temp }}/e004-llama.cpp-build
+          REPAIRED_SOURCE_DIR: ${{ runner.temp }}/e004-runtime-evidence/llama.cpp
+          REPAIRED_BUILD_DIR: ${{ runner.temp }}/e004-runtime-evidence/llama.cpp-build
+          REPAIRED_ROOT: ${{ runner.temp }}/e004-runtime-evidence
+          E004_HOME: ${{ runner.temp }}/e004-repro-home
+        run: |
+          set -Eeuo pipefail
+
+          cleanup() {
+            rm -rf "$SEED_SOURCE" "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" \
+              "$REPAIRED_ROOT" "$E004_HOME" "$STATE_DIR"
+            echo "TRANSIENT_BINARY_AND_SOURCE_CLEANUP=PASS"
+          }
+          trap cleanup EXIT
+
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN \
+            OPENAI_API_KEY ANTHROPIC_API_KEY GOOGLE_API_KEY GEMINI_API_KEY \
+            AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN \
+            AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_TENANT_ID \
+            NPM_TOKEN NODE_AUTH_TOKEN PYPI_TOKEN
+
+          test "${GITHUB_EVENT_NAME:-}" = "push"
+          test "${GITHUB_REPOSITORY:-}" = "TheHalfMoon/commandMed"
+          test "${GITHUB_REF:-}" = "refs/heads/main"
+          test "${GITHUB_RUN_ATTEMPT:-}" = "1"
+          test "$MAX_AUTHORIZED_DIAGNOSTIC_RUNS" = "1"
+          test "$MAX_AUTHORIZED_RUN_ATTEMPTS" = "1"
+          test "$CURRENT_AUTHORIZED_SPEND_USD" = "0"
+          [[ "${GITHUB_SHA:-}" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$AUTHORITY_MERGE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test -r "${GITHUB_EVENT_PATH:?missing GITHUB_EVENT_PATH}"
+
+          python3 - <<'PY'
+          import json
+          import os
+
+          with open(os.environ["GITHUB_EVENT_PATH"], "rb") as fh:
+              event = json.load(fh)
+
+          expected_before = os.environ["AUTHORITY_MERGE_SHA"]
+          expected_path = os.environ["TARGET_WORKFLOW_PATH"]
+          github_sha = os.environ["GITHUB_SHA"]
+
+          if event.get("before") != expected_before:
+              raise SystemExit("authority predecessor mismatch")
+          if event.get("after") != github_sha:
+              raise SystemExit("push after SHA mismatch")
+          if event.get("forced") is not False:
+              raise SystemExit("forced push prohibited")
+          if event.get("created") is not False or event.get("deleted") is not False:
+              raise SystemExit("ref creation/deletion event prohibited")
+
+          repo = event.get("repository")
+          if not isinstance(repo, dict) or repo.get("full_name") != "TheHalfMoon/commandMed":
+              raise SystemExit("repository mismatch")
+
+          head = event.get("head_commit")
+          if not isinstance(head, dict) or head.get("id") != github_sha:
+              raise SystemExit("head commit mismatch")
+
+          # GitHub Actions deliberately omits added/removed/modified attributes from
+          # commit objects in the push payload, so this workflow does not fabricate an
+          # in-job exact-path proof from incomplete event data. Exact path exclusivity is
+          # a mandatory premerge qualification fact: canonical main must equal
+          # AUTHORITY_MERGE_SHA and the reviewed authority..implementation diff must add
+          # only TARGET_WORKFLOW_PATH. The path-scoped trigger then requires this file to
+          # participate in the one eligible push, while the job-level predecessor guard
+          # prevents later workflow mutations from starting another diagnostic job.
+          print("ONE_SHOT_PUSH_EVENT_GATE=PASS")
+          print(f"AUTHORITY_PREDECESSOR={expected_before}")
+          print(f"IMPLEMENTATION_MERGE_SHA={github_sha}")
+          print(f"PATH_SCOPED_TRIGGER={expected_path}")
+          print("EXACT_PATH_EXCLUSIVITY_EVIDENCE=PREMERGE_REVIEWED_DIFF_AND_GUARDED_MERGE")
+          PY
+
+          required_tools=(
+            bash env git cmake ninja cc c++ python3 sha256sum readlink file stat
+            readelf sudo unshare setpriv cp rm
+          )
+          for tool in "${required_tools[@]}"; do
+            command -v "$tool" >/dev/null
+          done
+
+          rm -rf "$STATE_DIR" "$SEED_SOURCE" "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" \
+            "$REPAIRED_ROOT" "$E004_HOME"
+          mkdir -p "$STATE_DIR" "$E004_HOME" "$(dirname "$REPAIRED_SOURCE_DIR")"
+
+          normalize_path() {
+            python3 - "$1" <<'PY'
+          import os
+          import sys
+          result = []
+          for raw in sys.argv[1].split(":"):
+              if not raw:
+                  continue
+              resolved = os.path.realpath(raw)
+              if resolved not in result:
+                  result.append(resolved)
+          print(":".join(result))
+          PY
+          }
+
+          command_identity() {
+            local name="$1"
+            local command_path resolved line digest
+            command_path="$(command -v "$name")"
+            resolved="$(readlink -f "$command_path")"
+            line="$(sha256sum "$resolved")"
+            digest="${line%% *}"
+            printf '%s|%s\n' "$resolved" "$digest"
+          }
+
+          IFS='|' read -r python_path python_sha <<<"$(command_identity python3)"
+          IFS='|' read -r cmake_path cmake_sha <<<"$(command_identity cmake)"
+          IFS='|' read -r ninja_path ninja_sha <<<"$(command_identity ninja)"
+          IFS='|' read -r cc_path cc_sha <<<"$(command_identity cc)"
+          IFS='|' read -r cxx_path cxx_sha <<<"$(command_identity c++)"
+          IFS='|' read -r readelf_path readelf_sha <<<"$(command_identity readelf)"
+          IFS='|' read -r file_path file_sha <<<"$(command_identity file)"
+
+          bin_realpath="$(readlink -f /bin)"
+          usr_bin_realpath="$(readlink -f /usr/bin)"
+          historical_effective="$(normalize_path "$HISTORICAL_BUILD_PATH")"
+          repaired_effective="$(normalize_path "$REPAIRED_BUILD_PATH")"
+
+          effective_equal=NO
+          path_classification=EFFECTIVE_PATHS_DIFFER_UNEXPECTED
+          if test "$historical_effective" = "$repaired_effective"; then
+            effective_equal=YES
+            path_classification=REDUNDANT_USRMERGE_ENTRY_NOT_INDEPENDENT_VARIABLE
+          fi
+
+          environment_match=YES
+          test "${ImageOS:-UNSET}" = "$EXPECTED_IMAGE_OS" || environment_match=NO
+          test "${ImageVersion:-UNSET}" = "$EXPECTED_IMAGE_VERSION" || environment_match=NO
+          test "$python_path" = "$EXPECTED_PYTHON_PATH" || environment_match=NO
+          test "$python_sha" = "$EXPECTED_PYTHON_SHA256" || environment_match=NO
+          test "$cmake_path" = "$EXPECTED_CMAKE_PATH" || environment_match=NO
+          test "$cmake_sha" = "$EXPECTED_CMAKE_SHA256" || environment_match=NO
+          test "$ninja_path" = "$EXPECTED_NINJA_PATH" || environment_match=NO
+          test "$ninja_sha" = "$EXPECTED_NINJA_SHA256" || environment_match=NO
+          test "$cc_path" = "$EXPECTED_CC_PATH" || environment_match=NO
+          test "$cc_sha" = "$EXPECTED_CC_SHA256" || environment_match=NO
+          test "$cxx_path" = "$EXPECTED_CXX_PATH" || environment_match=NO
+          test "$cxx_sha" = "$EXPECTED_CXX_SHA256" || environment_match=NO
+
+          {
+            printf '%s\n' \
+              "ImageOS=${ImageOS:-UNSET}" \
+              "ImageVersion=${ImageVersion:-UNSET}" \
+              "PYTHON_RUNTIME_PATH=$python_path" \
+              "PYTHON_RUNTIME_SHA256=$python_sha" \
+              "CMAKE_PATH=$cmake_path" \
+              "CMAKE_SHA256=$cmake_sha" \
+              "NINJA_PATH=$ninja_path" \
+              "NINJA_SHA256=$ninja_sha" \
+              "C_COMPILER_PATH=$cc_path" \
+              "C_COMPILER_SHA256=$cc_sha" \
+              "CXX_COMPILER_PATH=$cxx_path" \
+              "CXX_COMPILER_SHA256=$cxx_sha" \
+              "READELF_PATH=$readelf_path" \
+              "READELF_SHA256=$readelf_sha" \
+              "FILE_PATH=$file_path" \
+              "FILE_SHA256=$file_sha" \
+              "BIN_REALPATH=$bin_realpath" \
+              "USR_BIN_REALPATH=$usr_bin_realpath" \
+              "HISTORICAL_PATH_VALUE=$HISTORICAL_BUILD_PATH" \
+              "REPAIRED_PATH_VALUE=$REPAIRED_BUILD_PATH" \
+              "NORMALIZED_HISTORICAL_PATH_IDENTITY=$historical_effective" \
+              "NORMALIZED_REPAIRED_PATH_IDENTITY=$repaired_effective" \
+              "EFFECTIVE_PATH_IDENTITIES_EQUAL=$effective_equal" \
+              "PATH_CONTEXT_CLASSIFICATION=$path_classification" \
+              "ENVIRONMENT_IDENTITIES_MATCH=$environment_match"
+          } | tee "$STATE_DIR/environment.env"
+
+          uname -a
+          cat /etc/os-release
+
+          # The only external network operation in this diagnostic is this exact public source fetch.
+          git init -q "$SEED_SOURCE"
+          git -C "$SEED_SOURCE" remote add origin "$TOOL_REPOSITORY_URL"
+          git -C "$SEED_SOURCE" \
+            -c credential.helper= \
+            -c http.extraHeader= \
+            fetch --no-tags --depth=1 origin "$TOOL_COMMIT"
+          git -C "$SEED_SOURCE" checkout --detach -q FETCH_HEAD
+
+          source_commit="$(git -C "$SEED_SOURCE" rev-parse HEAD)"
+          source_tree="$(git -C "$SEED_SOURCE" rev-parse 'HEAD^{tree}')"
+          test "$source_commit" = "$TOOL_COMMIT"
+          test "$source_tree" = "$TOOL_TREE"
+          test -z "$(git -C "$SEED_SOURCE" status --porcelain)"
+
+          cp -a "$SEED_SOURCE" "$HISTORICAL_SOURCE_DIR"
+          cp -a "$SEED_SOURCE" "$REPAIRED_SOURCE_DIR"
+          for source_dir in "$HISTORICAL_SOURCE_DIR" "$REPAIRED_SOURCE_DIR"; do
+            test "$(git -C "$source_dir" rev-parse HEAD)" = "$TOOL_COMMIT"
+            test "$(git -C "$source_dir" rev-parse 'HEAD^{tree}')" = "$TOOL_TREE"
+            test -z "$(git -C "$source_dir" status --porcelain)"
+          done
+
+          printf '%s\n' \
+            "SOURCE_FETCH_COUNT=1" \
+            "SOURCE_FETCH_HOST=github.com" \
+            "SOURCE_COMMIT=$source_commit" \
+            "SOURCE_TREE=$source_tree" | tee "$STATE_DIR/source.env"
+
+          bash_path="$(readlink -f "$(command -v bash)")"
+          env_path="$(readlink -f "$(command -v env)")"
+          git_path="$(readlink -f "$(command -v git)")"
+          sha256sum_path="$(readlink -f "$(command -v sha256sum)")"
+          stat_path="$(readlink -f "$(command -v stat)")"
+          cp_path="$(readlink -f "$(command -v cp)")"
+          sudo_path="$(readlink -f "$(command -v sudo)")"
+          unshare_path="$(readlink -f "$(command -v unshare)")"
+          setpriv_path="$(readlink -f "$(command -v setpriv)")"
+          runner_uid="$(id -u)"
+          runner_gid="$(id -g)"
+
+          cell_script="$STATE_DIR/run-cell.sh"
+          cat > "$cell_script" <<'CELL'
+          #!/usr/bin/env bash
+          set -Eeuo pipefail
+
+          cell_id="$1"
+          source_dir="$2"
+          build_dir="$3"
+          path_value="$4"
+          normalized_path="$5"
+          cell_env="$6"
+          retained_binary="$7"
+          expected_commit="$8"
+          expected_tree="$9"
+
+          sensitive_env=NO
+          while IFS="=" read -r name _; do
+            case "$name" in
+              GITHUB_*|ACTIONS_*|HF_TOKEN|HUGGING_FACE_HUB_TOKEN|GH_TOKEN|GITHUB_TOKEN|*_API_KEY|AWS_*|AZURE_*|NPM_TOKEN|NODE_AUTH_TOKEN|PYPI_TOKEN)
+                sensitive_env=YES
+                ;;
+            esac
+          done < <(env)
+          test "$sensitive_env" = "NO"
+
+          source_commit="$("$GIT_PATH" -C "$source_dir" rev-parse HEAD)"
+          source_tree="$("$GIT_PATH" -C "$source_dir" rev-parse 'HEAD^{tree}')"
+          test "$source_commit" = "$expected_commit"
+          test "$source_tree" = "$expected_tree"
+          test -z "$("$GIT_PATH" -C "$source_dir" status --porcelain)"
+
+          "$CMAKE_PATH" -S "$source_dir" -B "$build_dir" -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF -DLLAMA_BUILD_COMMON=ON -DLLAMA_BUILD_TESTS=OFF \
+            -DLLAMA_BUILD_TOOLS=ON -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=OFF \
+            -DLLAMA_BUILD_APP=OFF -DLLAMA_BUILD_UI=OFF -DLLAMA_USE_PREBUILT_UI=OFF \
+            -DLLAMA_TOOLS_INSTALL=OFF -DLLAMA_TESTS_INSTALL=OFF -DLLAMA_OPENSSL=OFF \
+            -DLLAMA_SUBPROCESS=OFF -DLLAMA_LLGUIDANCE=OFF -DGGML_NATIVE=OFF \
+            -DGGML_CCACHE=OFF -DGGML_OPENMP=OFF
+          "$CMAKE_PATH" --build "$build_dir" --target llama-quantize --parallel 2 --verbose
+
+          binary="$build_dir/bin/llama-quantize"
+          test -x "$binary"
+          cache_line="$("$SHA256SUM_PATH" "$build_dir/CMakeCache.txt")"
+          cache_sha="${cache_line%% *}"
+          binary_line="$("$SHA256SUM_PATH" "$binary")"
+          binary_sha="${binary_line%% *}"
+          binary_bytes="$("$STAT_PATH" -c '%s' "$binary")"
+          binary_type="$("$FILE_PATH" -b "$binary")"
+
+          build_id=NONE
+          while IFS= read -r line; do
+            if [[ "$line" =~ Build\ ID:\ ([[:xdigit:]]+) ]]; then
+              build_id="${BASH_REMATCH[1]}"
+              break
+            fi
+          done < <("$READELF_PATH" -n "$binary" 2>/dev/null || true)
+
+          read -r source_path_present build_path_present < <(
+            "$PYTHON_PATH" - "$binary" "$source_dir" "$build_dir" <<'PY'
+          import sys
+          data = open(sys.argv[1], "rb").read()
+          print("YES" if sys.argv[2].encode() in data else "NO", "YES" if sys.argv[3].encode() in data else "NO")
+          PY
+          )
+
+          "$CP_PATH" "$binary" "$retained_binary"
+          printf '%s\n' \
+            "CELL_STATUS=PASS" \
+            "CELL_ID=$cell_id" \
+            "SOURCE_DIR=$source_dir" \
+            "BUILD_DIR=$build_dir" \
+            "PATH_VALUE=$path_value" \
+            "NORMALIZED_EFFECTIVE_PATH_IDENTITY=$normalized_path" \
+            "SOURCE_COMMIT=$source_commit" \
+            "SOURCE_TREE=$source_tree" \
+            "CMAKE_CACHE_SHA256=$cache_sha" \
+            "LLAMA_QUANTIZE_SHA256=$binary_sha" \
+            "LLAMA_QUANTIZE_INTEGER_BYTES=$binary_bytes" \
+            "LLAMA_QUANTIZE_FILE_TYPE=$binary_type" \
+            "ELF_BUILD_ID_IF_PRESENT=$build_id" \
+            "SOURCE_ABSOLUTE_PATH_PRESENT_IN_BINARY=$source_path_present" \
+            "BUILD_ABSOLUTE_PATH_PRESENT_IN_BINARY=$build_path_present" \
+            "BUILD_NETWORK_NAMESPACE=ISOLATED" \
+            "SENSITIVE_CREDENTIAL_ENV_PRESENT=$sensitive_env" > "$cell_env"
+          CELL
+
+          build_cell() {
+            local cell_id="$1"
+            local source_dir="$2"
+            local build_dir="$3"
+            local path_value="$4"
+            local normalized_path cell_env retained_binary
+            normalized_path="$(normalize_path "$path_value")"
+            cell_env="$STATE_DIR/${cell_id}.env"
+            retained_binary="$STATE_DIR/${cell_id}.llama-quantize"
+
+            rm -rf "$build_dir"
+            rm -f "$cell_env" "$retained_binary"
+
+            if "$sudo_path" -n "$unshare_path" --net -- \
+              "$setpriv_path" \
+                --reuid "$runner_uid" \
+                --regid "$runner_gid" \
+                --clear-groups \
+                --inh-caps=-all \
+                --ambient-caps=-all \
+                --bounding-set=-all \
+                --no-new-privs \
+                --reset-env \
+                -- \
+              "$env_path" \
+                HOME="$E004_HOME" \
+                TMPDIR="$RUNNER_TEMP" \
+                PATH="$path_value" \
+                LC_ALL=C \
+                LANG=C \
+                GIT_PATH="$git_path" \
+                CMAKE_PATH="$cmake_path" \
+                SHA256SUM_PATH="$sha256sum_path" \
+                STAT_PATH="$stat_path" \
+                FILE_PATH="$file_path" \
+                READELF_PATH="$readelf_path" \
+                PYTHON_PATH="$python_path" \
+                CP_PATH="$cp_path" \
+              "$bash_path" "$cell_script" \
+                "$cell_id" "$source_dir" "$build_dir" "$path_value" "$normalized_path" \
+                "$cell_env" "$retained_binary" "$TOOL_COMMIT" "$TOOL_TREE"; then
+              cat "$cell_env"
+              echo "${cell_id}_EXECUTION=PASS"
+            else
+              printf '%s\n' "CELL_STATUS=FAIL" "CELL_ID=$cell_id" > "$cell_env"
+              echo "${cell_id}_EXECUTION=FAIL"
+            fi
+          }
+
+          build_cell A1 "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" "$HISTORICAL_BUILD_PATH"
+          build_cell A2 "$HISTORICAL_SOURCE_DIR" "$HISTORICAL_BUILD_DIR" "$HISTORICAL_BUILD_PATH"
+          build_cell B1 "$REPAIRED_SOURCE_DIR" "$REPAIRED_BUILD_DIR" "$REPAIRED_BUILD_PATH"
+          build_cell B2 "$REPAIRED_SOURCE_DIR" "$REPAIRED_BUILD_DIR" "$REPAIRED_BUILD_PATH"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+
+          state = Path(os.environ["STATE_DIR"])
+          cells = ("A1", "A2", "B1", "B2")
+
+          def read_env(path):
+              result = {}
+              if not path.exists():
+                  return result
+              for line in path.read_text(errors="replace").splitlines():
+                  if "=" in line:
+                      key, value = line.split("=", 1)
+                      result[key] = value
+              return result
+
+          environment = read_env(state / "environment.env")
+          records = {cell: read_env(state / f"{cell}.env") for cell in cells}
+          statuses = {cell: records[cell].get("CELL_STATUS", "MISSING") for cell in cells}
+          hashes = {cell: records[cell].get("LLAMA_QUANTIZE_SHA256") for cell in cells}
+          sizes = {cell: records[cell].get("LLAMA_QUANTIZE_INTEGER_BYTES") for cell in cells}
+          build_ids = {cell: records[cell].get("ELF_BUILD_ID_IF_PRESENT", "MISSING") for cell in cells}
+
+          for cell in cells:
+              print(f"{cell}_STATUS={statuses[cell]}")
+
+          execution_failure = any(statuses[cell] != "PASS" for cell in cells)
+          if not execution_failure:
+              for left_index, left in enumerate(cells):
+                  for right in cells[left_index + 1:]:
+                      print(f"SHA_EQUAL_{left}_{right}={'YES' if hashes[left] == hashes[right] else 'NO'}")
+                      print(f"BUILD_ID_EQUAL_{left}_{right}={'YES' if build_ids[left] == build_ids[right] else 'NO'}")
+
+              prior = os.environ["PRIOR_LLAMA_QUANTIZE_SHA256"]
+              rebuilt = os.environ["REBUILT_LLAMA_QUANTIZE_SHA256"]
+              expected_bytes = os.environ["EXPECTED_LLAMA_QUANTIZE_BYTES"]
+              for cell in cells:
+                  print(f"{cell}_EQUALS_PRIOR_SHA={'YES' if hashes[cell] == prior else 'NO'}")
+                  print(f"{cell}_EQUALS_REBUILT_SHA={'YES' if hashes[cell] == rebuilt else 'NO'}")
+                  print(f"{cell}_BYTES_EQUAL_HISTORICAL={'YES' if sizes[cell] == expected_bytes else 'NO'}")
+
+              binaries = {cell: (state / f"{cell}.llama-quantize").read_bytes() for cell in cells}
+              for left_index, left in enumerate(cells):
+                  for right in cells[left_index + 1:]:
+                      a = binaries[left]
+                      b = binaries[right]
+                      overlap_diff = sum(x != y for x, y in zip(a, b))
+                      length_diff = abs(len(a) - len(b))
+                      print(f"BYTE_DIFFERENCE_COUNT_{left}_{right}={overlap_diff + length_diff}")
+
+          environment_match = environment.get("ENVIRONMENT_IDENTITIES_MATCH") == "YES"
+          effective_paths_equal = environment.get("EFFECTIVE_PATH_IDENTITIES_EQUAL") == "YES"
+
+          if execution_failure:
+              disposition = "INCONCLUSIVE_ENVIRONMENT_MISMATCH_OR_EXECUTION_FAILURE"
+          elif not environment_match or not effective_paths_equal:
+              disposition = "INCONCLUSIVE_ENVIRONMENT_MISMATCH_OR_EXECUTION_FAILURE"
+          elif hashes["A1"] != hashes["A2"] or hashes["B1"] != hashes["B2"]:
+              disposition = "SAME_PATH_BUILD_NOT_BYTE_REPRODUCIBLE"
+          elif hashes["A1"] == os.environ["PRIOR_LLAMA_QUANTIZE_SHA256"] and hashes["B1"] == os.environ["REBUILT_LLAMA_QUANTIZE_SHA256"]:
+              disposition = "ABSOLUTE_PATH_CONTEXT_REPRODUCES_OBSERVED_HASH_SPLIT"
+          elif hashes["A1"] != hashes["B1"]:
+              disposition = "ABSOLUTE_PATH_CONTEXT_AFFECTS_BYTES_BUT_DOES_NOT_REPRODUCE_HISTORICAL_SPLIT"
+          else:
+              disposition = "NO_ABSOLUTE_PATH_EFFECT_OBSERVED_CAUSE_NEEDS_EVIDENCE"
+
+          print(f"ENVIRONMENT_IDENTITIES_MATCH={'YES' if environment_match else 'NO'}")
+          print(f"EFFECTIVE_PATH_IDENTITIES_EQUAL={'YES' if effective_paths_equal else 'NO'}")
+          print(f"PATH_CONTEXT_CLASSIFICATION={environment.get('PATH_CONTEXT_CLASSIFICATION', 'MISSING')}")
+          print("PATH_CAUSAL_ATTRIBUTION=PROHIBITED_EFFECTIVE_PATHS_EQUAL" if effective_paths_equal else "PATH_CAUSAL_ATTRIBUTION=NOT_ASSESSED_AUTHORITY_DOES_NOT_WIDEN")
+          print(f"DIAGNOSTIC_DISPOSITION={disposition}")
+          print("DIAGNOSTIC_RUN_COMPLETED=YES")
+          print("MODEL_CONVERSION_AUTHORITY=NONE")
+          print("CONVERSION_EXECUTION_AUTHORITY=NONE")
+          print("CONTAMINATION_ASSESSMENT_AUTHORITY=NONE")
+          print("A15_ACTIVATION=ABSENT_NOT_AUTHORIZED")
+          print("TRAINING_AUTHORITY=NONE")
+          print("COMPONENT_E004_STATE=BLOCKED_PREFLIGHT")
+          print("COMPONENT_E005_STATE=NOT_REACHED")
+          print("CURRENT_AUTHORIZED_SPEND_USD=0")
+          PY
