@@ -53,23 +53,27 @@ FOUNDER_DIRECTIVE_ORDERING=AFTER_PR165_CANONICAL_RUNTIME_READINESS_RECONCILIATIO
 
 This directive is interpreted only at the exact live dependency frontier. It authorizes the bounded diagnostic lifecycle defined here after independent review and canonical merge. It does not waive evidence, exact-head review, one-shot cardinality, historical-evidence preservation, or any scientific/execution gate outside this diagnostic.
 
+For binding clarity: PR #165 / merge `6dfde8e4a73459fe460cd528461a0a2139f23621` is the canonical merge of the runtime-reconstruction readiness reconciliation named above. That reconciliation in turn cites PR #163 / merge `836164f3b7ff9b50aac1a2b3ba9e7e950eef8e38` as the earlier canonical repaired-runtime result on which it is based. These are distinct dependency edges and MUST NOT be conflated.
+
 ## 3. Diagnostic question
 
 The one authorized run may answer only:
 
-> Under a single exact GitHub-hosted runner environment, with the exact pinned `llama.cpp` source and the previously frozen build configuration, are `llama-quantize` output bytes repeatable at the same absolute source/build paths, and does changing only the historically observed source/build path and PATH context reproduce or materially explain the previously observed SHA-256 difference?
+> Under a single exact GitHub-hosted runner environment, with the exact pinned `llama.cpp` source and the previously frozen build configuration, are `llama-quantize` output bytes repeatable at each of the two historically observed absolute source/build path layouts, and does changing only that absolute path layout reproduce or materially explain the previously observed SHA-256 difference?
+
+The two historical PATH strings must still be recorded and normalized to their effective search-directory identities. They MUST NOT be treated as an independent causal variable when normalization shows that they resolve to the same effective directories, including the expected usrmerge case where `/bin` resolves to `/usr/bin`.
 
 Permitted dispositions after the run are limited to:
 
 ```text
-DIAGNOSTIC_DISPOSITION=PATH_CONTEXT_REPRODUCES_OBSERVED_HASH_SPLIT
-DIAGNOSTIC_DISPOSITION=PATH_CONTEXT_AFFECTS_BYTES_BUT_DOES_NOT_REPRODUCE_HISTORICAL_SPLIT
+DIAGNOSTIC_DISPOSITION=ABSOLUTE_PATH_CONTEXT_REPRODUCES_OBSERVED_HASH_SPLIT
+DIAGNOSTIC_DISPOSITION=ABSOLUTE_PATH_CONTEXT_AFFECTS_BYTES_BUT_DOES_NOT_REPRODUCE_HISTORICAL_SPLIT
 DIAGNOSTIC_DISPOSITION=SAME_PATH_BUILD_NOT_BYTE_REPRODUCIBLE
-DIAGNOSTIC_DISPOSITION=NO_PATH_EFFECT_OBSERVED_CAUSE_NEEDS_EVIDENCE
+DIAGNOSTIC_DISPOSITION=NO_ABSOLUTE_PATH_EFFECT_OBSERVED_CAUSE_NEEDS_EVIDENCE
 DIAGNOSTIC_DISPOSITION=INCONCLUSIVE_ENVIRONMENT_MISMATCH_OR_EXECUTION_FAILURE
 ```
 
-No other causal claim may be invented from the diagnostic.
+No other causal claim may be invented from the diagnostic. In particular, `PATH_CAUSAL_ATTRIBUTION` MUST remain `PROHIBITED_EFFECTIVE_PATHS_EQUAL` whenever the normalized historical and repaired PATH identities are equal.
 
 ## 4. Exact source and historical environment identities
 
@@ -125,12 +129,10 @@ No source patch, compiler flag repair, prefix-map flag, linker flag, dependency 
 The implementation must create one exact source fetch and then local exact-source copies/worktrees sufficient to execute these cells without additional network access after staging:
 
 ```text
-CELL_A1=HISTORICAL_PATHS_HISTORICAL_PATH_ENV_FIRST_BUILD
-CELL_A2=HISTORICAL_PATHS_HISTORICAL_PATH_ENV_REPEAT_AFTER_CLEAN_BUILD_DIR
-CELL_B1=REPAIRED_PATHS_REPAIRED_PATH_ENV_FIRST_BUILD
-CELL_B2=REPAIRED_PATHS_REPAIRED_PATH_ENV_REPEAT_AFTER_CLEAN_BUILD_DIR
-CELL_C=HISTORICAL_PATHS_REPAIRED_PATH_ENV
-CELL_D=REPAIRED_PATHS_HISTORICAL_PATH_ENV
+CELL_A1=HISTORICAL_PATHS_FIRST_BUILD
+CELL_A2=HISTORICAL_PATHS_REPEAT_AFTER_CLEAN_BUILD_DIR
+CELL_B1=REPAIRED_PATHS_FIRST_BUILD
+CELL_B2=REPAIRED_PATHS_REPEAT_AFTER_CLEAN_BUILD_DIR
 ```
 
 Path/environment bindings:
@@ -145,7 +147,9 @@ REPAIRED_BUILD_DIR=$RUNNER_TEMP/e004-runtime-evidence/llama.cpp-build
 REPAIRED_BUILD_PATH=/usr/local/bin:/usr/bin:/bin
 ```
 
-A1/A2 and B1/B2 test same-path repeatability. C/D separate the observed PATH delta from the absolute source/build path delta.
+A1/A2 and B1/B2 test same-path repeatability and then compare the two absolute source/build path layouts. The implementation MUST normalize both recorded PATH strings before building and emit their effective identities. If `/bin` resolves to `/usr/bin` and the normalized effective PATHs are equal, the recorded PATH string difference is classified as `REDUNDANT_USRMERGE_ENTRY_NOT_INDEPENDENT_VARIABLE`; no extra C/D builds are authorized and no PATH-causal disposition is permitted.
+
+If the effective PATH identities unexpectedly differ, the one authorized run may record that fact, but it MUST classify the causal result as `INCONCLUSIVE_ENVIRONMENT_MISMATCH_OR_EXECUTION_FAILURE`; this authority does not widen into a separate PATH experiment.
 
 ## 7. Mandatory evidence per cell
 
@@ -156,6 +160,7 @@ CELL_ID
 SOURCE_DIR
 BUILD_DIR
 PATH_VALUE
+NORMALIZED_EFFECTIVE_PATH_IDENTITY
 SOURCE_COMMIT
 SOURCE_TREE
 CMAKE_CACHE_SHA256
@@ -169,6 +174,8 @@ The job must also emit:
 
 - exact resolved paths and SHA-256 identities for `cmake`, `ninja`, `cc`, `c++`, and relevant ELF inspection tools;
 - `uname -a`, `/etc/os-release`, `ImageOS`, and `ImageVersion`;
+- `BIN_REALPATH`, `USR_BIN_REALPATH`, normalized historical PATH identity, normalized repaired PATH identity, and `EFFECTIVE_PATH_IDENTITIES_EQUAL`;
+- `PATH_CONTEXT_CLASSIFICATION=REDUNDANT_USRMERGE_ENTRY_NOT_INDEPENDENT_VARIABLE` when the effective identities are equal;
 - same-path equality results for A1/A2 and B1/B2;
 - cross-cell SHA equality matrix;
 - equality against both historical hashes;
@@ -292,9 +299,11 @@ A diagnostic PASS means only that the one bounded diagnostic completed and its e
 
 If same-path builds are not byte-identical, runtime reconstruction remains blocked and any repair/normalization experiment requires separate authority.
 
-If same-path builds are byte-identical and the historical/repaired path contexts reproduce the historical two-hash split, a later reconciliation may attribute the observed split to the reproduced path/build-context dependency only to the extent directly demonstrated by retained evidence. It still must not reinterpret unrelated historical failures.
+If same-path builds are byte-identical and the two absolute source/build path layouts reproduce the historical two-hash split, a later reconciliation may attribute the observed split to the reproduced absolute path/build-context dependency only to the extent directly demonstrated by retained evidence. It still must not reinterpret unrelated historical failures.
 
 If the historical split is not reproduced, the cause remains `NEEDS_EVIDENCE` and later conversion authority remains blocked unless a separately reviewed policy disposition explicitly accepts execution-time identity binding without byte-for-byte reconstruction.
+
+A syntactic PATH difference may not be promoted into a causal finding when normalized effective PATH identities are equal.
 
 ## 12. E004 / E005 effect
 
@@ -318,12 +327,13 @@ PROJECT_FINISHED=NO
 
 Before canonical merge, an independent reviewer must verify at least:
 
-- canonical base `6dfde8e4a73459fe460cd528461a0a2139f23621` and PR #165 readiness reconciliation are correctly bound;
+- canonical base `6dfde8e4a73459fe460cd528461a0a2139f23621` is PR #165's merge of the named runtime-reconstruction readiness reconciliation, while that reconciliation separately depends on the PR #163 repaired-runtime result;
 - both historical binary SHA-256 values and equal byte counts are copied exactly;
 - mismatch cause remains `NEEDS_EVIDENCE`;
 - the diagnostic question is narrow and does not pre-accept the mismatch;
 - exact source commit/tree and build flags remain unchanged;
-- A1/A2, B1/B2, C, and D cells isolate repeatability/path/PATH effects without model execution;
+- A1/A2 and B1/B2 test same-path repeatability and the two absolute path layouts without model execution;
+- both historical PATH strings are retained as evidence, normalized to effective identities, and cannot support PATH-causal attribution when the effective identities are equal;
 - one standard public `ubuntu-24.04` runner and zero-spend boundary are preserved;
 - the merge-triggered path-scoped mechanism cannot execute more than the single newly authorized diagnostic run absent a later workflow mutation and separate authority;
 - no retry, failed-job rerun, second run, alternate trigger, model/weight access, conversion, inference, benchmark, contamination, A15, training, credential, upload, paid-runner, procurement/payment, or spend authority is created;
