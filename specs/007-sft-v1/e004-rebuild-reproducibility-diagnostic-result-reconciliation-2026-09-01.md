@@ -214,17 +214,18 @@ It does not establish that the absolute layout fully explains the earlier repair
 
 Section 11 of the canonical authority requires that when the historical split is not reproduced, the cause remains `NEEDS_EVIDENCE` and later conversion authority remains blocked unless a separately reviewed policy disposition explicitly accepts execution-time identity binding without byte-for-byte reconstruction.
 
-Therefore this reconciliation records:
+Therefore this reconciliation preserves the canonical sentinel and separately records the bounded matrix observation:
 
 ```text
-REBUILD_BINARY_REPRODUCIBILITY=PARTIALLY_DEMONSTRATED_WITHIN_DIAGNOSTIC_LAYOUTS
+REBUILD_BINARY_REPRODUCIBILITY=NOT_PROVEN
+DIAGNOSTIC_SAME_PATH_BYTE_REPEATABILITY=A1_A2_AND_B1_B2_IDENTICAL
 HISTORICAL_REPAIRED_HASH_RECONSTRUCTION=NOT_REPRODUCED
 REBUILD_MISMATCH_CAUSE=NEEDS_EVIDENCE
 RUNTIME_RECONSTRUCTION_READINESS=INCOMPLETE_PENDING_SEPARATE_RESOLUTION
 EXECUTION_TIME_IDENTITY_BINDING_POLICY_DISPOSITION=NONE
 ```
 
-`PARTIALLY_DEMONSTRATED_WITHIN_DIAGNOSTIC_LAYOUTS` is descriptive reconciliation language, not a new execution state or authority. It means only that A1=A2 and B1=B2 in this one bounded matrix; it does not satisfy the unresolved requirement to reconstruct the frozen repaired-runtime identity.
+`DIAGNOSTIC_SAME_PATH_BYTE_REPEATABILITY` records only the direct one-run matrix observation. It does not replace or weaken `REBUILD_BINARY_REPRODUCIBILITY=NOT_PROVEN`, because the frozen repaired-runtime identity was not reconstructed.
 
 ## 10. Safety and authority boundary after the run
 
@@ -290,7 +291,7 @@ The review must verify at least:
 - normalized effective PATH identities are equal and PATH causal attribution remains prohibited;
 - no unsupported ELF LOAD measurement or other unexecuted evidence appears in the record;
 - the exact workflow disposition is `ABSOLUTE_PATH_CONTEXT_AFFECTS_BYTES_BUT_DOES_NOT_REPRODUCE_HISTORICAL_SPLIT`;
-- `REBUILD_MISMATCH_CAUSE=NEEDS_EVIDENCE` remains in force;
+- canonical `REBUILD_BINARY_REPRODUCIBILITY=NOT_PROVEN` and `REBUILD_MISMATCH_CAUSE=NEEDS_EVIDENCE` remain in force;
 - no successor execution or model/scientific/spend authority is created;
 - E004 remains incomplete and blocked preflight, E005 remains not reached, and the project is not declared finished.
 
