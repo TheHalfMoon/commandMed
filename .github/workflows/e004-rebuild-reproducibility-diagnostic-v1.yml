@@ -51,7 +51,7 @@ env:
 
 jobs:
   diagnostic:
-    if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main' && github.run_attempt == 1
+    if: github.repository == 'TheHalfMoon/commandMed' && github.ref == 'refs/heads/main' && github.event.before == '2fd2915024182100be0e5ce6ffb261e5b76f03bb' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 60
 
@@ -101,8 +101,8 @@ jobs:
           with open(os.environ["GITHUB_EVENT_PATH"], "rb") as fh:
               event = json.load(fh)
 
-          expected_path = os.environ["TARGET_WORKFLOW_PATH"]
           expected_before = os.environ["AUTHORITY_MERGE_SHA"]
+          expected_path = os.environ["TARGET_WORKFLOW_PATH"]
           github_sha = os.environ["GITHUB_SHA"]
 
           if event.get("before") != expected_before:
@@ -122,40 +122,19 @@ jobs:
           if not isinstance(head, dict) or head.get("id") != github_sha:
               raise SystemExit("head commit mismatch")
 
-          # GitHub caps the push-event commits array at 2048 entries. The exact-path
-          # gate must therefore prove that the payload is complete before trusting
-          # any commit-level added/modified/removed lists.
-          push_size = event.get("size")
-          if isinstance(push_size, bool) or not isinstance(push_size, int) or push_size < 1:
-              raise SystemExit("invalid push size")
-          if push_size > 2048:
-              raise SystemExit("push commit payload can be truncated")
-
-          commits = event.get("commits")
-          if not isinstance(commits, list) or not commits:
-              raise SystemExit("push commits missing")
-          if len(commits) != push_size:
-              raise SystemExit("push commits payload is incomplete")
-
-          changed = set()
-          for commit in commits:
-              if not isinstance(commit, dict):
-                  raise SystemExit("malformed push commit")
-              for key in ("added", "modified", "removed"):
-                  values = commit.get(key, [])
-                  if not isinstance(values, list):
-                      raise SystemExit(f"malformed {key} list")
-                  changed.update(values)
-
-          if changed != {expected_path}:
-              raise SystemExit(f"changed-path set is not exact: {sorted(changed)!r}")
-
+          # GitHub Actions deliberately omits added/removed/modified attributes from
+          # commit objects in the push payload, so this workflow does not fabricate an
+          # in-job exact-path proof from incomplete event data. Exact path exclusivity is
+          # a mandatory premerge qualification fact: canonical main must equal
+          # AUTHORITY_MERGE_SHA and the reviewed authority..implementation diff must add
+          # only TARGET_WORKFLOW_PATH. The path-scoped trigger then requires this file to
+          # participate in the one eligible push, while the job-level predecessor guard
+          # prevents later workflow mutations from starting another diagnostic job.
           print("ONE_SHOT_PUSH_EVENT_GATE=PASS")
-          print(f"PUSH_COMMIT_PAYLOAD_COMPLETE={len(commits) == push_size}")
-          print(f"PUSH_SIZE={push_size}")
           print(f"AUTHORITY_PREDECESSOR={expected_before}")
           print(f"IMPLEMENTATION_MERGE_SHA={github_sha}")
-          print(f"CHANGED_PATH_EXACT={expected_path}")
+          print(f"PATH_SCOPED_TRIGGER={expected_path}")
+          print("EXACT_PATH_EXCLUSIVITY_EVIDENCE=PREMERGE_REVIEWED_DIFF_AND_GUARDED_MERGE")
           PY
 
           required_tools=(
