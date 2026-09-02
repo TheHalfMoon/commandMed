@@ -3,7 +3,7 @@
 **Spec:** 007 SFT V1  
 **Canonical base:** `3da7d95b8dfc7ee1548cc8ece58c5cb55cbc82a6`  
 **Artifact class:** non-executing bounded policy disposition  
-**Depends on:** canonical rebuild-reproducibility diagnostic authority, implementation, terminal evidence, and result reconciliation  
+**Depends on:** canonical rebuild-reproducibility diagnostic authority, implementation, retained terminal evidence, and canonical result reconciliation  
 **Authority effect before canonical merge:** NONE  
 **Model conversion authority:** NONE  
 **Conversion execution authority:** NONE  
@@ -14,11 +14,11 @@
 
 ## 1. Purpose
 
-Resolve only the policy question left open by the canonical E004 rebuild-reproducibility diagnostic: whether a future, separately authorized conversion execution may rely on a rigorously fail-closed **execution-time binary identity** even though the earlier repaired-runtime `llama-quantize` binary has not been reconstructed byte-for-byte.
+Resolve only the policy question left open by the canonical E004 rebuild-reproducibility diagnostic: whether a future, separately authorized conversion execution may rely on a rigorously fail-closed execution-time `llama-quantize` identity even though the earlier repaired-runtime binary has not been reconstructed byte-for-byte.
 
-This document performs no build, download, model access, conversion, inference, benchmark execution, contamination assessment, A15 activation, training, credential use, protected-data access, upload, procurement, payment, or spend.
+This document performs no build, download, model/source-weight access, conversion, inference, benchmark execution, contamination assessment, A15 activation, training, credential use, protected-data access, upload, procurement, payment, or spend.
 
-Canonical merge of this document after fresh independent exact-head review would establish only the policy disposition below:
+Canonical merge of this document after fresh independent exact-head review would establish only:
 
 ```text
 POLICY_ID=E004-EXECUTION-TIME-IDENTITY-BINDING-V1
@@ -34,13 +34,13 @@ TRAINING_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-The accepted policy is not an equivalence claim between historical binaries and is not permission to execute a conversion.
+This is not a historical-binary equivalence claim and is not permission to execute a conversion.
 
 ## 2. Controlling retained evidence
 
-The policy is bounded by the exact canonical observations already retained by commandMed.
+The policy is bounded by the exact canonical evidence already retained by commandMed.
 
-### 2.1 Historical build-evidence identity
+### 2.1 Historical build evidence
 
 ```text
 HISTORICAL_BUILD_RUN_ID=33187438094
@@ -52,10 +52,10 @@ HISTORICAL_BUILD_DIR=/home/runner/work/_temp/e004-llama.cpp-build
 HISTORICAL_LLAMA_QUANTIZE_SHA256=e1d88ef6fee265fc6aba97f18b8cc268b0632de7cbcdaca9c94b2c5f078900a0
 HISTORICAL_LLAMA_QUANTIZE_INTEGER_BYTES=6513680
 HISTORICAL_CMAKE_CACHE_SHA256=0b499b1dfa63d0f3fcf80cb3c0f45b25b95de2b5cd128574cc3d1e5f49ad0599
-HISTORICAL_ELF_BUILD_ID=c3b1ffcb29aa0b069380b8aaf7aef6e4928f5738
+HISTORICAL_COMPILE_COMMANDS_SHA256=567ad70c6090af9fcce508c41eddba51681669f1079e52e6c285c5cc471d713e
 ```
 
-### 2.2 Repaired runtime-evidence identity
+### 2.2 Repaired runtime evidence
 
 ```text
 REPAIRED_RUNTIME_RUN_ID=33434874024
@@ -68,61 +68,47 @@ REPAIRED_CMAKE_CACHE_SHA256=5a2f8b139183dfba6d422db476cd8ad1b69388749199d9090557
 RUNTIME_EVIDENCE_MANIFEST_SHA256=6f3e91fd162db6fd764a5915d34b50254cc91a07906eb602f833b02ff6dfb25d
 ```
 
-### 2.3 One-shot diagnostic result
+The repaired-runtime workflow did not retain a `compile_commands.json` SHA-256 in the canonical runtime manifest. This policy does not invent one retroactively.
 
-The canonical one-shot diagnostic was consumed exactly once:
+### 2.3 One-shot diagnostic evidence
 
 ```text
 DIAGNOSTIC_RUN_ID=33507754943
+DIAGNOSTIC_RUN_ATTEMPT=1
 DIAGNOSTIC_JOB_ID=99855785119
 DIAGNOSTIC_EXECUTION_ALLOWANCE_REMAINING=0
 SECOND_DIAGNOSTIC_EXECUTION_AUTHORITY=NONE
-```
 
-It produced:
-
-```text
 A1_LLAMA_QUANTIZE_SHA256=e1d88ef6fee265fc6aba97f18b8cc268b0632de7cbcdaca9c94b2c5f078900a0
 A2_LLAMA_QUANTIZE_SHA256=e1d88ef6fee265fc6aba97f18b8cc268b0632de7cbcdaca9c94b2c5f078900a0
 B1_LLAMA_QUANTIZE_SHA256=1f5c96a6763656d439455fdd331097cd73e607031c19f465dedf0dd4cfadeca6
 B2_LLAMA_QUANTIZE_SHA256=1f5c96a6763656d439455fdd331097cd73e607031c19f465dedf0dd4cfadeca6
-SHA_EQUAL_A1_A2=YES
-SHA_EQUAL_B1_B2=YES
-SHA_EQUAL_A1_B1=NO
+A1_A2_BYTE_DIFFERENCE_COUNT=0
+B1_B2_BYTE_DIFFERENCE_COUNT=0
+A_B_BYTE_DIFFERENCE_COUNT=760129
+A1_A2_BUILD_ID_EQUAL=YES
+B1_B2_BUILD_ID_EQUAL=YES
 HISTORICAL_TWO_HASH_SPLIT_REPRODUCED=NO
 DIAGNOSTIC_DISPOSITION=ABSOLUTE_PATH_CONTEXT_AFFECTS_BYTES_BUT_DOES_NOT_REPRODUCE_HISTORICAL_SPLIT
 ```
 
-The historical-layout cells reproduced the frozen historical build hash exactly. The repaired-layout cells were internally repeatable but produced a third hash, not the earlier repaired-runtime hash.
+The diagnostic reproduced the frozen historical build hash under the historical absolute layout. Its repaired-layout cells were internally repeatable but produced a third hash rather than the earlier repaired-runtime hash.
 
-Therefore this policy preserves:
+The diagnostic did not compute an ELF LOAD SHA-256 and this policy makes no such claim.
+
+The retained evidence therefore continues to require:
 
 ```text
 REBUILD_MISMATCH_CAUSE=NEEDS_EVIDENCE
 HISTORICAL_REPAIRED_HASH_RECONSTRUCTION=NOT_REPRODUCED
 HISTORICAL_BINARY_EQUIVALENCE_CLAIM=PROHIBITED
-```
-
-## 3. Retained-evidence exhaustion does not justify a causal claim
-
-The retained records prove that absolute source/build layout can change output bytes under the pinned build, while normalized effective executable-search PATH identity was equal across the historical and repaired PATH spellings.
-
-The pinned upstream build-info mechanism was also inspected at the exact tool revision. `cmake/build-info.cmake` at blob `c7005950c5612d1d93ca728386b10806b0043106` derives build metadata from the Git commit count/hash, compiler, and target. That static inspection does not establish the missing historical repaired-runtime cause.
-
-No retained evidence currently proves which additional execution-context difference produced `18ff27aa...` rather than diagnostic repaired-layout `1f5c96a6...`.
-
-```text
-BUILD_INFO_CAUSAL_ATTRIBUTION=NOT_ESTABLISHED
 PATH_SEARCH_CAUSAL_ATTRIBUTION=PROHIBITED_EFFECTIVE_PATHS_EQUAL
 UNOBSERVED_CAUSE_INVENTION=PROHIBITED
-REBUILD_MISMATCH_CAUSE=NEEDS_EVIDENCE
 ```
 
-This policy chooses a future assurance mechanism without rewriting that scientific history.
+## 3. Policy decision
 
-## 4. Policy decision
-
-For a future conversion subject that has obtained its own separate canonical execution authority, commandMed may accept an execution-time `llama-quantize` identity instead of requiring its SHA-256 to equal either historical binary hash **only if every requirement in this document is satisfied before model conversion begins**.
+For a future conversion subject that has obtained its own separate canonical execution authority, commandMed may accept an execution-time `llama-quantize` identity instead of requiring its SHA-256 to equal either historical binary hash **only if every pre-conversion requirement in this document is satisfied before model conversion begins; post-use requirements must pass before the execution result is accepted**.
 
 The accepted mechanism is:
 
@@ -139,11 +125,11 @@ FIRST_MODEL_BYTE_READ_BEFORE_TOOL_BINDING=PROHIBITED
 CONVERSION_BEFORE_TOOL_BINDING=PROHIBITED
 ```
 
-The execution-time identity is valid only for the exact separately authorized RunManifest and exact execution subject that produced it.
+The execution-time identity is valid only for the exact separately authorized execution subject and exact RunManifest that anchor it.
 
-## 5. Pre-execution identities that must be frozen
+## 4. Exact execution-subject bindings must be frozen
 
-A future conversion authority may not rely on an open-ended runtime discovery process. Before that execution begins, its exact RunManifest must freeze at least:
+A future conversion authority may not rely on open-ended runtime discovery. Before execution begins, the exact execution-subject package anchored by the RunManifest — including the RunManifest itself and its directly referenced canonical component, environment, storage/resource, and authority records — must collectively freeze at least the following identities or exact derivation contracts:
 
 ```text
 run_manifest_id
@@ -195,26 +181,34 @@ expected_max_wallclock
 zero_incremental_spend_disposition
 ```
 
-Placeholder-bearing or runtime-selected alternatives are not conforming pre-execution identities.
+These are required bindings for the exact execution subject; they are **not** all required to be direct JSON properties of `RunManifest`.
 
-If a field cannot truthfully be frozen until the concrete future environment exists, the future authority must remain unmerged/unexecuted until that field is concrete. This policy does not turn `NEEDS_EVIDENCE` into a wildcard.
+```text
+RUN_MANIFEST_CLOSED_SCHEMA_WIDENED_BY_THIS_POLICY=NO
+RUN_MANIFEST_VALIDATOR_WIDENED_BY_THIS_POLICY=NO
+NEW_DIRECT_RUN_MANIFEST_FIELDS_AUTHORIZED_BY_THIS_POLICY=NO
+```
 
-## 6. Same-subject double-build protocol
+The current closed RunManifest schema and `_RUN_FIELDS` remain unchanged. If a future execution design requires any listed identity as a new direct RunManifest property, that schema/validator change requires its own bounded implementation authority, tests, exact-head qualification, and independent review before use.
+
+Placeholder-bearing or runtime-selected alternatives are not conforming pre-execution bindings. If an identity cannot truthfully be frozen until a concrete future environment exists, the future authority must remain unmerged and unexecuted until that binding is concrete. This policy does not turn `NEEDS_EVIDENCE` into a wildcard.
+
+## 5. Same-subject double-build protocol
 
 Any later execution authority adopting this policy must require exactly two pre-model builds under the same frozen execution subject.
 
 For both builds:
 
-1. use the same exact source tree and commit/tree identity;
+1. use the same exact source commit and tree;
 2. use the same exact absolute source path;
 3. clean and recreate the same exact absolute build path between builds;
 4. use the same exact HOME, TMPDIR, syntactic PATH, normalized PATH identity, locale, and security boundary;
 5. use the same exact compiler, CMake, Ninja, Python, and other bound executable identities;
-6. use the exact same CMake configure argv and build argv;
-7. prohibit model-weight access, conversion, inference, benchmark execution, contamination assessment, A15, training, credentials, uploads, and paid-resource escalation during both builds;
+6. use the same exact CMake configure argv and build argv;
+7. prohibit model/source-weight access, conversion, inference, benchmark execution, contamination assessment, A15 activation, training, credentials, uploads, and paid-resource escalation during both builds;
 8. retain identity evidence for each build before deciding whether the execution may proceed.
 
-The two builds must independently record at least:
+Each build must independently record at least:
 
 ```text
 llama_quantize_sha256
@@ -229,7 +223,9 @@ build_absolute_path_presence_disposition
 security_boundary_evidence_sha256
 ```
 
-The following gate is noncompensable:
+A future implementation may define a canonical build manifest that contains these bound observations, but any such implementation is outside this policy-only PR.
+
+The double-build gate is noncompensable:
 
 ```text
 DOUBLE_BUILD_FULL_FILE_SHA256_EQUAL=YES_REQUIRED
@@ -239,9 +235,10 @@ DOUBLE_BUILD_CMAKE_CACHE_EQUAL=YES_REQUIRED
 DOUBLE_BUILD_COMPILE_COMMANDS_EQUAL=YES_REQUIRED
 DOUBLE_BUILD_GENERATED_BUILD_INFO_EQUAL=YES_REQUIRED
 DOUBLE_BUILD_SECURITY_BOUNDARY_EQUAL=YES_REQUIRED
+DOUBLE_BUILD_BUILD_MANIFEST_EQUAL=YES_REQUIRED
 ```
 
-Any failure is terminal for that exact execution attempt.
+Any failure is terminal for that exact execution attempt:
 
 ```text
 DOUBLE_BUILD_MISMATCH_DISPOSITION=ABORT_BEFORE_MODEL_BYTES
@@ -251,37 +248,38 @@ PATH_SUBSTITUTION_AFTER_MISMATCH=PROHIBITED
 BUILD_FLAG_SUBSTITUTION_AFTER_MISMATCH=PROHIBITED
 ```
 
-A later retry or changed subject requires separately reviewed authority; this policy does not supply it.
+A later retry or changed execution subject requires separately reviewed authority; this policy does not supply it.
 
-## 7. Execution-time binding after a successful double build
+## 6. Execution-time binding and completion attestation
 
-Only after the double-build gate passes may the exact common binary identity be bound as the tool identity for that RunManifest.
+Only after every pre-conversion binding and the complete double-build gate pass may the exact common binary identity be bound to the exact execution subject.
 
 ```text
 EXECUTION_TIME_LLAMA_QUANTIZE_SHA256=<EXACT_EQUAL_DOUBLE_BUILD_SHA256>
 EXECUTION_TIME_LLAMA_QUANTIZE_INTEGER_BYTES=<EXACT_EQUAL_DOUBLE_BUILD_BYTES>
 EXECUTION_TIME_ELF_BUILD_ID=<EXACT_EQUAL_DOUBLE_BUILD_BUILD_ID_IF_PRESENT>
-EXECUTION_TIME_BUILD_MANIFEST_SHA256=<EXACT_BOUND_BUILD_MANIFEST>
-EXECUTION_TIME_TOOL_BINDING_SCOPE=EXACT_RUN_MANIFEST_ONLY
+EXECUTION_TIME_BUILD_MANIFEST_SHA256=<EXACT_EQUAL_DOUBLE_BUILD_MANIFEST_SHA256>
+EXECUTION_TIME_TOOL_BINDING_SCOPE=EXACT_RUN_MANIFEST_AND_EXECUTION_SUBJECT_ONLY
 ```
 
 The binding must be recorded before the first model/source-weight byte is opened by conversion logic.
 
-The selected bound binary must then remain unchanged through the exact conversion/quantization stage. Immediately before use and immediately after the last permitted use, its SHA-256 and integer byte size must be recomputed and must equal the execution-time binding.
+Immediately before first permitted use, the binary SHA-256 and integer byte size must be recomputed and match the binding. The selected bound binary must remain unchanged through the exact conversion/quantization stage. Immediately after its last permitted use, its SHA-256 and integer byte size must be recomputed again.
 
 ```text
 PRE_USE_BINARY_REHASH=REQUIRED
-POST_USE_BINARY_REHASH=REQUIRED
 PRE_USE_SHA_MATCH=YES_REQUIRED
+POST_USE_BINARY_REHASH=REQUIRED
 POST_USE_SHA_MATCH=YES_REQUIRED
 BINARY_MUTATION_DURING_SUBJECT=FAIL_CLOSED
+POST_USE_ATTESTATION_IS_EXECUTION_RESULT_ACCEPTANCE_GATE=YES
 ```
 
-No historical hash equality is inferred from this binding.
+A post-use mismatch invalidates acceptance of the execution result even if conversion code otherwise completed successfully. It does not authorize retry.
 
-## 8. No cross-run promotion or binary reuse
+No historical hash equality is inferred from execution-time binding.
 
-An execution-time binary identity is not a reusable release artifact merely because it passed one exact RunManifest.
+## 7. No cross-run promotion or binary reuse
 
 ```text
 EXECUTION_TIME_BINARY_PERSISTENT_REUSE=PROHIBITED_BY_THIS_POLICY
@@ -291,32 +289,20 @@ EXECUTION_TIME_BINARY_PROVES_HISTORICAL_EQUIVALENCE=NO
 EXECUTION_TIME_BINARY_PROVES_GENERAL_BUILD_REPRODUCIBILITY=NO
 ```
 
-A later run must perform its own separately authorized same-subject binding unless a future canonical policy explicitly creates a persistent reproducible tool artifact with its own provenance and qualification evidence.
+A later run must perform its own separately authorized same-subject binding unless a future canonical policy explicitly establishes a persistent reproducible tool artifact with its own provenance and qualification evidence.
 
-## 9. Historical hashes remain evidence, not acceptance targets
-
-The three observed binary identities retain their exact meanings:
+The historical identities remain evidence, not future acceptance targets:
 
 ```text
 E1D88_HASH_ROLE=HISTORICAL_BUILD_EVIDENCE_AND_DIAGNOSTIC_A_LAYOUT_REPRODUCTION
 18FF27_HASH_ROLE=HISTORICAL_REPAIRED_RUNTIME_EVIDENCE_ONLY
 1F5C96_HASH_ROLE=DIAGNOSTIC_B_LAYOUT_REPEATABLE_OBSERVATION_ONLY
-```
-
-This policy does not declare any pair equivalent and does not declare any one of them the future conversion binary.
-
-```text
-E1D88_EQUALS_18FF27=NO
-E1D88_EQUALS_1F5C96=NO
-18FF27_EQUALS_1F5C96=NO
 HISTORICAL_REPAIRED_RUNTIME_CAUSE=NEEDS_EVIDENCE
 ```
 
-The unresolved causal question remains a valid evidence defect. It is no longer proposed as a mandatory historical-hash reconstruction target for a future separately authorized conversion because the future assurance boundary is the exact double-built execution subject itself.
+## 8. Composition with existing conversion policy
 
-## 10. Composition with existing conversion policy
-
-This policy does not supersede the canonical Decision B normalization/metadata policy. Any future conversion must still preserve its source-byte, directory-basename, converter-mode, metadata, tokenizer, config, and post-conversion attestation requirements.
+This policy does not supersede the canonical Decision B normalization/metadata policy. Any future separately authorized conversion must still satisfy its source-byte, directory-basename, converter-mode, metadata, tokenizer, configuration, and post-conversion attestation requirements.
 
 ```text
 NORMALIZATION_METADATA_POLICY=E004-DECISION-B-CONVERSION-NORMALIZATION-METADATA-V1
@@ -327,18 +313,18 @@ TRUST_REMOTE_CODE=FALSE_REQUIRED
 POST_CONVERSION_METADATA_ATTESTATION=REQUIRED_IF_CONVERSION_LATER_AUTHORIZED
 ```
 
-Execution-time tool identity binding cannot compensate for a source, metadata, lineage, storage, contamination, governance, or scientific-policy failure.
+Execution-time tool identity binding cannot compensate for a source, metadata, lineage, storage, contamination, governance, safety, or scientific-policy failure.
 
-## 11. What this policy resolves and what it does not
+## 9. What this policy resolves and what remains blocked
 
-After canonical merge, this policy would resolve only the narrow policy disposition requested by the rebuild-reproducibility authority:
+After a qualified canonical merge, this policy would resolve only:
 
 ```text
 EXECUTION_TIME_IDENTITY_BINDING_POLICY_DISPOSITION=ACCEPTED_FAIL_CLOSED_FOR_FUTURE_SEPARATELY_AUTHORIZED_CONVERSION
 HISTORICAL_REPAIRED_HASH_RECONSTRUCTION_AS_MANDATORY_PRECONDITION=REMOVED_BY_POLICY
 ```
 
-It would not produce operational execution readiness by itself:
+It would not establish operational conversion readiness:
 
 ```text
 PERSISTENT_LOCAL_SOURCE_BUNDLE_PRESENT=NO_UNCHANGED
@@ -357,7 +343,7 @@ CONVERSION_PHASE_NETWORK_BOUNDARY=NEEDS_EXACT_FUTURE_SUBJECT_BINDING
 CONVERSION_PHASE_CREDENTIAL_ATTESTATION=NEEDS_EXACT_FUTURE_SUBJECT_BINDING
 ```
 
-Nor does it resolve independent E004 prerequisites:
+Nor would it resolve independent E004 prerequisites:
 
 ```text
 COMPONENT_REAL_GUARD_EVIDENCE=ABSENT
@@ -369,7 +355,7 @@ A15_ACTIVATION=ABSENT_NOT_AUTHORIZED
 BACKBONE_WINNER=NEEDS_EVIDENCE
 ```
 
-## 12. Authority and claims boundary
+## 10. Authority and claims boundary
 
 Even after a qualified canonical merge:
 
@@ -400,26 +386,28 @@ RELEASE_READY=NO
 
 No execution may be inferred from policy acceptance.
 
-## 13. Failure semantics for any future adopter
+## 11. Failure semantics for any future adopter
 
 A future authority that adopts this policy must fail closed if any of the following occurs:
 
 - a frozen source/tool/dependency/runtime identity does not match;
-- actual absolute source/build paths differ from the RunManifest;
-- syntactic or normalized PATH identity differs from the RunManifest;
-- the two pre-model builds differ in required identity evidence;
+- the execution-subject package does not resolve all required bindings before execution;
+- actual absolute source/build paths differ from the frozen execution-subject bindings;
+- syntactic or normalized PATH identity differs from the frozen execution-subject bindings;
+- the two pre-model builds differ in any required equality evidence;
 - the generated build-info evidence differs between the two builds;
+- the build manifests differ between the two builds;
 - the binary changes between binding, pre-use, and post-use;
-- model bytes are opened before the tool-binding gate passes;
+- model/source-weight bytes are opened before the tool-binding gate passes;
 - a retry, path change, tool revision change, compiler change, flag change, or dependency change is attempted without separate authority;
 - a storage, retention, resource, network, credential, provenance, contamination, safety, or scientific prerequisite is absent or non-PASS;
 - the future execution would exceed its exact spend/resource authority.
 
 No average metric or later successful conversion can compensate for one of these identity failures.
 
-## 14. Required independent review and merge-exit gate
+## 12. Required independent review and merge-exit gate
 
-This policy has no canonical effect until a fresh independent exact-head repository/governance review verifies the complete diff and concludes that no material correctness, evidence-integrity, reproducibility, security, or authority-boundary blocker remains.
+This policy has no canonical effect until a fresh independent exact-head repository/governance review verifies the complete diff and concludes that no material correctness, evidence-integrity, reproducibility, security, integration, or authority-boundary blocker remains.
 
 The reviewer must verify at least:
 
@@ -431,9 +419,11 @@ DIAGNOSTIC_A1_A2_AND_B1_B2_IDENTITIES_RETAINED_EXACTLY=YES
 HISTORICAL_TWO_HASH_SPLIT_REMAINS_NOT_REPRODUCED=YES
 REBUILD_MISMATCH_CAUSE_REMAINS_NEEDS_EVIDENCE=YES
 NO_FALSE_HISTORICAL_BINARY_EQUIVALENCE=YES
-NO_UNSUPPORTED_BUILD_INFO_CAUSAL_CLAIM=YES
-EXECUTION_TIME_BINDING_IS_EXACT_RUN_MANIFEST_ONLY=YES
+NO_UNSUPPORTED_ELF_LOAD_CLAIM=YES
+PRE_CONVERSION_AND_POST_USE_GATES_SEPARATED=YES
+EXECUTION_SUBJECT_BINDINGS_DO_NOT_WIDEN_RUN_MANIFEST_SCHEMA=YES
 SAME_SUBJECT_DOUBLE_BUILD_REQUIRED_BEFORE_MODEL_BYTES=YES
+DOUBLE_BUILD_BUILD_MANIFEST_EQUALITY_EXPLICIT=YES
 DOUBLE_BUILD_MISMATCH_FAILS_CLOSED=YES
 AUTOMATIC_RETRY_AUTHORITY_CREATED=NO
 CROSS_RUN_BINARY_REUSE_CREATED=NO
@@ -452,7 +442,7 @@ MATERIAL_BLOCKER=NO
 
 Any `MATERIAL_BLOCKER=YES` finding must be resolved on a new exact head and independently re-reviewed before merge. Self-review is not sufficient.
 
-## 15. Explicit exclusions
+## 13. Explicit exclusions
 
 This artifact does not authorize or perform:
 
