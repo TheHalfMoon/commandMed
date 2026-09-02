@@ -199,6 +199,25 @@ No hidden downgrade is allowed.
 
 commandMed does not automatically inherit model-origin restrictions from related research programs. Candidate eligibility is governed by commandMed's own frozen evaluation, provenance, safety, licensing, device, and authorization contracts. Any future donor-origin restriction requires a separate explicit founder decision.
 
+### FD-007 — Repository independent review policy
+
+**State:** LOCKED
+**Founder decision:** `REMOVE_MANDATORY_INDEPENDENT_REPOSITORY_REVIEW_GATE`
+**Decision date:** 2026-09-02
+**Needed before:** prospective repository/PR qualification and merge decisions
+
+Intent:
+
+- independent repository review, bot review, peer review, exact-head review, and reviewer `MATERIAL_BLOCKER=NO` are optional by default rather than universal PR/merge gates;
+- deterministic validation, evidence-dependent gates, bounded authority, exact identity checks, CI/status checks, branch/ruleset requirements, and unresolved-thread reconciliation remain required where applicable;
+- historical review evidence remains valid and is not rewritten;
+- a later bounded authority may explicitly reintroduce a repository reviewer for a specifically named task;
+- domain-qualified human evidence that is itself required for scientific, clinical, statistical, privacy, rights, governance, or human-factor validity is unaffected unless separately amended.
+
+The constitutional amendment record is `docs/repository-review-gate-amendment-2026-09-02.md`.
+
+This decision creates no model/weight access, conversion, inference, benchmark, contamination, A15, training, credential, protected-data, paid-compute, procurement/payment, or spend authority.
+
 ## Spec 005 entry consequence
 
 The founder prerequisites needed to begin Spec 005 specification are satisfied by `FD-001`, `FD-002`, and `FD-006` above.
