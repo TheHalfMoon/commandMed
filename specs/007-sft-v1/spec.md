@@ -103,7 +103,7 @@ Every SFT example carries provenance, license status, content identity/hash, spl
 Exit from the specification stage requires ALL of the following, merged canonically:
 
 1. This `spec.md` passing static analyze with CRITICAL=0 / HIGH=0 / MEDIUM=0 and no constitution violation.
-2. Independent exact-head review of the specification head reporting MATERIAL_BLOCKER=NO.
+2. Repository/PR independent review is not a required exit or merge gate under constitutional amendment `FD-007`; deterministic validation and evidence-dependent gates remain mandatory.
 3. Every hard FR above is classified clause-completely with no silent gaps:
    - **FR-001** — frozen: role-class routing from decision-register D-003; curriculum domains from the canonical master-plan post-training list (§10); Arabic/English scope from §13 strata; adversarial/unsafe cases from AGENTS.md safety invariants.
    - **FR-002** — mixed: qualification-manifest *schema* frozen from Specs 004–005; winner checkpoint identity `NEEDS_EVIDENCE` (kind: authorized tournament execution result; owner: tournament lifecycle); `FD-001` license compatibility of that checkpoint `NEEDS_EVIDENCE` (kind: per-checkpoint lineage/license verification under FD-001 posture; owner: planning-stage license review).
