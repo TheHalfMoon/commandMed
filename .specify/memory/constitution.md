@@ -1,7 +1,8 @@
 # commandMed Constitution
 
-**Version:** 0.1.0
+**Version:** 0.1.1
 **Ratified:** 2026-08-21
+**Amended:** 2026-09-02
 **Status:** CANONICAL PLANNING CONSTITUTION
 
 ## Preamble
@@ -187,7 +188,9 @@ No release may infer:
 
 Ponytail/YAGNI applies to implementation complexity, not assurance guarantees.
 
-Use the minimum mechanism needed by the active bounded spec, while preserving validation, security, privacy, provenance, reproducibility, tests, failure handling, auditability, and independent review.
+Use the minimum mechanism needed by the active bounded spec, while preserving validation, security, privacy, provenance, reproducibility, tests, failure handling, and auditability.
+
+Independent repository/PR review is optional by default and is not a universal qualification or merge gate. A later bounded authority may explicitly require repository review for a specifically named task. Domain-qualified human evidence that is itself required for scientific, clinical, statistical, privacy, rights, governance, or human-factor validity is not removed by this rule.
 
 ## XIV. Bounded Spec Authority
 
@@ -208,3 +211,9 @@ A constitutional principle may change only through an explicit documented decisi
 - whether previously collected results remain comparable.
 
 Silent constitutional drift is prohibited.
+
+## Amendment record
+
+### 0.1.1 — Repository independent review gate
+
+Founder decision `FD-007`, recorded in `docs/repository-review-gate-amendment-2026-09-02.md`, removes mandatory independent repository/PR review as a default qualification or merge gate. Historical review evidence remains valid. Deterministic validation and evidence-dependent gates remain required, and domain-qualified human evidence requirements are unchanged unless separately amended.
