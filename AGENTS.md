@@ -126,8 +126,7 @@ Minimalism MUST NOT remove or weaken:
 - deterministic safety checks;
 - tests for safety-critical behavior;
 - auditability;
-- explicit failure handling;
-- independent review gates.
+- explicit failure handling.
 
 These are requirements, not overengineering.
 
@@ -153,6 +152,7 @@ Rules:
 - Work on feature branches and use draft PRs while evidence is incomplete.
 - Keep generated/experimental outputs out of canonical source unless the active spec names them as artifacts.
 - Do not merge a planning or implementation PR merely because checks are green; its spec exit gate must also be satisfied.
+- Independent repository/PR review is optional by default under constitutional amendment `FD-007`; a later bounded authority may explicitly require it for a named task.
 
 ## Claims discipline
 
