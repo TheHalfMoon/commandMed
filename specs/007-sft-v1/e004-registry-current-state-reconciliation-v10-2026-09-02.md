@@ -3,7 +3,8 @@
 **Spec:** 007 SFT V1  
 **Task:** E004  
 **Artifact class:** append-only post-policy current-state reconciliation  
-**Canonical base:** `071cf1ca92f7f1d7d4cea3c0bccd478f4208e2c1`  
+**Branch-creation canonical base:** `071cf1ca92f7f1d7d4cea3c0bccd478f4208e2c1`  
+**Current canonical main observed after PR #173:** `8000cf01cf981c6aca5932cd8fd3fd84e08c7805`  
 **Authority effect:** NONE  
 **Execution effect:** NONE  
 **Model conversion authority:** NONE  
@@ -14,9 +15,9 @@
 
 ## 1. Purpose
 
-Reconcile the exact E004 current view after canonical merge of PR #172 / `071cf1ca92f7f1d7d4cea3c0bccd478f4208e2c1`.
+Reconcile the exact E004 current view after canonical merge of PR #172 / `071cf1ca92f7f1d7d4cea3c0bccd478f4208e2c1` and the bounded post-merge build-environment-equality amendment in PR #173 / `8000cf01cf981c6aca5932cd8fd3fd84e08c7805`.
 
-Older E004 registry/task narrative predates later canonical source-integrity, build-evidence, repaired-runtime, rebuild-diagnostic, result-reconciliation, and policy-disposition evidence. This record supersedes only stale **current-state narrative**. It does not alter historical records, change the E004 task checkbox, create execution authority, or convert absent scientific, governance, personnel, resource, contamination, activation, or training evidence into PASS.
+Older E004 registry/task narrative predates later canonical source-integrity, build-evidence, repaired-runtime, rebuild-diagnostic, result-reconciliation, execution-time identity-binding policy, and policy-amendment evidence. This record supersedes only stale **current-state narrative**. It does not alter historical records, change the E004 task checkbox, create execution authority, or convert absent scientific, governance, personnel, resource, contamination, activation, or training evidence into PASS.
 
 ```text
 E001=CLOSED_CANONICAL
@@ -119,22 +120,29 @@ REBUILD_MISMATCH_CAUSE=NEEDS_EVIDENCE
 
 PR #168 canonically reconciled this consumed diagnostic. No second diagnostic occurred and none is authorized.
 
-## 3. PR #172 policy is canonical but does not create conversion authority
+## 3. PR #172 policy and PR #173 amendment are canonical but create no conversion authority
 
-Controlling policy:
+Controlling records:
 
-`specs/007-sft-v1/e004-execution-time-identity-binding-policy-disposition-2026-09-02.md`
+- `specs/007-sft-v1/e004-execution-time-identity-binding-policy-disposition-2026-09-02.md`
+- `specs/007-sft-v1/e004-execution-time-identity-binding-policy-build-environment-equality-amendment-2026-09-02.md`
 
 ```text
 POLICY_ID=E004-EXECUTION-TIME-IDENTITY-BINDING-V1
 EXECUTION_TIME_IDENTITY_BINDING_POLICY_DISPOSITION=ACCEPTED_FAIL_CLOSED_FOR_FUTURE_SEPARATELY_AUTHORIZED_CONVERSION
 HISTORICAL_REPAIRED_HASH_RECONSTRUCTION_AS_MANDATORY_PRECONDITION=REMOVED_BY_POLICY
 FUTURE_CONVERSION_TOOL_IDENTITY_MODE=SAME_SUBJECT_DOUBLE_BUILD_THEN_BIND
+DOUBLE_BUILD_BUILD_ENVIRONMENT_MANIFEST_EQUAL=YES_REQUIRED
+DOUBLE_BUILD_BUILD_ENVIRONMENT_MANIFEST_MISMATCH_DISPOSITION=ABORT_BEFORE_MODEL_BYTES
+AUTOMATIC_RETRY_AFTER_BUILD_ENVIRONMENT_MANIFEST_MISMATCH=PROHIBITED
+ALTERNATE_ENVIRONMENT_AFTER_MISMATCH=PROHIBITED
 ```
 
 The accepted policy removes reconstruction of the historical repaired binary hash as a mandatory future execution precondition. It does **not** prove the historical mismatch cause, historical binary equivalence, or general build reproducibility.
 
-Any future separately authorized conversion subject adopting the policy must freeze its exact execution-subject bindings and satisfy the fail-closed same-subject double-build, build-environment/build-manifest equality, pre-use identity, and post-use completion gates required by that policy before its result can be accepted.
+PR #173 closes the post-merge PR #172 review gap by making equality of the recorded `build_environment_manifest_sha256` identities an explicit, mandatory, noncompensable same-subject double-build gate. A mismatch is terminal before model/source-weight bytes and creates no retry or alternate-environment authority.
+
+Any future separately authorized conversion subject adopting the policy and amendment must freeze its exact execution-subject bindings and satisfy the complete fail-closed same-subject double-build equality set, including build-environment and build-manifest equality, together with pre-use identity and post-use completion gates before its result can be accepted.
 
 ```text
 MODEL_CONVERSION_AUTHORITY=NONE
@@ -264,7 +272,7 @@ This does not invalidate completed source-integrity/build/runtime/diagnostic evi
 
 ## 10. Current dependency-safe frontier
 
-After the completed internal evidence chain and accepted execution-time identity-binding policy, no remaining repository-only action can truthfully transition an E004 real prerequisite from incomplete to PASS under current governance.
+After the completed internal evidence chain, accepted execution-time identity-binding policy, and canonical build-environment-equality amendment, no remaining repository-only action can truthfully transition an E004 real prerequisite from incomplete to PASS under current governance.
 
 A real E004 transition requires at least one dependency-correct change such as:
 
@@ -276,7 +284,7 @@ A real E004 transition requires at least one dependency-correct change such as:
 A future conversion execution-subject authority remains downstream of the applicable scientific, governance, contamination, A1-A14, and A15 prerequisites and is not created here.
 
 ```text
-FURTHEST_CURRENT_INTERNAL_ONLY_STATE=E004_BLOCKED_PREFLIGHT_POST_POLICY
+FURTHEST_CURRENT_INTERNAL_ONLY_STATE=E004_BLOCKED_PREFLIGHT_POST_POLICY_AMENDMENT
 NO_ELIGIBLE_REPOSITORY_ONLY_REAL_GATE_TRANSITION_AVAILABLE=YES
 E004_COMPLETE=NO
 TOURNAMENT_EVIDENCE_PACK=NOT_PRODUCED
@@ -288,7 +296,7 @@ PROJECT_FINISHED=NO
 
 ## 11. Supersession boundary
 
-This V10 record supersedes only stale **current-state narrative** in earlier E004 frontier/registry/task descriptions where they describe source-integrity, build-evidence, repaired runtime evidence, the rebuild diagnostic, or the execution-time identity-binding policy as not yet completed.
+This V10 record supersedes only stale **current-state narrative** in earlier E004 frontier/registry/task descriptions where they describe source-integrity, build-evidence, repaired runtime evidence, the rebuild diagnostic, the execution-time identity-binding policy, or the build-environment-equality amendment as not yet completed.
 
 Historical statements remain evidence of the state at their canonical bases. V10 neither edits their historical meaning nor changes task completion/authority.
 
@@ -314,13 +322,15 @@ This reconciliation performs or authorizes none of the following:
 This record may become canonical only after fresh independent exact-head review verifies at least:
 
 ```text
-EXACT_CANONICAL_BASE_MATCHES_BRANCH_CREATION_MAIN=YES
+EXACT_BRANCH_CREATION_BASE_MATCHES_PR172_MERGE_MAIN=YES
+LIVE_CANONICAL_MAIN_INCLUDES_PR173_AMENDMENT=YES
 COMPLETED_E002_SOURCE_INTEGRITY_EVIDENCE_RETAINED_EXACTLY=YES
 COMPLETED_BUILD_EVIDENCE_RETAINED_EXACTLY=YES
 COMPLETED_REPAIRED_RUNTIME_EVIDENCE_RETAINED_EXACTLY=YES
 CONSUMED_DIAGNOSTIC_IDENTITY_AND_NO_RERUN_BOUNDARY_RETAINED_EXACTLY=YES
 PR168_RECONCILIATION_EFFECT_RETAINED_EXACTLY=YES
 PR172_POLICY_EFFECT_RETAINED_EXACTLY=YES
+PR173_BUILD_ENVIRONMENT_EQUALITY_AMENDMENT_RETAINED_EXACTLY=YES
 HISTORICAL_REBUILD_MISMATCH_CAUSE_REMAINS_NEEDS_EVIDENCE=YES
 OUTREACH_DECISION_REMAINS_ABSENT_POST_CANONICAL_SURFACE=YES
 GENERIC_CONTINUATION_NOT_TREATED_AS_OUTREACH_DECISION=YES
