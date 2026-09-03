@@ -1,0 +1,53 @@
+name: E004 local Parquet tooling bootstrap V1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-local-parquet-tooling-bootstrap-v1.yml
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TOOL_NAME: pyarrow
+      TOOL_VERSION: 25.0.1
+      WHEEL_NAME: pyarrow-25.0.1-cp313-cp313-manylinux_2_28_x86_64.whl
+      WHEEL_SHA256: 0befcf816e45a1af33ac775a9970b749e4868a230c7372f0ae5e932bee27039f
+      WHEEL_URL: https://files.pythonhosted.org/packages/98/d6/33a411115b61dbfc16ad6ad73e71730f6fea654ee3667673bc53ab0e2fe7/pyarrow-25.0.1-cp313-cp313-manylinux_2_28_x86_64.whl
+
+    steps:
+      - name: Download and verify exact public wheel
+        id: wheel
+        shell: bash
+        run: |
+          set -euo pipefail
+          wheel_path="${RUNNER_TEMP}/${WHEEL_NAME}"
+          curl --fail --silent --show-error --location --retry 3 --output "${wheel_path}" "${WHEEL_URL}"
+          actual_sha="$(sha256sum "${wheel_path}" | awk '{print $1}')"
+          test "${actual_sha}" = "${WHEEL_SHA256}"
+          echo "wheel_path=${wheel_path}" >> "${GITHUB_OUTPUT}"
+          echo "TOOLING_WHEEL_SHA256_VERIFICATION=PASS"
+          echo "TOOLING_WHEEL_SHA256=${actual_sha}"
+
+      - name: Publish verified local-tooling artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: E004_LOCAL_PARQUET_TOOLING_PYARROW_25_0_1
+          path: ${{ steps.wheel.outputs.wheel_path }}
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: Remove runner wheel
+        if: always()
+        shell: bash
+        run: |
+          rm -f "${RUNNER_TEMP}/${WHEEL_NAME}"
+          echo "RUNNER_TOOLING_WHEEL_CLEANUP=COMPLETE"
