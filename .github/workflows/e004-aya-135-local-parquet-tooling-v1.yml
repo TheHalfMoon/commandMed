@@ -1,0 +1,74 @@
+name: E004 Aya 135 local Parquet tooling V1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-aya-135-local-parquet-tooling-v1.yml
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PACKAGE_NAME: pyarrow
+      PACKAGE_VERSION: 25.0.1
+      EXPECTED_WHEEL: pyarrow-25.0.1-cp311-cp311-manylinux_2_28_x86_64.whl
+      ARTIFACT_NAME: E004_AYA_135_LOCAL_PARQUET_TOOLING_PYARROW_25_0_1_CP311
+
+    steps:
+      - name: Download exact CPython 3.11 Linux wheel
+        id: wheel
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/wheel"
+          mkdir -p "${out}"
+          python -m pip download \
+            --disable-pip-version-check \
+            --no-deps \
+            --only-binary=:all: \
+            --implementation cp \
+            --python-version 311 \
+            --abi cp311 \
+            --platform manylinux_2_28_x86_64 \
+            --dest "${out}" \
+            "${PACKAGE_NAME}==${PACKAGE_VERSION}"
+
+          wheel_path="${out}/${EXPECTED_WHEEL}"
+          test -f "${wheel_path}"
+          echo "wheel_path=${wheel_path}" >> "${GITHUB_OUTPUT}"
+
+      - name: Verify wheel against published PyPI SHA-256 metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          metadata="$(curl --fail --silent --show-error --location --retry 3 "https://pypi.org/pypi/${PACKAGE_NAME}/${PACKAGE_VERSION}/json")"
+          published_sha="$(printf '%s' "${metadata}" | jq -r --arg filename "${EXPECTED_WHEEL}" '.urls[] | select(.filename == $filename) | .digests.sha256' | head -n1)"
+          test -n "${published_sha}"
+          test "${published_sha}" != "null"
+          actual_sha="$(sha256sum "${{ steps.wheel.outputs.wheel_path }}" | awk '{print $1}')"
+          test "${actual_sha}" = "${published_sha}"
+          echo "PYPI_WHEEL_SHA256_VERIFICATION=PASS"
+          echo "PYPI_WHEEL_SHA256=${actual_sha}"
+
+      - name: Publish exact verified tooling wheel
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: E004_AYA_135_LOCAL_PARQUET_TOOLING_PYARROW_25_0_1_CP311
+          path: ${{ steps.wheel.outputs.wheel_path }}
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: Remove runner tooling wheel
+        if: always()
+        shell: bash
+        run: |
+          rm -rf "${RUNNER_TEMP}/wheel"
+          echo "RUNNER_TRANSIENT_TOOLING_CLEANUP=COMPLETE"
