@@ -1,0 +1,70 @@
+name: E004 Aya 135 Spec 003 evaluator source V2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-aya-135-spec003-evaluator-source-v2.yml
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SOURCE_COMMIT: 7fa0b8d4baee9e6ef5f2a0ca30aaf0bd8199c6fc
+      ARTIFACT_NAME: E004_AYA_135_SPEC003_EVALUATOR_SOURCE_V2
+
+    steps:
+      - name: Fetch and verify exact evaluator source blobs
+        id: package
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="${RUNNER_TEMP}/spec003-evaluator"
+          mkdir -p "${root}/src/commandmed/eval_contract" "${root}/data/lineage"
+
+          fetch_blob() {
+            path="$1"
+            expected_blob="$2"
+            dest="${root}/${path}"
+            mkdir -p "$(dirname "${dest}")"
+            url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${SOURCE_COMMIT}/${path}"
+            curl --fail --silent --show-error --location --retry 3 --output "${dest}" "${url}"
+            size="$(stat -c '%s' "${dest}")"
+            actual_blob="$( (printf 'blob %s\0' "${size}"; cat "${dest}") | sha1sum | awk '{print $1}')"
+            test "${actual_blob}" = "${expected_blob}"
+          }
+
+          fetch_blob src/commandmed/__init__.py 5c7c057f23569943ac84685d4f1dbb6ba308e252
+          fetch_blob src/commandmed/eval_contract/__init__.py b19d354f531b1b65bd1052a07b91fd12ccba2a8b
+          fetch_blob src/commandmed/eval_contract/canonical.py 26e922435eba4cc9b103b75f8dac0398d3566e95
+          fetch_blob src/commandmed/eval_contract/lineage.py 5d7a5b6a8b48b2b5a7afea35ed18ceb1c9fe6425
+          fetch_blob src/commandmed/eval_contract/model.py bcc145f9123d7d9c642e7b420a7f6867aaab4abe
+          fetch_blob src/commandmed/eval_contract/validate.py 87d386f00510f75ca481aff5f3ea61e083b0d380
+          fetch_blob data/lineage/lineage_contract.json 692de9b32271031b0f1dd9cc6edc98bc44b580b5
+
+          printf '%s\n' "${SOURCE_COMMIT}" > "${root}/SOURCE_COMMIT"
+          find "${root}" -type f -print0 | sort -z | xargs -0 sha256sum > "${root}/SHA256SUMS"
+          echo "package_path=${root}" >> "${GITHUB_OUTPUT}"
+          echo "SPEC003_EVALUATOR_SOURCE_BLOB_VERIFICATION=PASS"
+
+      - name: Publish verified evaluator source
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: E004_AYA_135_SPEC003_EVALUATOR_SOURCE_V2
+          path: ${{ steps.package.outputs.package_path }}
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: Remove runner source package
+        if: always()
+        shell: bash
+        run: |
+          rm -rf "${RUNNER_TEMP}/spec003-evaluator"
+          echo "RUNNER_TRANSIENT_EVALUATOR_SOURCE_CLEANUP=COMPLETE"
