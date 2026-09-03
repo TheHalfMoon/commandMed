@@ -33,8 +33,10 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "${api}")"
 
-          printf '%s' "${metadata}" | grep -Fq '"id":9895384385'
-          printf '%s' "${metadata}" | grep -Fq '"name":"E004_AYA_EXACT_PAYLOAD_TRANSPORT_BRIDGE"'
+          printf '%s' "${metadata}" | jq -e \
+            --argjson id "${ARTIFACT_ID}" \
+            --arg name "${EXPECTED_ARTIFACT_NAME}" \
+            '.id == $id and .name == $name' >/dev/null
 
           http_code="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
             -X DELETE \
