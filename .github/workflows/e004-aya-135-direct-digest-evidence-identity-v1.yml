@@ -1,10 +1,12 @@
-name: E004 Aya 135 direct-digest evidence identity V1
+name: E004 Aya 135 direct-digest correction V1
 
 on:
   pull_request:
     paths:
-      - "specs/007-sft-v1/e004-aya-135-deterministic-record-evidence-result-v1.json"
-      - "specs/007-sft-v1/e004-aya-135-spec003-post-deterministic-summary-v1.json"
+      - "scripts/e004_aya_135_spec003_direct_digest_v1.py"
+      - "specs/007-sft-v1/e004-aya-135-deterministic-admission-projection-v1.json"
+      - "specs/007-sft-v1/e004-aya-135-candidate-content-digest-map-v1-part-*.json"
+      - "specs/007-sft-v1/e004-aya-135-direct-digest-correction-summary-v1.json"
       - ".github/workflows/e004-aya-135-direct-digest-evidence-identity-v1.yml"
 
 permissions:
@@ -28,64 +30,12 @@ jobs:
           test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
           echo "HEAD_SHA=$(git rev-parse HEAD)"
 
-      - name: Verify deterministic evidence bytes and semantics
+      - name: Reject superseded inconsistent historical evidence files
         shell: bash
         run: |
           set -euo pipefail
-          evidence="specs/007-sft-v1/e004-aya-135-deterministic-record-evidence-result-v1.json"
-          summary="specs/007-sft-v1/e004-aya-135-spec003-post-deterministic-summary-v1.json"
-          actual="$(sha256sum "${evidence}" | awk '{print $1}')"
-          test "${actual}" = "129688b220a75773a7709c656a2aa313f2aed770541dc62a39b3351848beb07d"
-          python3 - "${evidence}" "${summary}" <<'PY'
-          import hashlib
-          import json
-          import sys
-
-          evidence_path, summary_path = sys.argv[1:]
-          evidence = json.load(open(evidence_path, encoding="utf-8"))
-          summary = json.load(open(summary_path, encoding="utf-8"))
-          records = evidence["records"]
-          assert evidence["method_id"] == "AYA_135_LOCAL_DETERMINISTIC_RECORD_EVIDENCE_V1"
-          assert evidence["candidate_count"] == 135 == len(records)
-          assert evidence["candidate_manifest_canonical_sha256"] == "dc341eef6589cf5c41cbf886f679d7d345f6fb47069e290377c2504c2f5adb99"
-          assert evidence["candidate_record_id_set_sha256"] == "d50c128704e66ff401db534d289b398b4b5e2ce5700f4b8ac0e6d26cbda9de83"
-          assert evidence["candidate_content_sha256_set_sha256"] == "ed6d37362b9fef0180f48af2a60c5eada85d64c9bf7c1ed7f12f07f2dbe5ba64"
-          assert evidence["source_file_sha256"] == "51baa85043b569ba117f41516b32d1b0e4e2647fb203a08933f98a556fb1fb06"
-          assert evidence["privacy_state_counts"] == {"NO_PHI_KNOWN": 118, "UNRESOLVED": 17}
-          assert evidence["record_level_rights_state_counts"] == {"SUPPORTED": 43, "UNRESOLVED": 92}
-          assert evidence["scope_verification_counts"] == {"PASS": 135}
-          assert evidence["external_ai_or_model_used"] is False
-          assert evidence["external_provider_used"] is False
-          assert evidence["network_access_performed"] is False
-          assert evidence["raw_text_persisted"] is False
-          assert evidence["user_id_read"] is False
-
-          ids = sorted(record["candidate_record_id"] for record in records)
-          contents = sorted(record["content_sha256"] for record in records)
-          assert len(ids) == len(set(ids)) == 135
-          assert len(contents) == len(set(contents)) == 135
-          id_root = hashlib.sha256(("\n".join(ids) + "\n").encode("ascii")).hexdigest()
-          content_root = hashlib.sha256(("\n".join(contents) + "\n").encode("ascii")).hexdigest()
-          assert id_root == "d50c128704e66ff401db534d289b398b4b5e2ce5700f4b8ac0e6d26cbda9de83"
-          assert content_root == "ed6d37362b9fef0180f48af2a60c5eada85d64c9bf7c1ed7f12f07f2dbe5ba64"
-          assert all(record["scope_verification"] == "PASS" for record in records)
-          assert sum(record["privacy_state"] == "NO_PHI_KNOWN" for record in records) == 118
-          assert sum(record["privacy_state"] == "UNRESOLVED" for record in records) == 17
-          assert sum(record["record_level_rights_state"] == "SUPPORTED" for record in records) == 43
-          assert sum(record["record_level_rights_state"] == "UNRESOLVED" for record in records) == 92
-
-          assert summary["candidate_count"] == 135
-          assert summary["deterministic_record_evidence_sha256"] == "129688b220a75773a7709c656a2aa313f2aed770541dc62a39b3351848beb07d"
-          assert summary["results_file_sha256"] == "3e7e4f15a913ca5e72c091aee4dda563f48037ed6fd67a3781fef1ade71d21ef"
-          assert summary["state_counts"] == {"BLOCKED": 92, "ELIGIBLE": 43}
-          assert summary["reason_counts"] == {"PRIVACY_UNRESOLVED": 17, "RIGHTS_UNRESOLVED": 92}
-          assert summary["validation_error_count"] == 0
-          assert summary["caller_controlled_eligible_state"] is False
-          print("DETERMINISTIC_EVIDENCE_SHA256=129688b220a75773a7709c656a2aa313f2aed770541dc62a39b3351848beb07d")
-          print("CANDIDATE_RECORD_ID_SET_SHA256=" + id_root)
-          print("CANDIDATE_CONTENT_SHA256_SET_SHA256=" + content_root)
-          print("SPEC003_POST_DETERMINISTIC_RESULTS_SHA256=" + summary["results_file_sha256"])
-          PY
+          test ! -e specs/007-sft-v1/e004-aya-135-deterministic-record-evidence-result-v1.json
+          test ! -e specs/007-sft-v1/e004-aya-135-spec003-post-deterministic-summary-v1.json
 
       - name: Verify canonical evaluator source identities
         shell: bash
@@ -93,6 +43,83 @@ jobs:
           set -euo pipefail
           test "$(git hash-object src/commandmed/eval_contract/lineage.py)" = "5d7a5b6a8b48b2b5a7afea35ed18ceb1c9fe6425"
           test "$(git hash-object data/lineage/lineage_contract.json)" = "692de9b32271031b0f1dd9cc6edc98bc44b580b5"
+          echo "SPEC003_EVALUATOR_LINEAGE_BLOB=5d7a5b6a8b48b2b5a7afea35ed18ceb1c9fe6425"
+          echo "SPEC003_LINEAGE_CONTRACT_BLOB=692de9b32271031b0f1dd9cc6edc98bc44b580b5"
+
+      - name: Verify projection and content-digest map identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum specs/007-sft-v1/e004-aya-135-deterministic-admission-projection-v1.json | awk '{print $1}')" = "1c696862705e50f10b8621f425389f8f9db0122ef8cc3027e46d50d6835430e7"
+          expected=(
+            b6028a65c05d41a251ef8b4a5073d30e8b4048322853a97ad020783cdea79687
+            59d1445a98f6ac5bfc8d50fb125700fbbd590d61f17b7fd35e1f9d0f428923a3
+            48310fdf92872e39d0c4f9527dab52e6682b9a117040f2cedef70fcf4eb63ef2
+            5d58375d6a36eaa1abb5fedda95004d12381e685b09b20c129171ddadf2d4b95
+            13014dcfab8fc511554c2f4fcd7afa105a84c7ccd43cf449b583627ed0fb1597
+          )
+          for i in 1 2 3 4 5; do
+            file="specs/007-sft-v1/e004-aya-135-candidate-content-digest-map-v1-part-0${i}.json"
+            actual="$(sha256sum "${file}" | awk '{print $1}')"
+            test "${actual}" = "${expected[$((i-1))]}"
+          done
+
+      - name: Compile corrected direct-digest adapter
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q scripts/e004_aya_135_spec003_direct_digest_v1.py
+
+      - name: Execute corrected canonical Spec 003 direct-digest admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/e004-aya-135-spec003-direct-digest-correction-v1.json"
+          summary="${RUNNER_TEMP}/summary.json"
+          PYTHONPATH=. python3 scripts/e004_aya_135_spec003_direct_digest_v1.py \
+            --projection specs/007-sft-v1/e004-aya-135-deterministic-admission-projection-v1.json \
+            --digest-map-part specs/007-sft-v1/e004-aya-135-candidate-content-digest-map-v1-part-01.json \
+            --digest-map-part specs/007-sft-v1/e004-aya-135-candidate-content-digest-map-v1-part-02.json \
+            --digest-map-part specs/007-sft-v1/e004-aya-135-candidate-content-digest-map-v1-part-03.json \
+            --digest-map-part specs/007-sft-v1/e004-aya-135-candidate-content-digest-map-v1-part-04.json \
+            --digest-map-part specs/007-sft-v1/e004-aya-135-candidate-content-digest-map-v1-part-05.json \
+            --contamination-evidence specs/007-sft-v1/e004-aya-135-qualification-evidence-v1.json \
+            --contract data/lineage/lineage_contract.json \
+            --out "${out}" | tee "${summary}"
+          test "$(sha256sum "${out}" | awk '{print $1}')" = "a8807085864707ae88966f7a925bfd2a7fd05a0e683d70893a46d3b6d5dbdce4"
+          python3 - "${summary}" <<'PY'
+          import json, sys
+          s=json.load(open(sys.argv[1], encoding='utf-8'))
+          assert s['candidate_count'] == 135
+          assert s['output_sha256'] == 'a8807085864707ae88966f7a925bfd2a7fd05a0e683d70893a46d3b6d5dbdce4'
+          assert s['state_counts'] == {'BLOCKED': 92, 'ELIGIBLE': 43}
+          assert s['reason_counts'] == {'PRIVACY_UNRESOLVED': 17, 'RIGHTS_UNRESOLVED': 92}
+          assert s['validation_error_count'] == 0
+          PY
+          rm -f "${out}" "${summary}"
+
+      - name: Verify optional canonical correction summary
+        if: ${{ hashFiles('specs/007-sft-v1/e004-aya-135-direct-digest-correction-summary-v1.json') != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          p='specs/007-sft-v1/e004-aya-135-direct-digest-correction-summary-v1.json'
+          s=json.load(open(p, encoding='utf-8'))
+          assert s['corrected_results_sha256'] == 'a8807085864707ae88966f7a925bfd2a7fd05a0e683d70893a46d3b6d5dbdce4'
+          assert s['state_counts'] == {'BLOCKED': 92, 'ELIGIBLE': 43}
+          assert s['validation_error_count'] == 0
+          assert s['historical_result_sha256'] == '3e7e4f15a913ca5e72c091aee4dda563f48037ed6fd67a3781fef1ade71d21ef'
+          assert s['historical_evidence_byte_identity_valid'] is False
+          PY
+
+      - name: Assert no raw Aya payload exists in checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e data/train-00000-of-00001.parquet
+          test ! -e aya-train.parquet
 
       - name: Verify diff whitespace
         shell: bash
