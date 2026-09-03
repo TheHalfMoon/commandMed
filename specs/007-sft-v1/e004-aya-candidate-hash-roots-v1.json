@@ -1,0 +1,22 @@
+{
+  "schema_version": "1",
+  "artifact_id": "e004-aya-candidate-hash-roots-v1",
+  "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+  "filter_id": "AYA_SP007_RO_001_CANDIDATE_FILTER_V1",
+  "source_repository": "CohereLabs/aya_dataset",
+  "source_revision": "f9ea04583f02a8f86404ff6c58bf75fe637df8a2",
+  "source_file": "data/train-00000-of-00001.parquet",
+  "source_file_sha256": "51baa85043b569ba117f41516b32d1b0e4e2647fb203a08933f98a556fb1fb06",
+  "candidate_count": 135,
+  "candidate_manifest_canonical_sha256": "dc341eef6589cf5c41cbf886f679d7d345f6fb47069e290377c2504c2f5adb99",
+  "candidate_manifest_file_sha256": "bbc7188613f242b428b4ac4cad0297c9dfb31403f6fab146a1a8491a106b2d6e",
+  "candidate_record_id_set_sha256": "d50c128704e66ff401db534d289b398b4b5e2ce5700f4b8ac0e6d26cbda9de83",
+  "candidate_content_sha256_set_sha256": "ed6d37362b9fef0180f48af2a60c5eada85d64c9bf7c1ed7f12f07f2dbe5ba64",
+  "candidate_records_persisted": false,
+  "raw_record_text_persisted": false,
+  "user_id_persisted": false,
+  "admission_state": "BLOCKED",
+  "rights_state": "UNRESOLVED",
+  "privacy_state": "UNRESOLVED",
+  "contamination_state": "NOT_ASSESSED"
+}
