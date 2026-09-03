@@ -1,11 +1,11 @@
 # E004 Aya 135 Deterministic Record Evidence Method V1 — 2026-09-03
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Authority:** `FD-008` / `REMOVE_MANDATORY_AYA_135_LOCAL_HUMAN_REVIEW_GATE`  
-**Method ID:** `AYA_135_LOCAL_DETERMINISTIC_RECORD_EVIDENCE_V1`  
-**Artifact class:** pre-result method freeze  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Authority:** `FD-008` / `REMOVE_MANDATORY_AYA_135_LOCAL_HUMAN_REVIEW_GATE`
+**Method ID:** `AYA_135_LOCAL_DETERMINISTIC_RECORD_EVIDENCE_V1`
+**Artifact class:** pre-result method freeze
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
