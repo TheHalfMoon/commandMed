@@ -1,0 +1,55 @@
+name: E004 Aya transport artifact cleanup V1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-aya-artifact-cleanup-v1.yml
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      ARTIFACT_ID: "9895384385"
+      EXPECTED_ARTIFACT_NAME: E004_AYA_EXACT_PAYLOAD_TRANSPORT_BRIDGE
+    steps:
+      - name: Delete exact transport artifact
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}"
+
+          metadata="$(curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "${api}")"
+
+          printf '%s' "${metadata}" | grep -Fq '"id":9895384385'
+          printf '%s' "${metadata}" | grep -Fq '"name":"E004_AYA_EXACT_PAYLOAD_TRANSPORT_BRIDGE"'
+
+          http_code="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            -X DELETE \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "${api}")"
+          test "${http_code}" = "204"
+
+          verify_code="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "${api}")"
+          test "${verify_code}" = "404"
+
+          echo "REMOTE_ARTIFACT_DELETION_RESULT=PASS"
+          echo "REMOTE_ARTIFACT_ID=${ARTIFACT_ID}"
