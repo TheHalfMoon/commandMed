@@ -108,3 +108,5 @@ jobs:
         run: |
           rm -f "${RUNNER_TEMP}/aya-train.parquet"
           echo "RUNNER_TRANSIENT_PAYLOAD_CLEANUP=COMPLETE"
+
+# Bounded replay trigger for FD-008 deterministic record-evidence execution.
