@@ -76,6 +76,7 @@ Authorized by the canonical Spec 007 implementation authorization record. Scope 
 - [x] **I029** Implement EfficiencyScorecard validator preserving raw values and disqualifying safety failure. Depends on I027-I028. — Safety FAIL => DISQUALIFIED; insufficient evidence cannot qualify.
 - [x] **I030** Implement FailureTaxonomyRecord validator. Depends on I003. — Closed failure/remediation vocabularies and reason-code validation.
 - [x] **I031** Enforce protected-final-evidence rule: protected failures cannot authorize training-data admission. Depends on I030,I008. — I5 GREEN run `33047827616` / job `98435898849`: 103 passed + 8 subtests.
+
 ## Phase I6 — Config / run activation composition
 
 - [x] **I032** Implement TrainingConfigurationRecord validator; unresolved values remain typed `NEEDS_EVIDENCE`. Depends on I010,I011-I026. — `src/commandmed/spec007/activation.py`; planning mode rejects invented numeric/strategy resolution.
