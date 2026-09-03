@@ -1,0 +1,65 @@
+name: E004 Aya 135 deterministic record evidence CI v1
+
+on:
+  pull_request:
+    paths:
+      - "scripts/e004_aya_135_deterministic_record_evidence_v1.py"
+      - "tests/spec007/test_e004_aya_135_deterministic_record_evidence.py"
+      - "specs/007-sft-v1/e004-aya-135-deterministic-record-evidence-method-v1-2026-09-03.md"
+      - ".github/workflows/e004-aya-135-deterministic-record-evidence-ci-v1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bind exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "HEAD_SHA=$(git rev-parse HEAD)"
+          echo "EVENT_HEAD_SHA=${{ github.event.pull_request.head.sha }}"
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+
+      - name: Compile deterministic implementation and focused tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            scripts/e004_aya_135_deterministic_record_evidence_v1.py \
+            tests/spec007/test_e004_aya_135_deterministic_record_evidence.py
+
+      - name: Run synthetic focused tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest \
+            tests.spec007.test_e004_aya_135_deterministic_record_evidence \
+            -v
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"
+
+      - name: Emit exact implementation SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum scripts/e004_aya_135_deterministic_record_evidence_v1.py
+
+      - name: Assert no raw Aya payload exists in repository checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e data/train-00000-of-00001.parquet
+          test ! -e aya-train.parquet
