@@ -3,7 +3,7 @@ name: E004 Aya exact payload transport bridge V1
 on:
   push:
     branches:
-      - e004-aya-bridge-run-1
+      - main
     paths:
       - .github/workflows/e004-aya-transport-bridge-v1.yml
 
