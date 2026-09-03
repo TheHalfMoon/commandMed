@@ -5,6 +5,7 @@ on:
     paths:
       - "scripts/e004_aya_135_spec003_fd008_admission_v1.py"
       - "specs/007-sft-v1/e004-aya-135-deterministic-admission-projection-v1.json"
+      - "specs/007-sft-v1/e004-registry-current-state-reconciliation-v22-2026-09-04.md"
       - ".github/workflows/e004-aya-135-spec003-fd008-admission-v1.yml"
 
 permissions:
@@ -68,9 +69,26 @@ jobs:
           summary = json.load(open(sys.argv[1], encoding="utf-8"))
           assert summary["candidate_count"] == 135
           assert summary["validation_error_count"] == 0
-          assert sum(summary["state_counts"].values()) == 135
+          assert summary["state_counts"] == {"BLOCKED": 92, "ELIGIBLE": 43}
+          assert summary["reason_counts"] == {"PRIVACY_UNRESOLVED": 17, "RIGHTS_UNRESOLVED": 92}
+          assert summary["output_sha256"] == "a6b21bd273b43f0912fbc8a0732d981fd7ebe8622a1c9a87cb1218286805818a"
           PY
           rm -f "${out}" "${RUNNER_TEMP}/admission-summary.json"
+
+      - name: Verify V22 result binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          v22="specs/007-sft-v1/e004-registry-current-state-reconciliation-v22-2026-09-04.md"
+          grep -Fxq 'SPEC003_POST_FD008_RESULTS_SHA256=a6b21bd273b43f0912fbc8a0732d981fd7ebe8622a1c9a87cb1218286805818a' "${v22}"
+          grep -Fxq 'SPEC003_CANDIDATE_COUNT=135' "${v22}"
+          grep -Fxq 'SPEC003_ELIGIBLE_COUNT=43' "${v22}"
+          grep -Fxq 'SPEC003_BLOCKED_COUNT=92' "${v22}"
+          grep -Fxq 'SPEC003_VALIDATION_ERROR_COUNT=0' "${v22}"
+          grep -Fxq 'FINAL_CURRICULUM_ADMISSION_AUTHORITY=NONE' "${v22}"
+          grep -Fxq 'DATASET_SNAPSHOT_AUTHORITY=NONE' "${v22}"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "${v22}"
+          grep -Fxq 'PROJECT_FINISHED=NO' "${v22}"
 
       - name: Assert no raw Aya payload exists in checkout
         shell: bash
