@@ -218,6 +218,25 @@ The constitutional amendment record is `docs/repository-review-gate-amendment-20
 
 This decision creates no model/weight access, conversion, inference, benchmark, contamination, A15, training, credential, protected-data, paid-compute, procurement/payment, or spend authority.
 
+### FD-008 — Aya 135 human-review evidence policy
+
+**State:** LOCKED
+**Founder decision:** `REMOVE_MANDATORY_AYA_135_LOCAL_HUMAN_REVIEW_GATE`
+**Decision date:** 2026-09-03
+**Needed before:** prospective Aya 135 record-level privacy/rights/scope qualification under Spec 007 / E004
+
+Intent:
+
+- remove mandatory human inspection as the evidence mechanism for the exact fixed Aya 135 qualification line only;
+- permit a predeclared deterministic, reproducible, local-only record-evidence method for privacy, embedded-source-risk, and `SP007-RO-001` scope;
+- preserve exact source/candidate identity binding, no `user_id` read, no network, no external AI/model/provider processing, no raw-text persistence, fail-closed ambiguity, and canonical Spec 003 evaluator ownership of `ELIGIBLE`;
+- do not convert any existing `UNRESOLVED` state into PASS merely because the human-review gate was removed;
+- preserve patient-facing, clinical, statistical, human-factor, and release human-evidence requirements outside this exact Aya 135 edge.
+
+The bounded amendment record is `docs/aya-135-human-review-gate-amendment-2026-09-03.md`.
+
+This decision creates no final curriculum admission, DatasetSnapshot, model conversion, A15 activation, training, credential, protected-data, paid-compute, procurement/payment, or spend authority.
+
 ## Spec 005 entry consequence
 
 The founder prerequisites needed to begin Spec 005 specification are satisfied by `FD-001`, `FD-002`, and `FD-006` above.
