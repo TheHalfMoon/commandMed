@@ -3,8 +3,22 @@ from __future__ import annotations
 import importlib.util
 import inspect
 import sys
+import types
 import unittest
 from pathlib import Path
+
+# The focused classifier tests are intentionally stdlib-only. Real local Aya
+# execution uses the separately pinned pyarrow tooling, but importing this script
+# for pure synthetic classifier tests must not widen the repository test bootstrap.
+try:
+    import pyarrow.parquet  # noqa: F401
+except ModuleNotFoundError:  # pragma: no cover - depends on local test environment
+    pyarrow_stub = types.ModuleType("pyarrow")
+    pyarrow_stub.__path__ = []  # type: ignore[attr-defined]
+    parquet_stub = types.ModuleType("pyarrow.parquet")
+    pyarrow_stub.parquet = parquet_stub  # type: ignore[attr-defined]
+    sys.modules["pyarrow"] = pyarrow_stub
+    sys.modules["pyarrow.parquet"] = parquet_stub
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts/e004_aya_135_deterministic_record_evidence_v1.py"
