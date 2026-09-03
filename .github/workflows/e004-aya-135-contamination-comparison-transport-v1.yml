@@ -1,0 +1,115 @@
+name: E004 Aya 135 contamination comparison transport V1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/e004-aya-135-contamination-comparison-transport-v1.yml
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  transport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ARTIFACT_NAME: E004_AYA_135_CONTAMINATION_COMPARISON_UNIVERSE_V1
+
+    steps:
+      - name: Verify bounded public runner
+        shell: bash
+        env:
+          RUNNER_ENVIRONMENT: ${{ runner.environment }}
+          REPOSITORY_VISIBILITY: ${{ github.event.repository.visibility }}
+        run: |
+          set -euo pipefail
+          test "${RUNNER_ENVIRONMENT}" = "github-hosted"
+          test "${REPOSITORY_VISIBILITY}" = "public"
+          echo "COMPARISON_TRANSPORT_RUNNER_PRECHECK=PASS"
+
+      - name: Materialize exact frozen comparison universe
+        id: materialize
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="${RUNNER_TEMP}/comparison-universe-v1"
+          mkdir -p "${root}"
+
+          fetch_hf() {
+            repo="$1"; rev="$2"; path="$3"; dest="$4"; expected_sha="$5"; expected_size="$6"
+            url="https://huggingface.co/datasets/${repo}/resolve/${rev}/${path}?download=true"
+            curl --fail --silent --show-error --location --retry 3 --retry-delay 2 --output "${root}/${dest}" "${url}"
+            actual_sha="$(sha256sum "${root}/${dest}" | awk '{print $1}')"
+            actual_size="$(stat -c '%s' "${root}/${dest}")"
+            if [ -n "${expected_sha}" ]; then test "${actual_sha}" = "${expected_sha}"; fi
+            if [ -n "${expected_size}" ]; then test "${actual_size}" = "${expected_size}"; fi
+          }
+
+          fetch_hf openai/healthbench 40ee1968852fc57f625934251ac22be47077a8fb 2025-05-07-06-14-12_oss_eval.jsonl healthbench_core.jsonl e99dd3c6372c10d6fcc5e385c5fae69d0dd40392dae56836ef9493ae324ecd2f 60258154
+          fetch_hf openai/healthbench 40ee1968852fc57f625934251ac22be47077a8fb consensus_2025-05-09-20-00-46.jsonl healthbench_consensus.jsonl fabe37553327238928b05357d8b309737b5d426d6dee432a3376da618d0969d6 36921504
+          fetch_hf openai/healthbench 40ee1968852fc57f625934251ac22be47077a8fb hard_2025-05-08-21-00-10.jsonl healthbench_hard.jsonl b0320430e5cd974e746585594c1dd10b5a3fc2aff9c72b26106c2c4a069d74e9 12581564
+          fetch_hf openai/healthbench-professional 349962fd46dd02343a0d8a606491baf59154ea1a healthbench_professional_eval.jsonl healthbench_professional.jsonl d44b08e6e952e04c945e2c406f02533d9e7a989a84e35820ee7efdff20c9e4e2 2755136
+          fetch_hf TsinghuaC3I/MedXpertQA 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 Text/dev.jsonl medxpertqa_text_dev.jsonl "" ""
+          fetch_hf TsinghuaC3I/MedXpertQA 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 Text/test.jsonl medxpertqa_text_test.jsonl "" ""
+          fetch_hf TsinghuaC3I/MedXpertQA 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 MM/dev.jsonl medxpertqa_mm_dev.jsonl "" ""
+          fetch_hf TsinghuaC3I/MedXpertQA 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 MM/test.jsonl medxpertqa_mm_test.jsonl "" ""
+
+          pubmed_url="https://raw.githubusercontent.com/pubmedqa/pubmedqa/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997/data/ori_pqal.json"
+          curl --fail --silent --show-error --location --retry 3 --retry-delay 2 --output "${root}/pubmedqa_pqal.json" "${pubmed_url}"
+          pubmed_size="$(stat -c '%s' "${root}/pubmedqa_pqal.json")"
+          pubmed_blob="$( (printf 'blob %s\0' "${pubmed_size}"; cat "${root}/pubmedqa_pqal.json") | sha1sum | awk '{print $1}')"
+          test "${pubmed_blob}" = "38db7750761c78950ed32303e7545bdaa513390c"
+
+          entries_file="${root}/transport-entries.ndjson"
+          : > "${entries_file}"
+          append_entry() {
+            cid="$1"; repo="$2"; rev="$3"; path="$4"; local_name="$5"
+            observed_sha="$(sha256sum "${root}/${local_name}" | awk '{print $1}')"
+            observed_size="$(stat -c '%s' "${root}/${local_name}")"
+            jq -nc \
+              --arg comparison_id "${cid}" \
+              --arg source_repository "${repo}" \
+              --arg source_revision "${rev}" \
+              --arg path "${path}" \
+              --arg local_filename "${local_name}" \
+              --arg observed_sha256 "${observed_sha}" \
+              --argjson observed_size_bytes "${observed_size}" \
+              '{comparison_id:$comparison_id,source_repository:$source_repository,source_revision:$source_revision,path:$path,local_filename:$local_filename,observed_sha256:$observed_sha256,observed_size_bytes:$observed_size_bytes}' \
+              >> "${entries_file}"
+          }
+
+          append_entry healthbench_core openai/healthbench 40ee1968852fc57f625934251ac22be47077a8fb 2025-05-07-06-14-12_oss_eval.jsonl healthbench_core.jsonl
+          append_entry healthbench_consensus openai/healthbench 40ee1968852fc57f625934251ac22be47077a8fb consensus_2025-05-09-20-00-46.jsonl healthbench_consensus.jsonl
+          append_entry healthbench_hard openai/healthbench 40ee1968852fc57f625934251ac22be47077a8fb hard_2025-05-08-21-00-10.jsonl healthbench_hard.jsonl
+          append_entry healthbench_professional openai/healthbench-professional 349962fd46dd02343a0d8a606491baf59154ea1a healthbench_professional_eval.jsonl healthbench_professional.jsonl
+          append_entry medxpertqa_text_dev TsinghuaC3I/MedXpertQA 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 Text/dev.jsonl medxpertqa_text_dev.jsonl
+          append_entry medxpertqa_text_test TsinghuaC3I/MedXpertQA 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 Text/test.jsonl medxpertqa_text_test.jsonl
+          append_entry medxpertqa_mm_dev TsinghuaC3I/MedXpertQA 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 MM/dev.jsonl medxpertqa_mm_dev.jsonl
+          append_entry medxpertqa_mm_test TsinghuaC3I/MedXpertQA 7e7c465a68eb2b866926bfa59c8c9d17a8daba65 MM/test.jsonl medxpertqa_mm_test.jsonl
+          append_entry pubmedqa_pqal pubmedqa/pubmedqa 1cbae8e92f72f20c8d3747cbb3bf5bc53554d997 data/ori_pqal.json pubmedqa_pqal.json
+
+          jq -s '{schema_version:"1",artifact_id:"e004-aya-135-contamination-comparison-transport-v1",entries:.}' "${entries_file}" > "${root}/transport-manifest.json"
+          rm -f "${entries_file}"
+
+          echo "package_path=${root}" >> "${GITHUB_OUTPUT}"
+          echo "COMPARISON_UNIVERSE_MATERIALIZATION=PASS"
+          echo "COMPARISON_ENTRY_COUNT=9"
+
+      - name: Publish exact frozen comparison universe
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: E004_AYA_135_CONTAMINATION_COMPARISON_UNIVERSE_V1
+          path: ${{ steps.materialize.outputs.package_path }}
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: Remove runner comparison payloads
+        if: always()
+        shell: bash
+        run: |
+          rm -rf "${RUNNER_TEMP}/comparison-universe-v1"
+          echo "RUNNER_TRANSIENT_COMPARISON_CLEANUP=COMPLETE"
