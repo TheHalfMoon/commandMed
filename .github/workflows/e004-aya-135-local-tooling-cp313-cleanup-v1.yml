@@ -1,11 +1,11 @@
-name: E004 Aya 135 CPython 3.11 tooling cleanup V1
+name: E004 Aya 135 CPython 3.13 tooling cleanup V1
 
 on:
   push:
     branches:
       - main
     paths:
-      - .github/workflows/e004-aya-135-local-tooling-cp311-cleanup-v1.yml
+      - .github/workflows/e004-aya-135-local-tooling-cp313-cleanup-v1.yml
 
 permissions:
   actions: write
@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      ARTIFACT_ID: "9899215310"
-      EXPECTED_ARTIFACT_NAME: E004_AYA_135_LOCAL_PARQUET_TOOLING_PYARROW_25_0_1_CP311
+      ARTIFACT_ID: "9899315558"
+      EXPECTED_ARTIFACT_NAME: E004_AYA_135_LOCAL_PARQUET_TOOLING_PYARROW_25_0_1_CP313
     steps:
-      - name: Delete exact incompatible tooling artifact
+      - name: Delete exact CPython 3.13 tooling artifact
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -53,5 +53,5 @@ jobs:
             "${api}")"
           test "${verify_code}" = "404"
 
-          echo "REMOTE_CP311_TOOLING_ARTIFACT_DELETION_RESULT=PASS"
-          echo "REMOTE_CP311_TOOLING_ARTIFACT_ID=${ARTIFACT_ID}"
+          echo "REMOTE_CP313_TOOLING_ARTIFACT_DELETION_RESULT=PASS"
+          echo "REMOTE_CP313_TOOLING_ARTIFACT_ID=${ARTIFACT_ID}"
