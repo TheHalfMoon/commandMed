@@ -1,10 +1,10 @@
 # E004 Registry Current-State Reconciliation V22 — 2026-09-04
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Artifact class:** append-only global current-state reconciliation  
-**Canonical base at branch creation:** `4f9a3b6c9d65b0ece41e2100ed3290178d3d2b84`  
-**Authority source:** `FD-008` / `REMOVE_MANDATORY_AYA_135_LOCAL_HUMAN_REVIEW_GATE`  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Artifact class:** append-only global current-state reconciliation
+**Canonical base at branch creation:** `4f9a3b6c9d65b0ece41e2100ed3290178d3d2b84`
+**Authority source:** `FD-008` / `REMOVE_MANDATORY_AYA_135_LOCAL_HUMAN_REVIEW_GATE`
 **Current authorized spend:** USD 0
 
 ## 1. Purpose and supersession
