@@ -1,0 +1,153 @@
+{
+  "artifact_id": "e004-aya-135-contamination-comparison-universe-v1",
+  "candidate_subject": {
+    "candidate_content_sha256_set_sha256": "ed6d37362b9fef0180f48af2a60c5eada85d64c9bf7c1ed7f12f07f2dbe5ba64",
+    "candidate_count": 135,
+    "candidate_manifest_canonical_sha256": "dc341eef6589cf5c41cbf886f679d7d345f6fb47069e290377c2504c2f5adb99",
+    "candidate_record_id_set_sha256": "d50c128704e66ff401db534d289b398b4b5e2ce5700f4b8ac0e6d26cbda9de83",
+    "filter_id": "AYA_SP007_RO_001_CANDIDATE_FILTER_V1"
+  },
+  "entries": [
+    {
+      "binding_state": "DIRECT_SHA256",
+      "comparison_id": "healthbench_core",
+      "expected_sha256": "e99dd3c6372c10d6fcc5e385c5fae69d0dd40392dae56836ef9493ae324ecd2f",
+      "expected_size_bytes": 60258154,
+      "local_filename": "healthbench_core.jsonl",
+      "path": "2025-05-07-06-14-12_oss_eval.jsonl",
+      "source_repository": "openai/healthbench",
+      "source_revision": "40ee1968852fc57f625934251ac22be47077a8fb",
+      "source_type": "HUGGINGFACE_DATASET",
+      "xet_hash": "7f7599c22eea04aedfe29390b4708705628f35a8f9679ad35b8dbc85ca5dc882"
+    },
+    {
+      "binding_state": "DIRECT_SHA256",
+      "comparison_id": "healthbench_consensus",
+      "expected_sha256": "fabe37553327238928b05357d8b309737b5d426d6dee432a3376da618d0969d6",
+      "expected_size_bytes": 36921504,
+      "local_filename": "healthbench_consensus.jsonl",
+      "path": "consensus_2025-05-09-20-00-46.jsonl",
+      "source_repository": "openai/healthbench",
+      "source_revision": "40ee1968852fc57f625934251ac22be47077a8fb",
+      "source_type": "HUGGINGFACE_DATASET",
+      "xet_hash": "b813e7835b7a60ce478cf0097c032833691d82c64e61142e67458df28ce127be"
+    },
+    {
+      "binding_state": "DIRECT_SHA256",
+      "comparison_id": "healthbench_hard",
+      "expected_sha256": "b0320430e5cd974e746585594c1dd10b5a3fc2aff9c72b26106c2c4a069d74e9",
+      "expected_size_bytes": 12581564,
+      "local_filename": "healthbench_hard.jsonl",
+      "path": "hard_2025-05-08-21-00-10.jsonl",
+      "source_repository": "openai/healthbench",
+      "source_revision": "40ee1968852fc57f625934251ac22be47077a8fb",
+      "source_type": "HUGGINGFACE_DATASET",
+      "xet_hash": "953b649e324655d3a0eafd67be6bc3d059bb4a0809cf0c0a58e61e9510936e90"
+    },
+    {
+      "binding_state": "DIRECT_SHA256",
+      "comparison_id": "healthbench_professional",
+      "expected_sha256": "d44b08e6e952e04c945e2c406f02533d9e7a989a84e35820ee7efdff20c9e4e2",
+      "expected_size_bytes": 2755136,
+      "local_filename": "healthbench_professional.jsonl",
+      "path": "healthbench_professional_eval.jsonl",
+      "source_repository": "openai/healthbench-professional",
+      "source_revision": "349962fd46dd02343a0d8a606491baf59154ea1a",
+      "source_type": "HUGGINGFACE_DATASET",
+      "xet_hash": "9fb2b004d29ba6b856fdb3234517e666a1b124e1319d39d7db2b456ffb9fe851"
+    },
+    {
+      "binding_state": "IMMUTABLE_REVISION_LOCATOR",
+      "comparison_id": "medxpertqa_text_dev",
+      "local_filename": "medxpertqa_text_dev.jsonl",
+      "path": "Text/dev.jsonl",
+      "source_repository": "TsinghuaC3I/MedXpertQA",
+      "source_revision": "7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+      "source_type": "HUGGINGFACE_DATASET"
+    },
+    {
+      "binding_state": "IMMUTABLE_REVISION_LOCATOR",
+      "comparison_id": "medxpertqa_text_test",
+      "local_filename": "medxpertqa_text_test.jsonl",
+      "path": "Text/test.jsonl",
+      "source_repository": "TsinghuaC3I/MedXpertQA",
+      "source_revision": "7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+      "source_type": "HUGGINGFACE_DATASET"
+    },
+    {
+      "binding_state": "IMMUTABLE_REVISION_LOCATOR",
+      "comparison_id": "medxpertqa_mm_dev",
+      "local_filename": "medxpertqa_mm_dev.jsonl",
+      "path": "MM/dev.jsonl",
+      "source_repository": "TsinghuaC3I/MedXpertQA",
+      "source_revision": "7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+      "source_type": "HUGGINGFACE_DATASET"
+    },
+    {
+      "binding_state": "IMMUTABLE_REVISION_LOCATOR",
+      "comparison_id": "medxpertqa_mm_test",
+      "local_filename": "medxpertqa_mm_test.jsonl",
+      "path": "MM/test.jsonl",
+      "source_repository": "TsinghuaC3I/MedXpertQA",
+      "source_revision": "7e7c465a68eb2b866926bfa59c8c9d17a8daba65",
+      "source_type": "HUGGINGFACE_DATASET"
+    },
+    {
+      "binding_state": "IMMUTABLE_REVISION_LOCATOR_AND_GIT_BLOB",
+      "comparison_id": "pubmedqa_pqal",
+      "expected_git_blob_sha1": "38db7750761c78950ed32303e7545bdaa513390c",
+      "local_filename": "pubmedqa_pqal.json",
+      "path": "data/ori_pqal.json",
+      "source_repository": "pubmedqa/pubmedqa",
+      "source_revision": "1cbae8e92f72f20c8d3747cbb3bf5bc53554d997",
+      "source_type": "GITHUB_REPOSITORY"
+    }
+  ],
+  "predeclared_exclusions": [
+    {
+      "asset": "TsinghuaC3I/MedXpertQA@7e7c465a68eb2b866926bfa59c8c9d17a8daba65:images.zip",
+      "reason": "NON_TEXT_BINARY_NOT_COMPARABLE_UNDER_FROZEN_TEXT_13_TOKEN_METHOD"
+    },
+    {
+      "asset": "openai/healthbench@40ee1968852fc57f625934251ac22be47077a8fb:2025-05-07-06-14-12_oss_meta_eval.jsonl",
+      "reason": "NOT_A_SEPARATELY_REGISTERED_CANONICAL_BENCHMARK_ASSET_IN_BOUND_REGISTRY"
+    },
+    {
+      "asset": "medqa_usmle",
+      "reason": "EXECUTABLE_PAYLOAD_UNBOUND_REFERENCE_ONLY"
+    },
+    {
+      "asset": "medmcqa",
+      "reason": "EXECUTABLE_PAYLOAD_UNBOUND_MIXED_REFERENCE_ONLY"
+    },
+    {
+      "asset": "medqabstain",
+      "reason": "SOURCE_AND_ARTIFACT_UNRESOLVED_REFERENCE_ONLY"
+    },
+    {
+      "asset": "medabstain",
+      "reason": "COMPONENT_SPECIFIC_MIXED_REFERENCE_ONLY"
+    },
+    {
+      "asset": "medhelm",
+      "reason": "COMPONENT_SPECIFIC_MIXED_REFERENCE_ONLY"
+    },
+    {
+      "asset": "PRIVATE_GOLD_AND_ANY_GATED_PRIVATE_ASSET",
+      "reason": "PROHIBITED_BY_CONTROLLING_DECISION"
+    }
+  ],
+  "registry_binding": {
+    "commit": "70f683927f2f5cec53b8fe0adf2815986845c441",
+    "git_blob_sha1": "db0ccd74e65493a0777572cd2da6fdaeae50ebc4",
+    "path": "data/eval/benchmarks.json",
+    "repository": "TheHalfMoon/commandMed"
+  },
+  "schema_version": "1",
+  "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+  "selection_rule": {
+    "exclude": "UNBOUND or UNRESOLVED executable payloads, REFERENCE_ONLY family records, MIXED/gated/private assets, Private Gold, and non-text binary payloads that cannot participate in the frozen text n-gram method.",
+    "include": "Canonical benchmark records that are PUBLIC, VERIFIED, identity-bound, text-bearing, and executable/development assets under the current registry. Include every text-bearing file listed by an included multi-file artifact.",
+    "post_result_universe_change": "PROHIBITED"
+  }
+}
