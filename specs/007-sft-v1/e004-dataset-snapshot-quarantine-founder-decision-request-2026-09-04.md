@@ -1,20 +1,20 @@
 # E004 DatasetSnapshot and Quarantine Founder Decision Request — 2026-09-04
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Current global frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v25-2026-09-04.md`  
-**Canonical base:** `b7b4c9aaae8e76bdcef2c3def0cd856038e25558`  
-**Artifact class:** Founder decision request only  
-**Decision owner:** Founder  
-**Decision state:** ABSENT  
-**Authority effect of this document:** NONE  
-**DatasetSnapshot created:** NO  
-**Quarantine PASS created:** NO  
-**Near-duplicate PASS created:** NO  
-**Model execution performed:** NO  
-**Training performed:** NO  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Current global frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v25-2026-09-04.md`
+**Canonical base:** `b7b4c9aaae8e76bdcef2c3def0cd856038e25558`
+**Artifact class:** Founder decision request only
+**Decision owner:** Founder
+**Decision state:** ABSENT
+**Authority effect of this document:** NONE
+**DatasetSnapshot created:** NO
+**Quarantine PASS created:** NO
+**Near-duplicate PASS created:** NO
+**Model execution performed:** NO
+**Training performed:** NO
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
