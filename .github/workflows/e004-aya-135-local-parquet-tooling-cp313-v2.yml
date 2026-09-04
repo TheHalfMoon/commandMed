@@ -1,6 +1,7 @@
 name: E004 Aya 135 local Parquet tooling CPython 3.13 V2
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
