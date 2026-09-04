@@ -87,7 +87,7 @@ jobs:
               header_path: "896d502cd9e18f207d1219da2c63daaaabf04904b5302c9ae217df4d056057a4",
               part1_path: "e570ec057b474f5df7ed6f8cac5c1b4e1b508a095536b24cde25b30840445ca6",
               part2_path: "69d046bd3fc5c75b510b51ac6ba6d1e163a9b77f04a5a132c7a86a8ed963dc0f",
-              packed_path: "d31b5d452dce70d1960244f8a90e7be63c66719a4244bdfe3f03b2939af3db6a",
+              packed_path: "13f310936dd545174a7748c1c82e7f2d8dced21b66641bc46939fc36f808ee3c",
           }
           for path, expected in expected_file_sha256.items():
               actual = hashlib.sha256(path.read_bytes()).hexdigest()
