@@ -9,7 +9,7 @@ on:
       - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-header.json"
       - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-part-01.json"
       - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-part-02.json"
-      - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-packed-parts-03-09.json.gz.b64"
+      - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-packed-chunk-*.b64"
       - "specs/007-sft-v1/e004-aya-43-curriculum-construction-evidence-v1-2026-09-04.md"
       - "specs/007-sft-v1/e004-registry-current-state-reconciliation-v23-2026-09-04.md"
       - ".github/workflows/e004-aya-43-curriculum-construction-v1.yml"
@@ -81,12 +81,21 @@ jobs:
           header_path = root / "e004-aya-43-curriculum-and-scope-persistence-v1-header.json"
           part1_path = root / "e004-aya-43-curriculum-and-scope-persistence-v1-part-01.json"
           part2_path = root / "e004-aya-43-curriculum-and-scope-persistence-v1-part-02.json"
-          packed_path = root / "e004-aya-43-curriculum-and-scope-persistence-v1-packed-parts-03-09.json.gz.b64"
+          chunk_paths = [
+              root / f"e004-aya-43-curriculum-and-scope-persistence-v1-packed-chunk-{index:02d}.b64"
+              for index in range(1, 7)
+          ]
 
           expected_file_sha256 = {
               header_path: "896d502cd9e18f207d1219da2c63daaaabf04904b5302c9ae217df4d056057a4",
               part1_path: "e570ec057b474f5df7ed6f8cac5c1b4e1b508a095536b24cde25b30840445ca6",
               part2_path: "69d046bd3fc5c75b510b51ac6ba6d1e163a9b77f04a5a132c7a86a8ed963dc0f",
+              chunk_paths[0]: "bee023ecd73f1919f5130ac69403e9a7e50c1f38ad02f41e45b3d7b28d027ce6",
+              chunk_paths[1]: "ae2ce7b57f9f81116c9527e7f791b23c7cf1626fc5030810c5db00625d41c424",
+              chunk_paths[2]: "f0cc2d5aaf93884b23a58aca8d8f5b1adbde9ca17ea5114e255bcf6136e3ecd9",
+              chunk_paths[3]: "0d9330d23a531477977fed7d204fce839658f97a7e8f47285121966e8020bc4f",
+              chunk_paths[4]: "fbf35af63183e8e5e5e9c2e6e7169e25ea6048599a591567278f26d6dad0ef64",
+              chunk_paths[5]: "3280d986af5fd567b9ca53e2c94c17ade53207b88a4e04544d89fb950fe3aa73",
           }
           for path, expected in expected_file_sha256.items():
               actual = hashlib.sha256(path.read_bytes()).hexdigest()
@@ -104,7 +113,9 @@ jobs:
           }:
               raise SystemExit("PERSISTENCE_HEADER_IDENTITY_MISMATCH")
 
-          packed_b64 = packed_path.read_bytes().strip()
+          packed_b64 = b"".join(path.read_bytes().strip() for path in chunk_paths)
+          if len(packed_b64) != 10188:
+              raise SystemExit(f"PACKED_BASE64_LENGTH_MISMATCH:{len(packed_b64)}")
           packed_gzip = base64.b64decode(packed_b64, validate=True)
           if hashlib.sha256(packed_gzip).hexdigest() != "928c69fecd957477ac931cd9464184e1f9455bd359f30258112158a6f8308139":
               raise SystemExit("PACKED_GZIP_SHA256_MISMATCH")
