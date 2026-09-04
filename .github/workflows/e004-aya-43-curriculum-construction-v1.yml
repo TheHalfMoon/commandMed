@@ -1,0 +1,81 @@
+name: E004 Aya 43 curriculum construction V1
+
+on:
+  pull_request:
+    paths:
+      - "scripts/e004_aya_43_curriculum_construction_v1.py"
+      - "tests/spec007/test_e004_aya_43_curriculum_construction.py"
+      - "specs/007-sft-v1/e004-aya-43-curriculum-construction-method-v1-2026-09-04.md"
+      - ".github/workflows/e004-aya-43-curriculum-construction-v1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Bind exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          echo "HEAD_SHA=$(git rev-parse HEAD)"
+
+      - name: Verify canonical Founder authority and method boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          decision="specs/007-sft-v1/e004-final-curriculum-admission-founder-decision-2026-09-04.md"
+          method="specs/007-sft-v1/e004-aya-43-curriculum-construction-method-v1-2026-09-04.md"
+          grep -Fxq 'FOUNDER_FINAL_CURRICULUM_ADMISSION_DECISION=E004_FINAL_CURRICULUM_ADMISSION_DECISION_B' "${decision}"
+          grep -Fxq 'FINAL_CURRICULUM_RECORD_COUNT=43' "${decision}"
+          grep -Fxq 'FINAL_CURRICULUM_RECORD_ID_SET_SHA256=417a1b6afbedf1aa72a31e9f06478526fe0f73f0d3bd3338b2d633b23eda8ee4' "${decision}"
+          grep -Fxq 'CURRICULUM_RECORD_CONSTRUCTION_AUTHORITY=AUTHORIZED_EXACT_AYA_43_HASH_BOUND_METADATA_ONLY' "${decision}"
+          grep -Fxq 'CONTENT_SCOPE_VERIFICATION_AUTHORITY=AUTHORIZED_EXACT_AYA_43_ONLY' "${decision}"
+          grep -Fxq 'DATASET_SNAPSHOT_AUTHORITY=NONE' "${decision}"
+          grep -Fq '**Method ID:** `AYA_43_HASH_BOUND_CURRICULUM_CONSTRUCTION_V1`' "${method}"
+          grep -Fq '**DatasetSnapshot authority:** NONE' "${method}"
+          grep -Fq '**Training authority:** NONE' "${method}"
+
+      - name: Compile implementation and focused test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            scripts/e004_aya_43_curriculum_construction_v1.py \
+            tests/spec007/test_e004_aya_43_curriculum_construction.py
+
+      - name: Run focused synthetic tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m unittest -v \
+            tests.spec007.test_e004_aya_43_curriculum_construction
+
+      - name: Verify implementation identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "IMPLEMENTATION_SHA256=$(sha256sum scripts/e004_aya_43_curriculum_construction_v1.py | awk '{print $1}')"
+          echo "METHOD_SHA256=$(sha256sum specs/007-sft-v1/e004-aya-43-curriculum-construction-method-v1-2026-09-04.md | awk '{print $1}')"
+
+      - name: Assert no raw Aya payload exists in checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e data/train-00000-of-00001.parquet
+          test ! -e aya-train.parquet
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"
