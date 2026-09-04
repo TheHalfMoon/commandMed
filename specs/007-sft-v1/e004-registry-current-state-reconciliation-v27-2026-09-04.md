@@ -1,13 +1,13 @@
 # E004 Registry Current-State Reconciliation V27 — 2026-09-04
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Reconciliation class:** append-only current-state overlay  
-**Supersedes as current view:** `e004-registry-current-state-reconciliation-v26-2026-09-04.md`  
-**Authority effect:** NONE  
-**Execution effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Reconciliation class:** append-only current-state overlay
+**Supersedes as current view:** `e004-registry-current-state-reconciliation-v26-2026-09-04.md`
+**Authority effect:** NONE
+**Execution effect:** NONE
+**Training authority:** NONE
 **Spend authority:** NONE
 
 ## 1. Canonicalization condition
