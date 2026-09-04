@@ -1,18 +1,18 @@
 # E004 Research-Component Sentinel Fixture Freeze Evidence V1 — 2026-09-04
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Evidence class:** repository-safe deterministic freeze qualification  
-**Founder decision:** `E004_SENTINEL_FIXTURE_FREEZE_DECISION_B`  
-**PR:** #240  
-**Qualified implementation head:** `6e044d35d81998c71c8cc2335ae4607c1fe4a99d`  
-**Workflow run:** `33869622710`  
-**Workflow job:** `101012255948`  
-**Model inference performed:** NO  
-**Guard PASS created:** NO  
-**DatasetSnapshot created:** NO  
-**Training performed:** NO  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Evidence class:** repository-safe deterministic freeze qualification
+**Founder decision:** `E004_SENTINEL_FIXTURE_FREEZE_DECISION_B`
+**PR:** #240
+**Qualified implementation head:** `6e044d35d81998c71c8cc2335ae4607c1fe4a99d`
+**Workflow run:** `33869622710`
+**Workflow job:** `101012255948`
+**Model inference performed:** NO
+**Guard PASS created:** NO
+**DatasetSnapshot created:** NO
+**Training performed:** NO
 **Authorized spend:** USD 0
 
 ## 1. Exact authority
