@@ -6,6 +6,12 @@ on:
       - "scripts/e004_aya_43_curriculum_construction_v1.py"
       - "tests/spec007/test_e004_aya_43_curriculum_construction.py"
       - "specs/007-sft-v1/e004-aya-43-curriculum-construction-method-v1-2026-09-04.md"
+      - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-header.json"
+      - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-part-01.json"
+      - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-part-02.json"
+      - "specs/007-sft-v1/e004-aya-43-curriculum-and-scope-persistence-v1-packed-chunk-*.b64"
+      - "specs/007-sft-v1/e004-aya-43-curriculum-construction-evidence-v1-2026-09-04.md"
+      - "specs/007-sft-v1/e004-registry-current-state-reconciliation-v23-2026-09-04.md"
       - ".github/workflows/e004-aya-43-curriculum-construction-v1.yml"
 
 permissions:
@@ -59,6 +65,135 @@ jobs:
           set -euo pipefail
           PYTHONPATH=. python3 -m unittest -v \
             tests.spec007.test_e004_aya_43_curriculum_construction
+
+      - name: Reconstruct and validate exact persisted Aya-43 bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64
+          import gzip
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path("specs/007-sft-v1")
+          header_path = root / "e004-aya-43-curriculum-and-scope-persistence-v1-header.json"
+          part1_path = root / "e004-aya-43-curriculum-and-scope-persistence-v1-part-01.json"
+          part2_path = root / "e004-aya-43-curriculum-and-scope-persistence-v1-part-02.json"
+          chunk_paths = [
+              root / f"e004-aya-43-curriculum-and-scope-persistence-v1-packed-chunk-{index:02d}.b64"
+              for index in range(1, 7)
+          ]
+
+          expected_file_sha256 = {
+              header_path: "896d502cd9e18f207d1219da2c63daaaabf04904b5302c9ae217df4d056057a4",
+              part1_path: "e570ec057b474f5df7ed6f8cac5c1b4e1b508a095536b24cde25b30840445ca6",
+              part2_path: "69d046bd3fc5c75b510b51ac6ba6d1e163a9b77f04a5a132c7a86a8ed963dc0f",
+              chunk_paths[0]: "bee023ecd73f1919f5130ac69403e9a7e50c1f38ad02f41e45b3d7b28d027ce6",
+              chunk_paths[1]: "ae2ce7b57f9f81116c9527e7f791b23c7cf1626fc5030810c5db00625d41c424",
+              chunk_paths[2]: "f0cc2d5aaf93884b23a58aca8d8f5b1adbde9ca17ea5114e255bcf6136e3ecd9",
+              chunk_paths[3]: "0d9330d23a531477977fed7d204fce839658f97a7e8f47285121966e8020bc4f",
+              chunk_paths[4]: "fbf35af63183e8e5e5e9c2e6e7169e25ea6048599a591567278f26d6dad0ef64",
+              chunk_paths[5]: "3280d986af5fd567b9ca53e2c94c17ade53207b88a4e04544d89fb950fe3aa73",
+          }
+          for path, expected in expected_file_sha256.items():
+              actual = hashlib.sha256(path.read_bytes()).hexdigest()
+              if actual != expected:
+                  raise SystemExit(f"PERSISTENCE_FILE_SHA256_MISMATCH:{path.name}:{actual}")
+
+          header = json.loads(header_path.read_text(encoding="utf-8"))
+          if header != {
+              **header,
+              "artifact_id": "e004-aya-43-curriculum-and-scope-persistence-v1",
+              "schema_version": "1",
+              "entry_count": 43,
+              "part_count": 9,
+              "expected_full_bundle_sha256": "f12f70a754e39d395c4d5999fcae1d6718640b1a97931fd9f48321469b87be03",
+          }:
+              raise SystemExit("PERSISTENCE_HEADER_IDENTITY_MISMATCH")
+
+          packed_b64 = b"".join(path.read_bytes().strip() for path in chunk_paths)
+          if len(packed_b64) != 10188:
+              raise SystemExit(f"PACKED_BASE64_LENGTH_MISMATCH:{len(packed_b64)}")
+          packed_gzip = base64.b64decode(packed_b64, validate=True)
+          if hashlib.sha256(packed_gzip).hexdigest() != "928c69fecd957477ac931cd9464184e1f9455bd359f30258112158a6f8308139":
+              raise SystemExit("PACKED_GZIP_SHA256_MISMATCH")
+          packed_raw = gzip.decompress(packed_gzip)
+          if hashlib.sha256(packed_raw).hexdigest() != "ac0001440b55dd5469fe57ccbc367b530fc175bbaf7aceb3c1c5d11786eff5f5":
+              raise SystemExit("PACKED_RAW_SHA256_MISMATCH")
+          packed = json.loads(packed_raw)
+          if packed.get("artifact_id") != "e004-aya-43-curriculum-and-scope-persistence-packed-parts-v1":
+              raise SystemExit("PACKED_ARTIFACT_ID_MISMATCH")
+          if packed.get("schema_version") != "1" or packed.get("first_part") != 3 or packed.get("last_part") != 9:
+              raise SystemExit("PACKED_RANGE_MISMATCH")
+
+          parts = [
+              json.loads(part1_path.read_text(encoding="utf-8")),
+              json.loads(part2_path.read_text(encoding="utf-8")),
+              *packed.get("parts", []),
+          ]
+          if len(parts) != 9:
+              raise SystemExit("PERSISTENCE_PART_COUNT_MISMATCH")
+
+          entries = []
+          for expected_part, part in enumerate(parts, start=1):
+              if part.get("artifact_id") != "e004-aya-43-curriculum-and-scope-persistence-part-v1":
+                  raise SystemExit(f"PART_ARTIFACT_ID_MISMATCH:{expected_part}")
+              if part.get("schema_version") != "1" or part.get("part") != expected_part or part.get("part_count") != 9:
+                  raise SystemExit(f"PART_IDENTITY_MISMATCH:{expected_part}")
+              part_entries = part.get("entries")
+              if not isinstance(part_entries, list) or not part_entries:
+                  raise SystemExit(f"PART_ENTRIES_INVALID:{expected_part}")
+              entries.extend(part_entries)
+
+          if len(entries) != 43:
+              raise SystemExit("PERSISTED_ENTRY_COUNT_MISMATCH")
+
+          bundle = dict(header["bundle_fields"])
+          bundle["entries"] = entries
+          if bundle.get("eligible_record_count") != 43:
+              raise SystemExit("BUNDLE_ELIGIBLE_COUNT_MISMATCH")
+          if bundle.get("eligible_record_id_set_sha256") != "417a1b6afbedf1aa72a31e9f06478526fe0f73f0d3bd3338b2d633b23eda8ee4":
+              raise SystemExit("BUNDLE_ELIGIBLE_SET_MISMATCH")
+          if bundle.get("raw_aya_text_persisted") is not False or bundle.get("user_id_read") is not False:
+              raise SystemExit("BUNDLE_PRIVACY_BOUNDARY_MISMATCH")
+          if bundle.get("remote_model_or_ai_record_processing") is not False:
+              raise SystemExit("BUNDLE_EXTERNAL_PROCESSING_BOUNDARY_MISMATCH")
+
+          prohibited_keys = {"inputs", "targets", "prompt", "prompt_text", "user_id"}
+          def assert_safe(value):
+              if isinstance(value, dict):
+                  for key, child in value.items():
+                      if key in prohibited_keys:
+                          raise SystemExit(f"PROHIBITED_PERSISTED_KEY:{key}")
+                      assert_safe(child)
+              elif isinstance(value, list):
+                  for child in value:
+                      assert_safe(child)
+          assert_safe(bundle)
+
+          bundle_bytes = json.dumps(
+              bundle,
+              ensure_ascii=False,
+              sort_keys=True,
+              separators=(",", ":"),
+          ).encode("utf-8") + b"\n"
+          actual_bundle_sha256 = hashlib.sha256(bundle_bytes).hexdigest()
+          expected_bundle_sha256 = header["expected_full_bundle_sha256"]
+          if actual_bundle_sha256 != expected_bundle_sha256:
+              raise SystemExit(f"FULL_BUNDLE_SHA256_MISMATCH:{actual_bundle_sha256}")
+
+          out = Path("/tmp/e004-aya-43-curriculum-and-scope-bundle-v1.json")
+          out.write_bytes(bundle_bytes)
+          print(f"RECONSTRUCTED_ENTRY_COUNT={len(entries)}")
+          print(f"RECONSTRUCTED_BUNDLE_SHA256={actual_bundle_sha256}")
+          print("PERSISTED_RAW_AYA_TEXT=ABSENT")
+          print("PERSISTED_USER_ID=ABSENT")
+          PY
+
+          PYTHONPATH=. python3 scripts/e004_aya_43_curriculum_construction_v1.py validate \
+            --bundle /tmp/e004-aya-43-curriculum-and-scope-bundle-v1.json
 
       - name: Verify implementation identity
         shell: bash
