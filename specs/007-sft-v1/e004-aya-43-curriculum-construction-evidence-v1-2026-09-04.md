@@ -1,12 +1,12 @@
 # E004 Aya-43 Curriculum Construction Evidence V1 — 2026-09-04
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Artifact class:** post-merge deterministic evidence reconciliation  
-**Authority effect:** NONE  
-**Execution effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Artifact class:** post-merge deterministic evidence reconciliation
+**Authority effect:** NONE
+**Execution effect:** NONE
+**Training authority:** NONE
 **Spend authority:** NONE
 
 ## 1. Authority and exact subject
