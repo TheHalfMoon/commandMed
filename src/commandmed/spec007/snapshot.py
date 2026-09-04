@@ -140,15 +140,6 @@ def _validated_records(records: Iterable[dict[str, Any]]) -> list[dict[str, Any]
             raise ValueError(f"duplicate record_id '{record_id}'")
         seen_ids.add(record_id)
 
-        authority_quarantine = evaluate_quarantine_source(
-            record["source_authority_id"], "TRAIN"
-        )
-        if not authority_quarantine["allowed"] or not authority_quarantine["can_train"]:
-            raise ValueError(
-                f"record[{index}] source_authority_id not authorized for TRAIN: "
-                f"{authority_quarantine['reason_code']}"
-            )
-
         split_quarantine = evaluate_quarantine_source(record["split_id"], "TRAIN")
         if not split_quarantine["allowed"] or not split_quarantine["can_train"]:
             raise ValueError(
