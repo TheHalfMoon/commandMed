@@ -1,16 +1,16 @@
 # E004 Aya-43 Curriculum Construction Method V1 — 2026-09-04
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Authority:** `E004_FINAL_CURRICULUM_ADMISSION_DECISION_B`  
-**Canonical authority merge:** `79ced30d21da6be4e087c683e5655166082015e4`  
-**Method ID:** `AYA_43_HASH_BOUND_CURRICULUM_CONSTRUCTION_V1`  
-**Artifact class:** pre-result deterministic construction method  
-**Raw Aya repository persistence:** PROHIBITED  
-**Remote model/AI record processing:** PROHIBITED  
-**DatasetSnapshot authority:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Authority:** `E004_FINAL_CURRICULUM_ADMISSION_DECISION_B`
+**Canonical authority merge:** `79ced30d21da6be4e087c683e5655166082015e4`
+**Method ID:** `AYA_43_HASH_BOUND_CURRICULUM_CONSTRUCTION_V1`
+**Artifact class:** pre-result deterministic construction method
+**Raw Aya repository persistence:** PROHIBITED
+**Remote model/AI record processing:** PROHIBITED
+**DatasetSnapshot authority:** NONE
+**Training authority:** NONE
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
