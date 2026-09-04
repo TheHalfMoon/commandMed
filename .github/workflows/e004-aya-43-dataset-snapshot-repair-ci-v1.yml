@@ -1,0 +1,70 @@
+name: E004 Aya-43 DatasetSnapshot repair V1
+
+on:
+  pull_request:
+    paths:
+      - 'src/commandmed/spec007/snapshot.py'
+      - 'tests/spec007/test_quarantine_snapshot.py'
+      - '.github/workflows/e004-aya-43-dataset-snapshot-repair-ci-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Bind exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          echo "HEAD_SHA=$(git rev-parse HEAD)"
+
+      - name: Verify Founder authority boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          decision='specs/007-sft-v1/e004-dataset-snapshot-quarantine-founder-decision-2026-09-04.md'
+          grep -Fxq 'FOUNDER_DATASET_SNAPSHOT_QUARANTINE_DECISION=E004_DATASET_SNAPSHOT_QUARANTINE_DECISION_B' "$decision"
+          grep -Fxq 'SNAPSHOT_BUILDER_REPAIR_AUTHORITY=AUTHORIZED_NARROW_PROVENANCE_VS_QUARANTINE_SEMANTICS_REPAIR_ONLY' "$decision"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$decision"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$decision"
+
+      - name: Compile focused surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            src/commandmed/spec007/snapshot.py \
+            tests/spec007/test_quarantine_snapshot.py
+
+      - name: Run focused snapshot and quarantine tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m unittest -v tests.spec007.test_quarantine_snapshot
+
+      - name: Assert narrow repair semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -Fq 'evaluate_quarantine_source(record["source_authority_id"], "TRAIN")' src/commandmed/spec007/snapshot.py; then
+            echo 'source_authority_id is still treated as a quarantine source' >&2
+            exit 1
+          fi
+          grep -Fq 'evaluate_quarantine_source(record["split_id"], "TRAIN")' src/commandmed/spec007/snapshot.py
+          grep -Fq 'E004_FINAL_CURRICULUM_ADMISSION_DECISION_B' tests/spec007/test_quarantine_snapshot.py
+          grep -Fq 'MODEL_SELECTION_DEV_SET' tests/spec007/test_quarantine_snapshot.py
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"

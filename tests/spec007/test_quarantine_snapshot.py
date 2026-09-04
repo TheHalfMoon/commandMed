@@ -18,16 +18,22 @@ from src.commandmed.spec007.snapshot import (
 )
 
 
-def rendered_record(record_id: str, role: str = "PATIENT_CAREGIVER") -> dict:
+def rendered_record(
+    record_id: str,
+    role: str = "PATIENT_CAREGIVER",
+    *,
+    source_authority_id: str = "VERIFIED_SFT_CURRICULUM_DATA",
+    split_id: str = "VERIFIED_SFT_CURRICULUM_DATA",
+) -> dict:
     record = {
         "schema_version": "1",
         "record_id": record_id,
         "record_canonical_sha256": "0" * 64,
         "content_sha256": "1" * 64,
-        "source_authority_id": "VERIFIED_SFT_CURRICULUM_DATA",
+        "source_authority_id": source_authority_id,
         "source_license_id": "synthetic-license",
         "source_verification_status": "VERIFIED",
-        "split_id": "VERIFIED_SFT_CURRICULUM_DATA",
+        "split_id": split_id,
         "contamination_status": "ASSESSED_CLEAN",
         "review_state": "PASS",
         "role_class": role,
@@ -122,6 +128,42 @@ class TestDatasetSnapshotAndCoverage(unittest.TestCase):
         self.assertEqual(2, snapshot["record_count"])
         self.assertEqual(40, snapshot["rendered_token_count"])
         self.assertEqual(20, snapshot["supervised_token_count"])
+
+    def test_snapshot_treats_source_authority_as_provenance_not_quarantine_source(self):
+        record = rendered_record(
+            "r-founder-authority",
+            source_authority_id="E004_FINAL_CURRICULUM_ADMISSION_DECISION_B",
+            split_id="VERIFIED_SFT_CURRICULUM_DATA",
+        )
+        snapshot = build_dataset_snapshot(
+            [record],
+            snapshot_id="snapshot-founder-authority",
+            canonical_order_identity="record-id-ascending-v1",
+            duplicate_report_id="dup-founder-authority",
+            contamination_report_id="contam-founder-authority",
+            quarantine_verification_id="quarantine-founder-authority",
+        )
+        self.assertEqual([], validate_dataset_snapshot(snapshot))
+        self.assertEqual(
+            {"E004_FINAL_CURRICULUM_ADMISSION_DECISION_B": 1},
+            snapshot["source_summary"],
+        )
+
+    def test_snapshot_still_rejects_prohibited_train_split(self):
+        record = rendered_record(
+            "r-prohibited-split",
+            source_authority_id="E004_FINAL_CURRICULUM_ADMISSION_DECISION_B",
+            split_id="MODEL_SELECTION_DEV_SET",
+        )
+        with self.assertRaisesRegex(ValueError, "split_id not authorized for TRAIN"):
+            build_dataset_snapshot(
+                [record],
+                snapshot_id="snapshot-prohibited-split",
+                canonical_order_identity="record-id-ascending-v1",
+                duplicate_report_id="dup-prohibited-split",
+                contamination_report_id="contam-prohibited-split",
+                quarantine_verification_id="quarantine-prohibited-split",
+            )
 
     def test_record_count_and_token_accounting_fail_closed(self):
         snapshot = build_dataset_snapshot(
