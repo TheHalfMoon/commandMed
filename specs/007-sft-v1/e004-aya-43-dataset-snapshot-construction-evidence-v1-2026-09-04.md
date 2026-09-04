@@ -1,12 +1,12 @@
 # E004 Aya-43 DatasetSnapshot Construction Evidence V1 — 2026-09-04
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Authority source:** `e004-dataset-snapshot-quarantine-founder-decision-2026-09-04.md`  
-**Authority effect:** NONE beyond the already-canonical Founder Decision B  
-**Model inference performed:** NO  
-**Training performed:** NO  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Authority source:** `e004-dataset-snapshot-quarantine-founder-decision-2026-09-04.md`
+**Authority effect:** NONE beyond the already-canonical Founder Decision B
+**Model inference performed:** NO
+**Training performed:** NO
 **Current authorized spend:** USD 0
 
 ## 1. Exact authorized subject
