@@ -4,7 +4,8 @@
 **Task:** E004
 **Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
 **Successor policy:** `SP007-RO-001`
-**Current global frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v25-2026-09-04.md`
+**Input global frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v25-2026-09-04.md`
+**Post-request current-view reconciliation:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v26-2026-09-04.md`
 **Canonical base:** `b7b4c9aaae8e76bdcef2c3def0cd856038e25558`
 **Artifact class:** Founder decision request only
 **Decision owner:** Founder
@@ -195,7 +196,7 @@ QUARANTINE_VERIFICATION_CONSTRUCTION_AUTHORITY=NONE
 SNAPSHOT_BUILDER_REPAIR_AUTHORITY=NONE
 ```
 
-Effect: V25 remains the active frontier and no DatasetSnapshot dependency is constructed.
+Effect: V26 remains the active frontier and no DatasetSnapshot dependency is constructed.
 
 ### `E004_DATASET_SNAPSHOT_QUARANTINE_DECISION_B` — authorize the exact bounded supporting-evidence and snapshot path
 
