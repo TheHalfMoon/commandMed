@@ -1,0 +1,90 @@
+name: E004 research component sentinel fixture freeze V1
+
+on:
+  pull_request:
+    paths:
+      - "specs/007-sft-v1/e004-research-component-sentinel-fixture-set-v1.json"
+      - "specs/007-sft-v1/e004-research-component-sentinel-fixture-freeze-founder-decision-2026-09-04.md"
+      - "specs/007-sft-v1/e004-research-component-sentinel-fixture-freeze-evidence-v1-2026-09-04.md"
+      - "specs/007-sft-v1/e004-registry-current-state-reconciliation-v25-2026-09-04.md"
+      - "specs/007-sft-v1/tasks.md"
+      - "scripts/e004_research_component_sentinel_fixture_freeze_v1.py"
+      - "tests/spec007/test_e004_research_component_sentinel_fixture_freeze.py"
+      - "src/commandmed/spec007/research_scope.py"
+      - "src/commandmed/eval_contract/canonical.py"
+      - ".github/workflows/e004-research-component-sentinel-fixture-freeze-v1.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Bind exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          echo "HEAD_SHA=$(git rev-parse HEAD)"
+
+      - name: Verify exact Founder authority boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          decision="specs/007-sft-v1/e004-research-component-sentinel-fixture-freeze-founder-decision-2026-09-04.md"
+          grep -Fxq 'FOUNDER_SENTINEL_FIXTURE_FREEZE_DECISION=E004_SENTINEL_FIXTURE_FREEZE_DECISION_B' "${decision}"
+          grep -Fxq 'SENTINEL_FIXTURE_CONSTRUCTION_AUTHORITY=AUTHORIZED_EXACT_PREDECLARED_SP007_RO_001_SENTINEL_7_ONLY' "${decision}"
+          grep -Fxq 'SENTINEL_FIXTURE_FREEZE_AUTHORITY=AUTHORIZED_EXACT_PREDECLARED_SP007_RO_001_SENTINEL_7_ONLY' "${decision}"
+          grep -Fxq 'SENTINEL_FIXTURE_RECORD_COUNT=7' "${decision}"
+          grep -Fxq 'SENTINEL_FIXTURE_SET_SHA256=5a2bd28b391010c9575c99654899cd442fea8d94cbb4176045b654c940fa2fd3' "${decision}"
+          grep -Fxq 'SENTINEL_FIXTURE_SHA256_SET_SHA256=b65b36689cf2006bad8b446536d50ccd3f3440a4b244c044a1b26409aea0fef2' "${decision}"
+          grep -Fxq 'SENTINEL_EXECUTION_AUTHORITY_EXPANSION=NONE' "${decision}"
+          grep -Fxq 'DATASET_SNAPSHOT_AUTHORITY=NONE' "${decision}"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "${decision}"
+
+      - name: Compile verifier and focused tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            scripts/e004_research_component_sentinel_fixture_freeze_v1.py \
+            tests/spec007/test_e004_research_component_sentinel_fixture_freeze.py
+
+      - name: Run focused fail-closed tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m unittest -v \
+            tests.spec007.test_e004_research_component_sentinel_fixture_freeze
+
+      - name: Validate exact frozen sentinel set
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 scripts/e004_research_component_sentinel_fixture_freeze_v1.py \
+            --fixture-set specs/007-sft-v1/e004-research-component-sentinel-fixture-set-v1.json \
+            --decision specs/007-sft-v1/e004-research-component-sentinel-fixture-freeze-founder-decision-2026-09-04.md
+
+      - name: Assert non-execution boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'never loads model weights' scripts/e004_research_component_sentinel_fixture_freeze_v1.py
+          grep -Fq 'SENTINEL_MODEL_INFERENCE_PERFORMED=NO' scripts/e004_research_component_sentinel_fixture_freeze_v1.py
+          grep -Fq 'SENTINEL_GUARD_PASS_CREATED=NO' scripts/e004_research_component_sentinel_fixture_freeze_v1.py
+          grep -Fq 'DATASET_SNAPSHOT_AUTHORITY=NONE' scripts/e004_research_component_sentinel_fixture_freeze_v1.py
+          grep -Fq 'TRAINING_AUTHORITY=NONE' scripts/e004_research_component_sentinel_fixture_freeze_v1.py
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"
