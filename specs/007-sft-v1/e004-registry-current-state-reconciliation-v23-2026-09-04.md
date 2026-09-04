@@ -1,14 +1,14 @@
 # E004 Registry Current-State Reconciliation V23 — 2026-09-04
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Reconciliation class:** append-only current-state overlay  
-**Supersedes as current view:** `e004-registry-current-state-reconciliation-v22-2026-09-04.md`  
-**Canonical base:** `2d4b51c8e076284902e178b0fb1fb46ba4e93d37`  
-**Authority effect:** NONE  
-**Execution effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Reconciliation class:** append-only current-state overlay
+**Supersedes as current view:** `e004-registry-current-state-reconciliation-v22-2026-09-04.md`
+**Canonical base:** `2d4b51c8e076284902e178b0fb1fb46ba4e93d37`
+**Authority effect:** NONE
+**Execution effect:** NONE
+**Training authority:** NONE
 **Spend authority:** NONE
 
 ## 1. Purpose
