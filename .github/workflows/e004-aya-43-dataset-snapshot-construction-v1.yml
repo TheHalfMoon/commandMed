@@ -1,0 +1,107 @@
+name: E004 Aya-43 DatasetSnapshot construction V1
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/e004_aya_43_dataset_snapshot_v1.py'
+      - 'tests/spec007/test_e004_aya_43_dataset_snapshot_v1.py'
+      - 'specs/007-sft-v1/e004-aya-43-near-duplicate-assessment-evidence-v1.json'
+      - 'specs/007-sft-v1/e004-aya-43-dataset-snapshot-and-supporting-evidence-v1.json'
+      - 'specs/007-sft-v1/e004-aya-43-dataset-snapshot-construction-evidence-v1-2026-09-04.md'
+      - 'specs/007-sft-v1/e004-registry-current-state-reconciliation-v27-2026-09-04.md'
+      - 'specs/007-sft-v1/tasks.md'
+      - '.github/workflows/e004-aya-43-dataset-snapshot-construction-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Bind exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          echo "HEAD_SHA=$(git rev-parse HEAD)"
+
+      - name: Verify exact Founder authority boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          decision='specs/007-sft-v1/e004-dataset-snapshot-quarantine-founder-decision-2026-09-04.md'
+          grep -Fxq 'FOUNDER_DATASET_SNAPSHOT_QUARANTINE_DECISION=E004_DATASET_SNAPSHOT_QUARANTINE_DECISION_B' "$decision"
+          grep -Fxq 'DATASET_SNAPSHOT_AUTHORITY=AUTHORIZED_CONDITIONAL_EXACT_AYA_43_RESEARCH_COMPONENT_ONLY' "$decision"
+          grep -Fxq 'DUPLICATE_NEAR_DUPLICATE_ASSESSMENT_AUTHORITY=AUTHORIZED_EXACT_AYA_43_PREDECLARED_METHOD_ONLY' "$decision"
+          grep -Fxq 'QUARANTINE_VERIFICATION_CONSTRUCTION_AUTHORITY=AUTHORIZED_EXACT_VERIFIED_SFT_CURRICULUM_DATA_TRAIN_BINDING_ONLY' "$decision"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$decision"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$decision"
+
+      - name: Compile implementation and focused tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            scripts/e004_aya_43_dataset_snapshot_v1.py \
+            tests/spec007/test_e004_aya_43_dataset_snapshot_v1.py
+
+      - name: Run focused fail-closed tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m unittest -v \
+            tests.spec007.test_e004_aya_43_dataset_snapshot_v1
+
+      - name: Construct exact safe DatasetSnapshot bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 scripts/e004_aya_43_dataset_snapshot_v1.py construct \
+            --out /tmp/e004-aya-43-dataset-snapshot-and-supporting-evidence-v1.json
+
+      - name: Validate committed safe DatasetSnapshot bundle when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          committed='specs/007-sft-v1/e004-aya-43-dataset-snapshot-and-supporting-evidence-v1.json'
+          if test -f "$committed"; then
+            PYTHONPATH=. python3 scripts/e004_aya_43_dataset_snapshot_v1.py validate \
+              --bundle "$committed"
+          else
+            echo 'COMMITTED_SAFE_BUNDLE_PRESENT=NO_PRE_PERSISTENCE_HEAD'
+          fi
+
+      - name: Assert non-execution and privacy boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e data/train-00000-of-00001.parquet
+          test ! -e aya-train.parquet
+          ! grep -R -F --include='e004-aya-43-dataset-snapshot-*' '"inputs"' specs/007-sft-v1
+          ! grep -R -F --include='e004-aya-43-dataset-snapshot-*' '"targets"' specs/007-sft-v1
+          ! grep -R -F --include='e004-aya-43-dataset-snapshot-*' '"user_id"' specs/007-sft-v1
+          grep -Fq 'MODEL_INFERENCE_USED=NO' <(PYTHONPATH=. python3 scripts/e004_aya_43_dataset_snapshot_v1.py construct --out /tmp/e004-repeat.json)
+          grep -Fq 'TRAINING_PERFORMED=NO' <(PYTHONPATH=. python3 scripts/e004_aya_43_dataset_snapshot_v1.py construct --out /tmp/e004-repeat-2.json)
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"
+
+      - name: Publish repository-safe generated bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: E004_AYA_43_DATASET_SNAPSHOT_SAFE_BUNDLE_V1
+          path: /tmp/e004-aya-43-dataset-snapshot-and-supporting-evidence-v1.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
