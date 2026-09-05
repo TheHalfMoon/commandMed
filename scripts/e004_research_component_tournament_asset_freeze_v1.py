@@ -11,16 +11,18 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from src.commandmed.spec007.research_tournament import (
+    compute_research_component_tournament_protocol_sha256,
+)
+from src.commandmed.spec007.research_tournament_asset_evidence import (
+    validate_frozen_research_component_evaluation_package,
+)
 from src.commandmed.spec007.research_tournament_assets import (
     compute_contamination_method_sha256,
     compute_research_component_evaluation_asset_set_sha256,
     compute_research_component_evaluation_asset_sha256,
     compute_rights_instrument_sha256,
     evaluate_research_component_asset_admission,
-    validate_frozen_research_component_tournament_subject,
-)
-from src.commandmed.spec007.research_tournament import (
-    compute_research_component_tournament_protocol_sha256,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,6 +34,12 @@ def load_json(path: Path):
 
 
 def main() -> int:
+    provenance = load_json(
+        SPEC / "e004-research-component-evaluation-asset-provenance-instrument-v1.json"
+    )
+    source_verification = load_json(
+        SPEC / "e004-research-component-evaluation-asset-source-verification-v1.json"
+    )
     rights = load_json(
         SPEC / "e004-research-component-evaluation-asset-rights-instrument-v1.json"
     )
@@ -52,7 +60,9 @@ def main() -> int:
         for asset in assets
         if isinstance(asset, dict)
     ]
-    errors = validate_frozen_research_component_tournament_subject(
+    errors = validate_frozen_research_component_evaluation_package(
+        provenance_instrument=provenance,
+        source_verification_instrument=source_verification,
         rights_instrument=rights,
         contamination_method=contamination,
         asset_set=asset_set,
@@ -73,6 +83,11 @@ def main() -> int:
         and asset.get("asset_kind") == "RESOURCE_MEASUREMENT_PROTOCOL"
     )
 
+    print(f"PROVENANCE_INSTRUMENT_SHA256={provenance.get('instrument_sha256')}")
+    print(
+        "SOURCE_VERIFICATION_INSTRUMENT_SHA256="
+        f"{source_verification.get('instrument_sha256')}"
+    )
     print(f"RIGHTS_INSTRUMENT_SHA256={rights.get('instrument_sha256')}")
     print(f"RIGHTS_INSTRUMENT_COMPUTED_SHA256={compute_rights_instrument_sha256(rights)}")
     print(f"CONTAMINATION_METHOD_SHA256={contamination.get('method_sha256')}")
