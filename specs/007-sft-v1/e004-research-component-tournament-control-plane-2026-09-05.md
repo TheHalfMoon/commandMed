@@ -1,13 +1,13 @@
 # E004 Research-Component Tournament Control Plane — 2026-09-05
 
-**Spec:** 007 SFT V1  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Artifact class:** deterministic non-executing tournament control plane  
-**Authority effect:** NONE  
-**Execution effect:** NONE  
-**Winner-selection effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Artifact class:** deterministic non-executing tournament control plane
+**Authority effect:** NONE
+**Execution effect:** NONE
+**Winner-selection effect:** NONE
+**Training authority:** NONE
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
@@ -234,6 +234,6 @@ PROJECT_FINISHED=NO
 
 ## 11. Qualification
 
-Before merge, require exact-head repository verification appropriate to the changed code surface, including applicable CI/status checks, unresolved review-thread reconciliation, mergeability, ruleset/branch state, and an expected-head guarded merge.
+Before merge, require exact-head repository verification appropriate to the changed code surface, including applicable CI/status checks, unresolved review-thread reconciliation, mergeability, branch/ruleset state, and an expected-head guarded merge.
 
 Under FD-007, external independent repository review is optional by default unless a later exact task reintroduces it. Bot silence or service unavailability is never represented as a substantive review PASS.
