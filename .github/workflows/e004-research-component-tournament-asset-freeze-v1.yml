@@ -6,12 +6,16 @@ on:
       - 'src/commandmed/spec007/research_tournament.py'
       - 'src/commandmed/spec007/research_tournament_assets.py'
       - 'src/commandmed/spec007/research_tournament_asset_evidence.py'
+      - 'src/commandmed/spec007/research_tournament_qualification.py'
       - 'tests/spec007/test_research_tournament_assets.py'
       - 'tests/spec007/test_research_tournament_asset_evidence.py'
+      - 'tests/spec007/test_research_tournament_qualification.py'
       - 'scripts/e004_research_component_tournament_asset_freeze_v1.py'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-qualification-founder-decision-2026-09-05.md'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-rights-instrument-v1.json'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-provenance-instrument-v1.json'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-source-verification-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-asset-privacy-classification-v1.json'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-contamination-method-v1.json'
       - 'specs/007-sft-v1/e004-research-component-tournament-evaluation-assets-v1.json'
       - 'specs/007-sft-v1/e004-research-component-tournament-protocol-v1.json'
@@ -36,24 +40,32 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
-          decision='specs/007-sft-v1/e004-successor-scope-execution-authorization-founder-decision-2026-09-02.md'
+          successor='specs/007-sft-v1/e004-successor-scope-execution-authorization-founder-decision-2026-09-02.md'
+          qualification='specs/007-sft-v1/e004-research-component-evaluation-qualification-founder-decision-2026-09-05.md'
           candidate_freeze='specs/007-sft-v1/e001-candidate-manifest-freeze-2026-08-27.md'
-          grep -Fxq 'FOUNDER_SUCCESSOR_EXECUTION_DECISION=E004_SUCCESSOR_EXECUTION_DECISION_B' "$decision"
-          grep -Fxq 'SUCCESSOR_SCOPE_EXECUTION_AUTHORITY=AUTHORIZED_SP007_RO_001_EVIDENCE_ONLY' "$decision"
-          grep -Fq 'COMPONENT_EXTERNAL_CLINICAL_REVIEW_REQUIRED=NO' "$decision"
-          grep -Fq 'COMPONENT_EXTERNAL_STATISTICAL_REVIEW_REQUIRED=NO' "$decision"
-          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$decision"
+          grep -Fxq 'FOUNDER_SUCCESSOR_EXECUTION_DECISION=E004_SUCCESSOR_EXECUTION_DECISION_B' "$successor"
+          grep -Fxq 'SUCCESSOR_SCOPE_EXECUTION_AUTHORITY=AUTHORIZED_SP007_RO_001_EVIDENCE_ONLY' "$successor"
+          grep -Fq 'COMPONENT_EXTERNAL_CLINICAL_REVIEW_REQUIRED=NO' "$successor"
+          grep -Fq 'COMPONENT_EXTERNAL_STATISTICAL_REVIEW_REQUIRED=NO' "$successor"
+          grep -Fxq 'FOUNDER_RESEARCH_COMPONENT_EVAL_QUALIFICATION_DECISION=E004_RESEARCH_COMPONENT_EVAL_QUALIFICATION_DECISION_B' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_EVAL_ASSET_CONSTRUCTION_AUTHORITY=AUTHORIZED_EXACT_DECLARED_SET_ONLY' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_EVAL_PRIVACY_CLASSIFICATION_AUTHORITY=AUTHORIZED_EXACT_DECLARED_FIXTURES_ONLY_NO_EXTERNAL_PROVIDER' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_EVAL_CONTAMINATION_ASSESSMENT_AUTHORITY=AUTHORIZED_EXACT_DECLARED_SET_NONEXPOSURE_METHOD_ONLY' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_EVAL_SPEC003_ADMISSION_AUTHORITY=AUTHORIZED_EXACT_DECLARED_SET_EVALUATOR_ONLY' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_TOURNAMENT_PROTOCOL_FREEZE_AUTHORITY=AUTHORIZED_ONLY_IF_ALL_EXACT_ASSET_GATES_PASS' "$qualification"
+          grep -Fxq 'CALLER_CONTROLLED_ELIGIBLE_STATE=PROHIBITED' "$qualification"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$qualification"
           grep -Fxq 'CANDIDATE_MANIFEST_FROZEN=YES' "$candidate_freeze"
           grep -Fxq 'MANIFEST_VERSION=e001-mass-reach-v1' "$candidate_freeze"
           grep -Fxq 'MANIFEST_CANONICAL_SHA256=98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28' "$candidate_freeze"
-          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$decision"
-          grep -Fxq 'MODEL_CONVERSION_AUTHORITY=NONE' "$decision"
-          grep -Fxq 'PRIVATE_GOLD_ACCESS_AUTHORITY=NONE' "$decision"
-          grep -Fxq 'PHI_ACCESS_AUTHORITY=NONE' "$decision"
-          grep -Fxq 'SPEND_AUTHORITY=NONE' "$decision"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$qualification"
+          grep -Fxq 'MODEL_CONVERSION_AUTHORITY=NONE' "$qualification"
+          grep -Fxq 'PRIVATE_GOLD_ACCESS_AUTHORITY=NONE' "$qualification"
+          grep -Fxq 'PHI_ACCESS_AUTHORITY=NONE' "$qualification"
+          grep -Fxq 'SPEND_AUTHORITY=NONE' "$qualification"
           echo "HEAD_SHA=$(git rev-parse HEAD)"
 
-      - name: Compile asset-freeze surface
+      - name: Compile asset-qualification surface
         shell: bash
         run: |
           set -euo pipefail
@@ -61,19 +73,22 @@ jobs:
             src/commandmed/spec007/research_tournament.py \
             src/commandmed/spec007/research_tournament_assets.py \
             src/commandmed/spec007/research_tournament_asset_evidence.py \
+            src/commandmed/spec007/research_tournament_qualification.py \
             tests/spec007/test_research_tournament_assets.py \
             tests/spec007/test_research_tournament_asset_evidence.py \
+            tests/spec007/test_research_tournament_qualification.py \
             scripts/e004_research_component_tournament_asset_freeze_v1.py
 
-      - name: Run focused asset-freeze tests
+      - name: Run focused asset-qualification tests
         shell: bash
         run: |
           set -euo pipefail
           PYTHONPATH=. python3 -m unittest -v \
             tests.spec007.test_research_tournament_assets \
-            tests.spec007.test_research_tournament_asset_evidence
+            tests.spec007.test_research_tournament_asset_evidence \
+            tests.spec007.test_research_tournament_qualification
 
-      - name: Run deterministic freeze verifier
+      - name: Run deterministic qualification verifier
         shell: bash
         run: |
           set -euo pipefail
