@@ -1,0 +1,17 @@
+{
+  "schema_version": "1",
+  "instrument_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+  "instrument_sha256": "877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0",
+  "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+  "subject_class": "PROJECT_AUTHORED_SYNTHETIC_NONCLINICAL_EVALUATION",
+  "permitted_use": "COMPONENT_TOURNAMENT_SELECTION",
+  "external_payload_rights_reliance": false,
+  "external_dataset_content_included": false,
+  "private_gold_content_included": false,
+  "phi_content_included": false,
+  "training_or_adaptation_use_authorized": false,
+  "redistribution_rights_claim_created": false,
+  "commercial_rights_claim_created": false,
+  "rights_basis": "PROJECT_AUTHORED_CONTENT_INTERNAL_RESEARCH_EVALUATION_ONLY",
+  "current_authorized_spend_usd": 0
+}

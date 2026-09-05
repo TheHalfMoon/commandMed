@@ -1,0 +1,17 @@
+{
+  "schema_version": "1",
+  "instrument_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+  "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+  "asset_set_id": "SP007_RO_001_NONCLINICAL_EVALUATION_ASSET_SET_V1",
+  "asset_set_sha256": "709d5f73c1599364fc184b959cbdfd199c7ec07307fef8f8091d8eafb10f5454",
+  "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+  "authoring_repository": "TheHalfMoon/commandMed",
+  "fixture_namespace_seed": "b85f140192a511cfbfe190476bdb3f6baf784b4d",
+  "generation_method": "SHA256_NAMESPACE_SEED_METRIC_FAMILY_CASE_INDEX",
+  "external_payloads_used": false,
+  "candidate_outputs_observed_before_freeze": false,
+  "adaptive_generation_from_candidate_outputs": false,
+  "purpose": "COMPONENT_TOURNAMENT_SELECTION",
+  "current_authorized_spend_usd": 0,
+  "instrument_sha256": "82d29ba6374b1f74cd70d4c77be567f16ff78efb38008a8bc1764d9e1ac73d1f"
+}

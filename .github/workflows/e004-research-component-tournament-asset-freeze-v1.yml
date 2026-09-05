@@ -1,0 +1,155 @@
+name: E004 Research component tournament asset freeze V1
+
+on:
+  pull_request:
+    paths:
+      - 'src/commandmed/spec007/research_tournament.py'
+      - 'src/commandmed/spec007/research_tournament_assets.py'
+      - 'src/commandmed/spec007/research_tournament_asset_evidence.py'
+      - 'src/commandmed/spec007/research_tournament_qualification.py'
+      - 'tests/spec007/test_research_tournament_assets.py'
+      - 'tests/spec007/test_research_tournament_asset_evidence.py'
+      - 'tests/spec007/test_research_tournament_qualification.py'
+      - 'tests/spec007/test_research_tournament_nonce_repair_evidence.py'
+      - 'scripts/e004_research_component_tournament_asset_freeze_v1.py'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-qualification-founder-decision-2026-09-05.md'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-founder-decision-request-2026-09-05.md'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-founder-decision-2026-09-05.md'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-evidence-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-asset-rights-instrument-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-asset-provenance-instrument-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-asset-source-verification-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-asset-privacy-classification-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-asset-contamination-method-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-tournament-evaluation-assets-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-tournament-protocol-v1.json'
+      - '.github/workflows/e004-research-component-tournament-asset-freeze-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Bind exact head and bounded authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          successor='specs/007-sft-v1/e004-successor-scope-execution-authorization-founder-decision-2026-09-02.md'
+          qualification='specs/007-sft-v1/e004-research-component-evaluation-qualification-founder-decision-2026-09-05.md'
+          nonce_repair='specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-founder-decision-2026-09-05.md'
+          candidate_freeze='specs/007-sft-v1/e001-candidate-manifest-freeze-2026-08-27.md'
+          grep -Fxq 'FOUNDER_SUCCESSOR_EXECUTION_DECISION=E004_SUCCESSOR_EXECUTION_DECISION_B' "$successor"
+          grep -Fxq 'SUCCESSOR_SCOPE_EXECUTION_AUTHORITY=AUTHORIZED_SP007_RO_001_EVIDENCE_ONLY' "$successor"
+          grep -Fq 'COMPONENT_EXTERNAL_CLINICAL_REVIEW_REQUIRED=NO' "$successor"
+          grep -Fq 'COMPONENT_EXTERNAL_STATISTICAL_REVIEW_REQUIRED=NO' "$successor"
+          grep -Fxq 'FOUNDER_RESEARCH_COMPONENT_EVAL_QUALIFICATION_DECISION=E004_RESEARCH_COMPONENT_EVAL_QUALIFICATION_DECISION_B' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_EVAL_ASSET_CONSTRUCTION_AUTHORITY=AUTHORIZED_EXACT_DECLARED_SET_ONLY' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_EVAL_PRIVACY_CLASSIFICATION_AUTHORITY=AUTHORIZED_EXACT_DECLARED_FIXTURES_ONLY_NO_EXTERNAL_PROVIDER' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_EVAL_CONTAMINATION_ASSESSMENT_AUTHORITY=AUTHORIZED_EXACT_DECLARED_SET_NONEXPOSURE_METHOD_ONLY' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_EVAL_SPEC003_ADMISSION_AUTHORITY=AUTHORIZED_EXACT_DECLARED_SET_EVALUATOR_ONLY' "$qualification"
+          grep -Fxq 'RESEARCH_COMPONENT_TOURNAMENT_PROTOCOL_FREEZE_AUTHORITY=AUTHORIZED_ONLY_IF_ALL_EXACT_ASSET_GATES_PASS' "$qualification"
+          grep -Fxq 'FOUNDER_RESEARCH_COMPONENT_EVAL_NONCE_REPAIR_DECISION=E004_RESEARCH_COMPONENT_EVAL_NONCE_REPAIR_DECISION_B' "$nonce_repair"
+          grep -Fxq 'EVAL_NONCE_REPAIR_AUTHORITY=AUTHORIZED_PREEXISTING_VALIDATOR_METHOD_ONLY' "$nonce_repair"
+          grep -Fxq 'EVAL_NONCE_REPAIR_INDEXING=ONE_BASED_DECIMAL_UNPADDED' "$nonce_repair"
+          grep -Fxq 'EVAL_NONCE_EMBEDDING_REPAIR_AUTHORITY=AUTHORIZED_EXACT_NONCE_FIELDS_AND_REQUIRED_PROMPT_INPUT_EMBEDDINGS_ONLY' "$nonce_repair"
+          grep -Fxq 'EVAL_NONCE_SEMANTIC_PAYLOAD_REWRITE_AUTHORITY=NONE' "$nonce_repair"
+          grep -Fxq 'EVAL_DERIVED_ASSET_HASH_REBIND_AUTHORITY=AUTHORIZED_DETERMINISTIC_RECOMPUTATION_ONLY' "$nonce_repair"
+          grep -Fxq 'EVAL_DERIVED_ASSET_SET_HASH_REBIND_AUTHORITY=AUTHORIZED_DETERMINISTIC_RECOMPUTATION_ONLY' "$nonce_repair"
+          grep -Fxq 'EVAL_DERIVED_PROVENANCE_BINDING_REBIND_AUTHORITY=AUTHORIZED_NEW_ASSET_SET_HASH_ONLY' "$nonce_repair"
+          grep -Fxq 'EVAL_DERIVED_SOURCE_VERIFICATION_REBIND_AUTHORITY=AUTHORIZED_NEW_ASSET_SET_HASH_ONLY' "$nonce_repair"
+          grep -Fxq 'EVAL_DERIVED_PRIVACY_BINDING_REBIND_AUTHORITY=AUTHORIZED_NEW_ASSET_SET_HASH_ONLY' "$nonce_repair"
+          grep -Fxq 'EVAL_DERIVED_PROTOCOL_MANIFEST_REBIND_AUTHORITY=AUTHORIZED_ONLY_AFTER_ALL_REPAIRED_ASSETS_COMPUTE_ELIGIBLE' "$nonce_repair"
+          grep -Fxq 'EVAL_DERIVED_PROTOCOL_HASH_REBIND_AUTHORITY=AUTHORIZED_DETERMINISTIC_RECOMPUTATION_ONLY' "$nonce_repair"
+          grep -Fxq 'CALLER_CONTROLLED_ELIGIBLE_STATE=PROHIBITED' "$nonce_repair"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$nonce_repair"
+          grep -Fxq 'CANDIDATE_MANIFEST_FROZEN=YES' "$candidate_freeze"
+          grep -Fxq 'MANIFEST_VERSION=e001-mass-reach-v1' "$candidate_freeze"
+          grep -Fxq 'MANIFEST_CANONICAL_SHA256=98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28' "$candidate_freeze"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$qualification"
+          grep -Fxq 'MODEL_CONVERSION_AUTHORITY=NONE' "$qualification"
+          grep -Fxq 'PRIVATE_GOLD_ACCESS_AUTHORITY=NONE' "$qualification"
+          grep -Fxq 'PHI_ACCESS_AUTHORITY=NONE' "$qualification"
+          grep -Fxq 'SPEND_AUTHORITY=NONE' "$qualification"
+          echo "HEAD_SHA=$(git rev-parse HEAD)"
+
+      - name: Compile asset-qualification surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            src/commandmed/spec007/research_tournament.py \
+            src/commandmed/spec007/research_tournament_assets.py \
+            src/commandmed/spec007/research_tournament_asset_evidence.py \
+            src/commandmed/spec007/research_tournament_qualification.py \
+            tests/spec007/test_research_tournament_assets.py \
+            tests/spec007/test_research_tournament_asset_evidence.py \
+            tests/spec007/test_research_tournament_qualification.py \
+            tests/spec007/test_research_tournament_nonce_repair_evidence.py \
+            scripts/e004_research_component_tournament_asset_freeze_v1.py
+
+      - name: Run focused asset-qualification tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m unittest -v \
+            tests.spec007.test_research_tournament_assets \
+            tests.spec007.test_research_tournament_asset_evidence \
+            tests.spec007.test_research_tournament_qualification \
+            tests.spec007.test_research_tournament_nonce_repair_evidence \
+            2>&1 | tee focused-qualification.log
+
+      - name: Preserve focused failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e004-focused-qualification-failure-${{ github.event.pull_request.head.sha }}
+          path: focused-qualification.log
+          if-no-files-found: ignore
+          retention-days: 1
+
+      - name: Run deterministic qualification verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 scripts/e004_research_component_tournament_asset_freeze_v1.py
+
+      - name: Install pytest for regression qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check pytest
+
+      - name: Run Spec 007 regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m pytest -q tests/spec007
+
+      - name: Configure local Git identity for ephemeral fixture commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --local user.name 'commandMed CI Fixture'
+          git config --local user.email 'commandmed-ci-fixture@invalid.local'
+
+      - name: Run full repository regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m pytest -q
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"

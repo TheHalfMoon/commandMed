@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "instrument_id": "E004_RESEARCH_COMPONENT_SOURCE_VERIFICATION_V1",
+  "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+  "asset_set_id": "SP007_RO_001_NONCLINICAL_EVALUATION_ASSET_SET_V1",
+  "asset_set_sha256": "709d5f73c1599364fc184b959cbdfd199c7ec07307fef8f8091d8eafb10f5454",
+  "verification_subject": "CANONICAL_REPOSITORY_ASSET_SET_AND_SELF_HASHES",
+  "repository_full_name": "TheHalfMoon/commandMed",
+  "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+  "provenance_instrument_sha256": "82d29ba6374b1f74cd70d4c77be567f16ff78efb38008a8bc1764d9e1ac73d1f",
+  "rights_instrument_sha256": "877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0",
+  "contamination_method_sha256": "190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b",
+  "quarantine_matrix_sha256": "e2b2fd52e2eef007935ffe497fb50656960fa4ab82caac45138e117594475477",
+  "required_asset_count": 7,
+  "required_metric_families": [
+    "GENERAL_ARABIC_LANGUAGE_NON_CLINICAL",
+    "GENERAL_CAPABILITY_PRESERVATION",
+    "GENERAL_ENGLISH_LANGUAGE",
+    "GENERAL_INSTRUCTION_FOLLOWING",
+    "RESOURCE_EFFICIENCY",
+    "SYNTHETIC_NON_CLINICAL_TOOL_ROUTING",
+    "UNCERTAINTY_AND_ABSTENTION"
+  ],
+  "all_asset_self_hashes_required": true,
+  "all_cases_or_probes_nonce_bound": true,
+  "private_gold_present": false,
+  "external_payloads_used": false,
+  "verification_status": "PASS",
+  "current_authorized_spend_usd": 0,
+  "instrument_sha256": "6a71619aa8a940d97beeef13be935fbf83d865f2892f0fd3c37e53e32f427529"
+}
