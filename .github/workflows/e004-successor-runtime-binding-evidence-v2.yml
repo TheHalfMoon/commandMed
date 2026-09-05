@@ -1,0 +1,375 @@
+# E004 SP007-RO-001 SUCCESSOR RUNTIME-BINDING EVIDENCE V2.
+#
+# Review-first, non-model evidence lane. Pull requests execute static
+# qualification only. Exactly one later marker push may collect runtime,
+# toolchain, environment, and static compatibility evidence after canonical
+# merge under the bounded authorization record.
+#
+# No model weights, model load, inference, tournament/evaluation execution,
+# conversion, A15 activation, training, credentials, protected data, artifact
+# upload, paid/larger runner, procurement, payment, or spend are permitted.
+
+name: E004 successor runtime binding evidence V2
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/e004-successor-runtime-binding-evidence-v2.yml
+  push:
+    branches:
+      - evidence/e004-successor-runtime-binding-run-v1
+    paths:
+      - .github/e004-successor-runtime-binding-run-v1.txt
+
+permissions: {}
+
+concurrency:
+  group: e004-successor-runtime-binding-evidence-v2-${{ github.event_name }}
+  cancel-in-progress: false
+
+env:
+  AUTHORITY_RECORD: specs/007-sft-v1/e004-successor-runtime-binding-evidence-authorization-2026-09-05.md
+  LLAMA_CPP_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  LLAMA_CPP_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  LLAMA_CPP_TAG: b10621
+  LLAMA_CPP_ARCHIVE: llama-b10621-bin-ubuntu-x64.tar.gz
+  LLAMA_CPP_ARCHIVE_BYTES: "16291771"
+  LLAMA_CPP_ARCHIVE_SHA256: 91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+  TRANSFORMERS_VERSION: 4.57.6
+  TRANSFORMERS_COMMIT: 753d61104116eefc8ffc977327b441ee0c8d599f
+  TORCH_RUNTIME_TARGET: 2.11.0+cpu
+  GIT_TERMINAL_PROMPT: "0"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_INPUT: "1"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  static-qualification:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Bind exact head and bounded authority
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          test -f "$AUTHORITY_RECORD"
+          grep -Fxq 'E004_SUCCESSOR_RUNTIME_BINDING_EVIDENCE_AUTHORITY=AUTHORIZED_BOUNDED' "$AUTHORITY_RECORD"
+          grep -Fxq 'MAX_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=1' "$AUTHORITY_RECORD"
+          grep -Fxq 'RERUN_AUTHORITY=NONE_BY_DEFAULT' "$AUTHORITY_RECORD"
+          grep -Fxq 'MODEL_WEIGHT_DOWNLOAD_BY_RUNTIME_EVIDENCE_LANE=PROHIBITED' "$AUTHORITY_RECORD"
+          grep -Fxq 'MODEL_LOAD=PROHIBITED' "$AUTHORITY_RECORD"
+          grep -Fxq 'MODEL_INFERENCE=PROHIBITED' "$AUTHORITY_RECORD"
+          grep -Fxq 'A15_ACTIVATION=PROHIBITED' "$AUTHORITY_RECORD"
+          grep -Fxq 'CREDENTIAL_USE=PROHIBITED' "$AUTHORITY_RECORD"
+          grep -Fxq 'SPEND_USD=0' "$AUTHORITY_RECORD"
+
+      - name: Prove runtime jobs are inert on pull requests
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          workflow='.github/workflows/e004-successor-runtime-binding-evidence-v2.yml'
+          grep -Fq 'evidence/e004-successor-runtime-binding-run-v1' "$workflow"
+          grep -Fq '.github/e004-successor-runtime-binding-run-v1.txt' "$workflow"
+          count="$(grep -Fc "if: github.event_name == 'push' && github.ref == 'refs/heads/evidence/e004-successor-runtime-binding-run-v1'" "$workflow")"
+          test "$count" = '2'
+          prefix='actions/'
+          if grep -Eq "${prefix}(upload-artifact|cache)@" "$workflow"; then
+            echo 'Artifact/cache action is prohibited' >&2
+            exit 1
+          fi
+          model_host='huggingface'".co"
+          if grep -Fq "$model_host" "$workflow"; then
+            echo 'Model-host access is prohibited in runtime evidence lane' >&2
+            exit 1
+          fi
+          loader='from_'"pretrained"
+          if grep -Fq "$loader" "$workflow"; then
+            echo 'Model-loading API is prohibited in runtime evidence lane' >&2
+            exit 1
+          fi
+          git diff --check "${{ github.event.pull_request.base.sha }}"...HEAD
+
+  llama-runtime-evidence:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/evidence/e004-successor-runtime-binding-run-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout canonical evidence head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Fail-closed non-model preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -f "$AUTHORITY_RECORD"
+          grep -Fxq 'E004_SUCCESSOR_RUNTIME_BINDING_EVIDENCE_AUTHORITY=AUTHORIZED_BOUNDED' "$AUTHORITY_RECORD"
+          grep -Fxq 'MAX_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=1' "$AUTHORITY_RECORD"
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          for name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN; do test -z "${!name:-}"; done
+          required_tools=(bash curl sha256sum stat tar find sort awk file ldd readlink grep wc sudo unshare paste)
+          for tool in "${required_tools[@]}"; do command -v "$tool" >/dev/null; done
+          available_kb="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          test "$available_kb" -ge 1048576
+          printf '%s\n' \
+            'AUTHORITY=E004_SUCCESSOR_RUNTIME_BINDING_EVIDENCE_AUTHORITY_AUTHORIZED_BOUNDED' \
+            'MODEL_WEIGHT_ACCESS=PROHIBITED' 'MODEL_LOAD=PROHIBITED' \
+            'MODEL_EXECUTION=PROHIBITED' 'TOURNAMENT_EXECUTION=PROHIBITED' \
+            'A15_ACTIVATION=PROHIBITED' 'CONVERSION=PROHIBITED' \
+            'TRAINING=PROHIBITED' 'CREDENTIAL_USE=PROHIBITED' \
+            'ARTIFACT_UPLOAD=PROHIBITED' 'PAID_OR_LARGER_RUNNER=PROHIBITED' \
+            'SPEND_USD=0' "AVAILABLE_KB=$available_kb" \
+            "RUN_ID=${GITHUB_RUN_ID:-UNSET}" "RUN_ATTEMPT=${GITHUB_RUN_ATTEMPT:-UNSET}" \
+            "RUN_HEAD_SHA=${GITHUB_SHA:-UNSET}" "RUNNER_OS=${RUNNER_OS:-UNSET}" \
+            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" "ImageOS=${ImageOS:-UNSET}" \
+            "ImageVersion=${ImageVersion:-UNSET}"
+          uname -a
+          cat /etc/os-release
+
+      - name: Bind exact public llama.cpp runtime archive and executable
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-successor-llama-runtime
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          rm -rf "$ROOT"
+          mkdir -p "$ROOT/extract"
+          archive="$ROOT/$LLAMA_CPP_ARCHIVE"
+          url="https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${LLAMA_CPP_ARCHIVE}"
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+            --output "$archive.part" "$url"
+          actual_bytes="$(stat -c '%s' "$archive.part")"
+          actual_sha="$(sha256sum "$archive.part" | awk '{print $1}')"
+          test "$actual_bytes" = "$LLAMA_CPP_ARCHIVE_BYTES"
+          test "$actual_sha" = "$LLAMA_CPP_ARCHIVE_SHA256"
+          mv "$archive.part" "$archive"
+
+          listing="$ROOT/archive-list.txt"
+          tar -tzf "$archive" > "$listing"
+          test -s "$listing"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$listing"; then
+            echo 'Unsafe archive path detected' >&2
+            exit 1
+          fi
+          tar --no-same-owner -xzf "$archive" -C "$ROOT/extract"
+
+          cli_count="$(find "$ROOT/extract" \( -type f -o -type l \) -name 'llama-cli' | wc -l | tr -d ' ')"
+          test "$cli_count" = '1'
+          cli="$(find "$ROOT/extract" \( -type f -o -type l \) -name 'llama-cli' -print -quit)"
+          cli_real="$(readlink -f "$cli")"
+          case "$cli_real" in "$ROOT/extract"/*) ;; *) echo 'llama-cli escapes extraction root' >&2; exit 1 ;; esac
+          test -f "$cli_real" -a -x "$cli_real"
+
+          runtime_manifest="$ROOT/runtime-files.tsv"
+          : > "$runtime_manifest"
+          while IFS= read -r path; do
+            rel="${path#"$ROOT/extract/"}"
+            printf '%s\t%s\t%s\n' "$rel" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$runtime_manifest"
+          done < <(find "$ROOT/extract" -type f -print | sort)
+          sort -o "$runtime_manifest" "$runtime_manifest"
+          runtime_count="$(wc -l < "$runtime_manifest" | tr -d ' ')"
+          runtime_manifest_sha="$(sha256sum "$runtime_manifest" | awk '{print $1}')"
+          symlink_count="$(find "$ROOT/extract" -type l | wc -l | tr -d ' ')"
+          cli_sha="$(sha256sum "$cli_real" | awk '{print $1}')"
+          cli_bytes="$(stat -c '%s' "$cli_real")"
+          lib_dirs="$(find "$ROOT/extract" -type f -name '*.so*' -printf '%h\n' | sort -u | paste -sd: -)"
+
+          printf '%s\n' \
+            "LLAMA_CPP_COMMIT=$LLAMA_CPP_COMMIT" "LLAMA_CPP_TREE=$LLAMA_CPP_TREE" \
+            "LLAMA_CPP_TAG=$LLAMA_CPP_TAG" "RUNTIME_ARCHIVE=$LLAMA_CPP_ARCHIVE" \
+            "RUNTIME_ARCHIVE_BYTES=$actual_bytes" "RUNTIME_ARCHIVE_SHA256=$actual_sha" \
+            "ARCHIVE_LIST_SHA256=$(sha256sum "$listing" | awk '{print $1}')" \
+            "RUNTIME_FILE_COUNT=$runtime_count" "RUNTIME_SYMLINK_COUNT=$symlink_count" \
+            "RUNTIME_FILE_MANIFEST_SHA256=$runtime_manifest_sha" \
+            "LLAMA_CLI_RELATIVE_PATH=${cli_real#"$ROOT/extract/"}" \
+            "LLAMA_CLI_BYTES=$cli_bytes" "LLAMA_CLI_SHA256=$cli_sha"
+          file "$cli_real"
+          LD_LIBRARY_PATH="$lib_dirs" ldd "$cli_real" || true
+          cat "$runtime_manifest"
+          sudo -n env LD_LIBRARY_PATH="$lib_dirs" unshare -n -- "$cli_real" --version
+          printf '%s\n' 'LLAMA_CLI_NON_MODEL_INTROSPECTION=PASS_OFFLINE_NAMESPACE'
+
+      - name: Bind exact static Qwen3 and Qwen3.5 architecture support
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-successor-llama-runtime
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          arch="$ROOT/llama-arch.h"
+          url="https://raw.githubusercontent.com/ggml-org/llama.cpp/${LLAMA_CPP_COMMIT}/src/llama-arch.h"
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+            --output "$arch.part" "$url"
+          mv "$arch.part" "$arch"
+          grep -Eq 'LLM_ARCH_QWEN3[, ]' "$arch"
+          grep -Eq 'LLM_ARCH_QWEN35[, ]' "$arch"
+          printf '%s\n' \
+            "LLAMA_ARCH_HEADER_SHA256=$(sha256sum "$arch" | awk '{print $1}')" \
+            'STATIC_QWEN3_ARCHITECTURE_IDENTIFIER=PASS' \
+            'STATIC_QWEN35_ARCHITECTURE_IDENTIFIER=PASS' \
+            'MODEL_FILE_OPENED=NO' 'MODEL_LOAD_PERFORMED=NO' \
+            'MODEL_EXECUTION_PERFORMED=NO' 'CREDENTIAL_USE_PERFORMED=NO' \
+            'ARTIFACT_UPLOAD_PERFORMED=NO' 'SPEND_USD=0'
+
+  transformers-runtime-evidence:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/evidence/e004-successor-runtime-binding-run-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout canonical evidence head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Fail-closed non-model Python-runtime preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -f "$AUTHORITY_RECORD"
+          grep -Fxq 'E004_SUCCESSOR_RUNTIME_BINDING_EVIDENCE_AUTHORITY=AUTHORIZED_BOUNDED' "$AUTHORITY_RECORD"
+          grep -Fxq 'MAX_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=1' "$AUTHORITY_RECORD"
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          for name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN; do test -z "${!name:-}"; done
+          required_tools=(bash python3 sha256sum stat find sort awk readlink sudo unshare df tee)
+          for tool in "${required_tools[@]}"; do command -v "$tool" >/dev/null; done
+          python3 -m pip --version
+          python3 -m venv --help >/dev/null
+          available_kb="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          test "$available_kb" -ge 12582912
+          printf '%s\n' \
+            'AUTHORITY=E004_SUCCESSOR_RUNTIME_BINDING_EVIDENCE_AUTHORITY_AUTHORIZED_BOUNDED' \
+            'MODEL_WEIGHT_ACCESS=PROHIBITED' 'MODEL_LOAD=PROHIBITED' \
+            'MODEL_EXECUTION=PROHIBITED' 'TOURNAMENT_EXECUTION=PROHIBITED' \
+            'A15_ACTIVATION=PROHIBITED' 'CONVERSION=PROHIBITED' \
+            'TRAINING=PROHIBITED' 'CREDENTIAL_USE=PROHIBITED' \
+            'ARTIFACT_UPLOAD=PROHIBITED' 'PAID_OR_LARGER_RUNNER=PROHIBITED' \
+            'SPEND_USD=0' "AVAILABLE_KB=$available_kb" \
+            "RUN_ID=${GITHUB_RUN_ID:-UNSET}" "RUN_ATTEMPT=${GITHUB_RUN_ATTEMPT:-UNSET}" \
+            "RUN_HEAD_SHA=${GITHUB_SHA:-UNSET}" "RUNNER_OS=${RUNNER_OS:-UNSET}" \
+            "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" "ImageOS=${ImageOS:-UNSET}" \
+            "ImageVersion=${ImageVersion:-UNSET}"
+
+      - name: Stage exact public Python runtime dependency closure
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-successor-transformers-runtime
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          export PIP_CONFIG_FILE=/dev/null PIP_TRUSTED_HOST=''
+          rm -rf "$ROOT"
+          mkdir -p "$ROOT/wheelhouse"
+          pip_log="$ROOT/pip-download.log"
+          python3 -m pip download -vv --dest "$ROOT/wheelhouse" \
+            --index-url https://pypi.org/simple \
+            --extra-index-url https://download.pytorch.org/whl/cpu \
+            "torch==$TORCH_RUNTIME_TARGET" 'numpy~=1.26.4' \
+            'sentencepiece>=0.1.98,<0.3.0' "transformers==$TRANSFORMERS_VERSION" \
+            'protobuf>=4.21.0,<5.0.0' 'tqdm>=4.27' 'PyYAML>=5.1' 'requests>=2.25' \
+            2>&1 | tee "$pip_log"
+          manifest="$ROOT/dependency-artifacts.tsv"
+          : > "$manifest"
+          while IFS= read -r path; do
+            printf '%s\t%s\t%s\n' "$(basename "$path")" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$manifest"
+          done < <(find "$ROOT/wheelhouse" -maxdepth 1 -type f -print | sort)
+          sort -o "$manifest" "$manifest"
+          dependency_count="$(wc -l < "$manifest" | tr -d ' ')"
+          test "$dependency_count" -gt 0
+          printf '%s\n' \
+            "TRANSFORMERS_VERSION=$TRANSFORMERS_VERSION" \
+            "TRANSFORMERS_COMMIT=$TRANSFORMERS_COMMIT" \
+            "TORCH_RUNTIME_TARGET=$TORCH_RUNTIME_TARGET" \
+            "DEPENDENCY_ARTIFACT_COUNT=$dependency_count" \
+            "DEPENDENCY_SET_MANIFEST_SHA256=$(sha256sum "$manifest" | awk '{print $1}')" \
+            "PIP_DOWNLOAD_LOG_SHA256=$(sha256sum "$pip_log" | awk '{print $1}')" \
+            'PHASE_A_NETWORK=PUBLIC_PYPI_AND_PYTORCH_INDEXES_ONLY' \
+            'PHASE_A_CREDENTIAL_USE=NO'
+          cat "$manifest"
+
+      - name: Install offline and prove static/import-only Qwen3 and Granite support
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-successor-transformers-runtime
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          python3 -m venv "$ROOT/venv"
+          venv_python="$ROOT/venv/bin/python"
+          venv_pip="$ROOT/venv/bin/pip"
+          sudo -n env PIP_CONFIG_FILE=/dev/null unshare -n -- "$venv_pip" install \
+            --no-index --find-links "$ROOT/wheelhouse" \
+            "torch==$TORCH_RUNTIME_TARGET" 'numpy~=1.26.4' \
+            'sentencepiece>=0.1.98,<0.3.0' "transformers==$TRANSFORMERS_VERSION" \
+            'protobuf>=4.21.0,<5.0.0' 'tqdm>=4.27' 'PyYAML>=5.1' 'requests>=2.25'
+          installed="$ROOT/installed-environment.txt"
+          "$venv_pip" freeze --all | LC_ALL=C sort > "$installed"
+          resolved_python="$(readlink -f "$venv_python")"
+          python_sha="$(sha256sum "$resolved_python" | awk '{print $1}')"
+          sudo -n unshare -n -- "$venv_python" - <<'PY'
+          import hashlib
+          import importlib.util
+          import pathlib
+          import torch
+          import transformers
+          from transformers.models.auto.configuration_auto import CONFIG_MAPPING_NAMES
+          from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING_NAMES
+          assert transformers.__version__ == "4.57.6"
+          assert torch.__version__ == "2.11.0+cpu"
+          assert CONFIG_MAPPING_NAMES["qwen3"] == "Qwen3Config"
+          assert MODEL_FOR_CAUSAL_LM_MAPPING_NAMES["qwen3"] == "Qwen3ForCausalLM"
+          assert CONFIG_MAPPING_NAMES["granite"] == "GraniteConfig"
+          assert MODEL_FOR_CAUSAL_LM_MAPPING_NAMES["granite"] == "GraniteForCausalLM"
+          modules = {
+              "TRANSFORMERS_MODULE": pathlib.Path(transformers.__file__).resolve(),
+              "TORCH_MODULE": pathlib.Path(torch.__file__).resolve(),
+          }
+          for label, module_name in (
+              ("QWEN3_CONFIG_MODULE", "transformers.models.qwen3.configuration_qwen3"),
+              ("QWEN3_MODELING_MODULE", "transformers.models.qwen3.modeling_qwen3"),
+              ("GRANITE_CONFIG_MODULE", "transformers.models.granite.configuration_granite"),
+              ("GRANITE_MODELING_MODULE", "transformers.models.granite.modeling_granite"),
+          ):
+              spec = importlib.util.find_spec(module_name)
+              if spec is None or spec.origin is None:
+                  raise SystemExit(f"missing module: {module_name}")
+              modules[label] = pathlib.Path(spec.origin).resolve()
+          for key, path in modules.items():
+              print(f"{key}_PATH={path}")
+              print(f"{key}_SHA256={hashlib.sha256(path.read_bytes()).hexdigest()}")
+          print("TRANSFORMERS_VERSION=4.57.6")
+          print("TRANSFORMERS_TAG_TARGET_COMMIT=753d61104116eefc8ffc977327b441ee0c8d599f")
+          print("TORCH_VERSION=2.11.0+cpu")
+          print("QWEN3_CONFIG_MAPPING=PASS")
+          print("QWEN3_CAUSAL_LM_MAPPING=PASS")
+          print("GRANITE_CONFIG_MAPPING=PASS")
+          print("GRANITE_CAUSAL_LM_MAPPING=PASS")
+          print("STATIC_IMPORT_ONLY_COMPATIBILITY=PASS")
+          print("MODEL_OBJECT_INSTANTIATED=NO")
+          print("MODEL_WEIGHT_FILE_OPENED=NO")
+          print("MODEL_LOAD_PERFORMED=NO")
+          print("MODEL_EXECUTION_PERFORMED=NO")
+          PY
+          printf '%s\n' \
+            "PYTHON_RUNTIME_PATH=$resolved_python" \
+            "PYTHON_RUNTIME_VERSION=$($venv_python --version 2>&1)" \
+            "PYTHON_RUNTIME_SHA256=$python_sha" \
+            "INSTALLED_ENVIRONMENT_MANIFEST_SHA256=$(sha256sum "$installed" | awk '{print $1}')" \
+            'PHASE_B_NETWORK=DEFAULT_DENY_NETWORK_NAMESPACE_FOR_INSTALL_AND_IMPORT' \
+            'CREDENTIAL_USE_PERFORMED=NO' 'ARTIFACT_UPLOAD_PERFORMED=NO' \
+            'MODEL_LOAD_PERFORMED=NO' 'MODEL_EXECUTION_PERFORMED=NO' 'SPEND_USD=0'
+          cat "$installed"
