@@ -48,12 +48,20 @@ def make_metrics_v2():
 def first_selection_metric(metrics_v2):
     for metric in metrics_v2["metrics"]:
         for requirement in metric.get("evidence_requirements", []):
-            if requirement.get("evidence_role") in {"SELECTION_DEV", "QUALIFICATION_ONLY"}:
+            if requirement.get("evidence_role") in {
+                "SELECTION_DEV",
+                "QUALIFICATION_ONLY",
+            }:
                 return metric["metric_id"], requirement["evidence_role"]
     raise AssertionError("no selection-eligible metric found")
 
 
-def make_threshold(metrics_v2, lane=SEVEN_LANES[0], policy_id="TP-001", **overrides):
+def make_threshold(
+    metrics_v2,
+    lane=SEVEN_LANES[0],
+    policy_id="TP-001",
+    **overrides,
+):
     metric_id, role = first_selection_metric(metrics_v2)
     record = {
         "threshold_policy_id": policy_id,
@@ -71,7 +79,9 @@ def make_threshold(metrics_v2, lane=SEVEN_LANES[0], policy_id="TP-001", **overri
         "clinical_meaningfulness_evidence_ids": ["EVIDENCE-CLINICAL-001"],
         "statistical_justification_evidence_ids": ["EVIDENCE-STATISTICAL-001"],
         "clinical_review_authority_reference": FD009_CLINICAL_POLICY_AUTHORITY,
-        "statistical_review_authority_reference": FD009_STATISTICAL_POLICY_AUTHORITY,
+        "statistical_review_authority_reference": (
+            FD009_STATISTICAL_POLICY_AUTHORITY
+        ),
         "conflict_disposition_record_ids": [],
         "pre_result_freeze": True,
         "record_canonical_sha256": "a" * 64,
@@ -101,7 +111,9 @@ def make_design(lane, threshold_id, design_id):
         "coverage_allocation_design": {"synthetic": 10},
         "rounding_or_allocation_rule": "SYNTHETIC_RULE",
         "software_formula_or_method_identity": "SYNTHETIC_METHOD_V1",
-        "sensitivity_analysis_identity_or_explicit_not_required": "EXPLICIT_NOT_REQUIRED",
+        "sensitivity_analysis_identity_or_explicit_not_required": (
+            "EXPLICIT_NOT_REQUIRED"
+        ),
         "candidate_neutral": True,
         "pre_result_freeze": True,
         "record_canonical_sha256": "b" * 64,
@@ -151,28 +163,52 @@ class FD009ThresholdPolicyTests(unittest.TestCase):
             clinical_review_authority_reference="REV-AUTH-1",
             statistical_review_authority_reference="REV-AUTH-2",
         )
-        errors = validate_fd009_threshold_policy(record, self.quality, self.metrics)
-        self.assertTrue(any("FD009_NON_HUMAN_POLICY" in error for error in errors))
+        errors = validate_fd009_threshold_policy(
+            record, self.quality, self.metrics
+        )
+        self.assertTrue(
+            any("FD009_NON_HUMAN_POLICY" in error for error in errors)
+        )
 
     def test_missing_clinical_evidence_fails_closed(self):
-        record = make_threshold(self.metrics, clinical_meaningfulness_evidence_ids=[])
-        errors = validate_fd009_threshold_policy(record, self.quality, self.metrics)
-        self.assertTrue(any("clinical_meaningfulness_evidence_ids" in e for e in errors))
+        record = make_threshold(
+            self.metrics,
+            clinical_meaningfulness_evidence_ids=[],
+        )
+        errors = validate_fd009_threshold_policy(
+            record, self.quality, self.metrics
+        )
+        self.assertTrue(
+            any("clinical_meaningfulness_evidence_ids" in e for e in errors)
+        )
 
     def test_missing_statistical_evidence_fails_closed(self):
-        record = make_threshold(self.metrics, statistical_justification_evidence_ids=[])
-        errors = validate_fd009_threshold_policy(record, self.quality, self.metrics)
-        self.assertTrue(any("statistical_justification_evidence_ids" in e for e in errors))
+        record = make_threshold(
+            self.metrics,
+            statistical_justification_evidence_ids=[],
+        )
+        errors = validate_fd009_threshold_policy(
+            record, self.quality, self.metrics
+        )
+        self.assertTrue(
+            any("statistical_justification_evidence_ids" in e for e in errors)
+        )
 
     def test_threshold_value_remains_mandatory(self):
         record = make_threshold(self.metrics)
         del record["threshold_value_or_margin"]
-        errors = validate_fd009_threshold_policy(record, self.quality, self.metrics)
-        self.assertTrue(any("MISSING_THRESHOLD_VALUE_OR_MARGIN" in e for e in errors))
+        errors = validate_fd009_threshold_policy(
+            record, self.quality, self.metrics
+        )
+        self.assertTrue(
+            any("MISSING_THRESHOLD_VALUE_OR_MARGIN" in e for e in errors)
+        )
 
     def test_pre_result_freeze_remains_mandatory(self):
         record = make_threshold(self.metrics, pre_result_freeze=False)
-        errors = validate_fd009_threshold_policy(record, self.quality, self.metrics)
+        errors = validate_fd009_threshold_policy(
+            record, self.quality, self.metrics
+        )
         self.assertTrue(any("pre_result_freeze" in e for e in errors))
 
 
@@ -189,19 +225,26 @@ class FD009ReadinessTests(unittest.TestCase):
     def test_one_legacy_authority_blocks_global_readiness(self):
         metrics = make_metrics_v2()
         records = make_ready_records(metrics)
-        records["threshold_policies"][3]["clinical_review_authority_reference"] = (
-            "HUMAN-REVIEWER-PLACEHOLDER"
-        )
+        records["threshold_policies"][3][
+            "clinical_review_authority_reference"
+        ] = "HUMAN-REVIEWER-PLACEHOLDER"
         result = evaluate_fd009_scientific_selection_readiness(
             records, make_quality_contract(), metrics
         )
         self.assertEqual(result["state"], "INCOMPLETE")
-        self.assertTrue(any("FD009_NON_HUMAN_POLICY" in c for c in result["reason_codes"]))
+        self.assertTrue(
+            any(
+                "FD009_NON_HUMAN_POLICY" in code
+                for code in result["reason_codes"]
+            )
+        )
 
     def test_incomplete_evidence_still_blocks_global_readiness(self):
         metrics = make_metrics_v2()
         records = make_ready_records(metrics)
-        records["threshold_policies"][0]["statistical_justification_evidence_ids"] = []
+        records["threshold_policies"][0][
+            "statistical_justification_evidence_ids"
+        ] = []
         result = evaluate_fd009_scientific_selection_readiness(
             records, make_quality_contract(), metrics
         )
