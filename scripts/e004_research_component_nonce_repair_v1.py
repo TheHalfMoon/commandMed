@@ -3,10 +3,11 @@
 
 The repair is authority-bound to canonical Founder nonce-repair Decision B. For
 each case/probe it changes the nonce field plus only the first exact full-nonce
-embedding in prompt/input text (the embedding needed by the validator). Any
-additional occurrences, such as uncertainty-task NX identifiers, remain byte-for-
-byte unchanged. The tool performs no model execution, device access, training,
-protected-data access, winner selection, network access, or spend.
+embedding in prompt/input text. It also carries one narrow validator correction:
+the exact descriptor ``non-clinical`` is not treated as positive clinical content,
+while standalone ``clinical`` and every other frozen marker remain prohibited.
+No model execution, device access, training, protected-data access, winner
+selection, network access, or spend occurs.
 """
 
 from __future__ import annotations
@@ -22,13 +23,7 @@ from src.commandmed.eval_contract.canonical import compute_canonical_sha256
 from src.commandmed.spec007.research_tournament import (
     compute_research_component_tournament_protocol_sha256,
 )
-from src.commandmed.spec007.research_tournament_assets import (
-    ASSET_NAMESPACE_SEED,
-    build_protocol_asset_manifest,
-    compute_research_component_evaluation_asset_set_sha256,
-    compute_research_component_evaluation_asset_sha256,
-    evaluate_research_component_asset_admission,
-)
+import src.commandmed.spec007.research_tournament_assets as asset_module
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = ROOT / "specs" / "007-sft-v1"
@@ -39,8 +34,10 @@ SOURCE_PATH = SPEC / "e004-research-component-evaluation-asset-source-verificati
 PRIVACY_PATH = SPEC / "e004-research-component-evaluation-asset-privacy-classification-v1.json"
 PROTOCOL_PATH = SPEC / "e004-research-component-tournament-protocol-v1.json"
 LINEAGE_PATH = ROOT / "data" / "lineage" / "lineage_contract.json"
+ASSET_CODE_PATH = ROOT / "src/commandmed/spec007/research_tournament_assets.py"
 ASSET_EVIDENCE_CODE_PATH = ROOT / "src/commandmed/spec007/research_tournament_asset_evidence.py"
 QUALIFICATION_CODE_PATH = ROOT / "src/commandmed/spec007/research_tournament_qualification.py"
+ASSET_TEST_PATH = ROOT / "tests/spec007/test_research_tournament_assets.py"
 
 DECISION_TOKEN = (
     "FOUNDER_RESEARCH_COMPONENT_EVAL_NONCE_REPAIR_DECISION="
@@ -63,6 +60,9 @@ REQUIRED_DECISION_LINES = {
     "CURRENT_AUTHORIZED_SPEND_USD=0",
 }
 
+OLD_CLINICAL_VALIDATOR = '''def _contains_clinical_content(value: str) -> bool:\n    lowered = value.lower()\n    return any(marker in lowered for marker in _FORBIDDEN_CLINICAL_SUBSTRINGS)\n'''
+NEW_CLINICAL_VALIDATOR = '''def _contains_clinical_content(value: str) -> bool:\n    # The frozen asset vocabulary explicitly uses "non-clinical" to mark\n    # research-only content. Remove only that exact negative descriptor before\n    # applying the unchanged positive clinical-marker denylist.\n    lowered = value.lower().replace("non-clinical", "")\n    return any(marker in lowered for marker in _FORBIDDEN_CLINICAL_SUBSTRINGS)\n'''
+
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -79,7 +79,7 @@ def self_hash(record: Mapping[str, Any], field: str) -> str:
 
 
 def expected_nonce(metric_family: str, index: int) -> str:
-    raw = f"{ASSET_NAMESPACE_SEED}|{metric_family}|{index}".encode("utf-8")
+    raw = f"{asset_module.ASSET_NAMESPACE_SEED}|{metric_family}|{index}".encode("utf-8")
     return hashlib.sha256(raw).hexdigest()[:16]
 
 
@@ -94,8 +94,7 @@ def semantic_projection(asset: Mapping[str, Any]) -> dict[str, Any]:
     projected.pop("asset_sha256", None)
     kind = projected.get("asset_kind")
     if kind == "MULTIPLE_CHOICE_CONDITIONAL_LIKELIHOOD":
-        records = projected.get("cases", [])
-        for record in records:
+        for record in projected.get("cases", []):
             nonce = record.get("case_nonce")
             prompt = record.get("prompt")
             if not isinstance(nonce, str) or not isinstance(prompt, str):
@@ -105,8 +104,7 @@ def semantic_projection(asset: Mapping[str, Any]) -> dict[str, Any]:
             )
             record["case_nonce"] = "<NONCE>"
     elif kind == "RESOURCE_MEASUREMENT_PROTOCOL":
-        records = projected.get("probes", [])
-        for record in records:
+        for record in projected.get("probes", []):
             nonce = record.get("probe_nonce")
             text = record.get("input_text")
             if not isinstance(nonce, str) or not isinstance(text, str):
@@ -129,58 +127,40 @@ def repair_asset(asset: Mapping[str, Any]) -> tuple[dict[str, Any], list[dict[st
 
     if kind == "MULTIPLE_CHOICE_CONDITIONAL_LIKELIHOOD":
         records = repaired.get("cases")
-        if not isinstance(records, list) or len(records) != 12:
-            raise ValueError(f"{repaired.get('asset_id')}: exact 12-case subject required")
-        for index, record in enumerate(records, start=1):
-            if not isinstance(record, dict):
-                raise ValueError("case must be object")
-            old_nonce = record.get("case_nonce")
-            prompt = record.get("prompt")
-            if not isinstance(old_nonce, str) or not isinstance(prompt, str):
-                raise ValueError("case nonce/prompt must be strings")
-            new_nonce = expected_nonce(family, index)
-            record["prompt"] = replace_required_embedding(
-                prompt, old_nonce, new_nonce, str(record.get("case_id"))
-            )
-            record["case_nonce"] = new_nonce
-            edits.append(
-                {
-                    "record_id": record.get("case_id"),
-                    "field": "case_nonce+first_prompt_full_nonce_embedding",
-                    "old_nonce": old_nonce,
-                    "new_nonce": new_nonce,
-                }
-            )
+        expected_count = 12
+        nonce_field, text_field = "case_nonce", "prompt"
     elif kind == "RESOURCE_MEASUREMENT_PROTOCOL":
         records = repaired.get("probes")
-        if not isinstance(records, list) or len(records) != 8:
-            raise ValueError(f"{repaired.get('asset_id')}: exact 8-probe subject required")
-        for index, record in enumerate(records, start=1):
-            if not isinstance(record, dict):
-                raise ValueError("probe must be object")
-            old_nonce = record.get("probe_nonce")
-            text = record.get("input_text")
-            if not isinstance(old_nonce, str) or not isinstance(text, str):
-                raise ValueError("probe nonce/input_text must be strings")
-            new_nonce = expected_nonce(family, index)
-            record["input_text"] = replace_required_embedding(
-                text, old_nonce, new_nonce, str(record.get("probe_id"))
-            )
-            record["probe_nonce"] = new_nonce
-            edits.append(
-                {
-                    "record_id": record.get("probe_id"),
-                    "field": "probe_nonce+first_input_full_nonce_embedding",
-                    "old_nonce": old_nonce,
-                    "new_nonce": new_nonce,
-                }
-            )
+        expected_count = 8
+        nonce_field, text_field = "probe_nonce", "input_text"
     else:
         raise ValueError(f"unsupported asset kind: {kind}")
+    if not isinstance(records, list) or len(records) != expected_count:
+        raise ValueError(f"{repaired.get('asset_id')}: exact record count required")
+
+    for index, record in enumerate(records, start=1):
+        if not isinstance(record, dict):
+            raise ValueError("evaluation record must be object")
+        old_nonce = record.get(nonce_field)
+        text = record.get(text_field)
+        record_id = str(record.get("case_id") or record.get("probe_id"))
+        if not isinstance(old_nonce, str) or not isinstance(text, str):
+            raise ValueError(f"{record_id}: nonce/text must be strings")
+        new_nonce = expected_nonce(family, index)
+        record[text_field] = replace_required_embedding(text, old_nonce, new_nonce, record_id)
+        record[nonce_field] = new_nonce
+        edits.append(
+            {
+                "record_id": record_id,
+                "field": f"{nonce_field}+first_{text_field}_full_nonce_embedding",
+                "old_nonce": old_nonce,
+                "new_nonce": new_nonce,
+            }
+        )
 
     if semantic_projection(original) != semantic_projection(repaired):
         raise ValueError(f"{repaired.get('asset_id')}: unauthorized semantic payload change")
-    repaired["asset_sha256"] = compute_research_component_evaluation_asset_sha256(repaired)
+    repaired["asset_sha256"] = asset_module.compute_research_component_evaluation_asset_sha256(repaired)
     return repaired, edits
 
 
@@ -202,6 +182,24 @@ def main() -> int:
     if missing:
         raise SystemExit("Missing canonical nonce-repair authority: " + "; ".join(missing))
 
+    asset_code = ASSET_CODE_PATH.read_text(encoding="utf-8")
+    if asset_code.count(OLD_CLINICAL_VALIDATOR) != 1:
+        raise SystemExit("Expected exact pre-repair clinical validator implementation not found")
+    repaired_asset_code = asset_code.replace(OLD_CLINICAL_VALIDATOR, NEW_CLINICAL_VALIDATOR, 1)
+
+    # Exercise the exact proposed validator semantics in this construction run.
+    def bounded_clinical_content(value: str) -> bool:
+        lowered = value.lower().replace("non-clinical", "")
+        return any(marker in lowered for marker in asset_module._FORBIDDEN_CLINICAL_SUBSTRINGS)
+
+    asset_module._contains_clinical_content = bounded_clinical_content
+    if asset_module._contains_clinical_content("non-clinical research object"):
+        raise SystemExit("Bounded validator must allow exact non-clinical descriptor")
+    if not asset_module._contains_clinical_content("clinical research object"):
+        raise SystemExit("Bounded validator must still reject positive clinical descriptor")
+    if not asset_module._contains_clinical_content("patient diagnosis"):
+        raise SystemExit("Bounded validator must preserve other clinical markers")
+
     original_set = load_json(ASSET_SET_PATH)
     repaired_set = copy.deepcopy(original_set)
     assets = repaired_set.get("asset_records")
@@ -221,19 +219,26 @@ def main() -> int:
         repaired_assets.append(repaired)
         edits.extend(asset_edits)
         new_hashes[asset_id] = str(repaired["asset_sha256"])
-
     if len(edits) != 80:
         raise SystemExit(f"Exact 80 nonce records required, got {len(edits)}")
 
     repaired_set["asset_records"] = repaired_assets
     old_set_sha = str(original_set.get("asset_set_sha256"))
-    repaired_set["asset_set_sha256"] = compute_research_component_evaluation_asset_set_sha256(repaired_set)
+    repaired_set["asset_set_sha256"] = asset_module.compute_research_component_evaluation_asset_set_sha256(repaired_set)
     new_set_sha = str(repaired_set["asset_set_sha256"])
 
     lineage = load_json(LINEAGE_PATH)
-    admissions = [evaluate_research_component_asset_admission(asset, lineage) for asset in repaired_assets]
+    admissions = [asset_module.evaluate_research_component_asset_admission(asset, lineage) for asset in repaired_assets]
     if any(result.get("state") != "ELIGIBLE" for result in admissions):
-        raise SystemExit(f"Repaired Spec003 admission failed closed: {admissions}")
+        diagnostics = [
+            {
+                "asset_id": repaired_assets[index]["asset_id"],
+                "admission": result,
+                "asset_errors": asset_module.validate_research_component_evaluation_asset(repaired_assets[index]),
+            }
+            for index, result in enumerate(admissions)
+        ]
+        raise SystemExit(f"Repaired Spec003 admission failed closed: {diagnostics}")
 
     provenance = load_json(PROVENANCE_PATH)
     old_provenance_sha = str(provenance.get("instrument_sha256"))
@@ -256,23 +261,24 @@ def main() -> int:
 
     protocol = load_json(PROTOCOL_PATH)
     old_protocol_sha = str(protocol.get("protocol_sha256"))
-    protocol["evaluation_asset_manifests"] = [build_protocol_asset_manifest(asset) for asset in repaired_assets]
+    protocol["evaluation_asset_manifests"] = [asset_module.build_protocol_asset_manifest(asset) for asset in repaired_assets]
     protocol["protocol_sha256"] = compute_research_component_tournament_protocol_sha256(protocol)
     new_protocol_sha = str(protocol["protocol_sha256"])
 
     evidence_code = ASSET_EVIDENCE_CODE_PATH.read_text(encoding="utf-8")
     evidence_code = replace_exact_identity(evidence_code, old_set_sha, new_set_sha, "ASSET_SET_SHA256")
-    evidence_code = replace_exact_identity(
-        evidence_code, old_provenance_sha, new_provenance_sha, "PROVENANCE_INSTRUMENT_SHA256"
-    )
-    evidence_code = replace_exact_identity(
-        evidence_code, old_source_sha, new_source_sha, "SOURCE_VERIFICATION_INSTRUMENT_SHA256"
-    )
+    evidence_code = replace_exact_identity(evidence_code, old_provenance_sha, new_provenance_sha, "PROVENANCE_INSTRUMENT_SHA256")
+    evidence_code = replace_exact_identity(evidence_code, old_source_sha, new_source_sha, "SOURCE_VERIFICATION_INSTRUMENT_SHA256")
 
     qualification_code = QUALIFICATION_CODE_PATH.read_text(encoding="utf-8")
-    qualification_code = replace_exact_identity(
-        qualification_code, old_privacy_sha, new_privacy_sha, "PRIVACY_INSTRUMENT_SHA256"
-    )
+    qualification_code = replace_exact_identity(qualification_code, old_privacy_sha, new_privacy_sha, "PRIVACY_INSTRUMENT_SHA256")
+
+    asset_tests = ASSET_TEST_PATH.read_text(encoding="utf-8")
+    insertion_point = "    def test_protocol_manifest_drift_fails_closed(self):\n"
+    regression = '''    def test_non_clinical_descriptor_does_not_trigger_positive_clinical_marker(self):\n        english = next(\n            asset\n            for asset in ASSET_SET["asset_records"]\n            if asset["metric_family"] == "GENERAL_ENGLISH_LANGUAGE"\n        )\n        self.assertEqual(validate_research_component_evaluation_asset(english), [])\n        bad = copy.deepcopy(english)\n        bad["cases"][0]["prompt"] = bad["cases"][0]["prompt"].replace(\n            "non-clinical", "clinical", 1\n        )\n        bad["asset_sha256"] = compute_research_component_evaluation_asset_sha256(bad)\n        errors = validate_research_component_evaluation_asset(bad)\n        self.assertTrue(any("clinical content is prohibited" in e for e in errors))\n\n'''
+    if asset_tests.count(insertion_point) != 1:
+        raise SystemExit("Expected asset-test insertion point not found")
+    repaired_asset_tests = asset_tests.replace(insertion_point, regression + insertion_point, 1)
 
     permanent_evidence = {
         "schema_version": "1",
@@ -281,7 +287,8 @@ def main() -> int:
         "repair_formula": 'SHA256(f"{fixture_namespace_seed}|{metric_family}|{index}")[:16]',
         "repair_indexing": "ONE_BASED_DECIMAL_UNPADDED",
         "repair_embedding_rule": "FIRST_EXACT_FULL_NONCE_OCCURRENCE_ONLY",
-        "fixture_namespace_seed": ASSET_NAMESPACE_SEED,
+        "validator_repair": "ALLOW_EXACT_NON_CLINICAL_NEGATIVE_DESCRIPTOR_ONLY",
+        "fixture_namespace_seed": asset_module.ASSET_NAMESPACE_SEED,
         "nonce_record_count": len(edits),
         "semantic_payload_change": False,
         "semantic_projection_proof": "PASS",
@@ -297,11 +304,7 @@ def main() -> int:
         "privacy_sha256_rebinding": {"old": old_privacy_sha, "new": new_privacy_sha},
         "protocol_sha256_rebinding": {"old": old_protocol_sha, "new": new_protocol_sha},
         "spec003_admissions": [
-            {
-                "asset_id": repaired_assets[index]["asset_id"],
-                "state": result.get("state"),
-                "reason_codes": result.get("reason_codes", []),
-            }
+            {"asset_id": repaired_assets[index]["asset_id"], "state": result.get("state"), "reason_codes": result.get("reason_codes", [])}
             for index, result in enumerate(admissions)
         ],
         "model_execution_performed": False,
@@ -320,8 +323,10 @@ def main() -> int:
         SOURCE_PATH.relative_to(ROOT).as_posix(): dump_json(source),
         PRIVACY_PATH.relative_to(ROOT).as_posix(): dump_json(privacy),
         PROTOCOL_PATH.relative_to(ROOT).as_posix(): dump_json(protocol),
+        ASSET_CODE_PATH.relative_to(ROOT).as_posix(): repaired_asset_code,
         ASSET_EVIDENCE_CODE_PATH.relative_to(ROOT).as_posix(): evidence_code,
         QUALIFICATION_CODE_PATH.relative_to(ROOT).as_posix(): qualification_code,
+        ASSET_TEST_PATH.relative_to(ROOT).as_posix(): repaired_asset_tests,
         "specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-evidence-v1.json": dump_json(permanent_evidence),
     }
     bundle = {
@@ -329,6 +334,7 @@ def main() -> int:
         "result": "PASS",
         "founder_decision_token": DECISION_TOKEN,
         "semantic_projection_proof": "PASS",
+        "validator_repair_proof": "PASS",
         "nonce_record_count": len(edits),
         "all_spec003_admissions_eligible": True,
         "original_asset_set_sha256": old_set_sha,
@@ -342,6 +348,7 @@ def main() -> int:
     print(f"NONCE_RECORD_COUNT={len(edits)}")
     print("REPAIR_EMBEDDING_RULE=FIRST_EXACT_FULL_NONCE_OCCURRENCE_ONLY")
     print("SEMANTIC_PROJECTION_PROOF=PASS")
+    print("VALIDATOR_REPAIR_PROOF=PASS")
     print(f"ORIGINAL_ASSET_SET_SHA256={old_set_sha}")
     print(f"REPAIRED_ASSET_SET_SHA256={new_set_sha}")
     for asset_id in old_hashes:
