@@ -308,7 +308,10 @@ def _expected_nonce(metric_family: str, index: int) -> str:
 
 
 def _contains_clinical_content(value: str) -> bool:
-    lowered = value.lower()
+    # The frozen asset vocabulary explicitly uses "non-clinical" to mark
+    # research-only content. Remove only that exact negative descriptor before
+    # applying the unchanged positive clinical-marker denylist.
+    lowered = value.lower().replace("non-clinical", "")
     return any(marker in lowered for marker in _FORBIDDEN_CLINICAL_SUBSTRINGS)
 
 

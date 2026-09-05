@@ -201,6 +201,21 @@ class ResearchComponentEvaluationAssetFreezeTests(unittest.TestCase):
         errors = validate_research_component_evaluation_asset(bad)
         self.assertTrue(any("clinical content is prohibited" in e for e in errors))
 
+    def test_non_clinical_descriptor_does_not_trigger_positive_clinical_marker(self):
+        english = next(
+            asset
+            for asset in ASSET_SET["asset_records"]
+            if asset["metric_family"] == "GENERAL_ENGLISH_LANGUAGE"
+        )
+        self.assertEqual(validate_research_component_evaluation_asset(english), [])
+        bad = copy.deepcopy(english)
+        bad["cases"][0]["prompt"] = bad["cases"][0]["prompt"].replace(
+            "non-clinical", "clinical", 1
+        )
+        bad["asset_sha256"] = compute_research_component_evaluation_asset_sha256(bad)
+        errors = validate_research_component_evaluation_asset(bad)
+        self.assertTrue(any("clinical content is prohibited" in e for e in errors))
+
     def test_protocol_manifest_drift_fails_closed(self):
         bad_protocol = copy.deepcopy(PROTOCOL)
         bad_protocol["evaluation_asset_manifests"][0]["content_sha256"] = "0" * 64

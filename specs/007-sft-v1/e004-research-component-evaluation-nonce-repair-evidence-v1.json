@@ -1,0 +1,595 @@
+{
+  "schema_version": "1",
+  "evidence_id": "E004_RESEARCH_COMPONENT_EVAL_NONCE_REPAIR_EVIDENCE_V1",
+  "founder_decision_token": "FOUNDER_RESEARCH_COMPONENT_EVAL_NONCE_REPAIR_DECISION=E004_RESEARCH_COMPONENT_EVAL_NONCE_REPAIR_DECISION_B",
+  "repair_formula": "SHA256(f\"{fixture_namespace_seed}|{metric_family}|{index}\")[:16]",
+  "repair_indexing": "ONE_BASED_DECIMAL_UNPADDED",
+  "repair_embedding_rule": "FIRST_EXACT_FULL_NONCE_OCCURRENCE_ONLY",
+  "validator_repair": "ALLOW_EXACT_NON_CLINICAL_NEGATIVE_DESCRIPTOR_ONLY",
+  "fixture_namespace_seed": "b85f140192a511cfbfe190476bdb3f6baf784b4d",
+  "nonce_record_count": 80,
+  "semantic_payload_change": false,
+  "semantic_projection_proof": "PASS",
+  "caller_controlled_eligible_state": false,
+  "original_asset_set_sha256": "49d1044ec8c6317136cf69d5b094eb1d4e93a8d6dad938be23254a71a5dfe435",
+  "repaired_asset_set_sha256": "709d5f73c1599364fc184b959cbdfd199c7ec07307fef8f8091d8eafb10f5454",
+  "asset_hash_rebindings": [
+    {
+      "asset_id": "SP007-RO-001-EVAL-INSTRUCTION-V1",
+      "old_asset_sha256": "5d8c26b329fce0e3482609a7022a77d8fd4ae15dd8fea9147aecebb05e2aa6b7",
+      "new_asset_sha256": "34a0b5f35153f81da19d6f7ec85d2bd8f90c068a1d214dd5e4f146a7e332e237"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-ENGLISH-V1",
+      "old_asset_sha256": "fcd031071722117af6380d02287df815c81fcea1f9b9e28b0f6bff4f01ab24b5",
+      "new_asset_sha256": "fcd031071722117af6380d02287df815c81fcea1f9b9e28b0f6bff4f01ab24b5"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1",
+      "old_asset_sha256": "4b5197c6a82be54ded43f790bc440dd0ca69f13c17c3d7f1adf42ebd5770414f",
+      "new_asset_sha256": "4b5197c6a82be54ded43f790bc440dd0ca69f13c17c3d7f1adf42ebd5770414f"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1",
+      "old_asset_sha256": "501616fab6d321d3f686e108de04d7b5ecfb985e041a2d205b64fa00d8a8ef52",
+      "new_asset_sha256": "5cc287e3ec9b7a16003a11bea234892f959df60f8a07debf12ec7b36a79d93c9"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1",
+      "old_asset_sha256": "4fd249917c2ee40c9c3540e358cfaa0a5def97381694e08bde474b818ea1e030",
+      "new_asset_sha256": "8665d5f2a128d74062f4f30178c9af602ee03be951a287fb049e208697931fdc"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-CAPABILITY-V1",
+      "old_asset_sha256": "8e46855039a004b7486b196e7783b1530f7630429ca303e169ad719fec91eb25",
+      "new_asset_sha256": "7dd0a1131869b92ae57434c6b9ca4087cda17033b67d9d4bc636a1d6fb4da871"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1",
+      "old_asset_sha256": "a1ddea12b740886643fc396c62553b1ab954404090d16db499a57e933056a200",
+      "new_asset_sha256": "a1ddea12b740886643fc396c62553b1ab954404090d16db499a57e933056a200"
+    }
+  ],
+  "provenance_sha256_rebinding": {
+    "old": "f00ed7bdb15079ac19b7de30ff88742b2a0e9bbc2d270fc79065660d2444e7bf",
+    "new": "82d29ba6374b1f74cd70d4c77be567f16ff78efb38008a8bc1764d9e1ac73d1f"
+  },
+  "source_verification_sha256_rebinding": {
+    "old": "af453aa210ac928db413e928bbaff372e0d08ac3487bab37dfb716d68ba6d220",
+    "new": "6a71619aa8a940d97beeef13be935fbf83d865f2892f0fd3c37e53e32f427529"
+  },
+  "privacy_sha256_rebinding": {
+    "old": "52301182ca6b4b7e07a8a2442cc8168c313f81e11fb47b2ca62f725cb6156f1f",
+    "new": "ab3f2449888f753279492d669f08aaf3aa78115b698126c90c1602edff63c41c"
+  },
+  "protocol_sha256_rebinding": {
+    "old": "0925c4b89021c59ce86e2afef69a66a1ec75acb31a9e1388a2fd6218d421f815",
+    "new": "1c6a3ff38be596396fbd3025b1317be88e4c2068feace167d8187d22830b5dd8"
+  },
+  "spec003_admissions": [
+    {
+      "asset_id": "SP007-RO-001-EVAL-INSTRUCTION-V1",
+      "state": "ELIGIBLE",
+      "reason_codes": []
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-ENGLISH-V1",
+      "state": "ELIGIBLE",
+      "reason_codes": []
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1",
+      "state": "ELIGIBLE",
+      "reason_codes": []
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1",
+      "state": "ELIGIBLE",
+      "reason_codes": []
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1",
+      "state": "ELIGIBLE",
+      "reason_codes": []
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-CAPABILITY-V1",
+      "state": "ELIGIBLE",
+      "reason_codes": []
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1",
+      "state": "ELIGIBLE",
+      "reason_codes": []
+    }
+  ],
+  "model_execution_performed": false,
+  "tournament_execution_performed": false,
+  "winner_selected": false,
+  "training_performed": false,
+  "private_gold_accessed": false,
+  "phi_accessed": false,
+  "authorized_spend_usd": 0,
+  "nonce_edits": [
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-01",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "0fa98419824fb691",
+      "new_nonce": "9e2b8a36a4170ea4"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-02",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "cda92d0fc9a73462",
+      "new_nonce": "d1f1f9f008a03b3c"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-03",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "0192b7379396a468",
+      "new_nonce": "350bebe1ac392523"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-04",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "781e76f1d1114234",
+      "new_nonce": "94d87d94e4c15e66"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-05",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "ec0de5a994a2ff39",
+      "new_nonce": "5e08f3bb9b9a3dfb"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-06",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "4d82ae939f84e6f2",
+      "new_nonce": "af392ca005caad67"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-07",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "f0a32a00b37eab14",
+      "new_nonce": "34030c825707227f"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-08",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "e6a3fdb5bd1b3ce2",
+      "new_nonce": "f79303b80d4c191c"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-09",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "5cf4eb67af070354",
+      "new_nonce": "d961d11795a22839"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-10",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "58db9ff219de8bb8",
+      "new_nonce": "1cfd83533588b223"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-11",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "3119836dc86f67bd",
+      "new_nonce": "da22f76f6116b287"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-12",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "1b3793293d833685",
+      "new_nonce": "a41fc19f832b5b82"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-01",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "e5c008e8e79067c2",
+      "new_nonce": "ce38209103c6b3e9"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-02",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "c879a9847c1c80cc",
+      "new_nonce": "7619326d053e4635"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-03",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "0d2fd37899ca4567",
+      "new_nonce": "c5ef2c2beb1752e2"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-04",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "d2fb542fb9da70de",
+      "new_nonce": "3947da12d231ac13"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-05",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "24497885acd2b930",
+      "new_nonce": "3ccde2ada29f1ef1"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-06",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "28b5af013f8c7a87",
+      "new_nonce": "8e57075e7d4e0573"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-07",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "c4417101d1f4bfea",
+      "new_nonce": "361ef57006ea4168"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-08",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "5e720e91bf751fa6",
+      "new_nonce": "dd2ab9f687eb84e8"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-09",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "d773a4adceaf6c35",
+      "new_nonce": "87ea0335b0d24ce2"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-10",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "913ae8dba325be4d",
+      "new_nonce": "5ed0e71664674bad"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-11",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "84e31dbe9d040778",
+      "new_nonce": "6bfb7bdc0e094728"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ENGLISH-V1-CASE-12",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "48d6bd6adac04716",
+      "new_nonce": "13d15d5879f588b2"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-01",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "6ace81d4eca7a8c5",
+      "new_nonce": "bd4ccb1b0daa8c6d"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-02",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "2c7f52526bfc95b5",
+      "new_nonce": "b5db4e842d137af3"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-03",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "574e9a02349de5cb",
+      "new_nonce": "32e52de74e535056"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-04",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "8fe77d2b4a8a51e5",
+      "new_nonce": "9ef7d688d6b0d052"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-05",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "f7a80aac2d29580a",
+      "new_nonce": "00d3a9e80ca218db"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-06",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "24943fa668771394",
+      "new_nonce": "89bac909c6dd27c2"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-07",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "06d646005c03deea",
+      "new_nonce": "1217d8af2e5071f0"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-08",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "cc8ef98dcfe2806c",
+      "new_nonce": "abc2b0c0a80c0f9d"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-09",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "a58e5142b1d40b69",
+      "new_nonce": "8e3fa161c6baaf87"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-10",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "84f62a115a796ccc",
+      "new_nonce": "3357a841a438afdd"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-11",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "5553358108bf0aa7",
+      "new_nonce": "5bf2460f4131fec1"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-12",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "3e38e2f3d29cf4c7",
+      "new_nonce": "2678b976d080e7bb"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-01",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "50b20f5bded6c605",
+      "new_nonce": "2ca2265f89b34bdb"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-02",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "01365e07dc431151",
+      "new_nonce": "68bd8fbc5a557dd0"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-03",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "e8557411c400efc0",
+      "new_nonce": "dc2e5990a3c75bae"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-04",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "63290088a1fd2497",
+      "new_nonce": "10655f6329f5283e"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-05",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "ef2d53e4506cab1b",
+      "new_nonce": "bbb7a7e17d1b4967"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-06",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "c0043be830ed6d25",
+      "new_nonce": "cbb2d8939901fd99"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-07",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "82f0be31f8fbe619",
+      "new_nonce": "5f66e2e1941e38ee"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-08",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "9dc428b601764488",
+      "new_nonce": "3799e6a36ef33817"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-09",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "99b5d0515d5e2421",
+      "new_nonce": "05cd7de147c3071f"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-10",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "40961991dd541951",
+      "new_nonce": "85bc15b81eab5535"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-11",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "55b292d70d888f72",
+      "new_nonce": "6bc34e4c087720fd"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-12",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "57f3878373123d3d",
+      "new_nonce": "127f953e8a461def"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-01",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "b7825deed3215746",
+      "new_nonce": "784dea00f0dc73b1"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-02",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "ad3bba7da86261ed",
+      "new_nonce": "2622529b61bedb95"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-03",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "a48a5f9a47469209",
+      "new_nonce": "19292a33d66cc56f"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-04",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "49ff9042f0074033",
+      "new_nonce": "6236fbce72daaf4b"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-05",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "d5f0a49aeea49346",
+      "new_nonce": "a333ab2a78fc9eb9"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-06",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "ebf66a65f017210e",
+      "new_nonce": "1633102611397b58"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-07",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "146999b2ca5dfeae",
+      "new_nonce": "56910a4cee6fbb30"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-08",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "dfe55d6653786c43",
+      "new_nonce": "8cb972214c4b61cc"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-09",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "6f21bf79f7846021",
+      "new_nonce": "76163e40f3cd6c73"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-10",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "6431952901e52347",
+      "new_nonce": "ae07748a522dc4f7"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-11",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "9614aa3f60b58302",
+      "new_nonce": "52fd7f161e483685"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-12",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "32dbc0f93aff0368",
+      "new_nonce": "d03abe4ee1d0e148"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-01",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "b2946d8939d9da68",
+      "new_nonce": "1e061eeee9786481"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-02",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "db91edee9d176ad2",
+      "new_nonce": "8a9060b027306074"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-03",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "25902de7872a6621",
+      "new_nonce": "e4f9178607332070"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-04",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "2e90a898740e2a91",
+      "new_nonce": "c4bbc0412d80b2ea"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-05",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "2a4441c8ccb4f85c",
+      "new_nonce": "5709ac1222982ddf"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-06",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "086363f22c0a2acb",
+      "new_nonce": "bac4cb4e22f99396"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-07",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "a4e77b1655e38978",
+      "new_nonce": "ef63d1e13385cceb"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-08",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "5d0f3a4e8f70ec1b",
+      "new_nonce": "5f9b1b65196ede53"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-09",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "66004cb2ce2e9334",
+      "new_nonce": "4eb7aaae853459b4"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-10",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "9f22e6530825883d",
+      "new_nonce": "eb6d870675af74c3"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-11",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "16e3a44ce2f8b734",
+      "new_nonce": "7dd4893dd7d9766d"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-CAPABILITY-V1-CASE-12",
+      "field": "case_nonce+first_prompt_full_nonce_embedding",
+      "old_nonce": "f92e10cfc10c1f7a",
+      "new_nonce": "69c3dfa7b0346dee"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-01",
+      "field": "probe_nonce+first_input_text_full_nonce_embedding",
+      "old_nonce": "af677000edb55b40",
+      "new_nonce": "a391807b764b878f"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-02",
+      "field": "probe_nonce+first_input_text_full_nonce_embedding",
+      "old_nonce": "e730a522679f4501",
+      "new_nonce": "4414ac800cf2bf5c"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-03",
+      "field": "probe_nonce+first_input_text_full_nonce_embedding",
+      "old_nonce": "27ae3dd1000fa227",
+      "new_nonce": "bd0ecc59fe234ca3"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-04",
+      "field": "probe_nonce+first_input_text_full_nonce_embedding",
+      "old_nonce": "9b8073555489d85f",
+      "new_nonce": "981cb7d0d37520ad"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-05",
+      "field": "probe_nonce+first_input_text_full_nonce_embedding",
+      "old_nonce": "1ce56bea30cb2e2f",
+      "new_nonce": "2989ac6e9bc7cab5"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-06",
+      "field": "probe_nonce+first_input_text_full_nonce_embedding",
+      "old_nonce": "8bed4d6d3af20ce1",
+      "new_nonce": "816e007e8d6d7622"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-07",
+      "field": "probe_nonce+first_input_text_full_nonce_embedding",
+      "old_nonce": "272c00d2cf9f33c7",
+      "new_nonce": "b7c073f021af8c90"
+    },
+    {
+      "record_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-08",
+      "field": "probe_nonce+first_input_text_full_nonce_embedding",
+      "old_nonce": "013c59a6560b5da6",
+      "new_nonce": "0a7a012dac9486a6"
+    }
+  ]
+}

@@ -1,15 +1,39 @@
 {
   "schema_version": "1",
   "protocol_id": "SP007_RO_001_NONCLINICAL_BACKBONE_TOURNAMENT_V1",
-  "protocol_sha256": "0925c4b89021c59ce86e2afef69a66a1ec75acb31a9e1388a2fd6218d421f815",
+  "protocol_sha256": "1c6a3ff38be596396fbd3025b1317be88e4c2068feace167d8187d22830b5dd8",
   "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
   "claim_class": "NON_CLINICAL_RESEARCH_ENGINEERING_ONLY",
   "purpose": "SP007_RO_001_BACKBONE_EVIDENCE",
   "candidate_bindings": [
-    {"candidate_id":"Qwen/Qwen3-0.6B-Base","upstream_revision":"da87bfb608c14b7cf20ba1ce41287e8de496c0cd","candidate_role":"PRIMARY","winner_eligible":true,"purpose":"BACKBONE_CANDIDATE"},
-    {"candidate_id":"Qwen/Qwen3.5-0.8B-Base","upstream_revision":"dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68","candidate_role":"PRIMARY","winner_eligible":true,"purpose":"BACKBONE_CANDIDATE"},
-    {"candidate_id":"ibm-granite/granite-4.0-350m-base","upstream_revision":"a50b46cef21c8a86b15f0496cb794487a78a910b","candidate_role":"PRIMARY","winner_eligible":true,"purpose":"BACKBONE_CANDIDATE"},
-    {"candidate_id":"Qwen/Qwen3-4B-Base","upstream_revision":"906bfd4b4dc7f14ee4320094d8b41684abff8539","candidate_role":"CONTROL","winner_eligible":false,"purpose":"SCALE_QUALITY_OPPORTUNITY_COST"}
+    {
+      "candidate_id": "Qwen/Qwen3-0.6B-Base",
+      "upstream_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "candidate_role": "PRIMARY",
+      "winner_eligible": true,
+      "purpose": "BACKBONE_CANDIDATE"
+    },
+    {
+      "candidate_id": "Qwen/Qwen3.5-0.8B-Base",
+      "upstream_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+      "candidate_role": "PRIMARY",
+      "winner_eligible": true,
+      "purpose": "BACKBONE_CANDIDATE"
+    },
+    {
+      "candidate_id": "ibm-granite/granite-4.0-350m-base",
+      "upstream_revision": "a50b46cef21c8a86b15f0496cb794487a78a910b",
+      "candidate_role": "PRIMARY",
+      "winner_eligible": true,
+      "purpose": "BACKBONE_CANDIDATE"
+    },
+    {
+      "candidate_id": "Qwen/Qwen3-4B-Base",
+      "upstream_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "candidate_role": "CONTROL",
+      "winner_eligible": false,
+      "purpose": "SCALE_QUALITY_OPPORTUNITY_COST"
+    }
   ],
   "ranking_metric_families": [
     "GENERAL_ARABIC_LANGUAGE_NON_CLINICAL",
@@ -21,13 +45,111 @@
     "UNCERTAINTY_AND_ABSTENTION"
   ],
   "evaluation_asset_manifests": [
-    {"asset_id":"SP007-RO-001-EVAL-INSTRUCTION-V1","metric_family":"GENERAL_INSTRUCTION_FOLLOWING","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","license_validation_status":"PASS","content_sha256":"5d8c26b329fce0e3482609a7022a77d8fd4ae15dd8fea9147aecebb05e2aa6b7","split_id":"MODEL_SELECTION_DEV_SET","provenance_validation_status":"PASS","source_verification_status":"PASS","contamination_status":"PASS","quarantine_can_select_model":true,"purpose":"COMPONENT_TOURNAMENT_SELECTION"},
-    {"asset_id":"SP007-RO-001-EVAL-ENGLISH-V1","metric_family":"GENERAL_ENGLISH_LANGUAGE","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","license_validation_status":"PASS","content_sha256":"fcd031071722117af6380d02287df815c81fcea1f9b9e28b0f6bff4f01ab24b5","split_id":"MODEL_SELECTION_DEV_SET","provenance_validation_status":"PASS","source_verification_status":"PASS","contamination_status":"PASS","quarantine_can_select_model":true,"purpose":"COMPONENT_TOURNAMENT_SELECTION"},
-    {"asset_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1","metric_family":"GENERAL_ARABIC_LANGUAGE_NON_CLINICAL","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","license_validation_status":"PASS","content_sha256":"4b5197c6a82be54ded43f790bc440dd0ca69f13c17c3d7f1adf42ebd5770414f","split_id":"MODEL_SELECTION_DEV_SET","provenance_validation_status":"PASS","source_verification_status":"PASS","contamination_status":"PASS","quarantine_can_select_model":true,"purpose":"COMPONENT_TOURNAMENT_SELECTION"},
-    {"asset_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1","metric_family":"UNCERTAINTY_AND_ABSTENTION","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","license_validation_status":"PASS","content_sha256":"501616fab6d321d3f686e108de04d7b5ecfb985e041a2d205b64fa00d8a8ef52","split_id":"MODEL_SELECTION_DEV_SET","provenance_validation_status":"PASS","source_verification_status":"PASS","contamination_status":"PASS","quarantine_can_select_model":true,"purpose":"COMPONENT_TOURNAMENT_SELECTION"},
-    {"asset_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1","metric_family":"SYNTHETIC_NON_CLINICAL_TOOL_ROUTING","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","license_validation_status":"PASS","content_sha256":"4fd249917c2ee40c9c3540e358cfaa0a5def97381694e08bde474b818ea1e030","split_id":"MODEL_SELECTION_DEV_SET","provenance_validation_status":"PASS","source_verification_status":"PASS","contamination_status":"PASS","quarantine_can_select_model":true,"purpose":"COMPONENT_TOURNAMENT_SELECTION"},
-    {"asset_id":"SP007-RO-001-EVAL-CAPABILITY-V1","metric_family":"GENERAL_CAPABILITY_PRESERVATION","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","license_validation_status":"PASS","content_sha256":"8e46855039a004b7486b196e7783b1530f7630429ca303e169ad719fec91eb25","split_id":"MODEL_SELECTION_DEV_SET","provenance_validation_status":"PASS","source_verification_status":"PASS","contamination_status":"PASS","quarantine_can_select_model":true,"purpose":"COMPONENT_TOURNAMENT_SELECTION"},
-    {"asset_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1","metric_family":"RESOURCE_EFFICIENCY","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","license_validation_status":"PASS","content_sha256":"a1ddea12b740886643fc396c62553b1ab954404090d16db499a57e933056a200","split_id":"MODEL_SELECTION_DEV_SET","provenance_validation_status":"PASS","source_verification_status":"PASS","contamination_status":"PASS","quarantine_can_select_model":true,"purpose":"COMPONENT_TOURNAMENT_SELECTION"}
+    {
+      "asset_id": "SP007-RO-001-EVAL-INSTRUCTION-V1",
+      "metric_family": "GENERAL_INSTRUCTION_FOLLOWING",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "license_validation_status": "PASS",
+      "content_sha256": "34a0b5f35153f81da19d6f7ec85d2bd8f90c068a1d214dd5e4f146a7e332e237",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "provenance_validation_status": "PASS",
+      "source_verification_status": "PASS",
+      "contamination_status": "PASS",
+      "quarantine_can_select_model": true,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-ENGLISH-V1",
+      "metric_family": "GENERAL_ENGLISH_LANGUAGE",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "license_validation_status": "PASS",
+      "content_sha256": "fcd031071722117af6380d02287df815c81fcea1f9b9e28b0f6bff4f01ab24b5",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "provenance_validation_status": "PASS",
+      "source_verification_status": "PASS",
+      "contamination_status": "PASS",
+      "quarantine_can_select_model": true,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1",
+      "metric_family": "GENERAL_ARABIC_LANGUAGE_NON_CLINICAL",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "license_validation_status": "PASS",
+      "content_sha256": "4b5197c6a82be54ded43f790bc440dd0ca69f13c17c3d7f1adf42ebd5770414f",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "provenance_validation_status": "PASS",
+      "source_verification_status": "PASS",
+      "contamination_status": "PASS",
+      "quarantine_can_select_model": true,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-UNCERTAINTY-V1",
+      "metric_family": "UNCERTAINTY_AND_ABSTENTION",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "license_validation_status": "PASS",
+      "content_sha256": "5cc287e3ec9b7a16003a11bea234892f959df60f8a07debf12ec7b36a79d93c9",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "provenance_validation_status": "PASS",
+      "source_verification_status": "PASS",
+      "contamination_status": "PASS",
+      "quarantine_can_select_model": true,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-TOOL-ROUTING-V1",
+      "metric_family": "SYNTHETIC_NON_CLINICAL_TOOL_ROUTING",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "license_validation_status": "PASS",
+      "content_sha256": "8665d5f2a128d74062f4f30178c9af602ee03be951a287fb049e208697931fdc",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "provenance_validation_status": "PASS",
+      "source_verification_status": "PASS",
+      "contamination_status": "PASS",
+      "quarantine_can_select_model": true,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-CAPABILITY-V1",
+      "metric_family": "GENERAL_CAPABILITY_PRESERVATION",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "license_validation_status": "PASS",
+      "content_sha256": "7dd0a1131869b92ae57434c6b9ca4087cda17033b67d9d4bc636a1d6fb4da871",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "provenance_validation_status": "PASS",
+      "source_verification_status": "PASS",
+      "contamination_status": "PASS",
+      "quarantine_can_select_model": true,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION"
+    },
+    {
+      "asset_id": "SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1",
+      "metric_family": "RESOURCE_EFFICIENCY",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "license_validation_status": "PASS",
+      "content_sha256": "a1ddea12b740886643fc396c62553b1ab954404090d16db499a57e933056a200",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "provenance_validation_status": "PASS",
+      "source_verification_status": "PASS",
+      "contamination_status": "PASS",
+      "quarantine_can_select_model": true,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION"
+    }
   ],
   "sentinel_fixture_set_sha256": "5a2bd28b391010c9575c99654899cd442fea8d94cbb4176045b654c940fa2fd3",
   "sentinel_fixture_sha256_set_sha256": "b65b36689cf2006bad8b446536d50ccd3f3440a4b244c044a1b26409aea0fef2",
