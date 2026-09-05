@@ -465,7 +465,7 @@ def validate_research_component_execution_evidence_bundle(
     evidence_pack: Any,
     resource_results: Any,
 ) -> list[str]:
-    """Compose subject, tournament-pack, and resource-result validation."""
+    """Compose subject, exact protocol, tournament pack, and resource records."""
     prefix = "ResearchComponentExecutionEvidenceBundle"
     errors = validate_research_component_preexecution_subject(subject)
     protocol_errors = validate_research_component_tournament_protocol(protocol)
@@ -476,6 +476,27 @@ def validate_research_component_execution_evidence_bundle(
         evidence_pack, dict
     ):
         return sorted(set(errors))
+
+    if protocol.get("protocol_id") != subject.get("protocol_id"):
+        errors.append(f"{prefix}: protocol_id mismatch with execution subject")
+    if protocol.get("protocol_sha256") != subject.get("protocol_sha256"):
+        errors.append(f"{prefix}: protocol_sha256 mismatch with execution subject")
+
+    resource_asset = next(
+        (
+            asset
+            for asset in protocol.get("evaluation_asset_manifests", [])
+            if isinstance(asset, dict) and asset.get("metric_family") == "RESOURCE_EFFICIENCY"
+        ),
+        None,
+    )
+    if not isinstance(resource_asset, dict):
+        errors.append(f"{prefix}: frozen resource asset manifest missing")
+    else:
+        if resource_asset.get("asset_id") != RESEARCH_COMPONENT_RESOURCE_ASSET_ID:
+            errors.append(f"{prefix}: resource asset_id mismatch with canonical frozen asset")
+        if resource_asset.get("content_sha256") != RESEARCH_COMPONENT_RESOURCE_ASSET_SHA256:
+            errors.append(f"{prefix}: resource asset sha256 mismatch with canonical frozen asset")
 
     if evidence_pack.get("execution_environment_id") != subject.get("execution_environment_id"):
         errors.append(f"{prefix}: execution environment mismatch")
