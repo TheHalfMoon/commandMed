@@ -1,0 +1,200 @@
+# E002 PRECONVERTED ARTIFACT INTEGRITY EVIDENCE WORKFLOW.
+#
+# This lane is bounded to the exact two immutable preconverted artifacts already
+# enumerated by canonical E002 authority. Pull requests execute static workflow
+# qualification only. Byte acquisition occurs only after canonical merge via
+# one exact evidence-branch marker push.
+#
+# It MUST NOT load model weights, import or execute a model runtime, run
+# inference, convert or quantize weights, access benchmarks, use credentials,
+# upload/cache model artifacts, train, select a winner, or spend money.
+
+name: E002 preconverted artifact integrity evidence V1
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/e002-preconverted-integrity-evidence-v1.yml'
+      - 'specs/007-sft-v1/e002-preconverted-integrity-evidence-v1-2026-09-05.md'
+  push:
+    branches:
+      - evidence/e002-preconverted-integrity-run-v1
+    paths:
+      - '.github/e002-preconverted-integrity-run-v1.txt'
+
+permissions: {}
+
+concurrency:
+  group: e002-preconverted-integrity-v1-${{ github.event_name }}
+  cancel-in-progress: false
+
+env:
+  QWEN06_REPOSITORY: Antigma/Qwen3-0.6B-Base-GGUF
+  QWEN06_REVISION: f457544766bcdc72afd3514439eb3d422d4434dc
+  QWEN06_FILENAME: qwen3-0.6b-base-q4_k_m.gguf
+  QWEN06_BYTES: '396704512'
+  QWEN06_SHA256: 218d3f063193b40008d4e63d90cf83e7dc6d33a8c6c1c647589f868a8fc74492
+  QWEN35_REPOSITORY: ggml-org/Qwen3.5-0.8B-Base-GGUF
+  QWEN35_REVISION: 1bd44f68963429437d08bc12f465716eb31ba6e5
+  QWEN35_FILENAME: Qwen3.5-0.8B-Base-Q4_0.gguf
+  QWEN35_BYTES: '563035840'
+  QWEN35_SHA256: 0dabf7f08793293d999ea306cee8c9caa3d76099e791ea2b0ce8f555f4e4098d
+
+jobs:
+  static-qualification:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Bind exact head and E002 authority
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          authority='specs/007-sft-v1/e002-model-access-authorization-2026-08-27.md'
+          grep -Fq 'MODEL_WEIGHT_ACCESS_AUTHORITY=AUTHORIZED_E002_FROZEN_PUBLIC_CANDIDATES_ONLY' "$authority"
+          grep -Fq 'PRECONVERTED_ARTIFACT_ALLOWLIST_COUNT=2' "$authority"
+          grep -Fq 'qwen3-0.6b-base-q4_k_m.gguf' "$authority"
+          grep -Fq '218d3f063193b40008d4e63d90cf83e7dc6d33a8c6c1c647589f868a8fc74492' "$authority"
+          grep -Fq 'Qwen3.5-0.8B-Base-Q4_0.gguf' "$authority"
+          grep -Fq '0dabf7f08793293d999ea306cee8c9caa3d76099e791ea2b0ce8f555f4e4098d' "$authority"
+          grep -Fq 'NO_MODEL_LOAD=ENFORCED' "$authority"
+          grep -Fq 'NO_MODEL_CONVERSION=ENFORCED' "$authority"
+          grep -Fq 'NO_CREDENTIALS=ENFORCED' "$authority"
+          grep -Fq 'NO_SPEND=ENFORCED' "$authority"
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"
+          echo "HEAD_SHA=$(git rev-parse HEAD)"
+
+      - name: Prove byte-acquisition jobs are inert on pull requests
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "${{ github.event_name }}" = 'pull_request'
+          test "${{ github.ref_name }}" != 'evidence/e002-preconverted-integrity-run-v1'
+          printf '%s\n' \
+            'BYTE_ACQUISITION_PERFORMED=NO' \
+            'MODEL_LOAD_PERFORMED=NO' \
+            'MODEL_EXECUTION_PERFORMED=NO' \
+            'CONVERSION_PERFORMED=NO' \
+            'CREDENTIAL_USE_PERFORMED=NO' \
+            'SPEND_USD=0'
+
+  qwen06-integrity:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Fail-closed E002 byte-integrity preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "${{ github.ref_name }}" = 'evidence/e002-preconverted-integrity-run-v1'
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          for credential_name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN; do
+            test -z "${!credential_name:-}"
+          done
+          required_tools=(bash curl sha256sum stat head df awk)
+          for tool in "${required_tools[@]}"; do command -v "$tool" >/dev/null; done
+          available_kb="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          test "$available_kb" -ge 1048576
+          printf '%s\n' \
+            'E002_SCOPE=EXACT_PRECONVERTED_ALLOWLIST_ONLY' \
+            'MODEL_LOAD=PROHIBITED' \
+            'MODEL_EXECUTION=PROHIBITED' \
+            'CONVERSION=PROHIBITED' \
+            'CREDENTIAL_USE=PROHIBITED' \
+            'ARTIFACT_UPLOAD=PROHIBITED' \
+            'SPEND_USD=0'
+
+      - name: Materialize and verify exact Qwen3 0.6B GGUF bytes
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          target="$RUNNER_TEMP/$QWEN06_FILENAME"
+          url="https://huggingface.co/${QWEN06_REPOSITORY}/resolve/${QWEN06_REVISION}/${QWEN06_FILENAME}?download=true"
+          curl --disable --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+            --output "$target" "$url"
+          actual_bytes="$(stat -c '%s' "$target")"
+          actual_sha256="$(sha256sum "$target" | awk '{print $1}')"
+          magic="$(head -c 4 "$target")"
+          test "$actual_bytes" = "$QWEN06_BYTES"
+          test "$actual_sha256" = "$QWEN06_SHA256"
+          test "$magic" = 'GGUF'
+          printf '%s\n' \
+            "ARTIFACT_REPOSITORY=$QWEN06_REPOSITORY" \
+            "ARTIFACT_REVISION=$QWEN06_REVISION" \
+            "ARTIFACT_FILENAME=$QWEN06_FILENAME" \
+            "ARTIFACT_BYTES=$actual_bytes" \
+            "ARTIFACT_SHA256=$actual_sha256" \
+            'STATIC_CONTAINER_MAGIC=GGUF' \
+            'BYTE_INTEGRITY=PASS' \
+            'MODEL_LOAD_PERFORMED=NO' \
+            'MODEL_EXECUTION_PERFORMED=NO' \
+            'ARTIFACT_UPLOAD_PERFORMED=NO' \
+            'CREDENTIAL_USE_PERFORMED=NO' \
+            'SPEND_USD=0'
+
+  qwen35-integrity:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Fail-closed E002 byte-integrity preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "${{ github.ref_name }}" = 'evidence/e002-preconverted-integrity-run-v1'
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          for credential_name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN; do
+            test -z "${!credential_name:-}"
+          done
+          required_tools=(bash curl sha256sum stat head df awk)
+          for tool in "${required_tools[@]}"; do command -v "$tool" >/dev/null; done
+          available_kb="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          test "$available_kb" -ge 1048576
+          printf '%s\n' \
+            'E002_SCOPE=EXACT_PRECONVERTED_ALLOWLIST_ONLY' \
+            'MODEL_LOAD=PROHIBITED' \
+            'MODEL_EXECUTION=PROHIBITED' \
+            'CONVERSION=PROHIBITED' \
+            'CREDENTIAL_USE=PROHIBITED' \
+            'ARTIFACT_UPLOAD=PROHIBITED' \
+            'SPEND_USD=0'
+
+      - name: Materialize and verify exact Qwen3.5 0.8B GGUF bytes
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          target="$RUNNER_TEMP/$QWEN35_FILENAME"
+          url="https://huggingface.co/${QWEN35_REPOSITORY}/resolve/${QWEN35_REVISION}/${QWEN35_FILENAME}?download=true"
+          curl --disable --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+            --output "$target" "$url"
+          actual_bytes="$(stat -c '%s' "$target")"
+          actual_sha256="$(sha256sum "$target" | awk '{print $1}')"
+          magic="$(head -c 4 "$target")"
+          test "$actual_bytes" = "$QWEN35_BYTES"
+          test "$actual_sha256" = "$QWEN35_SHA256"
+          test "$magic" = 'GGUF'
+          printf '%s\n' \
+            "ARTIFACT_REPOSITORY=$QWEN35_REPOSITORY" \
+            "ARTIFACT_REVISION=$QWEN35_REVISION" \
+            "ARTIFACT_FILENAME=$QWEN35_FILENAME" \
+            "ARTIFACT_BYTES=$actual_bytes" \
+            "ARTIFACT_SHA256=$actual_sha256" \
+            'STATIC_CONTAINER_MAGIC=GGUF' \
+            'BYTE_INTEGRITY=PASS' \
+            'MODEL_LOAD_PERFORMED=NO' \
+            'MODEL_EXECUTION_PERFORMED=NO' \
+            'ARTIFACT_UPLOAD_PERFORMED=NO' \
+            'CREDENTIAL_USE_PERFORMED=NO' \
+            'SPEND_USD=0'
