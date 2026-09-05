@@ -1,0 +1,21 @@
+{
+  "schema_version": "1",
+  "method_id": "E004_RESEARCH_COMPONENT_POST_FREEZE_SYNTHETIC_NONEXPOSURE_V1",
+  "method_sha256": "190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b",
+  "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+  "candidate_manifest_version": "e001-mass-reach-v1",
+  "candidate_manifest_sha256": "98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28",
+  "candidate_manifest_freeze_record": "specs/007-sft-v1/e001-candidate-manifest-freeze-2026-08-27.md",
+  "candidate_manifest_freeze_date": "2026-08-27",
+  "fixture_namespace_seed": "b85f140192a511cfbfe190476bdb3f6baf784b4d",
+  "fixture_construction_after_candidate_freeze": true,
+  "external_payloads_used": false,
+  "candidate_outputs_observed_before_fixture_freeze": false,
+  "adaptive_generation_from_candidate_outputs": false,
+  "exact_fixture_nonce_method": "SHA256_NAMESPACE_SEED_METRIC_FAMILY_CASE_INDEX",
+  "pass_semantics": "EXACT_FIXTURE_NONEXPOSURE_AND_NONADAPTIVE_PRE_RESULT_FREEZE_ONLY",
+  "semantic_task_novelty_claim": false,
+  "candidate_pretraining_corpus_inspection_claim": false,
+  "private_gold_comparison": false,
+  "current_authorized_spend_usd": 0
+}
