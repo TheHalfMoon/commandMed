@@ -3,10 +3,15 @@ name: E004 Research component tournament asset freeze V1
 on:
   pull_request:
     paths:
+      - 'src/commandmed/spec007/research_tournament.py'
       - 'src/commandmed/spec007/research_tournament_assets.py'
+      - 'src/commandmed/spec007/research_tournament_asset_evidence.py'
       - 'tests/spec007/test_research_tournament_assets.py'
+      - 'tests/spec007/test_research_tournament_asset_evidence.py'
       - 'scripts/e004_research_component_tournament_asset_freeze_v1.py'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-rights-instrument-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-asset-provenance-instrument-v1.json'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-asset-source-verification-v1.json'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-contamination-method-v1.json'
       - 'specs/007-sft-v1/e004-research-component-tournament-evaluation-assets-v1.json'
       - 'specs/007-sft-v1/e004-research-component-tournament-protocol-v1.json'
@@ -35,6 +40,8 @@ jobs:
           candidate_freeze='specs/007-sft-v1/e001-candidate-manifest-freeze-2026-08-27.md'
           grep -Fxq 'FOUNDER_SUCCESSOR_EXECUTION_DECISION=E004_SUCCESSOR_EXECUTION_DECISION_B' "$decision"
           grep -Fxq 'SUCCESSOR_SCOPE_EXECUTION_AUTHORITY=AUTHORIZED_SP007_RO_001_EVIDENCE_ONLY' "$decision"
+          grep -Fq 'COMPONENT_EXTERNAL_CLINICAL_REVIEW_REQUIRED=NO' "$decision"
+          grep -Fq 'COMPONENT_EXTERNAL_STATISTICAL_REVIEW_REQUIRED=NO' "$decision"
           grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$decision"
           grep -Fxq 'CANDIDATE_MANIFEST_FROZEN=YES' "$candidate_freeze"
           grep -Fxq 'MANIFEST_VERSION=e001-mass-reach-v1' "$candidate_freeze"
@@ -51,15 +58,20 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m compileall -q \
+            src/commandmed/spec007/research_tournament.py \
             src/commandmed/spec007/research_tournament_assets.py \
+            src/commandmed/spec007/research_tournament_asset_evidence.py \
             tests/spec007/test_research_tournament_assets.py \
+            tests/spec007/test_research_tournament_asset_evidence.py \
             scripts/e004_research_component_tournament_asset_freeze_v1.py
 
       - name: Run focused asset-freeze tests
         shell: bash
         run: |
           set -euo pipefail
-          PYTHONPATH=. python3 -m unittest -v tests.spec007.test_research_tournament_assets
+          PYTHONPATH=. python3 -m unittest -v \
+            tests.spec007.test_research_tournament_assets \
+            tests.spec007.test_research_tournament_asset_evidence
 
       - name: Run deterministic freeze verifier
         shell: bash
