@@ -86,7 +86,17 @@ jobs:
           PYTHONPATH=. python3 -m unittest -v \
             tests.spec007.test_research_tournament_assets \
             tests.spec007.test_research_tournament_asset_evidence \
-            tests.spec007.test_research_tournament_qualification
+            tests.spec007.test_research_tournament_qualification \
+            2>&1 | tee focused-qualification.log
+
+      - name: Preserve focused failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e004-focused-qualification-failure-${{ github.event.pull_request.head.sha }}
+          path: focused-qualification.log
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Run deterministic qualification verifier
         shell: bash
