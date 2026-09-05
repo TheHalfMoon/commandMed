@@ -25,24 +25,27 @@ def _candidate_bindings() -> list[dict[str, object]]:
         *(pair + ("PRIMARY", True) for pair in PRIMARY_CANDIDATES),
         CONTROL_CANDIDATE + ("CONTROL", False),
     ]
+    artifact_markers = "1234"
+    runtime_markers = "5678"
+    revision_markers = "9abc"
+    tokenizer_markers = "def0"
     for index, (candidate_id, revision, role, winner_eligible) in enumerate(all_candidates):
-        marker = format(index + 1, "x")
         bindings.append(
             {
                 "candidate_id": candidate_id,
                 "upstream_revision": revision,
                 "candidate_role": role,
                 "winner_eligible": winner_eligible,
-                "model_artifact_sha256": marker * 64,
+                "model_artifact_sha256": artifact_markers[index] * 64,
                 "model_artifact_bytes": 1000 + index,
                 "artifact_format": "SAFETENSORS",
                 "artifact_access_state": "PUBLIC_UNGATED_EXACT_IDENTITY",
                 "runtime_binding_authority_id": f"SYNTHETIC-RUNTIME-AUTHORITY-{index}",
                 "runtime_entrypoint": "python3",
-                "runtime_executable_sha256": format(index + 5, "x") * 64,
-                "runtime_source_revision": format(index + 9, "x") * 40,
+                "runtime_executable_sha256": runtime_markers[index] * 64,
+                "runtime_source_revision": revision_markers[index] * 40,
                 "runtime_format_compatibility_state": "PASS",
-                "tokenizer_config_sha256": format(index + 13, "x") * 64,
+                "tokenizer_config_sha256": tokenizer_markers[index] * 64,
                 "runtime_argv": ["python3", "synthetic-offline-runner.py"],
             }
         )
