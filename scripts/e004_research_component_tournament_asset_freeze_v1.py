@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the frozen SP007-RO-001 non-clinical tournament subject.
+"""Validate the qualified SP007-RO-001 non-clinical tournament subject.
 
 This command reads repository-authored metadata and synthetic non-clinical
 fixtures only. It never loads model weights, executes inference, opens devices,
@@ -14,8 +14,9 @@ from pathlib import Path
 from src.commandmed.spec007.research_tournament import (
     compute_research_component_tournament_protocol_sha256,
 )
-from src.commandmed.spec007.research_tournament_asset_evidence import (
-    validate_frozen_research_component_evaluation_package,
+from src.commandmed.spec007.research_tournament_qualification import (
+    FOUNDER_DECISION_TOKEN,
+    validate_qualified_research_component_evaluation_package,
 )
 from src.commandmed.spec007.research_tournament_assets import (
     compute_contamination_method_sha256,
@@ -34,6 +35,13 @@ def load_json(path: Path):
 
 
 def main() -> int:
+    founder_decision_text = (
+        SPEC
+        / "e004-research-component-evaluation-qualification-founder-decision-2026-09-05.md"
+    ).read_text(encoding="utf-8")
+    privacy = load_json(
+        SPEC / "e004-research-component-evaluation-asset-privacy-classification-v1.json"
+    )
     provenance = load_json(
         SPEC / "e004-research-component-evaluation-asset-provenance-instrument-v1.json"
     )
@@ -49,9 +57,7 @@ def main() -> int:
     asset_set = load_json(
         SPEC / "e004-research-component-tournament-evaluation-assets-v1.json"
     )
-    protocol = load_json(
-        SPEC / "e004-research-component-tournament-protocol-v1.json"
-    )
+    protocol = load_json(SPEC / "e004-research-component-tournament-protocol-v1.json")
     lineage_contract = load_json(ROOT / "data" / "lineage" / "lineage_contract.json")
 
     assets = asset_set.get("asset_records", [])
@@ -60,7 +66,9 @@ def main() -> int:
         for asset in assets
         if isinstance(asset, dict)
     ]
-    errors = validate_frozen_research_component_evaluation_package(
+    errors = validate_qualified_research_component_evaluation_package(
+        founder_decision_text=founder_decision_text,
+        privacy_instrument=privacy,
         provenance_instrument=provenance,
         source_verification_instrument=source_verification,
         rights_instrument=rights,
@@ -83,6 +91,8 @@ def main() -> int:
         and asset.get("asset_kind") == "RESOURCE_MEASUREMENT_PROTOCOL"
     )
 
+    print(f"FOUNDER_DECISION_BOUND={str(FOUNDER_DECISION_TOKEN in founder_decision_text).upper()}")
+    print(f"PRIVACY_INSTRUMENT_SHA256={privacy.get('instrument_sha256')}")
     print(f"PROVENANCE_INSTRUMENT_SHA256={provenance.get('instrument_sha256')}")
     print(
         "SOURCE_VERIFICATION_INSTRUMENT_SHA256="
@@ -121,6 +131,7 @@ def main() -> int:
         f"{compute_research_component_tournament_protocol_sha256(protocol)}"
     )
     print("MODEL_EXECUTION_PERFORMED=NO")
+    print("TOURNAMENT_EXECUTION_PERFORMED=NO")
     print("TRAINING_PERFORMED=NO")
     print("WINNER_SELECTED=NO")
     print("CURRENT_AUTHORIZED_SPEND_USD=0")
@@ -130,7 +141,6 @@ def main() -> int:
             print(f"ERROR={error}")
         print("RESULT=FAIL")
         return 1
-
     if len(assets) != 7 or mcq_case_count != 72 or resource_probe_count != 8:
         print("ERROR=Frozen asset cardinality mismatch")
         print("RESULT=FAIL")
