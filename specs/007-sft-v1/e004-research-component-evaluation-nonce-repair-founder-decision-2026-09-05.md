@@ -1,0 +1,152 @@
+# E004 Research-Component Evaluation Nonce-Repair Founder Decision — 2026-09-05
+
+**Spec:** 007 SFT V1  
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
+**Successor policy:** `SP007-RO-001`  
+**Decision owner:** Founder  
+**Decision state:** `CANONICAL_SELECTION_CAPTURE_PENDING_MERGE`  
+**Current authorized spend:** USD 0
+
+## 1. Canonical decision request
+
+This record captures the exact Founder selection made after the canonical decision request:
+
+```text
+REQUEST_PATH=specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-founder-decision-request-2026-09-05.md
+REQUEST_CANONICAL_MAIN_SHA=982a939f556b0d4ac2ce0f9aba89770ce170a39e
+```
+
+The selected exact token is:
+
+```text
+FOUNDER_RESEARCH_COMPONENT_EVAL_NONCE_REPAIR_DECISION=E004_RESEARCH_COMPONENT_EVAL_NONCE_REPAIR_DECISION_B
+```
+
+No generic continuation language is used as authority.
+
+## 2. Effective bounded repair authority after canonical merge
+
+After this record is canonically merged, and only while no later canonical record invalidates or narrows it:
+
+```text
+EVAL_NONCE_REPAIR_AUTHORITY=AUTHORIZED_PREEXISTING_VALIDATOR_METHOD_ONLY
+EVAL_NONCE_REPAIR_FORMULA=SHA256(f"{fixture_namespace_seed}|{metric_family}|{index}")[:16]
+EVAL_NONCE_REPAIR_INDEXING=ONE_BASED_DECIMAL_UNPADDED
+EVAL_NONCE_EMBEDDING_REPAIR_AUTHORITY=AUTHORIZED_EXACT_NONCE_FIELDS_AND_REQUIRED_PROMPT_INPUT_EMBEDDINGS_ONLY
+EVAL_NONCE_SEMANTIC_PAYLOAD_REWRITE_AUTHORITY=NONE
+EVAL_DERIVED_ASSET_HASH_REBIND_AUTHORITY=AUTHORIZED_DETERMINISTIC_RECOMPUTATION_ONLY
+EVAL_DERIVED_ASSET_SET_HASH_REBIND_AUTHORITY=AUTHORIZED_DETERMINISTIC_RECOMPUTATION_ONLY
+EVAL_DERIVED_PROVENANCE_BINDING_REBIND_AUTHORITY=AUTHORIZED_NEW_ASSET_SET_HASH_ONLY
+EVAL_DERIVED_SOURCE_VERIFICATION_REBIND_AUTHORITY=AUTHORIZED_NEW_ASSET_SET_HASH_ONLY
+EVAL_DERIVED_PRIVACY_BINDING_REBIND_AUTHORITY=AUTHORIZED_NEW_ASSET_SET_HASH_ONLY
+EVAL_DERIVED_PROTOCOL_MANIFEST_REBIND_AUTHORITY=AUTHORIZED_ONLY_AFTER_ALL_REPAIRED_ASSETS_COMPUTE_ELIGIBLE
+EVAL_DERIVED_PROTOCOL_HASH_REBIND_AUTHORITY=AUTHORIZED_DETERMINISTIC_RECOMPUTATION_ONLY
+CALLER_CONTROLLED_ELIGIBLE_STATE=PROHIBITED
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+## 3. Exact preserved subject
+
+The repair preserves:
+
+```text
+ASSET_SET_ID=SP007_RO_001_NONCLINICAL_EVALUATION_ASSET_SET_V1
+FIXTURE_NAMESPACE_SEED=b85f140192a511cfbfe190476bdb3f6baf784b4d
+NONCE_METHOD=SHA256_NAMESPACE_SEED_METRIC_FAMILY_CASE_INDEX
+ASSET_COUNT=7
+MCQ_CASE_COUNT=72
+RESOURCE_PROBE_COUNT=8
+EXTERNAL_PAYLOADS_USED=NO
+CANDIDATE_OUTPUTS_OBSERVED_BEFORE_FREEZE=NO
+ADAPTIVE_GENERATION_FROM_CANDIDATE_OUTPUTS=NO
+OPTIMIZATION_FEEDBACK_ALLOWED=NO
+PRIVATE_GOLD_INCLUDED=NO
+PHI_INCLUDED=NO
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+The exact asset IDs remain unchanged:
+
+```text
+SP007-RO-001-EVAL-INSTRUCTION-V1
+SP007-RO-001-EVAL-ENGLISH-V1
+SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1
+SP007-RO-001-EVAL-UNCERTAINTY-V1
+SP007-RO-001-EVAL-TOOL-ROUTING-V1
+SP007-RO-001-EVAL-CAPABILITY-V1
+SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1
+```
+
+## 4. Repair constraints
+
+The implementation must:
+
+1. use the preexisting validator formula exactly;
+2. use one-based decimal unpadded indexes;
+3. replace only each `case_nonce` / `probe_nonce` field and the exact corresponding full-nonce occurrence required by the validator in `prompt` / `input_text`;
+4. prove that no unrelated semantic task content, choices, correct answers, ranking families, asset IDs, counts, source classes, or clinical scope changed;
+5. recompute every derived identity from exact repaired bytes;
+6. rerun every rights, provenance/source, bounded privacy, quarantine, narrow contamination, canonical Spec 003 admission, protocol, focused-test, Spec 007 regression, full-regression, and diff-whitespace gate;
+7. require all seven Spec 003 admissions to be computed `ELIGIBLE` without caller override before protocol rebinding;
+8. fail closed on any mismatch.
+
+## 5. Existing contradiction remains historical evidence
+
+This decision does not retroactively turn the failed subject into a PASS.
+
+```text
+VALIDATOR_COMMIT=65cccddae92a8e86828bd394e87ba700ee323ccb
+ASSET_FREEZE_COMMIT=6cd3dd6ee638ee6512ad86be8178cf121ee59f18
+PR254_FAILED_HEAD=af8a7bc5ede288aaebcd6b15d71b9408dd70e12b
+PR254_FAILED_WORKFLOW_RUN=33966361118
+PR254_FOCUSED_QUALIFICATION=FAIL
+FIRST_CASE_VALIDATOR_EXPECTED_NONCE=9e2b8a36a4170ea4
+FIRST_CASE_FROZEN_NONCE=0fa98419824fb691
+```
+
+A repaired subject must earn a fresh exact-head PASS.
+
+## 6. No execution or training expansion
+
+This decision does not create or expand:
+
+```text
+MODEL_WEIGHT_ACCESS_AUTHORITY_EXPANSION=NONE
+MODEL_EXECUTION_AUTHORITY_EXPANSION=NONE
+TOURNAMENT_EXECUTION_AUTHORITY_EXPANSION=NONE
+DEVICE_EXECUTION_AUTHORITY_EXPANSION=NONE
+MODEL_CONVERSION_AUTHORITY=NONE
+CONVERSION_EXECUTION_AUTHORITY=NONE
+A15_ACTIVATION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+PHI_ACCESS_AUTHORITY=NONE
+GATED_ASSET_ACCESS_AUTHORITY=NONE
+CREDENTIAL_ACCESS_AUTHORITY=NONE
+PROVIDER_API_GENERATION_AUTHORITY=NONE
+PROCUREMENT_AUTHORITY=NONE
+PAYMENT_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+SYSTEM_SAFETY_PASS=NO
+CLINICAL_SAFETY_PASS=NO
+PATIENT_USE_AUTHORITY=NONE
+CLINICAL_PROFESSIONAL_USE_AUTHORITY=NONE
+RELEASE_READY=NO
+```
+
+The separately canonical successor execution decision remains controlling. Model or tournament execution remains prohibited until a later fresh successor preflight genuinely passes all controlling gates.
+
+## 7. Immediate authorized next transition after canonical merge
+
+```text
+NEXT_REAL_TRANSITION=REPAIR_EXACT_SP007_RO_001_EVALUATION_SUBJECT_AND_REQUALIFY
+PR254_CURRENT_EXPECTED_STATE=DRAFT_BLOCKED_UNTIL_REPAIRED_EXACT_HEAD_PASSES
+MODEL_EXECUTION_NOW=NOT_AUTHORIZED_BY_CURRENT_GATE_STATE
+TOURNAMENT_EXECUTION_NOW=NOT_AUTHORIZED_BY_CURRENT_GATE_STATE
+MODEL_WINNER_SELECTED=NO
+E005_STATE=NOT_REACHED
+TRAINING_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+PROJECT_FINISHED=NO
+```
