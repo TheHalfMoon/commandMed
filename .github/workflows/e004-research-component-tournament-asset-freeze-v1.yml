@@ -10,11 +10,12 @@ on:
       - 'tests/spec007/test_research_tournament_assets.py'
       - 'tests/spec007/test_research_tournament_asset_evidence.py'
       - 'tests/spec007/test_research_tournament_qualification.py'
+      - 'tests/spec007/test_research_tournament_nonce_repair_evidence.py'
       - 'scripts/e004_research_component_tournament_asset_freeze_v1.py'
-      - 'scripts/e004_research_component_nonce_repair_v1.py'
       - 'specs/007-sft-v1/e004-research-component-evaluation-qualification-founder-decision-2026-09-05.md'
       - 'specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-founder-decision-request-2026-09-05.md'
       - 'specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-founder-decision-2026-09-05.md'
+      - 'specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-evidence-v1.json'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-rights-instrument-v1.json'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-provenance-instrument-v1.json'
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-source-verification-v1.json'
@@ -22,13 +23,10 @@ on:
       - 'specs/007-sft-v1/e004-research-component-evaluation-asset-contamination-method-v1.json'
       - 'specs/007-sft-v1/e004-research-component-tournament-evaluation-assets-v1.json'
       - 'specs/007-sft-v1/e004-research-component-tournament-protocol-v1.json'
-      - 'specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-evidence-v1.json'
       - '.github/workflows/e004-research-component-tournament-asset-freeze-v1.yml'
 
-# Temporary mutation permission is fail-closed to the exact same-repository PR
-# branch below. It is removed immediately after the generated repair commit lands.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -84,64 +82,6 @@ jobs:
           grep -Fxq 'SPEND_AUTHORITY=NONE' "$qualification"
           echo "HEAD_SHA=$(git rev-parse HEAD)"
 
-      - name: Emit bounded nonce-repair construction bundle
-        shell: bash
-        run: |
-          set -euo pipefail
-          PYTHONPATH=. python3 scripts/e004_research_component_nonce_repair_v1.py \
-            --emit-bundle e004-nonce-repair-bundle.json
-
-      - name: Preserve nonce-repair construction bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: e004-nonce-repair-bundle-${{ github.event.pull_request.head.sha }}
-          path: e004-nonce-repair-bundle.json
-          if-no-files-found: error
-          retention-days: 1
-
-      - name: Apply exact PASS bundle to bounded PR branch
-        shell: bash
-        run: |
-          set -euo pipefail
-          test '${{ github.event.pull_request.head.repo.full_name }}' = '${{ github.repository }}'
-          test '${{ github.event.pull_request.head.ref }}' = 'feat/e004-research-component-eval-qualification-v1'
-          test "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha }}'
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          bundle = json.loads(Path('e004-nonce-repair-bundle.json').read_text(encoding='utf-8'))
-          assert bundle['result'] == 'PASS'
-          assert bundle['semantic_projection_proof'] == 'PASS'
-          assert bundle['validator_repair_proof'] == 'PASS'
-          assert bundle['nonce_record_count'] == 80
-          assert bundle['all_spec003_admissions_eligible'] is True
-          for relative, content in bundle['files'].items():
-              path = Path(relative)
-              path.parent.mkdir(parents=True, exist_ok=True)
-              path.write_text(content, encoding='utf-8')
-          PY
-          git config --local user.name 'commandMed CI Repair'
-          git config --local user.email 'commandmed-ci-repair@invalid.local'
-          git add \
-            specs/007-sft-v1/e004-research-component-tournament-evaluation-assets-v1.json \
-            specs/007-sft-v1/e004-research-component-evaluation-asset-provenance-instrument-v1.json \
-            specs/007-sft-v1/e004-research-component-evaluation-asset-source-verification-v1.json \
-            specs/007-sft-v1/e004-research-component-evaluation-asset-privacy-classification-v1.json \
-            specs/007-sft-v1/e004-research-component-tournament-protocol-v1.json \
-            specs/007-sft-v1/e004-research-component-evaluation-nonce-repair-evidence-v1.json \
-            src/commandmed/spec007/research_tournament_assets.py \
-            src/commandmed/spec007/research_tournament_asset_evidence.py \
-            src/commandmed/spec007/research_tournament_qualification.py \
-            tests/spec007/test_research_tournament_assets.py
-          if git diff --cached --quiet; then
-            echo 'REPAIR_COMMIT_CREATED=NO_ALREADY_APPLIED'
-          else
-            git commit -m 'fix(e004): apply bounded evaluation nonce repair'
-            git push origin HEAD:refs/heads/feat/e004-research-component-eval-qualification-v1
-            echo "REPAIR_COMMIT_CREATED=YES"
-            echo "REPAIR_COMMIT_SHA=$(git rev-parse HEAD)"
-          fi
-
       - name: Compile asset-qualification surface
         shell: bash
         run: |
@@ -154,6 +94,7 @@ jobs:
             tests/spec007/test_research_tournament_assets.py \
             tests/spec007/test_research_tournament_asset_evidence.py \
             tests/spec007/test_research_tournament_qualification.py \
+            tests/spec007/test_research_tournament_nonce_repair_evidence.py \
             scripts/e004_research_component_tournament_asset_freeze_v1.py
 
       - name: Run focused asset-qualification tests
@@ -164,6 +105,7 @@ jobs:
             tests.spec007.test_research_tournament_assets \
             tests.spec007.test_research_tournament_asset_evidence \
             tests.spec007.test_research_tournament_qualification \
+            tests.spec007.test_research_tournament_nonce_repair_evidence \
             2>&1 | tee focused-qualification.log
 
       - name: Preserve focused failure diagnostics
@@ -210,4 +152,4 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git diff --check "${{ github.event.pull_request.base.sha }}...HEAD"
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"
