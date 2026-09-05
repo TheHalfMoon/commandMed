@@ -28,6 +28,29 @@ SENTINEL_FIXTURE_SET_SHA256 = (
 SENTINEL_FIXTURE_SHA256_SET_SHA256 = (
     "b65b36689cf2006bad8b446536d50ccd3f3440a4b244c044a1b26409aea0fef2"
 )
+CANONICAL_GUARD_FIXTURE_SHA256 = {
+    "RO_GUARD_001_OUT_OF_SCOPE_PATIENT_ADVICE": (
+        "6ae5dcdfe4ab75b55cee81439f26242ed89c4867fb5fca125de1cf7b713ce4d4"
+    ),
+    "RO_GUARD_002_OUT_OF_SCOPE_CLINICAL_PROFESSIONAL_ADVICE": (
+        "0104be64bebbcd08dbf27971cc953d3abeb9ca07cc84dd7432e6d30f9646f518"
+    ),
+    "RO_GUARD_003_EMERGENCY_SENTINEL": (
+        "7b6653af5e0260ce01b42dca82be476b1cff1d6ba7c46a0ea82a7b492d45606b"
+    ),
+    "RO_GUARD_004_MEDICATION_SENTINEL": (
+        "136d3520fe3fc9569615be66072e4cb634fe91c15a56b0af21915dba2cff94b7"
+    ),
+    "RO_GUARD_005_DETERMINISTIC_TOOL_BOUNDARY": (
+        "2c3a5519c4bb6cd79f8e2f8a8d95fe05bf3e90b520ab80f7f6a43b4f6f294d5e"
+    ),
+    "RO_GUARD_006_UNSUPPORTED_CERTAINTY": (
+        "eb7557b946f7c55c4e99a69783aad015f04e21026c1564ba4098f697d1ecc825"
+    ),
+    "RO_GUARD_007_SCOPE_ESCAPE": (
+        "83628c0c1ef3cd5c89b77b4c88756784b24fc0647f76d97b355bd06363ae15e4"
+    ),
+}
 
 PRIMARY_CANDIDATES = (
     ("Qwen/Qwen3-0.6B-Base", "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"),
@@ -261,7 +284,7 @@ def _validate_evaluation_assets(value: Any, metric_families: set[str]) -> list[s
         return [f"{prefix}: must be a non-empty list"]
     errors: list[str] = []
     seen_asset_ids: set[str] = set()
-    covered_families: set[str] = set()
+    seen_families: set[str] = set()
     for index, asset in enumerate(value):
         item_prefix = f"{prefix}[{index}]"
         item_errors = validate_closed_object(
@@ -283,8 +306,10 @@ def _validate_evaluation_assets(value: Any, metric_families: set[str]) -> list[s
             errors.append(f"{item_prefix}: clinical metric identity is prohibited")
         if family not in ALLOWED_RANKING_METRIC_FAMILIES or family not in metric_families:
             errors.append(f"{item_prefix}: metric_family is not frozen for ranking")
+        elif family in seen_families:
+            errors.append(f"{item_prefix}: duplicate metric_family")
         else:
-            covered_families.add(family)
+            seen_families.add(family)
         if source_class in PROHIBITED_SELECTION_SOURCE_CLASSES:
             errors.append(f"{item_prefix}: source_class is prohibited for selection")
         elif source_class not in ALLOWED_SELECTION_SOURCE_CLASSES:
@@ -308,9 +333,10 @@ def _validate_evaluation_assets(value: Any, metric_families: set[str]) -> list[s
             errors.append(
                 f"{item_prefix}: purpose must equal COMPONENT_TOURNAMENT_SELECTION"
             )
-    missing = sorted(metric_families - covered_families)
-    if missing:
-        errors.append(f"{prefix}: missing ranking metric families {missing}")
+    if seen_families != metric_families:
+        errors.append(f"{prefix}: exact one-asset-per-ranking-family coverage required")
+    if isinstance(value, list) and len(value) != len(metric_families):
+        errors.append(f"{prefix}: asset count must equal ranking metric-family count")
     return errors
 
 
@@ -501,8 +527,8 @@ def validate_research_component_tournament_evidence_pack(
                 errors.append(f"{item_prefix}: duplicate guard_id")
             else:
                 guard_ids.add(guard_id)
-            if not is_canonical_sha256(result.get("fixture_sha256")):
-                errors.append(f"{item_prefix}: fixture_sha256 must be lowercase sha256 hex")
+            if result.get("fixture_sha256") != CANONICAL_GUARD_FIXTURE_SHA256.get(guard_id):
+                errors.append(f"{item_prefix}: fixture_sha256 mismatch for guard_id")
             violations = result.get("violation_count")
             if type(violations) is not int or violations < 0:
                 errors.append(f"{item_prefix}: violation_count must be non-negative integer")
