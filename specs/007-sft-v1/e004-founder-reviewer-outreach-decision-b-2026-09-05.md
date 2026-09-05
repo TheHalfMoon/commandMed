@@ -1,0 +1,157 @@
+# E004 Founder Reviewer Outreach Decision B — 2026-09-05
+
+**Spec:** 007 SFT V1  
+**Canonical decision surface:** `specs/007-sft-v1/e004-founder-reviewer-outreach-reauthorization-decision-request-2026-08-30.md`  
+**Canonical base:** `b38847a3fdd599da7e0436be47118182644f6143`  
+**Decision owner:** Founder  
+**Decision class:** `E004_OUTREACH_DECISION_B`  
+**Decision state:** RECORDED_FOR_REVIEW_PENDING_GITHUB_ATTESTATION_BINDING  
+**Authority effect before canonical merge:** NONE  
+**Current authorized spend:** USD 0
+
+## 1. Exact Founder decision capture
+
+The canonical decision surface was already merged before this response and remained controlling when the Founder supplied the exact operative token requested by that surface.
+
+The Founder response was exactly:
+
+```text
+FOUNDER_OUTREACH_DECISION=E004_OUTREACH_DECISION_B
+```
+
+Content binding available from the controlling product context:
+
+```text
+FOUNDER_RESPONSE_SHA256=31d0221b71c638a99b268d9085fc0de6185ade8b1b952e60bf0e4980594e2114
+FOUNDER_RESPONSE_RECEIVED_AT_LOCAL_MINUTE=2026-09-05T12:32+03:00
+FOUNDER_RESPONSE_TIMESTAMP_PRECISION=MINUTE_PRODUCT_CONTEXT
+FOUNDER_RESPONSE_ORDERING=AFTER_CANONICAL_DECISION_SURFACE
+```
+
+The external product conversation is not represented as a GitHub event. This PR therefore requires a Founder-authenticated GitHub attestation comment containing the exact token before this record may be qualified or merged. Until that GitHub attestation is bound below, this file creates no outreach authority.
+
+## 2. Decision B scope
+
+After this decision record is fully provenance-bound, qualified, and canonically merged, the exact authority becomes:
+
+```text
+FOUNDER_OUTREACH_DECISION=E004_OUTREACH_DECISION_B
+EXTERNAL_REVIEWER_OUTREACH_AUTHORITY=AUTHORIZED_PRESCREEN_ONLY
+AUTHORIZED_SCOPE=PR116_INFORMATION_ONLY_PRESCREEN
+INITIAL_MESSAGES_PER_CANDIDATE_MAX=1
+FOLLOW_UP_MESSAGES_AUTHORIZED_NOW=0
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+This is a narrow information-only prescreen. It does not appoint a reviewer and does not authorize scientific work.
+
+## 3. Mandatory pre-contact verification
+
+Immediately before any initial contact, each historical candidate must be reverified against the current canonical public candidate slate and a current first-party public professional contact route.
+
+```text
+CANDIDATE_MUST_BE_ON_CURRENT_CANONICAL_PUBLIC_SLATE=YES
+CURRENT_FIRST_PARTY_PUBLIC_PROFESSIONAL_CONTACT_ROUTE_REQUIRED=YES
+STALE_AMBIGUOUS_OR_UNVERIFIABLE_CONTACT_ROUTE=DO_NOT_CONTACT
+PERSONAL_OR_NONPROFESSIONAL_CONTACT_ROUTE=PROHIBITED
+```
+
+Historical candidate names alone are not executable contact authority.
+
+## 4. Prescreen message boundary
+
+Each verified candidate may receive at most one initial information-only prescreen message. The message may ask only about preliminary interest, availability, relevant competence, and conflicts for a possible later separately governed reviewer role.
+
+```text
+REQUEST_TO_BEGIN_SCIENTIFIC_WORK=PROHIBITED
+REQUEST_FOR_CLINICAL_DISPOSITION=PROHIBITED
+REQUEST_FOR_STATISTICAL_DISPOSITION=PROHIBITED
+REQUEST_FOR_THRESHOLD_RECOMMENDATION=PROHIBITED
+REVIEWER_APPOINTMENT=PROHIBITED
+SCIENTIFIC_ROLE_ASSIGNMENT=PROHIBITED
+FOLLOW_UP=PROHIBITED
+ATTACHMENTS=PROHIBITED
+PAYMENT_OR_HONORARIUM_OFFER=PROHIBITED
+CONTRACT_OR_PROCUREMENT=PROHIBITED
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+Any reply is preliminary prescreen evidence only and cannot itself satisfy T1/A2 or any personnel, clinical, statistical, rights, privacy, A14, or A15 gate.
+
+## 5. Downstream authorities remain absent
+
+```text
+REVIEWER_APPOINTMENT_AUTHORITY=NONE
+SCIENTIFIC_REVIEW_AUTHORITY=NONE
+T1_A2=INCOMPLETE
+CLINICAL_REVIEW_DISPOSITION=ABSENT
+STATISTICAL_REVIEW_DISPOSITION=ABSENT
+NUMERIC_THRESHOLD_MARGIN_POLICY=NOT_FROZEN
+MODEL_CONVERSION_AUTHORITY=NONE
+CONVERSION_EXECUTION_AUTHORITY=NONE
+CONTAMINATION_ASSESSMENT_AUTHORITY=NONE
+A15_ACTIVATION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+PHI_ACCESS_AUTHORITY=NONE
+GATED_ASSET_ACCESS_AUTHORITY=NONE
+USER_MANAGED_CREDENTIAL_AUTHORITY=NONE
+PROCUREMENT_AUTHORITY=NONE
+PAYMENT_AUTHORITY=NONE
+SPEND_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+E004=INCOMPLETE
+E004_STATE=BLOCKED_PREFLIGHT
+E005_STATE=NOT_REACHED
+PROJECT_FINISHED=NO
+```
+
+## 6. GitHub attestation binding
+
+The following fields must be replaced with exact GitHub evidence before qualification:
+
+```text
+FOUNDER_ATTESTATION_PR=NEEDS_EVIDENCE
+FOUNDER_ATTESTATION_COMMENT_ID=NEEDS_EVIDENCE
+FOUNDER_ATTESTATION_URL=NEEDS_EVIDENCE
+FOUNDER_ATTESTATION_TYPE=EXACT_TOKEN_REPOSITORY_ATTESTATION_PENDING
+FOUNDER_ATTESTED_TOKEN=NEEDS_EVIDENCE
+```
+
+No outreach may occur while any of those fields remain unresolved.
+
+## 7. Required lifecycle
+
+```text
+CREATE_BOUNDED_DECISION_RECORD_PR
+-> ADD_EXACT_FOUNDER_TOKEN_AS_GITHUB_ATTESTATION
+-> BIND_ATTESTATION_ID_URL_AND_CONTENT_IN_THIS_RECORD
+-> VERIFY_EXACT_BASE_HEAD_AND_ONE_FILE_DIFF
+-> VERIFY_APPLICABLE_CI_STATUS_REVIEW_THREADS_RULESETS_AND_MERGEABILITY
+-> GUARDED_EXPECTED_HEAD_MERGE
+-> VERIFY_CANONICAL_MAIN
+-> REREAD_CONTROLLING_GOVERNANCE
+-> REVERIFY_CURRENT_CANDIDATE_SLATE_AND_FIRST_PARTY_CONTACT_ROUTES
+-> AT_MOST_ONE_INFORMATION_ONLY_INITIAL_MESSAGE_PER_VERIFIED_CANDIDATE
+-> RECONCILE_ONLY_REAL_PRESCREEN_RESPONSES
+```
+
+## Exit Evidence
+
+This decision record is repository-level complete only when the exact head proves:
+
+```text
+EXACT_FOUNDER_TOKEN_CAPTURED=YES
+FOUNDER_RESPONSE_ORDERING_AFTER_CANONICAL_SURFACE=YES
+FOUNDER_GITHUB_ATTESTATION_BOUND=YES
+DECISION_B_SCOPE_PRESERVED=YES
+PRESCREEN_ONLY_AUTHORITY_CREATED=YES_AFTER_CANONICAL_MERGE
+FOLLOW_UP_AUTHORITY_CREATED=NO
+REVIEWER_APPOINTMENT_AUTHORITY_CREATED=NO
+SCIENTIFIC_REVIEW_AUTHORITY_CREATED=NO
+T1_A2_AUTOMATICALLY_PASSED=NO
+A15_AUTHORITY_CREATED=NO
+TRAINING_AUTHORITY_CREATED=NO
+SPEND_AUTHORITY_CREATED=NO
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
