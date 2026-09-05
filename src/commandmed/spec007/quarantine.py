@@ -54,6 +54,31 @@ def canonical_quarantine_matrix_sha256() -> str:
     return compute_canonical_sha256({"quarantine_rules": parsed["quarantine_rules"]})
 
 
+def explicitly_prohibited_quarantine_source(source_id: Any, purpose: Any) -> bool:
+    """Return whether an identity is explicitly prohibited for a canonical purpose.
+
+    This is intentionally narrower than :func:`evaluate_quarantine_source`.
+    Callers may use it to prevent a provenance authority from masquerading as an
+    explicitly protected/quarantined source identity without incorrectly treating
+    every provenance authority as though it were itself a quarantine source.
+    Unknown provenance authority identities therefore do not become authorized
+    quarantine sources; this helper answers only the explicit-prohibition question.
+    """
+    if not isinstance(source_id, str) or not source_id:
+        return False
+    if not isinstance(purpose, str):
+        return False
+    rules = _load_canonical_quarantine()["quarantine_rules"]
+    rule = next(
+        (item for item in rules if isinstance(item, dict) and item.get("purpose") == purpose),
+        None,
+    )
+    if rule is None:
+        return False
+    prohibited_sources = rule.get("prohibited_sources", [])
+    return isinstance(prohibited_sources, list) and source_id in prohibited_sources
+
+
 def evaluate_quarantine_source(source_id: Any, purpose: Any) -> dict[str, Any]:
     """Evaluate one source/purpose pair against the canonical matrix, fail closed."""
     digest = canonical_quarantine_matrix_sha256()

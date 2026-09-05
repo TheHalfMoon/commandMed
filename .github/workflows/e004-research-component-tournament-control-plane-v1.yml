@@ -1,0 +1,100 @@
+name: E004 Research component tournament control plane V1
+
+on:
+  pull_request:
+    paths:
+      - 'src/commandmed/spec007/research_tournament.py'
+      - 'src/commandmed/spec007/quarantine.py'
+      - 'src/commandmed/spec007/snapshot.py'
+      - 'tests/spec007/test_research_tournament.py'
+      - 'tests/spec007/test_review_repair_regressions.py'
+      - 'tests/spec007/test_quarantine_snapshot.py'
+      - 'specs/007-sft-v1/e004-research-component-tournament-control-plane-2026-09-05.md'
+      - '.github/workflows/e004-research-component-tournament-control-plane-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Bind exact head and authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          decision='specs/007-sft-v1/e004-successor-scope-execution-authorization-founder-decision-2026-09-02.md'
+          policy='specs/007-sft-v1/e004-research-only-safety-policy-successor-2026-08-31.md'
+          grep -Fxq 'FOUNDER_SUCCESSOR_EXECUTION_DECISION=E004_SUCCESSOR_EXECUTION_DECISION_B' "$decision"
+          grep -Fxq 'SUCCESSOR_SCOPE_EXECUTION_AUTHORITY=AUTHORIZED_SP007_RO_001_EVIDENCE_ONLY' "$decision"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$decision"
+          grep -Fq 'SUCCESSOR_SCOPE_ID=SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1' "$policy"
+          grep -Fq 'COMPONENT_EXTERNAL_CLINICAL_REVIEW_REQUIRED=NO' "$decision"
+          grep -Fq 'COMPONENT_EXTERNAL_STATISTICAL_REVIEW_REQUIRED=NO' "$decision"
+          echo "HEAD_SHA=$(git rev-parse HEAD)"
+
+      - name: Compile changed Python surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            src/commandmed/spec007/research_tournament.py \
+            src/commandmed/spec007/quarantine.py \
+            src/commandmed/spec007/snapshot.py \
+            tests/spec007/test_research_tournament.py \
+            tests/spec007/test_review_repair_regressions.py \
+            tests/spec007/test_quarantine_snapshot.py
+
+      - name: Run focused tournament tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m unittest -v tests.spec007.test_research_tournament
+
+      - name: Install pytest for regression qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check pytest
+
+      - name: Run focused snapshot regression repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m pytest -q \
+            tests/spec007/test_review_repair_regressions.py::test_snapshot_rejects_prohibited_source_authority_even_with_allowed_split \
+            tests/spec007/test_quarantine_snapshot.py::TestDatasetSnapshotAndCoverage::test_snapshot_treats_source_authority_as_provenance_not_quarantine_source \
+            tests/spec007/test_quarantine_snapshot.py::TestDatasetSnapshotAndCoverage::test_snapshot_still_rejects_prohibited_train_split
+
+      - name: Run Spec 007 regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m pytest -q tests/spec007
+
+      - name: Configure local Git identity for ephemeral fixture commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --local user.name 'commandMed CI Fixture'
+          git config --local user.email 'commandmed-ci-fixture@invalid.local'
+
+      - name: Run full repository regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m pytest -q
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"
