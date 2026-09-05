@@ -1,0 +1,308 @@
+{
+  "schema_version": "1",
+  "asset_set_id": "SP007_RO_001_NONCLINICAL_EVALUATION_ASSET_SET_V1",
+  "asset_set_sha256": "49d1044ec8c6317136cf69d5b094eb1d4e93a8d6dad938be23254a71a5dfe435",
+  "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+  "pre_result_freeze": true,
+  "candidate_result_visibility_before_freeze": false,
+  "asset_records": [
+    {
+      "schema_version": "1",
+      "asset_id": "SP007-RO-001-EVAL-INSTRUCTION-V1",
+      "asset_sha256": "5d8c26b329fce0e3482609a7022a77d8fd4ae15dd8fea9147aecebb05e2aa6b7",
+      "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+      "metric_family": "GENERAL_INSTRUCTION_FOLLOWING",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "rights_instrument_sha256": "877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0",
+      "contamination_method_id": "E004_RESEARCH_COMPONENT_POST_FREEZE_SYNTHETIC_NONEXPOSURE_V1",
+      "contamination_method_sha256": "190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b",
+      "candidate_manifest_version": "e001-mass-reach-v1",
+      "candidate_manifest_sha256": "98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28",
+      "fixture_namespace_seed": "b85f140192a511cfbfe190476bdb3f6baf784b4d",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "quarantine_purpose": "CHECKPOINT_SELECTION",
+      "quarantine_matrix_sha256": "e2b2fd52e2eef007935ffe497fb50656960fa4ab82caac45138e117594475477",
+      "candidate_outputs_observed_before_freeze": false,
+      "optimization_feedback_allowed": false,
+      "external_payloads_used": false,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION",
+      "asset_kind": "MULTIPLE_CHOICE_CONDITIONAL_LIKELIHOOD",
+      "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX",
+      "cases": [
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-01",
+          "case_nonce": "0fa98419824fb691",
+          "prompt": "Case nonce 0fa98419824fb691. Follow the instruction exactly. Take the token `cm0fa98419` and choose the option that repeats it twice with a vertical bar between the copies and no spaces.",
+          "choices": [
+            {"choice_id": "A", "text": "cm0fa98419|cm0fa98419"},
+            {"choice_id": "B", "text": "cm0fa98419 cm0fa98419"},
+            {"choice_id": "C", "text": "cm0fa98419|cm0fa98419|"},
+            {"choice_id": "D", "text": "cm0fa98419"}
+          ],
+          "correct_choice_id": "A",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-02",
+          "case_nonce": "cda92d0fc9a73462",
+          "prompt": "Case nonce cda92d0fc9a73462. Follow the instruction exactly. Choose the option that writes the pair 17,26 in reverse order using a colon and no spaces.",
+          "choices": [
+            {"choice_id": "A", "text": "17:26"},
+            {"choice_id": "B", "text": "26:17"},
+            {"choice_id": "C", "text": "26, 17"},
+            {"choice_id": "D", "text": "17,26"}
+          ],
+          "correct_choice_id": "B",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-03",
+          "case_nonce": "0192b7379396a468",
+          "prompt": "Case nonce 0192b7379396a468. Follow the instruction exactly. Reverse the four-character string `0192` and choose the exact result.",
+          "choices": [
+            {"choice_id": "A", "text": "0192"},
+            {"choice_id": "B", "text": "2910"},
+            {"choice_id": "C", "text": "0129"},
+            {"choice_id": "D", "text": "29100"}
+          ],
+          "correct_choice_id": "B",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-04",
+          "case_nonce": "781e76f1d1114234",
+          "prompt": "Case nonce 781e76f1d1114234. Follow the instruction exactly. Take the token `cm781e76f1` and choose the option that repeats it twice with a vertical bar between the copies and no spaces.",
+          "choices": [
+            {"choice_id": "A", "text": "cm781e76f1|cm781e76f1"},
+            {"choice_id": "B", "text": "cm781e76f1 cm781e76f1"},
+            {"choice_id": "C", "text": "cm781e76f1|cm781e76f1|"},
+            {"choice_id": "D", "text": "cm781e76f1"}
+          ],
+          "correct_choice_id": "A",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-05",
+          "case_nonce": "ec0de5a994a2ff39",
+          "prompt": "Case nonce ec0de5a994a2ff39. Follow the instruction exactly. Choose the option that writes the pair 10,6 in reverse order using a colon and no spaces.",
+          "choices": [
+            {"choice_id": "A", "text": "10:6"},
+            {"choice_id": "B", "text": "6:10"},
+            {"choice_id": "C", "text": "6, 10"},
+            {"choice_id": "D", "text": "10,6"}
+          ],
+          "correct_choice_id": "B",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-06",
+          "case_nonce": "4d82ae939f84e6f2",
+          "prompt": "Case nonce 4d82ae939f84e6f2. Follow the instruction exactly. Reverse the four-character string `4d82` and choose the exact result.",
+          "choices": [
+            {"choice_id": "A", "text": "4d82"},
+            {"choice_id": "B", "text": "28d4"},
+            {"choice_id": "C", "text": "248d"},
+            {"choice_id": "D", "text": "28d40"}
+          ],
+          "correct_choice_id": "B",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-07",
+          "case_nonce": "f0a32a00b37eab14",
+          "prompt": "Case nonce f0a32a00b37eab14. Follow the instruction exactly. Take the token `cmf0a32a00` and choose the option that repeats it twice with a vertical bar between the copies and no spaces.",
+          "choices": [
+            {"choice_id": "A", "text": "cmf0a32a00|cmf0a32a00"},
+            {"choice_id": "B", "text": "cmf0a32a00 cmf0a32a00"},
+            {"choice_id": "C", "text": "cmf0a32a00|cmf0a32a00|"},
+            {"choice_id": "D", "text": "cmf0a32a00"}
+          ],
+          "correct_choice_id": "A",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-08",
+          "case_nonce": "e6a3fdb5bd1b3ce2",
+          "prompt": "Case nonce e6a3fdb5bd1b3ce2. Follow the instruction exactly. Choose the option that writes the pair 28,5 in reverse order using a colon and no spaces.",
+          "choices": [
+            {"choice_id": "A", "text": "28:5"},
+            {"choice_id": "B", "text": "5:28"},
+            {"choice_id": "C", "text": "5, 28"},
+            {"choice_id": "D", "text": "28,5"}
+          ],
+          "correct_choice_id": "B",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-09",
+          "case_nonce": "5cf4eb67af070354",
+          "prompt": "Case nonce 5cf4eb67af070354. Follow the instruction exactly. Reverse the four-character string `5cf4` and choose the exact result.",
+          "choices": [
+            {"choice_id": "A", "text": "5cf4"},
+            {"choice_id": "B", "text": "4fc5"},
+            {"choice_id": "C", "text": "45cf"},
+            {"choice_id": "D", "text": "4fc50"}
+          ],
+          "correct_choice_id": "B",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-10",
+          "case_nonce": "58db9ff219de8bb8",
+          "prompt": "Case nonce 58db9ff219de8bb8. Follow the instruction exactly. Take the token `cm58db9ff2` and choose the option that repeats it twice with a vertical bar between the copies and no spaces.",
+          "choices": [
+            {"choice_id": "A", "text": "cm58db9ff2|cm58db9ff2"},
+            {"choice_id": "B", "text": "cm58db9ff2 cm58db9ff2"},
+            {"choice_id": "C", "text": "cm58db9ff2|cm58db9ff2|"},
+            {"choice_id": "D", "text": "cm58db9ff2"}
+          ],
+          "correct_choice_id": "A",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-11",
+          "case_nonce": "3119836dc86f67bd",
+          "prompt": "Case nonce 3119836dc86f67bd. Follow the instruction exactly. Choose the option that writes the pair 21,13 in reverse order using a colon and no spaces.",
+          "choices": [
+            {"choice_id": "A", "text": "21:13"},
+            {"choice_id": "B", "text": "13:21"},
+            {"choice_id": "C", "text": "13, 21"},
+            {"choice_id": "D", "text": "21,13"}
+          ],
+          "correct_choice_id": "B",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        },
+        {
+          "case_id": "SP007-RO-001-EVAL-INSTRUCTION-V1-CASE-12",
+          "case_nonce": "1b3793293d833685",
+          "prompt": "Case nonce 1b3793293d833685. Follow the instruction exactly. Reverse the four-character string `1b37` and choose the exact result.",
+          "choices": [
+            {"choice_id": "A", "text": "1b37"},
+            {"choice_id": "B", "text": "73b1"},
+            {"choice_id": "C", "text": "137b"},
+            {"choice_id": "D", "text": "73b10"}
+          ],
+          "correct_choice_id": "B",
+          "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"
+        }
+      ]
+    },
+    {
+      "schema_version": "1",
+      "asset_id": "SP007-RO-001-EVAL-ENGLISH-V1",
+      "asset_sha256": "fcd031071722117af6380d02287df815c81fcea1f9b9e28b0f6bff4f01ab24b5",
+      "scope_id": "SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1",
+      "metric_family": "GENERAL_ENGLISH_LANGUAGE",
+      "source_class": "SYNTHETIC_NONCLINICAL_EVALUATION",
+      "source_authority_id": "E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1",
+      "source_license_id": "E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1",
+      "rights_instrument_sha256": "877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0",
+      "contamination_method_id": "E004_RESEARCH_COMPONENT_POST_FREEZE_SYNTHETIC_NONEXPOSURE_V1",
+      "contamination_method_sha256": "190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b",
+      "candidate_manifest_version": "e001-mass-reach-v1",
+      "candidate_manifest_sha256": "98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28",
+      "fixture_namespace_seed": "b85f140192a511cfbfe190476bdb3f6baf784b4d",
+      "split_id": "MODEL_SELECTION_DEV_SET",
+      "quarantine_purpose": "CHECKPOINT_SELECTION",
+      "quarantine_matrix_sha256": "e2b2fd52e2eef007935ffe497fb50656960fa4ab82caac45138e117594475477",
+      "candidate_outputs_observed_before_freeze": false,
+      "optimization_feedback_allowed": false,
+      "external_payloads_used": false,
+      "purpose": "COMPONENT_TOURNAMENT_SELECTION",
+      "asset_kind": "MULTIPLE_CHOICE_CONDITIONAL_LIKELIHOOD",
+      "scoring_method": "NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX",
+      "cases": [
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-01","case_nonce":"e5c008e8e79067c2","prompt":"Case nonce e5c008e8e79067c2. Choose the grammatically correct Standard English sentence about a non-clinical research object.","choices":[{"choice_id":"A","text":"The marker are beside the blue box."},{"choice_id":"B","text":"The marker is beside the blue box."},{"choice_id":"C","text":"The marker be beside the blue box."},{"choice_id":"D","text":"The marker beside the blue box are."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-02","case_nonce":"c879a9847c1c80cc","prompt":"Case nonce c879a9847c1c80cc. Choose the grammatically correct Standard English sentence about non-clinical research objects.","choices":[{"choice_id":"A","text":"The notebooks is ready for review."},{"choice_id":"B","text":"The notebooks are ready for review."},{"choice_id":"C","text":"The notebooks be ready for review."},{"choice_id":"D","text":"The notebooks ready is for review."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-03","case_nonce":"0d2fd37899ca4567","prompt":"Case nonce 0d2fd37899ca4567. Choose the grammatically correct Standard English sentence about a non-clinical research object.","choices":[{"choice_id":"A","text":"The sensor are beside the blue box."},{"choice_id":"B","text":"The sensor is beside the blue box."},{"choice_id":"C","text":"The sensor be beside the blue box."},{"choice_id":"D","text":"The sensor beside the blue box are."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-04","case_nonce":"d2fb542fb9da70de","prompt":"Case nonce d2fb542fb9da70de. Choose the grammatically correct Standard English sentence about non-clinical research objects.","choices":[{"choice_id":"A","text":"The folders is ready for review."},{"choice_id":"B","text":"The folders are ready for review."},{"choice_id":"C","text":"The folders be ready for review."},{"choice_id":"D","text":"The folders ready is for review."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-05","case_nonce":"24497885acd2b930","prompt":"Case nonce 24497885acd2b930. Choose the grammatically correct Standard English sentence about a non-clinical research object.","choices":[{"choice_id":"A","text":"The label are beside the blue box."},{"choice_id":"B","text":"The label is beside the blue box."},{"choice_id":"C","text":"The label be beside the blue box."},{"choice_id":"D","text":"The label beside the blue box are."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-06","case_nonce":"28b5af013f8c7a87","prompt":"Case nonce 28b5af013f8c7a87. Choose the grammatically correct Standard English sentence about non-clinical research objects.","choices":[{"choice_id":"A","text":"The windows is ready for review."},{"choice_id":"B","text":"The windows are ready for review."},{"choice_id":"C","text":"The windows be ready for review."},{"choice_id":"D","text":"The windows ready is for review."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-07","case_nonce":"c4417101d1f4bfea","prompt":"Case nonce c4417101d1f4bfea. Choose the grammatically correct Standard English sentence about a non-clinical research object.","choices":[{"choice_id":"A","text":"The marker are beside the blue box."},{"choice_id":"B","text":"The marker is beside the blue box."},{"choice_id":"C","text":"The marker be beside the blue box."},{"choice_id":"D","text":"The marker beside the blue box are."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-08","case_nonce":"5e720e91bf751fa6","prompt":"Case nonce 5e720e91bf751fa6. Choose the grammatically correct Standard English sentence about non-clinical research objects.","choices":[{"choice_id":"A","text":"The notebooks is ready for review."},{"choice_id":"B","text":"The notebooks are ready for review."},{"choice_id":"C","text":"The notebooks be ready for review."},{"choice_id":"D","text":"The notebooks ready is for review."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-09","case_nonce":"d773a4adceaf6c35","prompt":"Case nonce d773a4adceaf6c35. Choose the grammatically correct Standard English sentence about a non-clinical research object.","choices":[{"choice_id":"A","text":"The sensor are beside the blue box."},{"choice_id":"B","text":"The sensor is beside the blue box."},{"choice_id":"C","text":"The sensor be beside the blue box."},{"choice_id":"D","text":"The sensor beside the blue box are."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-10","case_nonce":"913ae8dba325be4d","prompt":"Case nonce 913ae8dba325be4d. Choose the grammatically correct Standard English sentence about non-clinical research objects.","choices":[{"choice_id":"A","text":"The folders is ready for review."},{"choice_id":"B","text":"The folders are ready for review."},{"choice_id":"C","text":"The folders be ready for review."},{"choice_id":"D","text":"The folders ready is for review."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-11","case_nonce":"84e31dbe9d040778","prompt":"Case nonce 84e31dbe9d040778. Choose the grammatically correct Standard English sentence about a non-clinical research object.","choices":[{"choice_id":"A","text":"The label are beside the blue box."},{"choice_id":"B","text":"The label is beside the blue box."},{"choice_id":"C","text":"The label be beside the blue box."},{"choice_id":"D","text":"The label beside the blue box are."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ENGLISH-V1-CASE-12","case_nonce":"48d6bd6adac04716","prompt":"Case nonce 48d6bd6adac04716. Choose the grammatically correct Standard English sentence about non-clinical research objects.","choices":[{"choice_id":"A","text":"The windows is ready for review."},{"choice_id":"B","text":"The windows are ready for review."},{"choice_id":"C","text":"The windows be ready for review."},{"choice_id":"D","text":"The windows ready is for review."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"}
+      ]
+    },
+    {
+      "schema_version":"1","asset_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1","asset_sha256":"4b5197c6a82be54ded43f790bc440dd0ca69f13c17c3d7f1adf42ebd5770414f","scope_id":"SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1","metric_family":"GENERAL_ARABIC_LANGUAGE_NON_CLINICAL","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","rights_instrument_sha256":"877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0","contamination_method_id":"E004_RESEARCH_COMPONENT_POST_FREEZE_SYNTHETIC_NONEXPOSURE_V1","contamination_method_sha256":"190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b","candidate_manifest_version":"e001-mass-reach-v1","candidate_manifest_sha256":"98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28","fixture_namespace_seed":"b85f140192a511cfbfe190476bdb3f6baf784b4d","split_id":"MODEL_SELECTION_DEV_SET","quarantine_purpose":"CHECKPOINT_SELECTION","quarantine_matrix_sha256":"e2b2fd52e2eef007935ffe497fb50656960fa4ab82caac45138e117594475477","candidate_outputs_observed_before_freeze":false,"optimization_feedback_allowed":false,"external_payloads_used":false,"purpose":"COMPONENT_TOURNAMENT_SELECTION","asset_kind":"MULTIPLE_CHOICE_CONDITIONAL_LIKELIHOOD","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX","cases":[
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-01","case_nonce":"6ace81d4eca7a8c5","prompt":"رمز الحالة 6ace81d4eca7a8c5. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"الرمز واضحة ومنظمة."},{"choice_id":"B","text":"الرمز واضح ومنظم."},{"choice_id":"C","text":"الرمز واضح ومنظمة."},{"choice_id":"D","text":"الرمز واضحتان ومنظمتان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-02","case_nonce":"2c7f52526bfc95b5","prompt":"رمز الحالة 2c7f52526bfc95b5. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"الورقة واضح ومنظم."},{"choice_id":"B","text":"الورقة واضحة ومنظمة."},{"choice_id":"C","text":"الورقة واضح ومنظمة."},{"choice_id":"D","text":"الورقة واضحان ومنظمان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-03","case_nonce":"574e9a02349de5cb","prompt":"رمز الحالة 574e9a02349de5cb. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"القلم واضحة ومنظمة."},{"choice_id":"B","text":"القلم واضح ومنظم."},{"choice_id":"C","text":"القلم واضح ومنظمة."},{"choice_id":"D","text":"القلم واضحتان ومنظمتان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-04","case_nonce":"8fe77d2b4a8a51e5","prompt":"رمز الحالة 8fe77d2b4a8a51e5. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"القائمة واضح ومنظم."},{"choice_id":"B","text":"القائمة واضحة ومنظمة."},{"choice_id":"C","text":"القائمة واضح ومنظمة."},{"choice_id":"D","text":"القائمة واضحان ومنظمان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-05","case_nonce":"f7a80aac2d29580a","prompt":"رمز الحالة f7a80aac2d29580a. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"الجدول واضحة ومنظمة."},{"choice_id":"B","text":"الجدول واضح ومنظم."},{"choice_id":"C","text":"الجدول واضح ومنظمة."},{"choice_id":"D","text":"الجدول واضحتان ومنظمتان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-06","case_nonce":"24943fa668771394","prompt":"رمز الحالة 24943fa668771394. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"الصفحة واضح ومنظم."},{"choice_id":"B","text":"الصفحة واضحة ومنظمة."},{"choice_id":"C","text":"الصفحة واضح ومنظمة."},{"choice_id":"D","text":"الصفحة واضحان ومنظمان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-07","case_nonce":"06d646005c03deea","prompt":"رمز الحالة 06d646005c03deea. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"الرمز واضحة ومنظمة."},{"choice_id":"B","text":"الرمز واضح ومنظم."},{"choice_id":"C","text":"الرمز واضح ومنظمة."},{"choice_id":"D","text":"الرمز واضحتان ومنظمتان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-08","case_nonce":"cc8ef98dcfe2806c","prompt":"رمز الحالة cc8ef98dcfe2806c. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"الورقة واضح ومنظم."},{"choice_id":"B","text":"الورقة واضحة ومنظمة."},{"choice_id":"C","text":"الورقة واضح ومنظمة."},{"choice_id":"D","text":"الورقة واضحان ومنظمان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-09","case_nonce":"a58e5142b1d40b69","prompt":"رمز الحالة a58e5142b1d40b69. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"القلم واضحة ومنظمة."},{"choice_id":"B","text":"القلم واضح ومنظم."},{"choice_id":"C","text":"القلم واضح ومنظمة."},{"choice_id":"D","text":"القلم واضحتان ومنظمتان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-10","case_nonce":"84f62a115a796ccc","prompt":"رمز الحالة 84f62a115a796ccc. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"القائمة واضح ومنظم."},{"choice_id":"B","text":"القائمة واضحة ومنظمة."},{"choice_id":"C","text":"القائمة واضح ومنظمة."},{"choice_id":"D","text":"القائمة واضحان ومنظمان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-11","case_nonce":"5553358108bf0aa7","prompt":"رمز الحالة 5553358108bf0aa7. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"الجدول واضحة ومنظمة."},{"choice_id":"B","text":"الجدول واضح ومنظم."},{"choice_id":"C","text":"الجدول واضح ومنظمة."},{"choice_id":"D","text":"الجدول واضحتان ومنظمتان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-ARABIC-NONCLINICAL-V1-CASE-12","case_nonce":"3e38e2f3d29cf4c7","prompt":"رمز الحالة 3e38e2f3d29cf4c7. اختر الجملة العربية الفصحى السليمة عن عنصر غير سريري.","choices":[{"choice_id":"A","text":"الصفحة واضح ومنظم."},{"choice_id":"B","text":"الصفحة واضحة ومنظمة."},{"choice_id":"C","text":"الصفحة واضح ومنظمة."},{"choice_id":"D","text":"الصفحة واضحان ومنظمان."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"}
+      ]
+    },
+    {
+      "schema_version":"1","asset_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1","asset_sha256":"501616fab6d321d3f686e108de04d7b5ecfb985e041a2d205b64fa00d8a8ef52","scope_id":"SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1","metric_family":"UNCERTAINTY_AND_ABSTENTION","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","rights_instrument_sha256":"877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0","contamination_method_id":"E004_RESEARCH_COMPONENT_POST_FREEZE_SYNTHETIC_NONEXPOSURE_V1","contamination_method_sha256":"190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b","candidate_manifest_version":"e001-mass-reach-v1","candidate_manifest_sha256":"98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28","fixture_namespace_seed":"b85f140192a511cfbfe190476bdb3f6baf784b4d","split_id":"MODEL_SELECTION_DEV_SET","quarantine_purpose":"CHECKPOINT_SELECTION","quarantine_matrix_sha256":"e2b2fd52e2eef007935ffe497fb50656960fa4ab82caac45138e117594475477","candidate_outputs_observed_before_freeze":false,"optimization_feedback_allowed":false,"external_payloads_used":false,"purpose":"COMPONENT_TOURNAMENT_SELECTION","asset_kind":"MULTIPLE_CHOICE_CONDITIONAL_LIKELIHOOD","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX","cases":[
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-01","case_nonce":"50b20f5bded6c605","prompt":"Case nonce 50b20f5bded6c605. The supplied context contains no definition, source, or observation for `NX-50b20f5bded6c605`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-50b20f5bded6c605` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-50b20f5bded6c605` means."},{"choice_id":"C","text":"`NX-50b20f5bded6c605` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-50b20f5bded6c605` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-02","case_nonce":"01365e07dc431151","prompt":"Case nonce 01365e07dc431151. The supplied context contains no definition, source, or observation for `NX-01365e07dc431151`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-01365e07dc431151` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-01365e07dc431151` means."},{"choice_id":"C","text":"`NX-01365e07dc431151` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-01365e07dc431151` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-03","case_nonce":"e8557411c400efc0","prompt":"Case nonce e8557411c400efc0. The supplied context contains no definition, source, or observation for `NX-e8557411c400efc0`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-e8557411c400efc0` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-e8557411c400efc0` means."},{"choice_id":"C","text":"`NX-e8557411c400efc0` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-e8557411c400efc0` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-04","case_nonce":"63290088a1fd2497","prompt":"Case nonce 63290088a1fd2497. The supplied context contains no definition, source, or observation for `NX-63290088a1fd2497`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-63290088a1fd2497` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-63290088a1fd2497` means."},{"choice_id":"C","text":"`NX-63290088a1fd2497` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-63290088a1fd2497` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-05","case_nonce":"ef2d53e4506cab1b","prompt":"Case nonce ef2d53e4506cab1b. The supplied context contains no definition, source, or observation for `NX-ef2d53e4506cab1b`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-ef2d53e4506cab1b` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-ef2d53e4506cab1b` means."},{"choice_id":"C","text":"`NX-ef2d53e4506cab1b` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-ef2d53e4506cab1b` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-06","case_nonce":"c0043be830ed6d25","prompt":"Case nonce c0043be830ed6d25. The supplied context contains no definition, source, or observation for `NX-c0043be830ed6d25`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-c0043be830ed6d25` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-c0043be830ed6d25` means."},{"choice_id":"C","text":"`NX-c0043be830ed6d25` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-c0043be830ed6d25` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-07","case_nonce":"82f0be31f8fbe619","prompt":"Case nonce 82f0be31f8fbe619. The supplied context contains no definition, source, or observation for `NX-82f0be31f8fbe619`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-82f0be31f8fbe619` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-82f0be31f8fbe619` means."},{"choice_id":"C","text":"`NX-82f0be31f8fbe619` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-82f0be31f8fbe619` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-08","case_nonce":"9dc428b601764488","prompt":"Case nonce 9dc428b601764488. The supplied context contains no definition, source, or observation for `NX-9dc428b601764488`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-9dc428b601764488` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-9dc428b601764488` means."},{"choice_id":"C","text":"`NX-9dc428b601764488` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-9dc428b601764488` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-09","case_nonce":"99b5d0515d5e2421","prompt":"Case nonce 99b5d0515d5e2421. The supplied context contains no definition, source, or observation for `NX-99b5d0515d5e2421`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-99b5d0515d5e2421` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-99b5d0515d5e2421` means."},{"choice_id":"C","text":"`NX-99b5d0515d5e2421` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-99b5d0515d5e2421` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-10","case_nonce":"40961991dd541951","prompt":"Case nonce 40961991dd541951. The supplied context contains no definition, source, or observation for `NX-40961991dd541951`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-40961991dd541951` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-40961991dd541951` means."},{"choice_id":"C","text":"`NX-40961991dd541951` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-40961991dd541951` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-11","case_nonce":"55b292d70d888f72","prompt":"Case nonce 55b292d70d888f72. The supplied context contains no definition, source, or observation for `NX-55b292d70d888f72`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-55b292d70d888f72` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-55b292d70d888f72` means."},{"choice_id":"C","text":"`NX-55b292d70d888f72` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-55b292d70d888f72` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-UNCERTAINTY-V1-CASE-12","case_nonce":"57f3878373123d3d","prompt":"Case nonce 57f3878373123d3d. The supplied context contains no definition, source, or observation for `NX-57f3878373123d3d`. Choose the response that follows a strict uncertainty-and-abstention policy.","choices":[{"choice_id":"A","text":"`NX-57f3878373123d3d` definitely means the first successful experiment."},{"choice_id":"B","text":"There is not enough information here to determine what `NX-57f3878373123d3d` means."},{"choice_id":"C","text":"`NX-57f3878373123d3d` probably refers to a hidden code."},{"choice_id":"D","text":"I can infer the exact meaning of `NX-57f3878373123d3d` from the nonce alone."}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"}
+      ]
+    },
+    {
+      "schema_version":"1","asset_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1","asset_sha256":"4fd249917c2ee40c9c3540e358cfaa0a5def97381694e08bde474b818ea1e030","scope_id":"SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1","metric_family":"SYNTHETIC_NON_CLINICAL_TOOL_ROUTING","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","rights_instrument_sha256":"877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0","contamination_method_id":"E004_RESEARCH_COMPONENT_POST_FREEZE_SYNTHETIC_NONEXPOSURE_V1","contamination_method_sha256":"190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b","candidate_manifest_version":"e001-mass-reach-v1","candidate_manifest_sha256":"98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28","fixture_namespace_seed":"b85f140192a511cfbfe190476bdb3f6baf784b4d","split_id":"MODEL_SELECTION_DEV_SET","quarantine_purpose":"CHECKPOINT_SELECTION","quarantine_matrix_sha256":"e2b2fd52e2eef007935ffe497fb50656960fa4ab82caac45138e117594475477","candidate_outputs_observed_before_freeze":false,"optimization_feedback_allowed":false,"external_payloads_used":false,"purpose":"COMPONENT_TOURNAMENT_SELECTION","asset_kind":"MULTIPLE_CHOICE_CONDITIONAL_LIKELIHOOD","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX","cases":[
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-01","case_nonce":"b7825deed3215746","prompt":"Case nonce b7825deed3215746. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Compute 18 + 8 using the deterministic arithmetic tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"A","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-02","case_nonce":"ad3bba7da86261ed","prompt":"Case nonce ad3bba7da86261ed. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Sort [6, 0, 3] in ascending order using the deterministic sorting tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-03","case_nonce":"a48a5f9a47469209","prompt":"Case nonce a48a5f9a47469209. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Count the characters in `cm-a48a5f` using the deterministic character-count tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"C","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-04","case_nonce":"49ff9042f0074033","prompt":"Case nonce 49ff9042f0074033. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Convert `cm49ff9` to uppercase using the deterministic ASCII-uppercase tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"D","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-05","case_nonce":"d5f0a49aeea49346","prompt":"Case nonce d5f0a49aeea49346. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Compute 22 + 20 using the deterministic arithmetic tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"A","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-06","case_nonce":"ebf66a65f017210e","prompt":"Case nonce ebf66a65f017210e. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Sort [10, 4, 7] in ascending order using the deterministic sorting tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-07","case_nonce":"146999b2ca5dfeae","prompt":"Case nonce 146999b2ca5dfeae. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Count the characters in `cm-146999` using the deterministic character-count tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"C","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-08","case_nonce":"dfe55d6653786c43","prompt":"Case nonce dfe55d6653786c43. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Convert `cmdfe55` to uppercase using the deterministic ASCII-uppercase tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"D","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-09","case_nonce":"6f21bf79f7846021","prompt":"Case nonce 6f21bf79f7846021. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Compute 26 + 32 using the deterministic arithmetic tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"A","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-10","case_nonce":"6431952901e52347","prompt":"Case nonce 6431952901e52347. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Sort [14, 8, 11] in ascending order using the deterministic sorting tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-11","case_nonce":"9614aa3f60b58302","prompt":"Case nonce 9614aa3f60b58302. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Count the characters in `cm-9614aa` using the deterministic character-count tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"C","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-TOOL-ROUTING-V1-CASE-12","case_nonce":"32dbc0f93aff0368","prompt":"Case nonce 32dbc0f93aff0368. Available tools: CM_ADD_INTEGERS = add two integers; CM_SORT_ASC = sort a list of integers in ascending order; CM_COUNT_CHARS = count Unicode characters in a supplied string; CM_UPPERCASE_ASCII = convert ASCII letters to uppercase. Request: Convert `cm32dbc` to uppercase using the deterministic ASCII-uppercase tool. Choose the correct tool ID.","choices":[{"choice_id":"A","text":"CM_ADD_INTEGERS"},{"choice_id":"B","text":"CM_SORT_ASC"},{"choice_id":"C","text":"CM_COUNT_CHARS"},{"choice_id":"D","text":"CM_UPPERCASE_ASCII"}],"correct_choice_id":"D","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"}
+      ]
+    },
+    {
+      "schema_version":"1","asset_id":"SP007-RO-001-EVAL-CAPABILITY-V1","asset_sha256":"8e46855039a004b7486b196e7783b1530f7630429ca303e169ad719fec91eb25","scope_id":"SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1","metric_family":"GENERAL_CAPABILITY_PRESERVATION","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","rights_instrument_sha256":"877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0","contamination_method_id":"E004_RESEARCH_COMPONENT_POST_FREEZE_SYNTHETIC_NONEXPOSURE_V1","contamination_method_sha256":"190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b","candidate_manifest_version":"e001-mass-reach-v1","candidate_manifest_sha256":"98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28","fixture_namespace_seed":"b85f140192a511cfbfe190476bdb3f6baf784b4d","split_id":"MODEL_SELECTION_DEV_SET","quarantine_purpose":"CHECKPOINT_SELECTION","quarantine_matrix_sha256":"e2b2fd52e2eef007935ffe497fb50656960fa4ab82caac45138e117594475477","candidate_outputs_observed_before_freeze":false,"optimization_feedback_allowed":false,"external_payloads_used":false,"purpose":"COMPONENT_TOURNAMENT_SELECTION","asset_kind":"MULTIPLE_CHOICE_CONDITIONAL_LIKELIHOOD","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX","cases":[
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-01","case_nonce":"b2946d8939d9da68","prompt":"Case nonce b2946d8939d9da68. Ignore the nonce when solving. What is 4 × 9?","choices":[{"choice_id":"A","text":"36"},{"choice_id":"B","text":"45"},{"choice_id":"C","text":"32"},{"choice_id":"D","text":"37"}],"correct_choice_id":"A","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-02","case_nonce":"db91edee9d176ad2","prompt":"Case nonce db91edee9d176ad2. Ignore the nonce when solving. Continue the arithmetic sequence 2, 5, 8, ... .","choices":[{"choice_id":"A","text":"10"},{"choice_id":"B","text":"11"},{"choice_id":"C","text":"14"},{"choice_id":"D","text":"8"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-03","case_nonce":"25902de7872a6621","prompt":"Case nonce 25902de7872a6621. Rules: every zeta is a kappa; no kappa is a lambda. Which conclusion must be true? A: Every lambda is a zeta. B: Some zeta is a lambda. C: No zeta is a lambda. D: Every kappa is a zeta.","choices":[{"choice_id":"A","text":"Every lambda is a zeta."},{"choice_id":"B","text":"Some zeta is a lambda."},{"choice_id":"C","text":"No zeta is a lambda."},{"choice_id":"D","text":"Every kappa is a zeta."}],"correct_choice_id":"C","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-04","case_nonce":"2e90a898740e2a91","prompt":"Case nonce 2e90a898740e2a91. Ignore the nonce when solving. What is 31 + 29?","choices":[{"choice_id":"A","text":"59"},{"choice_id":"B","text":"60"},{"choice_id":"C","text":"62"},{"choice_id":"D","text":"70"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-05","case_nonce":"2a4441c8ccb4f85c","prompt":"Case nonce 2a4441c8ccb4f85c. Ignore the nonce when solving. What is 8 × 13?","choices":[{"choice_id":"A","text":"104"},{"choice_id":"B","text":"117"},{"choice_id":"C","text":"96"},{"choice_id":"D","text":"105"}],"correct_choice_id":"A","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-06","case_nonce":"086363f22c0a2acb","prompt":"Case nonce 086363f22c0a2acb. Ignore the nonce when solving. Continue the arithmetic sequence 6, 9, 12, ... .","choices":[{"choice_id":"A","text":"14"},{"choice_id":"B","text":"15"},{"choice_id":"C","text":"18"},{"choice_id":"D","text":"12"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-07","case_nonce":"a4e77b1655e38978","prompt":"Case nonce a4e77b1655e38978. Rules: every zeta is a kappa; no kappa is a lambda. Which conclusion must be true? A: Every lambda is a zeta. B: Some zeta is a lambda. C: No zeta is a lambda. D: Every kappa is a zeta.","choices":[{"choice_id":"A","text":"Every lambda is a zeta."},{"choice_id":"B","text":"Some zeta is a lambda."},{"choice_id":"C","text":"No zeta is a lambda."},{"choice_id":"D","text":"Every kappa is a zeta."}],"correct_choice_id":"C","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-08","case_nonce":"5d0f3a4e8f70ec1b","prompt":"Case nonce 5d0f3a4e8f70ec1b. Ignore the nonce when solving. What is 59 + 49?","choices":[{"choice_id":"A","text":"107"},{"choice_id":"B","text":"108"},{"choice_id":"C","text":"110"},{"choice_id":"D","text":"118"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-09","case_nonce":"66004cb2ce2e9334","prompt":"Case nonce 66004cb2ce2e9334. Ignore the nonce when solving. What is 12 × 17?","choices":[{"choice_id":"A","text":"204"},{"choice_id":"B","text":"221"},{"choice_id":"C","text":"192"},{"choice_id":"D","text":"205"}],"correct_choice_id":"A","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-10","case_nonce":"9f22e6530825883d","prompt":"Case nonce 9f22e6530825883d. Ignore the nonce when solving. Continue the arithmetic sequence 10, 13, 16, ... .","choices":[{"choice_id":"A","text":"18"},{"choice_id":"B","text":"19"},{"choice_id":"C","text":"22"},{"choice_id":"D","text":"16"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-11","case_nonce":"16e3a44ce2f8b734","prompt":"Case nonce 16e3a44ce2f8b734. Rules: every zeta is a kappa; no kappa is a lambda. Which conclusion must be true? A: Every lambda is a zeta. B: Some zeta is a lambda. C: No zeta is a lambda. D: Every kappa is a zeta.","choices":[{"choice_id":"A","text":"Every lambda is a zeta."},{"choice_id":"B","text":"Some zeta is a lambda."},{"choice_id":"C","text":"No zeta is a lambda."},{"choice_id":"D","text":"Every kappa is a zeta."}],"correct_choice_id":"C","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"},
+        {"case_id":"SP007-RO-001-EVAL-CAPABILITY-V1-CASE-12","case_nonce":"f92e10cfc10c1f7a","prompt":"Case nonce f92e10cfc10c1f7a. Ignore the nonce when solving. What is 87 + 69?","choices":[{"choice_id":"A","text":"155"},{"choice_id":"B","text":"156"},{"choice_id":"C","text":"158"},{"choice_id":"D","text":"166"}],"correct_choice_id":"B","scoring_method":"NORMALIZED_CONDITIONAL_LOG_LIKELIHOOD_ARGMAX"}
+      ]
+    },
+    {
+      "schema_version":"1","asset_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1","asset_sha256":"a1ddea12b740886643fc396c62553b1ab954404090d16db499a57e933056a200","scope_id":"SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1","metric_family":"RESOURCE_EFFICIENCY","source_class":"SYNTHETIC_NONCLINICAL_EVALUATION","source_authority_id":"E004_RESEARCH_COMPONENT_DETERMINISTIC_FIXTURE_PROVENANCE_V1","source_license_id":"E004_RESEARCH_COMPONENT_PROJECT_AUTHORED_EVAL_RIGHTS_V1","rights_instrument_sha256":"877205412550ac16a074634c6549e3e169bf216ddbb6216646307a05bf2f59d0","contamination_method_id":"E004_RESEARCH_COMPONENT_POST_FREEZE_SYNTHETIC_NONEXPOSURE_V1","contamination_method_sha256":"190c8107cbf9f2f942cdc404f9cc7a00f185514c9e9a609431645f78261a8b6b","candidate_manifest_version":"e001-mass-reach-v1","candidate_manifest_sha256":"98d586500d12e7904bce199061c48d5ac50e9f66a372de034d9ecba4e2d3cc28","fixture_namespace_seed":"b85f140192a511cfbfe190476bdb3f6baf784b4d","split_id":"MODEL_SELECTION_DEV_SET","quarantine_purpose":"CHECKPOINT_SELECTION","quarantine_matrix_sha256":"e2b2fd52e2eef007935ffe497fb50656960fa4ab82caac45138e117594475477","candidate_outputs_observed_before_freeze":false,"optimization_feedback_allowed":false,"external_payloads_used":false,"purpose":"COMPONENT_TOURNAMENT_SELECTION","asset_kind":"RESOURCE_MEASUREMENT_PROTOCOL","scoring_method":"RESOURCE_MEASUREMENT_RECORD_V1","probes":[
+        {"probe_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-01","probe_nonce":"af677000edb55b40","input_text":"Resource probe nonce af677000edb55b40. Continue with the single token OK.","max_new_tokens":8,"warmup_runs":1,"measured_runs":3,"required_measurements":["MODEL_ARTIFACT_BYTES","PEAK_RSS_BYTES","TIME_TO_FIRST_TOKEN_MS","DECODE_TOKENS_PER_SECOND","WALL_CLOCK_MS"]},
+        {"probe_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-02","probe_nonce":"e730a522679f4501","input_text":"Resource probe nonce e730a522679f4501. Continue with the single token OK.","max_new_tokens":8,"warmup_runs":1,"measured_runs":3,"required_measurements":["MODEL_ARTIFACT_BYTES","PEAK_RSS_BYTES","TIME_TO_FIRST_TOKEN_MS","DECODE_TOKENS_PER_SECOND","WALL_CLOCK_MS"]},
+        {"probe_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-03","probe_nonce":"27ae3dd1000fa227","input_text":"Resource probe nonce 27ae3dd1000fa227. Continue with the single token OK.","max_new_tokens":8,"warmup_runs":1,"measured_runs":3,"required_measurements":["MODEL_ARTIFACT_BYTES","PEAK_RSS_BYTES","TIME_TO_FIRST_TOKEN_MS","DECODE_TOKENS_PER_SECOND","WALL_CLOCK_MS"]},
+        {"probe_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-04","probe_nonce":"9b8073555489d85f","input_text":"Resource probe nonce 9b8073555489d85f. Continue with the single token OK.","max_new_tokens":8,"warmup_runs":1,"measured_runs":3,"required_measurements":["MODEL_ARTIFACT_BYTES","PEAK_RSS_BYTES","TIME_TO_FIRST_TOKEN_MS","DECODE_TOKENS_PER_SECOND","WALL_CLOCK_MS"]},
+        {"probe_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-05","probe_nonce":"1ce56bea30cb2e2f","input_text":"Resource probe nonce 1ce56bea30cb2e2f. Continue with the single token OK.","max_new_tokens":8,"warmup_runs":1,"measured_runs":3,"required_measurements":["MODEL_ARTIFACT_BYTES","PEAK_RSS_BYTES","TIME_TO_FIRST_TOKEN_MS","DECODE_TOKENS_PER_SECOND","WALL_CLOCK_MS"]},
+        {"probe_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-06","probe_nonce":"8bed4d6d3af20ce1","input_text":"Resource probe nonce 8bed4d6d3af20ce1. Continue with the single token OK.","max_new_tokens":8,"warmup_runs":1,"measured_runs":3,"required_measurements":["MODEL_ARTIFACT_BYTES","PEAK_RSS_BYTES","TIME_TO_FIRST_TOKEN_MS","DECODE_TOKENS_PER_SECOND","WALL_CLOCK_MS"]},
+        {"probe_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-07","probe_nonce":"272c00d2cf9f33c7","input_text":"Resource probe nonce 272c00d2cf9f33c7. Continue with the single token OK.","max_new_tokens":8,"warmup_runs":1,"measured_runs":3,"required_measurements":["MODEL_ARTIFACT_BYTES","PEAK_RSS_BYTES","TIME_TO_FIRST_TOKEN_MS","DECODE_TOKENS_PER_SECOND","WALL_CLOCK_MS"]},
+        {"probe_id":"SP007-RO-001-EVAL-RESOURCE-EFFICIENCY-V1-PROBE-08","probe_nonce":"013c59a6560b5da6","input_text":"Resource probe nonce 013c59a6560b5da6. Continue with the single token OK.","max_new_tokens":8,"warmup_runs":1,"measured_runs":3,"required_measurements":["MODEL_ARTIFACT_BYTES","PEAK_RSS_BYTES","TIME_TO_FIRST_TOKEN_MS","DECODE_TOKENS_PER_SECOND","WALL_CLOCK_MS"]}
+      ]
+    }
+  ]
+}
