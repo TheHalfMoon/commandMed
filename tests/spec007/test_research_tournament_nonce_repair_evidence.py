@@ -111,17 +111,13 @@ class ResearchComponentNonceRepairEvidenceTests(unittest.TestCase):
                 self.assertEqual(result["state"], "ELIGIBLE")
                 self.assertEqual(result["reason_codes"], [])
 
-    def test_nonce_edit_log_is_complete_and_unique(self):
+    def test_nonce_edit_log_is_complete_unique_and_replaced(self):
         edits = EVIDENCE["nonce_edits"]
         self.assertEqual(len(edits), 80)
         self.assertEqual(len({item["record_id"] for item in edits}), 80)
         self.assertTrue(all(len(item["old_nonce"]) == 16 for item in edits))
         self.assertTrue(all(len(item["new_nonce"]) == 16 for item in edits))
-        changed = [item for item in edits if item["old_nonce"] != item["new_nonce"]]
-        unchanged = [item for item in edits if item["old_nonce"] == item["new_nonce"]]
-        self.assertGreater(len(changed), 0)
-        self.assertGreater(len(unchanged), 0)
-        self.assertEqual(len(changed) + len(unchanged), 80)
+        self.assertTrue(all(item["old_nonce"] != item["new_nonce"] for item in edits))
 
 
 if __name__ == "__main__":
