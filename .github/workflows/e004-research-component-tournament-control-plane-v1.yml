@@ -4,12 +4,15 @@ on:
   pull_request:
     paths:
       - 'src/commandmed/spec007/research_tournament.py'
+      - 'src/commandmed/spec007/research_execution.py'
       - 'src/commandmed/spec007/quarantine.py'
       - 'src/commandmed/spec007/snapshot.py'
       - 'tests/spec007/test_research_tournament.py'
+      - 'tests/spec007/test_research_execution.py'
       - 'tests/spec007/test_review_repair_regressions.py'
       - 'tests/spec007/test_quarantine_snapshot.py'
       - 'specs/007-sft-v1/e004-research-component-tournament-control-plane-2026-09-05.md'
+      - 'specs/007-sft-v1/e004-research-component-preexecution-envelope-2026-09-05.md'
       - '.github/workflows/e004-research-component-tournament-control-plane-v1.yml'
 
 permissions:
@@ -33,12 +36,15 @@ jobs:
           test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
           decision='specs/007-sft-v1/e004-successor-scope-execution-authorization-founder-decision-2026-09-02.md'
           policy='specs/007-sft-v1/e004-research-only-safety-policy-successor-2026-08-31.md'
+          maintenance='specs/007-sft-v1/e004-corrective-maintenance-authorization-2026-08-27.md'
           grep -Fxq 'FOUNDER_SUCCESSOR_EXECUTION_DECISION=E004_SUCCESSOR_EXECUTION_DECISION_B' "$decision"
           grep -Fxq 'SUCCESSOR_SCOPE_EXECUTION_AUTHORITY=AUTHORIZED_SP007_RO_001_EVIDENCE_ONLY' "$decision"
           grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$decision"
           grep -Fq 'SUCCESSOR_SCOPE_ID=SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1' "$policy"
           grep -Fq 'COMPONENT_EXTERNAL_CLINICAL_REVIEW_REQUIRED=NO' "$decision"
           grep -Fq 'COMPONENT_EXTERNAL_STATISTICAL_REVIEW_REQUIRED=NO' "$decision"
+          grep -Fq 'E004_CORRECTIVE_MAINTENANCE_AUTHORITY=AUTHORIZED' "$maintenance"
+          grep -Fq 'CM-3 — Add a bounded identity-bound E004 execution envelope' "$maintenance"
           echo "HEAD_SHA=$(git rev-parse HEAD)"
 
       - name: Compile changed Python surface
@@ -47,9 +53,11 @@ jobs:
           set -euo pipefail
           python3 -m compileall -q \
             src/commandmed/spec007/research_tournament.py \
+            src/commandmed/spec007/research_execution.py \
             src/commandmed/spec007/quarantine.py \
             src/commandmed/spec007/snapshot.py \
             tests/spec007/test_research_tournament.py \
+            tests/spec007/test_research_execution.py \
             tests/spec007/test_review_repair_regressions.py \
             tests/spec007/test_quarantine_snapshot.py
 
@@ -64,6 +72,12 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check pytest
+
+      - name: Run focused pre-execution envelope tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m pytest -q tests/spec007/test_research_execution.py
 
       - name: Run focused snapshot regression repair
         shell: bash
