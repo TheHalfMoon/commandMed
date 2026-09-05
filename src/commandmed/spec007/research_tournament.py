@@ -13,6 +13,7 @@ from src.commandmed.eval_contract.canonical import compute_canonical_sha256
 from src.commandmed.spec007.foundation import is_canonical_sha256, validate_closed_object
 from src.commandmed.spec007.research_scope import (
     RESEARCH_COMPONENT_CLAIM_CLASS,
+    RESEARCH_COMPONENT_REQUIRED_GUARDS,
     RESEARCH_COMPONENT_SCOPE_ID,
 )
 
@@ -20,16 +21,17 @@ RESEARCH_COMPONENT_TOURNAMENT_PROTOCOL_ID = (
     "SP007_RO_001_NONCLINICAL_BACKBONE_TOURNAMENT_V1"
 )
 RESEARCH_COMPONENT_TOURNAMENT_PURPOSE = "SP007_RO_001_BACKBONE_EVIDENCE"
+RESEARCH_COMPONENT_EXECUTION_AUTHORITY_ID = "E004_SUCCESSOR_EXECUTION_DECISION_B"
+SENTINEL_FIXTURE_SET_SHA256 = (
+    "5a2bd28b391010c9575c99654899cd442fea8d94cbb4176045b654c940fa2fd3"
+)
+SENTINEL_FIXTURE_SHA256_SET_SHA256 = (
+    "b65b36689cf2006bad8b446536d50ccd3f3440a4b244c044a1b26409aea0fef2"
+)
 
 PRIMARY_CANDIDATES = (
-    (
-        "Qwen/Qwen3-0.6B-Base",
-        "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
-    ),
-    (
-        "Qwen/Qwen3.5-0.8B-Base",
-        "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
-    ),
+    ("Qwen/Qwen3-0.6B-Base", "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"),
+    ("Qwen/Qwen3.5-0.8B-Base", "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68"),
     (
         "ibm-granite/granite-4.0-350m-base",
         "a50b46cef21c8a86b15f0496cb794487a78a910b",
@@ -51,7 +53,13 @@ ALLOWED_RANKING_METRIC_FAMILIES = frozenset(
         "RESOURCE_EFFICIENCY",
     }
 )
-
+ALLOWED_SELECTION_SOURCE_CLASSES = frozenset(
+    {
+        "PUBLIC_UNGATED_NONCLINICAL",
+        "REPOSITORY_FROZEN_NONCLINICAL",
+        "SYNTHETIC_NONCLINICAL_EVALUATION",
+    }
+)
 PROHIBITED_CLINICAL_METRIC_IDS = frozenset(
     {
         "emergency_miss_rate",
@@ -63,7 +71,6 @@ PROHIBITED_CLINICAL_METRIC_IDS = frozenset(
         "benign_case_over_triage_rate",
     }
 )
-
 PROHIBITED_SELECTION_SOURCE_CLASSES = frozenset(
     {
         "PRIVATE_GOLD",
@@ -86,7 +93,8 @@ _PROTOCOL_FIELDS = (
     "candidate_bindings",
     "ranking_metric_families",
     "evaluation_asset_manifests",
-    "sentinel_set_id",
+    "sentinel_fixture_set_sha256",
+    "sentinel_fixture_sha256_set_sha256",
     "sentinel_can_rank",
     "private_gold_allowed",
     "clinical_metric_ids_allowed",
@@ -108,6 +116,7 @@ _ASSET_FIELDS = (
     "source_class",
     "source_authority_id",
     "source_license_id",
+    "license_validation_status",
     "content_sha256",
     "split_id",
     "provenance_validation_status",
@@ -199,13 +208,11 @@ def _validate_candidate_bindings(value: Any) -> list[str]:
     prefix = "ResearchComponentTournamentProtocol.candidate_bindings"
     if not isinstance(value, list) or len(value) != 4:
         return [f"{prefix}: must contain exactly four frozen candidates"]
-
     errors: list[str] = []
-    seen: set[tuple[str, str]] = set()
     expected_primary = set(PRIMARY_CANDIDATES)
+    seen: set[tuple[str, str]] = set()
     seen_primary: set[tuple[str, str]] = set()
     seen_control = False
-
     for index, candidate in enumerate(value):
         item_prefix = f"{prefix}[{index}]"
         item_errors = validate_closed_object(
@@ -214,17 +221,13 @@ def _validate_candidate_bindings(value: Any) -> list[str]:
         errors.extend(item_errors)
         if item_errors or not isinstance(candidate, dict):
             continue
-
-        candidate_id = candidate.get("candidate_id")
-        revision = candidate.get("upstream_revision")
-        pair = (candidate_id, revision)
-        if not _nonempty(candidate_id) or not _nonempty(revision):
+        pair = (candidate.get("candidate_id"), candidate.get("upstream_revision"))
+        if not all(_nonempty(item) for item in pair):
             errors.append(f"{item_prefix}: candidate identity must be non-empty")
             continue
         if pair in seen:
             errors.append(f"{item_prefix}: duplicate candidate identity")
         seen.add(pair)
-
         if pair in expected_primary:
             seen_primary.add(pair)
             if candidate.get("candidate_role") != "PRIMARY":
@@ -245,7 +248,6 @@ def _validate_candidate_bindings(value: Any) -> list[str]:
                 )
         else:
             errors.append(f"{item_prefix}: candidate identity is outside frozen E001 set")
-
     if seen_primary != expected_primary:
         errors.append(f"{prefix}: exact frozen primary set required")
     if not seen_control:
@@ -257,7 +259,6 @@ def _validate_evaluation_assets(value: Any, metric_families: set[str]) -> list[s
     prefix = "ResearchComponentTournamentProtocol.evaluation_asset_manifests"
     if not isinstance(value, list) or not value:
         return [f"{prefix}: must be a non-empty list"]
-
     errors: list[str] = []
     seen_asset_ids: set[str] = set()
     covered_families: set[str] = set()
@@ -269,7 +270,6 @@ def _validate_evaluation_assets(value: Any, metric_families: set[str]) -> list[s
         errors.extend(item_errors)
         if item_errors or not isinstance(asset, dict):
             continue
-
         asset_id = asset.get("asset_id")
         family = asset.get("metric_family")
         source_class = asset.get("source_class")
@@ -279,24 +279,23 @@ def _validate_evaluation_assets(value: Any, metric_families: set[str]) -> list[s
             errors.append(f"{item_prefix}: duplicate asset_id")
         else:
             seen_asset_ids.add(asset_id)
-
+        if asset_id in PROHIBITED_CLINICAL_METRIC_IDS:
+            errors.append(f"{item_prefix}: clinical metric identity is prohibited")
         if family not in ALLOWED_RANKING_METRIC_FAMILIES or family not in metric_families:
             errors.append(f"{item_prefix}: metric_family is not frozen for ranking")
         else:
             covered_families.add(family)
-
         if source_class in PROHIBITED_SELECTION_SOURCE_CLASSES:
             errors.append(f"{item_prefix}: source_class is prohibited for selection")
-        if asset.get("asset_id") in PROHIBITED_CLINICAL_METRIC_IDS:
-            errors.append(f"{item_prefix}: clinical metric identity is prohibited")
-        if not _nonempty(asset.get("source_authority_id")):
-            errors.append(f"{item_prefix}: source_authority_id must be non-empty")
-        if not _nonempty(asset.get("source_license_id")):
-            errors.append(f"{item_prefix}: source_license_id must be non-empty")
+        elif source_class not in ALLOWED_SELECTION_SOURCE_CLASSES:
+            errors.append(f"{item_prefix}: source_class is not in the frozen allowlist")
+        for field in ("source_authority_id", "source_license_id", "split_id"):
+            if not _nonempty(asset.get(field)):
+                errors.append(f"{item_prefix}: {field} must be non-empty")
+        if asset.get("license_validation_status") != "PASS":
+            errors.append(f"{item_prefix}: license_validation_status must equal PASS")
         if not is_canonical_sha256(asset.get("content_sha256")):
             errors.append(f"{item_prefix}: content_sha256 must be lowercase sha256 hex")
-        if not _nonempty(asset.get("split_id")):
-            errors.append(f"{item_prefix}: split_id must be non-empty")
         if asset.get("provenance_validation_status") != "PASS":
             errors.append(f"{item_prefix}: provenance_validation_status must equal PASS")
         if asset.get("source_verification_status") != "PASS":
@@ -309,7 +308,6 @@ def _validate_evaluation_assets(value: Any, metric_families: set[str]) -> list[s
             errors.append(
                 f"{item_prefix}: purpose must equal COMPONENT_TOURNAMENT_SELECTION"
             )
-
     missing = sorted(metric_families - covered_families)
     if missing:
         errors.append(f"{prefix}: missing ranking metric families {missing}")
@@ -322,7 +320,6 @@ def validate_research_component_tournament_protocol(protocol: Any) -> list[str]:
     errors = validate_closed_object(protocol, required_fields=_PROTOCOL_FIELDS, field=prefix)
     if errors or not isinstance(protocol, dict):
         return errors
-
     if protocol.get("schema_version") != "1":
         errors.append(f"{prefix}: schema_version must equal '1'")
     if protocol.get("protocol_id") != RESEARCH_COMPONENT_TOURNAMENT_PROTOCOL_ID:
@@ -333,30 +330,28 @@ def validate_research_component_tournament_protocol(protocol: Any) -> list[str]:
         errors.append(f"{prefix}: claim_class mismatch")
     if protocol.get("purpose") != RESEARCH_COMPONENT_TOURNAMENT_PURPOSE:
         errors.append(f"{prefix}: purpose mismatch")
-
     errors.extend(_validate_candidate_bindings(protocol.get("candidate_bindings")))
 
     metric_families = protocol.get("ranking_metric_families")
     errors.extend(
-        _unique_nonempty_strings(
-            metric_families,
-            f"{prefix}.ranking_metric_families",
-        )
+        _unique_nonempty_strings(metric_families, f"{prefix}.ranking_metric_families")
     )
     metric_set = set(metric_families) if isinstance(metric_families, list) else set()
     if metric_set != set(ALLOWED_RANKING_METRIC_FAMILIES):
         errors.append(
             f"{prefix}: ranking_metric_families must equal the frozen non-clinical set"
         )
-
     errors.extend(
-        _validate_evaluation_assets(
-            protocol.get("evaluation_asset_manifests"), metric_set
-        )
+        _validate_evaluation_assets(protocol.get("evaluation_asset_manifests"), metric_set)
     )
 
-    if not _nonempty(protocol.get("sentinel_set_id")):
-        errors.append(f"{prefix}: sentinel_set_id must be non-empty")
+    if protocol.get("sentinel_fixture_set_sha256") != SENTINEL_FIXTURE_SET_SHA256:
+        errors.append(f"{prefix}: sentinel_fixture_set_sha256 mismatch")
+    if (
+        protocol.get("sentinel_fixture_sha256_set_sha256")
+        != SENTINEL_FIXTURE_SHA256_SET_SHA256
+    ):
+        errors.append(f"{prefix}: sentinel_fixture_sha256_set_sha256 mismatch")
     if protocol.get("sentinel_can_rank") is not False:
         errors.append(f"{prefix}: sentinel_can_rank must be false")
     if protocol.get("private_gold_allowed") is not False:
@@ -373,7 +368,6 @@ def validate_research_component_tournament_protocol(protocol: Any) -> list[str]:
         errors.append(f"{prefix}: pre_result_freeze must be true")
     if protocol.get("authorized_spend_usd") != 0:
         errors.append(f"{prefix}: authorized_spend_usd must equal 0")
-
     errors.extend(
         _validate_self_hash(
             protocol,
@@ -386,8 +380,7 @@ def validate_research_component_tournament_protocol(protocol: Any) -> list[str]:
 
 
 def validate_research_component_tournament_evidence_pack(
-    evidence_pack: Any,
-    protocol: Any,
+    evidence_pack: Any, protocol: Any
 ) -> list[str]:
     """Validate evidence only; winner selection remains outside this contract."""
     prefix = "ResearchComponentTournamentEvidencePack"
@@ -396,12 +389,10 @@ def validate_research_component_tournament_evidence_pack(
     )
     if errors or not isinstance(evidence_pack, dict):
         return errors
-
     protocol_errors = validate_research_component_tournament_protocol(protocol)
-    if protocol_errors:
+    if protocol_errors or not isinstance(protocol, dict):
         errors.append(f"{prefix}: bound protocol is invalid")
         return sorted(set(errors))
-    assert isinstance(protocol, dict)
 
     if evidence_pack.get("schema_version") != "1":
         errors.append(f"{prefix}: schema_version must equal '1'")
@@ -415,6 +406,10 @@ def validate_research_component_tournament_evidence_pack(
     expected_candidates = {
         (item["candidate_id"], item["upstream_revision"]): item
         for item in protocol["candidate_bindings"]
+    }
+    assets_by_family = {
+        item["metric_family"]: item["asset_id"]
+        for item in protocol["evaluation_asset_manifests"]
     }
     candidate_results = evidence_pack.get("candidate_results")
     if not isinstance(candidate_results, list) or len(candidate_results) != 4:
@@ -464,17 +459,25 @@ def validate_research_component_tournament_evidence_pack(
                         errors.append(f"{metric_prefix}: duplicate metric_family")
                     else:
                         families.add(family)
-                    for field in ("asset_id", "value_identity", "deterministic_evaluator_id"):
+                    if metric_result.get("asset_id") != assets_by_family.get(family):
+                        errors.append(f"{metric_prefix}: asset_id mismatch for metric_family")
+                    for field in ("value_identity", "deterministic_evaluator_id"):
                         if not _nonempty(metric_result.get(field)):
                             errors.append(f"{metric_prefix}: {field} must be non-empty")
                 if families != set(ALLOWED_RANKING_METRIC_FAMILIES):
                     errors.append(f"{item_prefix}: metric-family set mismatch")
-
-            resource_ids = result.get("resource_result_ids")
-            errors.extend(_unique_nonempty_strings(resource_ids, f"{item_prefix}.resource_result_ids"))
-            if result.get("qualification_disposition") not in {"PASS", "FAIL", "DISQUALIFIED"}:
+            errors.extend(
+                _unique_nonempty_strings(
+                    result.get("resource_result_ids"),
+                    f"{item_prefix}.resource_result_ids",
+                )
+            )
+            if result.get("qualification_disposition") not in {
+                "PASS",
+                "FAIL",
+                "DISQUALIFIED",
+            }:
                 errors.append(f"{item_prefix}: unsupported qualification_disposition")
-
         if seen != set(expected_candidates):
             errors.append(f"{prefix}: exact frozen candidate result set required")
 
@@ -492,8 +495,8 @@ def validate_research_component_tournament_evidence_pack(
             if item_errors or not isinstance(result, dict):
                 continue
             guard_id = result.get("guard_id")
-            if not _nonempty(guard_id):
-                errors.append(f"{item_prefix}: guard_id must be non-empty")
+            if guard_id not in RESEARCH_COMPONENT_REQUIRED_GUARDS:
+                errors.append(f"{item_prefix}: guard_id is outside canonical set")
             elif guard_id in guard_ids:
                 errors.append(f"{item_prefix}: duplicate guard_id")
             else:
@@ -503,24 +506,26 @@ def validate_research_component_tournament_evidence_pack(
             violations = result.get("violation_count")
             if type(violations) is not int or violations < 0:
                 errors.append(f"{item_prefix}: violation_count must be non-negative integer")
-            if result.get("disposition") not in {"PASS", "FAIL"}:
+            disposition = result.get("disposition")
+            if disposition not in {"PASS", "FAIL"}:
                 errors.append(f"{item_prefix}: disposition must be PASS or FAIL")
-            if violations == 0 and result.get("disposition") != "PASS":
+            if violations == 0 and disposition != "PASS":
                 errors.append(f"{item_prefix}: zero violations require PASS")
-            if isinstance(violations, int) and violations > 0 and result.get("disposition") != "FAIL":
+            if type(violations) is int and violations > 0 and disposition != "FAIL":
                 errors.append(f"{item_prefix}: positive violations require FAIL")
+        if guard_ids != set(RESEARCH_COMPONENT_REQUIRED_GUARDS):
+            errors.append(f"{prefix}: exact canonical guard set required")
 
     if not _nonempty(evidence_pack.get("execution_environment_id")):
         errors.append(f"{prefix}: execution_environment_id must be non-empty")
-    if not _nonempty(evidence_pack.get("execution_authority_id")):
-        errors.append(f"{prefix}: execution_authority_id must be non-empty")
+    if evidence_pack.get("execution_authority_id") != RESEARCH_COMPONENT_EXECUTION_AUTHORITY_ID:
+        errors.append(f"{prefix}: execution_authority_id mismatch")
     if evidence_pack.get("spend_usd") != 0:
         errors.append(f"{prefix}: spend_usd must equal 0")
     if evidence_pack.get("winner_selected") is not False:
         errors.append(f"{prefix}: winner_selected must be false")
     if evidence_pack.get("recommendation") != "NONE":
         errors.append(f"{prefix}: recommendation must equal NONE")
-
     errors.extend(
         _validate_self_hash(
             evidence_pack,
