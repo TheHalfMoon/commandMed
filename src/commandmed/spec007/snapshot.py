@@ -11,7 +11,10 @@ from src.commandmed.spec007.foundation import (
     validate_canonical_sha256,
     validate_closed_object,
 )
-from src.commandmed.spec007.quarantine import evaluate_quarantine_source
+from src.commandmed.spec007.quarantine import (
+    evaluate_quarantine_source,
+    explicitly_prohibited_quarantine_source,
+)
 
 _SNAPSHOT_REQUIRED_FIELDS = (
     "snapshot_id",
@@ -139,6 +142,17 @@ def _validated_records(records: Iterable[dict[str, Any]]) -> list[dict[str, Any]
         if record_id in seen_ids:
             raise ValueError(f"duplicate record_id '{record_id}'")
         seen_ids.add(record_id)
+
+        # ``source_authority_id`` is provenance, not the quarantine split.
+        # Preserve that distinction while preventing an explicitly protected
+        # quarantine-source identity (for example Private Gold) from being
+        # relabeled as provenance and paired with a train-allowed split.
+        if explicitly_prohibited_quarantine_source(
+            record["source_authority_id"], "TRAIN"
+        ):
+            raise ValueError(
+                f"record[{index}] source_authority_id explicitly prohibited for TRAIN"
+            )
 
         split_quarantine = evaluate_quarantine_source(record["split_id"], "TRAIN")
         if not split_quarantine["allowed"] or not split_quarantine["can_train"]:
