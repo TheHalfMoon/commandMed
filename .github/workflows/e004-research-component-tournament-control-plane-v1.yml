@@ -14,6 +14,8 @@ on:
 
 permissions:
   contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   validate:
@@ -80,11 +82,30 @@ jobs:
           set -euo pipefail
           PYTHONPATH=. python3 -m pytest -q tests/spec007
 
-      - name: Run full repository regression suite
+      - name: Run full repository regression suite with bounded failure diagnostic
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EXACT_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
-          set -euo pipefail
-          PYTHONPATH=. python3 -m pytest -q
+          set +e
+          PYTHONPATH=. python3 -m pytest -q --tb=short > /tmp/full.log 2>&1
+          code=$?
+          cat /tmp/full.log
+          if [ "$code" -ne 0 ]; then
+            {
+              echo 'Exact-head full repository regression diagnostic'
+              echo
+              echo "HEAD=${EXACT_HEAD}"
+              echo
+              echo '```text'
+              tail -n 160 /tmp/full.log
+              echo '```'
+            } > /tmp/pr-comment.md
+            gh pr comment "$PR_NUMBER" --body-file /tmp/pr-comment.md
+            exit "$code"
+          fi
 
       - name: Verify diff whitespace
         shell: bash
