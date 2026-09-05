@@ -1,14 +1,14 @@
 # E004 Research-Component Tournament Pre-Execution Envelope — 2026-09-05
 
-**Spec:** 007 SFT V1  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Canonical base at branch creation:** `c94e8f5e2e31993b902afb41115dc802ecc91195`  
-**Artifact class:** deterministic non-executing pre-execution control plane  
-**Corrective-maintenance authority:** `E004_CORRECTIVE_MAINTENANCE_AUTHORITY=AUTHORIZED` / CM-3  
-**Execution authority effect:** NONE  
-**Winner-selection effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Canonical base at branch creation:** `c94e8f5e2e31993b902afb41115dc802ecc91195`
+**Artifact class:** deterministic non-executing pre-execution control plane
+**Corrective-maintenance authority:** `E004_CORRECTIVE_MAINTENANCE_AUTHORITY=AUTHORIZED` / CM-3
+**Execution authority effect:** NONE
+**Winner-selection effect:** NONE
+**Training authority:** NONE
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
