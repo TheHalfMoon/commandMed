@@ -14,7 +14,7 @@ import struct
 from typing import Any, Mapping
 
 from src.commandmed.eval_contract.canonical import compute_canonical_sha256
-from src.commandmed.spec007.foundation import is_canonical_sha256
+from src.commandmed.spec007.foundation import is_canonical_sha256, validate_closed_object
 from src.commandmed.spec007.research_execution import (
     RESEARCH_COMPONENT_EVALUATION_ASSET_SET_SHA256,
     RESEARCH_COMPONENT_TOURNAMENT_PROTOCOL_SHA256,
@@ -87,6 +87,45 @@ FROZEN_EVALUATION_ASSETS: dict[str, tuple[str, str, str]] = {
 
 _LLAMA_CANDIDATES = frozenset(PRIMARY_CANDIDATES[:2])
 _SAFE_PATH_RE = re.compile(r"^[^\x00\r\n]+$")
+_MANIFEST_FIELDS = (
+    "schema_version",
+    "adapter_id",
+    "adapter_sha256",
+    "scope_id",
+    "protocol_id",
+    "protocol_sha256",
+    "evaluation_asset_set_sha256",
+    "candidate_id",
+    "upstream_revision",
+    "candidate_role",
+    "backend_family",
+    "backend_source_revision",
+    "runtime_artifact_sha256",
+    "build_toolchain_identity",
+    "operations",
+    "execution_performed",
+    "authorized_spend_usd",
+)
+_OPERATION_FIELDS = (
+    "operation_id",
+    "operation_kind",
+    "asset_id",
+    "asset_sha256",
+    "scoring_method",
+    "input_format",
+    "input_sha256",
+    "expected_output_kind",
+    "invocations",
+)
+_INVOCATION_FIELDS = (
+    "invocation_id",
+    "probe_id",
+    "run_class",
+    "run_index",
+    "runtime_entrypoint",
+    "runtime_executable_sha256",
+    "argv",
+)
 
 
 def _nonempty(value: Any) -> bool:
@@ -117,6 +156,27 @@ def _require_frozen_asset(asset: Any) -> Mapping[str, Any]:
     return asset
 
 
+def _require_frozen_asset_set(asset_set: Any) -> dict[str, Mapping[str, Any]]:
+    errors = validate_research_component_evaluation_asset_set(asset_set)
+    if errors or not isinstance(asset_set, dict):
+        raise ValueError("evaluation asset set is not canonically valid")
+    if asset_set.get("asset_set_sha256") != RESEARCH_COMPONENT_EVALUATION_ASSET_SET_SHA256:
+        raise ValueError("evaluation asset set identity mismatch")
+    records = asset_set.get("asset_records")
+    if not isinstance(records, list) or len(records) != 7:
+        raise ValueError("frozen asset set must contain exactly seven records")
+    by_id: dict[str, Mapping[str, Any]] = {}
+    for raw_asset in records:
+        asset = _require_frozen_asset(raw_asset)
+        asset_id = str(asset.get("asset_id"))
+        if asset_id in by_id:
+            raise ValueError("duplicate frozen evaluation asset")
+        by_id[asset_id] = asset
+    if set(by_id) != set(FROZEN_EVALUATION_ASSETS):
+        raise ValueError("evaluation asset set does not match frozen identities")
+    return by_id
+
+
 def _pack_u32(value: int) -> bytes:
     if not isinstance(value, int) or isinstance(value, bool) or not 0 <= value <= 0xFFFFFFFF:
         raise ValueError("value must fit unsigned 32-bit integer")
@@ -142,7 +202,6 @@ def _serialize_multiple_choice_task(case: Mapping[str, Any]) -> bytes:
     correct_choice_id = case.get("correct_choice_id")
     if not isinstance(choices, list) or len(choices) != 4:
         raise ValueError("multiple-choice task requires exactly four choices")
-
     choice_ids = [choice.get("choice_id") for choice in choices if isinstance(choice, dict)]
     if choice_ids != ["A", "B", "C", "D"] or correct_choice_id not in choice_ids:
         raise ValueError("multiple-choice task requires ordered A-D choices and one answer")
@@ -154,27 +213,18 @@ def _serialize_multiple_choice_task(case: Mapping[str, Any]) -> bytes:
         payload.extend(_pack_string(choice.get("text")))
     for choice_id in choice_ids:
         payload.extend(_pack_i32(1 if choice_id == correct_choice_id else 0))
-
-    # llama.cpp's current multiple-choice record has a second answer collection
-    # reserved for multiple-correct-answer tasks. SP007-RO-001 uses only mc1.
     payload.extend(_pack_u32(0))
     return bytes(payload)
 
 
 def serialize_llama_multiple_choice_asset(asset: Any) -> bytes:
-    """Serialize one frozen MC asset into llama.cpp's exact native task format.
-
-    The pinned runtime is Linux x86_64 and reads native uint32/int records. The
-    adapter binds that observed little-endian environment explicitly as LE32.
-    No model or executable is opened by this function.
-    """
+    """Serialize one frozen MC asset into llama.cpp's exact native task format."""
     record = _require_frozen_asset(asset)
     if record.get("asset_kind") != MULTIPLE_CHOICE_ASSET_KIND:
         raise ValueError("resource-measurement asset cannot be serialized as multiple choice")
     cases = record.get("cases")
     if not isinstance(cases, list) or len(cases) != 12:
         raise ValueError("frozen multiple-choice asset must contain exactly 12 cases")
-
     tasks = [_serialize_multiple_choice_task(case) for case in cases if isinstance(case, dict)]
     if len(tasks) != len(cases):
         raise ValueError("multiple-choice cases must be object records")
@@ -267,14 +317,12 @@ def build_llama_resource_invocations(asset: Any, *, model_path: str) -> list[dic
         if not isinstance(probe, dict):
             raise ValueError("resource probes must be object records")
         probe_id = probe.get("probe_id")
-        input_text = probe.get("input_text")
-        max_new_tokens = probe.get("max_new_tokens")
         if probe.get("warmup_runs") != 1 or probe.get("measured_runs") != 3:
             raise ValueError("resource probe run counts do not match frozen protocol")
         argv = build_llama_resource_probe_argv(
             model_path=model_path,
-            input_text=str(input_text),
-            max_new_tokens=max_new_tokens,
+            input_text=str(probe.get("input_text")),
+            max_new_tokens=probe.get("max_new_tokens"),
         )
         invocations.append(
             {
@@ -317,26 +365,16 @@ def build_e004_llama_adapter_manifest(
     payload_directory: str,
 ) -> dict[str, Any]:
     """Build a complete non-executing adapter manifest for one GGUF candidate."""
-    errors = validate_research_component_evaluation_asset_set(asset_set)
-    if errors or not isinstance(asset_set, dict):
-        raise ValueError("evaluation asset set is not canonically valid")
-    if asset_set.get("asset_set_sha256") != RESEARCH_COMPONENT_EVALUATION_ASSET_SET_SHA256:
-        raise ValueError("evaluation asset set identity mismatch")
-
+    by_id = _require_frozen_asset_set(asset_set)
     pair = (candidate_id, upstream_revision)
     if pair not in _LLAMA_CANDIDATES:
         raise ValueError("candidate is not assigned to the pinned llama.cpp GGUF route")
     model = _safe_path(model_path, "model_path")
     payload_dir = _safe_path(payload_directory, "payload_directory").rstrip("/")
 
-    records = asset_set.get("asset_records")
-    if not isinstance(records, list) or len(records) != 7:
-        raise ValueError("frozen asset set must contain exactly seven records")
-
     operations: list[dict[str, Any]] = []
-    for raw_asset in sorted(records, key=lambda item: str(item.get("asset_id", ""))):
-        asset = _require_frozen_asset(raw_asset)
-        asset_id = str(asset.get("asset_id"))
+    for asset_id in sorted(by_id):
+        asset = by_id[asset_id]
         if asset.get("asset_kind") == MULTIPLE_CHOICE_ASSET_KIND:
             payload_sha = compute_llama_multiple_choice_payload_sha256(asset)
             payload_path = f"{payload_dir}/{asset_id}.mcbin"
@@ -359,8 +397,7 @@ def build_e004_llama_adapter_manifest(
                             "runtime_entrypoint": "llama-perplexity",
                             "runtime_executable_sha256": LLAMA_PERPLEXITY_EXECUTABLE_SHA256,
                             "argv": build_llama_multiple_choice_argv(
-                                model_path=model,
-                                payload_path=payload_path,
+                                model_path=model, payload_path=payload_path
                             ),
                         }
                     ],
@@ -377,9 +414,7 @@ def build_e004_llama_adapter_manifest(
                     "input_format": "FROZEN_RESOURCE_PROBE_RECORDS_V1",
                     "input_sha256": asset.get("asset_sha256"),
                     "expected_output_kind": "RESOURCE_MEASUREMENT_RECORD_V1",
-                    "invocations": build_llama_resource_invocations(
-                        asset, model_path=model
-                    ),
+                    "invocations": build_llama_resource_invocations(asset, model_path=model),
                 }
             )
         else:
@@ -408,16 +443,148 @@ def build_e004_llama_adapter_manifest(
     return manifest
 
 
-def validate_e004_llama_adapter_manifest(manifest: Any) -> list[str]:
-    """Validate a built llama adapter manifest without creating authority."""
-    if not isinstance(manifest, dict):
-        return ["E004LlamaAdapterManifest: expected object"]
+def _validate_mc_invocation(
+    invocation: Mapping[str, Any], asset_id: str, model_paths: set[str]
+) -> list[str]:
+    prefix = f"E004LlamaAdapterManifest.{asset_id}.MC"
+    errors = validate_closed_object(
+        invocation, required_fields=_INVOCATION_FIELDS, field=prefix
+    )
+    if errors:
+        return errors
+    if invocation.get("invocation_id") != f"{asset_id}-MC-SCORE-01":
+        errors.append(f"{prefix}: invocation_id mismatch")
+    if invocation.get("probe_id") is not None:
+        errors.append(f"{prefix}: probe_id must be null")
+    if invocation.get("run_class") != "SCORING" or invocation.get("run_index") != 1:
+        errors.append(f"{prefix}: run identity mismatch")
+    if invocation.get("runtime_entrypoint") != "llama-perplexity":
+        errors.append(f"{prefix}: runtime_entrypoint mismatch")
+    if invocation.get("runtime_executable_sha256") != LLAMA_PERPLEXITY_EXECUTABLE_SHA256:
+        errors.append(f"{prefix}: exact llama-perplexity executable identity required")
+    argv = invocation.get("argv")
+    if not isinstance(argv, list) or len(argv) != 11:
+        errors.append(f"{prefix}: exact argv shape required")
+        return errors
+    try:
+        model_path = _safe_path(argv[2], "model_path")
+        payload_path = _safe_path(argv[4], "payload_path")
+    except (IndexError, ValueError):
+        errors.append(f"{prefix}: argv path binding invalid")
+        return errors
+    model_paths.add(model_path)
+    try:
+        expected_argv = build_llama_multiple_choice_argv(
+            model_path=model_path, payload_path=payload_path
+        )
+    except ValueError:
+        errors.append(f"{prefix}: argv binding invalid")
+        return errors
+    if argv != expected_argv:
+        errors.append(f"{prefix}: exact argv mismatch")
+    return errors
+
+
+def _expected_resource_runs(asset_id: str) -> set[tuple[str, str, int, str]]:
+    expected: set[tuple[str, str, int, str]] = set()
+    for probe_index in range(1, 9):
+        probe_id = f"{asset_id}-PROBE-{probe_index:02d}"
+        expected.add((probe_id, "WARMUP", 1, f"{probe_id}-WARMUP-01"))
+        for run_index in range(1, 4):
+            expected.add(
+                (probe_id, "MEASURED", run_index, f"{probe_id}-MEASURED-{run_index:02d}")
+            )
+    return expected
+
+
+def _validate_resource_invocations(
+    invocations: Any,
+    asset: Mapping[str, Any],
+    model_paths: set[str],
+) -> list[str]:
+    asset_id = str(asset.get("asset_id"))
+    prefix = f"E004LlamaAdapterManifest.{asset_id}.RESOURCE"
+    if not isinstance(invocations, list) or len(invocations) != 32:
+        return [f"{prefix}: exactly 32 invocations required"]
+    probes = asset.get("probes")
+    if not isinstance(probes, list):
+        return [f"{prefix}: canonical probes unavailable"]
+    probe_by_id = {str(probe.get("probe_id")): probe for probe in probes if isinstance(probe, dict)}
+    observed: set[tuple[str, str, int, str]] = set()
     errors: list[str] = []
+    for index, invocation in enumerate(invocations):
+        item_prefix = f"{prefix}[{index}]"
+        item_errors = validate_closed_object(
+            invocation, required_fields=_INVOCATION_FIELDS, field=item_prefix
+        )
+        errors.extend(item_errors)
+        if item_errors or not isinstance(invocation, dict):
+            continue
+        probe_id = invocation.get("probe_id")
+        run_class = invocation.get("run_class")
+        run_index = invocation.get("run_index")
+        invocation_id = invocation.get("invocation_id")
+        if not isinstance(probe_id, str) or probe_id not in probe_by_id:
+            errors.append(f"{item_prefix}: exact frozen probe_id required")
+            continue
+        if run_class not in {"WARMUP", "MEASURED"}:
+            errors.append(f"{item_prefix}: run_class mismatch")
+        if not isinstance(run_index, int) or isinstance(run_index, bool):
+            errors.append(f"{item_prefix}: run_index must be integer")
+            continue
+        observed.add((probe_id, str(run_class), run_index, str(invocation_id)))
+        if invocation.get("runtime_entrypoint") != "llama-cli":
+            errors.append(f"{item_prefix}: runtime_entrypoint mismatch")
+        if invocation.get("runtime_executable_sha256") != LLAMA_CLI_EXECUTABLE_SHA256:
+            errors.append(f"{item_prefix}: exact llama-cli executable identity required")
+        argv = invocation.get("argv")
+        if not isinstance(argv, list) or len(argv) != 17:
+            errors.append(f"{item_prefix}: exact resource argv shape required")
+            continue
+        try:
+            model_path = _safe_path(argv[2], "model_path")
+        except (IndexError, ValueError):
+            errors.append(f"{item_prefix}: model path binding invalid")
+            continue
+        model_paths.add(model_path)
+        probe = probe_by_id[probe_id]
+        try:
+            expected_argv = build_llama_resource_probe_argv(
+                model_path=model_path,
+                input_text=str(probe.get("input_text")),
+                max_new_tokens=probe.get("max_new_tokens"),
+            )
+        except ValueError:
+            errors.append(f"{item_prefix}: frozen probe argv cannot be constructed")
+            continue
+        if argv != expected_argv:
+            errors.append(f"{item_prefix}: exact resource argv mismatch")
+    if observed != _expected_resource_runs(asset_id):
+        errors.append(f"{prefix}: exact warmup/measured invocation set required")
+    return errors
+
+
+def validate_e004_llama_adapter_manifest(manifest: Any, asset_set: Any) -> list[str]:
+    """Validate an exact non-executing llama adapter manifest fail closed."""
+    prefix = "E004LlamaAdapterManifest"
+    errors = validate_closed_object(manifest, required_fields=_MANIFEST_FIELDS, field=prefix)
+    if errors or not isinstance(manifest, dict):
+        return errors
+    try:
+        by_id = _require_frozen_asset_set(asset_set)
+    except ValueError as exc:
+        return [f"{prefix}: {exc}"]
+
     pair = (manifest.get("candidate_id"), manifest.get("upstream_revision"))
     if pair not in _LLAMA_CANDIDATES:
-        errors.append("E004LlamaAdapterManifest: candidate route mismatch")
+        errors.append(f"{prefix}: candidate route mismatch")
+    expected_adapter_id = (
+        f"SP007-RO-001-LLAMA-ADAPTER::{manifest.get('candidate_id')}@"
+        f"{manifest.get('upstream_revision')}"
+    )
     expected = {
         "schema_version": "1",
+        "adapter_id": expected_adapter_id,
         "scope_id": RESEARCH_COMPONENT_SCOPE_ID,
         "protocol_id": RESEARCH_COMPONENT_TOURNAMENT_PROTOCOL_ID,
         "protocol_sha256": RESEARCH_COMPONENT_TOURNAMENT_PROTOCOL_SHA256,
@@ -432,46 +599,75 @@ def validate_e004_llama_adapter_manifest(manifest: Any) -> list[str]:
     }
     for field, value in expected.items():
         if manifest.get(field) != value:
-            errors.append(f"E004LlamaAdapterManifest: {field} mismatch")
+            errors.append(f"{prefix}: {field} mismatch")
     if not is_canonical_sha256(manifest.get("adapter_sha256")):
-        errors.append("E004LlamaAdapterManifest: adapter_sha256 must be canonical")
+        errors.append(f"{prefix}: adapter_sha256 must be canonical")
     elif manifest.get("adapter_sha256") != compute_e004_llama_adapter_manifest_sha256(manifest):
-        errors.append("E004LlamaAdapterManifest: adapter_sha256 mismatch")
+        errors.append(f"{prefix}: adapter_sha256 mismatch")
 
     operations = manifest.get("operations")
     if not isinstance(operations, list) or len(operations) != 7:
-        errors.append("E004LlamaAdapterManifest: exactly seven operations required")
+        errors.append(f"{prefix}: exactly seven operations required")
         return sorted(set(errors))
     asset_ids = [op.get("asset_id") for op in operations if isinstance(op, dict)]
-    if set(asset_ids) != set(FROZEN_EVALUATION_ASSETS):
-        errors.append("E004LlamaAdapterManifest: exact frozen asset coverage required")
-    for operation in operations:
-        if not isinstance(operation, dict):
-            errors.append("E004LlamaAdapterManifest: operation must be an object")
+    if len(asset_ids) != 7 or set(asset_ids) != set(FROZEN_EVALUATION_ASSETS):
+        errors.append(f"{prefix}: exact frozen asset coverage required")
+
+    model_paths: set[str] = set()
+    for index, operation in enumerate(operations):
+        item_prefix = f"{prefix}.operations[{index}]"
+        item_errors = validate_closed_object(
+            operation, required_fields=_OPERATION_FIELDS, field=item_prefix
+        )
+        errors.extend(item_errors)
+        if item_errors or not isinstance(operation, dict):
             continue
         asset_id = str(operation.get("asset_id"))
-        expected_asset = FROZEN_EVALUATION_ASSETS.get(asset_id)
-        if expected_asset is None or operation.get("asset_sha256") != expected_asset[0]:
-            errors.append(f"E004LlamaAdapterManifest: {asset_id} identity mismatch")
+        asset = by_id.get(asset_id)
+        frozen = FROZEN_EVALUATION_ASSETS.get(asset_id)
+        if asset is None or frozen is None:
+            errors.append(f"{item_prefix}: asset outside frozen set")
             continue
-        invocations = operation.get("invocations")
-        expected_count = 32 if expected_asset[1] == RESOURCE_ASSET_KIND else 1
-        if not isinstance(invocations, list) or len(invocations) != expected_count:
-            errors.append(
-                f"E004LlamaAdapterManifest: {asset_id} invocation count must equal {expected_count}"
+        asset_sha, asset_kind, scoring_method = frozen
+        if operation.get("asset_sha256") != asset_sha:
+            errors.append(f"{item_prefix}: asset_sha256 mismatch")
+        if operation.get("scoring_method") != scoring_method:
+            errors.append(f"{item_prefix}: scoring_method mismatch")
+        if not is_canonical_sha256(operation.get("input_sha256")):
+            errors.append(f"{item_prefix}: input_sha256 must be canonical")
+
+        if asset_kind == MULTIPLE_CHOICE_ASSET_KIND:
+            expected_operation = {
+                "operation_id": f"{asset_id}-MC-SCORE",
+                "operation_kind": "MULTIPLE_CHOICE_SCORE",
+                "input_format": LLAMA_MULTIPLE_CHOICE_INPUT_FORMAT,
+                "input_sha256": compute_llama_multiple_choice_payload_sha256(asset),
+                "expected_output_kind": "ASSET_ACCURACY_RECORD_V1",
+            }
+            for field, value in expected_operation.items():
+                if operation.get(field) != value:
+                    errors.append(f"{item_prefix}: {field} mismatch")
+            invocations = operation.get("invocations")
+            if not isinstance(invocations, list) or len(invocations) != 1:
+                errors.append(f"{item_prefix}: exactly one scoring invocation required")
+            elif isinstance(invocations[0], dict):
+                errors.extend(_validate_mc_invocation(invocations[0], asset_id, model_paths))
+            else:
+                errors.append(f"{item_prefix}: scoring invocation malformed")
+        elif asset_kind == RESOURCE_ASSET_KIND:
+            expected_operation = {
+                "operation_id": f"{asset_id}-RESOURCE",
+                "operation_kind": "RESOURCE_MEASUREMENT",
+                "input_format": "FROZEN_RESOURCE_PROBE_RECORDS_V1",
+                "input_sha256": asset_sha,
+                "expected_output_kind": "RESOURCE_MEASUREMENT_RECORD_V1",
+            }
+            for field, value in expected_operation.items():
+                if operation.get(field) != value:
+                    errors.append(f"{item_prefix}: {field} mismatch")
+            errors.extend(
+                _validate_resource_invocations(operation.get("invocations"), asset, model_paths)
             )
-            continue
-        for invocation in invocations:
-            if not isinstance(invocation, dict):
-                errors.append(f"E004LlamaAdapterManifest: {asset_id} invocation malformed")
-                continue
-            executable = invocation.get("runtime_executable_sha256")
-            argv = invocation.get("argv")
-            entrypoint = invocation.get("runtime_entrypoint")
-            if not is_canonical_sha256(executable):
-                errors.append(f"E004LlamaAdapterManifest: {asset_id} executable sha invalid")
-            if not isinstance(argv, list) or not argv or argv[0] != entrypoint:
-                errors.append(f"E004LlamaAdapterManifest: {asset_id} argv mismatch")
-            if isinstance(argv, list) and "--offline" not in argv:
-                errors.append(f"E004LlamaAdapterManifest: {asset_id} offline flag required")
+    if len(model_paths) != 1:
+        errors.append(f"{prefix}: one exact local model path must bind all invocations")
     return sorted(set(errors))
