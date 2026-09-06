@@ -15,14 +15,18 @@ on:
       - 'tests/spec007/test_research_candidate_bundle.py'
       - 'tests/spec007/test_e004_execution_adapter.py'
       - 'tests/spec007/test_e004_transformers_adapter.py'
+      - 'tests/spec007/test_e004_model_load_compatibility_policy.py'
       - 'tests/spec007/test_review_repair_regressions.py'
       - 'tests/spec007/test_quarantine_snapshot.py'
+      - 'tools/e004_model_load_probe.cpp'
       - 'specs/007-sft-v1/e004-successor-candidate-artifact-bundle-set-v1.json'
       - 'specs/007-sft-v1/e004-successor-candidate-artifact-bundle-binding-v1-2026-09-06.md'
       - 'specs/007-sft-v1/e004-successor-execution-adapter-control-plane-v1-2026-09-06.md'
       - 'specs/007-sft-v1/e004-successor-transformers-adapter-control-plane-v1-2026-09-06.md'
       - 'specs/007-sft-v1/e004-research-component-tournament-control-plane-2026-09-05.md'
       - 'specs/007-sft-v1/e004-research-component-preexecution-envelope-2026-09-05.md'
+      - 'specs/007-sft-v1/e004-model-load-compatibility-implementation-v1-2026-09-07.md'
+      - '.github/workflows/e004-model-load-compatibility-evidence-v1.yml'
       - '.github/workflows/e004-research-component-tournament-control-plane-v1.yml'
 
 permissions:
@@ -47,6 +51,8 @@ jobs:
           decision='specs/007-sft-v1/e004-successor-scope-execution-authorization-founder-decision-2026-09-02.md'
           policy='specs/007-sft-v1/e004-research-only-safety-policy-successor-2026-08-31.md'
           maintenance='specs/007-sft-v1/e004-corrective-maintenance-authorization-2026-08-27.md'
+          load_decision='specs/007-sft-v1/e004-model-load-compatibility-founder-decision-2026-09-07.md'
+          load_frontier='specs/007-sft-v1/e004-registry-current-state-reconciliation-v40-2026-09-07.md'
           grep -Fxq 'FOUNDER_SUCCESSOR_EXECUTION_DECISION=E004_SUCCESSOR_EXECUTION_DECISION_B' "$decision"
           grep -Fxq 'SUCCESSOR_SCOPE_EXECUTION_AUTHORITY=AUTHORIZED_SP007_RO_001_EVIDENCE_ONLY' "$decision"
           grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$decision"
@@ -55,6 +61,15 @@ jobs:
           grep -Fq 'COMPONENT_EXTERNAL_STATISTICAL_REVIEW_REQUIRED=NO' "$decision"
           grep -Fq 'E004_CORRECTIVE_MAINTENANCE_AUTHORITY=AUTHORIZED' "$maintenance"
           grep -Fq 'CM-3 — Add a bounded identity-bound E004 execution envelope' "$maintenance"
+          grep -Fxq 'FOUNDER_E004_MODEL_LOAD_COMPATIBILITY_DECISION=E004_MODEL_LOAD_COMPATIBILITY_DECISION_B' "$load_decision"
+          grep -Fxq 'MODEL_LOAD_COMPATIBILITY_PROBE_AUTHORITY=AUTHORIZED_EXACT_SP007_RO_001_FOUR_CANDIDATE_LOAD_ONLY' "$load_decision"
+          grep -Fxq 'MODEL_LOAD_AUTHORITY=AUTHORIZED_COMPATIBILITY_PROBE_ONLY' "$load_decision"
+          grep -Fxq 'MODEL_FORWARD_PASS_AUTHORITY=NONE' "$load_decision"
+          grep -Fxq 'MODEL_INFERENCE_AUTHORITY=NONE' "$load_decision"
+          grep -Fxq 'GENERATION_AUTHORITY=NONE' "$load_decision"
+          grep -Fxq 'A15_ACTIVATION_AUTHORITY=NONE' "$load_decision"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$load_decision"
+          grep -Fxq 'MODEL_LOAD_COMPATIBILITY_IMPLEMENTATION=NOT_YET_CANONICAL' "$load_frontier"
           echo "HEAD_SHA=$(git rev-parse HEAD)"
 
       - name: Compile changed Python surface
@@ -74,8 +89,15 @@ jobs:
             tests/spec007/test_research_candidate_bundle.py \
             tests/spec007/test_e004_execution_adapter.py \
             tests/spec007/test_e004_transformers_adapter.py \
+            tests/spec007/test_e004_model_load_compatibility_policy.py \
             tests/spec007/test_review_repair_regressions.py \
             tests/spec007/test_quarantine_snapshot.py
+
+      - name: Run focused E004 model-load compatibility policy tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m unittest -v tests.spec007.test_e004_model_load_compatibility_policy
 
       - name: Run focused E004 llama execution-adapter tests
         shell: bash
