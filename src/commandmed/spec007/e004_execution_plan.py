@@ -369,6 +369,12 @@ def validate_e004_candidate_execution_plan(
     ):
         if not is_canonical_sha256(plan.get(field)):
             errors.append(f"{prefix}: {field} must be canonical sha256")
+    claimed_plan_sha = plan.get("execution_plan_sha256")
+    if (
+        is_canonical_sha256(claimed_plan_sha)
+        and claimed_plan_sha != compute_e004_execution_plan_sha256(plan)
+    ):
+        errors.append(f"{prefix}: execution_plan_sha256 mismatch")
     if plan.get("runtime_entrypoint") != ORCHESTRATOR_ENTRYPOINT:
         errors.append(f"{prefix}: runtime_entrypoint mismatch")
     argv = plan.get("runtime_argv")
@@ -445,8 +451,11 @@ def validate_e004_four_candidate_execution_plan_set(
     for field in _PLAN_SET_FIELDS:
         if plan_set.get(field) != expected.get(field):
             errors.append(f"{prefix}: {field} mismatch")
-    if not is_canonical_sha256(plan_set.get("plan_set_sha256")):
+    claimed_set_sha = plan_set.get("plan_set_sha256")
+    if not is_canonical_sha256(claimed_set_sha):
         errors.append(f"{prefix}: plan_set_sha256 must be canonical sha256")
+    elif claimed_set_sha != compute_e004_execution_plan_set_sha256(plan_set):
+        errors.append(f"{prefix}: plan_set_sha256 mismatch")
     if plan_set.get("execution_performed") is not False:
         errors.append(f"{prefix}: execution_performed must be false")
     if plan_set.get("authorized_spend_usd") != 0:
