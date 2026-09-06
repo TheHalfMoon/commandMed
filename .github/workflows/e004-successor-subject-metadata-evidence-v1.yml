@@ -99,7 +99,8 @@ jobs:
             echo 'Model-loading API is prohibited' >&2
             exit 1
           fi
-          if grep -Fq 'trust_remote_code' "$workflow"; then
+          remote_code='trust_'"remote_code"
+          if grep -Fq "$remote_code" "$workflow"; then
             echo 'Remote-code execution surface is prohibited' >&2
             exit 1
           fi
@@ -125,7 +126,7 @@ jobs:
           grep -Fxq 'MAX_AUTHORIZED_SUBJECT_METADATA_EVIDENCE_RUNS=1' "$AUTHORITY_RECORD"
           unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
           for name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN; do test -z "${!name:-}"; done
-          required_tools=(bash curl python3 sha256sum stat sort awk grep df)
+          required_tools=(bash curl python3 sha256sum stat sort awk grep df tee wc)
           for tool in "${required_tools[@]}"; do command -v "$tool" >/dev/null; done
           available_kb="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
           test "$available_kb" -ge 3145728
@@ -176,8 +177,7 @@ jobs:
                   self.count += n
                   return b
               def unpack(self, fmt):
-                  n = struct.calcsize(fmt)
-                  return struct.unpack(fmt, self.read(n))[0]
+                  return struct.unpack(fmt, self.read(struct.calcsize(fmt)))[0]
               def string(self):
                   n = self.unpack('<Q')
                   if n > 100_000_000:
@@ -224,7 +224,7 @@ jobs:
                   if key in CAPTURE:
                       selected[key] = captured
               for _ in range(tensor_count):
-                  _name = r.string()
+                  r.string()
                   n_dims = r.unpack('<I')
                   if n_dims > 16:
                       raise SystemExit('unreasonable GGUF tensor rank')
