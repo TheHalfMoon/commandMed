@@ -1,20 +1,20 @@
 # E004 Model-Load Compatibility Founder Decision Request — 2026-09-06
 
-**Spec:** 007 SFT V1  
-**Task:** E004  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Current global frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v38-2026-09-06.md`  
-**Canonical base:** `75261eeef5cedf4963e77cc2ec6b8a59dbf1ca2e`  
-**Artifact class:** Founder decision request only  
-**Decision owner:** Founder  
-**Decision state:** ABSENT  
-**Authority effect of this document:** NONE  
-**Model load performed:** NO  
-**Model inference performed:** NO  
-**Tournament execution performed:** NO  
-**A15 activation:** ABSENT_NOT_AUTHORIZED  
-**Training performed:** NO  
+**Spec:** 007 SFT V1
+**Task:** E004
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Current global frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v38-2026-09-06.md`
+**Canonical base:** `75261eeef5cedf4963e77cc2ec6b8a59dbf1ca2e`
+**Artifact class:** Founder decision request only
+**Decision owner:** Founder
+**Decision state:** ABSENT
+**Authority effect of this document:** NONE
+**Model load performed:** NO
+**Model inference performed:** NO
+**Tournament execution performed:** NO
+**A15 activation:** ABSENT_NOT_AUTHORIZED
+**Training performed:** NO
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
