@@ -1,33 +1,23 @@
 # E004 Successor Runtime-Binding Run Evidence — 2026-09-06
 
-**Spec:** 007 SFT V1  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Authority record:** `specs/007-sft-v1/e004-successor-runtime-binding-evidence-authorization-2026-09-05.md`  
-**Canonical workflow merge:** `6a86bbc4a52adac3846a1eef97f89cb170fe202b`  
-**Workflow path:** `.github/workflows/e004-successor-runtime-binding-evidence-v3.yml`  
-**Execution branch:** `evidence/e004-successor-runtime-binding-run-v1`  
-**Execution marker head:** `f5f5fbdcafa82d11bc0ddeb3dc641c729cf9fc79`  
-**Execution marker tree:** `ed5ba0e2f76d736460e68f33b2c8f90215ca6a52`  
-**Workflow run:** `33974098680`  
-**Run attempt:** `1`  
-**Run event:** `push`  
-**Run conclusion:** `success`  
-**Model load performed:** NO  
-**Model execution performed:** NO  
-**Tournament execution performed:** NO  
-**Model conversion performed:** NO  
-**A15 activation performed:** NO  
-**Credential use performed:** NO  
-**Artifact upload performed:** NO  
-**Training performed:** NO  
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Authority record:** `specs/007-sft-v1/e004-successor-runtime-binding-evidence-authorization-2026-09-05.md`
+**Canonical workflow merge:** `6a86bbc4a52adac3846a1eef97f89cb170fe202b`
+**Workflow path:** `.github/workflows/e004-successor-runtime-binding-evidence-v3.yml`
+**Execution branch:** `evidence/e004-successor-runtime-binding-run-v1`
+**Execution marker head:** `f5f5fbdcafa82d11bc0ddeb3dc641c729cf9fc79`
+**Execution marker tree:** `ed5ba0e2f76d736460e68f33b2c8f90215ca6a52`
+**Workflow run:** `33974098680`
+**Run attempt:** `1`
+**Run event:** `push`
+**Run conclusion:** `success`
 **Spend:** USD 0
 
-## 1. Purpose and authority boundary
+## 1. Authority and consumption
 
-This record canonically captures the deterministic non-model runtime-binding evidence emitted by the single authorized successor runtime-binding evidence run. It closes only fields directly proven by the retained GitHub Actions logs.
-
-It does not authorize or claim candidate weight loading, inference, tournament execution, resource measurement with a model, conversion, quantization, A15 activation, winner selection, training, credential/gated/private-data access, procurement, payment, or spend.
+This record captures only deterministic non-model evidence emitted by the single authorized successor runtime-binding evidence run. It does not authorize candidate weight loading, inference, tournament execution, resource measurement with a model, conversion, A15 activation, winner selection, training, credential/gated/private-data access, procurement, payment, or spend.
 
 ```text
 MAX_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=1
@@ -44,9 +34,9 @@ ARTIFACT_UPLOAD_PERFORMED=NO
 SPEND_USD=0
 ```
 
-The arithmetic disposition above records consumption of the one-run budget without rewriting or broadening the historical authorization record.
+The one-run budget is therefore consumed without rewriting or broadening the historical authorization record.
 
-## 2. Exact run and job identity
+## 2. Exact run and jobs
 
 ```text
 RUN_ID=33974098680
@@ -68,7 +58,7 @@ STATIC_QUALIFICATION_PUSH_JOB_CONCLUSION=skipped
 WORKFLOW_ARTIFACT_COUNT=0
 ```
 
-Both runtime jobs used the standard GitHub-hosted `ubuntu-24.04` image family observed as:
+Observed hosted-runner identity:
 
 ```text
 RUNNER_VERSION=2.337.0
@@ -79,11 +69,7 @@ RUNNER_IMAGE_VERSION=20260831.293.1
 OPERATING_SYSTEM=Ubuntu_24.04.4_LTS
 ```
 
-No Actions artifact was retained by the run.
-
-## 3. Exact llama.cpp runtime evidence
-
-The successful `llama-runtime-evidence` job emitted:
+## 3. llama.cpp evidence
 
 ```text
 LLAMA_CPP_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
@@ -113,11 +99,11 @@ ARTIFACT_UPLOAD_PERFORMED=NO
 SPEND_USD=0
 ```
 
-This proves the exact public archive/file/executable identity and non-model offline introspection of the selected llama.cpp route, plus static architecture identifiers for Qwen3 and Qwen3.5. It does not prove that either frozen GGUF candidate has been opened or executed by this runtime.
+This proves the selected public llama.cpp archive/file/executable identity, offline non-model introspection, and static Qwen3/Qwen3.5 architecture identifiers. It does not prove that either frozen GGUF candidate has been opened or executed by this runtime.
 
-## 4. Exact Transformers/Torch dependency evidence
+## 4. Transformers/Torch evidence
 
-The successful `transformers-runtime-evidence` job emitted the exact dependency-closure identity:
+Exact dependency closure:
 
 ```text
 TRANSFORMERS_VERSION=4.57.6
@@ -130,11 +116,7 @@ PHASE_A_NETWORK=PUBLIC_PYPI_AND_PYTORCH_INDEXES_ONLY
 PHASE_A_CREDENTIAL_USE=NO
 ```
 
-The dependency set is intentionally bound to this run rather than inheriting the older `ebfd3c49...` closure from a different evidence run/image.
-
-## 5. Exact installed Python environment and static/import-only compatibility
-
-The offline install/import phase emitted:
+Exact offline installed environment and static/import-only support:
 
 ```text
 PYTHON_RUNTIME_PATH=/usr/bin/python3.12
@@ -147,7 +129,6 @@ QWEN3_CONFIG_MODULE_SHA256=27863e9718fdbc899f2d0e567621e4d3d36d8dc500c1d54b49dba
 QWEN3_MODELING_MODULE_SHA256=4b95c371fd26d40c69083dab36ac1eafd8cf82b415a0bb827275097c5ad2305b
 GRANITE_CONFIG_MODULE_SHA256=535090da0bd3606c7be77517d2de4839f70b9658a40d4ec9ba98fb365397dc39
 GRANITE_MODELING_MODULE_SHA256=920678d503bcb6795ba46c1b9579c28aad208a3ff0b73e7e02754e7cd9e3c19c
-TRANSFORMERS_VERSION=4.57.6
 TRANSFORMERS_TAG_TARGET_COMMIT=753d61104116eefc8ffc977327b441ee0c8d599f
 TORCH_VERSION=2.11.0+cpu
 QWEN3_CONFIG_MAPPING=PASS
@@ -165,32 +146,9 @@ ARTIFACT_UPLOAD_PERFORMED=NO
 SPEND_USD=0
 ```
 
-This proves that the exact installed Transformers/Torch environment recognizes the required Qwen3 and Granite configuration/model mappings under an offline network namespace. It does not construct a candidate model object and does not establish candidate-weight execution compatibility by inference.
+Static/import-only mapping evidence is not candidate-weight execution compatibility evidence.
 
-## 6. Negative evidence and retention boundary
-
-```text
-MODEL_OBJECT_INSTANTIATED=NO
-MODEL_WEIGHT_FILE_OPENED=NO
-MODEL_LOAD_PERFORMED=NO
-MODEL_EXECUTION_PERFORMED=NO
-TOURNAMENT_EXECUTION_PERFORMED=NO
-MODEL_CONVERSION_PERFORMED=NO
-A15_ACTIVATION_PERFORMED=NO
-WINNER_SELECTION_PERFORMED=NO
-TRAINING_PERFORMED=NO
-CREDENTIAL_USE_PERFORMED=NO
-ARTIFACT_UPLOAD_PERFORMED=NO
-PRIVATE_GOLD_ACCESSED=NO
-PHI_ACCESSED=NO
-PAID_OR_LARGER_RUNNER_USED=NO
-SPEND_USD=0
-RETENTION=GITHUB_ACTIONS_LOGS_ONLY
-```
-
-## 7. Exact current interpretation
-
-The run directly closes the selected runtime archive/package/executable and static/import-only support evidence it emitted. It does not automatically close the complete four-candidate execution subject.
+## 5. Current interpretation
 
 ```text
 LLAMA_CPP_RUNTIME_ARCHIVE_IDENTITY=PASS_ON_RUN_33974098680
@@ -220,4 +178,4 @@ PHI_ACCESSED=NO
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-A later reconciliation must combine this evidence with the exact frozen candidate artifact/bundle/config evidence, resource/access/finance evidence, applicable A1-A14 gates, and the still-separate A15 gate before any live execution subject can be authorized.
+The complete execution subject remains fail-closed until the exact frozen candidate artifact/bundle/config evidence, resource/access/finance evidence, applicable A1-A14 gates, and separate A15 gate are genuinely satisfied.
