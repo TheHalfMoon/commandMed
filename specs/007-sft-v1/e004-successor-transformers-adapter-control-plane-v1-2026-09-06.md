@@ -169,9 +169,9 @@ The exact-head PR must pass the existing E004 control-plane compile, focused, Sp
 
 Independent repository review remains optional by default under FD-007. No bot silence or unavailable service may be represented as review PASS.
 
-## 9. Deliberate non-closure
+## 9. Deliberate non-closure at adapter merge
 
-Even after this adapter becomes canonical:
+Immediately after this adapter became canonical, the following fields still remained open:
 
 ```text
 EXACT_FOUR_CANDIDATE_TOP_LEVEL_RUNTIME_ARGV=INCOMPLETE
@@ -189,8 +189,10 @@ TRAINING_AUTHORITY=NONE
 CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
-The next dependency-safe unit is the four-candidate execution-plan/orchestrator identity that composes the canonical llama and Transformers adapter manifests into one exact top-level runtime entrypoint/argv per candidate without execution.
+The dependency-safe successor was the four-candidate execution-plan/orchestrator identity that composes the canonical llama and Transformers adapter manifests into one exact top-level runtime entrypoint/argv per candidate without execution.
 
-## 10. Successor qualification linkage
+## 10. Canonical successor and reconciliation linkage
 
-The dependency-safe successor implementation is defined by `e004-successor-four-candidate-execution-plan-control-plane-v1-2026-09-06.md` and its bounded `src/commandmed/spec007/e004_execution_plan.py` / `tests/spec007/test_e004_execution_plan.py` surface. That successor remains non-canonical and creates no new authority unless and until its exact final head is qualified and guarded-merged.
+That successor became canonical through PR #274 at merge `f030122384a7f28162d10fe3fe71682696ae3244` after exact-head qualification of `f4a1615baba9224fa78dcdc3898ca8c55eef6e31`.
+
+The post-merge frontier is reconciled by `e004-registry-current-state-reconciliation-v38-2026-09-06.md`. The four-candidate runtime argv and deterministic execution-plan identities are now canonical control-plane facts, while empirical model-load compatibility, the future execution environment, A1-A14, A15, and all model/tournament execution remain separately incomplete or unauthorized.
