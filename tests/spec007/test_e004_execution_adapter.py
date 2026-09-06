@@ -182,7 +182,7 @@ class TestE004LlamaExecutionAdapter(unittest.TestCase):
                 payload_directory="evaluation/generated",
             )
             self.assertEqual(first, second)
-            self.assertEqual(validate_e004_llama_adapter_manifest(first), [])
+            self.assertEqual(validate_e004_llama_adapter_manifest(first, ASSET_SET), [])
             self.assertFalse(first["execution_performed"])
             self.assertEqual(first["authorized_spend_usd"], 0)
             self.assertEqual(len(first["operations"]), 7)
@@ -221,7 +221,7 @@ class TestE004LlamaExecutionAdapter(unittest.TestCase):
         manifest["operations"][0]["invocations"][0]["argv"].append("--unexpected")
         self.assertIn(
             "E004LlamaAdapterManifest: adapter_sha256 mismatch",
-            validate_e004_llama_adapter_manifest(manifest),
+            validate_e004_llama_adapter_manifest(manifest, ASSET_SET),
         )
 
     def test_non_llama_candidate_route_fails_closed(self) -> None:
