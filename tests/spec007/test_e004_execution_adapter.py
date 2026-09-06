@@ -157,6 +157,7 @@ class TestE004LlamaExecutionAdapter(unittest.TestCase):
                 invocation["runtime_executable_sha256"], LLAMA_CLI_EXECUTABLE_SHA256
             )
             argv = invocation["argv"]
+            self.assertEqual(len(argv), 16)
             self.assertEqual(argv[0], "llama-cli")
             self.assertEqual(argv[argv.index("--n-predict") + 1], "8")
             self.assertEqual(argv[argv.index("--temp") + 1], "0")
