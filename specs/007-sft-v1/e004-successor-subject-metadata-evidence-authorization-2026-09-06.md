@@ -1,17 +1,17 @@
 # E004 Successor Subject-Metadata Evidence Authorization — 2026-09-06
 
-**Spec:** 007 SFT V1  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Predecessor frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v33-2026-09-06.md`  
-**Canonical base:** `12b0e4eec3fcedff81cbd1a9c1ecd10e8a0422d8`  
-**Decision owner:** Founder  
-**Decision class:** `E004_SUCCESSOR_SUBJECT_METADATA_EVIDENCE_AUTHORIZATION`  
-**Decision state:** `AUTHORIZED_BOUNDED`  
-**Model execution authority effect:** NONE  
-**Tournament execution authority effect:** NONE  
-**A15 effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Predecessor frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v33-2026-09-06.md`
+**Canonical base:** `12b0e4eec3fcedff81cbd1a9c1ecd10e8a0422d8`
+**Decision owner:** Founder
+**Decision class:** `E004_SUCCESSOR_SUBJECT_METADATA_EVIDENCE_AUTHORIZATION`
+**Decision state:** `AUTHORIZED_BOUNDED`
+**Model execution authority effect:** NONE
+**Tournament execution authority effect:** NONE
+**A15 effect:** NONE
+**Training authority:** NONE
 **Current authorized spend:** USD 0
 
 ## 1. Founder direction and dependency-safe interpretation
