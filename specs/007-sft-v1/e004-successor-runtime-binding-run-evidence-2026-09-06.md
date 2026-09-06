@@ -15,28 +15,24 @@
 **Run conclusion:** `success`
 **Spend:** USD 0
 
-## 1. Authority and consumption
+## 1. Authority, source classification, and consumption
 
-This record captures only deterministic non-model evidence emitted by the single authorized successor runtime-binding evidence run. It does not authorize candidate weight loading, inference, tournament execution, resource measurement with a model, conversion, A15 activation, winner selection, training, credential/gated/private-data access, procurement, payment, or spend.
+This record captures deterministic non-model evidence from the retained GitHub Actions logs plus live run/job/artifact metadata. Direct log outputs are preserved as execution evidence. Arithmetic authority consumption and unchanged global project states are identified as derived/canonical state rather than being represented as additional log-emitted values.
+
+The controlling authorization and observed run count give:
 
 ```text
 MAX_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=1
 OBSERVED_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=1
 REMAINING_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=0
 RERUN_AUTHORITY=NONE_BY_DEFAULT
-MODEL_WEIGHT_OPEN_BY_RUNTIME=NO
-MODEL_LOAD_PERFORMED=NO
-MODEL_EXECUTION_PERFORMED=NO
-TOURNAMENT_EXECUTION_PERFORMED=NO
-A15_ACTIVATION_PERFORMED=NO
-CREDENTIAL_USE_PERFORMED=NO
-ARTIFACT_UPLOAD_PERFORMED=NO
-SPEND_USD=0
 ```
 
-The one-run budget is therefore consumed without rewriting or broadening the historical authorization record.
+`MAX_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS` and `RERUN_AUTHORITY` come from the controlling authorization. `OBSERVED_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS` comes from the live GitHub run state. `REMAINING_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=0` is the fail-closed arithmetic consequence of those two facts. The one-run budget is therefore consumed without rewriting or broadening the historical authorization record.
 
 ## 2. Exact run and jobs
+
+Live GitHub run/job metadata establishes:
 
 ```text
 RUN_ID=33974098680
@@ -46,30 +42,41 @@ RUN_EVENT=push
 RUN_BRANCH=evidence/e004-successor-runtime-binding-run-v1
 RUN_HEAD_SHA=f5f5fbdcafa82d11bc0ddeb3dc641c729cf9fc79
 RUN_HEAD_TREE=ed5ba0e2f76d736460e68f33b2c8f90215ca6a52
+RUN_STATUS=completed
 RUN_CONCLUSION=success
 RUN_STARTED_AT=2026-09-05T15:12:43Z
 RUN_UPDATED_AT=2026-09-05T15:13:40Z
 LLAMA_RUNTIME_JOB_ID=101327644627
+LLAMA_RUNTIME_JOB_NAME=llama-runtime-evidence
 LLAMA_RUNTIME_JOB_CONCLUSION=success
 TRANSFORMERS_RUNTIME_JOB_ID=101327644698
+TRANSFORMERS_RUNTIME_JOB_NAME=transformers-runtime-evidence
 TRANSFORMERS_RUNTIME_JOB_CONCLUSION=success
 STATIC_QUALIFICATION_PUSH_JOB_ID=101327645478
+STATIC_QUALIFICATION_PUSH_JOB_NAME=static-qualification
 STATIC_QUALIFICATION_PUSH_JOB_CONCLUSION=skipped
 WORKFLOW_ARTIFACT_COUNT=0
+WORKFLOW_ARTIFACTS=[]
 ```
 
-Observed hosted-runner identity:
+The skipped static-qualification job is expected on the push event; it is the pull-request-only qualification lane. The two runtime-evidence jobs are the bounded push-only evidence lanes.
+
+The retained job logs emitted the same hosted-runner image identity for both runtime jobs:
 
 ```text
 RUNNER_VERSION=2.337.0
 RUNNER_OS=Linux
 RUNNER_ARCH=X64
-RUNNER_IMAGE=ubuntu-24.04
-RUNNER_IMAGE_VERSION=20260831.293.1
+IMAGE_OS=ubuntu24
+IMAGE_VERSION=20260831.293.1
 OPERATING_SYSTEM=Ubuntu_24.04.4_LTS
 ```
 
+This runner identity belongs to the runtime-evidence run only. It is not automatically the complete future tournament execution-environment binding.
+
 ## 3. llama.cpp evidence
+
+The retained `llama-runtime-evidence` log emitted:
 
 ```text
 LLAMA_CPP_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
@@ -86,8 +93,6 @@ LLAMA_CLI_RELATIVE_PATH=llama-b10621/llama-cli
 LLAMA_CLI_BYTES=1418312
 LLAMA_CLI_SHA256=f0034d9e6959f6c32b40cbb5326f41ccdbac21b77feb27a6f32c0a7465c9ebf7
 LLAMA_CLI_NON_MODEL_INTROSPECTION=PASS_OFFLINE_NAMESPACE
-LLAMA_CLI_VERSION=0.3.0-dev_build_10621_commit_c1d0e7a00
-LLAMA_CLI_BUILD_TOOLCHAIN=GNU_11.4.0_Linux_x86_64
 LLAMA_ARCH_HEADER_SHA256=404d6e73de04156ff771dc557cda99c112583d2ddccda3b63ddb159f319fbecf
 STATIC_QWEN3_ARCHITECTURE_IDENTIFIER=PASS
 STATIC_QWEN35_ARCHITECTURE_IDENTIFIER=PASS
@@ -99,11 +104,18 @@ ARTIFACT_UPLOAD_PERFORMED=NO
 SPEND_USD=0
 ```
 
-This proves the selected public llama.cpp archive/file/executable identity, offline non-model introspection, and static Qwen3/Qwen3.5 architecture identifiers. It does not prove that either frozen GGUF candidate has been opened or executed by this runtime.
+The same log also reported non-model executable introspection output:
+
+```text
+LLAMA_CLI_VERSION=0.3.0-dev_build_10621_commit_c1d0e7a00
+LLAMA_CLI_BUILD_TOOLCHAIN=GNU_11.4.0_for_Linux_x86_64
+```
+
+These values prove the selected public llama.cpp archive/file/executable identity, offline non-model introspection, and static Qwen3/Qwen3.5 architecture identifiers. They do not prove that either frozen GGUF candidate has been opened or executed by this runtime.
 
 ## 4. Transformers/Torch evidence
 
-Exact dependency closure:
+The retained `transformers-runtime-evidence` log emitted the exact dependency closure:
 
 ```text
 TRANSFORMERS_VERSION=4.57.6
@@ -116,7 +128,7 @@ PHASE_A_NETWORK=PUBLIC_PYPI_AND_PYTORCH_INDEXES_ONLY
 PHASE_A_CREDENTIAL_USE=NO
 ```
 
-Exact offline installed environment and static/import-only support:
+The offline install/import phase emitted:
 
 ```text
 PYTHON_RUNTIME_PATH=/usr/bin/python3.12
@@ -148,7 +160,9 @@ SPEND_USD=0
 
 Static/import-only mapping evidence is not candidate-weight execution compatibility evidence.
 
-## 5. Current interpretation
+## 5. Evidence disposition and unchanged fail-closed project state
+
+The following narrow evidence dispositions are directly supported by the retained logs and live run metadata:
 
 ```text
 LLAMA_CPP_RUNTIME_ARCHIVE_IDENTITY=PASS_ON_RUN_33974098680
@@ -159,6 +173,11 @@ TRANSFORMERS_DEPENDENCY_CLOSURE_IDENTITY=PASS_ON_RUN_33974098680
 TRANSFORMERS_INSTALLED_ENVIRONMENT_IDENTITY=PASS_ON_RUN_33974098680
 TRANSFORMERS_QWEN3_STATIC_IMPORT_MAPPING=PASS_ON_RUN_33974098680
 TRANSFORMERS_GRANITE_STATIC_IMPORT_MAPPING=PASS_ON_RUN_33974098680
+```
+
+After combining those narrow fields with the pre-existing canonical governance and successor state, the global project state remains fail-closed. These lines are canonical state reconciliation, not additional job-log emissions:
+
+```text
 EXACT_FOUR_CANDIDATE_RUNTIME_BINDINGS=INCOMPLETE
 EXACT_FOUR_CANDIDATE_EXECUTION_ARTIFACT_SET=INCOMPLETE
 EXACT_FOUR_CANDIDATE_TOKENIZER_CONFIG_BINDINGS=INCOMPLETE
