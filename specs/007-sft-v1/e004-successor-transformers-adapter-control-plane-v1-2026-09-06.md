@@ -1,12 +1,12 @@
 # E004 Successor Transformers/PyTorch Adapter Control Plane V1 — 2026-09-06
 
-**Spec:** 007 SFT V1  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Predecessor frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v37-2026-09-06.md`  
-**Authority source:** CM-3 bounded E004 execution-envelope corrective maintenance  
-**Execution effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Predecessor frontier:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v37-2026-09-06.md`
+**Authority source:** CM-3 bounded E004 execution-envelope corrective maintenance
+**Execution effect:** NONE
+**Training authority:** NONE
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
