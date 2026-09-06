@@ -6,15 +6,18 @@ on:
       - 'src/commandmed/spec007/research_tournament.py'
       - 'src/commandmed/spec007/research_execution.py'
       - 'src/commandmed/spec007/research_candidate_bundle.py'
+      - 'src/commandmed/spec007/e004_execution_adapter.py'
       - 'src/commandmed/spec007/quarantine.py'
       - 'src/commandmed/spec007/snapshot.py'
       - 'tests/spec007/test_research_tournament.py'
       - 'tests/spec007/test_research_execution.py'
       - 'tests/spec007/test_research_candidate_bundle.py'
+      - 'tests/spec007/test_e004_execution_adapter.py'
       - 'tests/spec007/test_review_repair_regressions.py'
       - 'tests/spec007/test_quarantine_snapshot.py'
       - 'specs/007-sft-v1/e004-successor-candidate-artifact-bundle-set-v1.json'
       - 'specs/007-sft-v1/e004-successor-candidate-artifact-bundle-binding-v1-2026-09-06.md'
+      - 'specs/007-sft-v1/e004-successor-execution-adapter-control-plane-v1-2026-09-06.md'
       - 'specs/007-sft-v1/e004-research-component-tournament-control-plane-2026-09-05.md'
       - 'specs/007-sft-v1/e004-research-component-preexecution-envelope-2026-09-05.md'
       - '.github/workflows/e004-research-component-tournament-control-plane-v1.yml'
@@ -59,13 +62,21 @@ jobs:
             src/commandmed/spec007/research_tournament.py \
             src/commandmed/spec007/research_execution.py \
             src/commandmed/spec007/research_candidate_bundle.py \
+            src/commandmed/spec007/e004_execution_adapter.py \
             src/commandmed/spec007/quarantine.py \
             src/commandmed/spec007/snapshot.py \
             tests/spec007/test_research_tournament.py \
             tests/spec007/test_research_execution.py \
             tests/spec007/test_research_candidate_bundle.py \
+            tests/spec007/test_e004_execution_adapter.py \
             tests/spec007/test_review_repair_regressions.py \
             tests/spec007/test_quarantine_snapshot.py
+
+      - name: Run focused E004 execution-adapter tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m unittest -v tests.spec007.test_e004_execution_adapter
 
       - name: Run focused candidate-bundle tests
         shell: bash
