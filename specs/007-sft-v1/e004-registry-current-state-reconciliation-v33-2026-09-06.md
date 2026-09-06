@@ -1,30 +1,26 @@
 # E004 Registry Current-State Reconciliation V33 — 2026-09-06
 
-**Spec:** 007 SFT V1  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Canonical base before this reconciliation:** `6a86bbc4a52adac3846a1eef97f89cb170fe202b`  
-**Predecessor:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v32-2026-09-05.md`  
-**Runtime evidence:** `specs/007-sft-v1/e004-successor-runtime-binding-run-evidence-2026-09-06.md`  
-**Artifact class:** deterministic current-state and dependency-frontier overlay  
-**Authority effect:** NONE beyond recording consumption of the already-authorized one-run runtime-evidence unit  
-**Model execution effect:** NONE  
-**Tournament execution effect:** NONE  
-**A15 effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Canonical base before this reconciliation:** `6a86bbc4a52adac3846a1eef97f89cb170fe202b`
+**Predecessor:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v32-2026-09-05.md`
+**Runtime evidence:** `specs/007-sft-v1/e004-successor-runtime-binding-run-evidence-2026-09-06.md`
+**Artifact class:** deterministic current-state and dependency-frontier overlay
+**Authority effect:** NONE beyond recording consumption of the already-authorized one-run runtime-evidence unit
+**Model execution effect:** NONE
+**Tournament execution effect:** NONE
+**A15 effect:** NONE
+**Training authority:** NONE
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
 
 Recompute the exact E004 successor frontier after the single authorized non-model runtime-binding evidence run completed successfully as GitHub Actions run `33974098680`.
 
-This reconciliation uses only evidence already emitted by that run and previously canonical artifact/bundle/governance records. It does not infer model compatibility from static identifiers, does not open or load candidate weights, does not execute the tournament, and does not create A15 or any other authority.
+This reconciliation uses only evidence emitted by that run and previously canonical artifact/bundle/governance records. It does not infer model compatibility from static identifiers, open or load candidate weights, execute the tournament, or create A15 or any other authority.
 
 ## 2. One-run authority consumption
-
-The canonical runtime-evidence authorization permits exactly one runtime-binding evidence run and grants no rerun authority by default.
-
-The authorized run was observed exactly once:
 
 ```text
 MAX_AUTHORIZED_RUNTIME_BINDING_EVIDENCE_RUNS=1
@@ -41,8 +37,6 @@ No second run, rerun, failed-job retry, or broadened evidence lane is authorized
 
 ## 3. Candidate byte-integrity state retained from V32
 
-The exact four-candidate frozen identity set remains unchanged:
-
 ```text
 QWEN06_BYTE_INTEGRITY=PASS
 QWEN35_BYTE_INTEGRITY=PASS
@@ -51,7 +45,7 @@ CONTROL_SELECTED_SOURCE_BYTE_INTEGRITY=PASS
 EXACT_FOUR_CANDIDATE_FROZEN_IDENTITY_SET=PASS
 ```
 
-The frozen candidates remain exactly:
+The exact frozen candidates remain:
 
 ```text
 PRIMARY=Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd
@@ -63,11 +57,9 @@ CONTROL_WINNER_ELIGIBLE=NO
 
 No candidate addition, substitution, revision drift, role drift, or winner selection is introduced.
 
-## 4. Runtime evidence now genuinely closed
+## 4. Runtime evidence now closed
 
-### llama.cpp route
-
-Run `33974098680` directly proves the selected public llama.cpp runtime archive and executable identities:
+The selected llama.cpp route is directly bound by run `33974098680`:
 
 ```text
 LLAMA_CPP_COMMIT=c1d0e7a004015f23bc0233470b747b596f29b264
@@ -79,22 +71,14 @@ LLAMA_CPP_CLI_SHA256=f0034d9e6959f6c32b40cbb5326f41ccdbac21b77feb27a6f32c0a7465c
 LLAMA_CPP_CLI_NON_MODEL_INTROSPECTION=PASS_OFFLINE_NAMESPACE
 STATIC_QWEN3_ARCHITECTURE_IDENTIFIER=PASS
 STATIC_QWEN35_ARCHITECTURE_IDENTIFIER=PASS
-```
-
-Therefore these V32 blockers are superseded for the selected llama.cpp runtime artifact itself:
-
-```text
 EXACT_LLAMA_RUNTIME_ARCHIVE_INTEGRITY=PASS
 EXACT_LLAMA_RUNTIME_EXECUTABLE_SHA256=PASS
 EXACT_LLAMA_RUNTIME_SOURCE_REVISION_BINDING=PASS
-EXACT_LLAMA_NON_MODEL_RUNTIME_INTROSPECTION=PASS
 ```
 
-Static architecture identifiers do not by themselves establish that either frozen GGUF candidate has been successfully opened and executed by the runtime.
+Static architecture identifiers do not establish candidate-weight execution compatibility.
 
-### Transformers/Torch route
-
-The same run directly proves an exact installed Python dependency environment:
+The selected Transformers/Torch route is directly bound by the same run:
 
 ```text
 TRANSFORMERS_VERSION=4.57.6
@@ -110,25 +94,15 @@ QWEN3_CAUSAL_LM_MAPPING=PASS
 GRANITE_CONFIG_MAPPING=PASS
 GRANITE_CAUSAL_LM_MAPPING=PASS
 STATIC_IMPORT_ONLY_COMPATIBILITY=PASS
-PHASE_B_NETWORK=DEFAULT_DENY_NETWORK_NAMESPACE_FOR_INSTALL_AND_IMPORT
-```
-
-Therefore these V32 blockers are superseded for the selected Python runtime environment itself:
-
-```text
 EXACT_TRANSFORMERS_DEPENDENCY_CLOSURE=PASS
 EXACT_TRANSFORMERS_RUNTIME_SOURCE_REVISION_BINDING=PASS
 EXACT_PYTHON_RUNTIME_IDENTITY=PASS
 EXACT_TRANSFORMERS_INSTALLED_ENVIRONMENT_IDENTITY=PASS
-EXACT_QWEN3_STATIC_IMPORT_MAPPING=PASS
-EXACT_GRANITE_STATIC_IMPORT_MAPPING=PASS
 ```
 
-No model object was instantiated and no candidate weight file was opened, loaded, or executed. Static/import-only mapping evidence therefore cannot be promoted into a candidate-weight execution compatibility PASS.
+No model object was instantiated and no candidate weight file was opened, loaded, or executed. Static/import-only mapping evidence cannot be promoted into candidate-weight execution compatibility PASS.
 
-## 5. Runtime-evidence safety and retention state
-
-The run directly recorded:
+## 5. Runtime-evidence safety state
 
 ```text
 MODEL_OBJECT_INSTANTIATED=NO
@@ -145,13 +119,11 @@ SPEND_USD=0
 WORKFLOW_ARTIFACT_COUNT=0
 ```
 
-The observed runner image was `ubuntu-24.04` / `20260831.293.1`. This identity is evidence for the runtime-evidence run only. It is not automatically the complete future tournament execution-environment binding.
+The observed `ubuntu-24.04` / `20260831.293.1` runner identity is evidence for this runtime-evidence run only and is not automatically the future tournament execution-environment binding.
 
 ## 6. Exact four-candidate execution-subject recomputation
 
 The successor control plane requires, for every frozen candidate, exact model-artifact and complete-bundle identities plus runtime artifact/executable/source/toolchain, tokenizer/config identity, execution-plan identity, entrypoint/argv, and candidate/runtime compatibility PASS.
-
-After incorporating the new runtime evidence, the current disposition is:
 
 ```text
 EXACT_LLAMA_RUNTIME_ARTIFACT_IDENTITY=PASS
@@ -170,11 +142,11 @@ EXACT_FOUR_CANDIDATE_EXECUTION_ARTIFACT_SET=INCOMPLETE
 EXACT_TOURNAMENT_EXECUTION_ENVIRONMENT_BINDING=INCOMPLETE
 ```
 
-The remaining compatibility state is intentionally fail-closed because no candidate weight was opened by the runtime-evidence lane.
+The remaining compatibility state stays fail-closed because no candidate weight was opened by the runtime-evidence lane.
 
-## 7. Resource, access, finance, and A1-A14 recomputation
+## 7. Resource, access, finance, and A1-A14
 
-The zero-spend runtime-evidence job proves only that the evidence lane itself used a standard runner and spent USD 0. It does not prove the resource suitability of an intended tournament execution subject.
+The zero-spend runtime-evidence job proves only that its own evidence lane spent USD 0. It does not prove tournament resource suitability.
 
 ```text
 CURRENT_AUTHORIZED_SPEND_USD=0
@@ -185,11 +157,11 @@ ZERO_INCREMENTAL_SPEND_TOURNAMENT_RESOURCE_BINDING=INCOMPLETE
 A1_A14_APPLICABLE_PASS_SNAPSHOT=ABSENT
 ```
 
-No incompatible legacy Spec 005 device semantics are imported into SP007 by this reconciliation.
+No incompatible legacy Spec 005 device semantics are imported into SP007.
 
 ## 8. Evaluation, contamination, privacy, and winner boundary
 
-Previously canonical SP007 protocol/evaluation/curriculum/quarantine/contamination evidence remains governed by its own exact records and identities. This runtime transition does not widen any of those scopes and does not expose protected payloads.
+Previously canonical SP007 protocol/evaluation/curriculum/quarantine/contamination evidence remains governed by its own exact records and identities. This transition does not widen those scopes or expose protected payloads.
 
 ```text
 PROTOCOL_ID=SP007_RO_001_NONCLINICAL_BACKBONE_TOURNAMENT_V1
@@ -202,8 +174,6 @@ E005_STATE=NOT_REACHED
 ```
 
 ## 9. A15 remains separate
-
-The generic continuation direction is not A15, and the runtime-evidence authorization explicitly grants no A15 authority.
 
 ```text
 A15_ACTIVATION_AUTHORITY=NONE
@@ -238,22 +208,22 @@ The hardened caller-owned-PASS lock remains unchanged: supplied PASS labels or a
 
 ## 11. Task-ledger reconciliation
 
-`specs/007-sft-v1/tasks.md` correctly leaves E004 unchecked, but its pre-V32 narrative is stale. This bounded transition updates only the E004 explanatory paragraph so the ledger points at V33 and the consumed runtime-evidence run without changing the E004 completion state or granting later-phase authority.
+`specs/007-sft-v1/tasks.md` remains correctly unchecked for E004. This bounded transition updates only its E004 explanatory paragraph to point at V33 and the consumed runtime-evidence run without granting later-phase authority.
 
 ## 12. Next dependency-safe frontier
 
-The next repository work is limited to deterministic reconciliation of already-canonical, non-sensitive evidence needed to determine whether any remaining exact candidate bundle/tokenizer/config/execution-plan fields can be closed without new external execution or model access.
+The next repository work is limited to deterministic reconciliation of already-canonical, non-sensitive evidence to determine whether remaining candidate bundle/tokenizer/config/execution-plan fields can be closed without new external execution or model access.
 
 The unresolved dependency order is:
 
 1. exact complete-bundle and tokenizer/config identities for all four frozen candidates;
 2. exact per-candidate runtime entrypoint/argv and execution-plan identities;
-3. exact candidate/runtime compatibility evidence sufficient under the SP007 control-plane semantics rather than static inference alone;
+3. exact candidate/runtime compatibility evidence sufficient under SP007 rather than static inference alone;
 4. exact tournament execution-environment, resource, access, and zero-incremental-spend bindings;
 5. a genuine applicable A1-A14 PASS snapshot;
 6. only then the separately required A15 activation surface;
 7. only after the exact canonical pre-execution subject is authorized may the frozen tournament execute.
 
-No new runtime-evidence run is available under the consumed authorization. Any missing evidence that requires new model opening/execution, new external runtime evidence, credentials, gated assets, procurement, payment, or spend must stop at its separately scoped canonical authority boundary.
+No new runtime-evidence run is available under the consumed authorization. Any missing evidence requiring new model opening/execution, new external runtime evidence, credentials, gated assets, procurement, payment, or spend must stop at its separately scoped canonical authority boundary.
 
 E005 winner selection remains downstream of an actual E004 tournament evidence pack and is not reached by this reconciliation.
