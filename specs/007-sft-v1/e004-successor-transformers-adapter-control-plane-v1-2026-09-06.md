@@ -190,3 +190,7 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 ```
 
 The next dependency-safe unit is the four-candidate execution-plan/orchestrator identity that composes the canonical llama and Transformers adapter manifests into one exact top-level runtime entrypoint/argv per candidate without execution.
+
+## 10. Successor qualification linkage
+
+The dependency-safe successor implementation is defined by `e004-successor-four-candidate-execution-plan-control-plane-v1-2026-09-06.md` and its bounded `src/commandmed/spec007/e004_execution_plan.py` / `tests/spec007/test_e004_execution_plan.py` surface. That successor remains non-canonical and creates no new authority unless and until its exact final head is qualified and guarded-merged.
