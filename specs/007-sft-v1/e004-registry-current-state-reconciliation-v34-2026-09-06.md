@@ -1,16 +1,16 @@
 # E004 Registry Current-State Reconciliation V34 — 2026-09-06
 
-**Spec:** 007 SFT V1  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Predecessor:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v33-2026-09-06.md`  
-**Canonical base before this transition:** `12b0e4eec3fcedff81cbd1a9c1ecd10e8a0422d8`  
-**Artifact class:** deterministic append-only current-state / dependency-frontier overlay  
-**Authority effect:** only the separately bounded subject-metadata evidence authorization introduced in this transition  
-**Model execution effect:** NONE  
-**Tournament execution effect:** NONE  
-**A15 effect:** NONE  
-**Training authority:** NONE  
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Predecessor:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v33-2026-09-06.md`
+**Canonical base before this transition:** `12b0e4eec3fcedff81cbd1a9c1ecd10e8a0422d8`
+**Artifact class:** deterministic append-only current-state / dependency-frontier overlay
+**Authority effect:** only the separately bounded subject-metadata evidence authorization introduced in this transition
+**Model execution effect:** NONE
+**Tournament execution effect:** NONE
+**A15 effect:** NONE
+**Training authority:** NONE
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
