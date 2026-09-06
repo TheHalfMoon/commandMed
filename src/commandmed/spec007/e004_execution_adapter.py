@@ -538,7 +538,7 @@ def _validate_resource_invocations(
         if invocation.get("runtime_executable_sha256") != LLAMA_CLI_EXECUTABLE_SHA256:
             errors.append(f"{item_prefix}: exact llama-cli executable identity required")
         argv = invocation.get("argv")
-        if not isinstance(argv, list) or len(argv) != 17:
+        if not isinstance(argv, list) or len(argv) != 16:
             errors.append(f"{item_prefix}: exact resource argv shape required")
             continue
         try:
