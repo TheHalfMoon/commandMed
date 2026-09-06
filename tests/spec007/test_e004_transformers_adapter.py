@@ -101,7 +101,7 @@ class TestE004TransformersAdapter(unittest.TestCase):
     def test_normalized_log_likelihood_argmax_uses_mean_and_first_tie(self) -> None:
         self.assertEqual(
             normalized_log_likelihood_argmax(
-                [-10.0, -8.0, -12.0, -9.0],
+                [-10.0, -8.0, -3.0, -9.0],
                 [5, 2, 3, 3],
             ),
             2,
