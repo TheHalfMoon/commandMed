@@ -87,8 +87,8 @@ jobs:
         run: |
           set -Eeuo pipefail
           workflow='.github/workflows/e004-successor-subject-metadata-evidence-v1.yml'
-          predicate="if: github.event_name == 'push' && github.ref == 'refs/heads/evidence/e004-successor-subject-metadata-run-v1'"
-          test "$(grep -Fc "$predicate" "$workflow")" = '1'
+          push_if="    if: github.event_name == 'push' && github.ref == 'refs/heads/evidence/e004-successor-subject-metadata-run-v1'"
+          test "$(grep -Fxc "$push_if" "$workflow")" = '1'
           prefix='actions/'
           if grep -Eq "${prefix}(upload-artifact|cache)@" "$workflow"; then
             echo 'Artifact/cache action is prohibited' >&2
