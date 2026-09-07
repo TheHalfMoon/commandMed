@@ -1,13 +1,13 @@
 # E004 Operational Preflight Evidence Implementation V1 — 2026-09-08
 
-**Spec:** 007 SFT V1  
-**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`  
-**Successor policy:** `SP007-RO-001`  
-**Implementation base:** `b9eb2c8b1b4bebfd4ddc63600d1cf07ba9a2bbea`  
-**Authority:** `specs/007-sft-v1/e004-operational-preflight-evidence-founder-decision-2026-09-08.md`  
-**Design:** `specs/007-sft-v1/e004-operational-preflight-evidence-design-2026-09-07.md`  
-**Artifact class:** review-first bounded implementation record  
-**Model / evaluation / tournament / A15 / training effect:** NONE  
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Implementation base:** `b9eb2c8b1b4bebfd4ddc63600d1cf07ba9a2bbea`
+**Authority:** `specs/007-sft-v1/e004-operational-preflight-evidence-founder-decision-2026-09-08.md`
+**Design:** `specs/007-sft-v1/e004-operational-preflight-evidence-design-2026-09-07.md`
+**Artifact class:** review-first bounded implementation record
+**Model / evaluation / tournament / A15 / training effect:** NONE
 **Current authorized spend:** USD 0
 
 ## 1. Purpose
