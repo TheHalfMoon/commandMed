@@ -178,7 +178,9 @@ class TestE004CorrectiveModelLoadCompatibilityPolicy(unittest.TestCase):
             "SECOND_CORRECTIVE_WORKFLOW_RUN_AUTHORITY=NONE",
         ):
             self.assertIn(token, self.workflow)
-        self.assertNotIn("rerun", self.workflow.lower())
+        self.assertNotIn("workflow_dispatch:", self.workflow)
+        self.assertNotIn("repository_dispatch:", self.workflow)
+        self.assertIn("github.run_attempt == 1", self.workflow)
 
     def test_corrective_runtime_identity_is_frozen(self) -> None:
         for token in (
