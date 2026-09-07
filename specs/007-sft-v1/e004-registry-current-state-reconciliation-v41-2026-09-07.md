@@ -1,0 +1,269 @@
+# E004 Registry Current-State Reconciliation V41 — 2026-09-07
+
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Predecessor:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v40-2026-09-07.md`
+**Canonical implementation record:** `specs/007-sft-v1/e004-model-load-compatibility-implementation-v1-2026-09-07.md`
+**Canonical implementation PR:** #280
+**Canonical implementation exact head:** `7784b00f31407145f9cccba14c4a25adae4e5345`
+**Canonical implementation merge:** `a1455770c0bdfdf935b9150c508df8306c385096`
+**Canonical implementation tree:** `6235ea515ea3509c33bf295dda027e1570ebe07f`
+**Evidence trigger branch:** `evidence/e004-model-load-compatibility-run-v1`
+**Evidence trigger head:** `cc0e63058f701430137f213aa22c59a1fb987e8d`
+**Evidence workflow run:** `34063020745`
+**Evidence workflow attempt:** `1`
+**Artifact class:** deterministic append-only current-state / empirical-evidence reconciliation overlay
+**Current authorized spend:** USD 0
+
+## 1. Purpose
+
+Reconcile the single canonically authorized Decision-B model-load compatibility workflow run without fabricating per-candidate success, failure, cleanup, rerun authority, later tournament readiness, or downstream authority.
+
+This record distinguishes the empirical model-load operation from prerequisite/runtime-preparation failures and from cleanup failures that occurred after a successful model-load step.
+
+## 2. Evidence-source boundary
+
+This reconciliation uses only repository-canonical workflow semantics plus GitHub Actions run, job, and step conclusions for the exact run and attempt identified above.
+
+```text
+EVIDENCE_WORKFLOW_RUN_ID=34063020745
+EVIDENCE_WORKFLOW_RUN_NUMBER=1
+EVIDENCE_WORKFLOW_RUN_ATTEMPT=1
+EVIDENCE_WORKFLOW_EVENT=push
+EVIDENCE_WORKFLOW_HEAD_SHA=cc0e63058f701430137f213aa22c59a1fb987e8d
+EVIDENCE_WORKFLOW_OVERALL_CONCLUSION=failure
+```
+
+The exact internal compiler-error text and exact cleanup-error text are not required to classify whether the model-load step was reached. They are not guessed or reconstructed here. A later diagnostic record may bind those details if they are retrieved as trustworthy evidence, but this record does not invent them.
+
+## 3. One-run authority consumption
+
+The canonical Decision B authorized exactly one post-merge workflow run with four exact candidate probes and no rerun authority.
+
+The marker commit contains exactly:
+
+```text
+E004_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN=AUTHORIZED_SINGLE_RUN
+IMPLEMENTATION_CANONICAL_MERGE=a1455770c0bdfdf935b9150c508df8306c385096
+DECISION_CANONICAL_MERGE=e34bc6eafd92a3dbbc4c9cfa99701a1241efac29
+AUTHORITY_FRONTIER_CANONICAL_MERGE=a805381020405ad0d1bb0038dc68994c6c316ce1
+```
+
+The authorized run completed at attempt 1. Therefore:
+
+```text
+MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN=CONSUMED_SINGLE_RUN
+MAX_AUTHORIZED_MODEL_LOAD_COMPATIBILITY_WORKFLOW_RUNS=1_CONSUMED
+AUTOMATIC_RERUN_AUTHORITY=NONE
+FAILED_RUN_RETRY_AUTHORITY=NONE
+SECOND_WORKFLOW_RUN_AUTHORITY=NONE
+MODEL_LOAD_COMPATIBILITY_PROBE_AUTHORITY=CONSUMED
+MODEL_LOAD_AUTHORITY=NONE_AFTER_DECISION_B_RUN_CONSUMPTION
+```
+
+No rerun or retry is performed or authorized by this reconciliation.
+
+## 4. Frozen subject remains unchanged
+
+```text
+CANDIDATE_ARTIFACT_BUNDLE_SET_ID=SP007_RO_001_CANDIDATE_ARTIFACT_BUNDLE_SET_V1
+CANDIDATE_ARTIFACT_BUNDLE_SET_SHA256=ee97fe0751743cc0d3a564b8f91add3c336267f08f2da86bf125dd7333db83fd
+PROTOCOL_ID=SP007_RO_001_NONCLINICAL_BACKBONE_TOURNAMENT_V1
+PROTOCOL_SHA256=1c6a3ff38be596396fbd3025b1317be88e4c2068feace167d8187d22830b5dd8
+```
+
+No candidate, revision, role, artifact identity, runtime route, runner class, or model-load semantics are substituted.
+
+## 5. Per-candidate observed dispositions
+
+### 5.1 Qwen/Qwen3-0.6B-Base
+
+```text
+CANDIDATE=Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+RUNTIME_ROUTE=LLAMA_CPP_GGUF
+JOB_ID=101566822624
+AUTHORITY_PREFLIGHT_STEP=PASS
+CANONICAL_BUNDLE_VALIDATION_STEP=PASS
+EXACT_PUBLIC_CANDIDATE_ACQUISITION_AND_HASH_STEP=PASS
+LLAMA_RUNTIME_REBIND_AND_LOAD_ONLY_HELPER_BUILD_STEP=FAIL
+MODEL_LOAD_STEP=SKIPPED
+CLEANUP_STEP=PASS
+EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE
+EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_MODEL_LOAD_NOT_REACHED
+```
+
+No empirical model-load failure is claimed because the model-load step did not execute.
+
+### 5.2 Qwen/Qwen3.5-0.8B-Base
+
+```text
+CANDIDATE=Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68
+RUNTIME_ROUTE=LLAMA_CPP_GGUF
+JOB_ID=101566822550
+AUTHORITY_PREFLIGHT_STEP=PASS
+CANONICAL_BUNDLE_VALIDATION_STEP=PASS
+EXACT_PUBLIC_CANDIDATE_ACQUISITION_AND_HASH_STEP=PASS
+LLAMA_RUNTIME_REBIND_AND_LOAD_ONLY_HELPER_BUILD_STEP=FAIL
+MODEL_LOAD_STEP=SKIPPED
+CLEANUP_STEP=PASS
+EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE
+EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_MODEL_LOAD_NOT_REACHED
+```
+
+No empirical model-load failure is claimed because the model-load step did not execute.
+
+### 5.3 ibm-granite/granite-4.0-350m-base
+
+```text
+CANDIDATE=ibm-granite/granite-4.0-350m-base@a50b46cef21c8a86b15f0496cb794487a78a910b
+RUNTIME_ROUTE=TRANSFORMERS_TORCH_CPU
+JOB_ID=101566822602
+AUTHORITY_PREFLIGHT_STEP=PASS
+CANONICAL_BUNDLE_VALIDATION_STEP=PASS
+EXACT_PUBLIC_CANDIDATE_ACQUISITION_AND_HASH_STEP=PASS
+TRANSFORMERS_RUNTIME_REBIND_STEP=PASS
+MODEL_LOAD_STEP=PASS
+EMPIRICAL_MODEL_LOAD_COMPATIBILITY=PASS
+EMPIRICAL_MODEL_LOAD_REASON_CODE=PASS_EXACT_MODEL_LOAD_COMPLETED
+CLEANUP_STEP=FAIL
+MODEL_BYTE_PERSISTENCE_AFTER_JOB=NOT_POSITIVELY_EVIDENCED_BY_CLEANUP_STEP
+```
+
+The precommitted workflow maps a zero exit status from the exact network-disabled model-load process to `PASS_EXACT_MODEL_LOAD_COMPLETED`. The GitHub step conclusion for that exact model-load step is `success`. The subsequent cleanup-step failure is recorded separately and does not retroactively change the observed model-load process exit, but cleanup compliance is not claimed.
+
+### 5.4 Qwen/Qwen3-4B-Base control
+
+```text
+CANDIDATE=Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539
+ROLE=CONTROL_WINNER_INELIGIBLE
+RUNTIME_ROUTE=TRANSFORMERS_TORCH_CPU
+JOB_ID=101566822395
+AUTHORITY_PREFLIGHT_STEP=PASS
+CANONICAL_BUNDLE_VALIDATION_STEP=PASS
+EXACT_PUBLIC_CANDIDATE_ACQUISITION_AND_HASH_STEP=PASS
+TRANSFORMERS_RUNTIME_REBIND_STEP=PASS
+MODEL_LOAD_STEP=PASS
+EMPIRICAL_MODEL_LOAD_COMPATIBILITY=PASS
+EMPIRICAL_MODEL_LOAD_REASON_CODE=PASS_EXACT_MODEL_LOAD_COMPLETED
+CLEANUP_STEP=FAIL
+MODEL_BYTE_PERSISTENCE_AFTER_JOB=NOT_POSITIVELY_EVIDENCED_BY_CLEANUP_STEP
+```
+
+The control remains winner-ineligible. Its compatibility PASS grants no winner-selection or tournament consequence.
+
+## 6. Aggregate empirical state
+
+```text
+EXACT_PER_CANDIDATE_MODEL_LOAD_COMPATIBILITY=PARTIAL_2_PASS_2_INCOMPLETE
+TRANSFORMERS_ROUTE_EMPIRICAL_MODEL_LOAD_COMPATIBILITY=PASS_FOR_BOTH_FROZEN_TRANSFORMERS_CANDIDATES
+LLAMA_CPP_GGUF_ROUTE_EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE_MODEL_LOAD_NOT_REACHED_FOR_BOTH_FROZEN_GGUF_CANDIDATES
+RUNTIME_FORMAT_COMPATIBILITY_STATE_FOR_LIVE_SUBJECT=NOT_PASS_ALL_FOUR
+FOUR_CANDIDATE_MODEL_LOAD_COMPATIBILITY_GATE=NOT_PASS
+```
+
+The overall workflow conclusion is `failure`, but that aggregate conclusion is not substituted for the exact per-candidate evidence above.
+
+## 7. Cleanup and retention truth
+
+The two GGUF jobs reached and passed their cleanup step after model load was skipped.
+
+The two Transformers jobs successfully completed model load and then failed their cleanup step. Therefore this reconciliation does not claim cleanup PASS or positively evidenced model-byte deletion for those two jobs.
+
+```text
+RAW_MODEL_BYTE_ARTIFACT_UPLOAD=NO_PATH_PRESENT_IN_CANONICAL_WORKFLOW
+ACTIONS_CACHE_FOR_MODEL_BYTES=NO_PATH_PRESENT_IN_CANONICAL_WORKFLOW
+GGUF_JOB_CLEANUP_STEP=PASS_FOR_BOTH_GGUF_JOBS
+TRANSFORMERS_JOB_CLEANUP_STEP=FAIL_FOR_BOTH_TRANSFORMERS_JOBS
+TRANSFORMERS_MODEL_BYTE_PERSISTENCE_AFTER_JOB=NOT_POSITIVELY_EVIDENCED_BY_CLEANUP_STEP
+RETENTION_COMPLIANCE_FOR_SINGLE_RUN=PARTIAL_NOT_FULLY_EVIDENCED
+```
+
+No statement in this section grants a second run or permits repository persistence of raw model bytes.
+
+## 8. Prohibited operations remain prohibited
+
+The canonical workflow is load-only and the run does not create authority for any later operation.
+
+```text
+MODEL_FORWARD_PASS_AUTHORITY=NONE
+MODEL_INFERENCE_AUTHORITY=NONE
+GENERATION_AUTHORITY=NONE
+BENCHMARK_EXECUTION_AUTHORITY=NONE
+EVALUATION_PAYLOAD_EXECUTION_AUTHORITY=NONE
+TOURNAMENT_EXECUTION_AUTHORITY=NONE
+WINNER_SELECTION_AUTHORITY=NONE
+A15_ACTIVATION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+PHI_ACCESS_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+```text
+MODEL_FORWARD_PASS_PERFORMED=NO_EVIDENCE_OF_EXECUTION
+MODEL_INFERENCE_PERFORMED=NO_EVIDENCE_OF_EXECUTION
+GENERATION_PERFORMED=NO_EVIDENCE_OF_EXECUTION
+BENCHMARK_EVALUATION_PAYLOAD_EXECUTION=NO_EVIDENCE_OF_EXECUTION
+TOURNAMENT_EXECUTION_PERFORMED=NO
+MODEL_WINNER_SELECTED=NO
+A15_ACTIVATION=ABSENT_NOT_AUTHORIZED
+TRAINING_PERFORMED=NO
+PRIVATE_GOLD_ACCESSED=NO
+PHI_ACCESSED=NO
+```
+
+## 9. E004 dependency state after the single run
+
+```text
+E004_EVALUATION_ASSET_QUALIFICATION_SUBUNIT=COMPLETE
+E004_RUNTIME_BINDING_EVIDENCE_SUBUNIT=COMPLETE_AUTHORITY_CONSUMED
+E004_SUBJECT_METADATA_EVIDENCE_SUBUNIT=COMPLETE_AUTHORITY_CONSUMED
+E004_CANDIDATE_ARTIFACT_BUNDLE_BINDING_SUBUNIT=COMPLETE
+E004_LLAMA_ADAPTER_CONTROL_PLANE_SUBUNIT=COMPLETE
+E004_TRANSFORMERS_ADAPTER_CONTROL_PLANE_SUBUNIT=COMPLETE
+E004_EXECUTION_PLAN_ARGV_SUBUNIT=COMPLETE
+E004_MODEL_LOAD_DECISION_SURFACE_SUBUNIT=COMPLETE_CANONICAL
+E004_MODEL_LOAD_DECISION_CAPTURE_SUBUNIT=COMPLETE_CANONICAL_DECISION_B
+E004_MODEL_LOAD_COMPATIBILITY_IMPLEMENTATION_SUBUNIT=COMPLETE_CANONICAL
+E004_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN_SUBUNIT=COMPLETE_CONSUMED_SINGLE_RUN_WITH_PARTIAL_RESULT
+E004_RUNTIME_COMPATIBILITY_SUBUNIT=INCOMPLETE_PARTIAL_EMPIRICAL_EVIDENCE
+E004_EXACT_SUBJECT_BINDING_SUBUNIT=INCOMPLETE
+E004_RESOURCE_ACCESS_FINANCE_SUBUNIT=INCOMPLETE
+E004_A1_A14_SNAPSHOT_SUBUNIT=INCOMPLETE
+E004_A15_SUBUNIT=NOT_REACHED_AS_SOLE_BLOCKER
+E004_MODEL_EXECUTION_SUBUNIT=NOT_STARTED_NOT_AUTHORIZED_BY_GATE_STATE
+E004_TOURNAMENT_EXECUTION_SUBUNIT=NOT_STARTED_NOT_AUTHORIZED_BY_GATE_STATE
+E004_TASK_CHECKBOX=REMAINS_INCOMPLETE
+E005_STATE=NOT_REACHED
+```
+
+## 10. Exact successor authority requirement
+
+Decision B has been consumed. Because both GGUF candidates remain empirically incomplete and no rerun/second-run authority exists, repository-only implementation changes cannot legitimately convert the four-candidate compatibility gate to PASS.
+
+The next legal transition is a new bounded Founder decision surface that may either preserve the no-retry state or authorize one corrective evidence run limited to the exact two GGUF candidates that did not reach model load. Any corrective surface must remain review-first, zero-spend, load-only, exact-runtime/exact-candidate bound, and must not rerun either already-PASS Transformers candidate.
+
+A broad continuation statement, ordinary approval, or generic permission cannot be interpreted as that future corrective decision token.
+
+## 11. Current disposition
+
+```text
+CURRENT_GLOBAL_FRONTIER=specs/007-sft-v1/e004-registry-current-state-reconciliation-v41-2026-09-07.md
+MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN=CONSUMED_SINGLE_RUN_NO_RERUN_AUTHORITY
+EXACT_PER_CANDIDATE_MODEL_LOAD_COMPATIBILITY=PARTIAL_2_PASS_2_INCOMPLETE
+RUNTIME_FORMAT_COMPATIBILITY_STATE_FOR_LIVE_SUBJECT=NOT_PASS_ALL_FOUR
+SUCCESSOR_PASS_PREFLIGHT=NO
+SUCCESSOR_PREFLIGHT_DISPOSITION=BLOCKED_PENDING_CANONICAL_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_FOUNDER_DECISION_SURFACE_AND_EXACT_POST_CANONICAL_DECISION
+MODEL_RUNTIME_LOAD_PERFORMED=YES_TWO_TRANSFORMERS_CANDIDATES_LOAD_ONLY
+MODEL_EXECUTION_PERFORMED=NO_FORWARD_OR_INFERENCE_AUTHORITY_AND_NO_EVIDENCE_OF_SUCH_EXECUTION
+TOURNAMENT_EXECUTION_PERFORMED=NO
+MODEL_WINNER_SELECTED=NO
+E005_STATE=NOT_REACHED
+TRAINING_AUTHORITY=NONE
+TRAINING_PERFORMED=NO
+PRIVATE_GOLD_ACCESSED=NO
+PHI_ACCESSED=NO
+CURRENT_AUTHORIZED_SPEND_USD=0
+PROJECT_FINISHED=NO
+```
