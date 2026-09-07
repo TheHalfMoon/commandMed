@@ -1,0 +1,405 @@
+# E004 CORRECTIVE MODEL-LOAD COMPATIBILITY EVIDENCE V1.
+#
+# Corrective Founder Decision B authorizes exactly one post-merge workflow run
+# containing exactly two load-only GGUF candidate probes. The already-PASS
+# Transformers candidates are mechanically excluded.
+#
+# No forward pass, inference, generation, benchmark/evaluation payload,
+# tournament, winner selection, A15 activation, training, credential use,
+# protected-data access, artifact upload/cache, paid compute, or spend is
+# permitted.
+
+name: E004 corrective model-load compatibility evidence V1
+
+on:
+  push:
+    branches:
+      - evidence/e004-model-load-compatibility-corrective-run-v1
+    paths:
+      - .github/e004-model-load-compatibility-corrective-run-v1.txt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e004-model-load-compatibility-corrective-evidence-v1
+  cancel-in-progress: false
+
+env:
+  DECISION_RECORD: specs/007-sft-v1/e004-model-load-compatibility-corrective-founder-decision-2026-09-07.md
+  BUNDLE_SET: specs/007-sft-v1/e004-successor-candidate-artifact-bundle-set-v1.json
+  MARKER: .github/e004-model-load-compatibility-corrective-run-v1.txt
+  DECISION_CANONICAL_MERGE: dbab184ac5c75f057963cc792b4b1472a6c64a01
+  ORIGINAL_EVIDENCE_WORKFLOW_RUN_ID: "34063020745"
+  BUNDLE_SET_SHA256: ee97fe0751743cc0d3a564b8f91add3c336267f08f2da86bf125dd7333db83fd
+  LLAMA_CPP_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  LLAMA_CPP_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  LLAMA_CPP_TAG: b10621
+  LLAMA_CPP_ARCHIVE: llama-b10621-bin-ubuntu-x64.tar.gz
+  LLAMA_CPP_ARCHIVE_BYTES: "16291771"
+  LLAMA_CPP_ARCHIVE_SHA256: 91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+  LLAMA_RUNTIME_FILE_MANIFEST_SHA256: 4a6b0d2a9dee9d91fb1553ead9e26f49c1f232c86269013bd8a7edb82f0cd711
+  LLAMA_LIBRARY_SHA256: 89869a6732162d45aa7fe5ab4b224e484c8f27f58c145e530e99dc59d8772448
+  GIT_TERMINAL_PROMPT: "0"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  corrective-model-load-probe:
+    if: github.run_attempt == 1 && github.event_name == 'push' && github.ref == 'refs/heads/evidence/e004-model-load-compatibility-corrective-run-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - candidate_id: Qwen/Qwen3-0.6B-Base
+            revision: da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+            route: LLAMA_CPP_GGUF
+            slug: qwen3-0.6b
+          - candidate_id: Qwen/Qwen3.5-0.8B-Base
+            revision: dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68
+            route: LLAMA_CPP_GGUF
+            slug: qwen3.5-0.8b
+
+    steps:
+      - name: Checkout exact corrective evidence trigger head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Fail-closed corrective authority and one-run preflight
+        shell: bash
+        env:
+          CANDIDATE_ID: ${{ matrix.candidate_id }}
+          CANDIDATE_REVISION: ${{ matrix.revision }}
+          RUNTIME_ROUTE: ${{ matrix.route }}
+        run: |
+          set -Eeuo pipefail
+          test "${GITHUB_RUN_ATTEMPT}" = '1'
+          test "${GITHUB_REF}" = 'refs/heads/evidence/e004-model-load-compatibility-corrective-run-v1'
+          test -f "$DECISION_RECORD" -a -f "$BUNDLE_SET" -a -f "$MARKER"
+          grep -Fxq 'FOUNDER_E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION=E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION_B' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_MODEL_LOAD_COMPATIBILITY_PROBE_AUTHORITY=AUTHORIZED_EXACT_TWO_GGUF_LOAD_ONLY' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_MODEL_LOAD_AUTHORITY=AUTHORIZED_EXACT_TWO_GGUF_LOAD_ONLY' "$DECISION_RECORD"
+          grep -Fxq 'TRANSFORMERS_CANDIDATE_RERUN_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'MODEL_FORWARD_PASS_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'MODEL_INFERENCE_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'GENERATION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'BENCHMARK_EXECUTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'EVALUATION_PAYLOAD_EXECUTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'TOURNAMENT_EXECUTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'WINNER_SELECTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'A15_ACTIVATION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$DECISION_RECORD"
+          grep -Fxq 'E004_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN=AUTHORIZED_SINGLE_RUN' "$MARKER"
+          grep -Fxq "DECISION_CANONICAL_MERGE=$DECISION_CANONICAL_MERGE" "$MARKER"
+          grep -Fxq "ORIGINAL_EVIDENCE_WORKFLOW_RUN_ID=$ORIGINAL_EVIDENCE_WORKFLOW_RUN_ID" "$MARKER"
+          grep -Fxq 'TRANSFORMERS_CANDIDATE_RERUN_AUTHORITY=NONE' "$MARKER"
+          implementation_merge="$(git rev-parse HEAD^)"
+          grep -Fxq "IMPLEMENTATION_CANONICAL_MERGE=$implementation_merge" "$MARKER"
+          test "$(git diff --name-only HEAD^ HEAD)" = "$MARKER"
+          test "$RUNTIME_ROUTE" = 'LLAMA_CPP_GGUF'
+          case "$CANDIDATE_ID@$CANDIDATE_REVISION" in
+            'Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd'|'Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68') ;;
+            *) exit 64 ;;
+          esac
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          for credential_name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN; do test -z "${!credential_name:-}"; done
+          required_tools=(bash curl python3 sha256sum stat find sort awk grep wc sudo unshare g++ tar)
+          for tool in "${required_tools[@]}"; do command -v "$tool" >/dev/null; done
+          printf '%s\n' \
+            'AUTHORITY=E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION_B' \
+            "CANDIDATE=$CANDIDATE_ID@$CANDIDATE_REVISION" \
+            'RUNTIME_ROUTE=LLAMA_CPP_GGUF' \
+            "RUN_ID=$GITHUB_RUN_ID" "RUN_ATTEMPT=$GITHUB_RUN_ATTEMPT" \
+            "RUN_HEAD_SHA=$GITHUB_SHA" "IMPLEMENTATION_CANONICAL_MERGE=$implementation_merge" \
+            'TRANSFORMERS_CANDIDATE_RERUN_AUTHORITY=NONE' \
+            'MODEL_FORWARD_PASS_AUTHORITY=NONE' 'MODEL_INFERENCE_AUTHORITY=NONE' \
+            'GENERATION_AUTHORITY=NONE' 'BENCHMARK_EXECUTION_AUTHORITY=NONE' \
+            'EVALUATION_PAYLOAD_EXECUTION_AUTHORITY=NONE' \
+            'TOURNAMENT_EXECUTION_AUTHORITY=NONE' 'WINNER_SELECTION_AUTHORITY=NONE' \
+            'A15_ACTIVATION_AUTHORITY=NONE' 'TRAINING_AUTHORITY=NONE' 'SPEND_USD=0' \
+            'PASS_REASON_CODE=PASS_EXACT_MODEL_LOAD_COMPLETED' \
+            'FAIL_REASON_CODE_MODEL=FAIL_MODEL_LOAD_ERROR' \
+            'FAIL_REASON_CODE_CRASH=FAIL_RUNTIME_CRASH_DURING_MODEL_LOAD' \
+            'INCOMPLETE_REASON_CODE_RESOURCE=INCOMPLETE_RESOURCE_LIMIT_OR_TERMINATION' \
+            'INCOMPLETE_REASON_CODE_PRELOAD=INCOMPLETE_MODEL_LOAD_NOT_REACHED_PRELOAD_PREREQUISITE_FAILED'
+
+      - name: Validate frozen GGUF bundle and materialize exact acquisition plan
+        id: acquire_plan
+        continue-on-error: true
+        shell: bash
+        env:
+          CANDIDATE_ID: ${{ matrix.candidate_id }}
+          CANDIDATE_REVISION: ${{ matrix.revision }}
+          ROOT: ${{ runner.temp }}/e004-corrective-model-load-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$ROOT"
+          mkdir -p "$ROOT/source"
+          PYTHONPATH=. python3 - "$BUNDLE_SET" "$CANDIDATE_ID" "$CANDIDATE_REVISION" "$ROOT/files.tsv" <<'PY'
+          import json
+          import pathlib
+          import sys
+          from src.commandmed.spec007.research_candidate_bundle import validate_candidate_artifact_bundle_set
+
+          bundle_path, candidate_id, revision, output_path = sys.argv[1:]
+          bundle_set = json.loads(pathlib.Path(bundle_path).read_text(encoding="utf-8"))
+          errors = validate_candidate_artifact_bundle_set(bundle_set)
+          if errors:
+              raise SystemExit("bundle validation failed: " + "; ".join(errors))
+          if bundle_set["bundle_set_sha256"] != "ee97fe0751743cc0d3a564b8f91add3c336267f08f2da86bf125dd7333db83fd":
+              raise SystemExit("bundle-set identity mismatch")
+          matches = [
+              item for item in bundle_set["candidate_bundles"]
+              if item["candidate_id"] == candidate_id and item["upstream_revision"] == revision
+          ]
+          if len(matches) != 1:
+              raise SystemExit("candidate is not the exact frozen corrective subject")
+          bundle = matches[0]
+          if bundle["runtime_route"] != "LLAMA_CPP_GGUF":
+              raise SystemExit("corrective subject route mismatch")
+          rows = []
+          for item in bundle["files"]:
+              rows.append("\t".join([
+                  item["path"], str(item["bytes"]), item["sha256"], item["purpose"],
+                  item["source_repository"], item["source_revision"],
+              ]))
+          pathlib.Path(output_path).write_text("\n".join(rows) + "\n", encoding="utf-8")
+          print(f"CANDIDATE_BUNDLE_SHA256={bundle['complete_bundle_sha256']}")
+          print(f"CANDIDATE_BUNDLE_BYTES={bundle['complete_bundle_bytes']}")
+          print(f"MODEL_ARTIFACT_SHA256={bundle['model_artifact_sha256']}")
+          print(f"MODEL_ARTIFACT_BYTES={bundle['model_artifact_bytes']}")
+          print(f"FILE_COUNT={len(bundle['files'])}")
+          PY
+          test -s "$ROOT/files.tsv"
+
+      - name: Acquire and verify exact public GGUF candidate bundle bytes
+        id: acquire
+        if: steps.acquire_plan.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-corrective-model-load-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          manifest="$ROOT/acquired.tsv"
+          : > "$manifest"
+          while IFS=$'\t' read -r relative_path expected_bytes expected_sha purpose repository revision; do
+            destination="$ROOT/source/$relative_path"
+            temporary="$destination.part"
+            mkdir -p "$(dirname "$destination")"
+            rm -f "$temporary" "$destination"
+            encoded_path="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe="/"))' "$relative_path")"
+            url="https://huggingface.co/${repository}/resolve/${revision}/${encoded_path}?download=true"
+            curl --disable --fail --location --silent --show-error \
+              --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+              --output "$temporary" "$url"
+            actual_bytes="$(stat -c '%s' "$temporary")"
+            actual_sha="$(sha256sum "$temporary" | awk '{print $1}')"
+            test "$actual_bytes" = "$expected_bytes"
+            test "$actual_sha" = "$expected_sha"
+            mv "$temporary" "$destination"
+            printf '%s\t%s\t%s\t%s\n' "$relative_path" "$actual_bytes" "$actual_sha" "$purpose" >> "$manifest"
+          done < "$ROOT/files.tsv"
+          sort -o "$manifest" "$manifest"
+          test -z "$(find "$ROOT/source" -type l -print -quit)"
+          expected_count="$(wc -l < "$ROOT/files.tsv" | tr -d ' ')"
+          actual_count="$(find "$ROOT/source" -type f | wc -l | tr -d ' ')"
+          test "$actual_count" = "$expected_count"
+          printf '%s\n' \
+            "ACQUIRED_FILE_COUNT=$actual_count" \
+            "ACQUIRED_MANIFEST_SHA256=$(sha256sum "$manifest" | awk '{print $1}')" \
+            'CANDIDATE_BYTE_INTEGRITY=PASS' \
+            'CANDIDATE_SOURCE_CLASS=PUBLIC_UNGATED_EXACT_CANONICAL_BUNDLE_FILES_ONLY' \
+            'CREDENTIAL_USE_DURING_CANDIDATE_ACQUISITION=NO'
+
+      - name: Rebind exact llama.cpp runtime and compile corrected load-only helper
+        id: rebind
+        if: steps.acquire_plan.outcome == 'success' && steps.acquire.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-corrective-model-load-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          runtime="$ROOT/llama-runtime"
+          headers="$ROOT/llama-headers"
+          mkdir -p "$runtime/extract" "$headers/ggml/include" "$headers/include"
+          archive="$runtime/$LLAMA_CPP_ARCHIVE"
+          url="https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${LLAMA_CPP_ARCHIVE}"
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+            --output "$archive.part" "$url"
+          test "$(stat -c '%s' "$archive.part")" = "$LLAMA_CPP_ARCHIVE_BYTES"
+          test "$(sha256sum "$archive.part" | awk '{print $1}')" = "$LLAMA_CPP_ARCHIVE_SHA256"
+          mv "$archive.part" "$archive"
+          listing="$runtime/archive-list.txt"
+          tar -tzf "$archive" > "$listing"
+          test -s "$listing"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$listing"; then exit 70; fi
+          tar --no-same-owner -xzf "$archive" -C "$runtime/extract"
+          runtime_manifest="$runtime/runtime-files.tsv"
+          : > "$runtime_manifest"
+          while IFS= read -r path; do
+            rel="${path#"$runtime/extract/"}"
+            printf '%s\t%s\t%s\n' "$rel" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$runtime_manifest"
+          done < <(find "$runtime/extract" -type f -print | sort)
+          sort -o "$runtime_manifest" "$runtime_manifest"
+          test "$(sha256sum "$runtime_manifest" | awk '{print $1}')" = "$LLAMA_RUNTIME_FILE_MANIFEST_SHA256"
+          libllama="$(find "$runtime/extract" -type f -name 'libllama.so.0.3.0' -print -quit)"
+          test -n "$libllama"
+          test "$(sha256sum "$libllama" | awk '{print $1}')" = "$LLAMA_LIBRARY_SHA256"
+
+          fetch_header() {
+            local upstream="$1"
+            local local_path="$2"
+            local target="$headers/$local_path"
+            mkdir -p "$(dirname "$target")"
+            curl --fail --location --silent --show-error \
+              --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+              --output "$target" \
+              "https://raw.githubusercontent.com/ggml-org/llama.cpp/${LLAMA_CPP_COMMIT}/${upstream}"
+            test -s "$target"
+          }
+          fetch_header include/llama.h include/llama.h
+          fetch_header ggml/include/ggml.h ggml/include/ggml.h
+          fetch_header ggml/include/ggml-cpu.h ggml/include/ggml-cpu.h
+          fetch_header ggml/include/ggml-backend.h ggml/include/ggml-backend.h
+          fetch_header ggml/include/ggml-alloc.h ggml/include/ggml-alloc.h
+          fetch_header ggml/include/ggml-opt.h ggml/include/ggml-opt.h
+          fetch_header ggml/include/gguf.h ggml/include/gguf.h
+          grep -Fxq '#include "ggml-alloc.h"' "$headers/ggml/include/ggml-backend.h"
+
+          libdir="$(dirname "$libllama")"
+          g++ -std=c++17 -O2 \
+            -I"$headers/include" -I"$headers/ggml/include" \
+            tools/e004_model_load_probe.cpp \
+            -L"$libdir" -Wl,-rpath,"$libdir" -Wl,-rpath-link,"$libdir" \
+            -l:libllama.so.0.3.0 -o "$ROOT/e004_model_load_probe"
+          test -x "$ROOT/e004_model_load_probe"
+          printf '%s\n' \
+            "LLAMA_CPP_COMMIT=$LLAMA_CPP_COMMIT" \
+            "LLAMA_CPP_TREE=$LLAMA_CPP_TREE" \
+            "LLAMA_RUNTIME_ARCHIVE_SHA256=$LLAMA_CPP_ARCHIVE_SHA256" \
+            "LLAMA_RUNTIME_FILE_MANIFEST_SHA256=$LLAMA_RUNTIME_FILE_MANIFEST_SHA256" \
+            "LLAMA_LIBRARY_SHA256=$LLAMA_LIBRARY_SHA256" \
+            "LOAD_ONLY_HELPER_SHA256=$(sha256sum "$ROOT/e004_model_load_probe" | awk '{print $1}')" \
+            'CORRECTIVE_HEADER_CLOSURE=PASS_GGML_ALLOC_INCLUDED' \
+            'LLAMA_RUNTIME_REBIND=PASS'
+
+      - name: Execute exact corrective load-only probe with network disabled
+        id: load
+        if: steps.acquire_plan.outcome == 'success' && steps.acquire.outcome == 'success' && steps.rebind.outcome == 'success'
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-corrective-model-load-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          for credential_name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN; do test -z "${!credential_name:-}"; done
+          model_path="$(awk -F '\t' '$4 == "MODEL_WEIGHT" {print $1}' "$ROOT/files.tsv")"
+          test -n "$model_path"
+          libdir="$(dirname "$(find "$ROOT/llama-runtime/extract" -type f -name 'libllama.so.0.3.0' -print -quit)")"
+          set +e
+          sudo -n env -u HF_TOKEN -u HUGGING_FACE_HUB_TOKEN -u GH_TOKEN \
+            LD_LIBRARY_PATH="$libdir" \
+            unshare -n -- "$ROOT/e004_model_load_probe" "$ROOT/source/$model_path"
+          status=$?
+          set -e
+          printf 'status=%s\n' "$status" >> "$GITHUB_OUTPUT"
+          printf '%s\n' \
+            "MODEL_LOAD_PROCESS_EXIT=$status" \
+            'NETWORK_DURING_MODEL_LOAD=PROHIBITED_ENFORCED_UNSHARE_N' \
+            'MODEL_FORWARD_PASS_PERFORMED=NO' \
+            'MODEL_INFERENCE_PERFORMED=NO' \
+            'GENERATION_PERFORMED=NO' \
+            'BENCHMARK_EVALUATION_PAYLOAD_EXECUTION=NO' \
+            'TOURNAMENT_EXECUTION=NO' \
+            'WINNER_SELECTION=NO' \
+            'A15_ACTIVATION=NO' \
+            'TRAINING=NO' \
+            'CREDENTIAL_USE=NO' \
+            'SPEND_USD=0'
+
+      - name: Record and enforce exact per-candidate disposition
+        if: always()
+        shell: bash
+        env:
+          CANDIDATE_ID: ${{ matrix.candidate_id }}
+          CANDIDATE_REVISION: ${{ matrix.revision }}
+          ACQUIRE_PLAN_OUTCOME: ${{ steps.acquire_plan.outcome }}
+          ACQUIRE_OUTCOME: ${{ steps.acquire.outcome }}
+          REBIND_OUTCOME: ${{ steps.rebind.outcome }}
+          LOAD_OUTCOME: ${{ steps.load.outcome }}
+          LOAD_STATUS: ${{ steps.load.outputs.status }}
+        run: |
+          set -Eeuo pipefail
+          disposition='INCOMPLETE'
+          reason='INCOMPLETE_MODEL_LOAD_NOT_REACHED_PRELOAD_PREREQUISITE_FAILED'
+          model_load_reached='NO'
+
+          if [ "$ACQUIRE_PLAN_OUTCOME" = 'success' ] && [ "$ACQUIRE_OUTCOME" = 'success' ] && [ "$REBIND_OUTCOME" = 'success' ]; then
+            model_load_reached='YES'
+            status="${LOAD_STATUS:-125}"
+            case "$status" in
+              0)
+                disposition='PASS'
+                reason='PASS_EXACT_MODEL_LOAD_COMPLETED'
+                ;;
+              137|143)
+                disposition='INCOMPLETE'
+                reason='INCOMPLETE_RESOURCE_LIMIT_OR_TERMINATION'
+                ;;
+              134|139)
+                disposition='FAIL'
+                reason='FAIL_RUNTIME_CRASH_DURING_MODEL_LOAD'
+                ;;
+              *)
+                disposition='FAIL'
+                reason='FAIL_MODEL_LOAD_ERROR'
+                ;;
+            esac
+          fi
+
+          printf '%s\n' \
+            "CANDIDATE=$CANDIDATE_ID@$CANDIDATE_REVISION" \
+            'RUNTIME_ROUTE=LLAMA_CPP_GGUF' \
+            "ACQUIRE_PLAN_OUTCOME=$ACQUIRE_PLAN_OUTCOME" \
+            "ACQUIRE_OUTCOME=$ACQUIRE_OUTCOME" \
+            "RUNTIME_REBIND_OUTCOME=$REBIND_OUTCOME" \
+            "MODEL_LOAD_STEP_OUTCOME=$LOAD_OUTCOME" \
+            "MODEL_LOAD_REACHED=$model_load_reached" \
+            "EMPIRICAL_MODEL_LOAD_COMPATIBILITY=$disposition" \
+            "EMPIRICAL_MODEL_LOAD_REASON_CODE=$reason" \
+            'TRANSFORMERS_CANDIDATE_RERUN=NO' \
+            'MODEL_FORWARD_PASS_PERFORMED=NO' \
+            'MODEL_INFERENCE_PERFORMED=NO' \
+            'GENERATION_PERFORMED=NO' \
+            'BENCHMARK_EVALUATION_PAYLOAD_EXECUTION=NO' \
+            'TOURNAMENT_EXECUTION=NO' \
+            'WINNER_SELECTION=NO' \
+            'A15_ACTIVATION=NO' \
+            'TRAINING=NO' \
+            'SPEND_USD=0'
+
+          test "$disposition" = 'PASS'
+
+      - name: Remove all candidate and runtime bytes
+        if: always()
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-corrective-model-load-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$ROOT"
+          test ! -e "$ROOT"
+          printf '%s\n' \
+            'MODEL_BYTE_PERSISTENCE_AFTER_JOB=NO' \
+            'RAW_MODEL_BYTE_ARTIFACT_UPLOAD=NO' \
+            'ACTIONS_CACHE_FOR_MODEL_BYTES=NO'
