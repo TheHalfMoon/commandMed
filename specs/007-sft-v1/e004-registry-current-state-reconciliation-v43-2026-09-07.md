@@ -1,0 +1,387 @@
+# E004 Registry Current-State Reconciliation V43 — 2026-09-07
+
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Predecessor:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v42-2026-09-07.md`
+**Canonical corrective Founder decision record:** `specs/007-sft-v1/e004-model-load-compatibility-corrective-founder-decision-2026-09-07.md`
+**Corrective Founder decision PR:** #284
+**Corrective Founder decision exact head:** `be24c78cbf772699e63df747e3ec436a8547521d`
+**Corrective Founder decision canonical merge:** `dbab184ac5c75f057963cc792b4b1472a6c64a01`
+**Corrective Founder decision canonical tree:** `2bc0bbfd77aac98f75cf285b7595ba71465e4313`
+**Canonical corrective implementation record:** `specs/007-sft-v1/e004-model-load-compatibility-corrective-implementation-v1-2026-09-07.md`
+**Corrective implementation PR:** #285
+**Corrective implementation exact head:** `89c8cb111cecac1c64b5a42cd2313e09390d26d1`
+**Corrective implementation canonical merge:** `689410e61b4338a1a18df51c98ee6c7023e1df2d`
+**Corrective implementation canonical tree:** `7802d33f32d7cf3ef2ac87f271ea6d5980d5e42a`
+**Corrective evidence trigger branch:** `evidence/e004-model-load-compatibility-corrective-run-v1`
+**Corrective evidence trigger head:** `031efa26c42563674f84c15604c7cdf23c61ecad`
+**Corrective evidence trigger tree:** `b14fea83d207cceed54c341268a4e4165a8998fa`
+**Corrective evidence workflow run:** `34150708258`
+**Corrective evidence workflow attempt:** `1`
+**Artifact class:** deterministic append-only current-state / empirical-evidence reconciliation overlay
+**Current authorized spend:** USD 0
+
+## 1. Purpose
+
+Reconcile the exact single corrective model-load compatibility workflow run authorized by the canonical post-V42 corrective Founder Decision B.
+
+This record preserves the original two Transformers empirical PASS outcomes, records the actual corrective GGUF outcomes candidate-by-candidate, records successful correction of the previously observed pre-load header-staging failure, records the newly reached llama.cpp model-load error, consumes the corrective one-run authority, and does not fabricate retry authority, broader model-execution authority, tournament readiness, winner selection, A15 activation, E005 progression, training readiness, or project completion.
+
+## 2. Exact corrective authority chain
+
+The Founder supplied and PR #284 canonically captured exactly:
+
+```text
+FOUNDER_E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION=E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION_B
+```
+
+The canonical decision record authorized only one review-first/post-merge, zero-spend, load-only corrective workflow run limited to the exact two frozen GGUF candidates.
+
+The implementation was then statically qualified on PR #285 at exact head `89c8cb111cecac1c64b5a42cd2313e09390d26d1` and merged with expected-head guarding. The pull-request qualification did not acquire candidate bytes or load a model.
+
+The corrective marker commit was created as the direct child of canonical implementation merge `689410e61b4338a1a18df51c98ee6c7023e1df2d` and changed only:
+
+```text
+.github/e004-model-load-compatibility-corrective-run-v1.txt
+```
+
+The marker contains:
+
+```text
+E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_EVIDENCE_RUN=AUTHORIZED_SINGLE_RUN
+CORRECTIVE_DECISION_CANONICAL_MERGE=dbab184ac5c75f057963cc792b4b1472a6c64a01
+CORRECTIVE_AUTHORITY_PREDECESSOR_MAIN=531435907e9dd45163933a99ade1bc6b6194220a
+ORIGINAL_EVIDENCE_WORKFLOW_RUN_ID=34063020745
+CORRECTIVE_IMPLEMENTATION_CANONICAL_MERGE=689410e61b4338a1a18df51c98ee6c7023e1df2d
+MAX_AUTHORIZED_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_WORKFLOW_RUNS=1
+AUTHORIZED_CORRECTIVE_CANDIDATE_PROBES_PER_WORKFLOW=2_EXACTLY_ONE_PER_FROZEN_GGUF_CANDIDATE
+AUTOMATIC_RERUN_AUTHORITY=NONE
+FAILED_RUN_RETRY_AUTHORITY=NONE
+SECOND_CORRECTIVE_WORKFLOW_RUN_AUTHORITY=NONE
+TRANSFORMERS_CANDIDATE_RERUN_AUTHORITY=NONE
+MODEL_FORWARD_PASS_AUTHORITY=NONE
+MODEL_INFERENCE_AUTHORITY=NONE
+GENERATION_AUTHORITY=NONE
+BENCHMARK_EXECUTION_AUTHORITY=NONE
+EVALUATION_PAYLOAD_EXECUTION_AUTHORITY=NONE
+TOURNAMENT_EXECUTION_AUTHORITY=NONE
+WINNER_SELECTION_AUTHORITY=NONE
+A15_ACTIVATION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+## 3. Corrective evidence run identity
+
+GitHub Actions records exactly one run for the corrective evidence branch:
+
+```text
+CORRECTIVE_EVIDENCE_WORKFLOW_RUN_COUNT=1
+CORRECTIVE_EVIDENCE_WORKFLOW_RUN_ID=34150708258
+CORRECTIVE_EVIDENCE_WORKFLOW_RUN_NUMBER=1
+CORRECTIVE_EVIDENCE_WORKFLOW_RUN_ATTEMPT=1
+CORRECTIVE_EVIDENCE_WORKFLOW_EVENT=push
+CORRECTIVE_EVIDENCE_WORKFLOW_HEAD_SHA=031efa26c42563674f84c15604c7cdf23c61ecad
+CORRECTIVE_EVIDENCE_WORKFLOW_OVERALL_CONCLUSION=failure
+CORRECTIVE_EVIDENCE_WORKFLOW_CREATED_AT=2026-09-07T18:12:45Z
+CORRECTIVE_EVIDENCE_WORKFLOW_UPDATED_AT=2026-09-07T18:14:21Z
+CORRECTIVE_EVIDENCE_WORKFLOW_ARTIFACT_COUNT=0
+```
+
+No rerun, retry, or second corrective workflow run occurred.
+
+## 4. Frozen subject and runtime identities remained unchanged
+
+Corrective subject:
+
+```text
+Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd | LLAMA_CPP_GGUF | PRIMARY
+Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68 | LLAMA_CPP_GGUF | PRIMARY
+```
+
+Parent identities:
+
+```text
+CANDIDATE_ARTIFACT_BUNDLE_SET_ID=SP007_RO_001_CANDIDATE_ARTIFACT_BUNDLE_SET_V1
+CANDIDATE_ARTIFACT_BUNDLE_SET_SHA256=ee97fe0751743cc0d3a564b8f91add3c336267f08f2da86bf125dd7333db83fd
+PROTOCOL_ID=SP007_RO_001_NONCLINICAL_BACKBONE_TOURNAMENT_V1
+PROTOCOL_SHA256=1c6a3ff38be596396fbd3025b1317be88e4c2068feace167d8187d22830b5dd8
+```
+
+Frozen llama.cpp runtime identity:
+
+```text
+LLAMA_CPP_SOURCE_REVISION=c1d0e7a004015f23bc0233470b747b596f29b264
+LLAMA_CPP_TREE=2255f4747492109298a5c997f374d49c2af3113d
+LLAMA_CPP_TAG=b10621
+LLAMA_RUNTIME_ARCHIVE_SHA256=91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+LLAMA_RUNTIME_FILE_MANIFEST_SHA256=4a6b0d2a9dee9d91fb1553ead9e26f49c1f232c86269013bd8a7edb82f0cd711
+LIBLLAMA_SHA256=89869a6732162d45aa7fe5ab4b224e484c8f27f58c145e530e99dc59d8772448
+```
+
+No candidate, revision, bundle, model artifact, role, runtime route, runtime revision, runtime archive, library identity, runner class, or model-load semantic substitution occurred.
+
+The already-PASS Transformers candidates were not rerun.
+
+## 5. Previously observed pre-load failure was corrected
+
+The original run `34063020745` had stopped both GGUF jobs before model load because `ggml-backend.h` included a missing staged `ggml-alloc.h`.
+
+In corrective run `34150708258`, both GGUF jobs completed all of the following successfully:
+
+```text
+AUTHORITY_PREFLIGHT_STEP=PASS
+CANONICAL_BUNDLE_VALIDATION_STEP=PASS
+EXACT_PUBLIC_CANDIDATE_ACQUISITION_AND_HASH_STEP=PASS
+CORRECTIVE_HEADER_CLOSURE_GGML_ALLOC=PASS
+LLAMA_RUNTIME_REBIND_AND_LOAD_ONLY_HELPER_BUILD_STEP=PASS
+MODEL_LOAD_STEP=REACHED_AND_EXECUTED
+```
+
+Therefore the prior `INCOMPLETE_MODEL_LOAD_NOT_REACHED` condition was genuinely removed. It is not carried forward as the current GGUF disposition.
+
+## 6. Per-candidate corrective empirical dispositions
+
+### 6.1 Qwen/Qwen3-0.6B-Base
+
+```text
+CANDIDATE=Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+RUNTIME_ROUTE=LLAMA_CPP_GGUF
+JOB_ID=101832231080
+CANDIDATE_BUNDLE_SHA256=8b207e94ad7c5937dceced686603294ae5f150022ac2b355fee9997a408fc415
+MODEL_ARTIFACT_SHA256=218d3f063193b40008d4e63d90cf83e7dc6d33a8c6c1c647589f868a8fc74492
+MODEL_ARTIFACT_BYTES=396704512
+CANDIDATE_BYTE_INTEGRITY=PASS
+LLAMA_RUNTIME_REBIND=PASS
+MODEL_LOAD_STEP=EXECUTED
+MODEL_LOAD_EXIT_CODE=2
+EMPIRICAL_MODEL_LOAD_COMPATIBILITY=FAIL
+EMPIRICAL_MODEL_LOAD_REASON_CODE=FAIL_MODEL_LOAD_ERROR
+CLEANUP_STEP=PASS
+MODEL_BYTE_PERSISTENCE_AFTER_JOB=NO
+RAW_MODEL_BYTE_ARTIFACT_UPLOAD=NO
+ACTIONS_CACHE_FOR_MODEL_BYTES=NO
+```
+
+The exact llama.cpp diagnostic emitted during the model-load call was:
+
+```text
+llama_model_load_from_file_impl: no backends are loaded. hint: use ggml_backend_load() or ggml_backend_load_all() to load a backend before calling this function
+```
+
+This is an empirical model-load FAIL under the precommitted corrective disposition contract because the model-load function was actually invoked and returned a model-load error. It must not be relabeled as a prerequisite `INCOMPLETE` result.
+
+### 6.2 Qwen/Qwen3.5-0.8B-Base
+
+```text
+CANDIDATE=Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68
+RUNTIME_ROUTE=LLAMA_CPP_GGUF
+JOB_ID=101832230804
+CANDIDATE_BUNDLE_SHA256=682ef5c8fb914feb5346d5153e26b83e6bb3bb834aa1313cba240b61c0657592
+MODEL_ARTIFACT_SHA256=0dabf7f08793293d999ea306cee8c9caa3d76099e791ea2b0ce8f555f4e4098d
+MODEL_ARTIFACT_BYTES=563035840
+CANDIDATE_BYTE_INTEGRITY=PASS
+LLAMA_RUNTIME_REBIND=PASS
+MODEL_LOAD_STEP=EXECUTED
+MODEL_LOAD_EXIT_CODE=2
+EMPIRICAL_MODEL_LOAD_COMPATIBILITY=FAIL
+EMPIRICAL_MODEL_LOAD_REASON_CODE=FAIL_MODEL_LOAD_ERROR
+CLEANUP_STEP=PASS
+MODEL_BYTE_PERSISTENCE_AFTER_JOB=NO
+RAW_MODEL_BYTE_ARTIFACT_UPLOAD=NO
+ACTIONS_CACHE_FOR_MODEL_BYTES=NO
+```
+
+The exact llama.cpp diagnostic emitted during the model-load call was the same:
+
+```text
+llama_model_load_from_file_impl: no backends are loaded. hint: use ggml_backend_load() or ggml_backend_load_all() to load a backend before calling this function
+```
+
+This is likewise an empirical model-load FAIL, not an incomplete pre-load result.
+
+## 7. Aggregate empirical state after the corrective run
+
+The original two Transformers candidates retain their already-reconciled empirical PASS results from run `34063020745`. They were not rerun.
+
+The two corrective GGUF candidates now have empirical FAIL results from run `34150708258`.
+
+```text
+EXACT_PER_CANDIDATE_MODEL_LOAD_COMPATIBILITY=PARTIAL_2_PASS_2_FAIL
+TRANSFORMERS_ROUTE_EMPIRICAL_MODEL_LOAD_COMPATIBILITY=PASS_FOR_BOTH_FROZEN_TRANSFORMERS_CANDIDATES_FROM_ORIGINAL_CONSUMED_RUN
+LLAMA_CPP_GGUF_ROUTE_EMPIRICAL_MODEL_LOAD_COMPATIBILITY=FAIL_FOR_BOTH_FROZEN_GGUF_CANDIDATES_MODEL_LOAD_ERROR_NO_BACKENDS_LOADED
+RUNTIME_FORMAT_COMPATIBILITY_STATE_FOR_LIVE_SUBJECT=NOT_PASS_ALL_FOUR
+FOUR_CANDIDATE_MODEL_LOAD_COMPATIBILITY_GATE=FAIL_NOT_PASS
+```
+
+The overall corrective workflow conclusion is `failure`, but that aggregate conclusion is not substituted for the exact per-candidate evidence.
+
+## 8. Cleanup, retention, credential, network, and spend truth
+
+Both corrective GGUF jobs completed their unconditional cleanup successfully after the model-load failure.
+
+```text
+CORRECTIVE_GGUF_JOB_CLEANUP_STEP=PASS_FOR_BOTH_GGUF_JOBS
+CORRECTIVE_GGUF_MODEL_BYTE_PERSISTENCE_AFTER_JOB=NO_FOR_BOTH_GGUF_JOBS
+CORRECTIVE_WORKFLOW_ARTIFACT_UPLOAD_COUNT=0
+RAW_MODEL_BYTE_ARTIFACT_UPLOAD=NO
+ACTIONS_CACHE_FOR_MODEL_BYTES=NO
+CREDENTIAL_USE_DURING_CANDIDATE_ACQUISITION=NO
+NETWORK_DURING_MODEL_LOAD=PROHIBITED_ENFORCED_UNSHARE_N
+RUNNER_CLASS=STANDARD_PUBLIC_UBUNTU_24_04_ONLY
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+The original two Transformers jobs from run `34063020745` still retain the previously reconciled cleanup limitation: their model-load steps passed but their cleanup steps failed, so positive deletion evidence for those original job-local bytes is not retroactively fabricated by this corrective run.
+
+```text
+RETROACTIVE_TRANSFORMERS_CLEANUP_PASS=NOT_ESTABLISHED
+RETENTION_COMPLIANCE_ACROSS_ALL_MODEL_LOAD_EVIDENCE=PARTIAL_NOT_FULLY_EVIDENCED
+```
+
+## 9. Prohibited operations remained prohibited and were not performed
+
+For both corrective GGUF jobs, the logs explicitly recorded:
+
+```text
+TRANSFORMERS_CANDIDATE_RERUN_PERFORMED=NO
+MODEL_FORWARD_PASS_PERFORMED=NO
+MODEL_INFERENCE_PERFORMED=NO
+GENERATION_PERFORMED=NO
+BENCHMARK_EXECUTION_PERFORMED=NO
+EVALUATION_PAYLOAD_EXECUTION_PERFORMED=NO
+TOURNAMENT_EXECUTION_PERFORMED=NO
+WINNER_SELECTION_PERFORMED=NO
+A15_ACTIVATION_PERFORMED=NO
+TRAINING_PERFORMED=NO
+```
+
+Current authority remains:
+
+```text
+MODEL_FORWARD_PASS_AUTHORITY=NONE
+MODEL_INFERENCE_AUTHORITY=NONE
+GENERATION_AUTHORITY=NONE
+BENCHMARK_EXECUTION_AUTHORITY=NONE
+EVALUATION_PAYLOAD_EXECUTION_AUTHORITY=NONE
+TOURNAMENT_EXECUTION_AUTHORITY=NONE
+WINNER_SELECTION_AUTHORITY=NONE
+A15_ACTIVATION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+PRIVATE_GOLD_ACCESS_AUTHORITY=NONE
+PHI_ACCESS_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+## 10. Corrective one-run authority is consumed
+
+The only authorized corrective workflow run completed at attempt 1. Therefore:
+
+```text
+CORRECTIVE_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN=CONSUMED_SINGLE_RUN_WITH_2_GGUF_EMPIRICAL_FAIL
+MAX_AUTHORIZED_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_WORKFLOW_RUNS=1_CONSUMED
+CORRECTIVE_MODEL_LOAD_COMPATIBILITY_PROBE_AUTHORITY=CONSUMED
+CORRECTIVE_MODEL_WEIGHT_ACQUISITION_AUTHORITY=NONE_AFTER_RUN_CONSUMPTION
+CORRECTIVE_MODEL_LOAD_AUTHORITY=NONE_AFTER_RUN_CONSUMPTION
+AUTOMATIC_RERUN_AUTHORITY=NONE
+FAILED_RUN_RETRY_AUTHORITY=NONE
+SECOND_CORRECTIVE_WORKFLOW_RUN_AUTHORITY=NONE
+TRANSFORMERS_CANDIDATE_RERUN_AUTHORITY=NONE
+```
+
+No repository-only implementation change can legitimately turn either empirical FAIL into PASS because there is no remaining corrective evidence-run authority.
+
+## 11. E004 dependency state after corrective evidence
+
+```text
+E004_EVALUATION_ASSET_QUALIFICATION_SUBUNIT=COMPLETE
+E004_RUNTIME_BINDING_EVIDENCE_SUBUNIT=COMPLETE_AUTHORITY_CONSUMED
+E004_SUBJECT_METADATA_EVIDENCE_SUBUNIT=COMPLETE_AUTHORITY_CONSUMED
+E004_CANDIDATE_ARTIFACT_BUNDLE_BINDING_SUBUNIT=COMPLETE
+E004_LLAMA_ADAPTER_CONTROL_PLANE_SUBUNIT=COMPLETE
+E004_TRANSFORMERS_ADAPTER_CONTROL_PLANE_SUBUNIT=COMPLETE
+E004_EXECUTION_PLAN_ARGV_SUBUNIT=COMPLETE
+E004_MODEL_LOAD_DECISION_SURFACE_SUBUNIT=COMPLETE_CANONICAL
+E004_MODEL_LOAD_DECISION_CAPTURE_SUBUNIT=COMPLETE_CANONICAL_DECISION_B_CONSUMED
+E004_MODEL_LOAD_COMPATIBILITY_IMPLEMENTATION_SUBUNIT=COMPLETE_CANONICAL
+E004_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN_SUBUNIT=COMPLETE_CONSUMED_SINGLE_RUN_WITH_PARTIAL_RESULT
+E004_CORRECTIVE_MODEL_LOAD_DECISION_SURFACE_SUBUNIT=COMPLETE_CANONICAL
+E004_CORRECTIVE_MODEL_LOAD_DECISION_CAPTURE_SUBUNIT=COMPLETE_CANONICAL_DECISION_B_CONSUMED
+E004_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_IMPLEMENTATION_SUBUNIT=COMPLETE_CANONICAL
+E004_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN_SUBUNIT=COMPLETE_CONSUMED_SINGLE_RUN_WITH_2_EMPIRICAL_FAIL
+E004_RUNTIME_COMPATIBILITY_SUBUNIT=INCOMPLETE_GATE_FAILED_2_PASS_2_FAIL
+E004_EXACT_SUBJECT_BINDING_SUBUNIT=INCOMPLETE
+E004_RESOURCE_ACCESS_FINANCE_SUBUNIT=INCOMPLETE
+E004_A1_A14_SNAPSHOT_SUBUNIT=INCOMPLETE
+E004_A15_SUBUNIT=NOT_REACHED_AS_SOLE_BLOCKER
+E004_MODEL_EXECUTION_SUBUNIT=NOT_STARTED_NOT_AUTHORIZED_BY_GATE_STATE
+E004_TOURNAMENT_EXECUTION_SUBUNIT=NOT_STARTED_NOT_AUTHORIZED_BY_GATE_STATE
+E004_TASK_CHECKBOX=REMAINS_INCOMPLETE
+E005_STATE=NOT_REACHED
+```
+
+## 12. Exact observed successor problem
+
+The corrective implementation successfully removed the prior missing-header prerequisite failure. The next observed runtime-load problem is not candidate acquisition, hash integrity, helper compilation, or model-byte availability.
+
+It is exactly:
+
+```text
+LLAMA_CPP_BACKEND_LOAD_STATE_AT_MODEL_LOAD=NO_BACKENDS_LOADED
+OBSERVED_LLAMA_CPP_DIAGNOSTIC=USE_GGML_BACKEND_LOAD_OR_GGML_BACKEND_LOAD_ALL_BEFORE_MODEL_LOAD
+```
+
+This record does not treat that diagnostic as authority to mutate the helper and rerun. The current corrective run is consumed and no retry authority exists.
+
+A future repository-only review may diagnose the exact frozen-runtime backend-loading mechanism and prepare a bounded decision surface if canonical governance permits, but no further model load may occur without new explicit canonical authority.
+
+## 13. Non-expansion state remains unresolved
+
+Even if a future separately authorized lane were to produce GGUF PASS, the following are still not established by the current evidence:
+
+```text
+RETROACTIVE_TRANSFORMERS_CLEANUP_PASS=NOT_ESTABLISHED
+ORCHESTRATOR_IMPLEMENTATION_STATE=NOT_ESTABLISHED
+EXACT_FUTURE_MODEL_EXECUTION_ENVIRONMENT=NOT_ESTABLISHED
+EXACT_COMPUTE_RESOURCE_IDENTITY=NOT_ESTABLISHED
+RESOURCE_AUTHORIZATION_BASIS=NOT_ESTABLISHED
+EXPECTED_CPU_RAM_DISK_ENVELOPE=NOT_ESTABLISHED
+EXPECTED_MAX_WALLCLOCK=NOT_ESTABLISHED
+EXACT_ACCESS_BINDING_FOR_EXECUTION_SUBJECT=NOT_ESTABLISHED
+EXACT_CREDENTIAL_STATE_BINDING=NOT_ESTABLISHED
+NETWORK_DURING_TOURNAMENT_EXECUTION_BINDING=NOT_ESTABLISHED
+RETENTION_BINDING_FOR_TOURNAMENT=NOT_ESTABLISHED
+ZERO_INCREMENTAL_SPEND_TOURNAMENT_RESOURCE_BINDING=NOT_ESTABLISHED
+A1_A14_APPLICABLE_PASS_SNAPSHOT=NOT_ESTABLISHED
+A15_ACTIVATION=NOT_ESTABLISHED
+TOURNAMENT_EXECUTION_AUTHORIZED_NOW=NO
+WINNER_SELECTION_AUTHORIZED_NOW=NO
+E005_STATE=NOT_REACHED
+TRAINING_AUTHORITY=NONE
+```
+
+## 14. Current disposition
+
+```text
+CURRENT_GLOBAL_FRONTIER=specs/007-sft-v1/e004-registry-current-state-reconciliation-v43-2026-09-07.md
+FOUNDER_E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION=E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION_B_CONSUMED
+CORRECTIVE_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN=CONSUMED_SINGLE_RUN_WITH_2_GGUF_EMPIRICAL_FAIL
+EXACT_PER_CANDIDATE_MODEL_LOAD_COMPATIBILITY=PARTIAL_2_PASS_2_FAIL
+RUNTIME_FORMAT_COMPATIBILITY_STATE_FOR_LIVE_SUBJECT=NOT_PASS_ALL_FOUR
+FOUR_CANDIDATE_MODEL_LOAD_COMPATIBILITY_GATE=FAIL_NOT_PASS
+SUCCESSOR_PASS_PREFLIGHT=NO
+SUCCESSOR_PREFLIGHT_DISPOSITION=BLOCKED_BY_EMPIRICAL_GGUF_MODEL_LOAD_FAILURE_AND_ABSENT_FURTHER_MODEL_LOAD_AUTHORITY
+MODEL_RUNTIME_LOAD_PERFORMED=YES_TWO_ORIGINAL_TRANSFORMERS_PASS_AND_TWO_CORRECTIVE_GGUF_ATTEMPTED_FAIL_LOAD_ONLY
+MODEL_EXECUTION_PERFORMED=NO_FORWARD_OR_INFERENCE_AUTHORITY_AND_NO_EVIDENCE_OF_SUCH_EXECUTION
+TOURNAMENT_EXECUTION_PERFORMED=NO
+MODEL_WINNER_SELECTED=NO
+A15_ACTIVATION=NOT_ESTABLISHED
+E005_STATE=NOT_REACHED
+TRAINING_AUTHORITY=NONE
+TRAINING_PERFORMED=NO
+PRIVATE_GOLD_ACCESSED=NO
+PHI_ACCESSED=NO
+CURRENT_AUTHORIZED_SPEND_USD=0
+PROJECT_FINISHED=NO
+```
