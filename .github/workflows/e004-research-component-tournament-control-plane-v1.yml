@@ -8,6 +8,7 @@ on:
       - 'src/commandmed/spec007/research_candidate_bundle.py'
       - 'src/commandmed/spec007/e004_execution_adapter.py'
       - 'src/commandmed/spec007/e004_transformers_adapter.py'
+      - 'src/commandmed/spec007/e004_applicable_prerequisite_snapshot.py'
       - 'src/commandmed/spec007/quarantine.py'
       - 'src/commandmed/spec007/snapshot.py'
       - 'tests/spec007/test_research_tournament.py'
@@ -15,6 +16,7 @@ on:
       - 'tests/spec007/test_research_candidate_bundle.py'
       - 'tests/spec007/test_e004_execution_adapter.py'
       - 'tests/spec007/test_e004_transformers_adapter.py'
+      - 'tests/spec007/test_e004_applicable_prerequisite_snapshot.py'
       - 'tests/spec007/test_e004_model_load_compatibility_policy.py'
       - 'tests/spec007/test_review_repair_regressions.py'
       - 'tests/spec007/test_quarantine_snapshot.py'
@@ -25,6 +27,7 @@ on:
       - 'specs/007-sft-v1/e004-successor-transformers-adapter-control-plane-v1-2026-09-06.md'
       - 'specs/007-sft-v1/e004-research-component-tournament-control-plane-2026-09-05.md'
       - 'specs/007-sft-v1/e004-research-component-preexecution-envelope-2026-09-05.md'
+      - 'specs/007-sft-v1/e004-applicable-prerequisite-snapshot-hardening-2026-09-07.md'
       - 'specs/007-sft-v1/e004-model-load-compatibility-implementation-v1-2026-09-07.md'
       - '.github/workflows/e004-model-load-compatibility-evidence-v1.yml'
       - '.github/workflows/e004-research-component-tournament-control-plane-v1.yml'
@@ -82,6 +85,7 @@ jobs:
             src/commandmed/spec007/research_candidate_bundle.py \
             src/commandmed/spec007/e004_execution_adapter.py \
             src/commandmed/spec007/e004_transformers_adapter.py \
+            src/commandmed/spec007/e004_applicable_prerequisite_snapshot.py \
             src/commandmed/spec007/quarantine.py \
             src/commandmed/spec007/snapshot.py \
             tests/spec007/test_research_tournament.py \
@@ -89,6 +93,7 @@ jobs:
             tests/spec007/test_research_candidate_bundle.py \
             tests/spec007/test_e004_execution_adapter.py \
             tests/spec007/test_e004_transformers_adapter.py \
+            tests/spec007/test_e004_applicable_prerequisite_snapshot.py \
             tests/spec007/test_e004_model_load_compatibility_policy.py \
             tests/spec007/test_review_repair_regressions.py \
             tests/spec007/test_quarantine_snapshot.py
@@ -134,6 +139,12 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONPATH=. python3 -m pytest -q tests/spec007/test_research_execution.py
+
+      - name: Run focused applicable-prerequisite snapshot tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python3 -m pytest -q tests/spec007/test_e004_applicable_prerequisite_snapshot.py
 
       - name: Run focused snapshot regression repair
         shell: bash
