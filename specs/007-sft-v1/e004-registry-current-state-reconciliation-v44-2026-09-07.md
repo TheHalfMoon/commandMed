@@ -1,0 +1,272 @@
+# E004 Registry Current-State Reconciliation V44 — 2026-09-07
+
+**Spec:** 007 SFT V1
+**Scope:** `SPEC007_RESEARCH_ENGINEERING_COMPONENT_V1`
+**Successor policy:** `SP007-RO-001`
+**Predecessor:** `specs/007-sft-v1/e004-registry-current-state-reconciliation-v43-2026-09-07.md`
+**Backend-registration diagnosis:** `specs/007-sft-v1/e004-model-load-backend-registration-diagnosis-2026-09-07.md`
+**Canonical backend corrective decision request:** `specs/007-sft-v1/e004-model-load-backend-corrective-founder-decision-request-2026-09-07.md`
+**Backend corrective decision-request PR:** #289
+**Backend corrective decision-request exact head:** `d074985799462b98511ceaa48197c770389f0367`
+**Backend corrective decision-request canonical merge:** `6ed44a1ad675dccd0a7c3351de01d2e32a405312`
+**Canonical tree after PR #289:** `6bdb0a50f0b594435f0f4146bc1981944a689166`
+**Artifact class:** deterministic append-only current-state / authority-frontier overlay
+**Current authorized spend:** USD 0
+
+## 1. Purpose
+
+Reconcile the E004 frontier after PR #289 made the repository-only backend-registration diagnosis and exact backend-corrective Founder decision surface canonical.
+
+This record creates no implementation or execution authority. It records only the now-canonical decision surface, the still-absent exact post-canonical backend-corrective Founder decision token, the consumed state of both prior model-load evidence runs, and the exact next lawful dependency transition.
+
+## 2. Canonical empirical state remains unchanged
+
+The original four-candidate evidence run and the later two-GGUF corrective evidence run are both consumed and immutable under current authority.
+
+```text
+ORIGINAL_EVIDENCE_WORKFLOW_RUN_ID=34063020745
+ORIGINAL_EVIDENCE_WORKFLOW_RUN_ATTEMPT=1
+ORIGINAL_EVIDENCE_RUN=CONSUMED_NO_RERUN_AUTHORITY
+CORRECTIVE_EVIDENCE_WORKFLOW_RUN_ID=34150708258
+CORRECTIVE_EVIDENCE_WORKFLOW_RUN_ATTEMPT=1
+CORRECTIVE_EVIDENCE_RUN=CONSUMED_SINGLE_RUN_WITH_2_GGUF_EMPIRICAL_FAIL
+AUTOMATIC_RERUN_AUTHORITY=NONE
+FAILED_RUN_RETRY_AUTHORITY=NONE
+SECOND_CORRECTIVE_WORKFLOW_RUN_AUTHORITY=NONE
+```
+
+Exact per-candidate model-load compatibility remains:
+
+```text
+Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd=FAIL_MODEL_LOAD_ERROR_EXIT_2_NO_BACKENDS_LOADED
+Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68=FAIL_MODEL_LOAD_ERROR_EXIT_2_NO_BACKENDS_LOADED
+ibm-granite/granite-4.0-350m-base@a50b46cef21c8a86b15f0496cb794487a78a910b=PASS_EXACT_MODEL_LOAD_COMPLETED
+Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539=PASS_EXACT_MODEL_LOAD_COMPLETED_CONTROL_WINNER_INELIGIBLE
+EXACT_PER_CANDIDATE_MODEL_LOAD_COMPATIBILITY=PARTIAL_2_PASS_2_FAIL
+FOUR_CANDIDATE_MODEL_LOAD_COMPATIBILITY_GATE=FAIL_NOT_PASS
+RUNTIME_FORMAT_COMPATIBILITY_STATE_FOR_LIVE_SUBJECT=NOT_PASS_ALL_FOUR
+```
+
+The already-PASS Transformers candidates remain outside every current corrective execution authority and may not be rerun.
+
+## 3. Backend-registration diagnosis is canonical repository evidence only
+
+PR #289 canonically recorded the narrow successor runtime diagnosis without acquiring or loading model bytes.
+
+Frozen-source evidence establishes:
+
+```text
+BACKEND_REGISTRATION_DIAGNOSIS=COMPLETE_REPOSITORY_ONLY
+OBSERVED_FAILURE=NO_BACKENDS_LOADED_BEFORE_LLAMA_MODEL_LOAD
+FROZEN_SOURCE_REQUIRED_PRELOAD_MECHANISM=DYNAMIC_BACKEND_REGISTRATION
+NARROWEST_PATH_BOUND_API=ggml_backend_load_all_from_path
+```
+
+The exact frozen llama.cpp runtime identity remains unchanged:
+
+```text
+LLAMA_CPP_SOURCE_REVISION=c1d0e7a004015f23bc0233470b747b596f29b264
+LLAMA_CPP_TREE=2255f4747492109298a5c997f374d49c2af3113d
+LLAMA_CPP_TAG=b10621
+LLAMA_RUNTIME_ARCHIVE=llama-b10621-bin-ubuntu-x64.tar.gz
+LLAMA_RUNTIME_ARCHIVE_SHA256=91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+LLAMA_RUNTIME_FILE_MANIFEST_SHA256=4a6b0d2a9dee9d91fb1553ead9e26f49c1f232c86269013bd8a7edb82f0cd711
+LIBLLAMA_SHA256=89869a6732162d45aa7fe5ab4b224e484c8f27f58c145e530e99dc59d8772448
+LLAMA_BUILD_TOOLCHAIN_IDENTITY=GNU_11.4.0_LINUX_X86_64
+```
+
+No runtime, archive, backend library, candidate, route, or resource substitution is authorized by the diagnosis.
+
+## 4. Backend-corrective decision surface is now canonical
+
+PR #289 canonically published exactly two Founder choices.
+
+Decision A:
+
+```text
+FOUNDER_E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION=E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION_A
+```
+
+Decision B:
+
+```text
+FOUNDER_E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION=E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION_B
+```
+
+Decision A preserves the current failed compatibility gate and creates no successor corrective execution authority.
+
+Decision B, only after an exact post-canonical token is separately supplied and captured in a canonical Founder decision record, would authorize one new review-first successor corrective lane limited to:
+
+```text
+Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd | LLAMA_CPP_GGUF | PRIMARY
+Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68 | LLAMA_CPP_GGUF | PRIMARY
+```
+
+and the same exact frozen llama.cpp runtime, with path-bound backend registration before load-only model construction.
+
+## 5. No exact post-canonical backend-corrective Founder token exists yet
+
+The new decision surface became canonical through merge `6ed44a1ad675dccd0a7c3351de01d2e32a405312`.
+
+No exact token matching either new choice has been supplied after that canonical merge.
+
+```text
+BACKEND_CORRECTIVE_DECISION_SURFACE=COMPLETE_CANONICAL_READY_FOR_POST_CANONICAL_FOUNDER_SELECTION
+BACKEND_CORRECTIVE_DECISION_REQUEST_CANONICAL_MERGE=6ed44a1ad675dccd0a7c3351de01d2e32a405312
+POST_CANONICAL_EXACT_BACKEND_CORRECTIVE_FOUNDER_DECISION_TOKEN=ABSENT
+FOUNDER_E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION=ABSENT
+```
+
+The previously supplied token:
+
+```text
+FOUNDER_E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION=E004_MODEL_LOAD_COMPATIBILITY_CORRECTIVE_DECISION_B
+```
+
+belongs to the earlier corrective decision surface and is already consumed by run `34150708258`. It does not match or substitute for the new backend-corrective decision token.
+
+## 6. Broad continuation does not substitute for the new exact token
+
+Broad Founder continuation, ordinary authorization, `go ahead`, `all permissions`, or any earlier generic approval does not match either exact token required by the newly canonical backend-corrective decision surface.
+
+```text
+POST_CANONICAL_BROAD_CONTINUATION_COUNTS_AS_EXACT_BACKEND_CORRECTIVE_DECISION=NO
+PREVIOUS_DIFFERENT_DECISION_TOKEN_COUNTS_AS_NEW_BACKEND_CORRECTIVE_DECISION=NO
+```
+
+No implementation, static backend-registration probe, model-byte acquisition, model load, or successor evidence-run authority is inferred from broad permission.
+
+## 7. Current backend-corrective authority state
+
+Because the new exact post-canonical token is absent:
+
+```text
+BACKEND_CORRECTIVE_IMPLEMENTATION_PREPARATION_AUTHORITY=NONE
+BACKEND_REGISTRATION_STATIC_PROBE_AUTHORITY=NONE
+BACKEND_CORRECTIVE_MODEL_WEIGHT_ACQUISITION_AUTHORITY=NONE
+BACKEND_CORRECTIVE_MODEL_LOAD_AUTHORITY=NONE
+BACKEND_CORRECTIVE_EVIDENCE_WORKFLOW_AUTHORITY=NONE
+PRIOR_CORRECTIVE_RUN_RERUN_AUTHORITY=NONE
+PRIOR_CORRECTIVE_RUN_RETRY_AUTHORITY=NONE
+TRANSFORMERS_CANDIDATE_RERUN_AUTHORITY=NONE
+MODEL_FORWARD_PASS_AUTHORITY=NONE
+MODEL_INFERENCE_AUTHORITY=NONE
+GENERATION_AUTHORITY=NONE
+BENCHMARK_EXECUTION_AUTHORITY=NONE
+EVALUATION_PAYLOAD_EXECUTION_AUTHORITY=NONE
+TOURNAMENT_EXECUTION_AUTHORITY=NONE
+WINNER_SELECTION_AUTHORITY=NONE
+A15_ACTIVATION_AUTHORITY=NONE
+TRAINING_AUTHORITY=NONE
+CURRENT_AUTHORIZED_SPEND_USD=0
+```
+
+Repository-only reasoning cannot promote either GGUF FAIL outcome to PASS and cannot create a new workflow-run allowance.
+
+## 8. Dependency state
+
+```text
+E004_EVALUATION_ASSET_QUALIFICATION_SUBUNIT=COMPLETE
+E004_RUNTIME_BINDING_EVIDENCE_SUBUNIT=COMPLETE_AUTHORITY_CONSUMED
+E004_SUBJECT_METADATA_EVIDENCE_SUBUNIT=COMPLETE_AUTHORITY_CONSUMED
+E004_CANDIDATE_ARTIFACT_BUNDLE_BINDING_SUBUNIT=COMPLETE
+E004_LLAMA_ADAPTER_CONTROL_PLANE_SUBUNIT=COMPLETE
+E004_TRANSFORMERS_ADAPTER_CONTROL_PLANE_SUBUNIT=COMPLETE
+E004_EXECUTION_PLAN_ARGV_SUBUNIT=COMPLETE
+E004_MODEL_LOAD_DECISION_SURFACE_SUBUNIT=COMPLETE_CANONICAL
+E004_MODEL_LOAD_DECISION_CAPTURE_SUBUNIT=COMPLETE_CANONICAL_DECISION_B_CONSUMED
+E004_MODEL_LOAD_COMPATIBILITY_IMPLEMENTATION_SUBUNIT=COMPLETE_CANONICAL
+E004_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN_SUBUNIT=COMPLETE_CONSUMED_SINGLE_RUN_WITH_PARTIAL_RESULT
+E004_CORRECTIVE_MODEL_LOAD_DECISION_SURFACE_SUBUNIT=COMPLETE_CANONICAL
+E004_CORRECTIVE_MODEL_LOAD_DECISION_CAPTURE_SUBUNIT=COMPLETE_CANONICAL_DECISION_B_CONSUMED
+E004_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_IMPLEMENTATION_SUBUNIT=COMPLETE_CANONICAL
+E004_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_EVIDENCE_RUN_SUBUNIT=COMPLETE_CONSUMED_SINGLE_RUN_WITH_2_EMPIRICAL_FAIL
+E004_BACKEND_REGISTRATION_DIAGNOSIS_SUBUNIT=COMPLETE_CANONICAL_REPOSITORY_ONLY
+E004_BACKEND_CORRECTIVE_DECISION_SURFACE_SUBUNIT=COMPLETE_CANONICAL
+E004_BACKEND_CORRECTIVE_DECISION_CAPTURE_SUBUNIT=INCOMPLETE_PENDING_EXACT_POST_CANONICAL_FOUNDER_TOKEN
+E004_RUNTIME_COMPATIBILITY_SUBUNIT=INCOMPLETE_GATE_FAILED_2_PASS_2_FAIL
+E004_EXACT_SUBJECT_BINDING_SUBUNIT=INCOMPLETE
+E004_RESOURCE_ACCESS_FINANCE_SUBUNIT=INCOMPLETE
+E004_A1_A14_SNAPSHOT_SUBUNIT=INCOMPLETE
+E004_A15_SUBUNIT=NOT_REACHED
+E004_MODEL_EXECUTION_SUBUNIT=NOT_STARTED_NOT_AUTHORIZED_BY_GATE_STATE
+E004_TOURNAMENT_EXECUTION_SUBUNIT=NOT_STARTED_NOT_AUTHORIZED_BY_GATE_STATE
+E004_TASK_CHECKBOX=REMAINS_INCOMPLETE
+E005_STATE=NOT_REACHED
+```
+
+## 9. Exact next lawful transition
+
+The next dependency-ordered transition is one exact post-canonical Founder selection matching the now-canonical backend-corrective decision surface.
+
+To authorize the bounded successor correction, the exact token is:
+
+```text
+FOUNDER_E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION=E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION_B
+```
+
+If that exact token is supplied after canonical merge `6ed44a1ad675dccd0a7c3351de01d2e32a405312`, live repository truth must be reverified first. The token must then be captured in a separate canonical Founder decision record before any backend-corrective implementation preparation or no-model backend-registration static probe is treated as authorized.
+
+Only after canonical Decision-B capture may a review-first implementation be prepared, statically qualified, guarded-merged, canonically reverified, and—if every bounded gate passes—followed by exactly one new post-merge successor evidence run.
+
+The consumed runs `34063020745` and `34150708258` remain permanently outside rerun/retry authority.
+
+## 10. Non-expansion statement
+
+Even a future successful two-GGUF successor model-load result would not by itself establish:
+
+```text
+RETROACTIVE_TRANSFORMERS_CLEANUP_PASS=NOT_ESTABLISHED
+ORCHESTRATOR_IMPLEMENTATION_STATE=NOT_ESTABLISHED
+EXACT_FUTURE_MODEL_EXECUTION_ENVIRONMENT=NOT_ESTABLISHED
+EXACT_COMPUTE_RESOURCE_IDENTITY=NOT_ESTABLISHED
+RESOURCE_AUTHORIZATION_BASIS=NOT_ESTABLISHED
+EXPECTED_CPU_RAM_DISK_ENVELOPE=NOT_ESTABLISHED
+EXPECTED_MAX_WALLCLOCK=NOT_ESTABLISHED
+EXACT_ACCESS_BINDING_FOR_EXECUTION_SUBJECT=NOT_ESTABLISHED
+EXACT_CREDENTIAL_STATE_BINDING=NOT_ESTABLISHED
+NETWORK_DURING_TOURNAMENT_EXECUTION_BINDING=NOT_ESTABLISHED
+RETENTION_BINDING_FOR_TOURNAMENT=NOT_ESTABLISHED
+ZERO_INCREMENTAL_SPEND_TOURNAMENT_RESOURCE_BINDING=NOT_ESTABLISHED
+A1_A14_APPLICABLE_PASS_SNAPSHOT=NOT_ESTABLISHED
+A15_ACTIVATION=NOT_ESTABLISHED
+TOURNAMENT_EXECUTION_AUTHORIZED_NOW=NO
+WINNER_SELECTION_AUTHORIZED_NOW=NO
+E005_STATE=NOT_REACHED
+TRAINING_AUTHORITY=NONE
+```
+
+No tournament, winner, A15, E005, training-readiness, release-readiness, or project-completion claim may be inferred from the new decision surface.
+
+## 11. Current disposition
+
+```text
+CURRENT_GLOBAL_FRONTIER=specs/007-sft-v1/e004-registry-current-state-reconciliation-v44-2026-09-07.md
+BACKEND_CORRECTIVE_DECISION_SURFACE=COMPLETE_CANONICAL_READY_FOR_POST_CANONICAL_FOUNDER_SELECTION
+POST_CANONICAL_EXACT_BACKEND_CORRECTIVE_FOUNDER_DECISION_TOKEN=ABSENT
+FOUNDER_E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION=ABSENT
+BACKEND_CORRECTIVE_IMPLEMENTATION_PREPARATION_AUTHORITY=NONE
+BACKEND_REGISTRATION_STATIC_PROBE_AUTHORITY=NONE
+BACKEND_CORRECTIVE_MODEL_WEIGHT_ACQUISITION_AUTHORITY=NONE
+BACKEND_CORRECTIVE_MODEL_LOAD_AUTHORITY=NONE
+BACKEND_CORRECTIVE_EVIDENCE_WORKFLOW_AUTHORITY=NONE
+EXACT_PER_CANDIDATE_MODEL_LOAD_COMPATIBILITY=PARTIAL_2_PASS_2_FAIL
+FOUR_CANDIDATE_MODEL_LOAD_COMPATIBILITY_GATE=FAIL_NOT_PASS
+RUNTIME_FORMAT_COMPATIBILITY_STATE_FOR_LIVE_SUBJECT=NOT_PASS_ALL_FOUR
+SUCCESSOR_PASS_PREFLIGHT=NO
+SUCCESSOR_PREFLIGHT_DISPOSITION=BLOCKED_PENDING_EXACT_POST_CANONICAL_BACKEND_CORRECTIVE_FOUNDER_DECISION
+MODEL_RUNTIME_LOAD_PERFORMED=YES_TWO_ORIGINAL_TRANSFORMERS_PASS_AND_TWO_CORRECTIVE_GGUF_ATTEMPTED_FAIL_LOAD_ONLY
+MODEL_FORWARD_PASS_PERFORMED=NO
+MODEL_INFERENCE_PERFORMED=NO
+GENERATION_PERFORMED=NO
+TOURNAMENT_EXECUTION_PERFORMED=NO
+MODEL_WINNER_SELECTED=NO
+A15_ACTIVATION=ABSENT_NOT_AUTHORIZED
+E005_STATE=NOT_REACHED
+TRAINING_AUTHORITY=NONE
+TRAINING_PERFORMED=NO
+PRIVATE_GOLD_ACCESSED=NO
+PHI_ACCESSED=NO
+CURRENT_AUTHORIZED_SPEND_USD=0
+PROJECT_FINISHED=NO
+```
