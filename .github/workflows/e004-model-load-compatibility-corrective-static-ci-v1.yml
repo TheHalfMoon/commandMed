@@ -1,0 +1,125 @@
+# Static-only qualification for the E004 corrective GGUF compatibility lane.
+# This workflow may download the exact frozen llama.cpp runtime/header bytes and
+# compile the reviewed load-only helper, but it must never acquire candidate
+# model bytes or execute the helper.
+
+name: E004 corrective model-load static qualification V1
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/e004-model-load-compatibility-corrective-evidence-v1.yml
+      - .github/workflows/e004-model-load-compatibility-corrective-static-ci-v1.yml
+      - tests/spec007/test_e004_model_load_compatibility_corrective_policy.py
+      - tools/e004_model_load_probe.cpp
+      - specs/007-sft-v1/e004-model-load-compatibility-corrective-implementation-v1-2026-09-07.md
+
+permissions:
+  contents: read
+
+env:
+  LLAMA_CPP_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  LLAMA_CPP_TAG: b10621
+  LLAMA_CPP_ARCHIVE: llama-b10621-bin-ubuntu-x64.tar.gz
+  LLAMA_CPP_ARCHIVE_BYTES: "16291771"
+  LLAMA_CPP_ARCHIVE_SHA256: 91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+  LLAMA_RUNTIME_FILE_MANIFEST_SHA256: 4a6b0d2a9dee9d91fb1553ead9e26f49c1f232c86269013bd8a7edb82f0cd711
+  LLAMA_LIBRARY_SHA256: 89869a6732162d45aa7fe5ab4b224e484c8f27f58c145e530e99dc59d8772448
+
+jobs:
+  static-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Compile Python sources
+        run: python3 -m compileall -q src tests
+
+      - name: Run focused corrective policy tests
+        run: PYTHONPATH=. python3 -m pytest -q tests/spec007/test_e004_model_load_compatibility_corrective_policy.py
+
+      - name: Run Spec 007 regression
+        run: PYTHONPATH=. python3 -m pytest -q tests/spec007
+
+      - name: Run full repository regression
+        run: PYTHONPATH=. python3 -m pytest -q
+
+      - name: Compile corrected helper against exact frozen llama.cpp runtime
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          root="${RUNNER_TEMP}/e004-corrective-static"
+          runtime="$root/llama-runtime"
+          headers="$root/llama-headers"
+          rm -rf "$root"
+          mkdir -p "$runtime/extract" "$headers/ggml/include" "$headers/include"
+
+          archive="$runtime/$LLAMA_CPP_ARCHIVE"
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+            --output "$archive.part" \
+            "https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${LLAMA_CPP_ARCHIVE}"
+          test "$(stat -c '%s' "$archive.part")" = "$LLAMA_CPP_ARCHIVE_BYTES"
+          test "$(sha256sum "$archive.part" | awk '{print $1}')" = "$LLAMA_CPP_ARCHIVE_SHA256"
+          mv "$archive.part" "$archive"
+          listing="$runtime/archive-list.txt"
+          tar -tzf "$archive" > "$listing"
+          test -s "$listing"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$listing"; then exit 70; fi
+          tar --no-same-owner -xzf "$archive" -C "$runtime/extract"
+
+          runtime_manifest="$runtime/runtime-files.tsv"
+          : > "$runtime_manifest"
+          while IFS= read -r path; do
+            rel="${path#"$runtime/extract/"}"
+            printf '%s\t%s\t%s\n' "$rel" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$runtime_manifest"
+          done < <(find "$runtime/extract" -type f -print | sort)
+          sort -o "$runtime_manifest" "$runtime_manifest"
+          test "$(sha256sum "$runtime_manifest" | awk '{print $1}')" = "$LLAMA_RUNTIME_FILE_MANIFEST_SHA256"
+
+          libllama="$(find "$runtime/extract" -type f -name 'libllama.so.0.3.0' -print -quit)"
+          test -n "$libllama"
+          test "$(sha256sum "$libllama" | awk '{print $1}')" = "$LLAMA_LIBRARY_SHA256"
+
+          fetch_header() {
+            local upstream="$1"
+            local local_path="$2"
+            local target="$headers/$local_path"
+            mkdir -p "$(dirname "$target")"
+            curl --fail --location --silent --show-error \
+              --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+              --output "$target" \
+              "https://raw.githubusercontent.com/ggml-org/llama.cpp/${LLAMA_CPP_COMMIT}/${upstream}"
+            test -s "$target"
+          }
+          fetch_header include/llama.h include/llama.h
+          fetch_header ggml/include/ggml.h ggml/include/ggml.h
+          fetch_header ggml/include/ggml-cpu.h ggml/include/ggml-cpu.h
+          fetch_header ggml/include/ggml-backend.h ggml/include/ggml-backend.h
+          fetch_header ggml/include/ggml-alloc.h ggml/include/ggml-alloc.h
+          fetch_header ggml/include/ggml-opt.h ggml/include/ggml-opt.h
+          fetch_header ggml/include/gguf.h ggml/include/gguf.h
+          grep -Fxq '#include "ggml-alloc.h"' "$headers/ggml/include/ggml-backend.h"
+
+          libdir="$(dirname "$libllama")"
+          g++ -std=c++17 -O2 \
+            -I"$headers/include" -I"$headers/ggml/include" \
+            tools/e004_model_load_probe.cpp \
+            -L"$libdir" -Wl,-rpath,"$libdir" -Wl,-rpath-link,"$libdir" \
+            -l:libllama.so.0.3.0 -o "$root/e004_model_load_probe"
+          test -x "$root/e004_model_load_probe"
+          printf '%s\n' \
+            'STATIC_ONLY=YES' \
+            'MODEL_BYTES_ACQUIRED=NO' \
+            'MODEL_LOAD_PERFORMED=NO' \
+            'CORRECTIVE_HEADER_CLOSURE=PASS_GGML_ALLOC_INCLUDED' \
+            "LOAD_ONLY_HELPER_SHA256=$(sha256sum "$root/e004_model_load_probe" | awk '{print $1}')"
+          rm -rf "$root"
+
+      - name: Diff whitespace
+        run: git diff --check origin/${{ github.base_ref }}...HEAD
