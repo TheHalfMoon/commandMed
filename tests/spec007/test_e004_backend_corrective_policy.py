@@ -147,8 +147,8 @@ class TestE004BackendCorrectivePolicy(unittest.TestCase):
     def test_runtime_identity_mismatch_and_preload_absence_fail_closed(self) -> None:
         self.assertIn("identity_fail() {", self.evidence)
         self.assertIn("'EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_RUNTIME_IDENTITY_GATE'", self.evidence)
+        self.assertIn('test "$(wc -l < "$backend_manifest" | tr -d \' \')" = "$BACKEND_LIBRARY_COUNT" || identity_fail', self.evidence)
         self.assertIn('cmp "$expected_backend_manifest" "$backend_manifest" || identity_fail', self.evidence)
-        self.assertIn('test "$BACKEND_LIBRARY_COUNT"', self.evidence)
         self.assertIn("exit 79", self.evidence)
         self.assertIn("if ! grep -Fxq 'MODEL_LOAD_REACHED=YES'", self.evidence)
         self.assertIn("exit 78", self.evidence)
