@@ -112,13 +112,13 @@ Start with [`AGENTS.md`](AGENTS.md) and [`specs/README.md`](specs/README.md) bef
 ## Repository map
 
 ```text
-src/        deterministic implementation/control-plane code
-scripts/    bounded evidence and repository utilities
-specs/      dependency-ordered specifications, tasks, evidence, reconciliation
- data/      repository-owned fixtures/manifests allowed by governance
- tests/     focused and regression tests
- docs/      master plans, research, governance, architecture
- .github/   bounded CI/evidence workflows
+src/      deterministic implementation/control-plane code
+scripts/  bounded evidence and repository utilities
+specs/    dependency-ordered specifications, tasks, evidence, reconciliation
+data/     repository-owned fixtures/manifests allowed by governance
+tests/    focused and regression tests
+docs/     master plans, research, governance, architecture
+.github/  bounded CI/evidence workflows
 ```
 
 ## External source adoption
