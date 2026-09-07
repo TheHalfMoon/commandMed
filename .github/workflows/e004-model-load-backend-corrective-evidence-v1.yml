@@ -1,0 +1,365 @@
+# E004 MODEL-LOAD BACKEND CORRECTIVE EVIDENCE V1.
+#
+# Canonical backend-corrective Decision B authorizes exactly one new post-merge
+# workflow run with exactly two frozen GGUF load-only probes. This workflow has
+# no pull_request, workflow_dispatch, or repository_dispatch trigger.
+
+name: E004 model-load backend corrective evidence V1
+
+on:
+  push:
+    branches:
+      - evidence/e004-model-load-backend-corrective-run-v1
+    paths:
+      - .github/e004-model-load-backend-corrective-run-v1.txt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e004-model-load-backend-corrective-evidence-v1
+  cancel-in-progress: false
+
+env:
+  DECISION_RECORD: specs/007-sft-v1/e004-model-load-backend-corrective-founder-decision-2026-09-07.md
+  BUNDLE_SET: specs/007-sft-v1/e004-successor-candidate-artifact-bundle-set-v1.json
+  MARKER: .github/e004-model-load-backend-corrective-run-v1.txt
+  BACKEND_CORRECTIVE_DECISION_CANONICAL_MERGE: b32fbdc340c298ac194a3db3dce3f1f09ef84187
+  PRIOR_CORRECTIVE_EVIDENCE_WORKFLOW_RUN_ID: "34150708258"
+  BUNDLE_SET_SHA256: ee97fe0751743cc0d3a564b8f91add3c336267f08f2da86bf125dd7333db83fd
+  LLAMA_CPP_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  LLAMA_CPP_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  LLAMA_CPP_TAG: b10621
+  LLAMA_CPP_ARCHIVE: llama-b10621-bin-ubuntu-x64.tar.gz
+  LLAMA_CPP_ARCHIVE_BYTES: "16291771"
+  LLAMA_CPP_ARCHIVE_SHA256: 91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+  LLAMA_RUNTIME_FILE_MANIFEST_SHA256: 4a6b0d2a9dee9d91fb1553ead9e26f49c1f232c86269013bd8a7edb82f0cd711
+  LLAMA_LIBRARY_SHA256: 89869a6732162d45aa7fe5ab4b224e484c8f27f58c145e530e99dc59d8772448
+  BACKEND_LIBRARY_DIRECTORY_RELATIVE: llama-b10621
+  BACKEND_LIBRARY_COUNT: "16"
+  BACKEND_MANIFEST_SHA256: 3875fabcb38e9bb09acb0e08f6a0ffc3f97ac4acb1434c83f5ad8b656e86ab79
+  GIT_TERMINAL_PROMPT: "0"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  backend-corrective-gguf-model-load-probe:
+    if: github.run_attempt == 1 && github.event_name == 'push' && github.ref == 'refs/heads/evidence/e004-model-load-backend-corrective-run-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - candidate_id: Qwen/Qwen3-0.6B-Base
+            revision: da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+            slug: qwen3-0.6b
+          - candidate_id: Qwen/Qwen3.5-0.8B-Base
+            revision: dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68
+            slug: qwen3.5-0.8b
+
+    steps:
+      - name: Checkout exact backend-corrective evidence trigger head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Fail-closed backend-corrective authority and one-run preflight
+        shell: bash
+        env:
+          CANDIDATE_ID: ${{ matrix.candidate_id }}
+          CANDIDATE_REVISION: ${{ matrix.revision }}
+        run: |
+          set -Eeuo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = '1'
+          test "$GITHUB_EVENT_NAME" = 'push'
+          test "$GITHUB_REF" = 'refs/heads/evidence/e004-model-load-backend-corrective-run-v1'
+          test -f "$DECISION_RECORD" -a -f "$BUNDLE_SET" -a -f "$MARKER"
+          grep -Fxq 'FOUNDER_E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION=E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION_B' "$DECISION_RECORD"
+          grep -Fxq 'BACKEND_CORRECTIVE_MODEL_WEIGHT_ACQUISITION_AUTHORITY=AUTHORIZED_EXACT_TWO_PUBLIC_UNGATED_CANONICAL_GGUF_BUNDLES_ONLY_POST_MERGE_EVIDENCE_RUN' "$DECISION_RECORD"
+          grep -Fxq 'BACKEND_CORRECTIVE_MODEL_LOAD_AUTHORITY=AUTHORIZED_EXACT_TWO_GGUF_LOAD_ONLY_POST_MERGE' "$DECISION_RECORD"
+          grep -Fxq 'BACKEND_CORRECTIVE_EVIDENCE_WORKFLOW_AUTHORITY=AUTHORIZED_ONE_NEW_SUCCESSOR_WORKFLOW_RUN' "$DECISION_RECORD"
+          grep -Fxq 'PRIOR_CORRECTIVE_RUN_RERUN_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'PRIOR_CORRECTIVE_RUN_RETRY_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'TRANSFORMERS_CANDIDATE_RERUN_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'MODEL_FORWARD_PASS_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'MODEL_INFERENCE_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'GENERATION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'BENCHMARK_EXECUTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'EVALUATION_PAYLOAD_EXECUTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'TOURNAMENT_EXECUTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'WINNER_SELECTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'A15_ACTIVATION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$DECISION_RECORD"
+          grep -Fxq 'MAX_AUTHORIZED_BACKEND_CORRECTIVE_MODEL_LOAD_COMPATIBILITY_WORKFLOW_RUNS=1' "$DECISION_RECORD"
+          grep -Fxq 'FAILED_RUN_RETRY_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'SECOND_BACKEND_CORRECTIVE_WORKFLOW_RUN_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'E004_MODEL_LOAD_BACKEND_CORRECTIVE_EVIDENCE_RUN=AUTHORIZED_SINGLE_RUN' "$MARKER"
+          grep -Fxq "BACKEND_CORRECTIVE_DECISION_CANONICAL_MERGE=$BACKEND_CORRECTIVE_DECISION_CANONICAL_MERGE" "$MARKER"
+          grep -Fxq "PRIOR_CORRECTIVE_EVIDENCE_WORKFLOW_RUN_ID=$PRIOR_CORRECTIVE_EVIDENCE_WORKFLOW_RUN_ID" "$MARKER"
+          implementation_merge="$(git rev-parse HEAD^)"
+          grep -Fxq "BACKEND_CORRECTIVE_IMPLEMENTATION_CANONICAL_MERGE=$implementation_merge" "$MARKER"
+          test "$(git diff --name-only HEAD^ HEAD)" = "$MARKER"
+          case "$CANDIDATE_ID@$CANDIDATE_REVISION" in
+            'Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd'|'Qwen/Qwen3.5-0.8B-Base@dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68') ;;
+            *) exit 65 ;;
+          esac
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          for credential_name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN; do test -z "${!credential_name:-}"; done
+          required_tools=(bash curl python3 sha256sum stat find sort awk grep wc sudo unshare tar g++ cmp tee env)
+          for tool in "${required_tools[@]}"; do command -v "$tool" >/dev/null; done
+          sudo unshare -n -- true
+          printf '%s\n' \
+            'AUTHORITY=E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION_B' \
+            "CANDIDATE=$CANDIDATE_ID@$CANDIDATE_REVISION" \
+            'RUNTIME_ROUTE=LLAMA_CPP_GGUF' \
+            "RUN_ID=$GITHUB_RUN_ID" "RUN_ATTEMPT=$GITHUB_RUN_ATTEMPT" \
+            "RUN_HEAD_SHA=$GITHUB_SHA" "BACKEND_CORRECTIVE_IMPLEMENTATION_CANONICAL_MERGE=$implementation_merge" \
+            'TRANSFORMERS_CANDIDATE_RERUN_PERFORMED=NO' \
+            'MODEL_FORWARD_PASS_AUTHORITY=NONE' 'MODEL_INFERENCE_AUTHORITY=NONE' \
+            'GENERATION_AUTHORITY=NONE' 'BENCHMARK_EXECUTION_AUTHORITY=NONE' \
+            'EVALUATION_PAYLOAD_EXECUTION_AUTHORITY=NONE' 'TOURNAMENT_EXECUTION_AUTHORITY=NONE' \
+            'WINNER_SELECTION_AUTHORITY=NONE' 'A15_ACTIVATION_AUTHORITY=NONE' \
+            'TRAINING_AUTHORITY=NONE' 'SPEND_USD=0'
+
+      - name: Validate frozen GGUF bundle and materialize exact acquisition plan
+        shell: bash
+        env:
+          CANDIDATE_ID: ${{ matrix.candidate_id }}
+          CANDIDATE_REVISION: ${{ matrix.revision }}
+          ROOT: ${{ runner.temp }}/e004-backend-corrective-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$ROOT"
+          mkdir -p "$ROOT/source"
+          PYTHONPATH=. python3 - "$BUNDLE_SET" "$CANDIDATE_ID" "$CANDIDATE_REVISION" "$ROOT/files.tsv" <<'PY'
+          import json
+          import pathlib
+          import sys
+          from src.commandmed.spec007.research_candidate_bundle import validate_candidate_artifact_bundle_set
+
+          bundle_path, candidate_id, revision, output_path = sys.argv[1:]
+          bundle_set = json.loads(pathlib.Path(bundle_path).read_text(encoding="utf-8"))
+          errors = validate_candidate_artifact_bundle_set(bundle_set)
+          if errors:
+              raise SystemExit("bundle validation failed: " + "; ".join(errors))
+          if bundle_set["bundle_set_sha256"] != "ee97fe0751743cc0d3a564b8f91add3c336267f08f2da86bf125dd7333db83fd":
+              raise SystemExit("bundle-set identity mismatch")
+          matches = [item for item in bundle_set["candidate_bundles"] if item["candidate_id"] == candidate_id and item["upstream_revision"] == revision]
+          if len(matches) != 1:
+              raise SystemExit("candidate is not the exact frozen backend-corrective subject")
+          bundle = matches[0]
+          if bundle["artifact_format"] != "GGUF" or bundle["candidate_role"] != "PRIMARY":
+              raise SystemExit("backend-corrective candidate format/role mismatch")
+          model_files = [item for item in bundle["files"] if item["purpose"] == "MODEL_WEIGHT"]
+          if len(model_files) != 1:
+              raise SystemExit("GGUF candidate must contain exactly one MODEL_WEIGHT")
+          rows = []
+          for item in bundle["files"]:
+              rows.append("\t".join([item["path"], str(item["bytes"]), item["sha256"], item["purpose"], item["source_repository"], item["source_revision"]]))
+          pathlib.Path(output_path).write_text("\n".join(rows) + "\n", encoding="utf-8")
+          print(f"CANDIDATE_BUNDLE_SHA256={bundle['complete_bundle_sha256']}")
+          print(f"CANDIDATE_BUNDLE_BYTES={bundle['complete_bundle_bytes']}")
+          print(f"MODEL_ARTIFACT_SHA256={bundle['model_artifact_sha256']}")
+          print(f"MODEL_ARTIFACT_BYTES={bundle['model_artifact_bytes']}")
+          print(f"MODEL_WEIGHT_PATH={model_files[0]['path']}")
+          print(f"FILE_COUNT={len(bundle['files'])}")
+          PY
+          test -s "$ROOT/files.tsv"
+
+      - name: Acquire and verify exact public GGUF candidate bundle bytes
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-backend-corrective-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          manifest="$ROOT/acquired.tsv"
+          : > "$manifest"
+          while IFS=$'\t' read -r relative_path expected_bytes expected_sha purpose repository revision; do
+            destination="$ROOT/source/$relative_path"
+            temporary="$destination.part"
+            mkdir -p "$(dirname "$destination")"
+            rm -f "$temporary" "$destination"
+            encoded_path="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe="/"))' "$relative_path")"
+            url="https://huggingface.co/${repository}/resolve/${revision}/${encoded_path}?download=true"
+            curl --disable --fail --location --silent --show-error --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 --output "$temporary" "$url"
+            actual_bytes="$(stat -c '%s' "$temporary")"
+            actual_sha="$(sha256sum "$temporary" | awk '{print $1}')"
+            test "$actual_bytes" = "$expected_bytes"
+            test "$actual_sha" = "$expected_sha"
+            mv "$temporary" "$destination"
+            printf '%s\t%s\t%s\t%s\n' "$relative_path" "$actual_bytes" "$actual_sha" "$purpose" >> "$manifest"
+          done < "$ROOT/files.tsv"
+          sort -o "$manifest" "$manifest"
+          test -z "$(find "$ROOT/source" -type l -print -quit)"
+          expected_count="$(wc -l < "$ROOT/files.tsv" | tr -d ' ')"
+          actual_count="$(find "$ROOT/source" -type f | wc -l | tr -d ' ')"
+          test "$actual_count" = "$expected_count"
+          test "$(awk -F'\t' '$4 == "MODEL_WEIGHT" {count++} END {print count+0}' "$ROOT/files.tsv")" = '1'
+          printf '%s\n' "ACQUIRED_FILE_COUNT=$actual_count" 'CANDIDATE_BYTE_INTEGRITY=PASS' 'CREDENTIAL_USE_DURING_CANDIDATE_ACQUISITION=NO'
+
+      - name: Rebind exact llama.cpp runtime verify frozen backends and compile helper
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-backend-corrective-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          runtime="$ROOT/llama-runtime"
+          headers="$ROOT/llama-headers"
+          mkdir -p "$runtime/extract" "$headers/ggml/include" "$headers/include"
+          identity_fail() {
+            printf '%s\n' \
+              'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE' \
+              'EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_RUNTIME_IDENTITY_GATE'
+            exit 79
+          }
+          archive="$runtime/$LLAMA_CPP_ARCHIVE"
+          curl --fail --location --silent --show-error --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 --output "$archive.part" "https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${LLAMA_CPP_ARCHIVE}"
+          test "$(stat -c '%s' "$archive.part")" = "$LLAMA_CPP_ARCHIVE_BYTES" || identity_fail
+          test "$(sha256sum "$archive.part" | awk '{print $1}')" = "$LLAMA_CPP_ARCHIVE_SHA256" || identity_fail
+          mv "$archive.part" "$archive"
+          tar -tzf "$archive" > "$runtime/archive-list.txt"
+          test -s "$runtime/archive-list.txt" || identity_fail
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$runtime/archive-list.txt"; then identity_fail; fi
+          tar --no-same-owner -xzf "$archive" -C "$runtime/extract"
+          runtime_manifest="$runtime/runtime-files.tsv"
+          : > "$runtime_manifest"
+          while IFS= read -r path; do
+            rel="${path#"$runtime/extract/"}"
+            printf '%s\t%s\t%s\n' "$rel" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$runtime_manifest"
+          done < <(find "$runtime/extract" -type f -print | sort)
+          sort -o "$runtime_manifest" "$runtime_manifest"
+          test "$(sha256sum "$runtime_manifest" | awk '{print $1}')" = "$LLAMA_RUNTIME_FILE_MANIFEST_SHA256" || identity_fail
+          libllama="$(find "$runtime/extract" -type f -name 'libllama.so.0.3.0' -print -quit)"
+          test -n "$libllama" || identity_fail
+          test "$(sha256sum "$libllama" | awk '{print $1}')" = "$LLAMA_LIBRARY_SHA256" || identity_fail
+          libdir="$(dirname "$libllama")"
+          test "${libdir#"$runtime/extract/"}" = "$BACKEND_LIBRARY_DIRECTORY_RELATIVE" || identity_fail
+
+          backend_manifest="$runtime/backend-files.tsv"
+          : > "$backend_manifest"
+          while IFS= read -r path; do
+            resolved="$(readlink -f "$path")"
+            test "$(dirname "$resolved")" = "$libdir" || identity_fail
+            printf '%s\t%s\t%s\n' "$(basename "$path")" "$(stat -Lc '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$backend_manifest"
+          done < <(find "$libdir" -maxdepth 1 \( -type f -o -type l \) -name 'libggml-*.so' -print | sort)
+          test "$(wc -l < "$backend_manifest" | tr -d ' ')" = "$BACKEND_LIBRARY_COUNT" || identity_fail
+          test "$(sha256sum "$backend_manifest" | awk '{print $1}')" = "$BACKEND_MANIFEST_SHA256" || identity_fail
+          expected_backend_manifest="$runtime/backend-files.expected.tsv"
+          python3 - "$expected_backend_manifest" <<'PY'
+          import pathlib, sys
+          rows = [
+              ("libggml-base.so", 919464, "ebbcda9795124309a9fa492e3a7be49dbbc6b8fd7d95cde1524838f88057fcc3"),
+              ("libggml-cpu-alderlake.so", 1141184, "f1e420c6069bb3d6f310069bb3164b8a2e3895227183dc095f2d521f5d54a7e7"),
+              ("libggml-cpu-cannonlake.so", 1286176, "d7c129e27327bdbe7fe5884aa60e4a5dec9eddbf5adadd3d72f73905ab5f17ab"),
+              ("libggml-cpu-cascadelake.so", 1282080, "4e2ee9f47758426548403f75c6031baa3fc1b6c3c5d209354d947b9cf35c8c20"),
+              ("libggml-cpu-cooperlake.so", 1282144, "c706d1d1ba8804deb457f0cde14fb1cffa3f7a8e465bac0169a2c957a3f3fb4f"),
+              ("libggml-cpu-haswell.so", 1141184, "f8620357aea4dce39ccc3326626573a71c783f5dd11e49f52addb21006adbc67"),
+              ("libggml-cpu-icelake.so", 1282080, "ef2ec9d39c701e5ab9062fe5aad49d55d0a4c63b1e0eb46fbbfb5d437b6b56b8"),
+              ("libggml-cpu-ivybridge.so", 1094656, "547c9295f247cb2ba4947af75a04a5279f40479af85eadc4876282a681c3c6fd"),
+              ("libggml-cpu-piledriver.so", 1090560, "4bdbbeca90cc5b2acb32284b09b6def78546a7d897b8fead87d38a39a52035b1"),
+              ("libggml-cpu-sandybridge.so", 1081248, "9ba32dcb20048f67dc5816646edd64799048bbe2c40deaf7c2cd46a726a99e04"),
+              ("libggml-cpu-sapphirerapids.so", 1548480, "6221b414b195d1d075eb575debb93e24daf26afec7352b136146e650595d3617"),
+              ("libggml-cpu-skylakex.so", 1286176, "211269ef5a067b400c19fb10472e4f4bcecd58b724760d9e4cfa968f4c9a8cdc"),
+              ("libggml-cpu-sse42.so", 882048, "94ee365a747ce6b81d81e32981f8c1ffa05942f39c245f3e33c05300208d7355"),
+              ("libggml-cpu-x64.so", 878128, "a31a3e374f01e90ef60dbc8b654be972029107ed5f0c670bb211ed6d6821d490"),
+              ("libggml-cpu-zen4.so", 1282144, "17dde3b34a68055c2c5f9c6d63a6ca6a9f1b470fdf8869113495af6eaad24f87"),
+              ("libggml-rpc.so", 159304, "aff4f89035be449fdc46d56a7e493e9eab4b7dbf09b35b170bf7d36be3709f55"),
+          ]
+          pathlib.Path(sys.argv[1]).write_text("".join(f"{n}\t{b}\t{s}\n" for n, b, s in rows), encoding="utf-8")
+          PY
+          cmp "$expected_backend_manifest" "$backend_manifest" || identity_fail
+          printf '%s\n' 'BACKEND_LIBRARY_IDENTITY_GATE=PASS' "BACKEND_LIBRARY_COUNT=$BACKEND_LIBRARY_COUNT" "BACKEND_MANIFEST_SHA256=$BACKEND_MANIFEST_SHA256"
+
+          fetch_header() {
+            local upstream="$1"
+            local local_path="$2"
+            local target="$headers/$local_path"
+            mkdir -p "$(dirname "$target")"
+            curl --fail --location --silent --show-error --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 --output "$target.part" "https://raw.githubusercontent.com/ggml-org/llama.cpp/${LLAMA_CPP_COMMIT}/${upstream}"
+            test -s "$target.part"
+            mv "$target.part" "$target"
+          }
+          fetch_header include/llama.h include/llama.h
+          fetch_header ggml/include/ggml.h ggml/include/ggml.h
+          fetch_header ggml/include/ggml-cpu.h ggml/include/ggml-cpu.h
+          fetch_header ggml/include/ggml-backend.h ggml/include/ggml-backend.h
+          fetch_header ggml/include/ggml-alloc.h ggml/include/ggml-alloc.h
+          fetch_header ggml/include/ggml-opt.h ggml/include/ggml-opt.h
+          fetch_header ggml/include/gguf.h ggml/include/gguf.h
+          test -e "$libdir/libggml.so" || identity_fail
+          g++ -std=c++17 -O2 -I"$headers/include" -I"$headers/ggml/include" tools/e004_model_load_probe.cpp \
+            "$libllama" "$libdir/libggml.so" -Wl,-rpath,"$libdir" -Wl,-rpath-link,"$libdir" -o "$ROOT/e004_model_load_probe"
+          test -x "$ROOT/e004_model_load_probe"
+          printf '%s\n' "VERIFIED_RUNTIME_LIBDIR=$libdir" "LOAD_ONLY_HELPER_SHA256=$(sha256sum "$ROOT/e004_model_load_probe" | awk '{print $1}')" 'LLAMA_RUNTIME_REBIND=PASS'
+
+      - name: Execute exact backend-corrective GGUF load-only probe with network disabled
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-backend-corrective-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN
+          model_relative="$(awk -F'\t' '$4 == "MODEL_WEIGHT" {print $1}' "$ROOT/files.tsv")"
+          test -n "$model_relative"
+          model_path="$ROOT/source/$model_relative"
+          expected_model_sha="$(awk -F'\t' '$4 == "MODEL_WEIGHT" {print $3}' "$ROOT/files.tsv")"
+          test -f "$model_path"
+          test "$(sha256sum "$model_path" | awk '{print $1}')" = "$expected_model_sha"
+          libllama="$(find "$ROOT/llama-runtime/extract" -type f -name 'libllama.so.0.3.0' -print -quit)"
+          test -n "$libllama"
+          libdir="$(dirname "$libllama")"
+          test "${libdir#"$ROOT/llama-runtime/extract/"}" = "$BACKEND_LIBRARY_DIRECTORY_RELATIVE"
+          test -x "$ROOT/e004_model_load_probe"
+          printf '%s\n' \
+            'NETWORK_DURING_MODEL_LOAD=PROHIBITED_ENFORCED_UNSHARE_N' \
+            'MODEL_FORWARD_PASS_PERFORMED=NO' 'MODEL_INFERENCE_PERFORMED=NO' \
+            'GENERATION_PERFORMED=NO' 'BENCHMARK_EXECUTION_PERFORMED=NO' \
+            'EVALUATION_PAYLOAD_EXECUTION_PERFORMED=NO' 'TOURNAMENT_EXECUTION_PERFORMED=NO' \
+            'WINNER_SELECTION_PERFORMED=NO' 'A15_ACTIVATION_PERFORMED=NO' 'TRAINING_PERFORMED=NO'
+          probe_log="$ROOT/model-load-probe.log"
+          set +e
+          sudo unshare -n -- env LD_LIBRARY_PATH="$libdir" "$ROOT/e004_model_load_probe" "$model_path" "$libdir" 2>&1 | tee "$probe_log"
+          probe_rc=${PIPESTATUS[0]}
+          set -e
+          if ! grep -Fxq 'MODEL_LOAD_REACHED=YES' "$probe_log"; then
+            printf '%s\n' \
+              'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE' \
+              'EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_BACKEND_REGISTRATION_NOT_READY' \
+              "PRE_MODEL_LOAD_EXIT_CODE=$probe_rc"
+            exit 78
+          fi
+          case "$probe_rc" in
+            0)
+              grep -Fxq 'BACKEND_REGISTRATION=PASS' "$probe_log"
+              grep -Fxq 'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=PASS' "$probe_log"
+              printf '%s\n' 'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=PASS' 'EMPIRICAL_MODEL_LOAD_REASON_CODE=PASS_EXACT_MODEL_LOAD_COMPLETED'
+              ;;
+            137|143)
+              printf '%s\n' 'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE' 'EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_RESOURCE_LIMIT_OR_TERMINATION'
+              exit "$probe_rc"
+              ;;
+            134|139)
+              printf '%s\n' 'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=FAIL' 'EMPIRICAL_MODEL_LOAD_REASON_CODE=FAIL_RUNTIME_CRASH_DURING_MODEL_LOAD'
+              exit "$probe_rc"
+              ;;
+            *)
+              printf '%s\n' 'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=FAIL' 'EMPIRICAL_MODEL_LOAD_REASON_CODE=FAIL_MODEL_LOAD_ERROR' "MODEL_LOAD_EXIT_CODE=$probe_rc"
+              exit "$probe_rc"
+              ;;
+          esac
+
+      - name: Remove all backend-corrective candidate and runtime bytes
+        if: always()
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-backend-corrective-${{ matrix.slug }}
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$ROOT"
+          test ! -e "$ROOT"
+          printf '%s\n' 'MODEL_BYTE_PERSISTENCE_AFTER_JOB=NO' 'RAW_MODEL_BYTE_ARTIFACT_UPLOAD=NO' 'ACTIONS_CACHE_FOR_MODEL_BYTES=NO'

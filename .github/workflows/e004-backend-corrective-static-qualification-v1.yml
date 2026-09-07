@@ -1,0 +1,197 @@
+# E004 BACKEND CORRECTIVE STATIC QUALIFICATION V1.
+#
+# Decision B authorizes exact-head repository qualification plus an exact frozen
+# runtime backend-registration probe with no candidate/model bytes. The probe
+# never invokes the model-load operation.
+
+name: E004 backend corrective static qualification V1
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/e004-backend-corrective-static-qualification-v1.yml
+      - .github/workflows/e004-model-load-backend-corrective-evidence-v1.yml
+      - tools/e004_model_load_probe.cpp
+      - tools/e004_backend_registration_probe.cpp
+      - tests/spec007/test_e004_backend_corrective_policy.py
+      - specs/007-sft-v1/e004-model-load-backend-corrective-implementation-v1-2026-09-07.md
+
+permissions:
+  contents: read
+
+env:
+  DECISION_RECORD: specs/007-sft-v1/e004-model-load-backend-corrective-founder-decision-2026-09-07.md
+  LLAMA_CPP_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  LLAMA_CPP_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  LLAMA_CPP_TAG: b10621
+  LLAMA_CPP_ARCHIVE: llama-b10621-bin-ubuntu-x64.tar.gz
+  LLAMA_CPP_ARCHIVE_BYTES: "16291771"
+  LLAMA_CPP_ARCHIVE_SHA256: 91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+  LLAMA_RUNTIME_FILE_MANIFEST_SHA256: 4a6b0d2a9dee9d91fb1553ead9e26f49c1f232c86269013bd8a7edb82f0cd711
+  LLAMA_LIBRARY_SHA256: 89869a6732162d45aa7fe5ab4b224e484c8f27f58c145e530e99dc59d8772448
+  BACKEND_LIBRARY_DIRECTORY_RELATIVE: llama-b10621
+  BACKEND_LIBRARY_COUNT: "16"
+  BACKEND_MANIFEST_SHA256: 3875fabcb38e9bb09acb0e08f6a0ffc3f97ac4acb1434c83f5ad8b656e86ab79
+
+jobs:
+  frozen-runtime-backend-static-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Bind exact head and canonical Decision B boundary
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          test -f "$DECISION_RECORD"
+          grep -Fxq 'FOUNDER_E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION=E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION_B' "$DECISION_RECORD"
+          grep -Fxq 'BACKEND_CORRECTIVE_IMPLEMENTATION_PREPARATION_AUTHORITY=AUTHORIZED_REVIEW_FIRST' "$DECISION_RECORD"
+          grep -Fxq 'BACKEND_REGISTRATION_STATIC_PROBE_AUTHORITY=AUTHORIZED_EXACT_FROZEN_RUNTIME_NO_MODEL_BYTES_ONLY' "$DECISION_RECORD"
+          grep -Fxq 'BACKEND_CORRECTIVE_MODEL_LOAD_AUTHORITY=AUTHORIZED_EXACT_TWO_GGUF_LOAD_ONLY_POST_MERGE' "$DECISION_RECORD"
+          grep -Fxq 'TRANSFORMERS_CANDIDATE_RERUN_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'MODEL_FORWARD_PASS_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'MODEL_INFERENCE_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'GENERATION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'TOURNAMENT_EXECUTION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'A15_ACTIVATION_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$DECISION_RECORD"
+          printf '%s\n' "EXACT_HEAD_SHA=$(git rev-parse HEAD)" 'MODEL_BYTES_ACQUIRED=NO' 'MODEL_LOAD_PERFORMED=NO'
+
+      - name: Verify exact frozen runtime and exact dynamic backend identities
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          root="$RUNNER_TEMP/e004-backend-static"
+          rm -rf "$root"
+          mkdir -p "$root/extract"
+          archive="$root/$LLAMA_CPP_ARCHIVE"
+          curl --fail --location --silent --show-error --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 --output "$archive.part" "https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${LLAMA_CPP_ARCHIVE}"
+          test "$(stat -c '%s' "$archive.part")" = "$LLAMA_CPP_ARCHIVE_BYTES"
+          test "$(sha256sum "$archive.part" | awk '{print $1}')" = "$LLAMA_CPP_ARCHIVE_SHA256"
+          mv "$archive.part" "$archive"
+          tar -tzf "$archive" > "$root/archive-list.txt"
+          test -s "$root/archive-list.txt"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$root/archive-list.txt"; then exit 70; fi
+          tar --no-same-owner -xzf "$archive" -C "$root/extract"
+
+          runtime_manifest="$root/runtime-files.tsv"
+          : > "$runtime_manifest"
+          while IFS= read -r path; do
+            rel="${path#"$root/extract/"}"
+            printf '%s\t%s\t%s\n' "$rel" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$runtime_manifest"
+          done < <(find "$root/extract" -type f -print | sort)
+          sort -o "$runtime_manifest" "$runtime_manifest"
+          test "$(sha256sum "$runtime_manifest" | awk '{print $1}')" = "$LLAMA_RUNTIME_FILE_MANIFEST_SHA256"
+
+          libllama="$(find "$root/extract" -type f -name 'libllama.so.0.3.0' -print -quit)"
+          test -n "$libllama"
+          test "$(sha256sum "$libllama" | awk '{print $1}')" = "$LLAMA_LIBRARY_SHA256"
+          libdir="$(dirname "$libllama")"
+          test "${libdir#"$root/extract/"}" = "$BACKEND_LIBRARY_DIRECTORY_RELATIVE"
+
+          backend_manifest="$root/backend-files.tsv"
+          : > "$backend_manifest"
+          while IFS= read -r path; do
+            resolved="$(readlink -f "$path")"
+            test "$(dirname "$resolved")" = "$libdir"
+            printf '%s\t%s\t%s\n' "$(basename "$path")" "$(stat -Lc '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$backend_manifest"
+          done < <(find "$libdir" -maxdepth 1 \( -type f -o -type l \) -name 'libggml-*.so' -print | sort)
+          test "$(wc -l < "$backend_manifest" | tr -d ' ')" = "$BACKEND_LIBRARY_COUNT"
+          test "$(sha256sum "$backend_manifest" | awk '{print $1}')" = "$BACKEND_MANIFEST_SHA256"
+
+          expected_backend_manifest="$root/backend-files.expected.tsv"
+          python3 - "$expected_backend_manifest" <<'PY'
+          import pathlib, sys
+          rows = [
+              ("libggml-base.so", 919464, "ebbcda9795124309a9fa492e3a7be49dbbc6b8fd7d95cde1524838f88057fcc3"),
+              ("libggml-cpu-alderlake.so", 1141184, "f1e420c6069bb3d6f310069bb3164b8a2e3895227183dc095f2d521f5d54a7e7"),
+              ("libggml-cpu-cannonlake.so", 1286176, "d7c129e27327bdbe7fe5884aa60e4a5dec9eddbf5adadd3d72f73905ab5f17ab"),
+              ("libggml-cpu-cascadelake.so", 1282080, "4e2ee9f47758426548403f75c6031baa3fc1b6c3c5d209354d947b9cf35c8c20"),
+              ("libggml-cpu-cooperlake.so", 1282144, "c706d1d1ba8804deb457f0cde14fb1cffa3f7a8e465bac0169a2c957a3f3fb4f"),
+              ("libggml-cpu-haswell.so", 1141184, "f8620357aea4dce39ccc3326626573a71c783f5dd11e49f52addb21006adbc67"),
+              ("libggml-cpu-icelake.so", 1282080, "ef2ec9d39c701e5ab9062fe5aad49d55d0a4c63b1e0eb46fbbfb5d437b6b56b8"),
+              ("libggml-cpu-ivybridge.so", 1094656, "547c9295f247cb2ba4947af75a04a5279f40479af85eadc4876282a681c3c6fd"),
+              ("libggml-cpu-piledriver.so", 1090560, "4bdbbeca90cc5b2acb32284b09b6def78546a7d897b8fead87d38a39a52035b1"),
+              ("libggml-cpu-sandybridge.so", 1081248, "9ba32dcb20048f67dc5816646edd64799048bbe2c40deaf7c2cd46a726a99e04"),
+              ("libggml-cpu-sapphirerapids.so", 1548480, "6221b414b195d1d075eb575debb93e24daf26afec7352b136146e650595d3617"),
+              ("libggml-cpu-skylakex.so", 1286176, "211269ef5a067b400c19fb10472e4f4bcecd58b724760d9e4cfa968f4c9a8cdc"),
+              ("libggml-cpu-sse42.so", 882048, "94ee365a747ce6b81d81e32981f8c1ffa05942f39c245f3e33c05300208d7355"),
+              ("libggml-cpu-x64.so", 878128, "a31a3e374f01e90ef60dbc8b654be972029107ed5f0c670bb211ed6d6821d490"),
+              ("libggml-cpu-zen4.so", 1282144, "17dde3b34a68055c2c5f9c6d63a6ca6a9f1b470fdf8869113495af6eaad24f87"),
+              ("libggml-rpc.so", 159304, "aff4f89035be449fdc46d56a7e493e9eab4b7dbf09b35b170bf7d36be3709f55"),
+          ]
+          pathlib.Path(sys.argv[1]).write_text("".join(f"{n}\t{b}\t{s}\n" for n, b, s in rows), encoding="utf-8")
+          PY
+          cmp "$expected_backend_manifest" "$backend_manifest"
+          printf '%s\n' \
+            'BACKEND_LIBRARY_IDENTITY_GATE=PASS' \
+            "BACKEND_LIBRARY_DIRECTORY_RELATIVE=$BACKEND_LIBRARY_DIRECTORY_RELATIVE" \
+            "BACKEND_LIBRARY_COUNT=$BACKEND_LIBRARY_COUNT" \
+            "BACKEND_MANIFEST_SHA256=$BACKEND_MANIFEST_SHA256" \
+            'MODEL_BYTES_ACQUIRED=NO' 'MODEL_LOAD_PERFORMED=NO'
+
+      - name: Compile and execute exact frozen-runtime no-model backend-registration probe
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          root="$RUNNER_TEMP/e004-backend-static"
+          libllama="$(find "$root/extract" -type f -name 'libllama.so.0.3.0' -print -quit)"
+          test -n "$libllama"
+          libdir="$(dirname "$libllama")"
+          headers="$root/headers"
+          mkdir -p "$headers/include" "$headers/ggml/include"
+          fetch_header() {
+            local upstream="$1"
+            local local_path="$2"
+            local target="$headers/$local_path"
+            mkdir -p "$(dirname "$target")"
+            curl --fail --location --silent --show-error --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 --output "$target.part" "https://raw.githubusercontent.com/ggml-org/llama.cpp/${LLAMA_CPP_COMMIT}/${upstream}"
+            test -s "$target.part"
+            mv "$target.part" "$target"
+          }
+          fetch_header include/llama.h include/llama.h
+          fetch_header ggml/include/ggml.h ggml/include/ggml.h
+          fetch_header ggml/include/ggml-cpu.h ggml/include/ggml-cpu.h
+          fetch_header ggml/include/ggml-backend.h ggml/include/ggml-backend.h
+          fetch_header ggml/include/ggml-alloc.h ggml/include/ggml-alloc.h
+          fetch_header ggml/include/ggml-opt.h ggml/include/ggml-opt.h
+          fetch_header ggml/include/gguf.h ggml/include/gguf.h
+          test -e "$libdir/libggml.so"
+          g++ -std=c++17 -O2 -I"$headers/include" -I"$headers/ggml/include" tools/e004_backend_registration_probe.cpp \
+            "$libllama" "$libdir/libggml.so" -Wl,-rpath,"$libdir" -Wl,-rpath-link,"$libdir" -o "$root/e004_backend_registration_probe"
+          test -x "$root/e004_backend_registration_probe"
+          env LD_LIBRARY_PATH="$libdir" "$root/e004_backend_registration_probe" "$libdir" | tee "$root/backend-registration.log"
+          grep -Fxq 'BACKEND_REGISTRATION=PASS' "$root/backend-registration.log"
+          grep -Eq '^BACKEND_REGISTRY_COUNT=[1-9][0-9]*$' "$root/backend-registration.log"
+          grep -Fxq 'MODEL_BYTES_ACQUIRED=NO' "$root/backend-registration.log"
+          grep -Fxq 'MODEL_LOAD_PERFORMED=NO' "$root/backend-registration.log"
+          printf '%s\n' 'NO_MODEL_STATIC_BACKEND_REGISTRATION_PROBE=PASS' 'MODEL_BYTES_ACQUIRED=NO' 'MODEL_LOAD_PERFORMED=NO'
+
+      - name: Run focused backend-corrective policy tests
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          PYTHONPATH=. python3 -m unittest -v tests.spec007.test_e004_backend_corrective_policy
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git diff --check "${{ github.event.pull_request.base.sha }}"...HEAD
+
+      - name: Remove frozen runtime bytes
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$RUNNER_TEMP/e004-backend-static"
+          test ! -e "$RUNNER_TEMP/e004-backend-static"
+          printf '%s\n' 'MODEL_BYTES_ACQUIRED=NO' 'MODEL_LOAD_PERFORMED=NO' 'RUNTIME_BYTES_PERSISTED_AFTER_JOB=NO'
