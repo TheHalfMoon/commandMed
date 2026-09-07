@@ -276,7 +276,9 @@ jobs:
           printf '%s\n' 'BACKEND_LIBRARY_IDENTITY_GATE=PASS' "BACKEND_LIBRARY_COUNT=$BACKEND_LIBRARY_COUNT" "BACKEND_MANIFEST_SHA256=$BACKEND_MANIFEST_SHA256"
 
           fetch_header() {
-            local upstream="$1" local_path="$2" target="$headers/$local_path"
+            local upstream="$1"
+            local local_path="$2"
+            local target="$headers/$local_path"
             mkdir -p "$(dirname "$target")"
             curl --fail --location --silent --show-error --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 --output "$target.part" "https://raw.githubusercontent.com/ggml-org/llama.cpp/${LLAMA_CPP_COMMIT}/${upstream}"
             test -s "$target.part"
