@@ -2,8 +2,8 @@
 #
 # Review-first, no-model/no-evaluation-payload lane authorized by the exact
 # post-canonical Founder Decision B. Pull requests execute static qualification
-# only. Exactly one later marker push may collect bounded operational evidence
-# after the implementation is canonically merged.
+# only. The V1 empirical allowance has been consumed; this static guard repair
+# does not authorize any new evidence run.
 
 name: E004 operational preflight evidence V1
 
@@ -11,7 +11,7 @@ on:
   pull_request:
     paths:
       - .github/workflows/e004-operational-preflight-evidence-v1.yml
-      - tests/spec007/test_e004_operational_preflight_evidence_policy.py
+      - tests/spec007/test_e004_operational-preflight-evidence-policy.py
       - specs/007-sft-v1/e004-operational-preflight-evidence-implementation-v1-2026-09-08.md
   push:
     branches:
@@ -116,7 +116,7 @@ jobs:
       - name: Checkout exact evidence head
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          fetch-depth: 2
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Enforce one-run marker and exact canonical authority
