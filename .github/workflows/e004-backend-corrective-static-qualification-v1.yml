@@ -1,0 +1,115 @@
+# E004 BACKEND CORRECTIVE STATIC QUALIFICATION V1.
+#
+# Decision B authorizes repository-review preparation and an exact-frozen-runtime
+# no-model static backend-registration probe. This workflow never acquires model
+# bytes and never calls llama_model_load_from_file.
+
+name: E004 backend corrective static qualification V1
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/e004-backend-corrective-static-qualification-v1.yml
+      - .github/workflows/e004-model-load-backend-corrective-evidence-v1.yml
+      - tools/e004_model_load_probe.cpp
+      - tests/spec007/test_e004_model_load_compatibility_policy.py
+      - specs/007-sft-v1/e004-model-load-backend-corrective-implementation-v1-2026-09-07.md
+
+permissions:
+  contents: read
+
+env:
+  DECISION_RECORD: specs/007-sft-v1/e004-model-load-backend-corrective-founder-decision-2026-09-07.md
+  LLAMA_CPP_TAG: b10621
+  LLAMA_CPP_ARCHIVE: llama-b10621-bin-ubuntu-x64.tar.gz
+  LLAMA_CPP_ARCHIVE_BYTES: "16291771"
+  LLAMA_CPP_ARCHIVE_SHA256: 91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+  LLAMA_RUNTIME_FILE_MANIFEST_SHA256: 4a6b0d2a9dee9d91fb1553ead9e26f49c1f232c86269013bd8a7edb82f0cd711
+  LLAMA_LIBRARY_SHA256: 89869a6732162d45aa7fe5ab4b224e484c8f27f58c145e530e99dc59d8772448
+
+jobs:
+  frozen-runtime-backend-identity-discovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify canonical Decision B boundary
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -f "$DECISION_RECORD"
+          grep -Fxq 'FOUNDER_E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION=E004_MODEL_LOAD_BACKEND_CORRECTIVE_DECISION_B' "$DECISION_RECORD"
+          grep -Fxq 'BACKEND_REGISTRATION_STATIC_PROBE_AUTHORITY=AUTHORIZED_EXACT_FROZEN_RUNTIME_NO_MODEL_BYTES_ONLY' "$DECISION_RECORD"
+          grep -Fxq 'BACKEND_CORRECTIVE_MODEL_LOAD_AUTHORITY=AUTHORIZED_EXACT_TWO_GGUF_LOAD_ONLY_POST_MERGE' "$DECISION_RECORD"
+          grep -Fxq 'MODEL_INFERENCE_AUTHORITY=NONE' "$DECISION_RECORD"
+          grep -Fxq 'TRAINING_AUTHORITY=NONE' "$DECISION_RECORD"
+
+      - name: Discover exact dynamic backend identities from frozen runtime
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          root="$RUNNER_TEMP/e004-backend-static"
+          rm -rf "$root"
+          mkdir -p "$root/extract"
+          archive="$root/$LLAMA_CPP_ARCHIVE"
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 \
+            --output "$archive.part" \
+            "https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${LLAMA_CPP_ARCHIVE}"
+          test "$(stat -c '%s' "$archive.part")" = "$LLAMA_CPP_ARCHIVE_BYTES"
+          test "$(sha256sum "$archive.part" | awk '{print $1}')" = "$LLAMA_CPP_ARCHIVE_SHA256"
+          mv "$archive.part" "$archive"
+          tar -tzf "$archive" > "$root/archive-list.txt"
+          test -s "$root/archive-list.txt"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$root/archive-list.txt"; then exit 70; fi
+          tar --no-same-owner -xzf "$archive" -C "$root/extract"
+
+          runtime_manifest="$root/runtime-files.tsv"
+          : > "$runtime_manifest"
+          while IFS= read -r path; do
+            rel="${path#"$root/extract/"}"
+            printf '%s\t%s\t%s\n' "$rel" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$runtime_manifest"
+          done < <(find "$root/extract" -type f -print | sort)
+          sort -o "$runtime_manifest" "$runtime_manifest"
+          test "$(sha256sum "$runtime_manifest" | awk '{print $1}')" = "$LLAMA_RUNTIME_FILE_MANIFEST_SHA256"
+
+          libllama="$(find "$root/extract" -type f -name 'libllama.so.0.3.0' -print -quit)"
+          test -n "$libllama"
+          test "$(sha256sum "$libllama" | awk '{print $1}')" = "$LLAMA_LIBRARY_SHA256"
+          libdir="$(dirname "$libllama")"
+
+          backend_manifest="$root/backend-files.tsv"
+          : > "$backend_manifest"
+          while IFS= read -r path; do
+            name="$(basename "$path")"
+            printf '%s\t%s\t%s\n' "$name" "$(stat -Lc '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$backend_manifest"
+          done < <(find "$libdir" -maxdepth 1 \( -type f -o -type l \) -name 'libggml-*.so' -print | sort)
+          test -s "$backend_manifest"
+          test "$(wc -l < "$backend_manifest" | tr -d ' ')" -ge 1
+
+          echo 'BACKEND_IDENTITY_DISCOVERY_BEGIN'
+          cat "$backend_manifest"
+          echo 'BACKEND_IDENTITY_DISCOVERY_END'
+          printf '%s\n' \
+            "BACKEND_LIBRARY_DIRECTORY_RELATIVE=${libdir#"$root/extract/"}" \
+            "BACKEND_LIBRARY_COUNT=$(wc -l < "$backend_manifest" | tr -d ' ')" \
+            "BACKEND_MANIFEST_SHA256=$(sha256sum "$backend_manifest" | awk '{print $1}')" \
+            'MODEL_BYTES_ACQUIRED=NO' \
+            'MODEL_LOAD_PERFORMED=NO' \
+            'MODEL_FORWARD_PASS_PERFORMED=NO' \
+            'MODEL_INFERENCE_PERFORMED=NO' \
+            'GENERATION_PERFORMED=NO' \
+            'TOURNAMENT_EXECUTION_PERFORMED=NO' \
+            'TRAINING_PERFORMED=NO'
+
+      - name: Remove frozen runtime bytes
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$RUNNER_TEMP/e004-backend-static"
+          test ! -e "$RUNNER_TEMP/e004-backend-static"
