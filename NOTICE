@@ -1,0 +1,8 @@
+commandMed
+Copyright 2026 TheHalfMoon
+
+This product is licensed under the Apache License, Version 2.0, for commandMed-owned software source unless a file or component states otherwise.
+
+Third-party and donor-origin software, data, model artifacts, documentation, benchmarks, and other materials retain their applicable upstream licenses, copyright notices, attribution requirements, patent terms, and NOTICE obligations.
+
+See THIRD_PARTY_NOTICES.md and docs/governance/external-code-adoption.md for repository policy. Presence in research or planning documentation does not mean that third-party source code has been incorporated into commandMed.

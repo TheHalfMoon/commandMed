@@ -14,7 +14,7 @@ with additional hard requirements for evidence integrity, agent/tool security, s
 
 commandMed is an active research repository with dependency-ordered governance. It is **not** a released clinical product and **no training is currently authorized**.
 
-The current active frontier is **Spec 007 / E004**. Canonical evidence has established exact model-load compatibility for the frozen four-candidate set, but the successor execution preflight is still blocked on separately governed operational evidence and later prerequisite gates.
+The current active frontier is **Spec 007 / E004**. Canonical evidence has established exact model-load compatibility for the frozen four-candidate set. The Founder has now selected the bounded no-model operational-preflight evidence lane, but that evidence has not yet been implemented, qualified, or executed; later prerequisite gates still remain.
 
 Current high-level state:
 
@@ -28,9 +28,9 @@ CURRENT_AUTHORIZED_SPEND_USD=0
 PROJECT_FINISHED=NO
 ```
 
-For the exact live dependency frontier, read:
+For the exact dependency frontier, read:
 
-- [`specs/007-sft-v1/e004-registry-current-state-reconciliation-v48-2026-09-07.md`](specs/007-sft-v1/e004-registry-current-state-reconciliation-v48-2026-09-07.md)
+- [`specs/007-sft-v1/e004-registry-current-state-reconciliation-v49-2026-09-08.md`](specs/007-sft-v1/e004-registry-current-state-reconciliation-v49-2026-09-08.md)
 - [`specs/README.md`](specs/README.md)
 
 Passing implementation tests never substitutes for missing scientific, authorization, access, resource, review, or evidence gates.
@@ -145,13 +145,13 @@ Current qualified Tencent references include:
 
 No donor code from those sources is made canonical merely by being referenced here.
 
-## Software license status
+## Software license
 
-The repository currently has no root software `LICENSE`. A canonical Founder decision surface exists at:
+commandMed-owned software source is licensed under the **Apache License 2.0**. See [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE).
 
-- [`docs/governance/software-license-founder-decision-request-2026-09-08.md`](docs/governance/software-license-founder-decision-request-2026-09-08.md)
+Third-party and donor-origin code retains its applicable upstream terms. Every copied, adapted, or vendored component must preserve exact provenance, license/NOTICE obligations, security qualification, and admission evidence. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`docs/governance/external-code-adoption.md`](docs/governance/external-code-adoption.md).
 
-Until that owner-level decision is explicitly selected and captured, canonical redistribution of copied donor code remains blocked. Third-party source always retains its applicable upstream obligations regardless of the eventual commandMed-owned software license.
+The license decision does not automatically admit any donor code, dependency, dataset, model artifact, benchmark, or other third-party material.
 
 ## Contributing
 
