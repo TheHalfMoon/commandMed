@@ -144,6 +144,16 @@ class TestE004BackendCorrectivePolicy(unittest.TestCase):
         ):
             self.assertIn(token, self.evidence)
 
+    def test_runtime_identity_mismatch_and_preload_absence_fail_closed(self) -> None:
+        self.assertIn("identity_fail() {", self.evidence)
+        self.assertIn("'EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_RUNTIME_IDENTITY_GATE'", self.evidence)
+        self.assertIn('cmp "$expected_backend_manifest" "$backend_manifest" || identity_fail', self.evidence)
+        self.assertIn('test "$BACKEND_LIBRARY_COUNT"', self.evidence)
+        self.assertIn("exit 79", self.evidence)
+        self.assertIn("if ! grep -Fxq 'MODEL_LOAD_REACHED=YES'", self.evidence)
+        self.assertIn("exit 78", self.evidence)
+        self.assertNotIn('exit "${probe_rc:-78}"', self.evidence)
+
     def test_no_retention_or_paid_compute_path_exists(self) -> None:
         for workflow in (self.static, self.evidence):
             self.assertEqual(workflow.count("runs-on: ubuntu-24.04"), 1)
