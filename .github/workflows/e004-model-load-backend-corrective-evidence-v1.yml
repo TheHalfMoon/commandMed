@@ -211,14 +211,20 @@ jobs:
           runtime="$ROOT/llama-runtime"
           headers="$ROOT/llama-headers"
           mkdir -p "$runtime/extract" "$headers/ggml/include" "$headers/include"
+          identity_fail() {
+            printf '%s\n' \
+              'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE' \
+              'EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_RUNTIME_IDENTITY_GATE'
+            exit 79
+          }
           archive="$runtime/$LLAMA_CPP_ARCHIVE"
           curl --fail --location --silent --show-error --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 --output "$archive.part" "https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${LLAMA_CPP_ARCHIVE}"
-          test "$(stat -c '%s' "$archive.part")" = "$LLAMA_CPP_ARCHIVE_BYTES"
-          test "$(sha256sum "$archive.part" | awk '{print $1}')" = "$LLAMA_CPP_ARCHIVE_SHA256"
+          test "$(stat -c '%s' "$archive.part")" = "$LLAMA_CPP_ARCHIVE_BYTES" || identity_fail
+          test "$(sha256sum "$archive.part" | awk '{print $1}')" = "$LLAMA_CPP_ARCHIVE_SHA256" || identity_fail
           mv "$archive.part" "$archive"
           tar -tzf "$archive" > "$runtime/archive-list.txt"
-          test -s "$runtime/archive-list.txt"
-          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$runtime/archive-list.txt"; then exit 70; fi
+          test -s "$runtime/archive-list.txt" || identity_fail
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$runtime/archive-list.txt"; then identity_fail; fi
           tar --no-same-owner -xzf "$archive" -C "$runtime/extract"
           runtime_manifest="$runtime/runtime-files.tsv"
           : > "$runtime_manifest"
@@ -227,22 +233,22 @@ jobs:
             printf '%s\t%s\t%s\n' "$rel" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$runtime_manifest"
           done < <(find "$runtime/extract" -type f -print | sort)
           sort -o "$runtime_manifest" "$runtime_manifest"
-          test "$(sha256sum "$runtime_manifest" | awk '{print $1}')" = "$LLAMA_RUNTIME_FILE_MANIFEST_SHA256"
+          test "$(sha256sum "$runtime_manifest" | awk '{print $1}')" = "$LLAMA_RUNTIME_FILE_MANIFEST_SHA256" || identity_fail
           libllama="$(find "$runtime/extract" -type f -name 'libllama.so.0.3.0' -print -quit)"
-          test -n "$libllama"
-          test "$(sha256sum "$libllama" | awk '{print $1}')" = "$LLAMA_LIBRARY_SHA256"
+          test -n "$libllama" || identity_fail
+          test "$(sha256sum "$libllama" | awk '{print $1}')" = "$LLAMA_LIBRARY_SHA256" || identity_fail
           libdir="$(dirname "$libllama")"
-          test "${libdir#"$runtime/extract/"}" = "$BACKEND_LIBRARY_DIRECTORY_RELATIVE"
+          test "${libdir#"$runtime/extract/"}" = "$BACKEND_LIBRARY_DIRECTORY_RELATIVE" || identity_fail
 
           backend_manifest="$runtime/backend-files.tsv"
           : > "$backend_manifest"
           while IFS= read -r path; do
             resolved="$(readlink -f "$path")"
-            test "$(dirname "$resolved")" = "$libdir"
+            test "$(dirname "$resolved")" = "$libdir" || identity_fail
             printf '%s\t%s\t%s\n' "$(basename "$path")" "$(stat -Lc '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$backend_manifest"
           done < <(find "$libdir" -maxdepth 1 \( -type f -o -type l \) -name 'libggml-*.so' -print | sort)
-          test "$(wc -l < "$backend_manifest" | tr -d ' ')" = "$BACKEND_LIBRARY_COUNT"
-          test "$(sha256sum "$backend_manifest" | awk '{print $1}')" = "$BACKEND_MANIFEST_SHA256"
+          test "$(wc -l < "$backend_manifest" | tr -d ' ')" = "$BACKEND_LIBRARY_COUNT" || identity_fail
+          test "$(sha256sum "$backend_manifest" | awk '{print $1}')" = "$BACKEND_MANIFEST_SHA256" || identity_fail
           expected_backend_manifest="$runtime/backend-files.expected.tsv"
           python3 - "$expected_backend_manifest" <<'PY'
           import pathlib, sys
@@ -266,7 +272,7 @@ jobs:
           ]
           pathlib.Path(sys.argv[1]).write_text("".join(f"{n}\t{b}\t{s}\n" for n, b, s in rows), encoding="utf-8")
           PY
-          cmp "$expected_backend_manifest" "$backend_manifest"
+          cmp "$expected_backend_manifest" "$backend_manifest" || identity_fail
           printf '%s\n' 'BACKEND_LIBRARY_IDENTITY_GATE=PASS' "BACKEND_LIBRARY_COUNT=$BACKEND_LIBRARY_COUNT" "BACKEND_MANIFEST_SHA256=$BACKEND_MANIFEST_SHA256"
 
           fetch_header() {
@@ -283,7 +289,7 @@ jobs:
           fetch_header ggml/include/ggml-alloc.h ggml/include/ggml-alloc.h
           fetch_header ggml/include/ggml-opt.h ggml/include/ggml-opt.h
           fetch_header ggml/include/gguf.h ggml/include/gguf.h
-          test -e "$libdir/libggml.so"
+          test -e "$libdir/libggml.so" || identity_fail
           g++ -std=c++17 -O2 -I"$headers/include" -I"$headers/ggml/include" tools/e004_model_load_probe.cpp \
             "$libllama" "$libdir/libggml.so" -Wl,-rpath,"$libdir" -Wl,-rpath-link,"$libdir" -o "$ROOT/e004_model_load_probe"
           test -x "$ROOT/e004_model_load_probe"
@@ -319,8 +325,11 @@ jobs:
           probe_rc=${PIPESTATUS[0]}
           set -e
           if ! grep -Fxq 'MODEL_LOAD_REACHED=YES' "$probe_log"; then
-            printf '%s\n' 'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE' 'EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_BACKEND_REGISTRATION_NOT_READY' "PRE_MODEL_LOAD_EXIT_CODE=$probe_rc"
-            exit "${probe_rc:-78}"
+            printf '%s\n' \
+              'EMPIRICAL_MODEL_LOAD_COMPATIBILITY=INCOMPLETE' \
+              'EMPIRICAL_MODEL_LOAD_REASON_CODE=INCOMPLETE_BACKEND_REGISTRATION_NOT_READY' \
+              "PRE_MODEL_LOAD_EXIT_CODE=$probe_rc"
+            exit 78
           fi
           case "$probe_rc" in
             0)
