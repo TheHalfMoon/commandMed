@@ -1,0 +1,319 @@
+# E004 OPERATIONAL PREFLIGHT EVIDENCE V2.
+#
+# Review-first corrective lane authorized by the exact post-canonical Founder
+# Decision B captured canonically after the consumed V1 terminal failure.
+# Pull requests execute static qualification only. The empirical lane is
+# available only after guarded canonical merge and only for one V2 marker run.
+
+name: E004 operational preflight evidence V2
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/e004-operational-preflight-evidence-v2.yml
+      - tests/spec007/test_e004_operational_preflight_evidence_v2_policy.py
+      - specs/007-sft-v1/e004-operational-preflight-evidence-implementation-v2-2026-09-08.md
+  push:
+    branches:
+      - evidence/e004-operational-preflight-run-v2
+    paths:
+      - .github/e004-operational-preflight-run-v2.txt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e004-operational-preflight-v2-${{ github.event_name }}
+  cancel-in-progress: false
+
+env:
+  DECISION_RECORD: specs/007-sft-v1/e004-operational-preflight-corrective-attempt-founder-decision-2026-09-08.md
+  BUNDLE_SET: specs/007-sft-v1/e004-successor-candidate-artifact-bundle-set-v1.json
+  EVIDENCE_BRANCH: evidence/e004-operational-preflight-run-v2
+  EVIDENCE_MARKER: .github/e004-operational-preflight-run-v2.txt
+  LLAMA_CPP_COMMIT: c1d0e7a004015f23bc0233470b747b596f29b264
+  LLAMA_CPP_TREE: 2255f4747492109298a5c997f374d49c2af3113d
+  LLAMA_CPP_TAG: b10621
+  LLAMA_CPP_ARCHIVE: llama-b10621-bin-ubuntu-x64.tar.gz
+  LLAMA_CPP_ARCHIVE_BYTES: "16291771"
+  LLAMA_CPP_ARCHIVE_SHA256: 91d7b03ddae498a39f28fdb85d84d2b4a0fd3838d10b4f897e0ef8975bb9b583
+  LLAMA_RUNTIME_FILE_MANIFEST_SHA256: 4a6b0d2a9dee9d91fb1553ead9e26f49c1f232c86269013bd8a7edb82f0cd711
+  LLAMA_CLI_SHA256: f0034d9e6959f6c32b40cbb5326f41ccdbac21b77feb27a6f32c0a7465c9ebf7
+  TRANSFORMERS_VERSION: 4.57.6
+  TRANSFORMERS_COMMIT: 753d61104116eefc8ffc977327b441ee0c8d599f
+  TORCH_RUNTIME_TARGET: 2.11.0+cpu
+  DEPENDENCY_ARTIFACT_COUNT: "27"
+  DEPENDENCY_SET_MANIFEST_SHA256: bcd0b7a64bca02f85b0561376b057823f8e5857b69328cb3aa3a1d3aff2c8c05
+  PYTHON_RUNTIME_SHA256: a92f0f95e883390c7256b2e441484aac06b1002dbe1d924141a77c8d82f96223
+  INSTALLED_ENVIRONMENT_MANIFEST_SHA256: 54517b34077e193c9bc019e8a2b232d3c9b6d6a85c4c6df13bcd38aa2b66c384
+  GIT_TERMINAL_PROMPT: "0"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_INPUT: "1"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  static-qualification:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Bind exact head and corrective Decision B authority
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          test -f "$DECISION_RECORD"
+          grep -Fxq 'FOUNDER_E004_OPERATIONAL_PREFLIGHT_CORRECTIVE_ATTEMPT_DECISION=E004_OPERATIONAL_PREFLIGHT_CORRECTIVE_ATTEMPT_DECISION_B' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_OPERATIONAL_PREFLIGHT_IMPLEMENTATION_AUTHORITY=AUTHORIZED_REVIEW_FIRST_V2' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_OPERATIONAL_PREFLIGHT_STATIC_QUALIFICATION_AUTHORITY=AUTHORIZED_NO_MODEL_NO_EVALUATION_PAYLOAD' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_OPERATIONAL_PREFLIGHT_EVIDENCE_RUN_AUTHORITY=AUTHORIZED_EXACTLY_ONE_NEW_V2_POST_MERGE_RUN' "$DECISION_RECORD"
+          grep -Fxq 'MAX_AUTHORIZED_CORRECTIVE_OPERATIONAL_PREFLIGHT_EVIDENCE_RUNS=1' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_RUN_ATTEMPT_REQUIRED=1' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_RERUN_AUTHORITY=NONE_BY_DEFAULT' "$DECISION_RECORD"
+          grep -Fxq 'CURRENT_AUTHORIZED_SPEND_USD=0' "$DECISION_RECORD"
+          printf '%s\n' "EXACT_HEAD_SHA=$(git rev-parse HEAD)" 'EMPIRICAL_OPERATIONAL_EVIDENCE_EXECUTED=NO'
+
+      - name: Compile and run focused V2 policy tests
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 -m compileall -q tests/spec007/test_e004_operational_preflight_evidence_v2_policy.py
+          PYTHONPATH=. python3 -m unittest -v tests.spec007.test_e004_operational_preflight_evidence_v2_policy
+
+      - name: Install pytest for deterministic regressions
+        shell: bash
+        run: python3 -m pip install --disable-pip-version-check pytest
+
+      - name: Run Spec 007 regression suite
+        shell: bash
+        run: PYTHONPATH=. python3 -m pytest -q tests/spec007
+
+      - name: Configure ephemeral Git identity for repository fixtures
+        shell: bash
+        run: |
+          git config --local user.name 'commandMed CI Fixture'
+          git config --local user.email 'commandmed-ci-fixture@invalid.local'
+
+      - name: Run full repository regression suite
+        shell: bash
+        run: PYTHONPATH=. python3 -m pytest -q
+
+      - name: Verify diff whitespace
+        shell: bash
+        run: git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"
+
+  operational-preflight-evidence:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/evidence/e004-operational-preflight-run-v2' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact evidence head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Enforce one-run marker and exact canonical authority
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "${GITHUB_RUN_ATTEMPT:-}" = '1'
+          test "$GITHUB_REF" = "refs/heads/$EVIDENCE_BRANCH"
+          test -f "$EVIDENCE_MARKER"
+          grep -Fxq 'FOUNDER_E004_OPERATIONAL_PREFLIGHT_CORRECTIVE_ATTEMPT_DECISION=E004_OPERATIONAL_PREFLIGHT_CORRECTIVE_ATTEMPT_DECISION_B' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_OPERATIONAL_PREFLIGHT_EVIDENCE_RUN_AUTHORITY=AUTHORIZED_EXACTLY_ONE_NEW_V2_POST_MERGE_RUN' "$DECISION_RECORD"
+          grep -Fxq 'MAX_AUTHORIZED_CORRECTIVE_OPERATIONAL_PREFLIGHT_EVIDENCE_RUNS=1' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_RUN_ATTEMPT_REQUIRED=1' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_RERUN_AUTHORITY=NONE_BY_DEFAULT' "$DECISION_RECORD"
+          grep -Fxq 'CORRECTIVE_FAILED_RUN_AUTOMATIC_RETRY_AUTHORITY=NONE' "$DECISION_RECORD"
+
+          parent="$(git rev-parse HEAD^)"
+          marker_parent="$(awk -F= '$1=="IMPLEMENTATION_CANONICAL_MERGE" {print $2}' "$EVIDENCE_MARKER")"
+          test -n "$marker_parent"
+          test "$marker_parent" = "$parent"
+          test "$(git rev-list --parents -n 1 "$parent" | awk '{print NF}')" -ge 3
+          test "$(git rev-list --count "$parent"..HEAD)" = '1'
+          test "$(git diff --name-only "$parent" HEAD | wc -l | tr -d ' ')" = '1'
+          test "$(git diff --name-only "$parent" HEAD)" = "$EVIDENCE_MARKER"
+          git cat-file -e "$parent:.github/workflows/e004-operational-preflight-evidence-v2.yml"
+          git cat-file -e "$parent:$DECISION_RECORD"
+          grep -Fxq 'E004_OPERATIONAL_PREFLIGHT_EVIDENCE_RUN=V2' "$EVIDENCE_MARKER"
+          grep -Fxq 'FOUNDER_DECISION_TOKEN_SHA256=774f35983f70ba560b2e0bd9174a7f2f76c92c1617e76851e1123dcc7d39780e' "$EVIDENCE_MARKER"
+          printf '%s\n' "WORKFLOW_RUN_ID=${GITHUB_RUN_ID:-UNSET}" "RUN_NUMBER=${GITHUB_RUN_NUMBER:-UNSET}" "RUN_ATTEMPT=${GITHUB_RUN_ATTEMPT:-UNSET}" "RUN_HEAD_SHA=${GITHUB_SHA:-UNSET}" "IMPLEMENTATION_CANONICAL_MERGE=$parent"
+
+      - name: Prove credential and public-ungated access boundaries
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN GOOGLE_APPLICATION_CREDENTIALS AZURE_CLIENT_ID AZURE_TENANT_ID AZURE_CLIENT_SECRET
+          for name in HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN GOOGLE_APPLICATION_CREDENTIALS AZURE_CLIENT_ID AZURE_TENANT_ID AZURE_CLIENT_SECRET; do test -z "${!name:-}"; done
+          if git config --local --get-regexp '^http\..*\.extraheader$' >/dev/null 2>&1; then exit 71; fi
+          python3 - "$BUNDLE_SET" <<'PY'
+          import json, pathlib, sys
+          payload = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+          bundles = payload.get("candidate_bundles")
+          if not isinstance(bundles, list) or len(bundles) != 4:
+              raise SystemExit("expected exact four-candidate bundle set")
+          if any(item.get("artifact_access_state") != "PUBLIC_UNGATED_EXACT_IDENTITY" for item in bundles):
+              raise SystemExit("candidate access class is not exact public/ungated")
+          print("CANDIDATE_BUNDLE_COUNT=4")
+          print("EXECUTION_SUBJECT_ACCESS_CLASS=PUBLIC_UNGATED_ONLY")
+          print("CREDENTIALS_REQUIRED_FOR_EXECUTION=NO")
+          print("PRIVATE_OR_GATED_ASSET_ACCESS=NO")
+          print("PRIVATE_GOLD_ACCESS=NO")
+          print("PHI_ACCESS=NO")
+          PY
+          printf '%s\n' 'CREDENTIAL_BOUNDARY_STATE=PASS_NO_CUSTOM_STEP_CREDENTIALS' 'CHECKOUT_PERSIST_CREDENTIALS=false' 'WORKFLOW_REPOSITORY_PERMISSION=CONTENTS_READ_ONLY'
+
+      - name: Capture exact runner host and resource observations
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-operational-preflight-v2
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$ROOT" && mkdir -p "$ROOT"
+          printf '%s\n' synthetic-retention-sentinel-v2 > "$ROOT/retention-sentinel.txt"
+          mem_total_kb="$(awk '/MemTotal:/ {print $2; exit}' /proc/meminfo)"
+          mem_available_kb="$(awk '/MemAvailable:/ {print $2; exit}' /proc/meminfo)"
+          printf '%s\n' \
+            'PROVIDER=GitHub_Actions' 'RUNNER_LABEL=ubuntu-24.04' 'RUNNER_CLASS=STANDARD_GITHUB_HOSTED_PUBLIC_REPOSITORY_RUNNER' \
+            "RUNNER_OS=${RUNNER_OS:-UNSET}" "RUNNER_ARCH=${RUNNER_ARCH:-UNSET}" "IMAGE_OS=${ImageOS:-UNSET}" "IMAGE_VERSION=${ImageVersion:-UNSET}" \
+            "HOST_OS_RELEASE_SHA256=$(sha256sum /etc/os-release | awk '{print $1}')" "KERNEL_IDENTITY=$(uname -srmv)" "LIBC_IDENTITY=$(getconf GNU_LIBC_VERSION)" \
+            "CPU_MODEL_IDENTITY=$(awk -F: '/model name/ {sub(/^[ \t]+/, \"\", $2); print $2; exit}' /proc/cpuinfo)" "LOGICAL_CPU_COUNT=$(getconf _NPROCESSORS_ONLN)" \
+            "TOTAL_MEMORY_BYTES=$((mem_total_kb * 1024))" "AVAILABLE_MEMORY_BYTES_AT_START=$((mem_available_kb * 1024))" \
+            "ROOT_FILESYSTEM_TOTAL_BYTES=$(df -PB1 / | awk 'NR==2 {print $2}')" "ROOT_FILESYSTEM_FREE_BYTES_AT_START=$(df -PB1 / | awk 'NR==2 {print $4}')" \
+            "RUNNER_TEMP_FILESYSTEM_FREE_BYTES_AT_START=$(df -PB1 "$RUNNER_TEMP" | awk 'NR==2 {print $4}')" \
+            'EXPECTED_MAX_WALLCLOCK_SECONDS=3600' 'PAID_OR_LARGER_RUNNER=PROHIBITED' 'SELF_HOSTED_RUNNER=PROHIBITED' 'GPU_RUNNER=PROHIBITED' 'CURRENT_AUTHORIZED_SPEND_USD=0'
+
+      - name: Reconstruct exact canonical llama.cpp runtime without model bytes
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-operational-preflight-v2/llama
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          mkdir -p "$ROOT/extract"
+          archive="$ROOT/$LLAMA_CPP_ARCHIVE"
+          effective_url="$(curl --fail --location --silent --show-error --retry 4 --retry-all-errors --retry-delay 2 --connect-timeout 30 --output "$archive.part" --write-out '%{url_effective}' "https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${LLAMA_CPP_ARCHIVE}")"
+          python3 - "$effective_url" <<'PY'
+          import sys
+          from urllib.parse import urlparse
+          host = (urlparse(sys.argv[1]).hostname or "").lower()
+          if host not in {"github.com", "release-assets.githubusercontent.com", "objects.githubusercontent.com"}:
+              raise SystemExit(f"unexpected llama provisioning host: {host}")
+          print(f"LLAMA_PROVISIONING_EFFECTIVE_HOST={host}")
+          PY
+          test "$(stat -c '%s' "$archive.part")" = "$LLAMA_CPP_ARCHIVE_BYTES"
+          test "$(sha256sum "$archive.part" | awk '{print $1}')" = "$LLAMA_CPP_ARCHIVE_SHA256"
+          mv "$archive.part" "$archive"
+          listing="$ROOT/archive-list.txt"
+          tar -tzf "$archive" > "$listing"
+          test -s "$listing"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$listing"; then exit 72; fi
+          tar --no-same-owner -xzf "$archive" -C "$ROOT/extract"
+          manifest="$ROOT/runtime-files.tsv"
+          : > "$manifest"
+          while IFS= read -r path; do
+            rel="${path#"$ROOT/extract/"}"
+            printf '%s\t%s\t%s\n' "$rel" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$manifest"
+          done < <(find "$ROOT/extract" -type f -print | sort)
+          sort -o "$manifest" "$manifest"
+          test "$(sha256sum "$manifest" | awk '{print $1}')" = "$LLAMA_RUNTIME_FILE_MANIFEST_SHA256"
+          cli="$(find "$ROOT/extract" \( -type f -o -type l \) -name llama-cli -print -quit)"
+          test -n "$cli"
+          cli_real="$(readlink -f "$cli")"
+          case "$cli_real" in "$ROOT/extract"/*) ;; *) exit 73 ;; esac
+          test "$(sha256sum "$cli_real" | awk '{print $1}')" = "$LLAMA_CLI_SHA256"
+          lib_dirs="$(find "$ROOT/extract" -type f -name '*.so*' -printf '%h\n' | sort -u | paste -sd: -)"
+          sudo -n env LD_LIBRARY_PATH="$lib_dirs" unshare -n -- "$cli_real" --version
+          printf '%s\n' "LLAMA_CPP_SOURCE_REVISION=$LLAMA_CPP_COMMIT" "LLAMA_CPP_TREE=$LLAMA_CPP_TREE" "LLAMA_CPP_TAG=$LLAMA_CPP_TAG" "LLAMA_RUNTIME_ARCHIVE_SHA256=$LLAMA_CPP_ARCHIVE_SHA256" "LLAMA_RUNTIME_FILE_MANIFEST_SHA256=$LLAMA_RUNTIME_FILE_MANIFEST_SHA256" 'LLAMA_RUNTIME_IDENTITY_STATE=PASS_EXACT_CANONICAL_RECONSTRUCTION' 'LLAMA_MODEL_FILE_ACQUIRED=NO' 'LLAMA_MODEL_LOAD_PERFORMED=NO'
+
+      - name: Reconstruct exact canonical Transformers and Torch runtime
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-operational-preflight-v2/transformers
+        run: |
+          set -Eeuo pipefail
+          unset HF_TOKEN HUGGING_FACE_HUB_TOKEN GH_TOKEN GITHUB_TOKEN
+          export PIP_CONFIG_FILE=/dev/null PIP_TRUSTED_HOST=''
+          mkdir -p "$ROOT/wheelhouse"
+          pip_log="$ROOT/pip-download.log"
+          python3 -m pip download -vv --dest "$ROOT/wheelhouse" --index-url https://pypi.org/simple --extra-index-url https://download.pytorch.org/whl/cpu "torch==$TORCH_RUNTIME_TARGET" 'numpy~=1.26.4' 'sentencepiece>=0.1.98,<0.3.0' "transformers==$TRANSFORMERS_VERSION" 'protobuf>=4.21.0,<5.0.0' 'tqdm>=4.27' 'PyYAML>=5.1' 'requests>=2.25' 2>&1 | tee "$pip_log"
+          python3 - "$pip_log" <<'PY'
+          import pathlib, re, sys
+          from urllib.parse import urlparse
+          text = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace")
+          urls = re.findall(r"https://[^\s'\"<>]+", text)
+          hosts = {(urlparse(url.rstrip(".,);" )).hostname or "").lower() for url in urls}
+          hosts.discard("")
+          unexpected = hosts - {"pypi.org", "files.pythonhosted.org", "download.pytorch.org"}
+          if unexpected:
+              raise SystemExit(f"unexpected pip provisioning hosts: {sorted(unexpected)}")
+          print("TRANSFORMERS_PROVISIONING_HOSTS=" + ",".join(sorted(hosts)))
+          PY
+          manifest="$ROOT/dependency-artifacts.tsv"
+          : > "$manifest"
+          while IFS= read -r path; do
+            printf '%s\t%s\t%s\n' "$(basename "$path")" "$(stat -c '%s' "$path")" "$(sha256sum "$path" | awk '{print $1}')" >> "$manifest"
+          done < <(find "$ROOT/wheelhouse" -maxdepth 1 -type f -print | sort)
+          sort -o "$manifest" "$manifest"
+          test "$(wc -l < "$manifest" | tr -d ' ')" = "$DEPENDENCY_ARTIFACT_COUNT"
+          test "$(sha256sum "$manifest" | awk '{print $1}')" = "$DEPENDENCY_SET_MANIFEST_SHA256"
+          python3 -m venv "$ROOT/venv"
+          venv_python="$ROOT/venv/bin/python"
+          venv_pip="$ROOT/venv/bin/pip"
+          sudo -n env PIP_CONFIG_FILE=/dev/null unshare -n -- "$venv_pip" install --no-index --find-links "$ROOT/wheelhouse" "torch==$TORCH_RUNTIME_TARGET" 'numpy~=1.26.4' 'sentencepiece>=0.1.98,<0.3.0' "transformers==$TRANSFORMERS_VERSION" 'protobuf>=4.21.0,<5.0.0' 'tqdm>=4.27' 'PyYAML>=5.1' 'requests>=2.25'
+          installed="$ROOT/installed-environment.txt"
+          "$venv_pip" freeze --all | LC_ALL=C sort > "$installed"
+          test "$(sha256sum "$installed" | awk '{print $1}')" = "$INSTALLED_ENVIRONMENT_MANIFEST_SHA256"
+          resolved_python="$(readlink -f "$venv_python")"
+          test "$(sha256sum "$resolved_python" | awk '{print $1}')" = "$PYTHON_RUNTIME_SHA256"
+          sudo -n unshare -n -- "$venv_python" - <<'PY'
+          import torch, transformers
+          from transformers.models.auto.configuration_auto import CONFIG_MAPPING_NAMES
+          from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING_NAMES
+          assert transformers.__version__ == "4.57.6"
+          assert torch.__version__ == "2.11.0+cpu"
+          assert CONFIG_MAPPING_NAMES["qwen3"] == "Qwen3Config"
+          assert MODEL_FOR_CAUSAL_LM_MAPPING_NAMES["qwen3"] == "Qwen3ForCausalLM"
+          assert CONFIG_MAPPING_NAMES["granite"] == "GraniteConfig"
+          assert MODEL_FOR_CAUSAL_LM_MAPPING_NAMES["granite"] == "GraniteForCausalLM"
+          print("STATIC_IMPORT_ONLY=PASS")
+          print("MODEL_OBJECT_INSTANTIATED=NO")
+          print("MODEL_WEIGHT_FILE_OPENED=NO")
+          print("MODEL_LOAD_PERFORMED=NO")
+          PY
+          printf '%s\n' "TRANSFORMERS_VERSION=$TRANSFORMERS_VERSION" "TRANSFORMERS_SOURCE_REVISION=$TRANSFORMERS_COMMIT" "TORCH_VERSION=$TORCH_RUNTIME_TARGET" "DEPENDENCY_SET_MANIFEST_SHA256=$DEPENDENCY_SET_MANIFEST_SHA256" "PYTHON_RUNTIME_SHA256=$PYTHON_RUNTIME_SHA256" "INSTALLED_ENVIRONMENT_MANIFEST_SHA256=$INSTALLED_ENVIRONMENT_MANIFEST_SHA256" 'TRANSFORMERS_RUNTIME_IDENTITY_STATE=PASS_EXACT_CANONICAL_RECONSTRUCTION'
+
+      - name: Prove default-deny network and capture post-staging resources
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          sudo -n unshare -n -- bash -c 'if awk "NR>1 && \$2 == \"00000000\" {found=1} END {exit found ? 0 : 1}" /proc/net/route; then exit 74; fi'
+          printf '%s\n' 'NETWORK_DISABLE_MECHANISM_STATE=PASS_UNSHARE_NET_NAMESPACE_NO_DEFAULT_ROUTE' 'POST_STAGING_RUNTIME_VALIDATION_NETWORK=DEFAULT_DENY' "RUNNER_TEMP_FILESYSTEM_FREE_BYTES_AFTER_RUNTIME_STAGING=$(df -PB1 "$RUNNER_TEMP" | awk 'NR==2 {print $4}')" 'MODEL_PROVIDER_ENDPOINT_ACCESS=PROHIBITED' 'HUGGING_FACE_MODEL_ENDPOINT_ACCESS=PROHIBITED' 'EVALUATION_DATA_ENDPOINT_ACCESS=PROHIBITED' 'ARBITRARY_WEB_ACCESS=PROHIBITED'
+
+      - name: Remove all runtime staging and prove retention cleanup
+        if: always()
+        shell: bash
+        env:
+          ROOT: ${{ runner.temp }}/e004-operational-preflight-v2
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$ROOT"
+          test ! -e "$ROOT"
+          test ! -e "$ROOT/retention-sentinel.txt"
+          printf '%s\n' 'RETENTION_CLEANUP_STATE=PASS' 'RETENTION_SENTINEL_ABSENT_AFTER_CLEANUP=YES' 'RUNTIME_STAGING_ABSENT_AFTER_CLEANUP=YES' 'GITHUB_ACTIONS_CACHE_UPLOAD=NO' 'WORKFLOW_ARTIFACT_UPLOAD=NO' 'RELEASE_ASSET_UPLOAD=NO' 'PACKAGE_REGISTRY_UPLOAD=NO'
+
+      - name: Emit successful bounded evidence disposition
+        if: success()
+        shell: bash
+        run: |
+          printf '%s\n' 'OPERATIONAL_PREFLIGHT_EVIDENCE=PASS' 'MODEL_WEIGHT_ACQUISITION_PERFORMED=NO' 'MODEL_LOAD_PERFORMED=NO' 'MODEL_FORWARD_PASS_PERFORMED=NO' 'MODEL_INFERENCE_PERFORMED=NO' 'GENERATION_PERFORMED=NO' 'EVALUATION_PAYLOAD_ACCESS_PERFORMED=NO' 'EVALUATION_PAYLOAD_EXECUTION_PERFORMED=NO' 'BENCHMARK_EXECUTION_PERFORMED=NO' 'TOURNAMENT_EXECUTION_PERFORMED=NO' 'A15_ACTIVATION_PERFORMED=NO' 'TRAINING_PERFORMED=NO' 'PRIVATE_GOLD_ACCESSED=NO' 'PHI_ACCESSED=NO' 'GATED_ASSET_ACCESSED=NO' 'CREDENTIAL_USE_PERFORMED=NO' 'CURRENT_AUTHORIZED_SPEND_USD=0'
