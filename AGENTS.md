@@ -252,3 +252,15 @@ Never equate:
 - generation quality with diagnostic validity;
 - a donor model’s license with a derivative model’s release eligibility;
 - an attractive research hypothesis with a publishable contribution.
+
+<!-- graft:start -->
+## Graft — repository context layer
+
+Use Graft (https://github.com/trailhq/Graft, `@nanonets/graft`) only as local developer/agent tooling for repository context and code navigation. This does not authorize model-weight access, inference, training, external medical-data egress, or any execution forbidden by the active bounded spec.
+
+If Graft is unavailable or the local `graft/` graph is absent/stale, run `graft init`, select the active agent(s), then run `graft build`. Prefer `graft check`, `graft map`, `graft ask "<question>" --source`, `graft skeleton <file>`, `graft callers <symbol>`, and `graft grep "<literal>"` before broad source exploration. After material code changes, run `graft build` again.
+
+Treat `graft/` as a local regenerable cache and do not commit it. Keep usage zero-cost: deterministic structural graph operations are permitted; do not introduce paid model/API usage. Any model-backed enrichment would require separate authorization under the active spec and applicable data/egress rules.
+
+Graft output is navigation context, not medical evidence, scientific evidence, evaluation evidence, safety evidence, or qualification authority. Existing frozen evaluation, Spec Kit, Jev, Alibaba Open Code Review, CI, security, privacy, provenance, licensing, and claims gates remain authoritative. Never fabricate Graft output, tool execution, CI, reviews, or evidence.
+<!-- graft:end -->
