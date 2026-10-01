@@ -18,4 +18,4 @@ Validation used local standard-library inspection scripts outside the source che
 
 Review limitations: Jev was not called because its documented route incurs API cost and no verified free route exists. No implementation code was introduced for Alibaba Open Code Review. No prohibited historical review service is qualification evidence for this packet. Domain-qualified clinical, statistical and rights reviews remain outstanding.
 
-Repository diff whitespace/scope verification is required on the staged patch before committing; this document does not assert a future CI or canonical admission result.
+The candidate patch passes the Git whitespace check against the canonical input. Every changed repository path is an addition under this preparation packet or its new planning specification; existing canonical files remain untouched. Configuration bytes remain preserved. License snapshots use UTF-8/LF and strip trailing whitespace, with original retrieval and normalized snapshot hashes recorded separately. These artifact checks do not assert CI, scientific freeze or canonical admission.

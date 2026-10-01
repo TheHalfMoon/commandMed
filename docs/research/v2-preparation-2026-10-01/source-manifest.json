@@ -27,9 +27,10 @@
           "path": "LICENSE",
           "sha": "13ae08d5a5828f508cf0e852b1b316c0c0bbb9b3",
           "snapshot_path": "source-snapshots/QwenLM--Qwen-Image-2.1--LICENSE.txt",
-          "snapshot_sha256": "06b7d356cd8cb6b79aa2eef3f934d1e1e8e1c2aa1e85dcc23915dd9a68197249",
+          "snapshot_sha256": "5b7d376e713065857be3ec7ea8a112816e255e7bc3cd418761f7ecd292fb749c",
           "text_sha256_utf8": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
-          "url": "https://github.com/QwenLM/Qwen-Image-2.1/blob/6627d87c6433151463ec4b48b8945a24fcf16a35/LICENSE"
+          "url": "https://github.com/QwenLM/Qwen-Image-2.1/blob/6627d87c6433151463ec4b48b8945a24fcf16a35/LICENSE",
+          "snapshot_format": "UTF8_LICENSE_TEXT_LF_TRAILING_WHITESPACE_NORMALIZED"
         }
       ],
       "tree_truncated": false
@@ -45,9 +46,10 @@
           "path": "LICENSE",
           "sha": "e1ece45b775283628888a36bc75f56078cee9de0",
           "snapshot_path": "source-snapshots/jaredpalmer--kev--LICENSE.txt",
-          "snapshot_sha256": "046e38fbf06270110a41aef891617ac239fb82bcbcb13fe354b6503572e901e1",
+          "snapshot_sha256": "3887817f2c23c47c60594fd73d575e8f0ed7c9a7f9e80168754524268aeae56f",
           "text_sha256_utf8": "6b08bb37982c233aa12bcbdf19106da12f3f4fcf800773ea42e28ebeddd34fb8",
-          "url": "https://github.com/jaredpalmer/kev/blob/952ce9d053f6c958d1447c57c36cc9cb3369aef4/LICENSE"
+          "url": "https://github.com/jaredpalmer/kev/blob/952ce9d053f6c958d1447c57c36cc9cb3369aef4/LICENSE",
+          "snapshot_format": "UTF8_LICENSE_TEXT_LF_TRAILING_WHITESPACE_NORMALIZED"
         },
         {
           "path": "kev/model.py",
@@ -75,9 +77,10 @@
           "path": "LICENSE",
           "sha": "916a53c7ffc9b1050cfd29ee07d3a4f619b540e5",
           "snapshot_path": "source-snapshots/Mapika--decider--LICENSE.txt",
-          "snapshot_sha256": "d00fc7226028723c91b1fa4dfba3d265dadddd2eff9b346e767ef92cb29edbc5",
+          "snapshot_sha256": "5daadc25825c2ecbb4f90ced7777b0f5b5e3f85bde71eafc8060249d677d07bf",
           "text_sha256_utf8": "8489ebe7c8abe903fcdaace4080ef1660bba98ea44c8007923bfb91777945e37",
-          "url": "https://github.com/Mapika/decider/blob/50d0be0d7cb43d2066965ce5fa7f3fe4e489a60f/LICENSE"
+          "url": "https://github.com/Mapika/decider/blob/50d0be0d7cb43d2066965ce5fa7f3fe4e489a60f/LICENSE",
+          "snapshot_format": "UTF8_LICENSE_TEXT_LF_TRAILING_WHITESPACE_NORMALIZED"
         },
         {
           "path": "decider/model.py",
@@ -99,9 +102,10 @@
           "path": "LICENSE",
           "sha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
           "snapshot_path": "source-snapshots/Contrastive-LM--CLM--LICENSE.txt",
-          "snapshot_sha256": "313605fbac6945e9324d4825470796b5b7dbc012f523fdc181f6e6fd234eb88f",
+          "snapshot_sha256": "50e6751797c50dedd75ef1b8a0d9e42f5f8472e9fbce91f34718e9f97b0c780a",
           "text_sha256_utf8": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-          "url": "https://github.com/Contrastive-LM/CLM/blob/bb42c6c5bf914fd449bed2f6ca65be80602cb1f7/LICENSE"
+          "url": "https://github.com/Contrastive-LM/CLM/blob/bb42c6c5bf914fd449bed2f6ca65be80602cb1f7/LICENSE",
+          "snapshot_format": "UTF8_LICENSE_TEXT_LF_TRAILING_WHITESPACE_NORMALIZED"
         },
         {
           "path": "src/clm/heads.py",
@@ -123,9 +127,10 @@
           "path": "LICENSE",
           "sha": "0a041280bd00a9d068f503b8ee7ce35214bd24a1",
           "snapshot_path": "source-snapshots/arcee-ai--mergekit--LICENSE.txt",
-          "snapshot_sha256": "425347eb68a83b13fe14e5a93c518c7a939cdfd3062c33b8e6bfc4236d1ea928",
+          "snapshot_sha256": "6557adc4bc1d59232e27567a185dd70cf2ecca3154018b0be61ea29cf9e814e2",
           "text_sha256_utf8": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
-          "url": "https://github.com/arcee-ai/mergekit/blob/9eeb539892c6753b032ea164e818b44a8c7a401b/LICENSE"
+          "url": "https://github.com/arcee-ai/mergekit/blob/9eeb539892c6753b032ea164e818b44a8c7a401b/LICENSE",
+          "snapshot_format": "UTF8_LICENSE_TEXT_LF_TRAILING_WHITESPACE_NORMALIZED"
         }
       ],
       "tree_truncated": false
@@ -141,9 +146,10 @@
           "path": "fusion_bench/LICENSE",
           "sha": "770ebf222db02a55320c08492570211feecca82f",
           "snapshot_path": "source-snapshots/WalkerWorldPeace--MLLMerging--fusion_bench--LICENSE.txt",
-          "snapshot_sha256": "988607a3eddea676f52476dce7efa91dddc6c641733e7ac7ba6b5d5631b771cc",
+          "snapshot_sha256": "cfce1ab475079a31bec3a27c74d511d218cdf51540dbd5f102fee66a84e94106",
           "text_sha256_utf8": "a4664b044b5ad52cfe5b1e3f2013680312d5f3e273893830de5ad30585fb5897",
-          "url": "https://github.com/WalkerWorldPeace/MLLMerging/blob/5f8a45837560e9863dc557704082269c70cea229/fusion_bench/LICENSE"
+          "url": "https://github.com/WalkerWorldPeace/MLLMerging/blob/5f8a45837560e9863dc557704082269c70cea229/fusion_bench/LICENSE",
+          "snapshot_format": "UTF8_LICENSE_TEXT_LF_TRAILING_WHITESPACE_NORMALIZED"
         }
       ],
       "tree_truncated": false
@@ -202,7 +208,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-          "snapshot_path": "source-snapshots/Contrastive-LM--CLM-v0.1-8B--LICENSE"
+          "snapshot_path": "source-snapshots/Contrastive-LM--CLM-v0.1-8B--LICENSE",
+          "snapshot_sha256": "50e6751797c50dedd75ef1b8a0d9e42f5f8472e9fbce91f34718e9f97b0c780a",
+          "snapshot_byte_identical_to_retrieved": false
         },
         {
           "path": "README.md",
@@ -230,7 +238,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "d0ffb4df6eded7faab6e0df4ec3187e605ee3089adcbc36af6f41a1a24f4abe1",
-          "snapshot_path": "source-snapshots/Contrastive-LM--CLM-v0.1-8B--config.json"
+          "snapshot_path": "source-snapshots/Contrastive-LM--CLM-v0.1-8B--config.json",
+          "snapshot_sha256": "d0ffb4df6eded7faab6e0df4ec3187e605ee3089adcbc36af6f41a1a24f4abe1",
+          "snapshot_byte_identical_to_retrieved": true
         }
       ],
       "weight_content_verified_locally": false,
@@ -270,7 +280,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "748acb2cda88454cb1ba69d745ba336f3fcb5486eac349e90960c8b8d8d3e854",
-          "snapshot_path": "source-snapshots/jaredpalmer--kev-0.8b--adapter_config.json"
+          "snapshot_path": "source-snapshots/jaredpalmer--kev-0.8b--adapter_config.json",
+          "snapshot_sha256": "748acb2cda88454cb1ba69d745ba336f3fcb5486eac349e90960c8b8d8d3e854",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "adapter_model.safetensors",
@@ -395,7 +407,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "7d2f033e87337113a7ffec63bd0c7102dd076c92beecc828e7231a1e5fdfbeb5",
-          "snapshot_path": "source-snapshots/jaredpalmer--kev-27b--config.json"
+          "snapshot_path": "source-snapshots/jaredpalmer--kev-27b--config.json",
+          "snapshot_sha256": "7d2f033e87337113a7ffec63bd0c7102dd076c92beecc828e7231a1e5fdfbeb5",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "head.pt",
@@ -610,7 +624,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "6cb8daca9fb653c61485ff7452fc068bacd5c27cbee659ecd24b47186b0d1b52",
-          "snapshot_path": "source-snapshots/Mapika--decider-2b--config.json"
+          "snapshot_path": "source-snapshots/Mapika--decider-2b--config.json",
+          "snapshot_sha256": "6cb8daca9fb653c61485ff7452fc068bacd5c27cbee659ecd24b47186b0d1b52",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "decider/__init__.py",
@@ -819,7 +835,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
-          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--LICENSE"
+          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--LICENSE",
+          "snapshot_sha256": "5b7d376e713065857be3ec7ea8a112816e255e7bc3cd418761f7ecd292fb749c",
+          "snapshot_byte_identical_to_retrieved": false
         },
         {
           "path": "README.md",
@@ -847,7 +865,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "cf1ecd104ea090855d60d8cec0895c1e9d6ee41b2f87e231b678beecd1cf7809",
-          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--model_index.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--model_index.json",
+          "snapshot_sha256": "cf1ecd104ea090855d60d8cec0895c1e9d6ee41b2f87e231b678beecd1cf7809",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "processor/added_tokens.json",
@@ -877,7 +897,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "93585062a80db5e8ca038efc7726a3e6411d9db948472d81d63c6303993be8c5",
-          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--processor--preprocessor_config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--processor--preprocessor_config.json",
+          "snapshot_sha256": "93585062a80db5e8ca038efc7726a3e6411d9db948472d81d63c6303993be8c5",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "processor/special_tokens_map.json",
@@ -927,7 +949,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "5895f3a167c14a967fe9ac70c64924ae5acc79799e0679fd12907e594a713cd1",
-          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--scheduler--scheduler_config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--scheduler--scheduler_config.json",
+          "snapshot_sha256": "5895f3a167c14a967fe9ac70c64924ae5acc79799e0679fd12907e594a713cd1",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "text_encoder/config.json",
@@ -936,7 +960,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "6001331949f7f86ab6d791a80b12246d4f8da5159fa08c3e62368a39f36d63a9",
-          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--text_encoder--config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--text_encoder--config.json",
+          "snapshot_sha256": "6001331949f7f86ab6d791a80b12246d4f8da5159fa08c3e62368a39f36d63a9",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "text_encoder/generation_config.json",
@@ -1003,7 +1029,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "56ae3281c4e6c2d1aa3658252d187488071815fd79bef15808bb0205fc1a2241",
-          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--transformer--config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--transformer--config.json",
+          "snapshot_sha256": "56ae3281c4e6c2d1aa3658252d187488071815fd79bef15808bb0205fc1a2241",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "transformer/diffusion_pytorch_model-00001-of-00002.safetensors",
@@ -1041,7 +1069,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "9785d527b278cb8b210e9f48a8028d92a4190968ce7e24c8fc85d9d1b82f6ba2",
-          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--vae--config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen-Image-2.1--vae--config.json",
+          "snapshot_sha256": "9785d527b278cb8b210e9f48a8028d92a4190968ce7e24c8fc85d9d1b82f6ba2",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "vae/diffusion_pytorch_model.safetensors",
@@ -1086,7 +1116,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
-          "snapshot_path": "source-snapshots/Qwen--Qwen3-8B--LICENSE"
+          "snapshot_path": "source-snapshots/Qwen--Qwen3-8B--LICENSE",
+          "snapshot_sha256": "63c4f3dd293e6b6f90f789ff13ef722830db46c5bf71b7420444a06bea86b6db",
+          "snapshot_byte_identical_to_retrieved": false
         },
         {
           "path": "README.md",
@@ -1102,7 +1134,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
-          "snapshot_path": "source-snapshots/Qwen--Qwen3-8B--config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen3-8B--config.json",
+          "snapshot_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "generation_config.json",
@@ -1238,7 +1272,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "50cbab8a892c5f2993b8c7351a99182507472def3b1374558308605d99b86b32",
-          "snapshot_path": "source-snapshots/Qwen--Qwen3.5-0.8B-Base--LICENSE"
+          "snapshot_path": "source-snapshots/Qwen--Qwen3.5-0.8B-Base--LICENSE",
+          "snapshot_sha256": "a4e33927bbebe7770848714617df236e5dee77c238935631d4d8422143a32bea",
+          "snapshot_byte_identical_to_retrieved": false
         },
         {
           "path": "README.md",
@@ -1254,7 +1290,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
-          "snapshot_path": "source-snapshots/Qwen--Qwen3.5-0.8B-Base--config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen3.5-0.8B-Base--config.json",
+          "snapshot_sha256": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "merges.txt",
@@ -1353,7 +1391,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a",
-          "snapshot_path": "source-snapshots/Qwen--Qwen3.8-27B--LICENSE"
+          "snapshot_path": "source-snapshots/Qwen--Qwen3.8-27B--LICENSE",
+          "snapshot_sha256": "a4e33927bbebe7770848714617df236e5dee77c238935631d4d8422143a32bea",
+          "snapshot_byte_identical_to_retrieved": false
         },
         {
           "path": "README.md",
@@ -1377,7 +1417,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "191e0af232104ed8b65258cf3fb2b842e288008baca7633c11b82a1ac7203aab",
-          "snapshot_path": "source-snapshots/Qwen--Qwen3.8-27B--config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen3.8-27B--config.json",
+          "snapshot_sha256": "191e0af232104ed8b65258cf3fb2b842e288008baca7633c11b82a1ac7203aab",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "crc32.txt",
@@ -1613,7 +1655,9 @@
           "lfs": null,
           "downloaded": true,
           "retrieved_content_sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
-          "snapshot_path": "source-snapshots/Qwen--Qwen3.8-27B--preprocessor_config.json"
+          "snapshot_path": "source-snapshots/Qwen--Qwen3.8-27B--preprocessor_config.json",
+          "snapshot_sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+          "snapshot_byte_identical_to_retrieved": true
         },
         {
           "path": "tokenizer.json",
@@ -1661,7 +1705,7 @@
     "registry_url": "https://github.com/TheHalfMoon/DAL/blob/d676beccfec001fd75d1b157b43068eb49a5733d/registry/baselines.json",
     "registry_sha256": "9d441fdad83271b526510aca8a0bd89d884403ba5bfed2e117afb7c7fe61914c",
     "historical_source_map_revision": "a1432dc81d48407c551b1b8ddefefa478a2cd33f",
-    "historical_revision_access": "UNRESOLVED",
+    "historical_revision_access": "VERIFIED_VIA_RENAMED_REPOSITORY",
     "entries": [
       {
         "id": "gax-uniform",
@@ -1783,6 +1827,135 @@
         "reason": "Include only if reproducible evaluation access and terms permit matched measurement.",
         "intended_role": "Optional System-One comparison; absence must be reported explicitly if access remains blocked"
       }
+    ],
+    "historical_registry_blob_oid": "7b46e4ecbb2c999393e921f1f647bcb9569926f0",
+    "historical_registry_retrieved_sha256": "9d441fdad83271b526510aca8a0bd89d884403ba5bfed2e117afb7c7fe61914c",
+    "historical_registry_url": "https://github.com/TheHalfMoon/DAL/blob/a1432dc81d48407c551b1b8ddefefa478a2cd33f/registry/baselines.json",
+    "historical_registry_entries": [
+      {
+        "id": "gax-uniform",
+        "name": "GAXBench Uniform Control",
+        "baseline_class": "deterministic-control",
+        "source_url": null,
+        "source_revision": "gax-p02",
+        "license": "Apache-2.0",
+        "access_status": "available",
+        "qualification_status": "qualified-offline",
+        "reason": null,
+        "intended_role": "Chance-like probability control over the exact candidate action set"
+      },
+      {
+        "id": "gax-lexicographic",
+        "name": "GAXBench Lexicographic Control",
+        "baseline_class": "deterministic-control",
+        "source_url": null,
+        "source_revision": "gax-p02",
+        "license": "Apache-2.0",
+        "access_status": "available",
+        "qualification_status": "qualified-offline",
+        "reason": null,
+        "intended_role": "Deterministic structural control for runner and failure-accounting tests"
+      },
+      {
+        "id": "prediction-file",
+        "name": "Typed Prediction File Adapter",
+        "baseline_class": "external-output-adapter",
+        "source_url": null,
+        "source_revision": "gax-p02",
+        "license": "Apache-2.0",
+        "access_status": "available",
+        "qualification_status": "qualified-offline",
+        "reason": null,
+        "intended_role": "Import immutable externally generated typed predictions without changing GAXBench metrics"
+      },
+      {
+        "id": "clm",
+        "name": "Contrastive Language Models",
+        "baseline_class": "contrastive-state-action",
+        "source_url": "https://github.com/Contrastive-LM/CLM",
+        "source_revision": "7956937c58ed5839c06ddc4dc6b6b61c3a3e4094",
+        "license": "Apache-2.0",
+        "access_status": "available",
+        "qualification_status": "adapter-qualified",
+        "reason": "TypeSafe /v1/systemone transport is qualified offline in GAX; real CLM model execution remains pending a zero-founder-cost Linux NVIDIA runtime.",
+        "intended_role": "General contrastive state-action baseline; exact revision and license frozen at qualification"
+      },
+      {
+        "id": "laya",
+        "name": "Laya",
+        "baseline_class": "encoder-typed-decision",
+        "source_url": "https://github.com/NandhaKishorM/laya",
+        "source_revision": "3c68ca2ccf6a83640ab80c20379503fe72c772fd",
+        "license": "Apache-2.0",
+        "access_status": "available",
+        "qualification_status": "adapter-qualified",
+        "reason": "TypeSafe /v1/systemone transport is qualified offline in GAX; real Laya checkpoint execution remains pending an immutable model revision and zero-founder-cost run.",
+        "intended_role": "Open compact typed-decision baseline; exact revision frozen at qualification"
+      },
+      {
+        "id": "decider",
+        "name": "decider",
+        "baseline_class": "one-pass-typed-decision",
+        "source_url": "https://github.com/Mapika/decider",
+        "source_revision": "5f91c011f05fa4b685f0845281a0805a56eb0169",
+        "license": "Apache-2.0",
+        "access_status": "available",
+        "qualification_status": "adapter-qualified",
+        "reason": "TypeSafe /v1/systemone transport is qualified offline in GAX; real decider checkpoint execution remains pending an immutable model revision and zero-founder-cost run.",
+        "intended_role": "Open one-pass answer-slot baseline; exact revision frozen at qualification"
+      },
+      {
+        "id": "restricted-logit",
+        "name": "Open Restricted-Logit Control",
+        "baseline_class": "restricted-next-token",
+        "source_url": "https://github.com/ikermoel/open-alternative-jev",
+        "source_revision": "4a85df1831b537343c9e133b5150fa3a3b1ce98e",
+        "license": "Apache-2.0",
+        "access_status": "available",
+        "qualification_status": "external-pending",
+        "reason": "Upstream source and license are frozen. The project does not expose a TypeSafe HTTP server; use the JSON-command or prediction-file transport after freezing an exact model revision.",
+        "intended_role": "No-task-training typed distribution control using restricted next-token probabilities"
+      },
+      {
+        "id": "clinical-encoder",
+        "name": "BioClinical ModernBERT Base Clinical Encoder Control",
+        "baseline_class": "clinical-encoder-classifier",
+        "source_url": "https://huggingface.co/thomas-sounack/BioClinical-ModernBERT-base",
+        "source_revision": "5e17e2f25260b6993e0fb60485f94678ff29779a",
+        "license": "MIT",
+        "access_status": "available",
+        "qualification_status": "external-pending",
+        "reason": "Model identity, immutable Hugging Face revision, and license are frozen for the matched clinical encoder control. Task-specific training and final benchmark execution belong to the frozen P08 evaluation protocol.",
+        "intended_role": "149.7M biomedical/clinical encoder control for measuring the value of GAX decision architecture beyond domain-specific encoder pretraining"
+      },
+      {
+        "id": "structured-output-llm",
+        "name": "Qwen3.5-4B Structured-Output LLM Control",
+        "baseline_class": "generative-structured-output",
+        "source_url": "https://huggingface.co/Qwen/Qwen3.5-4B",
+        "source_revision": "a7b0d22b993d71000cf2eadfb37222a67cee521e",
+        "license": "Apache-2.0",
+        "access_status": "available",
+        "qualification_status": "external-pending",
+        "reason": "Model identity, immutable Hugging Face revision, and license are frozen. Structured-action prompting, parse/failure accounting, and final inference belong to the frozen P08 evaluation protocol.",
+        "intended_role": "Strong open generative control evaluated against the exact GAXBench action schema with generation and parsing failures retained"
+      },
+      {
+        "id": "jev",
+        "name": "TypeSafe Jev",
+        "baseline_class": "system-one-black-box",
+        "source_url": "https://typesafe.ai",
+        "source_revision": null,
+        "license": "terms-review-required",
+        "access_status": "conditional",
+        "qualification_status": "blocked",
+        "reason": "Include only if reproducible evaluation access and terms permit matched measurement.",
+        "intended_role": "Optional System-One comparison; absence must be reported explicitly if access remains blocked"
+      }
+    ],
+    "lookup_history": [
+      "Initial connector lookup through TheHalfMoon/Gax failed.",
+      "Retry through the public redirect target TheHalfMoon/DAL resolved the exact historical source-map revision."
     ]
   },
   "retrievals": [
@@ -2457,17 +2630,17 @@
     }
   ],
   "snapshot_files": {
-    "source-snapshots/arcee-ai--mergekit--LICENSE.txt": "425347eb68a83b13fe14e5a93c518c7a939cdfd3062c33b8e6bfc4236d1ea928",
-    "source-snapshots/Contrastive-LM--CLM--LICENSE.txt": "313605fbac6945e9324d4825470796b5b7dbc012f523fdc181f6e6fd234eb88f",
+    "source-snapshots/arcee-ai--mergekit--LICENSE.txt": "6557adc4bc1d59232e27567a185dd70cf2ecca3154018b0be61ea29cf9e814e2",
+    "source-snapshots/Contrastive-LM--CLM--LICENSE.txt": "50e6751797c50dedd75ef1b8a0d9e42f5f8472e9fbce91f34718e9f97b0c780a",
     "source-snapshots/Contrastive-LM--CLM-v0.1-8B--config.json": "d0ffb4df6eded7faab6e0df4ec3187e605ee3089adcbc36af6f41a1a24f4abe1",
-    "source-snapshots/Contrastive-LM--CLM-v0.1-8B--LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-    "source-snapshots/jaredpalmer--kev--LICENSE.txt": "046e38fbf06270110a41aef891617ac239fb82bcbcb13fe354b6503572e901e1",
+    "source-snapshots/Contrastive-LM--CLM-v0.1-8B--LICENSE": "50e6751797c50dedd75ef1b8a0d9e42f5f8472e9fbce91f34718e9f97b0c780a",
+    "source-snapshots/jaredpalmer--kev--LICENSE.txt": "3887817f2c23c47c60594fd73d575e8f0ed7c9a7f9e80168754524268aeae56f",
     "source-snapshots/jaredpalmer--kev-0.8b--adapter_config.json": "748acb2cda88454cb1ba69d745ba336f3fcb5486eac349e90960c8b8d8d3e854",
     "source-snapshots/jaredpalmer--kev-27b--config.json": "7d2f033e87337113a7ffec63bd0c7102dd076c92beecc828e7231a1e5fdfbeb5",
-    "source-snapshots/laya--LICENSE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9",
-    "source-snapshots/Mapika--decider--LICENSE.txt": "d00fc7226028723c91b1fa4dfba3d265dadddd2eff9b346e767ef92cb29edbc5",
+    "source-snapshots/laya--LICENSE": "bb28c48e3e078166e91cfc2b6db7ffebb8a0973b9e23b3df060561292d8d69ec",
+    "source-snapshots/Mapika--decider--LICENSE.txt": "5daadc25825c2ecbb4f90ced7777b0f5b5e3f85bde71eafc8060249d677d07bf",
     "source-snapshots/Mapika--decider-2b--config.json": "6cb8daca9fb653c61485ff7452fc068bacd5c27cbee659ecd24b47186b0d1b52",
-    "source-snapshots/Qwen--Qwen-Image-2.1--LICENSE": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+    "source-snapshots/Qwen--Qwen-Image-2.1--LICENSE": "5b7d376e713065857be3ec7ea8a112816e255e7bc3cd418761f7ecd292fb749c",
     "source-snapshots/Qwen--Qwen-Image-2.1--model_index.json": "cf1ecd104ea090855d60d8cec0895c1e9d6ee41b2f87e231b678beecd1cf7809",
     "source-snapshots/Qwen--Qwen-Image-2.1--processor--preprocessor_config.json": "93585062a80db5e8ca038efc7726a3e6411d9db948472d81d63c6303993be8c5",
     "source-snapshots/Qwen--Qwen-Image-2.1--scheduler--scheduler_config.json": "5895f3a167c14a967fe9ac70c64924ae5acc79799e0679fd12907e594a713cd1",
@@ -2475,14 +2648,15 @@
     "source-snapshots/Qwen--Qwen-Image-2.1--transformer--config.json": "56ae3281c4e6c2d1aa3658252d187488071815fd79bef15808bb0205fc1a2241",
     "source-snapshots/Qwen--Qwen-Image-2.1--vae--config.json": "9785d527b278cb8b210e9f48a8028d92a4190968ce7e24c8fc85d9d1b82f6ba2",
     "source-snapshots/Qwen--Qwen3-8B--config.json": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
-    "source-snapshots/Qwen--Qwen3-8B--LICENSE": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+    "source-snapshots/Qwen--Qwen3-8B--LICENSE": "63c4f3dd293e6b6f90f789ff13ef722830db46c5bf71b7420444a06bea86b6db",
     "source-snapshots/Qwen--Qwen3.5-0.8B-Base--config.json": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
-    "source-snapshots/Qwen--Qwen3.5-0.8B-Base--LICENSE": "50cbab8a892c5f2993b8c7351a99182507472def3b1374558308605d99b86b32",
+    "source-snapshots/Qwen--Qwen3.5-0.8B-Base--LICENSE": "a4e33927bbebe7770848714617df236e5dee77c238935631d4d8422143a32bea",
     "source-snapshots/Qwen--Qwen3.8-27B--config.json": "191e0af232104ed8b65258cf3fb2b842e288008baca7633c11b82a1ac7203aab",
-    "source-snapshots/Qwen--Qwen3.8-27B--LICENSE": "bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a",
+    "source-snapshots/Qwen--Qwen3.8-27B--LICENSE": "a4e33927bbebe7770848714617df236e5dee77c238935631d4d8422143a32bea",
     "source-snapshots/Qwen--Qwen3.8-27B--preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
-    "source-snapshots/QwenLM--Qwen-Image-2.1--LICENSE.txt": "06b7d356cd8cb6b79aa2eef3f934d1e1e8e1c2aa1e85dcc23915dd9a68197249",
-    "source-snapshots/restricted-logit--LICENSE": "05a5d1e302e4d66c93eca514c9f3dff181a920a9b7e4bac75819da61ea629d0d",
-    "source-snapshots/WalkerWorldPeace--MLLMerging--fusion_bench--LICENSE.txt": "988607a3eddea676f52476dce7efa91dddc6c641733e7ac7ba6b5d5631b771cc"
-  }
+    "source-snapshots/QwenLM--Qwen-Image-2.1--LICENSE.txt": "5b7d376e713065857be3ec7ea8a112816e255e7bc3cd418761f7ecd292fb749c",
+    "source-snapshots/restricted-logit--LICENSE": "0f1c360c0200417ba76c7697d3b498d5ce45b758b3bb9ad3599005fa17778df2",
+    "source-snapshots/WalkerWorldPeace--MLLMerging--fusion_bench--LICENSE.txt": "cfce1ab475079a31bec3a27c74d511d218cdf51540dbd5f102fee66a84e94106"
+  },
+  "snapshot_policy": "Configuration bytes preserved; license text normalized to UTF-8/LF without trailing whitespace; raw retrieval identities separately retained."
 }
