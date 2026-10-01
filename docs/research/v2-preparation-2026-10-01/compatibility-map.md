@@ -1,0 +1,28 @@
+# Architecture, module and tensor compatibility
+
+Status: static metadata/source inspection, no weight access or runtime probe. Config dimensions and index key correspondence are upstream metadata evidence. Exact tensor shape/dtype inventories, buffer semantics and numerical equivalence remain unverified.
+
+| Component | Observed interface | Valid route | Barrier / required check |
+|---|---|---|---|
+| Qwen3.8-27B | `Qwen3_5ForConditionalGeneration`; text width 5120, 64 layers, 48 linear-attention + 16 full-attention layers; vision output width 5120 | Retain one semantic backbone with its multimodal tower and LM output head | Actual module classes/runtime versions; mixed recurrent/attention cache semantics |
+| Kev-27B current | `Qwen3_5TextModel`; width 5120, 64 layers; no vision tower or LM head in advertised index | Investigate text-backbone subset plus native pointer head | Full fine-tune + averaging differs from historical LoRA donor; tokenizer equivalence, medical/vision regression, recalibration |
+| Kev pointer | Two 5120→256 linear projections, option-closing-token vs final-question-token score | Attach/retrain compatible head within shared model | Same width does not prove aligned representation; dtype/temperature/token convention binding |
+| Kev-0.8B | Rank-16 adapter; base Qwen3.5-0.8B width 1024 | Small-scale reference head/adapter mechanism | Adapter config has null base revision; pin base explicitly from verified upstream identity; cannot copy 1024-wide tensors into 5120-wide backbone |
+| decider-2B | Width 2048, 24 layers; answer-slot option-logit readout | Architecture/readout baseline, retrained on same chosen base | Incompatible dimensions and tied embeddings; no direct 2B→27B tensor transplant |
+| CLM | Qwen3-8B last-token embeddings, width 4096; state/action projection heads | Conceptual contrastive baseline or new shared-backbone projections | Donor embeddings/pooling/head training bind semantics; a new 5120 input path needs training and action-cache invalidation |
+| Qwen-Image text/condition encoder | Qwen3-VL; text width 4096, 36 layers; native vision branch | Original encoder as comparison; target replaces its semantic path | Tokenization, visual tokens, hidden-layer choice, positional layout and condition-image processing must be specified |
+| Visual bridge | Proposed `[B,L,5120] → [B,L',4096]` | Linear projector first; MLP/cross-attention only if needed | Sequence resampling, image masks, negative conditioning, positions and distribution alignment; no shape-only success |
+| Image DiT | 32 layers; 32 heads ×128; context width 4096; in/out latent channels64; causal conditioning true | Keep distinct generator module in same model/checkpoint | Not tensor-correspondent to causal semantic backbone; latent packing and prefix-cache layout need runtime verification |
+| Image VAE | RGBA input/output, latent width64, spatial compression16 | Retain qualified generator codec | Lesion/reconstruction validity, normalization and image-grid handling; no semantic averaging |
+| Same-base expert deltas | Identical base revision, tensor semantics and tokenizer required | Adapter composition, compatible MergeKit families and delta merging | No v2 medical experts exist yet; exact tensors and family support must be qualified |
+| MergeKit | Pinned tree includes Qwen3/3-VL definitions, no Qwen3.5/3.8-named definition observed | Tool candidate after explicit hybrid-architecture support analysis | Raw generic merging does not prove support for all recurrent buffers, vision/MTP or vocabulary axes |
+| OptMerge | Published Qwen2-VL/InternVL and later spectral-method code | Compatible semantic experts under pinned original method definition | No demonstrated Qwen3.8 or LLM-to-DiT support; separate published OptMerge from later SWUDI/ASWUDI |
+| Expert Merging++ | Layer-wise/chunk coefficients; hidden/logit expert alignment | Same-base expert study after license resolution | Donor behavior matching uses optimization/calibration resources, not free training; no heterogeneous tensor guarantee |
+
+`tensor-name-map.json` normalizes Kev text keys with `model.language_model.` and records presence in the Qwen index for every donor entry. Matching names are a necessary static condition, never proof of tensor or functional compatibility. Qwen's extra vision/MTP/LM-head entries must be retained or explicitly scoped in any later transplant; do not replace the full multimodal checkpoint with a text-only donor.
+
+The 5120→4096 bridge with bias would contain `5120*4096+4096 = 20,975,616` trainable parameters. This is an algebraic design count, not an instantiated or trained bridge. Token-only projection cannot preserve arbitrary image-grid layout by itself. A successful final encoder removal must demonstrate that condition-image semantics and reference-image processing no longer depend on a duplicate semantic foundation model.
+
+Budget identity: `P_unified = P_shared + P_LM_head + P_decision + P_bridge + P_DiT + P_VAE + P_other` with tied tensors counted once. Compare against measured separate specialists, including their encoders, tokenizers, runtimes and cache policies. Savings equal removed duplicated modules minus added integration modules; neither the donor's rounded 7B/8B labels nor index tensor-byte totals prove installed bytes, peak resident memory or energy savings.
+
+One-pass contract: prefill-only probability readout for one question and its candidate options, no autoregressive answer decoding. Report actual forward calls, question branches, option/action encoding and prefix cache reuse for multi-question batches. Upstream hybrid-backbone branching is not evidence of one forward call for an entire arbitrary multi-question request.
