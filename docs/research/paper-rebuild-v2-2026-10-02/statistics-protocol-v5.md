@@ -1,6 +1,6 @@
 # Statistics protocol V5
 
-Status: prospective freeze candidate; execution remains unauthorized.
+Status: partially bound freeze candidate; execution remains unauthorized.
 
 ## Primary estimands
 
@@ -14,7 +14,7 @@ For interventions that transform probabilities, the primary operational contrast
 
 Before confirmatory access, each pair of assurance endpoints is tagged `STRUCTURALLY_DISTINCT`, `SHARED_INPUT`, or `MATHEMATICALLY_COUPLED`. Mechanical changes among coupled endpoints are reported but cannot by themselves support the headline interference claim; the strongest claim requires a material effect on a structurally distinct or clinically consequential hard-gate property.
 
-For learned interventions, training randomness is part of the design. The number of independent training seeds is prespecified, and inference combines source-item clustering with between-training-run variability rather than treating checkpoints as fixed when they are stochastic products of training.
+For learned interventions, training randomness is part of the design. The independent training seeds are fixed at `11`, `29`, and `47`. Inference combines source-item clustering with between-training-run variability rather than treating checkpoints as fixed when they are stochastic products of training.
 
 ## Primary confirmatory family
 
@@ -24,11 +24,11 @@ The confirmatory family contains: target-property effects for each admitted inte
 
 Each property receives a prespecified meaningful margin `m_j`. A paired effect is classified as `IMPROVE`, `HARM`, `EQUIVALENT`, or `INCONCLUSIVE` using confidence intervals and valid equivalence procedures. Failure to reject zero is never evidence of equivalence.
 
-For hard-gate properties, directional harm testing takes precedence over a global mean. For the global assurance certificate, use the intersection-union formulation in `formal-assurance-framework.md`; certification requires every required axis to clear its frozen threshold.
+For hard-gate non-target properties, relative noninferiority takes precedence over a global mean: every required cell must satisfy `Delta[i,j] >= -m_j` under the frozen confidence procedure. The global assurance certificate is the intersection of these hard-gate requirements; gains elsewhere cannot compensate for a failed cell.
 
 ## Multiplicity and replication
 
-Primary non-target claims are controlled within a prespecified family using Holm or a stronger justified method. Interaction tests form a separate family. The independent-backbone replication is confirmatory only for effects nominated before seeing the replication data; it is not another search stage.
+Primary non-target claims use family-wise alpha `0.05` with Holm control in the prespecified family. Interaction tests form a separate family. The independent-backbone replication is confirmatory only for effects nominated before seeing the replication data; it is not another search stage.
 ## Interval and resampling rules
 
 Use paired or cluster-preserving bootstrap intervals only when the resampling unit matches the source-item cluster and the statistic is bootstrap-appropriate. Use exact/binomial or score intervals for simple rates when their assumptions fit. For repeated stochastic generations, summarize within source item before between-item inference unless the model explicitly treats run as a crossed random factor.
@@ -37,7 +37,7 @@ All seeds, decoding settings, prompt templates, evaluators and transformation ge
 
 ## Power and sample-size gate
 
-No confirmatory run begins until every primary estimand has: a meaningful margin, expected variance or conservative variance bound, desired power, alpha allocation, minimum effective cluster count and a missing-data rule. Pilot data may estimate nuisance parameters but may not be reused as confirmatory observations.
+The desired power is `0.90`. The planned primary RULE_ORACLE family contains `4096` source clusters. No confirmatory run begins until every primary estimand has a meaningful margin, expected variance or conservative variance bound, verified power at the frozen margin, and a missing-data rule. Pilot data may estimate nuisance parameters but may not be reused as confirmatory observations.
 
 The paper must report minimum detectable effects rather than claiming that a null result proves modularity when the study is underpowered. Equivalence claims require margins justified before confirmatory access.
 

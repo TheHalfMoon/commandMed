@@ -1,0 +1,119 @@
+{
+  "confirmatory_frozen": false,
+  "contract_only": {
+    "B1_TYPED_V1": {
+      "locus": "DECISION_INTERFACE",
+      "status": "CONTRACT_ONLY"
+    },
+    "C1_CRDI_V1": {
+      "locus": "MODEL_ADAPTATION",
+      "status": "CONTRACT_ONLY"
+    },
+    "C2_CRDI_RETAIN_V1": {
+      "locus": "MODEL_ADAPTATION",
+      "status": "CONTRACT_ONLY"
+    }
+  },
+  "execution_authority": "NO",
+  "implementations": {
+    "A1_TS_V1": {
+      "path": "src/commandmed/reliability_v5/probability.py",
+      "sha256": "cb2cf6db128b0054881e6cb744c0531110c00af2bf76d91d50e6004b4d7f1530",
+      "status": "MECHANICAL_IMPLEMENTED"
+    },
+    "A2_SELBIAS_V1": {
+      "path": "src/commandmed/reliability_v5/selection_bias.py",
+      "sha256": "420ec6e3d16011cd50f14ea1874e678f8cc561077c3feae893d619b655ac202c",
+      "status": "MECHANICAL_IMPLEMENTED"
+    },
+    "D1_DEFER_V1": {
+      "path": "src/commandmed/reliability_v5/policy.py",
+      "sha256": "c2452a35be4685ab36a595e388eed6b4f8700b8bbc3664b7381ca3020e760f55",
+      "status": "MECHANICAL_IMPLEMENTED"
+    },
+    "D2_RULETOOL_V1": {
+      "path": "src/commandmed/reliability_v5/rule_tool.py",
+      "sha256": "0e3be73636bc78619cb40219543bea2c5770fbcae6cee2be34543a59ba082a16",
+      "status": "MECHANICAL_IMPLEMENTED"
+    }
+  },
+  "model_execution": "NO",
+  "models": {
+    "development": {
+      "repo": "Qwen/Qwen3.5-0.8B-Base",
+      "revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68"
+    },
+    "independent_replication": {
+      "repo": "HuggingFaceTB/SmolLM2-1.7B",
+      "revision": "effd688a12921b4cc83e3312b6feb579f70f9c71"
+    }
+  },
+  "paid_compute": "NO",
+  "protocols": {
+    "evaluation": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/evaluation-protocol-v5.md",
+      "sha256": "247caecb5d0c277228bd7c1687498fb06868ae6e70b7dc1e1b518e25294e70dc"
+    },
+    "power_margin_gate": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/POWER_AND_MARGIN_GATE_V5.md",
+      "sha256": "694b05f2e338a4030a2131f0af19e9b95320d0fd9ebd38c4f782207ee5679d65"
+    },
+    "preregistration": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/preregistration-v5.md",
+      "sha256": "89304c5829a7a77c55d60f92a778bae950d76b2306a15f3b5506bc094987811a"
+    },
+    "rights_source_admission": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/RIGHTS_AND_SOURCE_ADMISSION_V5.md",
+      "sha256": "6003f3c91c92ed748e5c39fde260f38381ac96787b22dc439b58ba320ab98366"
+    },
+    "statistics": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/statistics-protocol-v5.md",
+      "sha256": "bfee4ca21af61df65adc27a236cb280a0effb23c58146af3be600bab989aad90"
+    }
+  },
+  "remaining_blockers": [
+    "B1_TYPED_V1 exact implementation and review",
+    "C1_CRDI_V1 exact implementation and review",
+    "C2_CRDI_RETAIN_V1 exact implementation and review",
+    "property-specific meaningful numeric margins",
+    "power verification at frozen margins",
+    "final capability-retention task rights and identity",
+    "final quarantine procedure and confirmatory source identity binding",
+    "final clean commit binding after review"
+  ],
+  "repository": {
+    "branch": "research/commandmed-paper-first-principles",
+    "dirty": true,
+    "head": "d237c60dbb40ce647c1e94531722627375b2a513"
+  },
+  "rule_oracle": {
+    "calculator_count": 64,
+    "case_generator": {
+      "path": "src/commandmed/reliability_v5/case_generator.py",
+      "sha256": "20e48a56f5f61cc18cad74b62f084e029fd9225f8961afe1de9112e6c61971f9"
+    },
+    "case_identities": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json",
+      "sha256": "141555654a21871aad0b67cbc48a3a10983f3e4cd3e44bc9ea6e3524651a6de4"
+    },
+    "cases_per_calculator": 64,
+    "manifest": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json",
+      "sha256": "5d53b8d99600a04fc507af5e9fe7335ae7109711e3134f51bd0e7ce97f739c2d"
+    },
+    "source_cluster_count": 4096
+  },
+  "schema": "commandmed-v5-scientific-freeze-bindings",
+  "schema_version": "1.0",
+  "shared_mechanics": {
+    "contracts": {
+      "path": "src/commandmed/reliability_v5/contracts.py",
+      "sha256": "4c47e2eed005afa7ef6e6e6b1fcb681be32a59a23c453d9484dd6555ab72b23f"
+    },
+    "registry": {
+      "path": "src/commandmed/reliability_v5/registry.py",
+      "sha256": "ffa74f3ce1511ccd602503101483bea7830e579002c466c2ce2329f2219fd50e"
+    }
+  },
+  "training": "NO"
+}

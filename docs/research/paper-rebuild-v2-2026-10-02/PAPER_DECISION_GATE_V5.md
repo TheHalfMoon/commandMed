@@ -6,7 +6,7 @@ Status: `PRIMARY_PAPER_SELECTED_CONDITIONALLY`; `SCIENTIFIC_FREEZE_OPEN`; `EXECU
 
 **When Reliability Fixes Collide: Cross-Property Interference in Medical Foundation Model Decisions**
 
-Primary scientific object: the **reliability intervention matrix** — paired changes across independently reported assurance properties after targeted reliability interventions.
+Primary scientific object: the **reliability intervention matrix** â€” paired changes across independently reported assurance properties after targeted reliability interventions.
 
 Formal foundation: `formal-assurance-framework.md`.
 
@@ -65,3 +65,19 @@ The surviving primary thesis is narrower: whether targeted reliability intervent
 
 Decision: `KEEP_V5_AS_PRIMARY_CONDITIONAL`; `NOVELTY_NOT_CLEARED_FOR_FIRST_CLAIMS`; `SCIENTIFIC_FREEZE_OPEN`; `EXECUTION_NOT_AUTHORIZED`.
 
+
+## 2026-10-02 pre-freeze binding pass
+
+The V5 paper remains primary and conditional. The study is now narrower and more reproducible, but not confirmatory-frozen.
+
+Bound in this pass:
+- exact Qwen3.5-0.8B-Base primary revision and SmolLM2-1.7B independent-family revision;
+- public-domain AgentMD/RiskCalcs/RiskQA lineage at exact repository/blob identities;
+- prospective primary `RULE_ORACLE` size `4096` (`64 x 64`) and secondary RiskQA `N=350`;
+- deterministic static RiskCalcs selectors, including a stricter numeric/Boolean threshold rule-oracle audit with `734` eligible static candidates, each exposing at least 16 prospective input states, and a 64-entry candidate manifest;
+- family-wise alpha `0.05`, Holm control, desired power `0.90`, and learned-intervention seeds `11/29/47`;
+- relative hard-gate noninferiority `Delta[i,j] >= -m_j` rather than an arbitrary universal clinical threshold.
+
+Still unresolved: final 64-calculator domain/interpretation admission, synthetic generator hash, intervention implementation hashes, numeric native-unit margins from development-only repeatability/pilot evidence, final power at those margins, a lawful retention task, and confirmatory quarantine identities.
+
+Decision remains: `KEEP_V5_AS_PRIMARY_CONDITIONAL`; `SCIENTIFIC_FREEZE_OPEN`; `EXECUTION_NOT_AUTHORIZED`.

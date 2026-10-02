@@ -28,3 +28,21 @@ Date: 2026-10-02. Scope: documentation/research packet only. No model inference,
 ## Scientific state after verification
 
 V5 remains `PRIMARY_PAPER_SELECTED_CONDITIONALLY`, `NOVELTY_NOT_CLEARED_FOR_FIRST_CLAIMS`, `SCIENTIFIC_FREEZE_OPEN`, and `EXECUTION_NOT_AUTHORIZED`. Static verification does not promote any scientific claim.
+## 2026-10-03 implementation and freeze-candidate update
+
+- The V5 mechanical intervention layer is now implemented for `A1_TS_V1`, `A2_SELBIAS_V1`, `D1_DEFER_V1`, and `D2_RULETOOL_V1`. `B1_TYPED_V1`, `C1_CRDI_V1`, and `C2_CRDI_RETAIN_V1` remain explicitly `CONTRACT_ONLY`.
+- The strict RiskCalcs selector admits only statically parsed Boolean/numeric-threshold rules with no string domains, input arithmetic/calls/subscripts/attributes, at most eight inputs, and prospective generated input space of at least 64 states.
+- `413` calculators passed that strict static gate; `64` are selected deterministically before model outputs.
+- The prospective primary RULE_ORACLE design is now `4096` source clusters (`64 calculators x 64 cases`). No clinical calculator function was executed to create these identities.
+- Compact case binding: ordered 4096 case IDs SHA-256 = `eb5f4f2eb8bf473355e8f0a1215cd3be27d2d9a37a8f6f77ff1920e92a10e009`.
+- `rule-oracle-case-index-v5.json` replaces the large generated case payload; exact cases remain deterministically regenerable from the bound source manifest and generator.
+- V5-focused tests: `39 passed in 0.19s`.
+- Full repository tests after the implementation: `1091 passed in 24.23s`.
+- `python -m compileall` passed for the V5 implementation, freeze tools, and tests.
+- Ruff is not installed on this host; no Ruff result is claimed and no package was installed merely to obtain one.
+- Alibaba Open Code Review `v1.12.11 (a758d9c)` was run in zero-cost delegation mode. `ocr delegate preview` and `ocr delegate rule` resolved the Python review policy for the V5 code/freeze tools/tests. Host-agent review under those rules plus targeted security/error-pattern scanning found no blocking correctness/security defect. OCR's own default-path policy excluded test files from preview, so tests were supplied explicitly to `ocr delegate rule` and inspected with the same Python rule.
+- Jev remains `DEFERRED_ZERO_COST_POLICY`; no paid Jev call is claimed.
+
+## Literature refresh
+
+A new bounded adversarial refresh is recorded in `literature-refresh-v5-2026-10-03.md`. MedHELM, CSEDB, the EMNLP trustworthy-medical-QA survey, Gu et al. on probabilistic medical predictions, Boie et al. on medical confidence calibration, Matta et al. on calibration versus probabilistic validity, CURA, and CALIN further narrow the paper. The refresh does not clear a `first` claim. The surviving candidate gap is the matched intervention-to-assurance causal effect matrix with preregistered ordered interactions, exact rule-oracle cases, noncompensatory decision logic, and independent-family replication.
