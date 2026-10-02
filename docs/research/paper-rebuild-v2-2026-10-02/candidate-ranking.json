@@ -1,0 +1,241 @@
+{
+  "scale": "1 weak to 5 strong; ordinal reasoned judgments, not empirical effects or acceptance probabilities. Means are transparent prioritization heuristics only. Hard gates override rank.",
+  "criteria": [
+    "novelty",
+    "importance",
+    "falsifiability",
+    "reproducibility",
+    "baselines",
+    "zero_cost_feasibility",
+    "meaningful_negative_result",
+    "publication_strength",
+    "concurrent_differentiation",
+    "phd_portfolio_value",
+    "artifact_value"
+  ],
+  "candidates": [
+    {
+      "id": "T5",
+      "title": "Medical Readouts under Matched Supervision: Calibration, Selective Risk, and Capability Interference",
+      "criteria": {
+        "novelty": 3,
+        "importance": 5,
+        "falsifiability": 5,
+        "reproducibility": 5,
+        "baselines": 5,
+        "zero_cost_feasibility": 4,
+        "meaningful_negative_result": 5,
+        "publication_strength": 4,
+        "concurrent_differentiation": 3,
+        "phd_portfolio_value": 5,
+        "artifact_value": 5
+      },
+      "selection": "PRIMARY_CONDITIONAL",
+      "rationale": "Separates readout, decision supervision and maintenance objective with same-backbone probes and cross-family replication. Visual Jev, Dyad, Uni-Med and Med-MoE-LoRA may reduce the contribution to replication; no new paradigm is claimed.",
+      "threat_keys": [
+        "arxiv260925845",
+        "arxiv260936116",
+        "arxiv240917508",
+        "arxiv260107935"
+      ],
+      "equal_weight_mean": 4.455,
+      "science_priority_mean": 4.2,
+      "resource_priority_mean": 4.75
+    },
+    {
+      "id": "T7",
+      "title": "Evidence-Conditioned Calibration Transport under Medical Source Failures",
+      "criteria": {
+        "novelty": 2,
+        "importance": 5,
+        "falsifiability": 5,
+        "reproducibility": 4,
+        "baselines": 5,
+        "zero_cost_feasibility": 3,
+        "meaningful_negative_result": 5,
+        "publication_strength": 3,
+        "concurrent_differentiation": 2,
+        "phd_portfolio_value": 4,
+        "artifact_value": 4
+      },
+      "selection": "SECONDARY_CONDITIONAL",
+      "rationale": "Study transfer of a fixed calibration map across clinically valid source failures. CLEAR, CliniCARE, MemSafe, Visual Jev, SURE-RAG and RULE cover most primitives; a generic evidence-aware head or benchmark is rejected as novelty.",
+      "threat_keys": [
+        "arxiv260916301",
+        "arxiv260807796",
+        "arxiv260932269",
+        "arxiv260925845",
+        "arxiv260503534",
+        "arxiv240705131"
+      ],
+      "equal_weight_mean": 3.818,
+      "science_priority_mean": 3.8,
+      "resource_priority_mean": 4.0
+    },
+    {
+      "id": "T8",
+      "title": "Calibration-preserving merging under noncompensable medical constraints",
+      "criteria": {
+        "novelty": 3,
+        "importance": 5,
+        "falsifiability": 4,
+        "reproducibility": 2,
+        "baselines": 5,
+        "zero_cost_feasibility": 2,
+        "meaningful_negative_result": 5,
+        "publication_strength": 3,
+        "concurrent_differentiation": 3,
+        "phd_portfolio_value": 4,
+        "artifact_value": 4
+      },
+      "selection": "DEFERRED",
+      "rationale": "OptMerge, Expert Merging, uncertainty-aware merging and safety degradation already threaten merging novelty. Requires compatible lawfully usable experts and clinically defensible hard gates; zero-cost feasibility is low.",
+      "threat_keys": [
+        "arxiv250519892",
+        "arxiv250925712",
+        "arxiv240614563"
+      ],
+      "equal_weight_mean": 3.636,
+      "science_priority_mean": 4.0,
+      "resource_priority_mean": 3.25
+    },
+    {
+      "id": "T2",
+      "title": "Native calibrated medical decision head",
+      "criteria": {
+        "novelty": 1,
+        "importance": 4,
+        "falsifiability": 5,
+        "reproducibility": 4,
+        "baselines": 5,
+        "zero_cost_feasibility": 4,
+        "meaningful_negative_result": 4,
+        "publication_strength": 2,
+        "concurrent_differentiation": 1,
+        "phd_portfolio_value": 3,
+        "artifact_value": 4
+      },
+      "selection": "REJECT_GENERIC_NOVELTY",
+      "rationale": "Dyad, Chinese-Jev and Visual Jev directly threaten native-head novelty. Visual Jev reports no consistent typed-head advantage under a matched control. A head alone is not a contribution.",
+      "threat_keys": [
+        "arxiv260936116",
+        "arxiv260936965",
+        "arxiv260925845"
+      ],
+      "equal_weight_mean": 3.364,
+      "science_priority_mean": 3.0,
+      "resource_priority_mean": 4.25
+    },
+    {
+      "id": "T4",
+      "title": "Medical capability per byte and joule",
+      "criteria": {
+        "novelty": 2,
+        "importance": 4,
+        "falsifiability": 4,
+        "reproducibility": 3,
+        "baselines": 4,
+        "zero_cost_feasibility": 2,
+        "meaningful_negative_result": 4,
+        "publication_strength": 3,
+        "concurrent_differentiation": 2,
+        "phd_portfolio_value": 4,
+        "artifact_value": 5
+      },
+      "selection": "DEFERRED",
+      "rationale": "Parameter count is an inadequate systems endpoint. Hardware energy measurement and medical retention margins are not available. A static byte estimate cannot establish a Pareto frontier.",
+      "threat_keys": [
+        "arxiv260925845"
+      ],
+      "equal_weight_mean": 3.364,
+      "science_priority_mean": 3.2,
+      "resource_priority_mean": 3.5
+    },
+    {
+      "id": "T6",
+      "title": "Arabic/English medical selective calibration",
+      "criteria": {
+        "novelty": 2,
+        "importance": 5,
+        "falsifiability": 4,
+        "reproducibility": 2,
+        "baselines": 4,
+        "zero_cost_feasibility": 2,
+        "meaningful_negative_result": 4,
+        "publication_strength": 3,
+        "concurrent_differentiation": 2,
+        "phd_portfolio_value": 4,
+        "artifact_value": 4
+      },
+      "selection": "DEFERRED",
+      "rationale": "BiMediX, MedAraBench, MedArabiQ, Chinese-Jev and cross-lingual consistency studies make multilingual extension incremental unless semantic equivalence and calibrated transport are rigorously established. Qualified bilingual annotation is a boundary.",
+      "threat_keys": [
+        "arxiv240213253",
+        "arxiv250503427",
+        "arxiv260201714",
+        "arxiv260907687"
+      ],
+      "equal_weight_mean": 3.273,
+      "science_priority_mean": 3.4,
+      "resource_priority_mean": 3.0
+    },
+    {
+      "id": "T3",
+      "title": "Semantic encoder replacement for understanding and image generation",
+      "criteria": {
+        "novelty": 2,
+        "importance": 4,
+        "falsifiability": 4,
+        "reproducibility": 2,
+        "baselines": 4,
+        "zero_cost_feasibility": 1,
+        "meaningful_negative_result": 4,
+        "publication_strength": 3,
+        "concurrent_differentiation": 2,
+        "phd_portfolio_value": 4,
+        "artifact_value": 4
+      },
+      "selection": "OPTIONAL_FOLLOW_UP",
+      "rationale": "PixelUMM and unified models threaten encoder-removal novelty; Qwen-Image conditioning is more than width matching. A stronger resource result needs real hardware and licensed image evidence.",
+      "threat_keys": [
+        "arxiv260938597",
+        "arxiv250514683",
+        "arxiv241013848"
+      ],
+      "equal_weight_mean": 3.091,
+      "science_priority_mean": 3.2,
+      "resource_priority_mean": 2.75
+    },
+    {
+      "id": "T1",
+      "title": "Single-checkpoint heterogeneous capability fusion",
+      "criteria": {
+        "novelty": 1,
+        "importance": 4,
+        "falsifiability": 3,
+        "reproducibility": 2,
+        "baselines": 3,
+        "zero_cost_feasibility": 1,
+        "meaningful_negative_result": 3,
+        "publication_strength": 2,
+        "concurrent_differentiation": 1,
+        "phd_portfolio_value": 3,
+        "artifact_value": 3
+      },
+      "selection": "DEFERRED",
+      "rationale": "MedUAG, UniMedVL, SynerMedGen, BAGEL, PixelUMM already unify capabilities; no evidence that consolidation causes a clinical gain. Large heterogeneous rights/runtime burden.",
+      "threat_keys": [
+        "arxiv260818937",
+        "arxiv251015710",
+        "arxiv260508724",
+        "arxiv250514683",
+        "arxiv260938597"
+      ],
+      "equal_weight_mean": 2.364,
+      "science_priority_mean": 2.4,
+      "resource_priority_mean": 2.25
+    }
+  ],
+  "selection": "T5 primary; T7 secondary; T3 optional follow-up",
+  "no_candidate_ready_for_execution": true
+}

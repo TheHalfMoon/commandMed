@@ -1,0 +1,14 @@
+# Claim ledger V5
+
+Status: all scientific claims default to `UNPROVEN` until the frozen confirmatory protocol is executed.
+
+| ID | Prospective claim | Evidence required | Current status |
+|---|---|---|---|
+| V5-C01 | Reliability properties cannot be safely substituted for one another in the studied medical decision setting. | Formal non-implication witnesses plus empirical cross-property contrasts. | PARTIAL_THEORY_ONLY |
+| V5-C02 | At least one targeted reliability intervention materially changes a non-target assurance property. | Paired confirmatory effect with prespecified meaningful margin and multiplicity handling. | UNPROVEN |
+| V5-C03 | At least one target-improving intervention harms a noncompensable assurance property. | Replicated harm classification on a hard-gate axis. | UNPROVEN |
+| V5-C04 | Conventional compensatory scoring can reverse a deployment conclusion relative to non-compensatory assurance. | Same systems evaluated under both frozen rules with consequential failure traceability. | UNPROVEN |
+| V5-C05 | At least one selected intervention pair has a non-additive cross-property interaction. | Preregistered factorial contrast ordered `Gamma[a|b,j]` (plus `Kappa` when both orders are meaningful) with independent-family replication. | UNPROVEN |
+| V5-C06 | The main cross-property effect generalizes beyond one backbone family. | Directionally replicated effect on a second independently structured open-weight family. | UNPROVEN |
+| V5-C07 | Deterministic clinical-rule routing improves action validity without implying broader medical reliability. | Qualified rule oracle, same extraction inputs, tool/no-tool contrast, full assurance profile. | UNPROVEN |
+| V5-C08 | V5 is novel relative to prior medical multi-dimensional evaluation work. | Systematic prior-art search finding no substantially identical controlled intervention matrix design. | CONDITIONALLY_SUPPORTED |

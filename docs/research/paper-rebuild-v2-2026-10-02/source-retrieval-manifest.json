@@ -1,0 +1,2859 @@
+{
+  "scope": "Public metadata, abstracts, primary-paper HTML, licenses and source text inspected statically. No weights, dataset payloads, clinical records, provider inference calls or copied donor implementation. Raw response bodies are retained locally; public hashes identify them.",
+  "records": [
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aunified+OR+all%3Afoundation%29+AND+%28all%3Ageneration+OR+all%3Amultimodal%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:47:57.779213+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aunified+OR+all%3Afoundation%29+AND+%28all%3Ageneration+OR+all%3Amultimodal%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "c41a6de035246b049bac8461eff42ba9bb563b6ee1e519efebd87c08dac8c8aa",
+      "bytes": 29396,
+      "snapshot_id": "arxiv-search-00-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aunified+OR+all%3Afoundation%29+AND+%28all%3Ageneration+OR+all%3Amultimodal%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:01.629622+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aunified+OR+all%3Afoundation%29+AND+%28all%3Ageneration+OR+all%3Amultimodal%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "40019a7debb78cbc1c2a9314520d31db10f18eaf00d6df5caa4d3228403fa1cb",
+      "bytes": 32531,
+      "snapshot_id": "arxiv-search-00-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Aautoregressive+AND+%28all%3Adiffusion+OR+all%3Aflow%29%29+AND+%28all%3Aunified+OR+all%3Amultimodal%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:05.269386+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Aautoregressive+AND+%28all%3Adiffusion+OR+all%3Aflow%29%29+AND+%28all%3Aunified+OR+all%3Amultimodal%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "4a8c74bcef3244bec74217900292befebaa5f4283746aa512bb5ca92bf584e49",
+      "bytes": 28668,
+      "snapshot_id": "arxiv-search-01-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Aautoregressive+AND+%28all%3Adiffusion+OR+all%3Aflow%29%29+AND+%28all%3Aunified+OR+all%3Amultimodal%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:08.935052+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Aautoregressive+AND+%28all%3Adiffusion+OR+all%3Aflow%29%29+AND+%28all%3Aunified+OR+all%3Amultimodal%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "ae2779523dc7170c67146716689da1c625374d755b823e309e1866bef81dfd6b",
+      "bytes": 28107,
+      "snapshot_id": "arxiv-search-01-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Adecision+OR+all%3Aprobability%29+AND+%28all%3Ahead+OR+all%3Atyped+OR+all%3ASystem-One+OR+all%3AJev+OR+all%3AKev%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:12.469093+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Adecision+OR+all%3Aprobability%29+AND+%28all%3Ahead+OR+all%3Atyped+OR+all%3ASystem-One+OR+all%3AJev+OR+all%3AKev%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "f7ce70c98e50a4cf43a052518c353e1a36e5bb916afbf2a71a86510dae628378",
+      "bytes": 24678,
+      "snapshot_id": "arxiv-search-02-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Adecision+OR+all%3Aprobability%29+AND+%28all%3Ahead+OR+all%3Atyped+OR+all%3ASystem-One+OR+all%3AJev+OR+all%3AKev%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:16.374987+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Adecision+OR+all%3Aprobability%29+AND+%28all%3Ahead+OR+all%3Atyped+OR+all%3ASystem-One+OR+all%3AJev+OR+all%3AKev%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "d2ae61ca2b56469aab5894aae77ae3b81fd3c3de1767e7fff5f9ff2f26bd9051",
+      "bytes": 24394,
+      "snapshot_id": "arxiv-search-02-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Acalibration+OR+all%3Aselective+OR+all%3Aabstention%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:20.022804+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Acalibration+OR+all%3Aselective+OR+all%3Aabstention%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "b2599434c5a3e23114d36387c253f8ceb3551958dbed94c0f5736212735c381e",
+      "bytes": 28552,
+      "snapshot_id": "arxiv-search-03-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Acalibration+OR+all%3Aselective+OR+all%3Aabstention%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:23.908333+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Acalibration+OR+all%3Aselective+OR+all%3Aabstention%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "8ab9079d3bb203b31bbdc0e6cc04f4eecd15d75f1bdd9d416d1b375dde5996a5",
+      "bytes": 27785,
+      "snapshot_id": "arxiv-search-03-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3AArabic+OR+all%3Abilingual+OR+all%3Amultilingual%29+AND+%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Acalibration+OR+all%3Abenchmark+OR+all%3Adecision%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:28.460059+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3AArabic+OR+all%3Abilingual+OR+all%3Amultilingual%29+AND+%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Acalibration+OR+all%3Abenchmark+OR+all%3Adecision%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "0193ebc0106ea5316be3919f7eba84479e2c6414a718160a4eee0667eb01b781",
+      "bytes": 27020,
+      "snapshot_id": "arxiv-search-04-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3AArabic+OR+all%3Abilingual+OR+all%3Amultilingual%29+AND+%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Acalibration+OR+all%3Abenchmark+OR+all%3Adecision%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:32.345781+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3AArabic+OR+all%3Abilingual+OR+all%3Amultilingual%29+AND+%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Acalibration+OR+all%3Abenchmark+OR+all%3Adecision%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "95a9ffba49f18fe4866bc87ac557155ca36a31bfdcab62192b19377c942be17b",
+      "bytes": 25939,
+      "snapshot_id": "arxiv-search-04-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aretrieval+OR+all%3Aevidence%29+AND+%28all%3Aconflict+OR+all%3Acontradiction+OR+all%3Asufficiency+OR+all%3Aprovenance%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:36.621545+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aretrieval+OR+all%3Aevidence%29+AND+%28all%3Aconflict+OR+all%3Acontradiction+OR+all%3Asufficiency+OR+all%3Aprovenance%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "627123154127a90f3074828bdf59a6caf17c194c5b68e5d7862f8cae90ab4c23",
+      "bytes": 25860,
+      "snapshot_id": "arxiv-search-05-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aretrieval+OR+all%3Aevidence%29+AND+%28all%3Aconflict+OR+all%3Acontradiction+OR+all%3Asufficiency+OR+all%3Aprovenance%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:40.501729+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aretrieval+OR+all%3Aevidence%29+AND+%28all%3Aconflict+OR+all%3Acontradiction+OR+all%3Asufficiency+OR+all%3Aprovenance%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "9116b4602a8c931e6e9b02c50b9a2305b2df7c222aef736665934571eda4ed9b",
+      "bytes": 27061,
+      "snapshot_id": "arxiv-search-05-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=all%3Amerging+AND+%28all%3Aheterogeneous+OR+all%3Amultimodal+OR+all%3Acalibration+OR+all%3Asafety%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:45.259106+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=all%3Amerging+AND+%28all%3Aheterogeneous+OR+all%3Amultimodal+OR+all%3Acalibration+OR+all%3Asafety%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "0bcce970dc0242620d81be87ee7251bf049fc71d95b4b4b37ac4967415880091",
+      "bytes": 27696,
+      "snapshot_id": "arxiv-search-06-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=all%3Amerging+AND+%28all%3Aheterogeneous+OR+all%3Amultimodal+OR+all%3Acalibration+OR+all%3Asafety%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:49.057021+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=all%3Amerging+AND+%28all%3Aheterogeneous+OR+all%3Amultimodal+OR+all%3Acalibration+OR+all%3Asafety%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "c29823e5667909373422637890a018fa6e24a8516311e11492e23cdbd8bd2b45",
+      "bytes": 26642,
+      "snapshot_id": "arxiv-search-06-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=all%3Amerging+AND+%28all%3ATIES+OR+all%3ADARE+OR+all%3ADELLA+OR+all%3AModel-Stock+OR+all%3AOptMerge+OR+all%3AExpert-Merging%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:53.639474+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=all%3Amerging+AND+%28all%3ATIES+OR+all%3ADARE+OR+all%3ADELLA+OR+all%3AModel-Stock+OR+all%3AOptMerge+OR+all%3AExpert-Merging%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "a01132e4fe2915ab84592fe1b380b098fe656d90dfca1be23d9a758958a59282",
+      "bytes": 26523,
+      "snapshot_id": "arxiv-search-07-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=all%3Amerging+AND+%28all%3ATIES+OR+all%3ADARE+OR+all%3ADELLA+OR+all%3AModel-Stock+OR+all%3AOptMerge+OR+all%3AExpert-Merging%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:48:58.646750+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=all%3Amerging+AND+%28all%3ATIES+OR+all%3ADARE+OR+all%3ADELLA+OR+all%3AModel-Stock+OR+all%3AOptMerge+OR+all%3AExpert-Merging%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "283e507e9028d41d5184befaa2237fdbe381bf468835deb37f953845ae7723b3",
+      "bytes": 28179,
+      "snapshot_id": "arxiv-search-07-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Aencoder+OR+all%3Arepresentation%29+AND+%28all%3Areplacement+OR+all%3Aalignment%29+AND+%28all%3Amultimodal+OR+all%3Adiffusion%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:49:02.421232+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Aencoder+OR+all%3Arepresentation%29+AND+%28all%3Areplacement+OR+all%3Aalignment%29+AND+%28all%3Amultimodal+OR+all%3Adiffusion%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "a63bff4cd37e4dcf29200bcd1243ac3e7d274d2eee939983616970f7d7af15dd",
+      "bytes": 24139,
+      "snapshot_id": "arxiv-search-08-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Aencoder+OR+all%3Arepresentation%29+AND+%28all%3Areplacement+OR+all%3Aalignment%29+AND+%28all%3Amultimodal+OR+all%3Adiffusion%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:49:06.271727+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Aencoder+OR+all%3Arepresentation%29+AND+%28all%3Areplacement+OR+all%3Aalignment%29+AND+%28all%3Amultimodal+OR+all%3Adiffusion%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "40422d28b860fad8e0b7b7eec2623c0b642f55fae7dfdbe6611f7c5a4c0bf736",
+      "bytes": 26752,
+      "snapshot_id": "arxiv-search-08-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Ainterference+OR+all%3Atransfer+OR+all%3Amultitask%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:49:10.037946+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Ainterference+OR+all%3Atransfer+OR+all%3Amultitask%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "7d64fc9d8328a0b54671039051d737cbb04ee2516909adb128330360d8c51c54",
+      "bytes": 26103,
+      "snapshot_id": "arxiv-search-09-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Ainterference+OR+all%3Atransfer+OR+all%3Amultitask%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:49:13.743874+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Ainterference+OR+all%3Atransfer+OR+all%3Amultitask%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "114a841e7b729016d3bafcb610d4e02230a0496af1893e6a784e93d9e1f85970",
+      "bytes": 27921,
+      "snapshot_id": "arxiv-search-09-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3AFHIR+OR+all%3Agrounded+OR+all%3Aprovenance%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:49:17.465469+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3AFHIR+OR+all%3Agrounded+OR+all%3Aprovenance%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "641c360cb41fa42182d8b54e12ef342d25e6ba687014d8b871d5bf7101bfd777",
+      "bytes": 26505,
+      "snapshot_id": "arxiv-search-10-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3AFHIR+OR+all%3Agrounded+OR+all%3Aprovenance%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:49:21.200828+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3AFHIR+OR+all%3Agrounded+OR+all%3Aprovenance%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "23d4630a19327f08b2844259284e5aaeab2d4fd1290ced71c3bb42ddfe0c6780",
+      "bytes": 27651,
+      "snapshot_id": "arxiv-search-10-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aefficiency+OR+all%3Ajoule+OR+all%3Aenergy+OR+all%3Acompression%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:49:25.024868+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aefficiency+OR+all%3Ajoule+OR+all%3Aenergy+OR+all%3Acompression%29&start=0&max_results=10&sortBy=relevance&sortOrder=descending",
+      "sha256": "f75373ecf4e4dab08c3fc8117f9421c792d6b5894589703fef28cdd3d5fdfc79",
+      "bytes": 29976,
+      "snapshot_id": "arxiv-search-11-relevance.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aefficiency+OR+all%3Ajoule+OR+all%3Aenergy+OR+all%3Acompression%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at_utc": "2026-10-01T20:49:28.994484+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3Aefficiency+OR+all%3Ajoule+OR+all%3Aenergy+OR+all%3Acompression%29&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending",
+      "sha256": "6519ab0af6ad902d6abd538e1638ad7db310d82c8037f0094b037083012bdf4e",
+      "bytes": 26334,
+      "snapshot_id": "arxiv-search-11-submittedDate.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28large+language+model%29+AND+%28calibration+OR+selective+prediction+OR+abstention%29+AND+%28medical+OR+clinical%29&retmode=json&retmax=20&sort=relevance",
+      "retrieved_at_utc": "2026-10-01T20:49:32.647581+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28large+language+model%29+AND+%28calibration+OR+selective+prediction+OR+abstention%29+AND+%28medical+OR+clinical%29&retmode=json&retmax=20&sort=relevance",
+      "sha256": "ff77fb41d6232bdde2ab6d12a984c2726f266bdb5c845c84ba9ada2b594db68d",
+      "bytes": 6215,
+      "snapshot_id": "pubmed-search-0.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=39405325%2C39993309%2C40489764%2C36366745%2C41034564%2C39913643%2C39509695%2C41128019%2C41429903%2C39115792%2C37341477%2C40550116%2C30353541%2C42310827%2C39396423%2C41463627%2C41399476%2C39226873%2C42349387%2C40385411&retmode=xml",
+      "retrieved_at_utc": "2026-10-01T20:49:34.085228+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=39405325%2C39993309%2C40489764%2C36366745%2C41034564%2C39913643%2C39509695%2C41128019%2C41429903%2C39115792%2C37341477%2C40550116%2C30353541%2C42310827%2C39396423%2C41463627%2C41399476%2C39226873%2C42349387%2C40385411&retmode=xml",
+      "sha256": "5e4931584782eee49c39463b335ded99eb4fb7f6f04e79b764f730e7d1cfdf6c",
+      "bytes": 635613,
+      "snapshot_id": "pubmed-records-0.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28large+language+model%29+AND+%28retrieval+OR+evidence%29+AND+%28contradiction+OR+provenance+OR+uncertainty%29&retmode=json&retmax=20&sort=relevance",
+      "retrieved_at_utc": "2026-10-01T20:49:35.836658+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28large+language+model%29+AND+%28retrieval+OR+evidence%29+AND+%28contradiction+OR+provenance+OR+uncertainty%29&retmode=json&retmax=20&sort=relevance",
+      "sha256": "c709f8baa07104d1a0f616dbf42fe8b89b6e0b491e931959b91649acaf3f85eb",
+      "bytes": 2534,
+      "snapshot_id": "pubmed-search-1.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=39405325%2C38658283%2C30742121%2C29032195%2C40773383%2C27115477%2C41562412%2C39593937%2C27557146%2C36396980%2C38156063%2C41348775%2C38487804%2C40548125%2C10630172%2C40323323%2C41819775%2C41606089%2C40840437%2C40791721&retmode=xml",
+      "retrieved_at_utc": "2026-10-01T20:49:36.787037+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=39405325%2C38658283%2C30742121%2C29032195%2C40773383%2C27115477%2C41562412%2C39593937%2C27557146%2C36396980%2C38156063%2C41348775%2C38487804%2C40548125%2C10630172%2C40323323%2C41819775%2C41606089%2C40840437%2C40791721&retmode=xml",
+      "sha256": "41cc464f19f8e83d0fcb7729aa44d59f6f096eb0d3a10dc9bee25ae941cc31ff",
+      "bytes": 535605,
+      "snapshot_id": "pubmed-records-1.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28Arabic+OR+bilingual%29+AND+%28medical+OR+clinical%29+AND+%28large+language+model%29&retmode=json&retmax=20&sort=relevance",
+      "retrieved_at_utc": "2026-10-01T20:49:39.223465+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28Arabic+OR+bilingual%29+AND+%28medical+OR+clinical%29+AND+%28large+language+model%29&retmode=json&retmax=20&sort=relevance",
+      "sha256": "49b42d620b109cd471b3b7d202988f818d5efc12d9d1857707960c7950181a11",
+      "bytes": 3711,
+      "snapshot_id": "pubmed-search-2.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=40663377%2C42337008%2C40957651%2C41321712%2C40730812%2C39688492%2C39333468%2C39286413%2C41055064%2C40802989%2C40429278%2C41571930%2C39661968%2C41596056%2C38508675%2C35534148%2C42174989%2C34042769%2C37582318%2C41039605&retmode=xml",
+      "retrieved_at_utc": "2026-10-01T20:49:40.470922+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=40663377%2C42337008%2C40957651%2C41321712%2C40730812%2C39688492%2C39333468%2C39286413%2C41055064%2C40802989%2C40429278%2C41571930%2C39661968%2C41596056%2C38508675%2C35534148%2C42174989%2C34042769%2C37582318%2C41039605&retmode=xml",
+      "sha256": "107f8c915a5fb0cb2ff9a017ded0f4f474e8c756074c34cc5deabb68f087f2fa",
+      "bytes": 471124,
+      "snapshot_id": "pubmed-records-2.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28medical+foundation+model%29+AND+%28multimodal+OR+image+generation%29&retmode=json&retmax=20&sort=relevance",
+      "retrieved_at_utc": "2026-10-01T20:49:42.175559+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28medical+foundation+model%29+AND+%28multimodal+OR+image+generation%29&retmode=json&retmax=20&sort=relevance",
+      "sha256": "8dadecef0e8b4bdb43d8845294026221b57d722c0a75541f9cd1dfce54c9b730",
+      "bytes": 8396,
+      "snapshot_id": "pubmed-search-3.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=39511143%2C37757969%2C27071089%2C38519154%2C40121941%2C40423774%2C39169261%2C42509078%2C40887649%2C36947045%2C34664633%2C40187356%2C40886858%2C38839623%2C40107410%2C39189415%2C40865647%2C40879032%2C41637851%2C41495192&retmode=xml",
+      "retrieved_at_utc": "2026-10-01T20:49:43.806043+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=39511143%2C37757969%2C27071089%2C38519154%2C40121941%2C40423774%2C39169261%2C42509078%2C40887649%2C36947045%2C34664633%2C40187356%2C40886858%2C38839623%2C40107410%2C39189415%2C40865647%2C40879032%2C41637851%2C41495192&retmode=xml",
+      "sha256": "1522e5c8aa3a037e7ed44b30dc835049e590cc934e49e78ac5248fb7a62df72b",
+      "bytes": 517598,
+      "snapshot_id": "pubmed-records-3.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28clinical+decision+support%29+AND+%28large+language+model%29+AND+%28evaluation+OR+reproducibility%29&retmode=json&retmax=20&sort=relevance",
+      "retrieved_at_utc": "2026-10-01T20:49:45.337803+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28clinical+decision+support%29+AND+%28large+language+model%29+AND+%28evaluation+OR+reproducibility%29&retmode=json&retmax=20&sort=relevance",
+      "sha256": "a2340d99cdb8fe0871e62b9d00dc075ef3b6afa22d0de0493f37dbe6dcf6a8b7",
+      "bytes": 2928,
+      "snapshot_id": "pubmed-search-4.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=40055694%2C40267970%2C40997804%2C41559415%2C42060751%2C41652123%2C41726433%2C39760952%2C40479778%2C39508992%2C38810498%2C41064862%2C40911841%2C42380678%2C41850234%2C41231618%2C40481345%2C40775862%2C40721763%2C38452289&retmode=xml",
+      "retrieved_at_utc": "2026-10-01T20:49:46.343312+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=40055694%2C40267970%2C40997804%2C41559415%2C42060751%2C41652123%2C41726433%2C39760952%2C40479778%2C39508992%2C38810498%2C41064862%2C40911841%2C42380678%2C41850234%2C41231618%2C40481345%2C40775862%2C40721763%2C38452289&retmode=xml",
+      "sha256": "24bf544b5cf2fba1385c7eecfde00f47d2bc6b1c0608460bda7cd8c1fa29ad41",
+      "bytes": 392053,
+      "snapshot_id": "pubmed-records-4.xml",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.openalex.org/works?search=medical+language+model+calibration+abstention+evidence&per-page=10",
+      "retrieved_at_utc": "2026-10-01T20:49:49.171248+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.openalex.org/works?search=medical+language+model+calibration+abstention+evidence&per-page=10",
+      "sha256": "56a4cf828a0e105798a03dc5fe59b22c3c7165c7108f0e6512247840d728b69b",
+      "bytes": 256746,
+      "snapshot_id": "openalex-search.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.semanticscholar.org/graph/v1/paper/search?query=medical+language+model+calibration+abstention&limit=10&fields=title%2Cauthors%2Cyear%2CexternalIds%2Curl%2Cabstract",
+      "retrieved_at_utc": "2026-10-01T20:49:50.845590+00:00",
+      "status": "TOOL_UNAVAILABLE_OR_HTTP_ERROR",
+      "snapshot_id": "semantic-scholar-search.json",
+      "retrieval_batch": "retrieval-manifest.json",
+      "failure_type": "HTTP Error 429"
+    },
+    {
+      "url": "https://proceedings.mlr.press/v70/guo17a.html",
+      "retrieved_at_utc": "2026-10-01T20:49:51.781485+00:00",
+      "http_status": 200,
+      "resolved_url": "https://proceedings.mlr.press/v70/guo17a.html",
+      "sha256": "fcd644b81c1d06d034060e3ff8079ccc6acc2213dbf846043b92059ce10d26f8",
+      "bytes": 14452,
+      "snapshot_id": "official-guo2017.html",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://proceedings.mlr.press/v97/geifman19a.html",
+      "retrieved_at_utc": "2026-10-01T20:49:52.496997+00:00",
+      "http_status": 200,
+      "resolved_url": "https://proceedings.mlr.press/v97/geifman19a.html",
+      "sha256": "fa4c768eeeb4998ca977abfd6ae7836a50f62d02675b9b5f2dda607ea2dbcb18",
+      "bytes": 14071,
+      "snapshot_id": "official-selectivenet2019.html",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2208.02814",
+      "retrieved_at_utc": "2026-10-01T20:49:52.860089+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2208.02814",
+      "sha256": "efbc18270c5e7f6e162aedbae64bbc0f3381371a9f82508d009bcce6360a3d12",
+      "bytes": 41189,
+      "snapshot_id": "official-conformal-risk.html",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/kylemclaren/jevsearch",
+      "retrieved_at_utc": "2026-10-01T20:49:53.246170+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/kylemclaren/jevsearch",
+      "sha256": "c306b630bd2a25f45bb768854771c663e28afb8762167b68d108c1268157defa",
+      "bytes": 5428,
+      "snapshot_id": "kylemclaren--jevsearch--repository.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/kylemclaren/jevsearch/commits/main",
+      "retrieved_at_utc": "2026-10-01T20:49:53.713979+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/kylemclaren/jevsearch/commits/main",
+      "sha256": "c36f7b42d7847a39ecf3e5e73860e870116336bfc7c0ff97ba17adfea6045bff",
+      "bytes": 5068,
+      "snapshot_id": "kylemclaren--jevsearch--head.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/kylemclaren/jevsearch/git/trees/1df37decb960b3c4826c71b41d3393c15a8f28d3?recursive=1",
+      "retrieved_at_utc": "2026-10-01T20:49:54.204121+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/kylemclaren/jevsearch/git/trees/1df37decb960b3c4826c71b41d3393c15a8f28d3?recursive=1",
+      "sha256": "a51b0defecb4a858e4b0655c18dfa44728d1aa3a98c3466b99aea83988d77373",
+      "bytes": 14951,
+      "snapshot_id": "kylemclaren--jevsearch--tree.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/README.md",
+      "retrieved_at_utc": "2026-10-01T20:49:54.685646+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/README.md",
+      "sha256": "65aef37ad69294c8233a52a6c9f4f6f8b61329fa2a50a4b351d6dfb582aa8c46",
+      "bytes": 7629,
+      "snapshot_id": "kylemclaren--jevsearch--README.md",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:49:55.142147+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/LICENSE",
+      "sha256": "100eba69de860413188ee0e6130c2690d88ea49e3f1e1e3c03e36771ffad430a",
+      "bytes": 1069,
+      "snapshot_id": "kylemclaren--jevsearch--LICENSE",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/package.json",
+      "retrieved_at_utc": "2026-10-01T20:49:55.548887+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/package.json",
+      "sha256": "a4dc1ff562fa2173df9af360b574c5695dbd9ad2edbbf2680085679209740889",
+      "bytes": 1342,
+      "snapshot_id": "kylemclaren--jevsearch--package.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/components/jev-search.tsx",
+      "retrieved_at_utc": "2026-10-01T20:49:55.999979+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/components/jev-search.tsx",
+      "sha256": "53cc1cd0160c3aa060e9cc5a0cf8f85d918e210189d2a70f1e13f8f1cc7b5918",
+      "bytes": 26998,
+      "snapshot_id": "kylemclaren--jevsearch--src--components--jev-search.tsx",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/components/site/HeroSearch.tsx",
+      "retrieved_at_utc": "2026-10-01T20:49:56.431136+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/components/site/HeroSearch.tsx",
+      "sha256": "b044078486c3f259a48bae670715c8d863b948a4b3d3ae5d63a35496cdf9c353",
+      "bytes": 8653,
+      "snapshot_id": "kylemclaren--jevsearch--src--components--site--HeroSearch.tsx",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/hooks/use-jev-search.ts",
+      "retrieved_at_utc": "2026-10-01T20:49:56.895445+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/hooks/use-jev-search.ts",
+      "sha256": "b823b6fcd6e29e18706153f3588e781a4cd60b541fa7daa4ce2cf081952df536",
+      "bytes": 5134,
+      "snapshot_id": "kylemclaren--jevsearch--src--hooks--use-jev-search.ts",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/lib/jev-search-core.ts",
+      "retrieved_at_utc": "2026-10-01T20:49:57.309420+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/lib/jev-search-core.ts",
+      "sha256": "c5e4571f611462480e705cb5262f46f2423dfe0cd7817687ce9e56dbc5d2b3a0",
+      "bytes": 8082,
+      "snapshot_id": "kylemclaren--jevsearch--src--lib--jev-search-core.ts",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/lib/jev-search-index.json",
+      "retrieved_at_utc": "2026-10-01T20:49:57.727624+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/lib/jev-search-index.json",
+      "sha256": "bc98bee0fdb154530bc552e64af9fe35b6aaf079399d1d51b64306c5f5f3c680",
+      "bytes": 780417,
+      "snapshot_id": "kylemclaren--jevsearch--src--lib--jev-search-index.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/lib/jev-search-server.ts",
+      "retrieved_at_utc": "2026-10-01T20:49:58.486267+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/lib/jev-search-server.ts",
+      "sha256": "b1d5dbf12a3d8297413bea5dc17cc29ff9fe01b71fdd0289f8cd31c81aa90218",
+      "bytes": 10082,
+      "snapshot_id": "kylemclaren--jevsearch--src--lib--jev-search-server.ts",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/pages/api/jev-search.ts",
+      "retrieved_at_utc": "2026-10-01T20:49:58.958919+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/kylemclaren/jevsearch/1df37decb960b3c4826c71b41d3393c15a8f28d3/src/pages/api/jev-search.ts",
+      "sha256": "fce64b86da0478357a7e80bf9bfbb75fd169b7c91e8bad8aa5e7d913d700aa26",
+      "bytes": 538,
+      "snapshot_id": "kylemclaren--jevsearch--src--pages--api--jev-search.ts",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/openjevai/jevsearch",
+      "retrieved_at_utc": "2026-10-01T20:49:59.386766+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/openjevai/jevsearch",
+      "sha256": "0983df2a52b16b3d78ee4cd3b8863325b7e3687087ded0892c71a460eb5a3d7c",
+      "bytes": 16062,
+      "snapshot_id": "openjevai--jevsearch--repository.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/openjevai/jevsearch/commits/main",
+      "retrieved_at_utc": "2026-10-01T20:49:59.992284+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/openjevai/jevsearch/commits/main",
+      "sha256": "e3242a2e103c2f2d037779123a51f0c60ff3bbec2f39bd46e06a688e398966e6",
+      "bytes": 124988,
+      "snapshot_id": "openjevai--jevsearch--head.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/openjevai/jevsearch/git/trees/3b3c053f189605b68c2f9c44dcc46150e2c31385?recursive=1",
+      "retrieved_at_utc": "2026-10-01T20:50:00.676844+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/openjevai/jevsearch/git/trees/3b3c053f189605b68c2f9c44dcc46150e2c31385?recursive=1",
+      "sha256": "b80ea519354118d166031bf245721d26d10f832a08535e913974ff789ec4d3b0",
+      "bytes": 15262,
+      "snapshot_id": "openjevai--jevsearch--tree.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:01.209462+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/README.md",
+      "sha256": "b70e3dbc0e0ad1e801c883bda57db98ce36524b5cb0cead87aefd82b52700081",
+      "bytes": 8501,
+      "snapshot_id": "openjevai--jevsearch--README.md",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:50:01.719521+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/LICENSE",
+      "sha256": "100eba69de860413188ee0e6130c2690d88ea49e3f1e1e3c03e36771ffad430a",
+      "bytes": 1069,
+      "snapshot_id": "openjevai--jevsearch--LICENSE",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/package.json",
+      "retrieved_at_utc": "2026-10-01T20:50:02.142181+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/package.json",
+      "sha256": "a4dc1ff562fa2173df9af360b574c5695dbd9ad2edbbf2680085679209740889",
+      "bytes": 1342,
+      "snapshot_id": "openjevai--jevsearch--package.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/components/jev-search.tsx",
+      "retrieved_at_utc": "2026-10-01T20:50:02.572080+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/components/jev-search.tsx",
+      "sha256": "53cc1cd0160c3aa060e9cc5a0cf8f85d918e210189d2a70f1e13f8f1cc7b5918",
+      "bytes": 26998,
+      "snapshot_id": "openjevai--jevsearch--src--components--jev-search.tsx",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/components/site/HeroSearch.tsx",
+      "retrieved_at_utc": "2026-10-01T20:50:03.012601+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/components/site/HeroSearch.tsx",
+      "sha256": "b044078486c3f259a48bae670715c8d863b948a4b3d3ae5d63a35496cdf9c353",
+      "bytes": 8653,
+      "snapshot_id": "openjevai--jevsearch--src--components--site--HeroSearch.tsx",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/hooks/use-jev-search.ts",
+      "retrieved_at_utc": "2026-10-01T20:50:03.433415+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/hooks/use-jev-search.ts",
+      "sha256": "b823b6fcd6e29e18706153f3588e781a4cd60b541fa7daa4ce2cf081952df536",
+      "bytes": 5134,
+      "snapshot_id": "openjevai--jevsearch--src--hooks--use-jev-search.ts",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/lib/jev-search-core.ts",
+      "retrieved_at_utc": "2026-10-01T20:50:03.869222+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/lib/jev-search-core.ts",
+      "sha256": "c5e4571f611462480e705cb5262f46f2423dfe0cd7817687ce9e56dbc5d2b3a0",
+      "bytes": 8082,
+      "snapshot_id": "openjevai--jevsearch--src--lib--jev-search-core.ts",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/lib/jev-search-index.json",
+      "retrieved_at_utc": "2026-10-01T20:50:04.286016+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/lib/jev-search-index.json",
+      "sha256": "bc98bee0fdb154530bc552e64af9fe35b6aaf079399d1d51b64306c5f5f3c680",
+      "bytes": 780417,
+      "snapshot_id": "openjevai--jevsearch--src--lib--jev-search-index.json",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/lib/jev-search-server.ts",
+      "retrieved_at_utc": "2026-10-01T20:50:05.058223+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/lib/jev-search-server.ts",
+      "sha256": "c6cd02da7a46f09391ae9dfd48ea17168c5db250b18538beca505d37897f2a9e",
+      "bytes": 11027,
+      "snapshot_id": "openjevai--jevsearch--src--lib--jev-search-server.ts",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/pages/api/jev-search.ts",
+      "retrieved_at_utc": "2026-10-01T20:50:05.513217+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/openjevai/jevsearch/3b3c053f189605b68c2f9c44dcc46150e2c31385/src/pages/api/jev-search.ts",
+      "sha256": "7a3d591104e0b8525153350b47883a867366fd74b4a679e8686b87188efdc1fe",
+      "bytes": 585,
+      "snapshot_id": "openjevai--jevsearch--src--pages--api--jev-search.ts",
+      "retrieval_batch": "retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.16301v1",
+      "retrieved_at_utc": "2026-10-01T20:53:13.143223+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.16301v1",
+      "sha256": "a715fb6adaccba5a28abc7651325dce0a472bbdeff6212779e7c3bd0b391b08b",
+      "bytes": 41379,
+      "snapshot_id": "abs--2609.16301v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.16301v1",
+      "retrieved_at_utc": "2026-10-01T20:53:13.650373+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.16301v1",
+      "sha256": "7a4f655123a12b70ac421ebc4382375e36a8b4c2e3dc0e4acdec0707b28c1a06",
+      "bytes": 322658,
+      "snapshot_id": "fulltext--2609.16301v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2608.07796v1",
+      "retrieved_at_utc": "2026-10-01T20:53:14.111555+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2608.07796v1",
+      "sha256": "200a6e7ed27b5286269284fbf343d3900de07f1eb258a57c69bcaed7875d7d4e",
+      "bytes": 45805,
+      "snapshot_id": "abs--2608.07796v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2608.07796v1",
+      "retrieved_at_utc": "2026-10-01T20:53:14.556927+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2608.07796v1",
+      "sha256": "48562814fc479a218f0d639db28400b4176701d326a41cea6f30d7d11f6475a6",
+      "bytes": 773794,
+      "snapshot_id": "fulltext--2608.07796v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.32269v1",
+      "retrieved_at_utc": "2026-10-01T20:53:15.219201+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.32269v1",
+      "sha256": "c934a6be90fbd1e6bba0301f84b03dda085e26c4aaf0afbdbb15fefe0bb8b1f6",
+      "bytes": 43485,
+      "snapshot_id": "abs--2609.32269v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.32269v1",
+      "retrieved_at_utc": "2026-10-01T20:53:15.579442+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.32269v1",
+      "sha256": "072cc9dba1514a632aea15131e0b1b97837f52af083b6ab009fdcd6504f1ae40",
+      "bytes": 455967,
+      "snapshot_id": "fulltext--2609.32269v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2607.18086v1",
+      "retrieved_at_utc": "2026-10-01T20:53:16.166465+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2607.18086v1",
+      "sha256": "834c1dd5642625c847b19ddacbec3fb7947e816ee153e68cc65660f1a010dc75",
+      "bytes": 43259,
+      "snapshot_id": "abs--2607.18086v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2607.18086v1",
+      "retrieved_at_utc": "2026-10-01T20:53:16.618493+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "fulltext--2607.18086v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json",
+      "failure_type": "HTTP Error 404"
+    },
+    {
+      "url": "https://arxiv.org/abs/2509.24816v1",
+      "retrieved_at_utc": "2026-10-01T20:53:16.973106+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2509.24816v1",
+      "sha256": "bad2fa05658a4539a78aac809133085be0767956c0da31d6c13d661174a80a86",
+      "bytes": 43966,
+      "snapshot_id": "abs--2509.24816v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2509.24816v1",
+      "retrieved_at_utc": "2026-10-01T20:53:17.337461+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2509.24816v1",
+      "sha256": "9769dd2ccc80c4fcb7a883f6028d63c4db596aff47f7032de4da03478ec5abc0",
+      "bytes": 168481,
+      "snapshot_id": "fulltext--2509.24816v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.25845v1",
+      "retrieved_at_utc": "2026-10-01T20:53:17.825978+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.25845v1",
+      "sha256": "cda226dc9f83f227d5b0c88125108935e06c719f0b15b466c3f7123e68139d8a",
+      "bytes": 40633,
+      "snapshot_id": "abs--2609.25845v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.25845v1",
+      "retrieved_at_utc": "2026-10-01T20:53:18.209593+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.25845v1",
+      "sha256": "56d475a7b67930d1a3487faf4c0cda8efe93865f9dd112c3bdc5e2d5282f1695",
+      "bytes": 264536,
+      "snapshot_id": "fulltext--2609.25845v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.35342v1",
+      "retrieved_at_utc": "2026-10-01T20:53:18.751963+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.35342v1",
+      "sha256": "fcee5b421fd0700009936739483b09852fa6ac392904098a7d547cad57c00c4e",
+      "bytes": 43135,
+      "snapshot_id": "abs--2609.35342v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.35342v1",
+      "retrieved_at_utc": "2026-10-01T20:53:19.132272+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.35342v1",
+      "sha256": "0b2e3e1743b617a046ecd2535852ae1275aee15a4479fd67f7af54b5b5920d49",
+      "bytes": 185642,
+      "snapshot_id": "fulltext--2609.35342v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.33209v1",
+      "retrieved_at_utc": "2026-10-01T20:53:19.630141+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.33209v1",
+      "sha256": "19a3352f6b54a4c78f0676edf5c5d4b7f62ac4e6ad54e200b25b7dbd95fd000b",
+      "bytes": 43951,
+      "snapshot_id": "abs--2609.33209v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.33209v1",
+      "retrieved_at_utc": "2026-10-01T20:53:20.020091+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.33209v1",
+      "sha256": "1bc9632f7aced2440064b0dcfae6f7d074ab7be590f9d22c163ce2520def9f9b",
+      "bytes": 354968,
+      "snapshot_id": "fulltext--2609.33209v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.33971v1",
+      "retrieved_at_utc": "2026-10-01T20:53:20.501772+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.33971v1",
+      "sha256": "9718b761eccf4c164b2499b51c73f10ae1a49e419e233e77e646f88618b4cac0",
+      "bytes": 41723,
+      "snapshot_id": "abs--2609.33971v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.33971v1",
+      "retrieved_at_utc": "2026-10-01T20:53:20.868439+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.33971v1",
+      "sha256": "0c0914adac29bf3eeab59e83831228f0cca0b361f554e64225105fb3c1e3c61e",
+      "bytes": 360164,
+      "snapshot_id": "fulltext--2609.33971v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.36392v1",
+      "retrieved_at_utc": "2026-10-01T20:53:21.467969+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.36392v1",
+      "sha256": "c9891c288301f182543169df22cffafbfd1b92a230e745629e0f429bf4878dc0",
+      "bytes": 40628,
+      "snapshot_id": "abs--2609.36392v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.36392v1",
+      "retrieved_at_utc": "2026-10-01T20:53:21.829585+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.36392v1",
+      "sha256": "c16a35dc93842a5ecf7ae73049077f77f3707af5ac6421cedbe20d76e2bb8f42",
+      "bytes": 200677,
+      "snapshot_id": "fulltext--2609.36392v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2602.01714v1",
+      "retrieved_at_utc": "2026-10-01T20:53:22.313151+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2602.01714v1",
+      "sha256": "7990448305519f1068e2a96994a7e4bae31182a2c69083cfaf1f364602bac419",
+      "bytes": 43012,
+      "snapshot_id": "abs--2602.01714v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2602.01714v1",
+      "retrieved_at_utc": "2026-10-01T20:53:22.667977+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2602.01714v1",
+      "sha256": "264a061862236acf61b14089b778248306aca0ffb3586c2f3358bff8e20dc499",
+      "bytes": 329813,
+      "snapshot_id": "fulltext--2602.01714v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2505.03427v2",
+      "retrieved_at_utc": "2026-10-01T20:53:23.244952+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2505.03427v2",
+      "sha256": "ec211d90b1a28dc46306f6e3aa66069165a023bd9311365573e0700fa5eb7b1a",
+      "bytes": 42160,
+      "snapshot_id": "abs--2505.03427v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2505.03427v2",
+      "retrieved_at_utc": "2026-10-01T20:53:23.701054+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2505.03427v2",
+      "sha256": "6e8c2236a16030186a358347774584b721f862b161382bd236689cf98007b454",
+      "bytes": 401633,
+      "snapshot_id": "fulltext--2505.03427v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2402.13253v2",
+      "retrieved_at_utc": "2026-10-01T20:53:24.393737+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2402.13253v2",
+      "sha256": "39f809a8c42437a83fea1beb942607f106ef4b36933682e0f71f36a16127b5e3",
+      "bytes": 44802,
+      "snapshot_id": "abs--2402.13253v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2402.13253v2",
+      "retrieved_at_utc": "2026-10-01T20:53:24.869926+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2402.13253v2",
+      "sha256": "a5428477e2371109d8200f5b2e2d71fc585b41145fa638a0264b0690a562f309",
+      "bytes": 147609,
+      "snapshot_id": "fulltext--2402.13253v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.38597v1",
+      "retrieved_at_utc": "2026-10-01T20:53:25.461311+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.38597v1",
+      "sha256": "e8fe9542ee383dcfee5f7b2740063425b82c00043ddabc45ab4addea709fd9b3",
+      "bytes": 43080,
+      "snapshot_id": "abs--2609.38597v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.38597v1",
+      "retrieved_at_utc": "2026-10-01T20:53:25.854145+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.38597v1",
+      "sha256": "445888e76c5d39f766bc9d0274edebca72f848ab166dc52aff2b9f284bb620ca",
+      "bytes": 700159,
+      "snapshot_id": "fulltext--2609.38597v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.34798v1",
+      "retrieved_at_utc": "2026-10-01T20:53:26.490989+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.34798v1",
+      "sha256": "b50f6de46b466f0602a25935dd8e29824be6772092433dc1d84e797e2f46ce04",
+      "bytes": 44177,
+      "snapshot_id": "abs--2609.34798v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.34798v1",
+      "retrieved_at_utc": "2026-10-01T20:53:26.942180+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.34798v1",
+      "sha256": "115d414b50017de3adb540ad082afbebe4f30296fdcf01240c228b43c87af22c",
+      "bytes": 293643,
+      "snapshot_id": "fulltext--2609.34798v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2406.14563v1",
+      "retrieved_at_utc": "2026-10-01T20:53:27.512395+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2406.14563v1",
+      "sha256": "229df6084573684d0528e851418cb8c5c163295e7f820f80ce1eeb8fa9ed850f",
+      "bytes": 41730,
+      "snapshot_id": "abs--2406.14563v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2406.14563v1",
+      "retrieved_at_utc": "2026-10-01T20:53:27.903537+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2406.14563v1",
+      "sha256": "e436f5333faacba8ddf23b0f91ad526f191e1805bd1abd458577a783bcb9d27d",
+      "bytes": 283472,
+      "snapshot_id": "fulltext--2406.14563v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2511.06668v2",
+      "retrieved_at_utc": "2026-10-01T20:53:28.464963+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "abs--2511.06668v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json",
+      "failure_type": "HTTP Error 406"
+    },
+    {
+      "url": "https://arxiv.org/html/2511.06668v2",
+      "retrieved_at_utc": "2026-10-01T20:53:28.823802+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2511.06668v2",
+      "sha256": "37937dbc491d3c1dcb5e3f60e1f0f57dafb7d3c098c7753cf2befd571a130bd2",
+      "bytes": 296968,
+      "snapshot_id": "fulltext--2511.06668v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.35627v1",
+      "retrieved_at_utc": "2026-10-01T20:53:29.391197+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.35627v1",
+      "sha256": "2b6f2df15782672870e173e21b3bd7083ab4fb08a9ea3b857e389acb92d55770",
+      "bytes": 44255,
+      "snapshot_id": "abs--2609.35627v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.35627v1",
+      "retrieved_at_utc": "2026-10-01T20:53:29.756813+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.35627v1",
+      "sha256": "7f1b531271733791a41d9b8267ddf02fb8e31a3361ce640fe928670839f8f57d",
+      "bytes": 664167,
+      "snapshot_id": "fulltext--2609.35627v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.07687v1",
+      "retrieved_at_utc": "2026-10-01T20:53:30.390859+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.07687v1",
+      "sha256": "79751140bdd9dae6d649133d69a93735a6888d70e4cac2c383abd47f566db339",
+      "bytes": 42848,
+      "snapshot_id": "abs--2609.07687v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.07687v1",
+      "retrieved_at_utc": "2026-10-01T20:53:30.859700+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.07687v1",
+      "sha256": "9e62cfea641cbda93aaf2852c075f10a9975df40619384d384d825e0543e37d9",
+      "bytes": 274264,
+      "snapshot_id": "fulltext--2609.07687v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.32160v1",
+      "retrieved_at_utc": "2026-10-01T20:53:31.430130+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.32160v1",
+      "sha256": "9d13797b23dc0ebfd268377f7fa1b2d86c96d114b109b53818b0e0551145119b",
+      "bytes": 42847,
+      "snapshot_id": "abs--2609.32160v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.32160v1",
+      "retrieved_at_utc": "2026-10-01T20:53:31.817573+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.32160v1",
+      "sha256": "acad1c97dfc43a177ad2928ca2065442b538d35d824b49a7d7e6ba1bc3fd7508",
+      "bytes": 410323,
+      "snapshot_id": "fulltext--2609.32160v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.26758v2",
+      "retrieved_at_utc": "2026-10-01T20:53:32.392628+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.26758v2",
+      "sha256": "4c4014baa0dc29d60f2db197382ca0413ec46b85fcc4f35cc8aa44eb8fc8ea1b",
+      "bytes": 43829,
+      "snapshot_id": "abs--2609.26758v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.26758v2",
+      "retrieved_at_utc": "2026-10-01T20:53:32.802342+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.26758v2",
+      "sha256": "4393f7d7ef5e23f76ce9c02de8b702ade99708e6a871789918af536f9c0bb9e4",
+      "bytes": 166161,
+      "snapshot_id": "fulltext--2609.26758v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.36116v1",
+      "retrieved_at_utc": "2026-10-01T20:53:33.291204+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.36116v1",
+      "sha256": "b176351f4b549867664da3be1182805aa7b81ddffcc1b52279f4475eca8ab765",
+      "bytes": 42768,
+      "snapshot_id": "abs--2609.36116v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.36116v1",
+      "retrieved_at_utc": "2026-10-01T20:53:33.642433+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.36116v1",
+      "sha256": "1da47758b845ee7b201d22b61c60fb354877a2d3fb2a4e217e00d7d1b5b62803",
+      "bytes": 395211,
+      "snapshot_id": "fulltext--2609.36116v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.36965v1",
+      "retrieved_at_utc": "2026-10-01T20:53:34.263021+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.36965v1",
+      "sha256": "3f7938cf0aad4e0b1dc33d315e606811553db0ed48fe92b39384c3d9592137d4",
+      "bytes": 44238,
+      "snapshot_id": "abs--2609.36965v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.36965v1",
+      "retrieved_at_utc": "2026-10-01T20:53:34.634475+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.36965v1",
+      "sha256": "0ba9ce6a20332ef9c0eeb8d174dc54eec3e0c29560491d1cf79a5cc8fabbbeb0",
+      "bytes": 342407,
+      "snapshot_id": "fulltext--2609.36965v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.39369v1",
+      "retrieved_at_utc": "2026-10-01T20:53:35.217687+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.39369v1",
+      "sha256": "a169273034bf6db3850431f5275cf95d9e5b0262c34c43caa71f3568c3b5d669",
+      "bytes": 41370,
+      "snapshot_id": "abs--2609.39369v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.39369v1",
+      "retrieved_at_utc": "2026-10-01T20:53:35.654034+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.39369v1",
+      "sha256": "d742f9aa8e6cfdffdc7885fbb533376236bf5545776da3423169e0fa628aebb4",
+      "bytes": 207117,
+      "snapshot_id": "fulltext--2609.39369v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2604.22823v2",
+      "retrieved_at_utc": "2026-10-01T20:53:36.174539+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2604.22823v2",
+      "sha256": "e8a8a140f5eda63d64ab18aee80fc796f1ba060cc9620a88b052d09e7b106967",
+      "bytes": 44087,
+      "snapshot_id": "abs--2604.22823v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2604.22823v2",
+      "retrieved_at_utc": "2026-10-01T20:53:36.563805+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2604.22823v2",
+      "sha256": "459bafd45d306ea68cff9e5973a98e1330b79b5641dcd270079162a19ef960e6",
+      "bytes": 352459,
+      "snapshot_id": "fulltext--2604.22823v2.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2505.19892v3",
+      "retrieved_at_utc": "2026-10-01T20:53:37.382110+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2505.19892v3",
+      "sha256": "8563fbe4283609a33c984a5ad911d9a90116c32c9f5cc31d748151fd4d61528c",
+      "bytes": 43861,
+      "snapshot_id": "abs--2505.19892v3.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2505.19892v3",
+      "retrieved_at_utc": "2026-10-01T20:53:37.810358+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2505.19892v3",
+      "sha256": "f2aba04b42d1de31af7ecc3e0c61b804538fea43cb9e664a0338c127f521b233",
+      "bytes": 632059,
+      "snapshot_id": "fulltext--2505.19892v3.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2509.25712v1",
+      "retrieved_at_utc": "2026-10-01T20:53:38.457051+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2509.25712v1",
+      "sha256": "ee75db44616041cb586ac7feb60d87ebd574951ba8506711c30d299a2a49bb3f",
+      "bytes": 44193,
+      "snapshot_id": "abs--2509.25712v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2509.25712v1",
+      "retrieved_at_utc": "2026-10-01T20:53:38.745876+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2509.25712v1",
+      "sha256": "00f829427aaab42a0594487ea1c644e5375048b6b3fd8fee10381e8fa44587e3",
+      "bytes": 442042,
+      "snapshot_id": "fulltext--2509.25712v1.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2402.13178",
+      "retrieved_at_utc": "2026-10-01T20:53:39.435526+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2402.13178",
+      "sha256": "fa7a60e6f117c12bb658af7bb71951d3135c85909c0b7cd0ed863634d245e056",
+      "bytes": 42241,
+      "snapshot_id": "abs--2402.13178.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2402.13178",
+      "retrieved_at_utc": "2026-10-01T20:53:39.817785+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2402.13178",
+      "sha256": "7629e2402c0b0812cbcfd970e97a3afececaf2a4759ce619890af2227df273bf",
+      "bytes": 342176,
+      "snapshot_id": "fulltext--2402.13178.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2306.01708",
+      "retrieved_at_utc": "2026-10-01T20:53:40.512821+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2306.01708",
+      "sha256": "6fdbd0f716fc3a7d3a2178558d15fee3333657c356e04edd61a5298340f45618",
+      "bytes": 44791,
+      "snapshot_id": "abs--2306.01708.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2306.01708",
+      "retrieved_at_utc": "2026-10-01T20:53:40.802093+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2306.01708",
+      "sha256": "20a46adeb92ecbe102148a52cc16e0a41b104fc7d9e82bba06b55afa3e66d092",
+      "bytes": 396774,
+      "snapshot_id": "fulltext--2306.01708.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2311.03099",
+      "retrieved_at_utc": "2026-10-01T20:53:41.409081+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2311.03099",
+      "sha256": "dfe2dbe6c7e1c8930ecb2f8ae20411695d77434b99becbdee296fc0b68fa137c",
+      "bytes": 42683,
+      "snapshot_id": "abs--2311.03099.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2311.03099",
+      "retrieved_at_utc": "2026-10-01T20:53:41.800247+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2311.03099",
+      "sha256": "a0ac1ce2be0b1b133463b7ed466ae1a8e8be633f5250f95ea840b7f53d50702a",
+      "bytes": 302862,
+      "snapshot_id": "fulltext--2311.03099.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2403.19522",
+      "retrieved_at_utc": "2026-10-01T20:53:42.343160+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2403.19522",
+      "sha256": "2459aa5d94ae0727e64e856e5cbcd3b3c19190d92d8ed761a753dca45d9d9977",
+      "bytes": 42665,
+      "snapshot_id": "abs--2403.19522.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2403.19522",
+      "retrieved_at_utc": "2026-10-01T20:53:42.706229+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2403.19522",
+      "sha256": "ac40bb4a6af311507c204b61c9fbc89c20c1f157ea302de53a0f9ff385913173",
+      "bytes": 413790,
+      "snapshot_id": "fulltext--2403.19522.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2406.11617",
+      "retrieved_at_utc": "2026-10-01T20:53:43.365709+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2406.11617",
+      "sha256": "552aab1e02cba29076c003bb02b3333305f7a7b5689a8f98ef01897893b16962",
+      "bytes": 41284,
+      "snapshot_id": "abs--2406.11617.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2406.11617",
+      "retrieved_at_utc": "2026-10-01T20:53:43.811293+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2406.11617",
+      "sha256": "9385e7aa777e62d84c0050d6d2dc272ba6bbe13dd67c43a4dfc28e0da8c2f4ad",
+      "bytes": 281269,
+      "snapshot_id": "fulltext--2406.11617.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/1706.04599",
+      "retrieved_at_utc": "2026-10-01T20:53:44.376325+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/1706.04599",
+      "sha256": "bdcce0f6ecb8a7dc3b75015b42c9c0d29979db535a772e315ddd4daefc02961a",
+      "bytes": 42115,
+      "snapshot_id": "abs--1706.04599.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/1706.04599",
+      "retrieved_at_utc": "2026-10-01T20:53:44.740679+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/1706.04599",
+      "sha256": "f17237217f7d20dc83a3377d7c3dcbefcf41528743a896137c83b446ea0f1571",
+      "bytes": 327541,
+      "snapshot_id": "fulltext--1706.04599.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/1905.11593",
+      "retrieved_at_utc": "2026-10-01T20:53:45.193358+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/1905.11593",
+      "sha256": "c68b7b0ff020c222942a7a8d1c23db143637e211ee769c0d0f43fc5d0197d5a1",
+      "bytes": 44209,
+      "snapshot_id": "abs--1905.11593.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/1905.11593",
+      "retrieved_at_utc": "2026-10-01T20:53:45.655085+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "fulltext--1905.11593.html",
+      "retrieval_batch": "critical-retrieval-manifest.json",
+      "failure_type": "HTTP Error 406"
+    },
+    {
+      "url": "https://arxiv.org/abs/2208.02814",
+      "retrieved_at_utc": "2026-10-01T20:53:46.021240+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2208.02814",
+      "sha256": "efbc18270c5e7f6e162aedbae64bbc0f3381371a9f82508d009bcce6360a3d12",
+      "bytes": 41189,
+      "snapshot_id": "abs--2208.02814.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2208.02814",
+      "retrieved_at_utc": "2026-10-01T20:53:46.386434+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2208.02814",
+      "sha256": "e99cc6bf04f743cf4eb56c42f8cd23d28a764eb63c80ef6dc674863e6829333e",
+      "bytes": 432032,
+      "snapshot_id": "fulltext--2208.02814.html",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Acalibration+AND+%28all%3Aretrieval+OR+all%3ARAG%29%29+AND+%28all%3Ashift+OR+all%3Acorrupt+OR+all%3Amedical+OR+all%3Aclinical%29&start=0&max_results=20&sortBy=relevance",
+      "retrieved_at_utc": "2026-10-01T20:53:46.977098+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Acalibration+AND+%28all%3Aretrieval+OR+all%3ARAG%29%29+AND+%28all%3Ashift+OR+all%3Acorrupt+OR+all%3Amedical+OR+all%3Aclinical%29&start=0&max_results=20&sortBy=relevance",
+      "sha256": "bb134fe68240a68ab2a78e261184e85a15359559a89924577487de9c12e49c62",
+      "bytes": 51128,
+      "snapshot_id": "targeted-search-0.xml",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=all%3A%22evidence+sufficiency%22+AND+%28all%3Acalibration+OR+all%3Aclinical+OR+all%3Amedical%29&start=0&max_results=20&sortBy=relevance",
+      "retrieved_at_utc": "2026-10-01T20:53:51.056723+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=all%3A%22evidence+sufficiency%22+AND+%28all%3Acalibration+OR+all%3Aclinical+OR+all%3Amedical%29&start=0&max_results=20&sortBy=relevance",
+      "sha256": "b3baab823c41af0be3aa33704d8f13a5c7ace1c103a5e24bad947df7025d7f94",
+      "bytes": 25570,
+      "snapshot_id": "targeted-search-1.xml",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=all%3Amedical+AND+%28all%3A%22selective+prediction%22+OR+all%3A%22conformal+prediction%22%29+AND+all%3Alanguage&start=0&max_results=20&sortBy=relevance",
+      "retrieved_at_utc": "2026-10-01T20:53:54.786628+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=all%3Amedical+AND+%28all%3A%22selective+prediction%22+OR+all%3A%22conformal+prediction%22%29+AND+all%3Alanguage&start=0&max_results=20&sortBy=relevance",
+      "sha256": "b78e7b677550884b0120cd72301d2a77b5d998158459625a626b5424acb9b7d4",
+      "bytes": 51906,
+      "snapshot_id": "targeted-search-2.xml",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=ti%3A%22TIES-Merging%22+OR+ti%3A%22Model+Stock%22+OR+ti%3A%22DARE%22+OR+ti%3A%22BAGEL%22+OR+ti%3A%22Show-o2%22&start=0&max_results=20&sortBy=relevance",
+      "retrieved_at_utc": "2026-10-01T20:53:59.039587+00:00",
+      "http_status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=ti%3A%22TIES-Merging%22+OR+ti%3A%22Model+Stock%22+OR+ti%3A%22DARE%22+OR+ti%3A%22BAGEL%22+OR+ti%3A%22Show-o2%22&start=0&max_results=20&sortBy=relevance",
+      "sha256": "3388dabaf164f6a82db9f676bc124bd987451ea5b23d057bf245d5bd08ba5439",
+      "bytes": 45103,
+      "snapshot_id": "targeted-search-3.xml",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28%28%22large+language+model%22%5BTitle%2FAbstract%5D%29+OR+%28%22large+language+models%22%5BTitle%2FAbstract%5D%29%29+AND+%28calibrat%2A%5BTitle%2FAbstract%5D+OR+abstention%5BTitle%2FAbstract%5D+OR+selective%5BTitle%2FAbstract%5D%29+AND+%28%222000%2F01%2F01%22%5BDate+-+Publication%5D+%3A+%222026%2F10%2F01%22%5BDate+-+Publication%5D%29&retmode=json&retmax=20&sort=relevance",
+      "retrieved_at_utc": "2026-10-01T20:54:02.610716+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28%28%22large+language+model%22%5BTitle%2FAbstract%5D%29+OR+%28%22large+language+models%22%5BTitle%2FAbstract%5D%29%29+AND+%28calibrat%2A%5BTitle%2FAbstract%5D+OR+abstention%5BTitle%2FAbstract%5D+OR+selective%5BTitle%2FAbstract%5D%29+AND+%28%222000%2F01%2F01%22%5BDate+-+Publication%5D+%3A+%222026%2F10%2F01%22%5BDate+-+Publication%5D%29&retmode=json&retmax=20&sort=relevance",
+      "sha256": "f23432021d3762c8189f2ac4264493f5a7f990bda235bad9100057e79db7adf0",
+      "bytes": 616,
+      "snapshot_id": "pubmed-precise-search-0.json",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=42784988%2C42696739%2C42683463%2C42078152%2C42753000%2C42778754%2C42784728%2C42772746%2C41726100%2C42578783%2C42213673%2C42743034%2C42675110%2C41867170%2C40625928%2C42155929%2C42786397%2C42643478%2C40863199%2C40502255&retmode=xml",
+      "retrieved_at_utc": "2026-10-01T20:54:04.001463+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=42784988%2C42696739%2C42683463%2C42078152%2C42753000%2C42778754%2C42784728%2C42772746%2C41726100%2C42578783%2C42213673%2C42743034%2C42675110%2C41867170%2C40625928%2C42155929%2C42786397%2C42643478%2C40863199%2C40502255&retmode=xml",
+      "sha256": "f5f833d800e4dc5d26ddaf0e87b5e04faaae76d3808c942e0a5c7c2f01bf9f55",
+      "bytes": 392417,
+      "snapshot_id": "pubmed-precise-records-0.xml",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28%28%22large+language+model%22%5BTitle%2FAbstract%5D%29+OR+%28%22large+language+models%22%5BTitle%2FAbstract%5D%29%29+AND+%28contradiction%5BTitle%2FAbstract%5D+OR+provenance%5BTitle%2FAbstract%5D+OR+%22evidence+sufficiency%22%5BTitle%2FAbstract%5D%29+AND+%28%222000%2F01%2F01%22%5BDate+-+Publication%5D+%3A+%222026%2F10%2F01%22%5BDate+-+Publication%5D%29&retmode=json&retmax=20&sort=relevance",
+      "retrieved_at_utc": "2026-10-01T20:54:05.606603+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28%28%22large+language+model%22%5BTitle%2FAbstract%5D%29+OR+%28%22large+language+models%22%5BTitle%2FAbstract%5D%29%29+AND+%28contradiction%5BTitle%2FAbstract%5D+OR+provenance%5BTitle%2FAbstract%5D+OR+%22evidence+sufficiency%22%5BTitle%2FAbstract%5D%29+AND+%28%222000%2F01%2F01%22%5BDate+-+Publication%5D+%3A+%222026%2F10%2F01%22%5BDate+-+Publication%5D%29&retmode=json&retmax=20&sort=relevance",
+      "sha256": "fa0f876a7cfbba8d399fe4b3afd01f073040e3f799780d24db93dbf46019bf83",
+      "bytes": 630,
+      "snapshot_id": "pubmed-precise-search-1.json",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=42784988%2C42761487%2C42709722%2C42683245%2C42665211%2C42619779%2C42604785%2C42483425%2C42368970%2C42355557%2C42323886%2C42117848%2C41951703%2C41930309%2C41849833%2C41621626%2C41202290%2C41130558%2C41040799%2C41021971&retmode=xml",
+      "retrieved_at_utc": "2026-10-01T20:54:06.598298+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=42784988%2C42761487%2C42709722%2C42683245%2C42665211%2C42619779%2C42604785%2C42483425%2C42368970%2C42355557%2C42323886%2C42117848%2C41951703%2C41930309%2C41849833%2C41621626%2C41202290%2C41130558%2C41040799%2C41021971&retmode=xml",
+      "sha256": "75a734bfbef4678b949c6950104f47b9fe8c65d02946615d45ed01b78d2153e6",
+      "bytes": 328341,
+      "snapshot_id": "pubmed-precise-records-1.xml",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28%28%22large+language+model%22%5BTitle%2FAbstract%5D%29+OR+%28%22large+language+models%22%5BTitle%2FAbstract%5D%29%29+AND+Arabic%5BTitle%2FAbstract%5D+AND+%28%222000%2F01%2F01%22%5BDate+-+Publication%5D+%3A+%222026%2F10%2F01%22%5BDate+-+Publication%5D%29&retmode=json&retmax=20&sort=relevance",
+      "retrieved_at_utc": "2026-10-01T20:54:08.165591+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%28%28%22large+language+model%22%5BTitle%2FAbstract%5D%29+OR+%28%22large+language+models%22%5BTitle%2FAbstract%5D%29%29+AND+Arabic%5BTitle%2FAbstract%5D+AND+%28%222000%2F01%2F01%22%5BDate+-+Publication%5D+%3A+%222026%2F10%2F01%22%5BDate+-+Publication%5D%29&retmode=json&retmax=20&sort=relevance",
+      "sha256": "1cc9f0a8c6eb2acac87ca28c85f4986bbcdcea133e10d4eb28a852609f88c46e",
+      "bytes": 543,
+      "snapshot_id": "pubmed-precise-search-2.json",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=41364639%2C42736840%2C42595694%2C41829612%2C41717650%2C41678465%2C41663396%2C41663094%2C40730812%2C40713064%2C40708801%2C40490632%2C42546532%2C42262654%2C41778230%2C41554080%2C41050103%2C40892946%2C40867476%2C40863481&retmode=xml",
+      "retrieved_at_utc": "2026-10-01T20:54:09.218712+00:00",
+      "http_status": 200,
+      "resolved_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=41364639%2C42736840%2C42595694%2C41829612%2C41717650%2C41678465%2C41663396%2C41663094%2C40730812%2C40713064%2C40708801%2C40490632%2C42546532%2C42262654%2C41778230%2C41554080%2C41050103%2C40892946%2C40867476%2C40863481&retmode=xml",
+      "sha256": "3796cca5fc59ed12c347b58893f38538498cdfd32bde0393de5c96986d560cc8",
+      "bytes": 412606,
+      "snapshot_id": "pubmed-precise-records-2.xml",
+      "retrieval_batch": "critical-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/KingMinerThailand/JEVSearch/commits/main",
+      "retrieved_at_utc": "2026-10-01T20:59:23.089344+00:00",
+      "status": 200,
+      "resolved_url": "https://api.github.com/repos/KingMinerThailand/JEVSearch/commits/main",
+      "sha256": "0fb5173718a94b70bce6373f00df669f54ed78ce6dea092bc47b6ab5a2cd6f5a",
+      "bytes": 17078,
+      "snapshot_id": "KingMinerThailand--JEVSearch--head.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/KingMinerThailand/JEVSearch/git/trees/369b282489f72e58298ba1abc8b0144b1bc15c59?recursive=1",
+      "retrieved_at_utc": "2026-10-01T20:59:23.715122+00:00",
+      "status": 200,
+      "resolved_url": "https://api.github.com/repos/KingMinerThailand/JEVSearch/git/trees/369b282489f72e58298ba1abc8b0144b1bc15c59?recursive=1",
+      "sha256": "1d2a300c569315421a019ffb7cc6a672528b089bbd8f0633152a1ef5db94cbb7",
+      "bytes": 19525,
+      "snapshot_id": "KingMinerThailand--JEVSearch--tree.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:59:24.225544+00:00",
+      "status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/LICENSE",
+      "sha256": "6ddbee32133009b21da4e67387d18769fb77755df0acb763e272c309ed845098",
+      "bytes": 1067,
+      "snapshot_id": "KingMinerThailand--JEVSearch--LICENSE",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/README.md",
+      "retrieved_at_utc": "2026-10-01T20:59:24.652108+00:00",
+      "status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/README.md",
+      "sha256": "905ed6659df54a1a3983d1a88d95b7721fe39f1c503db7539e00f2f1f6b49499",
+      "bytes": 8250,
+      "snapshot_id": "KingMinerThailand--JEVSearch--README.md",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/package.json",
+      "retrieved_at_utc": "2026-10-01T20:59:25.099968+00:00",
+      "status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/package.json",
+      "sha256": "9907dbea5799b1f023a227673b47f06dfbe42369465f899ff6e0ae079404a788",
+      "bytes": 1769,
+      "snapshot_id": "KingMinerThailand--JEVSearch--package.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/server/analytics.ts",
+      "retrieved_at_utc": "2026-10-01T20:59:25.508840+00:00",
+      "status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/server/analytics.ts",
+      "sha256": "10e62bb7368c44005e6592d5592692fb336b7b943ef52548a2afee6e6995252b",
+      "bytes": 412,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--server--analytics.ts",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/server/env.server.ts",
+      "retrieved_at_utc": "2026-10-01T20:59:25.966891+00:00",
+      "status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/server/env.server.ts",
+      "sha256": "06acdeebd23ae78bc8482f8d622923c0bf7b1fefadb0f180ca3b70352bcf02e5",
+      "bytes": 564,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--server--env.server.ts",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/server/search.ts",
+      "retrieved_at_utc": "2026-10-01T20:59:26.398748+00:00",
+      "status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/server/search.ts",
+      "sha256": "b9e12fa67a9f16971974a0a36197e8ecf8ef38f3611d751b995dc720c938b878",
+      "bytes": 1350,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--server--search.ts",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/api/models/HuggingFaceTB/SmolLM2-1.7B",
+      "retrieved_at_utc": "2026-10-01T20:59:26.826870+00:00",
+      "status": 200,
+      "resolved_url": "https://huggingface.co/api/models/HuggingFaceTB/SmolLM2-1.7B",
+      "sha256": "fa496a37751bc49e7cf811e734ae729c5e24039edda8bd43d165aff711392528",
+      "bytes": 2818,
+      "snapshot_id": "HuggingFaceTB--SmolLM2-1.7B--model-api.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B/resolve/effd688a12921b4cc83e3312b6feb579f70f9c71/config.json",
+      "retrieved_at_utc": "2026-10-01T20:59:27.106873+00:00",
+      "status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/models/HuggingFaceTB/SmolLM2-1.7B/effd688a12921b4cc83e3312b6feb579f70f9c71/config.json?%2FHuggingFaceTB%2FSmolLM2-1.7B%2Fresolve%2Feffd688a12921b4cc83e3312b6feb579f70f9c71%2Fconfig.json=&etag=%22fdd9cb3110ec94e0f9652f54a0fc48fe21595e78%22",
+      "sha256": "33397f6af8090f7290f27ce6fb1cd23a95fd0915a5c648dfd10b6002aaf7fc48",
+      "bytes": 635,
+      "snapshot_id": "HuggingFaceTB--SmolLM2-1.7B--model-config.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B/resolve/effd688a12921b4cc83e3312b6feb579f70f9c71/README.md",
+      "retrieved_at_utc": "2026-10-01T20:59:27.463044+00:00",
+      "status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/models/HuggingFaceTB/SmolLM2-1.7B/effd688a12921b4cc83e3312b6feb579f70f9c71/README.md?%2FHuggingFaceTB%2FSmolLM2-1.7B%2Fresolve%2Feffd688a12921b4cc83e3312b6feb579f70f9c71%2FREADME.md=&etag=%22dff0c00056eb74a28324336e27cadcca578b311a%22",
+      "sha256": "83c5404c1162e01c59e08fec9e8233b357ecf0ca3249e78f4b1ee13c5b3c320c",
+      "bytes": 7201,
+      "snapshot_id": "HuggingFaceTB--SmolLM2-1.7B--model-README.md",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B/resolve/effd688a12921b4cc83e3312b6feb579f70f9c71/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:59:27.984890+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "HuggingFaceTB--SmolLM2-1.7B--model-LICENSE",
+      "retrieval_batch": "followup-retrieval-manifest.json",
+      "failure_type": "HTTP Error 404"
+    },
+    {
+      "url": "https://huggingface.co/api/models/Qwen/Qwen3.5-0.8B-Base",
+      "retrieved_at_utc": "2026-10-01T20:59:28.212158+00:00",
+      "status": 200,
+      "resolved_url": "https://huggingface.co/api/models/Qwen/Qwen3.5-0.8B-Base",
+      "sha256": "e276103f745a5985fe8b50c15fe02b2a415834123b60b12d9fb7931a366d5bd0",
+      "bytes": 10253,
+      "snapshot_id": "Qwen--Qwen3.5-0.8B-Base--model-api.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3.5-0.8B-Base/resolve/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/config.json",
+      "retrieved_at_utc": "2026-10-01T20:59:28.448368+00:00",
+      "status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3.5-0.8B-Base/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/config.json?%2FQwen%2FQwen3.5-0.8B-Base%2Fresolve%2Fdc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68%2Fconfig.json=&etag=%22715f0448b9d38103211f0ad88bbb4d6e4f4be8c9%22",
+      "sha256": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
+      "bytes": 2907,
+      "snapshot_id": "Qwen--Qwen3.5-0.8B-Base--model-config.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3.5-0.8B-Base/resolve/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/README.md",
+      "retrieved_at_utc": "2026-10-01T20:59:28.801406+00:00",
+      "status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3.5-0.8B-Base/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/README.md?%2FQwen%2FQwen3.5-0.8B-Base%2Fresolve%2Fdc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68%2FREADME.md=&etag=%22ab7a3ee4374f56bf96f351fa086bcc3c5b67dfde%22",
+      "sha256": "3cff39d2674e28b95e2df75cdb2d7a687ec391931065b05df83dbae12b447b11",
+      "bytes": 3727,
+      "snapshot_id": "Qwen--Qwen3.5-0.8B-Base--model-README.md",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3.5-0.8B-Base/resolve/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:59:29.365360+00:00",
+      "status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/models/Qwen/Qwen3.5-0.8B-Base/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68/LICENSE?%2FQwen%2FQwen3.5-0.8B-Base%2Fresolve%2Fdc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68%2FLICENSE=&etag=%221d5180a42f1c3383ba7c7bd0a50f0837ef0168df%22",
+      "sha256": "50cbab8a892c5f2993b8c7351a99182507472def3b1374558308605d99b86b32",
+      "bytes": 11343,
+      "snapshot_id": "Qwen--Qwen3.5-0.8B-Base--model-LICENSE",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2407.05131v2",
+      "retrieved_at_utc": "2026-10-01T20:59:29.698229+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "abs--2407.05131v2.html",
+      "retrieval_batch": "followup-retrieval-manifest.json",
+      "failure_type": "HTTP Error 406"
+    },
+    {
+      "url": "https://arxiv.org/html/2407.05131v2",
+      "retrieved_at_utc": "2026-10-01T20:59:30.100959+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2407.05131v2",
+      "sha256": "06f8be084c7437d3f08939f542b554e2793ef24aed2f2207ef45ce44075159cf",
+      "bytes": 234097,
+      "snapshot_id": "fulltext--2407.05131v2.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.03534v2",
+      "retrieved_at_utc": "2026-10-01T20:59:30.730576+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2605.03534v2",
+      "sha256": "a553081a912005c0afe5c51373dd7ca1c8aaf7d8ee9a482fcb046e81acfa4dff",
+      "bytes": 43784,
+      "snapshot_id": "abs--2605.03534v2.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2605.03534v2",
+      "retrieved_at_utc": "2026-10-01T20:59:31.208501+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2605.03534v2",
+      "sha256": "732f5e16f9b758292d27a49dd6420e6537f1bc1f8c54d7f3aaa11053cefebd68",
+      "bytes": 216053,
+      "snapshot_id": "fulltext--2605.03534v2.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.25988v1",
+      "retrieved_at_utc": "2026-10-01T20:59:31.708538+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2605.25988v1",
+      "sha256": "5bc4ed5212b725b49267937fb232a8ac0808df9ae9ece2398fd78f3ad25c4faf",
+      "bytes": 42402,
+      "snapshot_id": "abs--2605.25988v1.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2605.25988v1",
+      "retrieved_at_utc": "2026-10-01T20:59:32.156875+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2605.25988v1",
+      "sha256": "fc71871645b89d9e0d946831b3a8d339e3c39170dee901a223b16cadc40338be",
+      "bytes": 408739,
+      "snapshot_id": "fulltext--2605.25988v1.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2609.38810v1",
+      "retrieved_at_utc": "2026-10-01T20:59:32.729627+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2609.38810v1",
+      "sha256": "879fc7bc7c41d28425ea800ffde25b27989dc665d324cfa88133b54b7f0e3ce7",
+      "bytes": 43664,
+      "snapshot_id": "abs--2609.38810v1.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2609.38810v1",
+      "retrieved_at_utc": "2026-10-01T20:59:33.093797+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2609.38810v1",
+      "sha256": "28df9c5c150d860e41d688a32c4a3dba608adaf53fa537122b6b390bd4fe639b",
+      "bytes": 1065113,
+      "snapshot_id": "fulltext--2609.38810v1.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2503.05505v2",
+      "retrieved_at_utc": "2026-10-01T20:59:33.795180+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2503.05505v2",
+      "sha256": "b16efb2516e562d9d850492a151ffa945349668ec441ff5313ee6c8720c3e97e",
+      "bytes": 41567,
+      "snapshot_id": "abs--2503.05505v2.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2503.05505v2",
+      "retrieved_at_utc": "2026-10-01T20:59:34.269485+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2503.05505v2",
+      "sha256": "d2107b13dd6ffbf4ad7e1d75981c09a8c34b8ad19486d7d3f86f3d95524c57ec",
+      "bytes": 204018,
+      "snapshot_id": "fulltext--2503.05505v2.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2507.07902v1",
+      "retrieved_at_utc": "2026-10-01T20:59:34.959166+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "abs--2507.07902v1.html",
+      "retrieval_batch": "followup-retrieval-manifest.json",
+      "failure_type": "HTTP Error 406"
+    },
+    {
+      "url": "https://arxiv.org/html/2507.07902v1",
+      "retrieved_at_utc": "2026-10-01T20:59:35.377369+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2507.07902v1",
+      "sha256": "a3beef511de0e943e1c1211ad46b3e9da99189bfb3f0c55089057cce9747b73b",
+      "bytes": 254513,
+      "snapshot_id": "fulltext--2507.07902v1.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2606.22728v1",
+      "retrieved_at_utc": "2026-10-01T20:59:35.912022+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2606.22728v1",
+      "sha256": "33ce6fcbfc082d4bc532f35ecb15045b7777d355f8583bdbe4216ccb1efb9bbe",
+      "bytes": 42620,
+      "snapshot_id": "abs--2606.22728v1.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2606.22728v1",
+      "retrieved_at_utc": "2026-10-01T20:59:36.400578+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2606.22728v1",
+      "sha256": "3bf9011297579075cdba566f26ae41ef0c31d5ce2d30124ca4859d173428da0a",
+      "bytes": 1003554,
+      "snapshot_id": "fulltext--2606.22728v1.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2408.03314",
+      "retrieved_at_utc": "2026-10-01T20:59:37.331731+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2408.03314",
+      "sha256": "c38ea95eb2e29a5154f502608d5abea49cfddaf6b74674bb3cd42a5fd6d16086",
+      "bytes": 44439,
+      "snapshot_id": "abs--2408.03314.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2408.03314",
+      "retrieved_at_utc": "2026-10-01T20:59:37.701391+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2408.03314",
+      "sha256": "a9b93ce1d687a53f5e4348f81434234d17b0bf44541ecbb3a5e5551984e9cd02",
+      "bytes": 227467,
+      "snapshot_id": "fulltext--2408.03314.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2009.13081",
+      "retrieved_at_utc": "2026-10-01T20:59:38.205573+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2009.13081",
+      "sha256": "e8b268592278e0abf28169b1a34c2e2aeece5003dd95ad9b475a2305b160f55f",
+      "bytes": 42274,
+      "snapshot_id": "abs--2009.13081.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2009.13081",
+      "retrieved_at_utc": "2026-10-01T20:59:38.564655+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2009.13081",
+      "sha256": "e286e900f43942819789493a436b57be65b8ba881577748a463698377d014dec",
+      "bytes": 220478,
+      "snapshot_id": "fulltext--2009.13081.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/1909.06146",
+      "retrieved_at_utc": "2026-10-01T20:59:39.067768+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/1909.06146",
+      "sha256": "4c4c12fdcdf99fcddd43dadad05bbbc33b58a83d2f857115d4b9de595f84f767",
+      "bytes": 42888,
+      "snapshot_id": "abs--1909.06146.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/1909.06146",
+      "retrieved_at_utc": "2026-10-01T20:59:39.428266+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/1909.06146",
+      "sha256": "2b43580014ce221828545d576019e4ed9fa36f2b0dafbfb1f28c837b9796f91c",
+      "bytes": 187841,
+      "snapshot_id": "fulltext--1909.06146.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2203.14371",
+      "retrieved_at_utc": "2026-10-01T20:59:40.027699+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2203.14371",
+      "sha256": "1f6b726e45e4d0b5afb9a1b549e317e937fdfe7ffb4c72a8566f2390b0107fd6",
+      "bytes": 40545,
+      "snapshot_id": "abs--2203.14371.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2203.14371",
+      "retrieved_at_utc": "2026-10-01T20:59:40.432132+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2203.14371",
+      "sha256": "d9ae9862df602b032365fe0025e24e4b48a830a2fd0af2b73b5372e41b7ecce8",
+      "bytes": 158906,
+      "snapshot_id": "fulltext--2203.14371.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2404.12345",
+      "retrieved_at_utc": "2026-10-01T20:59:41.011458+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/abs/2404.12345",
+      "sha256": "ccc9aa93354994874454d128d742901b13ca0fb2b270e91220716f8619d6aee5",
+      "bytes": 44024,
+      "snapshot_id": "abs--2404.12345.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2404.12345",
+      "retrieved_at_utc": "2026-10-01T20:59:41.378562+00:00",
+      "status": 200,
+      "resolved_url": "https://arxiv.org/html/2404.12345",
+      "sha256": "b011b5d0f39e1d7bb39f13e615d70055b3e26964637c4aa5a3c7c1b0cfafc439",
+      "bytes": 266018,
+      "snapshot_id": "fulltext--2404.12345.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3A%22decision+head%22+OR+all%3A%22typed+decision%22%29+AND+%28all%3Ainterference+OR+all%3Acalibration+OR+all%3Asupervision%29&start=0&max_results=20&sortBy=relevance",
+      "retrieved_at_utc": "2026-10-01T20:59:42.349418+00:00",
+      "status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+%28all%3A%22decision+head%22+OR+all%3A%22typed+decision%22%29+AND+%28all%3Ainterference+OR+all%3Acalibration+OR+all%3Asupervision%29&start=0&max_results=20&sortBy=relevance",
+      "sha256": "468c2cb17f6f7685c2beb28080d46ec460892abadfa00ce611f15907aa319cee",
+      "bytes": 966,
+      "snapshot_id": "followup-search-0.xml",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+all%3Alanguage+AND+%28all%3A%22multi-task%22+OR+all%3A%22multi-objective%22%29+AND+%28all%3Ainterference+OR+all%3Acalibration%29&start=0&max_results=20&sortBy=relevance",
+      "retrieved_at_utc": "2026-10-01T20:59:45.961061+00:00",
+      "status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=%28all%3Amedical+OR+all%3Aclinical%29+AND+all%3Alanguage+AND+%28all%3A%22multi-task%22+OR+all%3A%22multi-objective%22%29+AND+%28all%3Ainterference+OR+all%3Acalibration%29&start=0&max_results=20&sortBy=relevance",
+      "sha256": "f7e3ec82517a39a041e0958cdca5027f828bbc5588e1aa79a8ed99378863150f",
+      "bytes": 13456,
+      "snapshot_id": "followup-search-1.xml",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=ti%3A%22On+Calibration+of+Modern+Neural+Networks%22+OR+ti%3A%22SelectiveNet%22+OR+ti%3A%22The+use+of+multiple+measurements+in+taxonomic+problems%22&start=0&max_results=20&sortBy=relevance",
+      "retrieved_at_utc": "2026-10-01T20:59:49.576772+00:00",
+      "status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=ti%3A%22On+Calibration+of+Modern+Neural+Networks%22+OR+ti%3A%22SelectiveNet%22+OR+ti%3A%22The+use+of+multiple+measurements+in+taxonomic+problems%22&start=0&max_results=20&sortBy=relevance",
+      "sha256": "f6f65f9860fcd5b5204e385d7d1e0f771dd0866b423cf3dcd33f1e1ae8c4d0d5",
+      "bytes": 6303,
+      "snapshot_id": "followup-search-2.xml",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://export.arxiv.org/api/query?search_query=ti%3A%22Sufficient+Context%22+OR+ti%3A%22Learning+to+Retrieve%22+OR+ti%3A%22Benchmarking+Retrieval-Augmented+Generation+for+Medicine%22&start=0&max_results=20&sortBy=relevance",
+      "retrieved_at_utc": "2026-10-01T20:59:53.162060+00:00",
+      "status": 200,
+      "resolved_url": "https://export.arxiv.org/api/query?search_query=ti%3A%22Sufficient+Context%22+OR+ti%3A%22Learning+to+Retrieve%22+OR+ti%3A%22Benchmarking+Retrieval-Augmented+Generation+for+Medicine%22&start=0&max_results=20&sortBy=relevance",
+      "sha256": "72226022165fa3348a158fcb8b433ae9597b8b169c736e6c2649624e5a727abd",
+      "bytes": 48043,
+      "snapshot_id": "followup-search-3.xml",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://hl7.org/fhir/license.html",
+      "retrieved_at_utc": "2026-10-01T20:59:56.745788+00:00",
+      "status": 200,
+      "resolved_url": "https://hl7.org/fhir/license.html",
+      "sha256": "7276b67f04f1358a8c5a10be5d99cb5dada9c03cea72254bd9fb1424cef1835d",
+      "bytes": 26680,
+      "snapshot_id": "official-fhir-license.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+      "retrieved_at_utc": "2026-10-01T20:59:57.562977+00:00",
+      "status": 200,
+      "resolved_url": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+      "sha256": "8ad8f6f186ca51ec73a5fb8935ecfa17b8cbaad300b7025b381898ab72621869",
+      "bytes": 38936,
+      "snapshot_id": "official-ncbi-policies.html",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api2.openreview.net/notes?content.title=Expert%20Merging&limit=10",
+      "retrieved_at_utc": "2026-10-01T20:59:58.144127+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "openreview-title-search.json",
+      "retrieval_batch": "followup-retrieval-manifest.json",
+      "failure_type": "HTTP Error 403"
+    },
+    {
+      "url": "https://api.crossref.org/works/10.1186%2Fs12911-025-02954-4",
+      "retrieved_at_utc": "2026-10-01T20:59:58.594073+00:00",
+      "status": 200,
+      "resolved_url": "https://api.crossref.org/works/10.1186%2Fs12911-025-02954-4",
+      "sha256": "2131906fbdbd08f05fbc1f7ecca9dc5cc80c2a9e2509fab37cc27a360a470e83",
+      "bytes": 10428,
+      "snapshot_id": "crossref--40055694.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.crossref.org/works/10.1038%2Fs41591-025-04151-2",
+      "retrieved_at_utc": "2026-10-01T20:59:59.132249+00:00",
+      "status": 200,
+      "resolved_url": "https://api.crossref.org/works/10.1038%2Fs41591-025-04151-2",
+      "sha256": "a5fbb8a98655fc07d3ca10fa6761477b5d86808a6cd614d0e69dbe467b0dd4ba",
+      "bytes": 38191,
+      "snapshot_id": "crossref--41559415.json",
+      "retrieval_batch": "followup-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.crossref.org/works/10.1198%2F016214506000001437",
+      "retrieved_at_utc": "2026-10-01T21:04:15.291707+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.crossref.org/works/10.1198%2F016214506000001437",
+      "sha256": "733b51e199cad69b68b53eda93c0f12314af84d412669454a2e51e22f4a16d47",
+      "bytes": 6490,
+      "snapshot_id": "crossref-doi--10.1198--016214506000001437.json",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.crossref.org/works/10.1214%2Faos%2F1176344552",
+      "retrieved_at_utc": "2026-10-01T21:04:15.884893+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.crossref.org/works/10.1214%2Faos%2F1176344552",
+      "sha256": "dc7d9c4c6e27cbe07c1cfd6292c412355c6120efb951d1550c2bd98c844cef8e",
+      "bytes": 1785,
+      "snapshot_id": "crossref-doi--10.1214--aos--1176344552.json",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.crossref.org/works/10.2307%2F4615733",
+      "retrieved_at_utc": "2026-10-01T21:04:16.424370+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "crossref-doi--10.2307--4615733.json",
+      "retrieval_batch": "final-retrieval-manifest.json",
+      "failure_type": "HTTP Error 404"
+    },
+    {
+      "url": "https://api.crossref.org/works/10.1007%2FBF02295996",
+      "retrieved_at_utc": "2026-10-01T21:04:16.943086+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.crossref.org/works/10.1007%2FBF02295996",
+      "sha256": "d69c84cff4f8381b0f431d7139d5237d3a2c42d1b56a1aa81c862107cedd07ae",
+      "bytes": 2705,
+      "snapshot_id": "crossref-doi--10.1007--BF02295996.json",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.crossref.org/works/10.1186%2F1745-6215-12-106",
+      "retrieved_at_utc": "2026-10-01T21:04:17.456819+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.crossref.org/works/10.1186%2F1745-6215-12-106",
+      "sha256": "2fa498f7321909c64ddcb904f8fd79ca9ef4539171477f71c57db47cbea021df",
+      "bytes": 8808,
+      "snapshot_id": "crossref-doi--10.1186--1745-6215-12-106.json",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.crossref.org/works/10.1038%2Fs41586-023-06291-2",
+      "retrieved_at_utc": "2026-10-01T21:04:17.997043+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.crossref.org/works/10.1038%2Fs41586-023-06291-2",
+      "sha256": "5bf5c09da254f231f64d01bfc203d2552a120286e6c22cb784edf7cc0addcfe2",
+      "bytes": 38387,
+      "snapshot_id": "crossref-doi--10.1038--s41586-023-06291-2.json",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/1901.09192v4",
+      "retrieved_at_utc": "2026-10-01T21:04:18.699266+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/1901.09192v4",
+      "sha256": "5ddaffda067a7dc5792921cf0d251274d7a0752f0d6a2637ed8fe129195f1c50",
+      "bytes": 41653,
+      "snapshot_id": "abs--1901.09192v4.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/1901.09192v4",
+      "retrieved_at_utc": "2026-10-01T21:04:19.116741+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/1901.09192v4",
+      "sha256": "c830a90c933ad27ec071d4cea14d3c3d54f008889965b2bbe335975b17708fe8",
+      "bytes": 191969,
+      "snapshot_id": "fulltext--1901.09192v4.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/1906.02530",
+      "retrieved_at_utc": "2026-10-01T21:04:19.598927+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/1906.02530",
+      "sha256": "8f35f05a73891f8dc8daa20aad2ab53f8197444e256486ac5f4d3ee42ab0e454",
+      "bytes": 43155,
+      "snapshot_id": "abs--1906.02530.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/1906.02530",
+      "retrieved_at_utc": "2026-10-01T21:04:19.974199+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/1906.02530",
+      "sha256": "e93db2bd634a9d3f962615bfd76eee76fd6146f581906e350a0e406a81058d05",
+      "bytes": 246922,
+      "snapshot_id": "fulltext--1906.02530.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2411.06037v3",
+      "retrieved_at_utc": "2026-10-01T21:04:20.563825+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2411.06037v3",
+      "sha256": "6bb67c2bed3567640d823b87ab9ca9de1418be61b559cf471eb21569c8ea1ffd",
+      "bytes": 43034,
+      "snapshot_id": "abs--2411.06037v3.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2411.06037v3",
+      "retrieved_at_utc": "2026-10-01T21:04:20.976633+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2411.06037v3",
+      "sha256": "b993d22183a4ae4711abad3ea59e67b0890ed333350a3d319fdb6e53e0face6c",
+      "bytes": 210703,
+      "snapshot_id": "fulltext--2411.06037v3.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2409.17508v2",
+      "retrieved_at_utc": "2026-10-01T21:04:21.490849+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2409.17508v2",
+      "sha256": "a45fbd6b32408292fe41e8dca60a6abcbc3ffd3ff608ef9183e2493a26b74166",
+      "bytes": 43554,
+      "snapshot_id": "abs--2409.17508v2.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2409.17508v2",
+      "retrieved_at_utc": "2026-10-01T21:04:21.955866+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2409.17508v2",
+      "sha256": "5d495e90609031df2e434deeb115a31fd8a47acd10c57bc933e8fe7c198e814e",
+      "bytes": 616628,
+      "snapshot_id": "fulltext--2409.17508v2.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2601.07935v1",
+      "retrieved_at_utc": "2026-10-01T21:04:22.502884+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2601.07935v1",
+      "sha256": "eb9ac4bdfecdf8489767c988b8c7dc55a49004218bce1b4954f13e8459f7b76a",
+      "bytes": 43595,
+      "snapshot_id": "abs--2601.07935v1.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2601.07935v1",
+      "retrieved_at_utc": "2026-10-01T21:04:22.934335+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2601.07935v1",
+      "sha256": "c25380807ad08265d443b6c90da687208cc97ddc5cd92497423120b650fd6f0a",
+      "bytes": 114717,
+      "snapshot_id": "fulltext--2601.07935v1.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2506.07044v5",
+      "retrieved_at_utc": "2026-10-01T21:04:23.442343+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2506.07044v5",
+      "sha256": "43324712ca84f1d572e4367d656a2d58bd5173fe44ba673dda3977c5fe48f00e",
+      "bytes": 47138,
+      "snapshot_id": "abs--2506.07044v5.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2506.07044v5",
+      "retrieved_at_utc": "2026-10-01T21:04:23.915149+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2506.07044v5",
+      "sha256": "2a330968d521316e874c6c15bf43cda72631e1ceeebbe73fb94abd1655067fd9",
+      "bytes": 778645,
+      "snapshot_id": "fulltext--2506.07044v5.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2505.14683",
+      "retrieved_at_utc": "2026-10-01T21:04:24.686936+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2505.14683",
+      "sha256": "5a588fbca47d6f3d8b1eef7a89b10914590ea68585f8fbb93bdaf057b8ca211f",
+      "bytes": 42290,
+      "snapshot_id": "abs--2505.14683.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2505.14683",
+      "retrieved_at_utc": "2026-10-01T21:04:25.072383+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2505.14683",
+      "sha256": "c3ae42026e17910b404a28cdea7b40ac6718b29f48f8011c2b88163a72b73d87",
+      "bytes": 382035,
+      "snapshot_id": "fulltext--2505.14683.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.03534v2",
+      "retrieved_at_utc": "2026-10-01T21:04:25.639932+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2605.03534v2",
+      "sha256": "a553081a912005c0afe5c51373dd7ca1c8aaf7d8ee9a482fcb046e81acfa4dff",
+      "bytes": 43784,
+      "snapshot_id": "abs--2605.03534v2.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2605.03534v2",
+      "retrieved_at_utc": "2026-10-01T21:04:26.021326+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2605.03534v2",
+      "sha256": "732f5e16f9b758292d27a49dd6420e6537f1bc1f8c54d7f3aaa11053cefebd68",
+      "bytes": 216053,
+      "snapshot_id": "fulltext--2605.03534v2.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/abs/2503.05505v2",
+      "retrieved_at_utc": "2026-10-01T21:04:26.510432+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/abs/2503.05505v2",
+      "sha256": "b16efb2516e562d9d850492a151ffa945349668ec441ff5313ee6c8720c3e97e",
+      "bytes": 41567,
+      "snapshot_id": "abs--2503.05505v2.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://arxiv.org/html/2503.05505v2",
+      "retrieved_at_utc": "2026-10-01T21:04:26.861797+00:00",
+      "http_status": 200,
+      "resolved_url": "https://arxiv.org/html/2503.05505v2",
+      "sha256": "d2107b13dd6ffbf4ad7e1d75981c09a8c34b8ad19486d7d3f86f3d95524c57ec",
+      "bytes": 204018,
+      "snapshot_id": "fulltext--2503.05505v2.html",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/cache.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:27.363566+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/cache.ts",
+      "sha256": "7b6601bf38fa24fabf0870e43ccf0b46a7dd2abb44e1a5912141ca19500f3b99",
+      "bytes": 2012,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--cache.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/candidates.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:27.821422+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/candidates.ts",
+      "sha256": "23031569195fdab6fc749e943e4feb8ab8187a67dd0013e34773bde77eb23981",
+      "bytes": 4821,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--candidates.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/freshness.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:28.267803+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/freshness.ts",
+      "sha256": "c2fffcefe52fac399fa0c482acf0e20ed23582b7cd59b441bf0ac0394eb088a2",
+      "bytes": 3898,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--freshness.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/merge.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:28.677078+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/merge.ts",
+      "sha256": "23039feab8108df8fe194133a793e4c30d1dedcc277d5c6faea3ee886f9a5a72",
+      "bytes": 1709,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--merge.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/pipeline.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:29.132343+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/pipeline.ts",
+      "sha256": "5c5bf87663ec22c9f833debf962425f5083d54f33ff069edf7f1cd7b9eaab109",
+      "bytes": 10758,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--pipeline.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/rank.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:29.536063+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/rank.ts",
+      "sha256": "1217af0c097abf8469cad599c15b7c884d8925e2af29364d51c1efb640ffa464",
+      "bytes": 4072,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--rank.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/search1api.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:30.002093+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/search1api.ts",
+      "sha256": "bbfb928a3a26423dc76fa195ace49d7c7ccac67434a9d6a5e2164176f311dc52",
+      "bytes": 3446,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--search1api.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/sources.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:30.444687+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/sources.ts",
+      "sha256": "deb774759a360da0354624fae15297eb2ab76cb32bb6e458302c678a4756798b",
+      "bytes": 9244,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--sources.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/stable-order.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:30.870381+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/stable-order.ts",
+      "sha256": "376020854d5896489c45fdf2d1c55457427773bbb17d27d3fccb66f4c97f427a",
+      "bytes": 1894,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--stable-order.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/typesafe.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:31.332992+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/typesafe.ts",
+      "sha256": "caa84f9bf74b82884f50b8f36e89ed53f99e89f7dc003ebd989d9f1a42e24494",
+      "bytes": 7993,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--typesafe.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/use-ask.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:31.757798+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/use-ask.ts",
+      "sha256": "1a284654352b3f87a01f66f44d75f182b70372005bd6856e1aa720b7614c47b4",
+      "bytes": 3912,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--use-ask.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/use-stable-order.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:32.191509+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/use-stable-order.ts",
+      "sha256": "69e56ad5856f274308a042ecd5cff11ac95664033d0fb2d617c66b619768bdd0",
+      "bytes": 869,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--use-stable-order.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/utils.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:32.636346+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/utils.ts",
+      "sha256": "74e8fe9d0d680c442ed6adb13e7d119d6c210c19ae6c114313b2a72552be0883",
+      "bytes": 169,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--utils.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/validate.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:33.082590+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/lib/validate.ts",
+      "sha256": "d108130404431dd812b0d3367cfa57c6c76aa447852840f394720e57363caa4c",
+      "bytes": 802,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--lib--validate.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/routes/api/ask.ts",
+      "retrieved_at_utc": "2026-10-01T21:04:33.535142+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/KingMinerThailand/JEVSearch/369b282489f72e58298ba1abc8b0144b1bc15c59/src/routes/api/ask.ts",
+      "sha256": "19e3257172a7d43f8dd2518138dbb9bed9adc3ff39e4c20c63df94191529b2bf",
+      "bytes": 4067,
+      "snapshot_id": "KingMinerThailand--JEVSearch--src--routes--api--ask.ts",
+      "retrieval_batch": "final-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/api/datasets/qiaojin/PubMedQA",
+      "retrieved_at_utc": "2026-10-01T20:50:05.288544+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/datasets/qiaojin/PubMedQA",
+      "sha256": "98fae29984435ef9435df0a1fd3e1ccfe295ba956869194129026ca939280750",
+      "bytes": 3889,
+      "snapshot_id": "qiaojin--PubMedQA--dataset-api.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/datasets/qiaojin/PubMedQA/resolve/9001f2853fb87cab8d220904e0de81ac6973b318/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:05.610190+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/datasets/qiaojin/PubMedQA/9001f2853fb87cab8d220904e0de81ac6973b318/README.md?%2Fdatasets%2Fqiaojin%2FPubMedQA%2Fresolve%2F9001f2853fb87cab8d220904e0de81ac6973b318%2FREADME.md=&etag=%2282e7e0167dd7afd840819c20418979195677b1ff%22",
+      "sha256": "977cd95a8e99322f9f7c080c6bf8906a100c843bc00c691c065b0830fd95f876",
+      "bytes": 5192,
+      "snapshot_id": "qiaojin--PubMedQA--dataset-README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/api/datasets/GBaker/MedQA-USMLE-4-options",
+      "retrieved_at_utc": "2026-10-01T20:50:05.965132+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/datasets/GBaker/MedQA-USMLE-4-options",
+      "sha256": "5840e37ade551067475db801d4859f2396736d2d45ac101393715b559fe5f314",
+      "bytes": 1268,
+      "snapshot_id": "GBaker--MedQA-USMLE-4-options--dataset-api.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/datasets/GBaker/MedQA-USMLE-4-options/resolve/0fb93dd23a7339b6dcd27e241cb9b5eca62d4d18/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:06.232230+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/datasets/GBaker/MedQA-USMLE-4-options/0fb93dd23a7339b6dcd27e241cb9b5eca62d4d18/README.md?%2Fdatasets%2FGBaker%2FMedQA-USMLE-4-options%2Fresolve%2F0fb93dd23a7339b6dcd27e241cb9b5eca62d4d18%2FREADME.md=&etag=%22ca577e8b3ffdeeb2e4945565a9a6b25b5a7c96d1%22",
+      "sha256": "c4f44b8111beb0cb7e7894ccbb456be1eceb9acaa3fadff73cd46d2d4309dde7",
+      "bytes": 654,
+      "snapshot_id": "GBaker--MedQA-USMLE-4-options--dataset-README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/api/datasets/openlifescienceai/medmcqa",
+      "retrieved_at_utc": "2026-10-01T20:50:06.882712+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/datasets/openlifescienceai/medmcqa",
+      "sha256": "49c2bba120a10d0bc7501e0200245251edb22107cc420fcabc6499cdbeafcfb2",
+      "bytes": 2970,
+      "snapshot_id": "openlifescienceai--medmcqa--dataset-api.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/datasets/openlifescienceai/medmcqa/resolve/91c6572c454088bf71b679ad90aa8dffcd0d5868/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:07.138254+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/datasets/openlifescienceai/medmcqa/91c6572c454088bf71b679ad90aa8dffcd0d5868/README.md?%2Fdatasets%2Fopenlifescienceai%2Fmedmcqa%2Fresolve%2F91c6572c454088bf71b679ad90aa8dffcd0d5868%2FREADME.md=&etag=%224e8798b51a2c343cb154b797ce59808fefbcc431%22",
+      "sha256": "aedb19bd3b6b4ba5b3a371d4aa61aac2195eb6239357d3b733345f62d9104d6a",
+      "bytes": 10700,
+      "snapshot_id": "openlifescienceai--medmcqa--dataset-README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/api/datasets/FreedomIntelligence/ArabicMMLU",
+      "retrieved_at_utc": "2026-10-01T20:50:07.521595+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "FreedomIntelligence--ArabicMMLU--dataset-api.json",
+      "retrieval_batch": "rights-retrieval-manifest.json",
+      "failure_type": "HTTP Error 401"
+    },
+    {
+      "url": "https://huggingface.co/api/datasets/MBZUAI/ArabicMMLU",
+      "retrieved_at_utc": "2026-10-01T20:50:07.760639+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/datasets/MBZUAI/ArabicMMLU",
+      "sha256": "9269066633f4372d1de90d4e8ad5afb850165454556a6052f6132f870ec75ea4",
+      "bytes": 12970,
+      "snapshot_id": "MBZUAI--ArabicMMLU--dataset-api.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/datasets/MBZUAI/ArabicMMLU/resolve/7aa530e2893ac420352b3f5c1a1310c010e9758b/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:08.008990+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/datasets/MBZUAI/ArabicMMLU/7aa530e2893ac420352b3f5c1a1310c010e9758b/README.md?%2Fdatasets%2FMBZUAI%2FArabicMMLU%2Fresolve%2F7aa530e2893ac420352b3f5c1a1310c010e9758b%2FREADME.md=&etag=%22dfb30da68ed5fb5fef70f7712996767eec3f3c18%22",
+      "sha256": "898f444b923bd933f1030c76238d0fe008a4667fb21e30a3f7d5cb79af86e939",
+      "bytes": 11597,
+      "snapshot_id": "MBZUAI--ArabicMMLU--dataset-README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/api/datasets/FreedomIntelligence/medical-o1-reasoning-SFT",
+      "retrieved_at_utc": "2026-10-01T20:50:08.584869+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/datasets/FreedomIntelligence/medical-o1-reasoning-SFT",
+      "sha256": "cb97f0869cb6658ac2dbd7d24ab32f6bdee25e511a1579b1cf467f7e99c94d64",
+      "bytes": 1976,
+      "snapshot_id": "FreedomIntelligence--medical-o1-reasoning-SFT--dataset-api.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT/resolve/fc2c9e8a37b38f38da6d449564a8c350b244aef4/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:08.836212+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/datasets/FreedomIntelligence/medical-o1-reasoning-SFT/fc2c9e8a37b38f38da6d449564a8c350b244aef4/README.md?%2Fdatasets%2FFreedomIntelligence%2Fmedical-o1-reasoning-SFT%2Fresolve%2Ffc2c9e8a37b38f38da6d449564a8c350b244aef4%2FREADME.md=&etag=%22e77b03342a159375ecdbb55ed3b4bfc2725c2817%22",
+      "sha256": "35a06bd0a1a8350090c78668792df0b320d5f890a6ae4e5ac7ec71e7fcda0616",
+      "bytes": 1967,
+      "snapshot_id": "FreedomIntelligence--medical-o1-reasoning-SFT--dataset-README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/api/datasets/rajpurkar/squad",
+      "retrieved_at_utc": "2026-10-01T20:50:09.376430+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/datasets/rajpurkar/squad",
+      "sha256": "2606e8e7db370505cbef32fa97cda82d456e001ca837cf7516c42f5eba3931b4",
+      "bytes": 2981,
+      "snapshot_id": "rajpurkar--squad--dataset-api.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/datasets/rajpurkar/squad/resolve/7b6d24c440a36b6815f21b70d25016731768db1f/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:09.629077+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/resolve-cache/datasets/rajpurkar/squad/7b6d24c440a36b6815f21b70d25016731768db1f/README.md?%2Fdatasets%2Frajpurkar%2Fsquad%2Fresolve%2F7b6d24c440a36b6815f21b70d25016731768db1f%2FREADME.md=&etag=%221cfb3ead8da0573949c9990a89ed01f909646358%22",
+      "sha256": "fb89c5d06573a2c7b7fb671ad60f5c1f3be2ccd7a63162f41b9e613abca0f0b8",
+      "bytes": 7620,
+      "snapshot_id": "rajpurkar--squad--dataset-README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/api/datasets/Idavidrein/gpqa",
+      "retrieved_at_utc": "2026-10-01T20:50:10.057679+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/api/datasets/Idavidrein/gpqa",
+      "sha256": "403691178f1e4eceb2d738832cac5b0b60a27c89ec0421d42403597e26516d96",
+      "bytes": 2313,
+      "snapshot_id": "Idavidrein--gpqa--dataset-api.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://huggingface.co/datasets/Idavidrein/gpqa/resolve/83022cefff930aea54f654c0b282e74b9eeda5c6/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:10.326137+00:00",
+      "http_status": 200,
+      "resolved_url": "https://huggingface.co/datasets/Idavidrein/gpqa/resolve/83022cefff930aea54f654c0b282e74b9eeda5c6/README.md",
+      "sha256": "438b45222c5148b48c9b009014bada9403a965b143ccb3467e6799b876164578",
+      "bytes": 3141,
+      "snapshot_id": "Idavidrein--gpqa--dataset-README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/jind11/MedQA",
+      "retrieved_at_utc": "2026-10-01T20:50:10.572608+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/jind11/MedQA",
+      "sha256": "e218f3a824b9d440e727ba9ff86b3938e4e963c79c631a5dedc2e2380a7e5014",
+      "bytes": 4901,
+      "snapshot_id": "jind11--MedQA--repository.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/jind11/MedQA/commits/master",
+      "retrieved_at_utc": "2026-10-01T20:50:11.051022+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/jind11/MedQA/commits/master",
+      "sha256": "469a40e8bf2d7e2241f01f2700e2409d8dc2f80bf80e3cb0a135f05b1675ac86",
+      "bytes": 5887,
+      "snapshot_id": "jind11--MedQA--head.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/jind11/MedQA/git/trees/27b02f66aac217933c9648a06f82e9f720377925?recursive=1",
+      "retrieved_at_utc": "2026-10-01T20:50:11.621182+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/jind11/MedQA/git/trees/27b02f66aac217933c9648a06f82e9f720377925?recursive=1",
+      "sha256": "0fdb5550fa048ba5b94d2101dde152d84ab52ca7358de0146d7cc275418e318c",
+      "bytes": 9679,
+      "snapshot_id": "jind11--MedQA--tree.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jind11/MedQA/27b02f66aac217933c9648a06f82e9f720377925/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:50:12.084939+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/jind11/MedQA/27b02f66aac217933c9648a06f82e9f720377925/LICENSE",
+      "sha256": "8a35478f13bfaa114cd157592ba06b9a27db0f9767ac1cb9b36d435de6157378",
+      "bytes": 1063,
+      "snapshot_id": "jind11--MedQA--LICENSE",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jind11/MedQA/27b02f66aac217933c9648a06f82e9f720377925/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:12.504123+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/jind11/MedQA/27b02f66aac217933c9648a06f82e9f720377925/README.md",
+      "sha256": "793b8e2803e876ab59b3f68dded40a36eb63d0043e1adf49224f34fd8b608797",
+      "bytes": 4974,
+      "snapshot_id": "jind11--MedQA--README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/pubmedqa/pubmedqa",
+      "retrieved_at_utc": "2026-10-01T20:50:12.896381+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/pubmedqa/pubmedqa",
+      "sha256": "62243ab316611c471e4538cf096152e58e5c43aafa690d43cb135562d5309f33",
+      "bytes": 5205,
+      "snapshot_id": "pubmedqa--pubmedqa--repository.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/pubmedqa/pubmedqa/commits/master",
+      "retrieved_at_utc": "2026-10-01T20:50:13.454967+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/pubmedqa/pubmedqa/commits/master",
+      "sha256": "e19581325a9686ca0700d1c44a99ef03839b3e9f6cd8771dc2bd062771afc188",
+      "bytes": 5005,
+      "snapshot_id": "pubmedqa--pubmedqa--head.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/pubmedqa/pubmedqa/git/trees/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997?recursive=1",
+      "retrieved_at_utc": "2026-10-01T20:50:14.064626+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/pubmedqa/pubmedqa/git/trees/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997?recursive=1",
+      "sha256": "620cead8c624cdcaf85c832ae7b492b97b018f2aed8ac23fcc6d997006d4efcf",
+      "bytes": 2181,
+      "snapshot_id": "pubmedqa--pubmedqa--tree.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pubmedqa/pubmedqa/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:50:14.461943+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/pubmedqa/pubmedqa/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997/LICENSE",
+      "sha256": "8e75abc6136be91e5ae66dbb6dda07c8bc9dcc215ed3bc1ba3ae7fab7904777e",
+      "bytes": 1065,
+      "snapshot_id": "pubmedqa--pubmedqa--LICENSE",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pubmedqa/pubmedqa/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:14.878205+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/pubmedqa/pubmedqa/1cbae8e92f72f20c8d3747cbb3bf5bc53554d997/README.md",
+      "sha256": "1338affd8530b416358b4ea40e6f1d6c935197352341bca2cf02288985a1fd99",
+      "bytes": 1723,
+      "snapshot_id": "pubmedqa--pubmedqa--README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/medmcqa/medmcqa",
+      "retrieved_at_utc": "2026-10-01T20:50:15.302315+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/medmcqa/medmcqa",
+      "sha256": "60094b68ada9558469a4d2c0a5dc3a8506e47565237c7872c050e798ff4c65ae",
+      "bytes": 6364,
+      "snapshot_id": "medmcqa--medmcqa--repository.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/medmcqa/medmcqa/commits/main",
+      "retrieved_at_utc": "2026-10-01T20:50:15.780158+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/medmcqa/medmcqa/commits/main",
+      "sha256": "caa47a16da45967e3dbda2b31966f6d1be7ef7283c486e51c3d974fdb6757a58",
+      "bytes": 5025,
+      "snapshot_id": "medmcqa--medmcqa--head.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/medmcqa/medmcqa/git/trees/c59ef14ca1990266c4107c7864b45a20fd93e5e0?recursive=1",
+      "retrieved_at_utc": "2026-10-01T20:50:16.307772+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/medmcqa/medmcqa/git/trees/c59ef14ca1990266c4107c7864b45a20fd93e5e0?recursive=1",
+      "sha256": "bd6a5ac5a97b69b4b931bbb998f36ece98e65578dd36a86af7a2e7930f4b9f4a",
+      "bytes": 3861,
+      "snapshot_id": "medmcqa--medmcqa--tree.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/medmcqa/medmcqa/c59ef14ca1990266c4107c7864b45a20fd93e5e0/LICENSE.md",
+      "retrieved_at_utc": "2026-10-01T20:50:16.729179+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/medmcqa/medmcqa/c59ef14ca1990266c4107c7864b45a20fd93e5e0/LICENSE.md",
+      "sha256": "aef55ea755c1bf14400349d722ba1d6d0efe56fd03ed74657bcde4c38fb60ad7",
+      "bytes": 1064,
+      "snapshot_id": "medmcqa--medmcqa--LICENSE.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/medmcqa/medmcqa/c59ef14ca1990266c4107c7864b45a20fd93e5e0/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:17.163630+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/medmcqa/medmcqa/c59ef14ca1990266c4107c7864b45a20fd93e5e0/README.md",
+      "sha256": "e4cec88e7de3802651255ff55891443633788360bede637a3cb04a35e58fd123",
+      "bytes": 9315,
+      "snapshot_id": "medmcqa--medmcqa--README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/Teddy-XiongGZ/RAG",
+      "retrieved_at_utc": "2026-10-01T20:50:17.627385+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "Teddy-XiongGZ--RAG--repository.json",
+      "retrieval_batch": "rights-retrieval-manifest.json",
+      "failure_type": "HTTP Error 404"
+    },
+    {
+      "url": "https://api.github.com/repos/synthetichealth/synthea",
+      "retrieved_at_utc": "2026-10-01T20:50:18.070336+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/synthetichealth/synthea",
+      "sha256": "6bc6ab0f43961b876b0081a8442a8b8c8a538ee5c737718df2fae0454155754d",
+      "bytes": 6753,
+      "snapshot_id": "synthetichealth--synthea--repository.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/synthetichealth/synthea/commits/master",
+      "retrieved_at_utc": "2026-10-01T20:50:18.512338+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/synthetichealth/synthea/commits/master",
+      "sha256": "91e59cd0e43238d40f299cc2978bad96fefa534a64d01802d6a82e93e09507f8",
+      "bytes": 22512,
+      "snapshot_id": "synthetichealth--synthea--head.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/synthetichealth/synthea/git/trees/d9d07a6eef91ee5144293b42ab64224d84d124f8?recursive=1",
+      "retrieved_at_utc": "2026-10-01T20:50:19.073723+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/synthetichealth/synthea/git/trees/d9d07a6eef91ee5144293b42ab64224d84d124f8?recursive=1",
+      "sha256": "7030fbdfd8244d8d46c4202c436c25d41fe3df1d92c1c287a443cb8e230a3742",
+      "bytes": 490816,
+      "snapshot_id": "synthetichealth--synthea--tree.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/synthetichealth/synthea/d9d07a6eef91ee5144293b42ab64224d84d124f8/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:50:19.837403+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/synthetichealth/synthea/d9d07a6eef91ee5144293b42ab64224d84d124f8/LICENSE",
+      "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "bytes": 11357,
+      "snapshot_id": "synthetichealth--synthea--LICENSE",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/synthetichealth/synthea/d9d07a6eef91ee5144293b42ab64224d84d124f8/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:20.345206+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/synthetichealth/synthea/d9d07a6eef91ee5144293b42ab64224d84d124f8/README.md",
+      "sha256": "674a227885066e2787dce85a04b4f39fd411f7e1f616e7c26fed10735929c8f1",
+      "bytes": 5127,
+      "snapshot_id": "synthetichealth--synthea--README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/MBZUAI/ArabicMMLU",
+      "retrieved_at_utc": "2026-10-01T20:50:20.833938+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "MBZUAI--ArabicMMLU--repository.json",
+      "retrieval_batch": "rights-retrieval-manifest.json",
+      "failure_type": "HTTP Error 404"
+    },
+    {
+      "url": "https://api.github.com/repos/JMBriti/medical_llama",
+      "retrieved_at_utc": "2026-10-01T20:50:21.376323+00:00",
+      "status": "UNAVAILABLE",
+      "snapshot_id": "JMBriti--medical_llama--repository.json",
+      "retrieval_batch": "rights-retrieval-manifest.json",
+      "failure_type": "HTTP Error 404"
+    },
+    {
+      "url": "https://api.github.com/repos/huggingface/diffusers",
+      "retrieved_at_utc": "2026-10-01T20:50:21.741360+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/huggingface/diffusers",
+      "sha256": "9e6297fa9fe6db839d9cdb19325c251567d33faf83ace607b7627df1f2e807c7",
+      "bytes": 6791,
+      "snapshot_id": "huggingface--diffusers--repository.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/huggingface/diffusers/commits/main",
+      "retrieved_at_utc": "2026-10-01T20:50:22.189730+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/huggingface/diffusers/commits/main",
+      "sha256": "41bb065e1cb6602aee82b734a2dfbf5cca80de7aff30b47c6a18b1b57fd50d1d",
+      "bytes": 14475,
+      "snapshot_id": "huggingface--diffusers--head.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://api.github.com/repos/huggingface/diffusers/git/trees/578c9b2c6636ab2424a0e56186268b83623656b2?recursive=1",
+      "retrieved_at_utc": "2026-10-01T20:50:22.677696+00:00",
+      "http_status": 200,
+      "resolved_url": "https://api.github.com/repos/huggingface/diffusers/git/trees/578c9b2c6636ab2424a0e56186268b83623656b2?recursive=1",
+      "sha256": "f0809302390fcac233aa182fa01a35415940fe88ba03874e09dd422ece2170c7",
+      "bytes": 852541,
+      "snapshot_id": "huggingface--diffusers--tree.json",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/LICENSE",
+      "retrieved_at_utc": "2026-10-01T20:50:23.411966+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/LICENSE",
+      "sha256": "f9e2070c247517b1ddf65f7b11b393484a18da91a958fd18a97bd0f241c3125c",
+      "bytes": 11357,
+      "snapshot_id": "huggingface--diffusers--LICENSE",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/README.md",
+      "retrieved_at_utc": "2026-10-01T20:50:23.835875+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/README.md",
+      "sha256": "7983ae4d23ec43664c587027d7462ba8a742ddff784430dfb7fd3cea8ba5523c",
+      "bytes": 14610,
+      "snapshot_id": "huggingface--diffusers--README.md",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/examples/dreambooth/test_dreambooth_lora_qwenimage21.py",
+      "retrieved_at_utc": "2026-10-01T20:50:24.252298+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/examples/dreambooth/test_dreambooth_lora_qwenimage21.py",
+      "sha256": "5a371613080c6785af4b44a7e3048717cd374b40b95a6227d722df4e00cba715",
+      "bytes": 16177,
+      "snapshot_id": "huggingface--diffusers--examples--dreambooth--test_dreambooth_lora_qwenimage21.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/examples/dreambooth/test_dreambooth_lora_qwenimage21_img2img.py",
+      "retrieved_at_utc": "2026-10-01T20:50:24.776136+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/examples/dreambooth/test_dreambooth_lora_qwenimage21_img2img.py",
+      "sha256": "8941a1f19ea3efe050ee2392b1057f888e20bb53ec480ad5464e9099f7569aa5",
+      "bytes": 6295,
+      "snapshot_id": "huggingface--diffusers--examples--dreambooth--test_dreambooth_lora_qwenimage21_img2img.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/examples/dreambooth/train_dreambooth_lora_qwenimage21.py",
+      "retrieved_at_utc": "2026-10-01T20:50:25.289887+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/examples/dreambooth/train_dreambooth_lora_qwenimage21.py",
+      "sha256": "26e5bdcc58fbbee6c9c0ba107b6efda5a7a7a9e6aff700089cf2b8b5652662e7",
+      "bytes": 87637,
+      "snapshot_id": "huggingface--diffusers--examples--dreambooth--train_dreambooth_lora_qwenimage21.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/examples/dreambooth/train_dreambooth_lora_qwenimage21_img2img.py",
+      "retrieved_at_utc": "2026-10-01T20:50:25.800642+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/examples/dreambooth/train_dreambooth_lora_qwenimage21_img2img.py",
+      "sha256": "1c5d3e4658ba65e1ff3bfc2e4787ca3e7297167b9beeb2e87ca70d769549acd0",
+      "bytes": 93231,
+      "snapshot_id": "huggingface--diffusers--examples--dreambooth--train_dreambooth_lora_qwenimage21_img2img.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/src/diffusers/models/autoencoders/autoencoder_kl_qwenimage21.py",
+      "retrieved_at_utc": "2026-10-01T20:50:26.365415+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/src/diffusers/models/autoencoders/autoencoder_kl_qwenimage21.py",
+      "sha256": "1e29f252dbddd044b84c8b794589001ce94bb125a8f13eb5b226ef30c1e2ea11",
+      "bytes": 58515,
+      "snapshot_id": "huggingface--diffusers--src--diffusers--models--autoencoders--autoencoder_kl_qwenimage21.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/src/diffusers/models/transformers/transformer_qwenimage21.py",
+      "retrieved_at_utc": "2026-10-01T20:50:26.873857+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/src/diffusers/models/transformers/transformer_qwenimage21.py",
+      "sha256": "0eb0555e21ca93195e1fe9389113cafbf0e8822f6454c3001cebb3d21521ebd7",
+      "bytes": 47103,
+      "snapshot_id": "huggingface--diffusers--src--diffusers--models--transformers--transformer_qwenimage21.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/src/diffusers/pipelines/qwenimage21/__init__.py",
+      "retrieved_at_utc": "2026-10-01T20:50:27.396301+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/src/diffusers/pipelines/qwenimage21/__init__.py",
+      "sha256": "75a9750e85e9b6b5910c5fa2da4fcd145aee08c1af6a49f2b8fb23ac5405b702",
+      "bytes": 1445,
+      "snapshot_id": "huggingface--diffusers--src--diffusers--pipelines--qwenimage21--__init__.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/src/diffusers/pipelines/qwenimage21/pipeline_qwenimage21.py",
+      "retrieved_at_utc": "2026-10-01T20:50:27.773762+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/src/diffusers/pipelines/qwenimage21/pipeline_qwenimage21.py",
+      "sha256": "33f07e0492315715c91418e19fb0e28e3cd603fcf33f5a821ab55655d8849ffb",
+      "bytes": 42102,
+      "snapshot_id": "huggingface--diffusers--src--diffusers--pipelines--qwenimage21--pipeline_qwenimage21.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/tests/models/autoencoders/test_models_autoencoder_kl_qwenimage21.py",
+      "retrieved_at_utc": "2026-10-01T20:50:28.257185+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/tests/models/autoencoders/test_models_autoencoder_kl_qwenimage21.py",
+      "sha256": "82f8811fb93a413659650ee3e0d688e328d854f3863eb94907ba2bd7474a57a0",
+      "bytes": 4287,
+      "snapshot_id": "huggingface--diffusers--tests--models--autoencoders--test_models_autoencoder_kl_qwenimage21.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/tests/models/transformers/test_models_transformer_qwenimage21.py",
+      "retrieved_at_utc": "2026-10-01T20:50:28.715289+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/tests/models/transformers/test_models_transformer_qwenimage21.py",
+      "sha256": "63a0c63962e0e54075fd78f7d682d3cf369d1784e62477ae5d839d3e78edaaa9",
+      "bytes": 17856,
+      "snapshot_id": "huggingface--diffusers--tests--models--transformers--test_models_transformer_qwenimage21.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/tests/pipelines/qwenimage21/__init__.py",
+      "retrieved_at_utc": "2026-10-01T20:50:29.176873+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/tests/pipelines/qwenimage21/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "snapshot_id": "huggingface--diffusers--tests--pipelines--qwenimage21--__init__.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/tests/pipelines/qwenimage21/test_qwenimage21.py",
+      "retrieved_at_utc": "2026-10-01T20:50:29.621160+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/huggingface/diffusers/578c9b2c6636ab2424a0e56186268b83623656b2/tests/pipelines/qwenimage21/test_qwenimage21.py",
+      "sha256": "fafe51d2221a0dbbc3b8a57b90310f198581c6d57c10b975dd0faa3b99b4ce84",
+      "bytes": 12384,
+      "snapshot_id": "huggingface--diffusers--tests--pipelines--qwenimage21--test_qwenimage21.py",
+      "retrieval_batch": "rights-retrieval-manifest.json"
+    }
+  ]
+}
