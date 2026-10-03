@@ -1,134 +1,104 @@
 {
-  "eligibility": "one safe parsed function; <=8 args; every input used only as boolean/simple numeric comparison; no string domains; no input arithmetic/calls/subscripts/attributes; prospective generated input space >=64",
-  "eligible_selection_stratum_count": 24,
+  "eligibility": "one safe parsed function; <=8 args; every input used only as boolean/simple numeric comparison; no string domains; no input arithmetic/calls/subscripts/attributes; prospective generated input space >=1024",
+  "eligible_selection_stratum_count": 15,
   "selected": [
     {
-      "arg_count": 6,
-      "code_sha256": "595b019ec4913471d041465fc897539500ed85d1da4572afdeb907eb6d5a1065",
+      "arg_count": 7,
+      "code_sha256": "a2371e0daea028ec6bc263f7295e5b4d2ced186210fbc55e2899a27f9bca4aac",
       "domain_constants": {
-        "asa_status": [
-          2
+        "donor_steatosis": [
+          40
         ],
-        "bispectral_index": [
+        "ffp": [
+          13.5
+        ],
+        "meld_score": [
+          30
+        ],
+        "pao2_fio2": [
+          200
+        ],
+        "prbc": [
+          10.5
+        ],
+        "preop_dialysis": [
           false,
           true
         ],
-        "diabetes": [
+        "preop_mv": [
           false,
           true
-        ],
-        "drinking_history": [
-          false,
-          true
-        ],
-        "lac": [
-          2
-        ],
-        "vas": [
-          3
         ]
       },
-      "function_name": "compute_rsi",
-      "pmid": "34806823",
-      "prospective_case_space": 1000,
-      "selection_key": "3c32d7aa38c6e01af758869dfa8e945f7bcc32a75473e79fa89a6fe728d46841",
+      "function_name": "calculate_rrs",
+      "pmid": "23696476",
+      "prospective_case_space": 12500,
+      "selection_key": "b5a571edfb506bc2e0e1a584cb2329e3d7399d66bc8765683b7ff0ce81448df9",
       "selection_specialty_stratum": "Anesthesiology",
-      "source_specialty": "Anesthesiology, Geriatrics, Orthopedic Surgery",
-      "title": "Risk Stratification Index (RSI) for Postoperative Delirium in Elderly Patients with Hip Fractures"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "be5d3b7d37210eb6eb8f4e399e3e2301a2394ddac95b97c13c7a4fc01ec918fa",
-      "domain_constants": {
-        "age": [
-          75
-        ],
-        "congestive_heart_failure": [
-          false,
-          true
-        ],
-        "metabolic_syndrome": [
-          false,
-          true
-        ],
-        "myocardial_infarction_or_revascularization": [
-          false,
-          true
-        ],
-        "stroke_TIA_thromboembolism": [
-          false,
-          true
-        ]
-      },
-      "function_name": "calculate_2MACE",
-      "pmid": "29111209",
-      "prospective_case_space": 80,
-      "selection_key": "030cc4b5a0a8527de1410c9d8b857827f9e29ea3de004ec07e9d647731f48e5f",
-      "selection_specialty_stratum": "Cardiology",
-      "source_specialty": "Cardiology, Internal Medicine",
-      "title": "2MACE Score Calculator"
-    },
-    {
-      "arg_count": 6,
-      "code_sha256": "1a0900a9be70c062795a8a36e2415fc99b8ddb82b31ac8d02bdd0649724ac11c",
-      "domain_constants": {
-        "catheterization": [
-          false,
-          true
-        ],
-        "hemoglobin": [
-          9
-        ],
-        "history_vte": [
-          false,
-          true
-        ],
-        "immobilization": [
-          false,
-          true
-        ],
-        "platelet_count": [
-          250000
-        ],
-        "ventilation": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_icu_vte_score",
-      "pmid": "32187076",
-      "prospective_case_space": 400,
-      "selection_key": "bc5f85c3c427142736e15e2781dbcfc4b0f945971ff6ae93c355a5fa037f81ef",
-      "selection_specialty_stratum": "Critical Care Medicine",
-      "source_specialty": "Critical Care Medicine, Hematology",
-      "title": "ICU-Venous Thromboembolism Score"
+      "source_specialty": "Anesthesiology, Surgery, Pulmonology",
+      "title": "Respiratory Risk Score (RRS) for Liver Transplantation"
     },
     {
       "arg_count": 4,
-      "code_sha256": "c647ce25cb7b35d099522b133dff298055896dccfeba2e0c161207be19840ce2",
+      "code_sha256": "8cf5c57639d86fcfd453af68da0e4a103d363729bba3c53da996ab33aaa381c4",
       "domain_constants": {
         "age": [
-          50
+          68,
+          79
         ],
-        "family_history": [
-          false,
-          true
+        "csha_scale": [
+          4
         ],
-        "num_neoplasms": [
-          1
+        "katz_index": [
+          6
         ],
-        "personal_history": [
-          false,
-          true
+        "serum_albumin": [
+          3.7,
+          4.25
         ]
       },
       "function_name": "compute_risk_score",
-      "pmid": "24603434",
-      "prospective_case_space": 100,
-      "selection_key": "02a16a6af877076f6a754d40be9dca2fd6edbdfbf73a309d5d65d3eaac67dff8",
+      "pmid": "29408989",
+      "prospective_case_space": 2500,
+      "selection_key": "041fc387c43bf40aedb16604ddeaa01ac858850f8264609a055b1f2fdb4c4d9c",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology, Geriatrics, Surgery",
+      "title": "Frailty-Based Predictive Score for Mid-Term Outcomes in Open Total Aortic Arch Surgery"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "6d08f0501f11b6bf1e3de4ef6675465f4a399f329ebf2891db0178ab130533cb",
+      "domain_constants": {
+        "age": [
+          40
+        ],
+        "bicarbonate": [
+          20
+        ],
+        "epidermal_detachment": [
+          10
+        ],
+        "malignancy": [
+          false,
+          true
+        ],
+        "serum_glucose": [
+          14
+        ],
+        "serum_urea": [
+          10
+        ],
+        "tachycardia": [
+          120
+        ]
+      },
+      "function_name": "compute_scorten_score",
+      "pmid": "10951229",
+      "prospective_case_space": 31250,
+      "selection_key": "2e176e6d320dd029877b8941c256afaaa550127ab6b44d79526e4433b7385630",
       "selection_specialty_stratum": "Dermatology",
-      "source_specialty": "Dermatology, Oncology, Pathology",
-      "title": "Mayo Muir-Torre Syndrome Risk Scoring System"
+      "source_specialty": "Dermatology, Emergency Medicine, Internal Medicine",
+      "title": "SCORTEN: Severity-of-Illness Score for Toxic Epidermal Necrolysis"
     },
     {
       "arg_count": 5,
@@ -232,192 +202,106 @@
       "title": "AIMS65 Score for Upper Gastrointestinal Bleeding"
     },
     {
-      "arg_count": 2,
-      "code_sha256": "8b4658cc929b205e36ed731c9daef7e2ba809fecf4c7a02244261063144ec5a6",
+      "arg_count": 4,
+      "code_sha256": "236126a2e0c06865f084d4ced8d3bcf6a0098c3a24003ff4d6b53d4992940ee8",
       "domain_constants": {
-        "CCI": [
-          0,
-          1,
-          2
+        "LDH": [
+          250
         ],
-        "ECOG_scale": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "26722355",
-      "prospective_case_space": 165,
-      "selection_key": "0810780c2e1ab6d708b82520b39ab7961360b8b21d7ff982f21e7172a0de7d2a",
-      "selection_specialty_stratum": "Geriatrics",
-      "source_specialty": "Geriatrics, Oncology, Surgery",
-      "title": "3-Month Postoperative Mortality Risk Calculator for Geriatric Cancer Patients"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "9bc40968c9cef4e5ffd1dfedfd75b25bd9495d409b556b5c75a7078e75eca2f7",
-      "domain_constants": {
         "age": [
-          40
+          65,
+          66,
+          75
         ],
-        "cmv": [
-          false,
-          true
+        "b2_microglobulin": [
+          4
         ],
-        "gvhd": [
-          false,
-          true
-        ],
-        "neutropenia": [
-          15
-        ],
-        "previous_sct": [
-          1
+        "serum_albumin": [
+          3.5
         ]
       },
       "function_name": "compute_risk_score",
-      "pmid": "26281032",
-      "prospective_case_space": 500,
-      "selection_key": "15127c2f46a4f07d6b4811cc259c188b139279430b7723e5565e00b1d1d534f7",
+      "pmid": "31118465",
+      "prospective_case_space": 1625,
+      "selection_key": "277f7ae29f374af77a48c1522062a1b1317b940c4586e69bb07e2b63807a8635",
       "selection_specialty_stratum": "Hematology",
-      "source_specialty": "Hematology, Infectious Disease, Oncology",
-      "title": "Post-Engraftment Invasive Fungal Disease (IFD) Risk Score Calculator"
+      "source_specialty": "Hematology, Oncology",
+      "title": "Revised International Prognostic Score System for Waldenstr\u00f6m's Macroglobulinemia (IPSSWM)"
     },
     {
       "arg_count": 6,
-      "code_sha256": "16dff144f0932a265c4d90e5e4b4684675fe8e2dffb4c5614c57b051473702f3",
-      "domain_constants": {
-        "Age": [
-          false,
-          true
-        ],
-        "Diabetes": [
-          false,
-          true
-        ],
-        "NLR": [
-          false,
-          true
-        ],
-        "Pulse_Rate": [
-          false,
-          true
-        ],
-        "SaO2": [
-          false,
-          true
-        ],
-        "Urea": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "35113971",
-      "prospective_case_space": 64,
-      "selection_key": "2484214707100382c5761a157885c6b0090f1e34c0b8131205176e679e402a1c",
-      "selection_specialty_stratum": "Infectious Disease",
-      "source_specialty": "Infectious Disease, Internal Medicine, Pulmonology",
-      "title": "OUR-ARDs Risk Score Calculator for COVID-19 Mortality"
-    },
-    {
-      "arg_count": 7,
-      "code_sha256": "f0b9d36a8f7d9281e94d9be253a3d1ae525428b4650dfb2a23ce4b869559ea7a",
+      "code_sha256": "2b096c81715a68beca75e25341dea1298098ebf4baed79bbfa04cfa2933daa33",
       "domain_constants": {
         "age": [
-          60
+          80
         ],
-        "cancer": [
+        "albumin": [
+          20
+        ],
+        "crp": [
+          150
+        ],
+        "severe_disease": [
           false,
           true
         ],
-        "icu_ccu_stay": [
-          false,
-          true
-        ],
-        "immobility": [
-          false,
-          true
-        ],
-        "known_thrombophilia": [
-          false,
-          true
-        ],
-        "lower_limb_paralysis": [
-          false,
-          true
-        ],
-        "prior_vte": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "25404191",
-      "prospective_case_space": 320,
-      "selection_key": "0a63bd1784bf1f7377d65f4fa7d3c7b603a8c256862592abc11e5257939a26b2",
-      "selection_specialty_stratum": "Internal Medicine",
-      "source_specialty": "Internal Medicine, Hematology, Cardiology",
-      "title": "IMPROVE VTE Risk Assessment Model"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "b0393b1d5d02f50f1b158f4c1cdedf71f6620eb5818624a61d06d7c38611cc17",
-      "domain_constants": {
-        "charlson_index": [
-          3
-        ],
-        "nephrotoxic_agents": [
-          6
-        ],
-        "vancomycin_level": [
+        "urea": [
           15
         ],
-        "weight": [
-          60
+        "wcc": [
+          20
         ]
       },
       "function_name": "compute_risk_score",
-      "pmid": "35330832",
-      "prospective_case_space": 625,
-      "selection_key": "229a2232fbe428409d32a64d9acbf8c9cba1e69bf2c3b28b8dafe5ff12091439",
-      "selection_specialty_stratum": "Nephrology",
-      "source_specialty": "Nephrology, Internal Medicine",
-      "title": "Vancomycin-Associated Acute Kidney Injury Risk Score Calculator"
+      "pmid": "19508548",
+      "prospective_case_space": 6250,
+      "selection_key": "2c23ad3bf0600f9d98201673f450180a51ed8c7589bee2d244487eb82b087c34",
+      "selection_specialty_stratum": "Infectious Disease",
+      "source_specialty": "Infectious Disease, Internal Medicine, Geriatrics",
+      "title": "Clostridium Difficile-Associated Diarrhoea Mortality Risk Calculator"
     },
     {
-      "arg_count": 5,
-      "code_sha256": "a8b1f95e0944494301b0110262808863b43ad6fa140c0b538a16b8ab11eba6f3",
+      "arg_count": 8,
+      "code_sha256": "8dbfcbce176d60cf50f67590c4c81f1c96d183df4c89718ebdfbec623b62334f",
       "domain_constants": {
-        "A1_dominance": [
+        "age": [
+          55
+        ],
+        "aneurysm_sac": [
           false,
           true
         ],
-        "aspect_ratio": [
-          1.19
-        ],
-        "cerebral_atherosclerosis": [
+        "early_infarction": [
           false,
           true
         ],
-        "irregular_shape": [
+        "external_ventricular_drain": [
           false,
           true
         ],
-        "mean_diameters": [
-          2.48
+        "hunt_hess_grade": [
+          4
+        ],
+        "parenchymal": [
+          false,
+          true
+        ],
+        "rapid_vasospasm": [
+          false,
+          true
+        ],
+        "surgery": [
+          false,
+          true
         ]
       },
-      "function_name": "compute_risk_score",
-      "pmid": "31214103",
-      "prospective_case_space": 200,
-      "selection_key": "0d1f92ca27a0bc0218dca6d4cf7a971d8d9e491b8837dd2360ad759985d6712f",
+      "function_name": "compute_pressure_score",
+      "pmid": "33215084",
+      "prospective_case_space": 1600,
+      "selection_key": "4ca7b56256bc7dfc0dc0ede73b437cd92ce5c25dee60cf72bfa36afcc6c4385c",
       "selection_specialty_stratum": "Neurology",
-      "source_specialty": "Neurology, Radiology",
-      "title": "ACoAA Rupture Risk Score Calculator"
+      "source_specialty": "Neurology, Surgery",
+      "title": "The PRESSURE Score Calculator"
     },
     {
       "arg_count": 7,
@@ -489,27 +373,34 @@
     },
     {
       "arg_count": 3,
-      "code_sha256": "7665da7936d0cb262a9069331bd894161e14e29332f77d9f5b86fb42fef4dd0e",
+      "code_sha256": "4a21a093aa98a07c213430d74d8f65850d94ce22a62336f80b84ff8b26de90c7",
       "domain_constants": {
-        "infection": [
-          false,
-          true
+        "age": [
+          70,
+          75,
+          80,
+          85
         ],
-        "nurd": [
-          7
+        "ebl": [
+          1000,
+          1500,
+          2000,
+          500
         ],
-        "rust": [
-          10,
-          6
+        "ot": [
+          2,
+          3,
+          4,
+          5
         ]
       },
-      "function_name": "calculate_nonunion_risk",
-      "pmid": "30172349",
-      "prospective_case_space": 80,
-      "selection_key": "4597075905975a4a00dc5733d454cc9dfd395583eab6086c286296cba20141c3",
+      "function_name": "compute_risk_score",
+      "pmid": "31285117",
+      "prospective_case_space": 5600,
+      "selection_key": "f1ce2db194090e9550ecc955bc627144d8a2a680e3d09faebd43fcd645b70a5d",
       "selection_specialty_stratum": "Orthopedic Surgery",
-      "source_specialty": "Orthopedic Surgery",
-      "title": "Tibial Nonunion Risk Prediction Calculator"
+      "source_specialty": "Orthopedic Surgery, Geriatrics",
+      "title": "Postoperative Complication Risk Calculator for Posterior Spine Surgery"
     },
     {
       "arg_count": 5,
@@ -540,131 +431,30 @@
       "title": "Kawasaki Disease IVIG Resistance Prediction Calculator"
     },
     {
-      "arg_count": 6,
-      "code_sha256": "147c0257200bffaaa7db7a41e38767a72ec82e8d48b479efb61a1fe331c37080",
+      "arg_count": 4,
+      "code_sha256": "35498e8922345ae81d78e43632ee5b92980f361c3e1a9853b81bd14131113f6a",
       "domain_constants": {
-        "active_smoking": [
-          false,
-          true
-        ],
         "age": [
-          false,
-          true
+          40,
+          65
         ],
-        "bilateral_reconstruction": [
-          false,
-          true
+        "bilirubin": [
+          2
         ],
-        "class_III_obesity": [
-          false,
-          true
+        "fluid_balance": [
+          2.5
         ],
-        "class_II_obesity": [
-          false,
-          true
-        ],
-        "dti_reconstruction": [
-          false,
-          true
+        "hematocrit": [
+          26
         ]
       },
       "function_name": "compute_risk_score",
-      "pmid": "23973103",
-      "prospective_case_space": 64,
-      "selection_key": "1e6bc08b850f7fad3857cd70992b604e4420a31fbf7ea530051868f8c51485c8",
-      "selection_specialty_stratum": "Plastic Surgery",
-      "source_specialty": "Plastic Surgery, Oncology",
-      "title": "Early Implant Loss Risk Calculator"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "07f9ce795698e2f2ef821cf8c9224903bb6a2aee14814223e0cb429982943fd5",
-      "domain_constants": {
-        "age": [
-          50
-        ],
-        "hemodialysis": [
-          false,
-          true
-        ],
-        "platelet_count": [
-          150000
-        ],
-        "vasopressors": [
-          false,
-          true
-        ]
-      },
-      "function_name": "calculate_provent_score",
-      "pmid": "26994779",
-      "prospective_case_space": 100,
-      "selection_key": "019c8e6000d5989345de6ceb8c7d55d397fc948920871fc47608fa661cbf7a86",
+      "pmid": "19384214",
+      "prospective_case_space": 1250,
+      "selection_key": "2355df6dd5fd95ddeca52a4618e9145933b71a9d405731fadcd86e0f105e1910",
       "selection_specialty_stratum": "Pulmonology",
-      "source_specialty": "Pulmonology, Internal Medicine",
-      "title": "ProVent Score Calculator"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "de48780affd2ac1f302f7677f8206e97bc1d27f4697cca67362ae28887373853",
-      "domain_constants": {
-        "attenuation": [
-          20
-        ],
-        "c_reactive_protein": [
-          100
-        ],
-        "diabetes": [
-          false,
-          true
-        ],
-        "entrapped_gas": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "25198832",
-      "prospective_case_space": 100,
-      "selection_key": "3b79e64870797e85f7dd3302a4dbba8fb0a9c563b0da968cb6a81531e7a67fe5",
-      "selection_specialty_stratum": "Radiology",
-      "source_specialty": "Radiology, Surgery, Infectious Disease",
-      "title": "Abdominal Fluid Collection Infection Risk Score"
-    },
-    {
-      "arg_count": 6,
-      "code_sha256": "7b979722eb2af2ed03b4224752c0fbc1bb1e05bf4d59483a3dbb7030b5894dea",
-      "domain_constants": {
-        "cytoplasmic_ANCA": [
-          false,
-          true
-        ],
-        "eosinophil_count": [
-          1
-        ],
-        "lung_fibrosis": [
-          false,
-          true
-        ],
-        "pauci_immune_glomerulonephritis": [
-          false,
-          true
-        ],
-        "perinuclear_ANCA": [
-          false,
-          true
-        ],
-        "sino_nasal_symptoms": [
-          false,
-          true
-        ]
-      },
-      "function_name": "calculate_mpa_score",
-      "pmid": "35106973",
-      "prospective_case_space": 160,
-      "selection_key": "05ca54abe041bfa34b61bdaf64148eb463370a5a0cf815c30cd97cc830a5af10",
-      "selection_specialty_stratum": "Rheumatology",
-      "source_specialty": "Rheumatology",
-      "title": "2022 ACR/EULAR Classification Criteria for Microscopic Polyangiitis (MPA) Calculator"
+      "source_specialty": "Pulmonology, Emergency Medicine, Intensive Care Medicine",
+      "title": "Acute Lung Injury Mortality Risk Score"
     },
     {
       "arg_count": 7,
@@ -701,1029 +491,283 @@
       "title": "Preoperative Frailty Score Calculator"
     },
     {
-      "arg_count": 3,
-      "code_sha256": "6a194b407bfe687feef89ccd2c57dadead11b2d2b75390faf40d32af3d4a8e19",
+      "arg_count": 8,
+      "code_sha256": "94e359d4196173bd8b07b4dcd1c740cf5c6ffa8d5141f6d406e798b25f1e10f9",
       "domain_constants": {
         "age": [
-          70
-        ],
-        "meld_score": [
-          10,
-          20
-        ],
-        "ventilator_status": [
-          false,
-          true
-        ]
-      },
-      "function_name": "calculate_risk_score",
-      "pmid": "27740520",
-      "prospective_case_space": 90,
-      "selection_key": "e271864b14b8333c93b1e094531bfa350e26b7d192912f31ade1320cd9c5c35e",
-      "selection_specialty_stratum": "Transplant Surgery",
-      "source_specialty": "Transplant Surgery, Geriatrics, Nephrology, Hepatology",
-      "title": "Simultaneous Liver and Kidney Transplantation (SLK) Risk Score for Elderly Patients"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "83734b5d5d98c467765ff4babf4a368ccae9a1a987328e8142e2903cc18ac235",
-      "domain_constants": {
-        "isup_grade": [
-          5
-        ],
-        "pet_ct_result": [
           false,
           true
         ],
-        "pi_rads_score": [
-          4,
-          5
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "32524748",
-      "prospective_case_space": 80,
-      "selection_key": "0473860f90ebb54ef971047019a8b5e70ee0756828de95ceb8bde0f11ccb5908",
-      "selection_specialty_stratum": "Urology",
-      "source_specialty": "Urology, Oncology, Radiology",
-      "title": "Prostate Cancer Lymph Node Metastasis Risk Calculator"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "cffa086aa7a9407f1e50ed24e47ae3a5a26330fe110fffb52b70d93e29de6a72",
-      "domain_constants": {
-        "R_interval": [
-          6
-        ],
-        "hemoglobin": [
-          10
-        ],
-        "platelet_count": [
-          100
-        ],
-        "retransplantation": [
+        "anemia": [
           false,
           true
         ],
-        "simultaneous_transplant": [
+        "copd": [
           false,
           true
-        ]
-      },
-      "function_name": "compute_ModRI",
-      "pmid": "32920876",
-      "prospective_case_space": 500,
-      "selection_key": "6ab6ffb9056feea87056e84e1241437323d68430bae737b0481a9a651e043d9c",
-      "selection_specialty_stratum": "Anesthesiology",
-      "source_specialty": "Anesthesiology, Surgery, Hematology",
-      "title": "Modified Risk Index (ModRI) for Massive Transfusion during Liver Transplantation"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "8cf5c57639d86fcfd453af68da0e4a103d363729bba3c53da996ab33aaa381c4",
-      "domain_constants": {
-        "age": [
-          68,
-          79
         ],
-        "csha_scale": [
-          4
-        ],
-        "katz_index": [
-          6
-        ],
-        "serum_albumin": [
-          3.7,
-          4.25
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "29408989",
-      "prospective_case_space": 2500,
-      "selection_key": "041fc387c43bf40aedb16604ddeaa01ac858850f8264609a055b1f2fdb4c4d9c",
-      "selection_specialty_stratum": "Cardiology",
-      "source_specialty": "Cardiology, Geriatrics, Surgery",
-      "title": "Frailty-Based Predictive Score for Mid-Term Outcomes in Open Total Aortic Arch Surgery"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "9c6fb46a46c5baeed606fea8267c6a53d0fba02d6031c3b9c0df4e2f1a889b75",
-      "domain_constants": {
-        "age": [
+        "gfr": [
           60
         ],
-        "freckles": [
+        "hdd": [
           false,
           true
         ],
-        "naevi_on_arms": [
-          20
-        ],
-        "risk_factors": [
-          3
-        ]
-      },
-      "function_name": "compute_melanoma_risk",
-      "pmid": "21399503",
-      "prospective_case_space": 250,
-      "selection_key": "21e049d4731476977b060a995c2b50eaf6aa3dae39aa736b461d31caa0cf07f1",
-      "selection_specialty_stratum": "Dermatology",
-      "source_specialty": "Dermatology, Oncology",
-      "title": "Melanoma Risk Score"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "1f1f7150ec35e022a3da1b505531aafc3973808ea18f8a72836643acc2cc95e5",
-      "domain_constants": {
-        "age": [
+        "lvef": [
           40
         ],
-        "bac_gcs": [
+        "nt": [
           false,
           true
         ],
-        "bac_positive": [
-          false,
-          true
-        ],
-        "bicarbonate_level": [
-          20
-        ],
-        "smoking_history": [
+        "pad": [
           false,
           true
         ]
       },
-      "function_name": "compute_risk_score",
-      "pmid": "36160674",
-      "prospective_case_space": 200,
-      "selection_key": "1b1070f87d6195f42a143f1e86ec47404dbf76c405acce141067c1d61e604b20",
-      "selection_specialty_stratum": "Emergency Medicine",
-      "source_specialty": "Emergency Medicine, Psychiatry",
-      "title": "Alcohol Misuse Risk Score Calculator"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "1bcc43f5c56e37474830831fa79607a56627cdb1dee98d3c65e56b1facd43f76",
-      "domain_constants": {
-        "age": [
-          50
-        ],
-        "bmi": [
-          25
-        ],
-        "family_history": [
-          false,
-          true
-        ],
-        "personal_history": [
-          false,
-          true
-        ],
-        "symptoms": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_lada_risk_score",
-      "pmid": "16644622",
-      "prospective_case_space": 200,
-      "selection_key": "e153978c52847f54bd36edd7e1bac9900bc7d6a8cd0d9838b71c295ef5ade7be",
-      "selection_specialty_stratum": "Endocrinology",
-      "source_specialty": "Endocrinology, Internal Medicine",
-      "title": "LADA Clinical Risk Score Calculator"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "a6c0e68701564ce2f338110ca37a91377c6b9e4c1402443c1e8c8ad600911f3a",
-      "domain_constants": {
-        "APRI": [
-          1.5
-        ],
-        "FIB_4": [
-          3.25
-        ],
-        "LSM": [
-          14.5,
-          9.5
-        ]
-      },
-      "function_name": "calculate_risk_group",
-      "pmid": "36672675",
-      "prospective_case_space": 200,
-      "selection_key": "3752c3b30a3b410c6eda706b8e0a3a4336541a842a80da23564eb544bb4d2786",
-      "selection_specialty_stratum": "Gastroenterology",
-      "source_specialty": "Gastroenterology, Oncology, Infectious Disease",
-      "title": "HCC Risk Calculator for HCV-positive Patients"
-    },
-    {
-      "arg_count": 6,
-      "code_sha256": "3cd9ada4f7ba04501a679c4ca6c55571e8fdf015cca19499dc34c97a1bb01b15",
-      "domain_constants": {
-        "acute_infection": [
-          false,
-          true
-        ],
-        "age": [
-          87
-        ],
-        "bladder_catheter": [
-          false,
-          true
-        ],
-        "delirium": [
-          false,
-          true
-        ],
-        "malnutrition": [
-          false,
-          true
-        ],
-        "pressure_sore": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "22950428",
-      "prospective_case_space": 160,
-      "selection_key": "a545920b113030b5d0bae5a80c91071e9c47606a1ce0af3f0e8ffaf7aad4c50a",
-      "selection_specialty_stratum": "Geriatrics",
-      "source_specialty": "Geriatrics, Internal Medicine",
-      "title": "Adverse Clinical Events (ACEs) Risk Score Calculator"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "3b7d2569de7cfe9a98f7a74aa2321b1d0bc4fc020c652244c7e7ce9e87cc0af5",
-      "domain_constants": {
-        "FBG": [
-          100
-        ],
-        "KPI": [
-          2
-        ],
-        "TP": [
-          60
-        ]
-      },
-      "function_name": "compute_risk_group",
-      "pmid": "24782120",
-      "prospective_case_space": 125,
-      "selection_key": "1853707f1f450fed9cd84924be9abdf4b152acf259edd33079455ebcfd4b0a20",
-      "selection_specialty_stratum": "Hematology",
-      "source_specialty": "Hematology, Oncology",
-      "title": "Prognostic Model for Extranodal Natural Killer/T Cell Lymphoma, Nasal Type (ENKTL)"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "7f9a892d9af58d006604a35e94042e358006fb49dd1095763f24efca36510160",
-      "domain_constants": {
-        "cmv_disease": [
-          false,
-          true
-        ],
-        "empirical_therapy": [
-          false,
-          true
-        ],
-        "increment_cpe_score": [
-          8
-        ],
-        "lymphopenia": [
-          false,
-          true
-        ],
-        "source_control": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_score",
-      "pmid": "31891235",
-      "prospective_case_space": 80,
-      "selection_key": "27693f49fd3aad05f6825d6513fed88e82b93c8fc906c07d6280d644a03997d3",
-      "selection_specialty_stratum": "Infectious Disease",
-      "source_specialty": "Infectious Disease, Transplant Surgery",
-      "title": "INCREMENT-SOT-CPE Mortality Score Calculator"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "558d84bedaea83302d5f47c70a7df48998a0596a35d19f92fbe7e26e8670f752",
-      "domain_constants": {
-        "age": [
-          80
-        ],
-        "cognition": [
-          false,
-          true
-        ],
-        "creatinine": [
-          1.5
-        ],
-        "heart_failure": [
-          false,
-          true
-        ],
-        "residence": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "23393714",
-      "prospective_case_space": 200,
-      "selection_key": "61b5d51738c725a1c875274abc7fec54f11b7e009e32f80154ee8de4bf480989",
-      "selection_specialty_stratum": "Internal Medicine",
-      "source_specialty": "Internal Medicine, Geriatrics",
-      "title": "Elderly Patient Readmission Risk Score"
-    },
-    {
-      "arg_count": 6,
-      "code_sha256": "024de9b937eb230ee8e443951d8bcea25a54fb72fd6977948f672cbdccd29366",
-      "domain_constants": {
-        "age": [
-          70
-        ],
-        "diabetes": [
-          false,
-          true
-        ],
-        "ihd": [
-          false,
-          true
-        ],
-        "stroke": [
-          false,
-          true
-        ],
-        "two_procedures": [
-          false,
-          true
-        ],
-        "vein_size": [
-          2.0
-        ]
-      },
-      "function_name": "compute_distal_score",
-      "pmid": "22513180",
-      "prospective_case_space": 400,
-      "selection_key": "b6f495c610012ba5fffa6cd506f6b7e92b8a35afdcc6f107ebf5c1cc9caf527b",
-      "selection_specialty_stratum": "Nephrology",
-      "source_specialty": "Nephrology, Surgery",
-      "title": "DISTAL Scoring System for Predicting Failure of Snuffbox Arteriovenous Fistulas"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "10b1961021724a341b156e92f344c031d28e25ca2c272dddc98bd0135446dcb1",
-      "domain_constants": {
-        "age": [
-          false,
-          true
-        ],
-        "bilateral_dc": [
-          false,
-          true
-        ],
-        "coma_duration": [
-          false,
-          true
-        ],
-        "extra_herniation": [
-          false,
-          true
-        ],
-        "fisher_grade": [
-          3,
-          4
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "28391551",
-      "prospective_case_space": 128,
-      "selection_key": "1d7fb296c3b3b66eb29155217434a9798447bb7f5e2abfa8a971b79499107c18",
-      "selection_specialty_stratum": "Neurology",
-      "source_specialty": "Neurology, Emergency Medicine",
-      "title": "Posttraumatic Hydrocephalus Risk Score Calculator"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "d3d023e083bdb3fd30791c95e5b8992a5ab3d64b49e60ac146b27a4c561c1d95",
-      "domain_constants": {
-        "TSR": [
-          0.5
-        ],
-        "num_metastatic_nodes": [
-          3
-        ],
-        "tumor_size": [
-          4
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "31882242",
-      "prospective_case_space": 125,
-      "selection_key": "5af4559c1b238d4f5146da52496d8dc9a4a1d68832f07d4c9cb66b81332f22f0",
-      "selection_specialty_stratum": "Obstetrics and Gynecology",
-      "source_specialty": "Obstetrics and Gynecology, Oncology",
-      "title": "Cervical Cancer Prognostic Scoring System"
-    },
-    {
-      "arg_count": 6,
-      "code_sha256": "327353a627e5571373a445430823a8c77fdc50ddb6af9723bf7f9a811033c4da",
-      "domain_constants": {
-        "infiltrative_appearance": [
-          false,
-          true
-        ],
-        "iron_sparing": [
-          false,
-          true
-        ],
-        "marked_diffusion_restriction": [
-          false,
-          true
-        ],
-        "nonperipheral_washout": [
-          false,
-          true
-        ],
-        "serum_afp": [
-          false,
-          true
-        ],
-        "tumor_size": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "36091074",
-      "prospective_case_space": 64,
-      "selection_key": "01f0712ced7b448a7f0fad14d6430928d886f72c5432b371e26237492d120fe2",
-      "selection_specialty_stratum": "Oncology",
-      "source_specialty": "Oncology, Radiology, Pathology",
-      "title": "GPC-3 Positive Expression Risk Score Calculator for Hepatocellular Carcinoma"
-    },
-    {
-      "arg_count": 6,
-      "code_sha256": "f5d49ead9ca07facb0570790fdaf020539ef88f6733b8787131507f46afb1458",
-      "domain_constants": {
-        "atypical_fracture": [
-          false,
-          true
-        ],
-        "comminution": [
-          false,
-          true
-        ],
-        "deep_wound_infection": [
-          false,
-          true
-        ],
-        "diabetes": [
-          false,
-          true
-        ],
-        "gap_size": [
-          5
-        ],
-        "varus_malreduction": [
-          10,
-          5
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "34884334",
-      "prospective_case_space": 640,
-      "selection_key": "684059ef1331af5ba69fd760b612cf3fc8c6039d43ec1ca28b25cbeb7e26bc4b",
-      "selection_specialty_stratum": "Orthopedic Surgery",
-      "source_specialty": "Orthopedic Surgery",
-      "title": "Post-Operative Non-Union Risk Score for Subtrochanteric Femur Fractures"
-    },
-    {
-      "arg_count": 5,
-      "code_sha256": "26802bc48ef600191577130826b023080363740c7e6164d5c85f09060cea7d65",
-      "domain_constants": {
-        "csf_neutrophil_count": [
-          1000
-        ],
-        "csf_protein": [
-          80
-        ],
-        "gram_stain": [
-          false,
-          true
-        ],
-        "neutrophil_count": [
-          10000
-        ],
-        "seizure": [
-          false,
-          true
-        ]
-      },
-      "function_name": "calculate_bms",
-      "pmid": "12359784",
-      "prospective_case_space": 500,
-      "selection_key": "5c6d5f4d2425649b50423a66f3d0e28f220ae06c9fc0c91f4a56cee3bec4f76b",
-      "selection_specialty_stratum": "Pediatrics",
-      "source_specialty": "Pediatrics, Infectious Disease, Emergency Medicine",
-      "title": "Bacterial Meningitis Score (BMS) Calculator"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "2741929b65a26bd6cdc0d8b5a809952770b28f693ecb256ad6b550597fb09302",
-      "domain_constants": {
-        "IP": [
-          false,
-          true
-        ],
-        "age": [
-          50
-        ],
-        "bilateral_operation": [
-          false,
-          true
-        ],
-        "resected_tissue_weight": [
-          650
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "36082101",
-      "prospective_case_space": 100,
-      "selection_key": "a27e7083d49ab45af571a9c79b3acce75bdbb1f6ed0e298f8fefcee3bb3864bb",
-      "selection_specialty_stratum": "Plastic Surgery",
-      "source_specialty": "Plastic Surgery",
-      "title": "Reduction Mammoplasty Complication Risk Score Calculator"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "d7d5e9d130f5a321376cd2976bf29c9f8ff6bbc26d89fe0498bbcf37a02f1478",
-      "domain_constants": {
-        "immune_suppression": [
-          false,
-          true
-        ],
-        "oxygen_requirement": [
-          2,
-          6
-        ],
-        "respiratory_rate": [
-          30
-        ]
-      },
-      "function_name": "compute_lung_injury_score",
-      "pmid": "23782966",
-      "prospective_case_space": 80,
-      "selection_key": "02cab26cea0612af735ad91c9aa0478dfd4827db7febeaf8fc4ec2502369a870",
-      "selection_specialty_stratum": "Pulmonology",
-      "source_specialty": "Pulmonology, Emergency Medicine, Internal Medicine",
-      "title": "Early Acute Lung Injury Score"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "eb7f2fb47c984d961ef79a918e5efcacfe526004c21b056b2a91dfd72a2a9dd5",
-      "domain_constants": {
-        "age": [
-          50
-        ],
-        "fever": [
-          false,
-          true
-        ],
-        "ldh": [
-          300
-        ],
-        "white_cell_count": [
-          7.0
-        ]
-      },
-      "function_name": "compute_flaw_score",
-      "pmid": "35157042",
-      "prospective_case_space": 250,
-      "selection_key": "1c7bcf1f1db2a8d950d031e85d9aca324f4464ef193eb7550b94ca7209c94af2",
-      "selection_specialty_stratum": "Rheumatology",
-      "source_specialty": "Rheumatology, Pulmonology",
-      "title": "FLAW Score for Predicting Rapidly Progressive Interstitial Lung Disease in Anti-MDA5-positive Dermatomyositis Patients"
-    },
-    {
-      "arg_count": 7,
-      "code_sha256": "574d8a34abffb64815dc4a147ad0e5a8c846bc6dcad9e74ef45b196289725406",
-      "domain_constants": {
-        "cbd_diameter": [
-          false,
-          true
-        ],
-        "distended_gb": [
-          false,
-          true
-        ],
-        "gb_wall_thickness": [
-          false,
-          true
-        ],
-        "impacted_stones": [
-          false,
-          true
-        ],
-        "liver_size": [
-          false,
-          true
-        ],
-        "multiple_stones": [
-          false,
-          true
-        ],
-        "pericholecystic_collection": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_score",
-      "pmid": "30065497",
-      "prospective_case_space": 128,
-      "selection_key": "56f41d9b7901266fc935b7dc7daf45e9219f039f2b895cb2fe38ca50146ef814",
-      "selection_specialty_stratum": "Surgery",
-      "source_specialty": "Surgery, Radiology",
-      "title": "Ultrasound Scoring System for Preoperative Prediction of Difficult Laparoscopic Cholecystectomy"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "434a2384b059667c006edc47f700f3a87161de3fc9bb6d42568308855bde5277",
-      "domain_constants": {
-        "pain_duration": [
-          4
-        ],
-        "stone_size": [
-          4
-        ],
-        "stone_to_UVJ_distance": [
-          4
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "31154851",
-      "prospective_case_space": 125,
-      "selection_key": "06bc18b91b740af8d6e27705178e1357828410d460b978120043cc493ad3ad73",
-      "selection_specialty_stratum": "Urology",
-      "source_specialty": "Urology",
-      "title": "\"Rule of 4's\" Surgical Intervention Predictor for Distal Ureteral Stones"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "5f3df41da97492074e93d302efa709045bca8d5fa5b832cbdd5f13fbcd767bdc",
-      "domain_constants": {
-        "Oxygen_Desaturation_Index": [
-          5
-        ],
-        "STOP_Bang_score": [
-          3
-        ],
-        "resting_daytime_SpO2": [
-          95
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "34373347",
-      "prospective_case_space": 125,
-      "selection_key": "a10d578223e1f100c6035042be485fa5c34f1d17955999a90d7bd9f8044c4b83",
-      "selection_specialty_stratum": "Anesthesiology",
-      "source_specialty": "Anesthesiology, Pulmonology, Psychiatry",
-      "title": "Sleep Apnea Risk Calculator for Chronic Pain Patients on Opioids"
-    },
-    {
-      "arg_count": 6,
-      "code_sha256": "d4ac55a2aaf8b727f3a279f270f9b26d741856913abc2b9e05dc04cedff9a9b0",
-      "domain_constants": {
-        "elevated_troponin": [
-          false,
-          true
-        ],
-        "male_gender": [
-          false,
-          true
-        ],
-        "peripheral_arterial_disease": [
-          false,
-          true
-        ],
-        "prior_cabg": [
-          false,
-          true
-        ],
-        "prior_stable_angina": [
-          false,
-          true
-        ],
-        "st_segment_deviation": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "15312862",
-      "prospective_case_space": 64,
-      "selection_key": "079bc737bd41b52af016b3b40316c80c1933e4115641c6c5bd9d66d20c58aad9",
+      "function_name": "compute_mitrascore",
+      "pmid": "35144748",
+      "prospective_case_space": 1600,
+      "selection_key": "1628bb10fbe07fa86ad05647bee2ededb1f6413ee699511a0763db54e63bc6a6",
       "selection_specialty_stratum": "Cardiology",
       "source_specialty": "Cardiology",
-      "title": "Coronary Artery Bypass Graft (CABG) Risk Score Calculator"
+      "title": "MitraScore Calculator"
     },
     {
-      "arg_count": 7,
-      "code_sha256": "6d08f0501f11b6bf1e3de4ef6675465f4a399f329ebf2891db0178ab130533cb",
+      "arg_count": 5,
+      "code_sha256": "b49ed18ce958c5ebb9ab424a9bb53467041a9bab5774284b49faf61355f9f205",
       "domain_constants": {
+        "INR": [
+          1.5
+        ],
         "age": [
-          40
+          65
         ],
-        "bicarbonate": [
-          20
+        "albumin": [
+          3.0
         ],
-        "epidermal_detachment": [
-          10
-        ],
-        "malignancy": [
+        "mental_status": [
           false,
           true
         ],
-        "serum_glucose": [
-          14
-        ],
-        "serum_urea": [
-          10
-        ],
-        "tachycardia": [
-          120
+        "systolic_BP": [
+          90
         ]
       },
-      "function_name": "compute_scorten_score",
-      "pmid": "10951229",
-      "prospective_case_space": 31250,
-      "selection_key": "2e176e6d320dd029877b8941c256afaaa550127ab6b44d79526e4433b7385630",
-      "selection_specialty_stratum": "Dermatology",
-      "source_specialty": "Dermatology, Emergency Medicine, Internal Medicine",
-      "title": "SCORTEN: Severity-of-Illness Score for Toxic Epidermal Necrolysis"
+      "function_name": "calculate_AIMS65",
+      "pmid": "34967427",
+      "prospective_case_space": 1250,
+      "selection_key": "2060de3698ad4d3294c69afb4f2f80770a00aa121da98126a68a7ebe6063c676",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Gastroenterology, Geriatrics",
+      "title": "AIMS65 Score for Upper Gastrointestinal Bleeding in Elderly"
     },
     {
-      "arg_count": 6,
-      "code_sha256": "48e0a5c2819b01c103231115f8780e6d0de2b3422bf2fd5b9448c12a25af36bf",
+      "arg_count": 5,
+      "code_sha256": "f0231bbae22f183915e8388d25a1bdefb6d32509f605a77ef1953bf2036749a9",
+      "domain_constants": {
+        "afp": [
+          1000,
+          101
+        ],
+        "largest_nodule_size": [
+          3,
+          6
+        ],
+        "mvi": [
+          false,
+          true
+        ],
+        "nuclear_grade": [
+          2
+        ],
+        "num_nodules": [
+          4
+        ]
+      },
+      "function_name": "compute_r3_afp_score",
+      "pmid": "35360522",
+      "prospective_case_space": 5000,
+      "selection_key": "3eb5634055017db36463f89de72521dcf90d0a23617a0ab95a4d7c13bbd25595",
+      "selection_specialty_stratum": "Gastroenterology",
+      "source_specialty": "Gastroenterology, Oncology, Surgery",
+      "title": "R3-AFP Score Calculator"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "8d738bc63a54147a8605fa2751c7402e4dfca1335e17ed60b2ab4c7f6620e948",
       "domain_constants": {
         "cancer": [
           false,
           true
         ],
-        "heart_failure": [
-          false,
-          true
+        "creatinine": [
+          2
         ],
-        "hypotension": [
-          false,
-          true
+        "inr": [
+          1.5
         ],
-        "low_paO2": [
-          false,
-          true
-        ],
-        "previous_dvt": [
-          false,
-          true
-        ],
-        "ultrasound_dvt": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "11057848",
-      "prospective_case_space": 64,
-      "selection_key": "1cf5b3b7651ca79037dfec456f9988b17eb30a9322b1597ca06e8c7fe831a8c7",
-      "selection_specialty_stratum": "Emergency Medicine",
-      "source_specialty": "Emergency Medicine, Pulmonology, Cardiology",
-      "title": "Acute Pulmonary Embolism Adverse Outcome Risk Score"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "16fb71d8a9a19ac986d0a45b65c71a71126fd838efae2aa5e16c2d8aff4129cd",
-      "domain_constants": {
-        "age": [
-          50
-        ],
-        "ast_alt_ratio": [
-          1
+        "mcv": [
+          90
         ],
         "platelet_count": [
-          150000
+          30
+        ],
+        "schistocytes": [
+          false,
+          true
+        ],
+        "transplant": [
+          false,
+          true
         ]
       },
-      "function_name": "compute_risk_score",
-      "pmid": "18562980",
-      "prospective_case_space": 125,
-      "selection_key": "37f2e19e3d8da2df481b7148863c8065279ada4148c2382f32aa99a7144e7d85",
-      "selection_specialty_stratum": "Gastroenterology",
-      "source_specialty": "Gastroenterology, Hepatology",
-      "title": "Gastroesophageal Varices Risk Score Calculator"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "64f8f3b8758f3e933eabe537f89d7c497727d7c61ab996666d20a949e14c75cb",
-      "domain_constants": {
-        "resp_rate": [
-          20
-        ],
-        "shock_index": [
-          1.0
-        ],
-        "sodium": [
-          145
-        ],
-        "urea": [
-          14
-        ]
-      },
-      "function_name": "compute_naurse_score",
-      "pmid": "24487652",
-      "prospective_case_space": 625,
-      "selection_key": "dbea42ed8924c33e678bcdadec4a656ff0cc2b9d46c494e42b5c6cfbce17442b",
-      "selection_specialty_stratum": "Geriatrics",
-      "source_specialty": "Geriatrics, Internal Medicine",
-      "title": "NaURSE Score Calculator"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "b6e66813546dc4039d0ff7b7bac4d0863f7465518cc4f543c8ab7feb4d545c49",
-      "domain_constants": {
-        "FLC_diff": [
-          18
-        ],
-        "NT_ProBNP": [
-          1800
-        ],
-        "cTnT": [
-          0.025
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "22331953",
-      "prospective_case_space": 125,
-      "selection_key": "1f0485d5ef6a919057e78ff4f91440035741e74027542fcaa5de166de53e643d",
+      "function_name": "calculate_plasmic_score",
+      "pmid": "30340093",
+      "prospective_case_space": 5000,
+      "selection_key": "61814eaac9537a4214f8e820f2af9ce7cb93fc8eeb5fe6982abcfde686b774c7",
       "selection_specialty_stratum": "Hematology",
-      "source_specialty": "Hematology, Cardiology",
-      "title": "Prognostic Staging System for Light Chain Amyloidosis"
+      "source_specialty": "Hematology, Internal Medicine",
+      "title": "PLASMIC Score Calculator for Thrombotic Thrombocytopenic Purpura (TTP) Diagnosis"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "0d915f8f8da5928549064cce7396bffa8d9886056c9a903b06cd789283beffa8",
+      "domain_constants": {
+        "IL6": [
+          30
+        ],
+        "LYM": [
+          0.4
+        ],
+        "WBC": [
+          2.0
+        ],
+        "age": [
+          60
+        ],
+        "high_fever": [
+          false,
+          true
+        ],
+        "pulmonary_lesions": [
+          false,
+          true
+        ],
+        "underlying_diseases": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "32527341",
+      "prospective_case_space": 5000,
+      "selection_key": "48768d441557cc701d755e987ad900c33750a9d943410a4f1a75ae7c976c6ab1",
+      "selection_specialty_stratum": "Infectious Disease",
+      "source_specialty": "Infectious Disease, Internal Medicine, Pulmonology",
+      "title": "COVID-19 Severity Early Warning Model"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "c34cec6e81cac32a366cbc69054bdfcf964f5885bd9416ebd054df3403425a62",
+      "domain_constants": {
+        "GCS_score": [
+          12,
+          13,
+          15,
+          3,
+          4,
+          5
+        ],
+        "ICH_volume": [
+          50
+        ],
+        "MI": [
+          false,
+          true
+        ],
+        "age": [
+          75
+        ],
+        "diabetes": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_SwICH_score",
+      "pmid": "31443074",
+      "prospective_case_space": 2100,
+      "selection_key": "705908401803639854095d755549c91f8b2968e69da8001eb6c8cc4da9ee84c3",
+      "selection_specialty_stratum": "Neurology",
+      "source_specialty": "Neurology, Surgery",
+      "title": "The Surgical Swedish ICH Score Calculator"
     },
     {
       "arg_count": 6,
-      "code_sha256": "2b096c81715a68beca75e25341dea1298098ebf4baed79bbfa04cfa2933daa33",
+      "code_sha256": "bbf7f9e2c4f1b4aee25ba5d2599833feece21f3726157346440e9e587c4c8c51",
       "domain_constants": {
-        "age": [
-          80
+        "c_reactive_protein": [
+          2.0
         ],
-        "albumin": [
-          20
-        ],
-        "crp": [
-          150
-        ],
-        "severe_disease": [
+        "chest_xray": [
           false,
           true
         ],
-        "urea": [
-          15
-        ],
-        "wcc": [
-          20
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "19508548",
-      "prospective_case_space": 6250,
-      "selection_key": "2c23ad3bf0600f9d98201673f450180a51ed8c7589bee2d244487eb82b087c34",
-      "selection_specialty_stratum": "Infectious Disease",
-      "source_specialty": "Infectious Disease, Internal Medicine, Geriatrics",
-      "title": "Clostridium Difficile-Associated Diarrhoea Mortality Risk Calculator"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "65d355b10d53389cd8bb17985172a51758681bfbda42246481ee67e31368c8a8",
-      "domain_constants": {
-        "crt": [
-          3
-        ],
-        "lactate_level": [
-          2
-        ],
-        "sofa_score": [
-          1
-        ]
-      },
-      "function_name": "compute_socrate_score",
-      "pmid": "32323060",
-      "prospective_case_space": 125,
-      "selection_key": "ba9f32af9337ab859cf3cc008d7c8b08a5ad83c56a73d221d1fd30a05aecf228",
-      "selection_specialty_stratum": "Nephrology",
-      "source_specialty": "Nephrology, Critical Care Medicine",
-      "title": "SOCRATE Score for Predicting Intradialytic Hemodynamic Instability"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "940d23c08f36d8ca48ec186bf5e6691fb82db1b8a8fd10d497f8d48d406428a3",
-      "domain_constants": {
-        "lymphocyte_percentage": [
-          9.2
-        ],
-        "nihss_score": [
-          14
-        ],
-        "pulse_rate": [
-          111
-        ]
-      },
-      "function_name": "calculate_psp_risk",
-      "pmid": "31735079",
-      "prospective_case_space": 125,
-      "selection_key": "225848e55e13c70127735092361f57f1b8699b5903c8ff9ee12b7d9964b20faa",
-      "selection_specialty_stratum": "Neurology",
-      "source_specialty": "Neurology, Pulmonology",
-      "title": "Post-Stroke Pneumonia Risk Stratification Model"
-    },
-    {
-      "arg_count": 4,
-      "code_sha256": "943fae2bc1f2bde2fd3b59222185009ea659d820facb55406eac009159a28c01",
-      "domain_constants": {
-        "age": [
-          65
-        ],
-        "endometrial_thickness": [
-          8
-        ],
-        "hypertension": [
+        "dyspnea": [
           false,
           true
         ],
-        "recurrent_bleeding": [
-          false,
-          true
+        "heart_rate": [
+          100
+        ],
+        "respiratory_rate": [
+          20,
+          24
+        ],
+        "temperature": [
+          99.0
         ]
       },
-      "function_name": "compute_risk_score",
-      "pmid": "24991535",
-      "prospective_case_space": 100,
-      "selection_key": "c080d1469f16043df05cf492c923b9b7e0eca6e6742dba915269753d2af1642c",
+      "function_name": "compute_obstetric_warning_score",
+      "pmid": "33819676",
+      "prospective_case_space": 4000,
+      "selection_key": "cc2e4c26bb97d50c7a52470544785aaa362021da9bf5e9e7dd9dd9dcdb722ee2",
       "selection_specialty_stratum": "Obstetrics and Gynecology",
-      "source_specialty": "Obstetrics and Gynecology, Oncology",
-      "title": "RHEA Risk-Scoring Model for Endometrial Cancer"
+      "source_specialty": "Obstetrics and Gynecology, Infectious Disease",
+      "title": "Obstetric Warning Score System"
     },
     {
-      "arg_count": 4,
-      "code_sha256": "b2547d85a06f67779095d90637cc5dc1137005a83084ac984e5582013577ef7d",
+      "arg_count": 6,
+      "code_sha256": "ec792b9828f37565b6a1793b177fa20f019530055a57d3c8876a1dd535a64443",
       "domain_constants": {
-        "KPS": [
-          70
+        "CA125": [
+          35
         ],
-        "age": [
-          45,
-          60,
-          61,
-          70
+        "CYFRA": [
+          3.3
         ],
-        "hypertension": [
+        "ECOG": [
+          1
+        ],
+        "leukocytes": [
+          10000
+        ],
+        "metastases": [
           false,
           true
         ],
-        "smoking": [
+        "treatment": [
           false,
           true
-        ]
-      },
-      "function_name": "compute_vte_risk_score",
-      "pmid": "30050733",
-      "prospective_case_space": 360,
-      "selection_key": "02e8f10938a86e5801cdaf526c390d9ef3e1c72b79e31d8bf051bce069524722",
-      "selection_specialty_stratum": "Oncology",
-      "source_specialty": "Oncology, Neurology",
-      "title": "Venous Thromboembolism Risk Score in Glioblastoma Patients"
-    },
-    {
-      "arg_count": 3,
-      "code_sha256": "16d23ccbc37acd2eae5f8079e2a51471c926ea63ff29e39572ede3f8b95b2f63",
-      "domain_constants": {
-        "CD4": [
-          430.75
-        ],
-        "ESR": [
-          17.46
-        ],
-        "PCT": [
-          0.22
         ]
       },
       "function_name": "compute_risk_score",
-      "pmid": "33243159",
-      "prospective_case_space": 125,
-      "selection_key": "805865c1186232b4532d77ce6d98c5fddd99780541cad705011fd1b9ac21561a",
-      "selection_specialty_stratum": "Orthopedic Surgery",
-      "source_specialty": "Orthopedic Surgery, Infectious Disease",
-      "title": "Surgical Site Infection (SSI) Risk Calculator for HIV-Positive Patients Following Orthopedic Surgery"
+      "pmid": "22815214",
+      "prospective_case_space": 2500,
+      "selection_key": "043cea640ecccfed1e024f2e06e0e523e5f7bcbffd91d96b5975a2e2153d628a",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Pulmonology",
+      "title": "Advanced NSCLC Prognostic Score Calculator"
     },
     {
       "arg_count": 5,
@@ -1755,47 +799,33 @@
       "title": "Mycoplasma Pneumoniae Pneumonia (MPP) Mucus Plug Risk Calculator"
     },
     {
-      "arg_count": 3,
-      "code_sha256": "038b88a69f8a2439eb14fe656c443b1d32d7a35b9064d5b75ac49f55057c2f4c",
+      "arg_count": 5,
+      "code_sha256": "5a69e846f5084331ee89707f4e81958cc5a0833ee7c2d13a7de49a16ed9f263a",
       "domain_constants": {
-        "CRP_D1": [
-          100
+        "age": [
+          60
         ],
-        "CURB_65": [
-          3
+        "bronchoscope_grade": [
+          3,
+          4
         ],
-        "PCT_D3_D1": [
-          1
+        "coh_level": [
+          10
+        ],
+        "pao2_fio2": [
+          300
+        ],
+        "tbsa": [
+          20
         ]
       },
-      "function_name": "calculate_risk_score",
-      "pmid": "27398948",
-      "prospective_case_space": 125,
-      "selection_key": "0f166345b0b083e038b9085e58adf39551162d434b018cf1e37b5c15b1509795",
+      "function_name": "compute_severity_score",
+      "pmid": "21963078",
+      "prospective_case_space": 5000,
+      "selection_key": "abed68582357bccf345d7d2079b5297d19b0a248bfee2a67c106e84bd56bdfb7",
       "selection_specialty_stratum": "Pulmonology",
-      "source_specialty": "Pulmonology, Internal Medicine, Emergency Medicine",
-      "title": "Community-Acquired Pneumonia Prognosis Calculator"
-    },
-    {
-      "arg_count": 2,
-      "code_sha256": "9d657d1d40ca4bfe24c9e5bd62f9f1e8604e8def3106b84f4792840ceb39b76e",
-      "domain_constants": {
-        "total_SWE_value": [
-          27,
-          33
-        ],
-        "total_US_score": [
-          5,
-          9
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "33995602",
-      "prospective_case_space": 64,
-      "selection_key": "2ea4f94d7a859af81d31dd3d7b7d95a65a0d6f521cc55f46244bdc8e8537a7a5",
-      "selection_specialty_stratum": "Rheumatology",
-      "source_specialty": "Rheumatology, Radiology",
-      "title": "Sj\u00f6gren's Syndrome Risk Matrix Model"
+      "source_specialty": "Pulmonology, Emergency Medicine",
+      "title": "Pneumonia Severity Score in Inhalation Injury Patients"
     },
     {
       "arg_count": 5,
@@ -1828,96 +858,1297 @@
       "title": "Geriatric Emergency Surgery Mortality (GEM) Score Calculator"
     },
     {
-      "arg_count": 3,
-      "code_sha256": "9151bf02b24b25858adf2bc52fce4ed211841fba247e8cdcdd4d09fd1113ec97",
+      "arg_count": 7,
+      "code_sha256": "315d33d232cd433ef89fa3419babb1ef62845a75a003ed56dc2c3095f7832da7",
       "domain_constants": {
-        "biopsy_percentage": [
-          15
+        "age": [
+          65
         ],
-        "mtd": [
-          15
+        "aspirin_use": [
+          false,
+          true
         ],
-        "psa": [
-          20
+        "cardiac_markers": [
+          false,
+          true
+        ],
+        "cardiac_risk_factors": [
+          3
+        ],
+        "coronary_disease": [
+          false,
+          true
+        ],
+        "severe_angina": [
+          false,
+          true
+        ],
+        "st_deviation": [
+          0.5
         ]
       },
-      "function_name": "calculate_ece_risk",
-      "pmid": "34729221",
-      "prospective_case_space": 125,
-      "selection_key": "27a878061748653e051be931877fe6b8b5bd0ad74ecd95ee520d0a475b5ebab1",
-      "selection_specialty_stratum": "Urology",
-      "source_specialty": "Urology, Oncology",
-      "title": "Prostate Cancer Extracapsular Extension (ECE) Prediction Algorithm"
+      "function_name": "compute_risk_score",
+      "pmid": "11792137",
+      "prospective_case_space": 2000,
+      "selection_key": "2b00f5a3517a50bc632aff379e2e92fc16f2c3d9ab488adf600c4aad9888a144",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology, Emergency Medicine, Internal Medicine",
+      "title": "TIMI Risk Score for Unstable Angina and Non-ST Elevation Myocardial Infarction"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "e48af446b5eafb8a1f23f2ed61450b908e2d5f7541f2923fe2a1a286adca3338",
+      "domain_constants": {
+        "age": [
+          60,
+          75
+        ],
+        "oxygen_saturation": [
+          97
+        ],
+        "pneumonia": [
+          false,
+          true
+        ],
+        "pulse_rate": [
+          80
+        ],
+        "respiratory_rate": [
+          26
+        ],
+        "urinary_output": [
+          150
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "36426167",
+      "prospective_case_space": 12500,
+      "selection_key": "5de842142d038c145c52fd5e74a820d15f264d70742f21328f8c363cf6488074",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Cardiology, Pulmonology",
+      "title": "NIPPV Weaning Success Prediction Score"
+    },
+    {
+      "arg_count": 8,
+      "code_sha256": "9b353245e8724c8ceee81fcb4d4dc6d6ed79bec1eafc4d674bf5107ef2b3efe1",
+      "domain_constants": {
+        "BP": [
+          100
+        ],
+        "NSAID_use": [
+          false,
+          true
+        ],
+        "albumin": [
+          3.0
+        ],
+        "antiplatelet_use": [
+          false,
+          true
+        ],
+        "disease_score": [
+          2
+        ],
+        "no_abdominal_tenderness": [
+          false,
+          true
+        ],
+        "no_diarrhea": [
+          false,
+          true
+        ],
+        "syncope": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_NOBLADS_score",
+      "pmid": "27311620",
+      "prospective_case_space": 4000,
+      "selection_key": "6773ac665bdabd68add7f6f77a0c1421c3454ffbd4de528f57dd3fb1fad36a1c",
+      "selection_specialty_stratum": "Gastroenterology",
+      "source_specialty": "Gastroenterology, Emergency Medicine, Internal Medicine",
+      "title": "NOBLADS Score for Severe Lower Gastrointestinal Bleeding Risk"
     },
     {
       "arg_count": 7,
-      "code_sha256": "a2371e0daea028ec6bc263f7295e5b4d2ced186210fbc55e2899a27f9bca4aac",
+      "code_sha256": "c1978df76501417bd71b01a9dcf668952c6b5a743fdcbffd19dfe350724d145d",
       "domain_constants": {
-        "donor_steatosis": [
-          40
-        ],
-        "ffp": [
-          13.5
-        ],
-        "meld_score": [
-          30
-        ],
-        "pao2_fio2": [
-          200
-        ],
-        "prbc": [
-          10.5
-        ],
-        "preop_dialysis": [
+        "cancer": [
           false,
           true
         ],
-        "preop_mv": [
+        "creatinine": [
+          2
+        ],
+        "hemolysis": [
+          false,
+          true
+        ],
+        "inr": [
+          1.5
+        ],
+        "mcv": [
+          90
+        ],
+        "platelet_count": [
+          30000
+        ],
+        "transplant": [
           false,
           true
         ]
       },
-      "function_name": "calculate_rrs",
-      "pmid": "23696476",
+      "function_name": "calculate_plasmic_score",
+      "pmid": "31079658",
+      "prospective_case_space": 5000,
+      "selection_key": "8a9c07bebf135ad0d064b213a95ea6fd9ef1fe0efad804b6e4373d9a259e1e32",
+      "selection_specialty_stratum": "Hematology",
+      "source_specialty": "Hematology",
+      "title": "PLASMIC Score Calculator for Thrombotic Thrombocytopenic Purpura (TTP)"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "dc1974954c69a2af6ee2c3ec0a3b4e44ef4944a80c6b60891dd0cc66eeaa262c",
+      "domain_constants": {
+        "art_experience": [
+          false,
+          true
+        ],
+        "cd4_count": [
+          100
+        ],
+        "drug_alcohol_abuse": [
+          false,
+          true
+        ],
+        "missed_appointments": [
+          1
+        ],
+        "prior_virologic_failure": [
+          false,
+          true
+        ],
+        "suboptimal_adherence": [
+          false,
+          true
+        ],
+        "suppressed_duration": [
+          12
+        ]
+      },
+      "function_name": "calculate_risk_score",
+      "pmid": "20121574",
+      "prospective_case_space": 2000,
+      "selection_key": "8d042e2702ace0114b6d7510cc2148e03cbcd92b3c5f6865dd4c085442d0d928",
+      "selection_specialty_stratum": "Infectious Disease",
+      "source_specialty": "Infectious Disease, Internal Medicine",
+      "title": "HIV Virologic Failure Prediction Calculator"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "3b7819b30bae35d51dfc822742d38b54b488ecf3bfc90f3a32c14d5f5bd84c3c",
+      "domain_constants": {
+        "CRP": [
+          6
+        ],
+        "CSF_lactate": [
+          4
+        ],
+        "CSF_leak": [
+          false,
+          true
+        ],
+        "PMN_neutrophils": [
+          50
+        ],
+        "aSAH": [
+          false,
+          true
+        ],
+        "glucose_ratio": [
+          0.4
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "28298047",
+      "prospective_case_space": 2500,
+      "selection_key": "73444cf4173c21fdc91a118190b89736438a0066d756487591571ff2f56f0b0c",
+      "selection_specialty_stratum": "Neurology",
+      "source_specialty": "Neurology, Surgery",
+      "title": "Postoperative Meningitis Prediction Rule"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "5bc7e1f75bf9cdd4331bf5a33f6f5e00ea271599ce87039d4c0023c35260f83e",
+      "domain_constants": {
+        "AGR": [
+          1.34
+        ],
+        "GTVnx": [
+          24.56
+        ],
+        "LDH": [
+          245
+        ],
+        "N2_3": [
+          false,
+          true
+        ],
+        "NLR": [
+          2.81
+        ],
+        "\u0394HGB": [
+          25.8
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "26014515",
+      "prospective_case_space": 6250,
+      "selection_key": "1546cfcc35509a7d27979ec874086c22bda2e17dde7eb3d7a22f5bcb82603834",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Radiology",
+      "title": "Nasopharyngeal Carcinoma Distant Metastasis Prediction Score"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "d8604f9f1da736e47132a3ef095d3afe3adda6d29fa1c647c7c07f023a282a40",
+      "domain_constants": {
+        "albumin": [
+          35
+        ],
+        "crp": [
+          90
+        ],
+        "neutrophil_percentage": [
+          70
+        ],
+        "sodium_ion_concentration": [
+          135
+        ],
+        "total_bilirubin": [
+          20
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "30026252",
+      "prospective_case_space": 3125,
+      "selection_key": "7ca199ebe2cacc001b5bad957feaede2b9dfdd60eb1134992d2c114a46d418b2",
+      "selection_specialty_stratum": "Pediatrics",
+      "source_specialty": "Pediatrics, Allergy and Immunology",
+      "title": "Kawasaki Disease IVIG Resistance Predictive Tool"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "6c44fe26a6ac74bcaac2fb8184a255853b53945dd9db5dd5245ccf15a39a429d",
+      "domain_constants": {
+        "hrr": [
+          6
+        ],
+        "oues": [
+          1.4
+        ],
+        "peak_vo2": [
+          14
+        ],
+        "petco2": [
+          33
+        ],
+        "ve_vco2_slope": [
+          34
+        ]
+      },
+      "function_name": "compute_cpx_score",
+      "pmid": "19033016",
+      "prospective_case_space": 3125,
+      "selection_key": "3e3daaf53cc4849efe62f3e9624efdd5b37d07d7d67b1fcb6cac080d01b6f5f4",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology",
+      "title": "Cardiopulmonary Exercise Test (CPX) Score for Heart Failure Outcomes"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "1041ad062d358e386896b7b31630ec534bc78b1e9d34fa93a424f709b182a385",
+      "domain_constants": {
+        "accident": [
+          false,
+          true
+        ],
+        "age": [
+          20,
+          60
+        ],
+        "fall": [
+          false,
+          true
+        ],
+        "fracture": [
+          false,
+          true
+        ],
+        "sbp": [
+          120,
+          90
+        ],
+        "scene": [
+          false,
+          true
+        ],
+        "ultrasound": [
+          false,
+          true
+        ]
+      },
+      "function_name": "calculate_ets",
+      "pmid": "16480439",
+      "prospective_case_space": 3200,
+      "selection_key": "6d88ba6b956d4c6af06d2e8bf1eb60211b6cc9503631faf66a48b02431c06adb",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Hematology, Surgery",
+      "title": "Emergency Room Transfusion Score (ETS)"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "514eb1473b9306ffb9ec12eca9fc7ae4e42c2a449cda47c5a765e273e99a6c3c",
+      "domain_constants": {
+        "age": [
+          70
+        ],
+        "amylase_level": [
+          454
+        ],
+        "bmi": [
+          21.45
+        ],
+        "lymph_nodes": [
+          21
+        ],
+        "operating_time": [
+          337
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "23461800",
+      "prospective_case_space": 3125,
+      "selection_key": "8cb3257a77f6da80bfbff27cbb744fd1b1f04fe27190aaf9bbd149af4a7d1f05",
+      "selection_specialty_stratum": "Gastroenterology",
+      "source_specialty": "Gastroenterology, Surgery",
+      "title": "Predictive Scoring System for Pancreatic Fistula After Laparoscopy-Assisted Gastrectomy"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "428b1d27893f646c7760fa4ea8223fcbd96935e21d5a5a0c9a6f9c4a97108791",
+      "domain_constants": {
+        "albumin_level": [
+          35
+        ],
+        "neutropenia": [
+          0.8
+        ],
+        "performance_status": [
+          2
+        ],
+        "platelet_count": [
+          50
+        ],
+        "transfusion_dependency": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "30898482",
+      "prospective_case_space": 1250,
+      "selection_key": "aae2c6cbaad3f08af8da561e42b02fdfc9aef5a018cd6d2bb8bb845719390b0f",
+      "selection_specialty_stratum": "Hematology",
+      "source_specialty": "Hematology, Oncology",
+      "title": "Azacitidine Infection Risk Model"
+    },
+    {
+      "arg_count": 8,
+      "code_sha256": "677e45e7b37718f233dec173730095101ec392cad79164adb2161f05fb4cd4e7",
+      "domain_constants": {
+        "age": [
+          65
+        ],
+        "arterial_ph": [
+          7.35
+        ],
+        "early_neuraminidase_inhibitor_use": [
+          false,
+          true
+        ],
+        "lymphocytes": [
+          0.8
+        ],
+        "multi_lobar_infiltrates": [
+          false,
+          true
+        ],
+        "pao2_fio2": [
+          300
+        ],
+        "respiratory_rate": [
+          30
+        ],
+        "systemic_corticosteroid_use": [
+          false,
+          true
+        ]
+      },
+      "function_name": "calculate_flu_iv_score",
+      "pmid": "35093039",
+      "prospective_case_space": 25000,
+      "selection_key": "9402235bf93f861179a65bb0cee6f89754c28e36dc23e9f82cdbf560394bd050",
+      "selection_specialty_stratum": "Infectious Disease",
+      "source_specialty": "Infectious Disease, Pulmonology, Emergency Medicine",
+      "title": "Flu-IV Score Calculator"
+    },
+    {
+      "arg_count": 3,
+      "code_sha256": "d9fcbed91f90b0c4a30b8574c770e0fe52b16661ac011519910e3b3e1d221039",
+      "domain_constants": {
+        "age": [
+          18,
+          49,
+          50,
+          69,
+          70,
+          79,
+          80
+        ],
+        "comorbidities": [
+          0,
+          1,
+          2
+        ],
+        "gcs": [
+          13,
+          14,
+          15,
+          3,
+          4,
+          5,
+          8,
+          9
+        ]
+      },
+      "function_name": "compute_sah_score",
+      "pmid": "24103667",
+      "prospective_case_space": 6380,
+      "selection_key": "8b3f54b39db3b5b80bb94c446f3731bec66271bb1f7df9c5ed065322d17a5c2f",
+      "selection_specialty_stratum": "Neurology",
+      "source_specialty": "Neurology",
+      "title": "The SAH Score"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "0c2b4ffe8b9a2abdc72fcc668904d0b79e2edf1c8b231f5b00dce5f4f8382239",
+      "domain_constants": {
+        "lymph_node_status": [
+          false,
+          true
+        ],
+        "serum_CEA": [
+          4.4
+        ],
+        "smoking_index": [
+          400
+        ],
+        "tumor_cavity": [
+          false,
+          true
+        ],
+        "tumor_contact_length": [
+          16
+        ],
+        "tumor_diameter": [
+          24
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "30888590",
+      "prospective_case_space": 2500,
+      "selection_key": "1e14fc5141bacbb5af793315bc41dbc42e91807538b74c4e87b3fb53fc96fe8b",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Pulmonology, Radiology",
+      "title": "Visceral Pleural Invasion Risk Score Calculator in NSCLC"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "f8c9770728fe383bf6bffcb188bff57a6b8284003fa3f8a458fb9be81ee14d12",
+      "domain_constants": {
+        "anc": [
+          7500
+        ],
+        "cp": [
+          0.5
+        ],
+        "crp": [
+          10.0
+        ],
+        "nausea": [
+          false,
+          true
+        ],
+        "rlq_pain": [
+          false,
+          true
+        ],
+        "wbc": [
+          10000
+        ]
+      },
+      "function_name": "compute_palabs",
+      "pmid": "31171439",
+      "prospective_case_space": 2500,
+      "selection_key": "b6f31698f600115797cd58c75cb5b0d719c937169c891bdf33bdcc7b1489b8ae",
+      "selection_specialty_stratum": "Pediatrics",
+      "source_specialty": "Pediatrics, Emergency Medicine, Surgery",
+      "title": "Pediatric Appendicitis Laboratory Score (PALabS)"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "3b72ef50bed99291976138686919280f765eedab2e37d0e1f2047cdf10ad037a",
+      "domain_constants": {
+        "age": [
+          54
+        ],
+        "cad": [
+          false,
+          true
+        ],
+        "ckd": [
+          false,
+          true
+        ],
+        "glucose": [
+          107
+        ],
+        "history_of_bleeding": [
+          false,
+          true
+        ],
+        "map": [
+          18
+        ],
+        "rvd": [
+          false,
+          true
+        ]
+      },
+      "function_name": "calculate_risk_score",
+      "pmid": "30571195",
+      "prospective_case_space": 2000,
+      "selection_key": "44f4c2e75b5e9913ac626cc12485d2418f6db24a77e651007beab00147f36b43",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology, Gastroenterology",
+      "title": "Utah Bleeding Risk Score Calculator"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "6784d1d5c494d61e7c5af12f7b106000718cf704ca902495eaf0d4eb5d18eefc",
+      "domain_constants": {
+        "hr": [
+          90
+        ],
+        "rr": [
+          22
+        ],
+        "sao2": [
+          92
+        ],
+        "sbp": [
+          90
+        ],
+        "temp": [
+          36,
+          38
+        ]
+      },
+      "function_name": "calculate_presep_score",
+      "pmid": "26113162",
+      "prospective_case_space": 5625,
+      "selection_key": "6e1f846d5569b69c4039b07c83d04e70b034e3f1c246b2827fcd632ca06000eb",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Infectious Disease",
+      "title": "Prehospital Early Sepsis Detection (PRESEP) Score"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "4fe006c27eebdc5eba3f57d02f91edf53d6a7a6702f43537bb53164c7245928b",
+      "domain_constants": {
+        "afp_level": [
+          400
+        ],
+        "albumin_level": [
+          3.0
+        ],
+        "esophageal_varices": [
+          false,
+          true
+        ],
+        "tumor_number": [
+          1
+        ],
+        "tumor_size": [
+          3.0
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "12483269",
+      "prospective_case_space": 1250,
+      "selection_key": "ccb604f8e1ee9338c3d7cd55e555b04e477478e7c97bbd243f3ab1e906fd1cdc",
+      "selection_specialty_stratum": "Gastroenterology",
+      "source_specialty": "Gastroenterology, Oncology",
+      "title": "Hepatocellular Carcinoma Prognosis Calculator"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "bfba2a5dcc15210de8dece7f7f1bd0480cb541e62a3fc72f870261e8e5c8ff70",
+      "domain_constants": {
+        "adherence": [
+          95
+        ],
+        "cd4_below_baseline": [
+          false,
+          true
+        ],
+        "cd4_count_12_months": [
+          false,
+          true
+        ],
+        "cd4_drop": [
+          0.25,
+          0.5
+        ],
+        "hemoglobin_drop": [
+          false,
+          true
+        ],
+        "papular_pruritic_eruption": [
+          false,
+          true
+        ],
+        "prior_art": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_score",
+      "pmid": "23118910",
+      "prospective_case_space": 1600,
+      "selection_key": "e68f9982dc00315aabb9bda93eb7622b1e3982f392a8c818e2976a627f33fb31",
+      "selection_specialty_stratum": "Infectious Disease",
+      "source_specialty": "Infectious Disease, Internal Medicine",
+      "title": "ART Failure Clinical Prediction Score"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "e50bc907cd02a359cacc37153aedde7b3cad02368047996d50df7605c65f7ac3",
+      "domain_constants": {
+        "age": [
+          67
+        ],
+        "antiplatelet_or_anticoagulant_use": [
+          false,
+          true
+        ],
+        "drainage_volume": [
+          101
+        ],
+        "midline_shift": [
+          11.2
+        ],
+        "ratio_PostPV_PostHCV": [
+          31.61
+        ],
+        "severe_brain_atrophy": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "31802959",
+      "prospective_case_space": 2500,
+      "selection_key": "b8d64908b5d4ef075a4f03eb275d9f85b2924fc46f0f6eb8c85c7db595f4a83c",
+      "selection_specialty_stratum": "Neurology",
+      "source_specialty": "Neurology, Surgery",
+      "title": "Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "2f48ab26b454b6fa4737fec3e4cad3d8e47f4a6c34918d88745c3dd59833575d",
+      "domain_constants": {
+        "afp": [
+          20
+        ],
+        "ctc": [
+          2
+        ],
+        "dcp": [
+          40
+        ],
+        "diameter": [
+          20
+        ],
+        "multiple_tumors": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "33859298",
+      "prospective_case_space": 1250,
+      "selection_key": "2602920d2abbbeb1969ad2189afe8c56c0cf54b359ad568764718ea804c77ae4",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Radiology, Gastroenterology",
+      "title": "Hepatocellular Carcinoma Recurrence Risk Calculator"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "096849df40327e7b706ce9576fb9bc031e89bc968d708c6714eec7adaa44ef54",
+      "domain_constants": {
+        "Cl": [
+          100
+        ],
+        "Cr": [
+          0.35
+        ],
+        "HCO3": [
+          20
+        ],
+        "PCT": [
+          1.7
+        ],
+        "glucose": [
+          200
+        ]
+      },
+      "function_name": "compute_aesd_score",
+      "pmid": "34362595",
+      "prospective_case_space": 3125,
+      "selection_key": "dff7f4694cc12f776eb81c7d37ea009b43aa3043432a070a99f6f15d56634e2f",
+      "selection_specialty_stratum": "Pediatrics",
+      "source_specialty": "Pediatrics, Neurology",
+      "title": "AESD Risk Score Calculator"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "7b093557804e6b90084e29c426bf447413457cb03b3d2da2781122f597e8a785",
+      "domain_constants": {
+        "PIRCHEII_DQ": [
+          111,
+          201
+        ],
+        "PIRCHEII_DR": [
+          116,
+          80
+        ],
+        "PIRCHEII_classI": [
+          141,
+          157
+        ],
+        "epMM_DQ": [
+          6,
+          8
+        ],
+        "epMM_DR": [
+          8,
+          9
+        ],
+        "epMM_classI": [
+          9
+        ]
+      },
+      "function_name": "calculate_risk",
+      "pmid": "35437211",
+      "prospective_case_space": 360000,
+      "selection_key": "491e6f978251d6c882724d5252309d25d74ae00f39f0ea63bc610e7e18004107",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology, Pediatrics, Allergy and Immunology",
+      "title": "HLAMatchmaker and PIRCHE-II Combined Risk Calculator for Pediatric Heart Transplant Patients"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "09af8211165c3f7c0b94091e1713c41f28c410ff40a1c1398d47c70b694725f9",
+      "domain_constants": {
+        "age": [
+          65
+        ],
+        "amnesia": [
+          false,
+          true
+        ],
+        "basal_skull_fracture": [
+          false,
+          true
+        ],
+        "dangerous_mechanism": [
+          false,
+          true
+        ],
+        "gcs": [
+          15
+        ],
+        "skull_fracture": [
+          false,
+          true
+        ],
+        "vomiting": [
+          2
+        ]
+      },
+      "function_name": "ct_head_rule",
+      "pmid": "11356436",
+      "prospective_case_space": 2000,
+      "selection_key": "8006f90155d3aa66cb83f49e2cba38069184d77e63e860017e3055cfb24d3a75",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Neurology",
+      "title": "Canadian CT Head Rule Calculator"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "a2ee2e519c517240b74e9e3192fd914e869225af668b50987a3a989e2dc58517",
+      "domain_constants": {
+        "age": [
+          65
+        ],
+        "albumin": [
+          2.5
+        ],
+        "c_protein": [
+          150
+        ],
+        "calcium": [
+          8.5
+        ],
+        "leucocytes": [
+          13000
+        ]
+      },
+      "function_name": "compute_score",
+      "pmid": "19393477",
+      "prospective_case_space": 3125,
+      "selection_key": "e53b7fa1e9b11ac39685f87fdf7904eed0aed680bc543bb07272f654a2891b10",
+      "selection_specialty_stratum": "Gastroenterology",
+      "source_specialty": "Gastroenterology, Emergency Medicine, Internal Medicine",
+      "title": "Acute Pancreatitis Prognostic Score Calculator"
+    },
+    {
+      "arg_count": 8,
+      "code_sha256": "7a2470ff1c1f4d6fc4cc0edf2261eb872bc00cc4221f2f435e218ef7e93cdf35",
+      "domain_constants": {
+        "ECOG_status": [
+          2
+        ],
+        "albumin": [
+          3.3
+        ],
+        "alkaline_phosphatase": [
+          120
+        ],
+        "bone_metastasis": [
+          false,
+          true
+        ],
+        "gastrectomy": [
+          false,
+          true
+        ],
+        "lung_metastasis": [
+          false,
+          true
+        ],
+        "peritoneal_metastasis": [
+          false,
+          true
+        ],
+        "total_bilirubin": [
+          1.2
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "21290247",
+      "prospective_case_space": 10000,
+      "selection_key": "44641d5cf940f30b0ece43ee5badd4d1e46d91d3147c0b06a01ad8c92247e5c2",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Gastroenterology",
+      "title": "Prognostic Model for Metastatic or Recurrent Gastric Adenocarcinoma"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "ed109b566f627fb5add4c5d89dde48a462beb76afbd15bb6541a107e4a830647",
+      "domain_constants": {
+        "age": [
+          65
+        ],
+        "anemia": [
+          false,
+          true
+        ],
+        "ejection_fraction": [
+          40
+        ],
+        "killip_class": [
+          2,
+          3
+        ],
+        "renal_insufficiency": [
+          false,
+          true
+        ],
+        "timi_flow_grade": [
+          false,
+          true
+        ],
+        "triple_vessel_disease": [
+          false,
+          true
+        ]
+      },
+      "function_name": "calculate_cadillac_score",
+      "pmid": "15862409",
+      "prospective_case_space": 3200,
+      "selection_key": "6045fefe4d50c1ed302a27a50edd0144fb1ca1939f900a3cf3e362a4d2160d27",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology",
+      "title": "CADILLAC Risk Score for Mortality After Primary Percutaneous Coronary Intervention (PCI)"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "9b6edb6c574af853e9fb26e9ec08116c27cba967ca9f59135eeae3a69189da82",
+      "domain_constants": {
+        "age": [
+          65
+        ],
+        "heart_rate": [
+          110
+        ],
+        "segmented_neutrophils": [
+          90
+        ],
+        "urine_wbc": [
+          50
+        ],
+        "vomiting": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "21722666",
+      "prospective_case_space": 1250,
+      "selection_key": "9033e3fbb8efccdd0b21b3418f49674cdde56b465da2fc1b5bf581de4f9369ce",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Infectious Disease, Internal Medicine, Urology",
+      "title": "Bacteremia Risk Calculator in Women with Acute Pyelonephritis"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "27cdde09d3792a70a893d259875bfea1c3543590e8fc654d4243c843a79c8cac",
+      "domain_constants": {
+        "ldh_level": [
+          250.5
+        ],
+        "ldl_hdl_ratio": [
+          2.9
+        ],
+        "lymph_node_positive": [
+          false,
+          true
+        ],
+        "max_diameter": [
+          4.4
+        ],
+        "num_crlms": [
+          4
+        ]
+      },
+      "function_name": "compute_clir_score",
+      "pmid": "35254582",
+      "prospective_case_space": 1250,
+      "selection_key": "64dc7b976f165f82246182f6989aa6362d617d93c7a87ba8e887e27078a276a1",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Surgery",
+      "title": "Circulating Lipid- and Inflammation-based Risk (CLIR) Score Calculator"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "a6a37d7b30d9246196ba60ef1a743194d5f39d9d7731af19db5bbc6a8ab579ed",
+      "domain_constants": {
+        "QRS_duration": [
+          120
+        ],
+        "QT_dispersion": [
+          70
+        ],
+        "coronary_artery_disease": [
+          false,
+          true
+        ],
+        "heart_failure": [
+          false,
+          true
+        ],
+        "subpulmonary_ejection_fraction": [
+          40
+        ],
+        "supraventricular_tachycardia": [
+          false,
+          true
+        ],
+        "systemic_ejection_fraction": [
+          40
+        ]
+      },
+      "function_name": "calculate_risk_score",
+      "pmid": "33465514",
+      "prospective_case_space": 5000,
+      "selection_key": "6b086edf010d18bc030ff5ab6c92398a25c3b88c84aae5045a90384f6f4ca0c7",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology",
+      "title": "PREVENTION-ACHD Risk Score Model"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "991f93945fa7f1f317b703ac118029d149efae8e4a044eeada704e7226a9c879",
+      "domain_constants": {
+        "AIS": [
+          4
+        ],
+        "ASA_score": [
+          3
+        ],
+        "GCS": [
+          13
+        ],
+        "PRBC_transfusion": [
+          false,
+          true
+        ],
+        "age": [
+          80
+        ]
+      },
+      "function_name": "compute_GERtality_score",
+      "pmid": "33806240",
+      "prospective_case_space": 1250,
+      "selection_key": "97455084fbb3258a0ae489de0a6a27723acd04b740c800c16c966c5a42e1946d",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Geriatrics, Surgery",
+      "title": "GERtality Score Calculator"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "8537b7d0753588d3c9c83b48fc27c63637db7ac5d8cc6ae75ff1b8299f591a80",
+      "domain_constants": {
+        "age": [
+          60
+        ],
+        "ecog_score": [
+          2
+        ],
+        "oral_mucositis_grade": [
+          3
+        ],
+        "procalcitonin": [
+          0.5
+        ],
+        "respiratory_rate": [
+          24
+        ],
+        "systolic_bp": [
+          90
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "26049405",
+      "prospective_case_space": 15625,
+      "selection_key": "651fe0dbf99b6923728dfdb2499af044df6790010c7fb45ce1c3bb88a1e7ece1",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Hematology, Infectious Disease",
+      "title": "Febrile Neutropenia Prognostic Model"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "72eb45035bbe76a8cdb77aea8a26e0011d0e72a1240d4af60cab0dc64c86d69e",
+      "domain_constants": {
+        "delta_b_lines": [
+          10
+        ],
+        "peak_oxygen_consumption": [
+          16
+        ],
+        "peak_systolic_pap": [
+          50
+        ],
+        "resting_ntprobnp": [
+          900
+        ],
+        "ve_vco2_slope": [
+          36
+        ]
+      },
+      "function_name": "compute_risk_score",
+      "pmid": "33624088",
+      "prospective_case_space": 3125,
+      "selection_key": "6ce8ca8cdbd0be9e60a0604e7f4243abb79de54174ac2559f1fa283b3846aad4",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology, Internal Medicine",
+      "title": "Heart Failure with Preserved Ejection Fraction (HFpEF) Risk Score Calculator"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "b5168a8c18f1f5161f6ca06a1c46081db90359b10f8d4c7b9c49b0b7600a6359",
+      "domain_constants": {
+        "age": [
+          65
+        ],
+        "body_temperature": [
+          38
+        ],
+        "glasgow_coma_scale": [
+          15
+        ],
+        "heart_rate": [
+          100
+        ],
+        "respiratory_rate": [
+          22
+        ],
+        "systolic_blood_pressure": [
+          100
+        ]
+      },
+      "function_name": "compute_jerato_score",
+      "pmid": "29742138",
+      "prospective_case_space": 15625,
+      "selection_key": "f6db55b4fbc5d42de4a542ba913a3039661212c19c33ef8810d44a9105a0a67c",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Geriatrics",
+      "title": "J-ERATO Score"
+    },
+    {
+      "arg_count": 6,
+      "code_sha256": "d4be6ad8c5a253399900c045d3b50fd0f5f7def404a67b3af54c9241bfc6f5e0",
+      "domain_constants": {
+        "bmi": [
+          23
+        ],
+        "lmr": [
+          2.8
+        ],
+        "nlr": [
+          2.7
+        ],
+        "plr": [
+          209.4
+        ],
+        "pni": [
+          45.1
+        ],
+        "prealbumin": [
+          180
+        ]
+      },
+      "function_name": "compute_inps",
+      "pmid": "34195071",
+      "prospective_case_space": 15625,
+      "selection_key": "aea87e7c56bd62500f166f6abf78b73f542f47f7157f779f483555a4141430af",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Gastroenterology, Surgery",
+      "title": "Inflammatory-Nutritional Prognostic Score (INPS) Calculator for Stage III Gastric Cancer Patients"
+    },
+    {
+      "arg_count": 5,
+      "code_sha256": "21030f668e4c063a02f8c36e10d3c5e6efb612b2204a4fdf5fbeddcc06887e3c",
+      "domain_constants": {
+        "EF": [
+          50
+        ],
+        "LA_diameter": [
+          43
+        ],
+        "age": [
+          65
+        ],
+        "eGFR": [
+          60
+        ],
+        "persistent_af": [
+          false,
+          true
+        ]
+      },
+      "function_name": "compute_apple_score",
+      "pmid": "25876528",
+      "prospective_case_space": 1250,
+      "selection_key": "807ca1ac622d30dbe619529976653653dd6c44706e9cb29adda20ae862b98f6d",
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology",
+      "title": "APPLE Score for Predicting Rhythm Outcomes After Catheter Ablation of Atrial Fibrillation"
+    },
+    {
+      "arg_count": 7,
+      "code_sha256": "c70afd73d32967e763d44232513e7fdde7065e37d2e085aa57ce8634ac6fc7aa",
+      "domain_constants": {
+        "Cys_C": [
+          1.125
+        ],
+        "age": [
+          75
+        ],
+        "dyspnea_class_IV": [
+          false,
+          true
+        ],
+        "history_of_heart_failure": [
+          false,
+          true
+        ],
+        "hs_CRP": [
+          25
+        ],
+        "hs_cTnT": [
+          0.04
+        ],
+        "systolic_bp": [
+          110
+        ]
+      },
+      "function_name": "compute_marked_risk_score",
+      "pmid": "23021334",
       "prospective_case_space": 12500,
-      "selection_key": "b5a571edfb506bc2e0e1a584cb2329e3d7399d66bc8765683b7ff0ce81448df9",
-      "selection_specialty_stratum": "Anesthesiology",
-      "source_specialty": "Anesthesiology, Surgery, Pulmonology",
-      "title": "Respiratory Risk Score (RRS) for Liver Transplantation"
+      "selection_key": "f6dbbf95a7e34cd50154dbb58c2b7e29a8ea73cd66dc944096b17c0786d24bb3",
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Cardiology",
+      "title": "MARKED-Risk Score Calculator"
     }
   ],
   "selected_count": 64,
   "selected_selection_stratum_counts": {
-    "Anesthesiology": 4,
-    "Cardiology": 3,
-    "Critical Care Medicine": 1,
-    "Dermatology": 3,
-    "Emergency Medicine": 3,
-    "Endocrinology": 2,
-    "Gastroenterology": 3,
-    "Geriatrics": 3,
-    "Hematology": 3,
-    "Infectious Disease": 3,
-    "Internal Medicine": 2,
-    "Nephrology": 3,
-    "Neurology": 3,
-    "Obstetrics and Gynecology": 3,
-    "Oncology": 3,
-    "Orthopedic Surgery": 3,
-    "Pediatrics": 3,
-    "Plastic Surgery": 2,
-    "Pulmonology": 3,
-    "Radiology": 1,
-    "Rheumatology": 3,
-    "Surgery": 3,
-    "Transplant Surgery": 1,
-    "Urology": 3
+    "Anesthesiology": 1,
+    "Cardiology": 10,
+    "Dermatology": 1,
+    "Emergency Medicine": 10,
+    "Endocrinology": 1,
+    "Gastroenterology": 6,
+    "Hematology": 4,
+    "Infectious Disease": 5,
+    "Neurology": 5,
+    "Obstetrics and Gynecology": 2,
+    "Oncology": 9,
+    "Orthopedic Surgery": 1,
+    "Pediatrics": 5,
+    "Pulmonology": 2,
+    "Surgery": 2
   },
   "selection_policy": "deterministic round-robin over alphabetically ordered first-listed source specialty strata; within each specialty candidates are ordered by sha256 selection_key then PMID; the design targets domain breadth, not clinical prevalence",
   "selector_salt": "CommandMed-V5|RULE_ORACLE_NUMBOOL",
   "source_blob": "118474a6286ad78896a7c15682a53b68261a2330",
   "source_bytes_sha256": "00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9",
   "source_revision": "d474a95128e128623933c9be0d389ff7d82ef782",
-  "static_eligible_count": 413,
+  "static_eligible_count": 82,
   "status": "STATIC_DOMAIN_BALANCED_NUMERIC_BOOLEAN_RULE_ORACLE_CANDIDATE_NO_FUNCTION_EXECUTION"
 }

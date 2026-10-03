@@ -6,7 +6,9 @@ from pathlib import Path
 
 from src.commandmed.reliability_v5.case_generator import (
     case_space_size,
+    cases_from_state_indices,
     deterministic_cases,
+    deterministic_state_indices,
     expanded_domains,
 )
 from src.commandmed.reliability_v5.contracts import ReliabilityContractError
@@ -30,6 +32,20 @@ class CaseGeneratorTests(unittest.TestCase):
         self.assertEqual(len({row["case_id"] for row in first}), 64)
         self.assertEqual(len({row["state_index"] for row in first}), 64)
 
+    def test_case_identity_is_intrinsic_not_selection_salt(self):
+        domains = {"x": [10], "flag": [True], "y": [20], "z": [30]}
+        first = cases_from_state_indices("toy", domains, [7])[0]
+        second = cases_from_state_indices("toy", domains, [7])[0]
+        self.assertEqual(first["case_id"], second["case_id"])
+        self.assertEqual(first["inputs"], second["inputs"])
+
+    def test_disjoint_selection_excludes_prior_states(self):
+        first = deterministic_state_indices("toy", 1024, count=64, salt="dev")
+        second = deterministic_state_indices(
+            "toy", 1024, count=64, salt="cal", exclude_state_indices=first
+        )
+        self.assertTrue(set(first).isdisjoint(second))
+
     def test_insufficient_space_fails_closed(self):
         with self.assertRaises(ReliabilityContractError):
             deterministic_cases("tiny", {"flag": [True]}, count=64)
@@ -38,21 +54,27 @@ class CaseGeneratorTests(unittest.TestCase):
         with self.assertRaises(ReliabilityContractError):
             expanded_domains({"category": ["high"]})
 
-    def test_frozen_manifest_supports_64_cases_per_calculator(self):
+    def test_manifest_supports_large_future_sampling_space(self):
         payload = json.loads(MANIFEST.read_text(encoding="utf-8"))
         selected = payload["selected"]
         self.assertEqual(len(selected), 64)
         for calculator in selected:
             with self.subTest(pmid=calculator["pmid"]):
-                self.assertGreaterEqual(calculator["prospective_case_space"], 64)
+                self.assertGreaterEqual(calculator["prospective_case_space"], 1024)
                 cases = deterministic_cases(
                     f"pmid:{calculator['pmid']}",
                     calculator["domain_constants"],
-                    count=64,
+                    count=128,
                 )
-                self.assertEqual(len(cases), 64)
-                self.assertEqual(len({row["case_id"] for row in cases}), 64)
+                self.assertEqual(len(cases), 128)
+                self.assertEqual(len({row["case_id"] for row in cases}), 128)
 
+
+    def test_invalid_exclusion_types_fail_with_contract_error(self):
+        with self.assertRaises(ReliabilityContractError):
+            deterministic_state_indices("toy", 1024, count=1, salt="x", exclude_state_indices=[[]])
+        with self.assertRaises(ReliabilityContractError):
+            cases_from_state_indices("toy", {"flag": [True]}, [[]])
 
 if __name__ == "__main__":
     unittest.main()

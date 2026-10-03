@@ -1,4 +1,4 @@
-﻿"""Deterministic candidate-state generator for V5 rule-oracle fixtures.
+"""Deterministic candidate-state generator for V5 rule-oracle fixtures.
 
 The generator operates only on statically extracted Boolean/numeric threshold
 metadata. It does not execute clinical calculator code and does not assert that
@@ -11,7 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-from collections.abc import Mapping, Sequence
+from collections.abc import Collection, Mapping, Sequence
 
 from .contracts import ReliabilityContractError
 
@@ -81,39 +81,70 @@ def _state_from_index(
     return {name: state[name] for name, _ in normalized}
 
 
-def deterministic_cases(
+def deterministic_state_indices(
     calculator_id: str,
-    domains: Mapping[str, Sequence[object]],
+    total: int,
     *,
-    count: int = DEFAULT_CASE_COUNT,
-    salt: str = "CommandMed-V5-RULE-ORACLE-CASES",
-) -> tuple[dict[str, object], ...]:
-    """Generate unique deterministic candidate states using a full-cycle index walk."""
+    count: int,
+    salt: str,
+    exclude_state_indices: Collection[int] = (),
+) -> tuple[int, ...]:
+    """Select unique state indices with a full-cycle deterministic walk."""
     if not isinstance(calculator_id, str) or not calculator_id.strip():
         raise ReliabilityContractError("calculator_id: expected a non-empty string")
+    if not isinstance(total, int) or isinstance(total, bool) or total <= 0:
+        raise ReliabilityContractError("total: expected a positive integer")
     if not isinstance(count, int) or isinstance(count, bool) or count <= 0:
         raise ReliabilityContractError("count: expected a positive integer")
     if not isinstance(salt, str) or not salt:
         raise ReliabilityContractError("salt: expected a non-empty string")
 
-    normalized = expanded_domains(domains)
-    total = math.prod(len(values) for _, values in normalized)
-    if total < count:
-        raise ReliabilityContractError(
-            f"domains: case space {total} is smaller than requested count {count}"
-        )
+    raw_excluded = tuple(exclude_state_indices)
+    if any(not isinstance(index, int) or isinstance(index, bool) for index in raw_excluded):
+        raise ReliabilityContractError("exclude_state_indices: expected integers")
+    if len(set(raw_excluded)) != len(raw_excluded):
+        raise ReliabilityContractError("exclude_state_indices: duplicates are not allowed")
+    excluded = set(raw_excluded)
+    if any(index < 0 or index >= total for index in excluded):
+        raise ReliabilityContractError("exclude_state_indices: index outside case space")
+    if total - len(excluded) < count:
+        raise ReliabilityContractError("case space after exclusions is smaller than requested count")
 
     digest = hashlib.sha256(f"{calculator_id}|{salt}".encode("utf-8")).digest()
     offset = int.from_bytes(digest[:8], "big") % total
     stride = _coprime_stride(int.from_bytes(digest[8:16], "big"), total)
+    selected: list[int] = []
+    for position in range(total):
+        state_index = (offset + position * stride) % total
+        if state_index in excluded:
+            continue
+        selected.append(state_index)
+        if len(selected) == count:
+            return tuple(selected)
+    raise ReliabilityContractError("unable to select requested disjoint state indices")
+
+def cases_from_state_indices(
+    calculator_id: str,
+    domains: Mapping[str, Sequence[object]],
+    state_indices: Sequence[int],
+) -> tuple[dict[str, object], ...]:
+    """Materialize intrinsic case identities from already selected state indices."""
+    normalized = expanded_domains(domains)
+    total = math.prod(len(values) for _, values in normalized)
+    raw_indices = tuple(state_indices)
+    if any(not isinstance(index, int) or isinstance(index, bool) for index in raw_indices):
+        raise ReliabilityContractError("state_indices: expected integers")
+    if len(set(raw_indices)) != len(raw_indices):
+        raise ReliabilityContractError("state_indices: duplicates are not allowed")
 
     cases: list[dict[str, object]] = []
-    for position in range(count):
-        state_index = (offset + position * stride) % total
+    for state_index in raw_indices:
+        if state_index < 0 or state_index >= total:
+            raise ReliabilityContractError("state_indices: index outside case space")
         inputs = _state_from_index(normalized, state_index)
         canonical = json.dumps(inputs, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
         case_id = hashlib.sha256(
-            f"{calculator_id}|{state_index}|{canonical}|{salt}".encode("utf-8")
+            f"{calculator_id}|{state_index}|{canonical}".encode("utf-8")
         ).hexdigest()
         cases.append(
             {
@@ -125,3 +156,21 @@ def deterministic_cases(
         )
     return tuple(cases)
 
+def deterministic_cases(
+    calculator_id: str,
+    domains: Mapping[str, Sequence[object]],
+    *,
+    count: int = DEFAULT_CASE_COUNT,
+    salt: str = "CommandMed-V5-RULE-ORACLE-CASES",
+    exclude_state_indices: Collection[int] = (),
+) -> tuple[dict[str, object], ...]:
+    """Generate selected cases while keeping identity independent of selection salt."""
+    total = case_space_size(domains)
+    state_indices = deterministic_state_indices(
+        calculator_id,
+        total,
+        count=count,
+        salt=salt,
+        exclude_state_indices=exclude_state_indices,
+    )
+    return cases_from_state_indices(calculator_id, domains, state_indices)

@@ -44,7 +44,9 @@ For probability-transforming interventions, the primary operational evaluation k
 
 `RULE_ORACLE` families use deterministic calculators or executable rules and support exact rule-conformance counterfactuals. `OPEN_CLINICAL_REASONING` families use auditable public labels or qualified adjudication and probe evidence use, robustness and reasoning under less deterministic semantics. Their effects are reported separately and are not averaged into one primary effect.
 
-Current freeze candidate: Qwen/Qwen3.5-0.8B-Base at revision dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68 is the primary development family; HuggingFaceTB/SmolLM2-1.7B at revision effd688a12921b4cc83e3312b6feb579f70f9c71 is the independent-family replication candidate. RULE_ORACLE plans 4096 source clusters from 64 statically admitted public-domain RiskCalcs calculators; RiskQA is a secondary external family with reported N=350. OPEN_CLINICAL_REASONING is currently unadmitted rather than filled with a rights-ambiguous benchmark.
+Current freeze candidate: Qwen/Qwen3.5-0.8B-Base at revision dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68 is the primary development family; HuggingFaceTB/SmolLM2-1.7B at revision effd688a12921b4cc83e3312b6feb579f70f9c71 is the independent-family replication candidate. RULE_ORACLE selects 64 public-domain RiskCalcs calculators whose static candidate state spaces are each at least 1024 states. Per calculator, 64 development and 64 calibration states are fixed before model work; the 64 confirmatory and 64 reserve states are selected only after implementation freeze from the still-unselected state space using future public randomness. RiskQA is a secondary external family with reported N=350. OPEN_CLINICAL_REASONING remains unadmitted.
+
+The independent-family replication tests transport of prespecified within-family intervention effects. It does not compare absolute Qwen versus SmolLM performance, and no architecture or scale-effect claim is permitted because the two candidates are not parameter matched.
 
 ## Controls
 
@@ -52,7 +54,7 @@ Required controls are unchanged-base repeated runs, sham semantic-preserving tra
 
 ## Confirmatory quarantine
 
-Final source-item identities, transformation seeds, held-out action thresholds and expert adjudications are unavailable to prompt design, intervention tuning, calibration fitting, model selection and code debugging. Any accidental exposure is logged and removes the affected material from confirmatory status.
+Development and calibration memberships are frozen before model work. RULE_ORACLE confirmatory/reserve identities do not yet exist as selected cases: after a clean implementation freeze, a later public-randomness event selects them from state indices not used by development or calibration under `CONFIRMATORY_QUARANTINE_V5.md`. Confirmatory membership is unavailable to prompt design, intervention tuning, calibration fitting, model selection and code debugging.
 
 ## Success boundary
 

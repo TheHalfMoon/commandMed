@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate compact V5 case-identity bindings without executing calculators."""
+"""Generate only pre-freeze V5 development/calibration case-identity bindings."""
 from __future__ import annotations
 
 import hashlib
@@ -10,12 +10,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
 
-from src.commandmed.reliability_v5.case_generator import deterministic_cases
+from src.commandmed.reliability_v5.case_generator import cases_from_state_indices
+from src.commandmed.reliability_v5.quarantine import prefreeze_state_partition
 
 PACKET = Path(__file__).resolve().parents[1]
 SOURCE = PACKET / "riskcalcs-rule-oracle-final-candidate-v5.json"
 OUT = PACKET / "rule-oracle-case-index-v5.json"
-CASES_PER_CALCULATOR = 64
 
 
 def sha256_file(path: Path) -> str:
@@ -38,43 +38,64 @@ def main() -> int:
         raise SystemExit(f"expected 64 selected calculators, found {len(selected)}")
 
     records = []
-    all_case_ids: list[str] = []
+    all_development_ids: list[str] = []
+    all_calibration_ids: list[str] = []
     for calculator in selected:
         pmid = str(calculator["pmid"])
-        cases = deterministic_cases(
-            f"pmid:{pmid}",
+        calculator_id = f"pmid:{pmid}"
+        total = int(calculator["prospective_case_space"])
+        partition = prefreeze_state_partition(calculator_id, total)
+        development = cases_from_state_indices(
+            calculator_id,
             calculator["domain_constants"],
-            count=CASES_PER_CALCULATOR,
+            partition["development"],
         )
-        case_ids = [str(case["case_id"]) for case in cases]
-        all_case_ids.extend(case_ids)
+        calibration = cases_from_state_indices(
+            calculator_id,
+            calculator["domain_constants"],
+            partition["calibration"],
+        )
+        dev_ids = [str(case["case_id"]) for case in development]
+        cal_ids = [str(case["case_id"]) for case in calibration]
+        all_development_ids.extend(dev_ids)
+        all_calibration_ids.extend(cal_ids)
         records.append(
             {
                 "pmid": pmid,
                 "title": calculator["title"],
+                "candidate_state_space": total,
                 "code_sha256": calculator["code_sha256"],
-                "case_ids_sha256": sha256_json(case_ids),
-                "first_case_id": case_ids[0],
-                "last_case_id": case_ids[-1],
+                "development_case_ids_sha256": sha256_json(dev_ids),
+                "calibration_case_ids_sha256": sha256_json(cal_ids),
             }
         )
 
     payload = {
-        "status": "STATIC_CASE_IDENTITY_INDEX_CALCULATORS_NOT_EXECUTED",
+        "status": "PREFREEZE_DEV_CAL_CASE_IDENTITY_INDEX_FUTURE_TEST_UNMATERIALIZED",
         "source_manifest": SOURCE.name,
         "source_manifest_sha256": sha256_file(SOURCE),
         "case_generator_path": "src/commandmed/reliability_v5/case_generator.py",
-        "case_generator_sha256": sha256_file(ROOT / "src/commandmed/reliability_v5/case_generator.py"),
+        "case_generator_sha256": sha256_file(
+            ROOT / "src/commandmed/reliability_v5/case_generator.py"
+        ),
         "calculator_count": len(records),
-        "cases_per_calculator": CASES_PER_CALCULATOR,
-        "total_cases": len(all_case_ids),
-        "ordered_case_ids_sha256": sha256_json(all_case_ids),
+        "development_case_count": len(all_development_ids),
+        "calibration_case_count": len(all_calibration_ids),
+        "development_case_ids_sha256": sha256_json(all_development_ids),
+        "calibration_case_ids_sha256": sha256_json(all_calibration_ids),
+        "confirmatory_case_identities_materialized": False,
+        "reserve_case_identities_materialized": False,
         "calculators": records,
     }
-    OUT.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    OUT.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
     print(f"CALCULATORS={payload['calculator_count']}")
-    print(f"TOTAL_CASES={payload['total_cases']}")
-    print(f"ORDERED_CASE_IDS_SHA256={payload['ordered_case_ids_sha256']}")
+    print(f"DEVELOPMENT_CASES={payload['development_case_count']}")
+    print(f"CALIBRATION_CASES={payload['calibration_case_count']}")
+    print("FUTURE_TEST_MATERIALIZED=False")
     print(f"OUT={OUT}")
     print(f"OUT_SHA256={sha256_file(OUT)}")
     return 0

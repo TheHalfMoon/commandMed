@@ -59,21 +59,29 @@
   },
   "paid_compute": "NO",
   "protocols": {
+    "confirmatory_quarantine": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/CONFIRMATORY_QUARANTINE_V5.md",
+      "sha256": "6ff1c8e207628996077558550855315975b9a605ee0dfa9dbc42d69a145ff151"
+    },
     "evaluation": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/evaluation-protocol-v5.md",
-      "sha256": "7f3b3775777b15a86bfe78201bb64ba6e2383030659b679407e3883bb49d72b1"
+      "sha256": "a7b368d8c84fab803501e96afa3ef89727d18f7b95ca19941685d08f71606e94"
     },
     "power_margin_gate": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/POWER_AND_MARGIN_GATE_V5.md",
-      "sha256": "694b05f2e338a4030a2131f0af19e9b95320d0fd9ebd38c4f782207ee5679d65"
+      "sha256": "c08dfc2327ce2ecaebefbf1b163655f3d2c8a62a303fcee6d6b2a6a0794f45e0"
     },
     "preregistration": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/preregistration-v5.md",
-      "sha256": "89304c5829a7a77c55d60f92a778bae950d76b2306a15f3b5506bc094987811a"
+      "sha256": "cd8cec1821fc63042a3a0ac872a82697e401b447004f98ac02d84f61408352bf"
+    },
+    "retention_task_admission": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md",
+      "sha256": "05e025c8535f7a41fc7aa842ca5e33da877ea9c8f88dfe94c4f0403d05251cd1"
     },
     "rights_source_admission": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/RIGHTS_AND_SOURCE_ADMISSION_V5.md",
-      "sha256": "1417fa5dde01b7321b6961577fc90c03a0ec50f0028659c78c529f0550b6693d"
+      "sha256": "0db6da5bd094198d8c9db474f7cc8de05cb9faa162550694521bc7b61edb4a60"
     },
     "statistics": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/statistics-protocol-v5.md",
@@ -82,50 +90,86 @@
   },
   "remaining_blockers": [
     "B1/C1/C2 model-integration and learned-execution qualification",
-    "qualified clinical appropriateness review of the selected 64 rule sources",
     "property-specific meaningful numeric margins",
     "power verification at frozen margins",
-    "final capability-retention task rights and identity",
-    "final quarantine procedure and confirmatory source identity binding",
+    "future confirmatory state selection after clean freeze event and future beacon pulse",
     "post-commit attestation binding the reviewed freeze commit"
   ],
   "repository_context": {
     "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     "branch": "research/commandmed-paper-first-principles",
-    "generated_from_head": "b99a7402801e4006ecff4e7c91182e2517e1aae4",
+    "generated_from_head": "12b60e22e199c86cd527be7fecfb1d4eb9d793d3",
     "worktree_dirty_at_build": true
+  },
+  "retention_control": {
+    "admission": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md",
+      "sha256": "05e025c8535f7a41fc7aa842ca5e33da877ea9c8f88dfe94c4f0403d05251cd1"
+    },
+    "claim_scope": "paired extractive-QA retention only",
+    "dataset": "rajpurkar/squad",
+    "dataset_inventory": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/dataset-inventory.json",
+      "sha256": "45b83ff171ab420213aeb49d190987cd01215110a2bca4bd554fd59536b040eb"
+    },
+    "license": "cc-by-sa-4.0",
+    "revision": "7b6d24c440a36b6815f21b70d25016731768db1f",
+    "split": "validation"
   },
   "rule_oracle": {
     "calculator_count": 64,
+    "calibration_cases_per_calculator": 64,
     "case_generator": {
       "path": "src/commandmed/reliability_v5/case_generator.py",
-      "sha256": "20e48a56f5f61cc18cad74b62f084e029fd9225f8961afe1de9112e6c61971f9"
+      "sha256": "1a79f6336a2f31440609b6d1af57984765b360cd09404bd7c817d61724cb73f0"
     },
     "case_identities": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json",
-      "sha256": "f73e6e763a5311adc9ca31c917a4d78f42585094b54f8ed8a386bd14c6a69dee"
+      "sha256": "d378bb45bbf855ee6964110762d33936f1c14a0efedcd84b983e5a2dd0d735bc"
     },
-    "cases_per_calculator": 64,
     "clinical_source_audit": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json",
-      "sha256": "6b774c94de0d6712a80a4a5ad204c4e0a997c34f7618b2171cd2ce0f0c0bec71"
+      "sha256": "08ae5d35446d4219d2e471b08f2270965cb37d7e516ad0abba7b8a9ff171b9c3"
     },
     "clinical_source_review": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md",
-      "sha256": "4ac792931fff77581dadc691f4cb9fa223a676def54b28b3438ef06647223a8d"
+      "sha256": "8c2053018193e8601941dda681b8037847a9cf50e1e8cdcab76768051d22592e"
     },
+    "confirmatory_assignment_materialized": false,
+    "development_cases_per_calculator": 64,
+    "eligible_selection_stratum_count": 15,
     "manifest": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json",
-      "sha256": "1d9f2a52af4bd1506eb5ebe341e595de4e481dc10c967abfcbdc6f019375de76"
+      "sha256": "351a4cf29ad520cd789feeb27e0bc4a90816979639c9bbec60919d614d21174f"
     },
-    "source_cluster_count": 4096
+    "minimum_candidate_state_space": 1024,
+    "planned_confirmatory_cases_per_calculator": 64,
+    "planned_confirmatory_cluster_count": 4096,
+    "planned_reserve_cases_per_calculator": 64,
+    "prefreeze_committed_cluster_count": 8192,
+    "quarantine_commitments": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/quarantine-commitments-v5.json",
+      "sha256": "27cdc2e35f65076af0e27d03e647492d4bdf493e60b124c8eaa6e0da363febfb"
+    },
+    "quarantine_mechanics": {
+      "path": "src/commandmed/reliability_v5/quarantine.py",
+      "sha256": "21e8fb1339fd6eafbf87baf3fc513fc5ddc48f09b7fa0ccac86ec04377612ed9"
+    },
+    "reserve_assignment_materialized": false,
+    "selected_candidate_state_space_min": 1250,
+    "selected_candidate_state_space_total": 759215,
+    "static_eligible_count": 82
   },
   "schema": "commandmed-v5-scientific-freeze-bindings",
-  "schema_version": "1.0",
+  "schema_version": "1.2",
   "shared_mechanics": {
     "contracts": {
       "path": "src/commandmed/reliability_v5/contracts.py",
       "sha256": "4c47e2eed005afa7ef6e6e6b1fcb681be32a59a23c453d9484dd6555ab72b23f"
+    },
+    "quarantine": {
+      "path": "src/commandmed/reliability_v5/quarantine.py",
+      "sha256": "21e8fb1339fd6eafbf87baf3fc513fc5ddc48f09b7fa0ccac86ec04377612ed9"
     },
     "registry": {
       "path": "src/commandmed/reliability_v5/registry.py",

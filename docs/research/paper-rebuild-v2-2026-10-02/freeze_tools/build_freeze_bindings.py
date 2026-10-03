@@ -57,7 +57,7 @@ def main() -> int:
     status = git("status", "--porcelain")
     payload = {
         "schema": "commandmed-v5-scientific-freeze-bindings",
-        "schema_version": "1.0",
+        "schema_version": "1.2",
         "confirmatory_frozen": False,
         "execution_authority": "NO",
         "model_execution": "NO",
@@ -71,6 +71,22 @@ def main() -> int:
         "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     }
     payload["models"] = MODELS
+    payload["retention_control"] = {
+        "dataset": "rajpurkar/squad",
+        "revision": "7b6d24c440a36b6815f21b70d25016731768db1f",
+        "split": "validation",
+        "license": "cc-by-sa-4.0",
+        "claim_scope": "paired extractive-QA retention only",
+        "dataset_inventory": bind("docs/research/paper-rebuild-v2-2026-10-02/dataset-inventory.json"),
+        "admission": bind("docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md"),
+    }
+    rule_manifest = json.loads(
+        (PACKET / "riskcalcs-rule-oracle-final-candidate-v5.json").read_text(encoding="utf-8")
+    )
+    quarantine_commitments = json.loads(
+        (PACKET / "quarantine-commitments-v5.json").read_text(encoding="utf-8")
+    )
+    selected_spaces = [int(row["prospective_case_space"]) for row in rule_manifest["selected"]]
     payload["rule_oracle"] = {
         "manifest": bind(
             "docs/research/paper-rebuild-v2-2026-10-02/"
@@ -79,16 +95,31 @@ def main() -> int:
         "case_identities": bind(
             "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json"
         ),
+        "quarantine_commitments": bind(
+            "docs/research/paper-rebuild-v2-2026-10-02/quarantine-commitments-v5.json"
+        ),
         "case_generator": bind("src/commandmed/reliability_v5/case_generator.py"),
+        "quarantine_mechanics": bind("src/commandmed/reliability_v5/quarantine.py"),
         "clinical_source_audit": bind(
             "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json"
         ),
         "clinical_source_review": bind(
             "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md"
         ),
-        "calculator_count": 64,
-        "cases_per_calculator": 64,
-        "source_cluster_count": 4096,
+        "static_eligible_count": int(rule_manifest["static_eligible_count"]),
+        "eligible_selection_stratum_count": int(rule_manifest["eligible_selection_stratum_count"]),
+        "calculator_count": int(rule_manifest["selected_count"]),
+        "minimum_candidate_state_space": int(quarantine_commitments["minimum_candidate_state_space"]),
+        "selected_candidate_state_space_min": min(selected_spaces),
+        "selected_candidate_state_space_total": sum(selected_spaces),
+        "development_cases_per_calculator": 64,
+        "calibration_cases_per_calculator": 64,
+        "planned_confirmatory_cases_per_calculator": 64,
+        "planned_reserve_cases_per_calculator": 64,
+        "prefreeze_committed_cluster_count": 8192,
+        "planned_confirmatory_cluster_count": 4096,
+        "confirmatory_assignment_materialized": False,
+        "reserve_assignment_materialized": False,
     }
     payload["implementations"] = {
         intervention_id: {**bind(path), "status": "MECHANICAL_IMPLEMENTED"}
@@ -106,6 +137,7 @@ def main() -> int:
     payload["shared_mechanics"] = {
         "contracts": bind("src/commandmed/reliability_v5/contracts.py"),
         "registry": bind("src/commandmed/reliability_v5/registry.py"),
+        "quarantine": bind("src/commandmed/reliability_v5/quarantine.py"),
     }
     payload["protocols"] = {
         "evaluation": bind("docs/research/paper-rebuild-v2-2026-10-02/evaluation-protocol-v5.md"),
@@ -113,14 +145,14 @@ def main() -> int:
         "preregistration": bind("docs/research/paper-rebuild-v2-2026-10-02/preregistration-v5.md"),
         "power_margin_gate": bind("docs/research/paper-rebuild-v2-2026-10-02/POWER_AND_MARGIN_GATE_V5.md"),
         "rights_source_admission": bind("docs/research/paper-rebuild-v2-2026-10-02/RIGHTS_AND_SOURCE_ADMISSION_V5.md"),
+        "confirmatory_quarantine": bind("docs/research/paper-rebuild-v2-2026-10-02/CONFIRMATORY_QUARANTINE_V5.md"),
+        "retention_task_admission": bind("docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md"),
     }
     payload["remaining_blockers"] = [
         "B1/C1/C2 model-integration and learned-execution qualification",
-        "qualified clinical appropriateness review of the selected 64 rule sources",
         "property-specific meaningful numeric margins",
         "power verification at frozen margins",
-        "final capability-retention task rights and identity",
-        "final quarantine procedure and confirmatory source identity binding",
+        "future confirmatory state selection after clean freeze event and future beacon pulse",
         "post-commit attestation binding the reviewed freeze commit",
     ]
     OUT.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")

@@ -12,59 +12,45 @@ This queue intentionally persists publication metadata and hashes only. It does 
 
 ## Review queue
 
-### PMID 34806823 - Risk Stratification Index (RSI) for Postoperative Delirium in Elderly Patients with Hip Fractures
+### PMID 23696476 - Respiratory Risk Score (RRS) for Liver Transplantation
 
 - first-listed source specialty stratum: Anesthesiology
-- source-declared specialties: Anesthesiology, Geriatrics, Orthopedic Surgery
-- PubMed title: Identification of risk factors for postoperative delirium in elderly patients with hip fractures by a risk stratification index model: A retrospective study.
-- journal/date: Brain and behavior / 2021Dec
-- DOI: 10.1002/brb3.2420
-- publication types: Journal Article, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: b47e65eb84169ef7025bb801f12a1deb6437456e4ec19293ad703b377429710c
-- prospective case space: 1000
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 29111209 - 2MACE Score Calculator
-
-- first-listed source specialty stratum: Cardiology
-- source-declared specialties: Cardiology, Internal Medicine
-- PubMed title: Usefulness of the 2MACE Score to Predicts Adverse Cardiovascular Events in Patients With Atrial Fibrillation.
-- journal/date: The American journal of cardiology / 2017Dec15
-- DOI: 10.1016/j.amjcard.2017.09.003
+- source-declared specialties: Anesthesiology, Surgery, Pulmonology
+- PubMed title: Respiratory risk score for the prediction of 3-month mortality and prolonged ventilation after liver transplantation.
+- journal/date: Liver transplantation : official publication of the American Association for the Study of Liver Diseases and the International Liver Transplantation Society / 2013Aug
+- DOI: 10.1002/lt.23673
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 74aed5c30c2b339f8fbfbaec6b5cb9628e5e851365e1c261835923f7b1e8ff84
-- prospective case space: 80
+- abstract SHA-256: 17307a51e4b4c7fc23bdfdc0425d9b5f944f6dcca55f3070d664483df19a6751
+- prospective case space: 12500
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 32187076 - ICU-Venous Thromboembolism Score
+### PMID 29408989 - Frailty-Based Predictive Score for Mid-Term Outcomes in Open Total Aortic Arch Surgery
 
-- first-listed source specialty stratum: Critical Care Medicine
-- source-declared specialties: Critical Care Medicine, Hematology
-- PubMed title: Prediction of Symptomatic Venous Thromboembolism in Critically Ill Patients: The ICU-Venous Thromboembolism Score.
-- journal/date: Critical care medicine / 2020Jun
-- DOI: 10.1097/CCM.0000000000004306
-- publication types: Journal Article, Multicenter Study
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology, Geriatrics, Surgery
+- PubMed title: Modified predictive score based on frailty for mid-term outcomes in open total aortic arch surgery.
+- journal/date: European journal of cardio-thoracic surgery : official journal of the European Association for Cardio-thoracic Surgery / 2018Jul01
+- DOI: 10.1093/ejcts/ezy001
+- publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 2f8f2e1d00f5af756315663f03252f814187596058cd1db933a646140cbd1643
-- prospective case space: 400
+- abstract SHA-256: da09b4f963ec878bfaa8264186f7f364c99d1d86114852724d8ea8b05e52ea11
+- prospective case space: 2500
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 24603434 - Mayo Muir-Torre Syndrome Risk Scoring System
+### PMID 10951229 - SCORTEN: Severity-of-Illness Score for Toxic Epidermal Necrolysis
 
 - first-listed source specialty stratum: Dermatology
-- source-declared specialties: Dermatology, Oncology, Pathology
-- PubMed title: A clinical scoring system to identify patients with sebaceous neoplasms at risk for the Muir-Torre variant of Lynch syndrome.
-- journal/date: Genetics in medicine : official journal of the American College of Medical Genetics / 2014Sep
-- DOI: 10.1038/gim.2014.19
-- publication types: Journal Article, Research Support, Non-U.S. Gov't
+- source-declared specialties: Dermatology, Emergency Medicine, Internal Medicine
+- PubMed title: SCORTEN: a severity-of-illness score for toxic epidermal necrolysis.
+- journal/date: The Journal of investigative dermatology / 2000Aug
+- DOI: 10.1046/j.1523-1747.2000.00061.x
+- publication types: Comparative Study, Journal Article
 - abstract present: True
-- abstract SHA-256: 22865d04e66a9fc3ecc96fdedd9dc9ebebd1613c5e4fd15241a20f7e7531f5ec
-- prospective case space: 100
+- abstract SHA-256: e0eb4cac1d80e4743942bb7db5ea69b87b493870bef31c36d5f6dcbe1ce8594d
+- prospective case space: 31250
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
@@ -110,87 +96,45 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 26722355 - 3-Month Postoperative Mortality Risk Calculator for Geriatric Cancer Patients
-
-- first-listed source specialty stratum: Geriatrics
-- source-declared specialties: Geriatrics, Oncology, Surgery
-- PubMed title: To Operate or Not: Prediction of 3-Month Postoperative Mortality in Geriatric Cancer Patients.
-- journal/date: Journal of Cancer / 2016
-- DOI: 10.7150/jca.13126
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 93b728db15b80454deb349490f8bfab209027d777961c82c146be915cd03b274
-- prospective case space: 165
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 26281032 - Post-Engraftment Invasive Fungal Disease (IFD) Risk Score Calculator
+### PMID 31118465 - Revised International Prognostic Score System for Waldenström's Macroglobulinemia (IPSSWM)
 
 - first-listed source specialty stratum: Hematology
-- source-declared specialties: Hematology, Infectious Disease, Oncology
-- PubMed title: Incidence and risk factors of post-engraftment invasive fungal disease in adult allogeneic hematopoietic stem cell transplant recipients receiving oral azoles prophylaxis.
-- journal/date: Bone marrow transplantation / 2015Nov
-- DOI: 10.1038/bmt.2015.181
-- publication types: Journal Article, Research Support, Non-U.S. Gov't
+- source-declared specialties: Hematology, Oncology
+- PubMed title: A revised international prognostic score system for Waldenström's macroglobulinemia.
+- journal/date: Leukemia / 2019Nov
+- DOI: 10.1038/s41375-019-0431-y
+- publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 19618df9d15e7be5c54b55e612bf1cabed23936753d92d9fc2720deda5fe0c6d
-- prospective case space: 500
+- abstract SHA-256: b49c86d203a049c29caec697c5226f381d390af13db59734010059736eecd632
+- prospective case space: 1625
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 35113971 - OUR-ARDs Risk Score Calculator for COVID-19 Mortality
+### PMID 19508548 - Clostridium Difficile-Associated Diarrhoea Mortality Risk Calculator
 
 - first-listed source specialty stratum: Infectious Disease
-- source-declared specialties: Infectious Disease, Internal Medicine, Pulmonology
-- PubMed title: Predictors of mortality among hospitalized COVID-19 patients and risk score formulation for prioritizing tertiary care-An experience from South India.
-- journal/date: PloS one / 2022
-- DOI: 10.1371/journal.pone.0263471
+- source-declared specialties: Infectious Disease, Internal Medicine, Geriatrics
+- PubMed title: Mortality and risk stratification in patients with Clostridium difficile-associated diarrhoea.
+- journal/date: Colorectal disease : the official journal of the Association of Coloproctology of Great Britain and Ireland / 2010Mar
+- DOI: 10.1111/j.1463-1318.2009.01832.x
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: c6a62afab466c1890d0cef4e7278f0a568516a52ade27dc38f09e5fc2dfd993f
-- prospective case space: 64
+- abstract SHA-256: 1d93b2f1641d17ac6ba66407bb595840271925fc6d00c37b4d4544ee6b6c85eb
+- prospective case space: 6250
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 25404191 - IMPROVE VTE Risk Assessment Model
-
-- first-listed source specialty stratum: Internal Medicine
-- source-declared specialties: Internal Medicine, Hematology, Cardiology
-- PubMed title: External validation of the risk assessment model of the International Medical Prevention Registry on Venous Thromboembolism (IMPROVE) for medical patients in a tertiary health system.
-- journal/date: Journal of the American Heart Association / 2014Nov17
-- DOI: 10.1161/JAHA.114.001152
-- publication types: Journal Article, Multicenter Study, Validation Study
-- abstract present: True
-- abstract SHA-256: 9ca00e823efa187de346fffdd9374e2a54b69f3d1ff132310559127bc84b76f9
-- prospective case space: 320
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 35330832 - Vancomycin-Associated Acute Kidney Injury Risk Score Calculator
-
-- first-listed source specialty stratum: Nephrology
-- source-declared specialties: Nephrology, Internal Medicine
-- PubMed title: Risk Scoring System for Vancomycin-Associated Acute Kidney Injury.
-- journal/date: Frontiers in pharmacology / 2022
-- DOI: 10.3389/fphar.2022.815188
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: d894fa80041ddd6a82412d1035fcd8ca33c5dfa6c65d34303d9d41e5e7254d97
-- prospective case space: 625
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 31214103 - ACoAA Rupture Risk Score Calculator
+### PMID 33215084 - The PRESSURE Score Calculator
 
 - first-listed source specialty stratum: Neurology
-- source-declared specialties: Neurology, Radiology
-- PubMed title: A Simple Scoring Model for Prediction of Rupture Risk of Anterior Communicating Artery Aneurysms.
-- journal/date: Frontiers in neurology / 2019
-- DOI: 10.3389/fneur.2019.00520
+- source-declared specialties: Neurology, Surgery
+- PubMed title: The PRESSURE score to predict decompressive craniectomy after aneurysmal subarachnoid haemorrhage.
+- journal/date: Brain communications / 2020
+- DOI: 10.1093/braincomms/fcaa134
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: e62fa6a4243d8953a17f460e5c31b43ac1a12fb140f3ab6ff655ae9ad52a9039
-- prospective case space: 200
+- abstract SHA-256: 309f72c2a32a9603b4885e12af2d3f1c8ecaea220bd09b0e49060c7d14e8b175
+- prospective case space: 1600
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
@@ -222,17 +166,17 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 30172349 - Tibial Nonunion Risk Prediction Calculator
+### PMID 31285117 - Postoperative Complication Risk Calculator for Posterior Spine Surgery
 
 - first-listed source specialty stratum: Orthopedic Surgery
-- source-declared specialties: Orthopedic Surgery
-- PubMed title: Prediction of tibial nonunion at the 6-week time point.
-- journal/date: Injury / 2018Nov
-- DOI: 10.1016/j.injury.2018.07.033
-- publication types: Journal Article
+- source-declared specialties: Orthopedic Surgery, Geriatrics
+- PubMed title: A sliding scale to predict postoperative complications undergoing posterior spine surgery.
+- journal/date: Journal of orthopaedic science : official journal of the Japanese Orthopaedic Association / 2020Jul
+- DOI: 10.1016/j.jos.2019.06.012
+- publication types: Journal Article, Multicenter Study
 - abstract present: True
-- abstract SHA-256: 8150c811aa9ccb597556b88ad3c9c196603ca22114a5d3eb115ac29261024a28
-- prospective case space: 80
+- abstract SHA-256: eb0738ad25062b7638e6f8ebf8a5f28df61cfd129d76a4f0fea2843e23b76ff3
+- prospective case space: 5600
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
@@ -250,59 +194,17 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 23973103 - Early Implant Loss Risk Calculator
-
-- first-listed source specialty stratum: Plastic Surgery
-- source-declared specialties: Plastic Surgery, Oncology
-- PubMed title: Risk analysis of early implant loss after immediate breast reconstruction: a review of 14,585 patients.
-- journal/date: Journal of the American College of Surgeons / 2013Dec
-- DOI: 10.1016/j.jamcollsurg.2013.07.389
-- publication types: Evaluation Study, Journal Article
-- abstract present: True
-- abstract SHA-256: a1d2768053b96b9996b06594efc282d011ffd5f13c9e88c6b32062ec2b1e6973
-- prospective case space: 64
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 26994779 - ProVent Score Calculator
+### PMID 19384214 - Acute Lung Injury Mortality Risk Score
 
 - first-listed source specialty stratum: Pulmonology
-- source-declared specialties: Pulmonology, Internal Medicine
-- PubMed title: Clinical application of the ProVent score in Korean patients requiring prolonged mechanical ventilation: A 10-year experience in a university-affiliated tertiary hospital.
-- journal/date: Journal of critical care / 2016Jun
-- DOI: 10.1016/j.jcrc.2016.02.017
-- publication types: Journal Article
+- source-declared specialties: Pulmonology, Emergency Medicine, Intensive Care Medicine
+- PubMed title: A simple clinical predictive index for objective estimates of mortality in acute lung injury.
+- journal/date: Critical care medicine / 2009Jun
+- DOI: 10.1097/CCM.0b013e3181a009b4
+- publication types: Journal Article, Multicenter Study, Research Support, N.I.H., Extramural
 - abstract present: True
-- abstract SHA-256: a799960916a246ec440fd05ffe1ea2c7597fc98a0de266083bd5ee2c355d2f2b
-- prospective case space: 100
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 25198832 - Abdominal Fluid Collection Infection Risk Score
-
-- first-listed source specialty stratum: Radiology
-- source-declared specialties: Radiology, Surgery, Infectious Disease
-- PubMed title: Distinguishing infected from noninfected abdominal fluid collections after surgery: an imaging, clinical, and laboratory-based scoring system.
-- journal/date: Investigative radiology / 2015Jan
-- DOI: 10.1097/RLI.0000000000000090
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 9d1adc472148fbc5116484a2a54321fbf936ed6f9568660268e6a336a13b1b61
-- prospective case space: 100
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 35106973 - 2022 ACR/EULAR Classification Criteria for Microscopic Polyangiitis (MPA) Calculator
-
-- first-listed source specialty stratum: Rheumatology
-- source-declared specialties: Rheumatology
-- PubMed title: 2022 American College of Rheumatology/European Alliance of Associations for Rheumatology Classification Criteria for Microscopic Polyangiitis.
-- journal/date: Arthritis & rheumatology (Hoboken, N.J.) / 2022Mar
-- DOI: 10.1002/art.41983
-- publication types: Journal Article, Practice Guideline, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: face8cdb34bf855f168241ffb22a14e103a65988d2f02f06c99b144910fbcf76
-- prospective case space: 160
+- abstract SHA-256: 5cc5d8d2f6b83922b9ba69cb7fa04e1cc68b35078c6f8e55df903c62ede5fac6
+- prospective case space: 1250
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
@@ -320,507 +222,115 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 27740520 - Simultaneous Liver and Kidney Transplantation (SLK) Risk Score for Elderly Patients
-
-- first-listed source specialty stratum: Transplant Surgery
-- source-declared specialties: Transplant Surgery, Geriatrics, Nephrology, Hepatology
-- PubMed title: Simultaneous liver and kidney transplantation in elderly patients: Outcomes and validation of a clinical risk score for patient selection.
-- journal/date: Annals of hepatology / 2016 Nov-Dec 2016
-- DOI: 10.5604/16652681.1222103
-- publication types: Comparative Study, Journal Article, Validation Study
-- abstract present: True
-- abstract SHA-256: afdbd92fff3c49c5cddab0fec8bb253e5ccc2936862b15f14ebcd2f5f4a65157
-- prospective case space: 90
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 32524748 - Prostate Cancer Lymph Node Metastasis Risk Calculator
-
-- first-listed source specialty stratum: Urology
-- source-declared specialties: Urology, Oncology, Radiology
-- PubMed title: Histological comparison between predictive value of preoperative 3-T multiparametric MRI and 68 Ga-PSMA PET/CT scan for pathological outcomes at radical prostatectomy and pelvic lymph node dissection for prostate cancer.
-- journal/date: BJU international / 2021Jan
-- DOI: 10.1111/bju.15134
-- publication types: Comparative Study, Journal Article
-- abstract present: True
-- abstract SHA-256: 1b3f41e27aa1d2dc00bb911dee8c99e1b0efaeac9b480ffe1371da77b2a845e7
-- prospective case space: 80
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 32920876 - Modified Risk Index (ModRI) for Massive Transfusion during Liver Transplantation
-
-- first-listed source specialty stratum: Anesthesiology
-- source-declared specialties: Anesthesiology, Surgery, Hematology
-- PubMed title: Validation of predictive models identifying patients at risk for massive transfusion during liver transplantation and their potential impact on blood bank resource utilization.
-- journal/date: Transfusion / 2020Nov
-- DOI: 10.1111/trf.16019
-- publication types: Journal Article, Validation Study
-- abstract present: True
-- abstract SHA-256: 0f4271a80db67409c2e0edb9e542325eb463903bb7819357e8c832ec406e86a1
-- prospective case space: 500
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 29408989 - Frailty-Based Predictive Score for Mid-Term Outcomes in Open Total Aortic Arch Surgery
-
-- first-listed source specialty stratum: Cardiology
-- source-declared specialties: Cardiology, Geriatrics, Surgery
-- PubMed title: Modified predictive score based on frailty for mid-term outcomes in open total aortic arch surgery.
-- journal/date: European journal of cardio-thoracic surgery : official journal of the European Association for Cardio-thoracic Surgery / 2018Jul01
-- DOI: 10.1093/ejcts/ezy001
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: da09b4f963ec878bfaa8264186f7f364c99d1d86114852724d8ea8b05e52ea11
-- prospective case space: 2500
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 21399503 - Melanoma Risk Score
-
-- first-listed source specialty stratum: Dermatology
-- source-declared specialties: Dermatology, Oncology
-- PubMed title: Development of an individual score for melanoma risk.
-- journal/date: European journal of cancer prevention : the official journal of the European Cancer Prevention Organisation (ECP) / 2011May
-- DOI: 10.1097/CEJ.0b013e32834474ae
-- publication types: Comparative Study, Journal Article, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: 64cfb2c66a65a4608c11b30872106ecc42d3798798ed1f85f1532b51e48ec2f5
-- prospective case space: 250
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 36160674 - Alcohol Misuse Risk Score Calculator
-
-- first-listed source specialty stratum: Emergency Medicine
-- source-declared specialties: Emergency Medicine, Psychiatry
-- PubMed title: Trauma center risk conditions for blood alcohol-positive and alcohol misuse patients: a retrospective study.
-- journal/date: International journal of burns and trauma / 2022
-- DOI: NONE_RECORDED
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 097f6970c3ddfde433a7c910b0cfb544223cb5e592bb921d57ba2c319b4dee87
-- prospective case space: 200
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 16644622 - LADA Clinical Risk Score Calculator
-
-- first-listed source specialty stratum: Endocrinology
-- source-declared specialties: Endocrinology, Internal Medicine
-- PubMed title: A clinical screening tool identifies autoimmune diabetes in adults.
-- journal/date: Diabetes care / 2006May
-- DOI: 10.2337/diacare.295970
-- publication types: Comparative Study, Journal Article, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: 6d06ec9cabaf13eeee1f278a73260764d43f9839f4b41d6ff6a58d6a8f4c46a9
-- prospective case space: 200
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 36672675 - HCC Risk Calculator for HCV-positive Patients
-
-- first-listed source specialty stratum: Gastroenterology
-- source-declared specialties: Gastroenterology, Oncology, Infectious Disease
-- PubMed title: Who Should Not Be Surveilled for HCC Development after Successful Therapy with DAAS in Advanced Chronic Hepatitis C? Results of a Long-Term Prospective Study.
-- journal/date: Biomedicines / 2023Jan09
-- DOI: 10.3390/biomedicines11010166
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 44d0d114b05a779ea1ceca6a2af347518117d84c70b1bfac772727c435a06c96
-- prospective case space: 200
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 22950428 - Adverse Clinical Events (ACEs) Risk Score Calculator
-
-- first-listed source specialty stratum: Geriatrics
-- source-declared specialties: Geriatrics, Internal Medicine
-- PubMed title: A score to predict the development of adverse clinical events after transition from acute hospital wards to post-acute care settings.
-- journal/date: Rejuvenation research / 2012Dec
-- DOI: 10.1089/rej.2012.1332
-- publication types: Journal Article, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: aef9908e727110b4869f6c1f11b85c2b617efbff72fd686db1b284742ffc1602
-- prospective case space: 160
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 24782120 - Prognostic Model for Extranodal Natural Killer/T Cell Lymphoma, Nasal Type (ENKTL)
-
-- first-listed source specialty stratum: Hematology
-- source-declared specialties: Hematology, Oncology
-- PubMed title: New prognostic model for extranodal natural killer/T cell lymphoma, nasal type.
-- journal/date: Annals of hematology / 2014Sep
-- DOI: 10.1007/s00277-014-2089-x
-- publication types: Journal Article, Research Support, N.I.H., Extramural, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: af15a94532490fd555c9368f9caef4b7102eb57bed8c805df24cdcdf96499a07
-- prospective case space: 125
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 31891235 - INCREMENT-SOT-CPE Mortality Score Calculator
-
-- first-listed source specialty stratum: Infectious Disease
-- source-declared specialties: Infectious Disease, Transplant Surgery
-- PubMed title: Predictors of mortality in solid organ transplant recipients with bloodstream infections due to carbapenemase-producing Enterobacterales: The impact of cytomegalovirus disease and lymphopenia.
-- journal/date: American journal of transplantation : official journal of the American Society of Transplantation and the American Society of Transplant Surgeons / 2019Dec31
-- DOI: 10.1111/ajt.15769
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 8b508a12489ce90feb85f53e75acd4b12003bb9ac89e2a512924cc4974c1753d
-- prospective case space: 80
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 23393714 - Elderly Patient Readmission Risk Score
-
-- first-listed source specialty stratum: Internal Medicine
-- source-declared specialties: Internal Medicine, Geriatrics
-- PubMed title: A simplified scoring tool for prediction of readmission in elderly patients hospitalized in internal medicine departments.
-- journal/date: The Israel Medical Association journal : IMAJ / 2012Dec
-- DOI: NONE_RECORDED
-- publication types: Comparative Study, Journal Article
-- abstract present: True
-- abstract SHA-256: 00c66d3df9f7c7f1e43dad83f842a2416144b1d2b48d4625803d6781bbf07055
-- prospective case space: 200
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 22513180 - DISTAL Scoring System for Predicting Failure of Snuffbox Arteriovenous Fistulas
-
-- first-listed source specialty stratum: Nephrology
-- source-declared specialties: Nephrology, Surgery
-- PubMed title: A scoring system (DISTAL) for predicting failure of snuffbox arteriovenous fistulas.
-- journal/date: European journal of vascular and endovascular surgery : the official journal of the European Society for Vascular Surgery / 2012Jul
-- DOI: 10.1016/j.ejvs.2012.03.014
-- publication types: Comparative Study, Journal Article
-- abstract present: True
-- abstract SHA-256: 4cd568cfe5de86e8d262297a818129be24aaf0219a760c4d4a2dcc86a277a0be
-- prospective case space: 400
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 28391551 - Posttraumatic Hydrocephalus Risk Score Calculator
-
-- first-listed source specialty stratum: Neurology
-- source-declared specialties: Neurology, Emergency Medicine
-- PubMed title: Predicting posttraumatic hydrocephalus: derivation and validation of a risk scoring system based on clinical characteristics.
-- journal/date: Metabolic brain disease / 2017Oct
-- DOI: 10.1007/s11011-017-0008-2
-- publication types: Journal Article, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: d1bde8f7be46148fea6a663fb20a226c11f0671e56fb5d4d5a08678bd82e1e87
-- prospective case space: 128
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 31882242 - Cervical Cancer Prognostic Scoring System
-
-- first-listed source specialty stratum: Obstetrics and Gynecology
-- source-declared specialties: Obstetrics and Gynecology, Oncology
-- PubMed title: The tumor-stroma ratio is an independent predictor of survival in patients with 2018 FIGO stage IIIC squamous cell carcinoma of the cervix following primary radical surgery.
-- journal/date: Gynecologic oncology / 2020Mar
-- DOI: 10.1016/j.ygyno.2019.12.022
-- publication types: Journal Article, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: 2caad4efa1e986d90e27c569dae5c7dfc63f57a7bd5b2818a82c5b4aed77b0a9
-- prospective case space: 125
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 36091074 - GPC-3 Positive Expression Risk Score Calculator for Hepatocellular Carcinoma
-
-- first-listed source specialty stratum: Oncology
-- source-declared specialties: Oncology, Radiology, Pathology
-- PubMed title: Preoperative prediction of glypican-3 positive expression in solitary hepatocellular carcinoma on gadoxetate-disodium enhanced magnetic resonance imaging.
-- journal/date: Frontiers in immunology / 2022
-- DOI: 10.3389/fimmu.2022.973153
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: b0523ef22ebb175f69cc6d5161c581111beb918abf966d621f5fd05fea943e5e
-- prospective case space: 64
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 34884334 - Post-Operative Non-Union Risk Score for Subtrochanteric Femur Fractures
-
-- first-listed source specialty stratum: Orthopedic Surgery
-- source-declared specialties: Orthopedic Surgery
-- PubMed title: Development and Validation of a Post-Operative Non-Union Risk Score for Subtrochanteric Femur Fractures.
-- journal/date: Journal of clinical medicine / 2021Nov29
-- DOI: 10.3390/jcm10235632
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 649a846e23b0aee6c2cbb392b76e86335198f36cc151c88d1d11afe4dafa2f1a
-- prospective case space: 640
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 12359784 - Bacterial Meningitis Score (BMS) Calculator
-
-- first-listed source specialty stratum: Pediatrics
-- source-declared specialties: Pediatrics, Infectious Disease, Emergency Medicine
-- PubMed title: Development and validation of a multivariable predictive model to distinguish bacterial from aseptic meningitis in children in the post-Haemophilus influenzae era.
-- journal/date: Pediatrics / 2002Oct
-- DOI: 10.1542/peds.110.4.712
-- publication types: Comparative Study, Journal Article, Research Support, Non-U.S. Gov't, Validation Study
-- abstract present: True
-- abstract SHA-256: 8f547b59906f2c508d9652991e580c5b3e718ffd5f0c9b947cde9f850c96136e
-- prospective case space: 500
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 36082101 - Reduction Mammoplasty Complication Risk Score Calculator
-
-- first-listed source specialty stratum: Plastic Surgery
-- source-declared specialties: Plastic Surgery
-- PubMed title: Predictive risk factors of complications in reduction mammoplasty-analysis of three different pedicles.
-- journal/date: Gland surgery / 2022Aug
-- DOI: 10.21037/gs-22-116
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: ec7a584660867f986a0ecd0d24b30752b5574174924f3b23092dcb3865f3eaca
-- prospective case space: 100
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 23782966 - Early Acute Lung Injury Score
-
-- first-listed source specialty stratum: Pulmonology
-- source-declared specialties: Pulmonology, Emergency Medicine, Internal Medicine
-- PubMed title: Early acute lung injury: criteria for identifying lung injury prior to the need for positive pressure ventilation*.
-- journal/date: Critical care medicine / 2013Aug
-- DOI: 10.1097/CCM.0b013e31828a3d99
-- publication types: Journal Article, Research Support, N.I.H., Extramural
-- abstract present: True
-- abstract SHA-256: 57963113579cfd593d8caccbf58e3d5e654d16d4dd902f61f02000d106e362d0
-- prospective case space: 80
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 35157042 - FLAW Score for Predicting Rapidly Progressive Interstitial Lung Disease in Anti-MDA5-positive Dermatomyositis Patients
-
-- first-listed source specialty stratum: Rheumatology
-- source-declared specialties: Rheumatology, Pulmonology
-- PubMed title: Predictors of rapidly progressive interstitial lung disease and mortality in patients with autoantibodies against melanoma differentiation-associated protein 5 dermatomyositis.
-- journal/date: Rheumatology (Oxford, England) / 2022Nov02
-- DOI: 10.1093/rheumatology/keac094
-- publication types: Journal Article, Multicenter Study, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: 738184a6e56847cbe10293cece3d367a5779c9a1e170401f146cd480fa729a41
-- prospective case space: 250
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 30065497 - Ultrasound Scoring System for Preoperative Prediction of Difficult Laparoscopic Cholecystectomy
-
-- first-listed source specialty stratum: Surgery
-- source-declared specialties: Surgery, Radiology
-- PubMed title: A Standardized Ultrasound Scoring System for Preoperative Prediction of Difficult Laparoscopic Cholecystectomy.
-- journal/date: Journal of medical ultrasound / 2017Oct-Dec
-- DOI: 10.1016/j.jmu.2017.09.001
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 5a73fab7ee2f8dc7008e621423522901b80cbc852c12691bb54af5d8666a9ad0
-- prospective case space: 128
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 31154851 - "Rule of 4's" Surgical Intervention Predictor for Distal Ureteral Stones
-
-- first-listed source specialty stratum: Urology
-- source-declared specialties: Urology
-- PubMed title: Prediction of Surgical Intervention for Distal Ureteral Stones.
-- journal/date: Journal of endourology / 2019Sep
-- DOI: 10.1089/end.2019.0187
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 35217c47a4d29df16e2e7e0f23e3fc5018169b3fbb28e97a23be69704165e190
-- prospective case space: 125
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 34373347 - Sleep Apnea Risk Calculator for Chronic Pain Patients on Opioids
-
-- first-listed source specialty stratum: Anesthesiology
-- source-declared specialties: Anesthesiology, Pulmonology, Psychiatry
-- PubMed title: Simple screening model for identifying the risk of sleep apnea in patients on opioids for chronic pain.
-- journal/date: Regional anesthesia and pain medicine / 2021Oct
-- DOI: 10.1136/rapm-2020-102388
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 98da4ddbf7578110b1ab763f7dd4bebaa06328d4f16793001440c53e02d38718
-- prospective case space: 125
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 15312862 - Coronary Artery Bypass Graft (CABG) Risk Score Calculator
+### PMID 35144748 - MitraScore Calculator
 
 - first-listed source specialty stratum: Cardiology
 - source-declared specialties: Cardiology
-- PubMed title: A risk score to estimate the likelihood of coronary artery bypass surgery during the index hospitalization among patients with unstable angina and non-ST-segment elevation myocardial infarction.
-- journal/date: Journal of the American College of Cardiology / 2004Aug18
-- DOI: 10.1016/j.jacc.2004.03.081
-- publication types: Clinical Trial, Journal Article, Randomized Controlled Trial, Research Support, Non-U.S. Gov't, Validation Study
+- PubMed title: A Score to Assess Mortality After Percutaneous Mitral Valve Repair.
+- journal/date: Journal of the American College of Cardiology / 2022Feb15
+- DOI: 10.1016/j.jacc.2021.11.041
+- publication types: Journal Article, Multicenter Study
 - abstract present: True
-- abstract SHA-256: 82b3b610a396969cb1924c44762557b0995d1fe39989c4f49acfc99f558378cd
-- prospective case space: 64
+- abstract SHA-256: 27f43f1e2f6def79be4801e6027741d882a8afcd7bdb5e04c4e6a9846976b797
+- prospective case space: 1600
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 10951229 - SCORTEN: Severity-of-Illness Score for Toxic Epidermal Necrolysis
-
-- first-listed source specialty stratum: Dermatology
-- source-declared specialties: Dermatology, Emergency Medicine, Internal Medicine
-- PubMed title: SCORTEN: a severity-of-illness score for toxic epidermal necrolysis.
-- journal/date: The Journal of investigative dermatology / 2000Aug
-- DOI: 10.1046/j.1523-1747.2000.00061.x
-- publication types: Comparative Study, Journal Article
-- abstract present: True
-- abstract SHA-256: e0eb4cac1d80e4743942bb7db5ea69b87b493870bef31c36d5f6dcbe1ce8594d
-- prospective case space: 31250
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 11057848 - Acute Pulmonary Embolism Adverse Outcome Risk Score
+### PMID 34967427 - AIMS65 Score for Upper Gastrointestinal Bleeding in Elderly
 
 - first-listed source specialty stratum: Emergency Medicine
-- source-declared specialties: Emergency Medicine, Pulmonology, Cardiology
-- PubMed title: Predicting adverse outcome in patients with acute pulmonary embolism: a risk score.
-- journal/date: Thrombosis and haemostasis / 2000Oct
-- DOI: NONE_RECORDED
+- source-declared specialties: Emergency Medicine, Gastroenterology, Geriatrics
+- PubMed title: Prediction of adverse outcomes using non-endoscopic scoring systems in patients over 80 years of age who present with the upper gastrointestinal bleeding in the emergency department.
+- journal/date: Ulusal travma ve acil cerrahi dergisi = Turkish journal of trauma & emergency surgery : TJTES / 2022Jan
+- DOI: 10.14744/tjtes.2020.27810
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: f5878f7b34a05b094d3f321ed0dcda2bf4f6f3c494285824cfa665a25200996e
-- prospective case space: 64
+- abstract SHA-256: cb7496e593677e1f2b879a59fc673edc3dfbf00ea3d69b729a8c24064a1cb322
+- prospective case space: 1250
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 18562980 - Gastroesophageal Varices Risk Score Calculator
+### PMID 35360522 - R3-AFP Score Calculator
 
 - first-listed source specialty stratum: Gastroenterology
-- source-declared specialties: Gastroenterology, Hepatology
-- PubMed title: A simple noninvasive score predicts gastroesophageal varices in patients with chronic viral hepatitis.
-- journal/date: Journal of clinical gastroenterology / 2009Jan
-- DOI: 10.1097/MCG.0b013e318157464b
+- source-declared specialties: Gastroenterology, Oncology, Surgery
+- PubMed title: R3-AFP score is a new composite tool to refine prediction of hepatocellular carcinoma recurrence after liver transplantation.
+- journal/date: JHEP reports : innovation in hepatology / 2022May
+- DOI: 10.1016/j.jhepr.2022.100445
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: cecd47750f2252d5c9c680d889200c53d9bbdb4b05baff4bf185ee0a14b22700
-- prospective case space: 125
+- abstract SHA-256: ea7124ce642570615af20f73a6f50b5a60ff77ee0ae09d6d51e062fc17e7f9b5
+- prospective case space: 5000
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 24487652 - NaURSE Score Calculator
-
-- first-listed source specialty stratum: Geriatrics
-- source-declared specialties: Geriatrics, Internal Medicine
-- PubMed title: A simple 5-point scoring system, NaURSE (Na+, urea, respiratory rate and shock index in the elderly), predicts in-hospital mortality in oldest old.
-- journal/date: Age and ageing / 2014May
-- DOI: 10.1093/ageing/afu002
-- publication types: Journal Article, Research Support, Non-U.S. Gov't
-- abstract present: True
-- abstract SHA-256: b35b3fb095fb867c6d51cc477c423b6dbb6eb08c99498cabc14e7a9315588b07
-- prospective case space: 625
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 22331953 - Prognostic Staging System for Light Chain Amyloidosis
+### PMID 30340093 - PLASMIC Score Calculator for Thrombotic Thrombocytopenic Purpura (TTP) Diagnosis
 
 - first-listed source specialty stratum: Hematology
-- source-declared specialties: Hematology, Cardiology
-- PubMed title: Revised prognostic staging system for light chain amyloidosis incorporating cardiac biomarkers and serum free light chain measurements.
-- journal/date: Journal of clinical oncology : official journal of the American Society of Clinical Oncology / 2012Mar20
-- DOI: 10.1200/JCO.2011.38.5724
-- publication types: Journal Article, Research Support, N.I.H., Extramural, Research Support, Non-U.S. Gov't
+- source-declared specialties: Hematology, Internal Medicine
+- PubMed title: Validation of the PLASMIC score, a clinical prediction tool for thrombotic thrombocytopenic purpura diagnosis, in Chinese patients.
+- journal/date: Thrombosis research / 2018Dec
+- DOI: 10.1016/j.thromres.2018.10.010
+- publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: ab7d2b1005552843ccb5e7f25279820e51d2881d0683edda1a91f26380b04f4c
-- prospective case space: 125
+- abstract SHA-256: d6083f7f38a1fda406802bfdd6131ddcd423af95338eb254bb13a27f1604c827
+- prospective case space: 5000
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 19508548 - Clostridium Difficile-Associated Diarrhoea Mortality Risk Calculator
+### PMID 32527341 - COVID-19 Severity Early Warning Model
 
 - first-listed source specialty stratum: Infectious Disease
-- source-declared specialties: Infectious Disease, Internal Medicine, Geriatrics
-- PubMed title: Mortality and risk stratification in patients with Clostridium difficile-associated diarrhoea.
-- journal/date: Colorectal disease : the official journal of the Association of Coloproctology of Great Britain and Ireland / 2010Mar
-- DOI: 10.1111/j.1463-1318.2009.01832.x
+- source-declared specialties: Infectious Disease, Internal Medicine, Pulmonology
+- PubMed title: [Analysis of the clinical characteristics and early warning model construction of severe/critical coronavirus disease 2019 patients].
+- journal/date: Zhonghua wei zhong bing ji jiu yi xue / 2020Apr
+- DOI: 10.3760/cma.j.cn121430-20200325-00410
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 1d93b2f1641d17ac6ba66407bb595840271925fc6d00c37b4d4544ee6b6c85eb
-- prospective case space: 6250
+- abstract SHA-256: 66f24a45f871afb2a4f5e12811c8e8ac3a89af0619b6a9b8b3184429a8abde1b
+- prospective case space: 5000
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 32323060 - SOCRATE Score for Predicting Intradialytic Hemodynamic Instability
-
-- first-listed source specialty stratum: Nephrology
-- source-declared specialties: Nephrology, Critical Care Medicine
-- PubMed title: Bedside prediction of intradialytic hemodynamic instability in critically ill patients: the SOCRATE study.
-- journal/date: Annals of intensive care / 2020Apr22
-- DOI: 10.1186/s13613-020-00663-x
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: b653000ac17c5e6d91029a4673c71ed2c70e8e87bccb7d282fa7b9711d0c47cb
-- prospective case space: 125
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 31735079 - Post-Stroke Pneumonia Risk Stratification Model
+### PMID 31443074 - The Surgical Swedish ICH Score Calculator
 
 - first-listed source specialty stratum: Neurology
-- source-declared specialties: Neurology, Pulmonology
-- PubMed title: Risk stratification model for post-stroke pneumonia in patients with acute ischemic stroke.
-- journal/date: European journal of cardiovascular nursing / 2020Aug
-- DOI: 10.1177/1474515119889770
-- publication types: Journal Article, Research Support, Non-U.S. Gov't
+- source-declared specialties: Neurology, Surgery
+- PubMed title: A grading scale for surgically treated patients with spontaneous supratentorial intracerebral hemorrhage: the Surgical Swedish ICH Score.
+- journal/date: Journal of neurosurgery / 2020Sep01
+- DOI: 10.3171/2019.5.JNS19622
+- publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 9944b0a1e0db93731acb7350fe8839e8b1b4ac8d59b45a6698a4acfde67a5a2d
-- prospective case space: 125
+- abstract SHA-256: 2ca015c65b2b8cbc6bb8d73ac2c7b3e3669e35f8c7acae07bc7ba885ef836012
+- prospective case space: 2100
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 24991535 - RHEA Risk-Scoring Model for Endometrial Cancer
+### PMID 33819676 - Obstetric Warning Score System
 
 - first-listed source specialty stratum: Obstetrics and Gynecology
-- source-declared specialties: Obstetrics and Gynecology, Oncology
-- PubMed title: A risk-scoring model for the prediction of endometrial cancer among symptomatic postmenopausal women with endometrial thickness > 4 mm.
-- journal/date: BioMed research international / 2014
-- DOI: 10.1155/2014/130569
+- source-declared specialties: Obstetrics and Gynecology, Infectious Disease
+- PubMed title: Initial clinical characteristics of gravid severe acute respiratory syndrome coronavirus 2-positive patients and the risk of progression to severe coronavirus disease 2019.
+- journal/date: American journal of obstetrics & gynecology MFM / 2021Jul
+- DOI: 10.1016/j.ajogmf.2021.100365
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 79e9ae21863021943909aee344dc5e79c418b581f70bfcaa7f8c2f70bfda2283
-- prospective case space: 100
+- abstract SHA-256: a6e63a94ae2ad7d3976a447732e20a822aca663b16ad959b7aa2493dab658c87
+- prospective case space: 4000
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 30050733 - Venous Thromboembolism Risk Score in Glioblastoma Patients
+### PMID 22815214 - Advanced NSCLC Prognostic Score Calculator
 
 - first-listed source specialty stratum: Oncology
-- source-declared specialties: Oncology, Neurology
-- PubMed title: Risk of Venous Thromboembolism in Glioblastoma Patients.
-- journal/date: Cureus / 2018May23
-- DOI: 10.7759/cureus.2678
+- source-declared specialties: Oncology, Pulmonology
+- PubMed title: A prognostic score based on clinical factors and biomarkers for advanced non-small cell lung cancer.
+- journal/date: The International journal of biological markers / 2012Oct08
+- DOI: 10.5301/JBM.2012.9314
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: a61150bf82e80424330fc7d966c471339f2b799ef3a1ac2a932eff70b3101a53
-- prospective case space: 360
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 33243159 - Surgical Site Infection (SSI) Risk Calculator for HIV-Positive Patients Following Orthopedic Surgery
-
-- first-listed source specialty stratum: Orthopedic Surgery
-- source-declared specialties: Orthopedic Surgery, Infectious Disease
-- PubMed title: Nomogram prediction of surgical site infection of HIV-infected patients following orthopedic surgery: a retrospective study.
-- journal/date: BMC infectious diseases / 2020Nov26
-- DOI: 10.1186/s12879-020-05613-3
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 75fa2926f28e33898c6cb74415f0a6529f3395f4572c2396861f24fcd02cd8e7
-- prospective case space: 125
+- abstract SHA-256: 09c8f6a1f2dba7736330fd50359ab0774cb928c909fb911478decc03441513ac
+- prospective case space: 2500
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
@@ -838,31 +348,17 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 27398948 - Community-Acquired Pneumonia Prognosis Calculator
+### PMID 21963078 - Pneumonia Severity Score in Inhalation Injury Patients
 
 - first-listed source specialty stratum: Pulmonology
-- source-declared specialties: Pulmonology, Internal Medicine, Emergency Medicine
-- PubMed title: Serial procalcitonin levels for predicting prognosis in community-acquired pneumonia.
-- journal/date: Respirology (Carlton, Vic.) / 2016Nov
-- DOI: 10.1111/resp.12846
+- source-declared specialties: Pulmonology, Emergency Medicine
+- PubMed title: Severity score for predicting pneumonia in inhalation injury patients.
+- journal/date: Burns : journal of the International Society for Burn Injuries / 2012Mar
+- DOI: 10.1016/j.burns.2011.08.010
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 258dbcd075eac9fb1b49604d12254d8560f29de401f8d6ae865432f9302bb2ca
-- prospective case space: 125
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 33995602 - Sjögren's Syndrome Risk Matrix Model
-
-- first-listed source specialty stratum: Rheumatology
-- source-declared specialties: Rheumatology, Radiology
-- PubMed title: Ultrasonography predicts the results of labial salivary gland biopsy in patients with suspected Sjögren's syndrome: a matrix risk model.
-- journal/date: Therapeutic advances in musculoskeletal disease / 2021
-- DOI: 10.1177/1759720X211010592
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: 63121d6bea277bf31a6839d7344efd5c006410e2078cfe84e5462bb9c3895484
-- prospective case space: 64
+- abstract SHA-256: 10c7eb36890814089b2cd5ae71a09bed1566a609628046155d6a585d1887d1dd
+- prospective case space: 5000
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
@@ -880,30 +376,534 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 34729221 - Prostate Cancer Extracapsular Extension (ECE) Prediction Algorithm
+### PMID 11792137 - TIMI Risk Score for Unstable Angina and Non-ST Elevation Myocardial Infarction
 
-- first-listed source specialty stratum: Urology
-- source-declared specialties: Urology, Oncology
-- PubMed title: External validation of a magnetic resonance imaging-based algorithm for prediction of side-specific extracapsular extension in prostate cancer.
-- journal/date: Central European journal of urology / 2021
-- DOI: 10.5173/ceju.2021.0128.R2
-- publication types: Journal Article
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology, Emergency Medicine, Internal Medicine
+- PubMed title: An integrated clinical approach to predicting the benefit of tirofiban in non-ST elevation acute coronary syndromes. Application of the TIMI Risk Score for UA/NSTEMI in PRISM-PLUS.
+- journal/date: European heart journal / 2002Feb
+- DOI: 10.1053/euhj.2001.2738
+- publication types: Clinical Trial, Comparative Study, Evaluation Study, Journal Article, Multicenter Study, Randomized Controlled Trial, Research Support, Non-U.S. Gov't, Validation Study
 - abstract present: True
-- abstract SHA-256: 30f06230d2c688547ca168d4c2584ebe89dea4bb6767561f844fdf5dd11fe910
-- prospective case space: 125
+- abstract SHA-256: 5bb63b7ddb65b96960f66d722951e18e20c5bead7a30396c1c1634a79b61831b
+- prospective case space: 2000
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 23696476 - Respiratory Risk Score (RRS) for Liver Transplantation
+### PMID 36426167 - NIPPV Weaning Success Prediction Score
 
-- first-listed source specialty stratum: Anesthesiology
-- source-declared specialties: Anesthesiology, Surgery, Pulmonology
-- PubMed title: Respiratory risk score for the prediction of 3-month mortality and prolonged ventilation after liver transplantation.
-- journal/date: Liver transplantation : official publication of the American Association for the Study of Liver Diseases and the International Liver Transplantation Society / 2013Aug
-- DOI: 10.1002/lt.23673
+- first-listed source specialty stratum: Emergency Medicine
+- source-declared specialties: Emergency Medicine, Cardiology, Pulmonology
+- PubMed title: Clinical Prediction Score for Successful Weaning from Noninvasive Positive Pressure Ventilation (NIPPV) in Emergency Department; a Retrospective Cohort Study.
+- journal/date: Archives of academic emergency medicine / 2022
+- DOI: 10.22037/aaem.v10i1.1769
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 17307a51e4b4c7fc23bdfdc0425d9b5f944f6dcca55f3070d664483df19a6751
+- abstract SHA-256: 5936e74c71afb60bd085c0239c6055a95c3c8314a94c7ac3f36668a022a39635
+- prospective case space: 12500
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 27311620 - NOBLADS Score for Severe Lower Gastrointestinal Bleeding Risk
+
+- first-listed source specialty stratum: Gastroenterology
+- source-declared specialties: Gastroenterology, Emergency Medicine, Internal Medicine
+- PubMed title: Development and Validation of a Risk Scoring System for Severe Acute Lower Gastrointestinal Bleeding.
+- journal/date: Clinical gastroenterology and hepatology : the official clinical practice journal of the American Gastroenterological Association / 2016Nov
+- DOI: 10.1016/j.cgh.2016.05.042
+- publication types: Journal Article, Validation Study
+- abstract present: True
+- abstract SHA-256: 1aabec5fe820f797d9df90ae5445be1ecf22d67607824bb9f1b00053b7e18670
+- prospective case space: 4000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 31079658 - PLASMIC Score Calculator for Thrombotic Thrombocytopenic Purpura (TTP)
+
+- first-listed source specialty stratum: Hematology
+- source-declared specialties: Hematology
+- PubMed title: Plasmic score applicability for the diagnosis of thrombotic microangiopathy associated with ADAMTS13-acquired deficiency in a developing country.
+- journal/date: Hematology, transfusion and cell therapy / 2019Apr-Jun
+- DOI: 10.1016/j.htct.2018.10.002
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 737fb7f51e8ab8761b1d6746e679aa532d9218a385d3b35ce00925579b798b5c
+- prospective case space: 5000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 20121574 - HIV Virologic Failure Prediction Calculator
+
+- first-listed source specialty stratum: Infectious Disease
+- source-declared specialties: Infectious Disease, Internal Medicine
+- PubMed title: Predicting virologic failure in an HIV clinic.
+- journal/date: Clinical infectious diseases : an official publication of the Infectious Diseases Society of America / 2010Mar01
+- DOI: 10.1086/650537
+- publication types: Journal Article, Research Support, N.I.H., Extramural, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: f791d347a4c7314af5443ed52bf732e52b7119be9d560c6692a775f986cce0c6
+- prospective case space: 2000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 28298047 - Postoperative Meningitis Prediction Rule
+
+- first-listed source specialty stratum: Neurology
+- source-declared specialties: Neurology, Surgery
+- PubMed title: Development of a prediction rule for diagnosing postoperative meningitis: a cross-sectional study.
+- journal/date: Journal of neurosurgery / 2018Jan
+- DOI: 10.3171/2016.10.JNS16379
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 382d15dcd555dec16589f1e6821a6ffbb98c45702094f35312bb33c59fed788d
+- prospective case space: 2500
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 26014515 - Nasopharyngeal Carcinoma Distant Metastasis Prediction Score
+
+- first-listed source specialty stratum: Oncology
+- source-declared specialties: Oncology, Radiology
+- PubMed title: Risk factors and prediction-score model for distant metastasis in nasopharyngeal carcinoma treated with intensity-modulated radiotherapy.
+- journal/date: Tumour biology : the journal of the International Society for Oncodevelopmental Biology and Medicine / 2015Nov
+- DOI: 10.1007/s13277-015-3574-0
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 9c72fbe0e1def4e075ba99ae4e0ba146e5de91b955c98cc165a206fab28c8b69
+- prospective case space: 6250
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 30026252 - Kawasaki Disease IVIG Resistance Predictive Tool
+
+- first-listed source specialty stratum: Pediatrics
+- source-declared specialties: Pediatrics, Allergy and Immunology
+- PubMed title: Predictive tool for intravenous immunoglobulin resistance of Kawasaki disease in Beijing.
+- journal/date: Archives of disease in childhood / 2019Mar
+- DOI: 10.1136/archdischild-2017-314512
+- publication types: Journal Article, Multicenter Study, Research Support, Non-U.S. Gov't, Validation Study
+- abstract present: True
+- abstract SHA-256: c23ac4a66763307447ca2dc031bac17845bab1fb3f1404fced9cedb6338ceb9e
+- prospective case space: 3125
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 19033016 - Cardiopulmonary Exercise Test (CPX) Score for Heart Failure Outcomes
+
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology
+- PubMed title: A cardiopulmonary exercise testing score for predicting outcomes in patients with heart failure.
+- journal/date: American heart journal / 2008Dec
+- DOI: 10.1016/j.ahj.2008.07.010
+- publication types: Journal Article, Multicenter Study
+- abstract present: True
+- abstract SHA-256: 02290e52517d1adb86031c4734a6160bf58161c7346533af942683cf77bb6061
+- prospective case space: 3125
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 16480439 - Emergency Room Transfusion Score (ETS)
+
+- first-listed source specialty stratum: Emergency Medicine
+- source-declared specialties: Emergency Medicine, Hematology, Surgery
+- PubMed title: The emergency room transfusion score (ETS): prediction of blood transfusion requirement in initial resuscitation after severe trauma.
+- journal/date: Transfusion medicine (Oxford, England) / 2006Feb
+- DOI: 10.1111/j.1365-3148.2006.00647.x
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: dfff07f2e4683e73ea1fed7dfb2a44af1f549085c7ed7b50ba137e9ac607727a
+- prospective case space: 3200
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 23461800 - Predictive Scoring System for Pancreatic Fistula After Laparoscopy-Assisted Gastrectomy
+
+- first-listed source specialty stratum: Gastroenterology
+- source-declared specialties: Gastroenterology, Surgery
+- PubMed title: Establishment of a simple predictive scoring system for pancreatic fistula after laparoscopy-assisted gastrectomy.
+- journal/date: Digestive endoscopy : official journal of the Japan Gastroenterological Endoscopy Society / 2013Nov
+- DOI: 10.1111/den.12042
+- publication types: Journal Article, Validation Study
+- abstract present: True
+- abstract SHA-256: 38fbb3d287fd8461465ff5e1b6b9686fd0ccb223b47e976ee60b5e4aaa26eee1
+- prospective case space: 3125
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 30898482 - Azacitidine Infection Risk Model
+
+- first-listed source specialty stratum: Hematology
+- source-declared specialties: Hematology, Oncology
+- PubMed title: Predictive Model for Infection Risk in Myelodysplastic Syndromes, Acute Myeloid Leukemia, and Chronic Myelomonocytic Leukemia Patients Treated With Azacitidine; Azacitidine Infection Risk Model: The Polish Adult Leukemia Group Study.
+- journal/date: Clinical lymphoma, myeloma & leukemia / 2019May
+- DOI: 10.1016/j.clml.2019.01.002
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 70c8dffe01cb53be6afb40ae80113fe073648edbfb2c0c818bd513343e194407
+- prospective case space: 1250
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 35093039 - Flu-IV Score Calculator
+
+- first-listed source specialty stratum: Infectious Disease
+- source-declared specialties: Infectious Disease, Pulmonology, Emergency Medicine
+- PubMed title: Flu-IV score: a predictive tool for assessing the risk of invasive mechanical ventilation in patients with influenza-related pneumonia.
+- journal/date: BMC pulmonary medicine / 2022Jan29
+- DOI: 10.1186/s12890-022-01833-2
+- publication types: Comparative Study, Journal Article
+- abstract present: True
+- abstract SHA-256: cd5c63bfd27ab9a73647cfb9ad4aeb1e223ad826cdfc5e6e165f48abf1df9f63
+- prospective case space: 25000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 24103667 - The SAH Score
+
+- first-listed source specialty stratum: Neurology
+- source-declared specialties: Neurology
+- PubMed title: The SAH Score: a comprehensive communication tool.
+- journal/date: Journal of stroke and cerebrovascular diseases : the official journal of National Stroke Association / 2014May-Jun
+- DOI: 10.1016/j.jstrokecerebrovasdis.2013.07.035
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 04eb8bf63d214ba062f9fd90c095744af84f615d700beb0e913743487a16a986
+- prospective case space: 6380
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 30888590 - Visceral Pleural Invasion Risk Score Calculator in NSCLC
+
+- first-listed source specialty stratum: Oncology
+- source-declared specialties: Oncology, Pulmonology, Radiology
+- PubMed title: A risk scoring system for predicting visceral pleural invasion in non-small lung cancer patients.
+- journal/date: General thoracic and cardiovascular surgery / 2019Oct
+- DOI: 10.1007/s11748-019-01101-x
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 44e0b1386ae8326c0794170b805d13f6bbb21b778f91b53620e68f5d4435556a
+- prospective case space: 2500
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 31171439 - Pediatric Appendicitis Laboratory Score (PALabS)
+
+- first-listed source specialty stratum: Pediatrics
+- source-declared specialties: Pediatrics, Emergency Medicine, Surgery
+- PubMed title: A new clinical score to identify children at low risk for appendicitis.
+- journal/date: The American journal of emergency medicine / 2020Mar
+- DOI: 10.1016/j.ajem.2019.05.050
+- publication types: Journal Article, Validation Study
+- abstract present: True
+- abstract SHA-256: d068cb0847c112bb2379f416f1bbb116c97a14341cfcd543878eb0a93326e88a
+- prospective case space: 2500
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 30571195 - Utah Bleeding Risk Score Calculator
+
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology, Gastroenterology
+- PubMed title: Novel Model to Predict Gastrointestinal Bleeding During Left Ventricular Assist Device Support.
+- journal/date: Circulation. Heart failure / 2018Nov
+- DOI: 10.1161/CIRCHEARTFAILURE.118.005267
+- publication types: Journal Article, Research Support, N.I.H., Extramural, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: b0d63867b5ebe05284fa69228a2787184fbb2247dbd5220e9af6e88f4f233525
+- prospective case space: 2000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 26113162 - Prehospital Early Sepsis Detection (PRESEP) Score
+
+- first-listed source specialty stratum: Emergency Medicine
+- source-declared specialties: Emergency Medicine, Infectious Disease
+- PubMed title: An Early Warning Scoring System to Identify Septic Patients in the Prehospital Setting: The PRESEP Score.
+- journal/date: Academic emergency medicine : official journal of the Society for Academic Emergency Medicine / 2015Jul
+- DOI: 10.1111/acem.12707
+- publication types: Journal Article, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: 31d5cf3c12b8624e5f56c9005c64e268a8b53164eff49575912928f6143976b4
+- prospective case space: 5625
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 12483269 - Hepatocellular Carcinoma Prognosis Calculator
+
+- first-listed source specialty stratum: Gastroenterology
+- source-declared specialties: Gastroenterology, Oncology
+- PubMed title: Prognosis of hepatocellular carcinoma associated with Child class B and C cirrhosis in relation to treatment: a multivariate analysis of 411 patients at a single center.
+- journal/date: Journal of hepato-biliary-pancreatic surgery / 2002
+- DOI: 10.1007/s005340200058
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 530f412fea0d5371d0358310e9df77f29952b4e1536859736d278d7be82e06b7
+- prospective case space: 1250
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 23118910 - ART Failure Clinical Prediction Score
+
+- first-listed source specialty stratum: Infectious Disease
+- source-declared specialties: Infectious Disease, Internal Medicine
+- PubMed title: A clinical prediction score in addition to WHO criteria for anti-retroviral treatment failure in resource-limited settings--experience from Lesotho.
+- journal/date: PloS one / 2012
+- DOI: 10.1371/journal.pone.0047937
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 230e7ffbac04e5282b18c6dcf2ae0374d1a9c2882e5df7f37b7f7395c59a87de
+- prospective case space: 1600
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 31802959 - Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System
+
+- first-listed source specialty stratum: Neurology
+- source-declared specialties: Neurology, Surgery
+- PubMed title: A Grading System For The Prediction Of Unilateral Chronic Subdural Hematoma Recurrence After Initial Single Burr Hole Evacuation.
+- journal/date: Risk management and healthcare policy / 2019
+- DOI: 10.2147/RMHP.S222144
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: e0aadcb9f4c5bfa9563b0263e36d676f13bc51fb93e3e7a471273455f0b0eee3
+- prospective case space: 2500
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 33859298 - Hepatocellular Carcinoma Recurrence Risk Calculator
+
+- first-listed source specialty stratum: Oncology
+- source-declared specialties: Oncology, Radiology, Gastroenterology
+- PubMed title: A clinical scoring system for predicting tumor recurrence after percutaneous radiofrequency ablation for 3 cm or less hepatocellular carcinoma.
+- journal/date: Scientific reports / 2021Apr15
+- DOI: 10.1038/s41598-021-87782-y
+- publication types: Journal Article, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: e984c4d6837a47e8b6d9f7ad3b36061fedf314faa2f77dc574f222628699cd1c
+- prospective case space: 1250
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 34362595 - AESD Risk Score Calculator
+
+- first-listed source specialty stratum: Pediatrics
+- source-declared specialties: Pediatrics, Neurology
+- PubMed title: Incidence and risk factors of acute encephalopathy with biphasic seizures in febrile status epilepticus.
+- journal/date: Brain & development / 2022Jan
+- DOI: 10.1016/j.braindev.2021.07.004
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 7c1b022fdbb0abc434af0107a6ad5e10ab60d0b403c2d39646fab9f9c42bd277
+- prospective case space: 3125
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 35437211 - HLAMatchmaker and PIRCHE-II Combined Risk Calculator for Pediatric Heart Transplant Patients
+
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology, Pediatrics, Allergy and Immunology
+- PubMed title: Immunologic risk stratification of pediatric heart transplant patients by combining HLAMatchmaker and PIRCHE-II.
+- journal/date: The Journal of heart and lung transplantation : the official publication of the International Society for Heart Transplantation / 2022Jul
+- DOI: 10.1016/j.healun.2022.03.015
+- publication types: Journal Article, Research Support, N.I.H., Extramural, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: e2695c7532b2fbb82bde75e56dba87d1700674603096aa131e08b1830dfca430
+- prospective case space: 360000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 11356436 - Canadian CT Head Rule Calculator
+
+- first-listed source specialty stratum: Emergency Medicine
+- source-declared specialties: Emergency Medicine, Neurology
+- PubMed title: The Canadian CT Head Rule for patients with minor head injury.
+- journal/date: Lancet (London, England) / 2001May05
+- DOI: 10.1016/s0140-6736(00)04561-x
+- publication types: Clinical Trial, Journal Article, Multicenter Study, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: 87813e4397f84fc9de406533a896432b91807eb3bc931a74bf60e34135e3a18c
+- prospective case space: 2000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 19393477 - Acute Pancreatitis Prognostic Score Calculator
+
+- first-listed source specialty stratum: Gastroenterology
+- source-declared specialties: Gastroenterology, Emergency Medicine, Internal Medicine
+- PubMed title: A simple prognostic score for risk assessment in patients with acute pancreatitis.
+- journal/date: European journal of internal medicine / 2009May
+- DOI: 10.1016/j.ejim.2008.09.014
+- publication types: Journal Article, Validation Study
+- abstract present: True
+- abstract SHA-256: 65dd759c0526daccdb93b63ff9cabad72c360f148407df76148f42ff3eaedb4c
+- prospective case space: 3125
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 21290247 - Prognostic Model for Metastatic or Recurrent Gastric Adenocarcinoma
+
+- first-listed source specialty stratum: Oncology
+- source-declared specialties: Oncology, Gastroenterology
+- PubMed title: A prognostic model in patients who receive chemotherapy for metastatic or recurrent gastric cancer: validation and comparison with previous models.
+- journal/date: Cancer chemotherapy and pharmacology / 2011Oct
+- DOI: 10.1007/s00280-011-1561-8
+- publication types: Journal Article, Validation Study
+- abstract present: True
+- abstract SHA-256: 9ef7302ec7689835dda397f5da579b777c4bae5a4399f7380fd3a34e3464a987
+- prospective case space: 10000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 15862409 - CADILLAC Risk Score for Mortality After Primary Percutaneous Coronary Intervention (PCI)
+
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology
+- PubMed title: Prediction of mortality after primary percutaneous coronary intervention for acute myocardial infarction: the CADILLAC risk score.
+- journal/date: Journal of the American College of Cardiology / 2005May03
+- DOI: 10.1016/j.jacc.2005.01.041
+- publication types: Journal Article, Validation Study
+- abstract present: True
+- abstract SHA-256: 1a3c7c853ed3684ab781d431042823e580a1c6d9c7d4b498d9cb912be210aa55
+- prospective case space: 3200
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 21722666 - Bacteremia Risk Calculator in Women with Acute Pyelonephritis
+
+- first-listed source specialty stratum: Emergency Medicine
+- source-declared specialties: Emergency Medicine, Infectious Disease, Internal Medicine, Urology
+- PubMed title: A simple model to predict bacteremia in women with acute pyelonephritis.
+- journal/date: The Journal of infection / 2011Aug
+- DOI: 10.1016/j.jinf.2011.06.007
+- publication types: Journal Article, Validation Study
+- abstract present: True
+- abstract SHA-256: b287380730bab1153af28040374b9de5d32fa57dc678a062d56eb016a5598c9b
+- prospective case space: 1250
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 35254582 - Circulating Lipid- and Inflammation-based Risk (CLIR) Score Calculator
+
+- first-listed source specialty stratum: Oncology
+- source-declared specialties: Oncology, Surgery
+- PubMed title: Circulating Lipid- and Inflammation-Based Risk (CLIR) Score: A Promising New Model for Predicting Outcomes in Complete Colorectal Liver Metastases Resection.
+- journal/date: Annals of surgical oncology / 2022Jan04
+- DOI: 10.1245/s10434-021-11234-0
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 87ef3d1f573f80423eb316c24b0da8c24cb0e5ac60debfb68ce06ff0f365e55a
+- prospective case space: 1250
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 33465514 - PREVENTION-ACHD Risk Score Model
+
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology
+- PubMed title: Identification of patients at risk of sudden cardiac death in congenital heart disease: The PRospEctiVE study on implaNTable cardIOverter defibrillator therapy and suddeN cardiac death in Adults with Congenital Heart Disease (PREVENTION-ACHD).
+- journal/date: Heart rhythm / 2021May
+- DOI: 10.1016/j.hrthm.2021.01.009
+- publication types: Journal Article, Observational Study, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: 873e3f2b724f957b28c9af3206358cec8c6f92a8db14bac8cc6d38c7aa7361ff
+- prospective case space: 5000
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 33806240 - GERtality Score Calculator
+
+- first-listed source specialty stratum: Emergency Medicine
+- source-declared specialties: Emergency Medicine, Geriatrics, Surgery
+- PubMed title: The GERtality Score: The Development of a Simple Tool to Help Predict in-Hospital Mortality in Geriatric Trauma Patients.
+- journal/date: Journal of clinical medicine / 2021Mar25
+- DOI: 10.3390/jcm10071362
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 9ce349f54a521a7b0493698ae7dd0dfa6715759bd931018e4b455d64ffd93e2d
+- prospective case space: 1250
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 26049405 - Febrile Neutropenia Prognostic Model
+
+- first-listed source specialty stratum: Oncology
+- source-declared specialties: Oncology, Hematology, Infectious Disease
+- PubMed title: A new prognostic model for chemotherapy-induced febrile neutropenia.
+- journal/date: International journal of clinical oncology / 2016Feb
+- DOI: 10.1007/s10147-015-0853-0
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 6272220ce1d5e1f5816b6c1c7a4d6f80bbce339c772b75f6ba17d92ba163b6a2
+- prospective case space: 15625
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 33624088 - Heart Failure with Preserved Ejection Fraction (HFpEF) Risk Score Calculator
+
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology, Internal Medicine
+- PubMed title: Predicting the transition to and progression of heart failure with preserved ejection fraction: a weighted risk score using bio-humoural, cardiopulmonary, and echocardiographic stress testing.
+- journal/date: European journal of preventive cardiology / 2021Dec29
+- DOI: 10.1093/eurjpc/zwaa129
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: fa15d2eb189fccd3a91a20da064decec4d42e7274441985add88bf363e663212
+- prospective case space: 3125
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 29742138 - J-ERATO Score
+
+- first-listed source specialty stratum: Emergency Medicine
+- source-declared specialties: Emergency Medicine, Geriatrics
+- PubMed title: A novel early risk assessment tool for detecting clinical outcomes in patients with heat-related illness (J-ERATO score): Development and validation in independent cohorts in Japan.
+- journal/date: PloS one / 2018
+- DOI: 10.1371/journal.pone.0197032
+- publication types: Journal Article, Multicenter Study, Observational Study, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: b5ef75511f3a26ee230cda19a6a5b1b8257e61b173fc8b1689adac5b377a2080
+- prospective case space: 15625
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 34195071 - Inflammatory-Nutritional Prognostic Score (INPS) Calculator for Stage III Gastric Cancer Patients
+
+- first-listed source specialty stratum: Oncology
+- source-declared specialties: Oncology, Gastroenterology, Surgery
+- PubMed title: A Novel Inflammatory-Nutritional Prognostic Scoring System for Stage III Gastric Cancer Patients With Radical Gastrectomy Followed by Adjuvant Chemotherapy.
+- journal/date: Frontiers in oncology / 2021
+- DOI: 10.3389/fonc.2021.650562
+- publication types: Journal Article
+- abstract present: True
+- abstract SHA-256: 1529a522d6405177245e2e4d24d4cbdd08416453cfa96d9ed4f296afb4d5dee4
+- prospective case space: 15625
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 25876528 - APPLE Score for Predicting Rhythm Outcomes After Catheter Ablation of Atrial Fibrillation
+
+- first-listed source specialty stratum: Cardiology
+- source-declared specialties: Cardiology
+- PubMed title: The APPLE score: a novel and simple score for the prediction of rhythm outcomes after catheter ablation of atrial fibrillation.
+- journal/date: Clinical research in cardiology : official journal of the German Cardiac Society / 2015Oct
+- DOI: 10.1007/s00392-015-0856-x
+- publication types: Journal Article, Research Support, N.I.H., Extramural, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: 35fcaa74858031638efed38261a75388a8c908af23a810dc4e4d2ec39781f895
+- prospective case space: 1250
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 23021334 - MARKED-Risk Score Calculator
+
+- first-listed source specialty stratum: Emergency Medicine
+- source-declared specialties: Emergency Medicine, Cardiology
+- PubMed title: Multimarker strategy for short-term risk assessment in patients with dyspnea in the emergency department: the MARKED (Multi mARKer Emergency Dyspnea)-risk score.
+- journal/date: Journal of the American College of Cardiology / 2012Oct23
+- DOI: 10.1016/j.jacc.2012.06.040
+- publication types: Comparative Study, Journal Article, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: 7457ee5f49fccc2dcc7b6f7126b4955ce9178507cb7570c99e253d9b46befffe
 - prospective case space: 12500
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`

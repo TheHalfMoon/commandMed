@@ -2,524 +2,527 @@
   "calculator_count": 64,
   "calculators": [
     {
-      "case_ids_sha256": "88a4ef17ea9a61a1f51ff2887649ed9e808acc2c5f51050b53b180bcf6a933e5",
-      "code_sha256": "595b019ec4913471d041465fc897539500ed85d1da4572afdeb907eb6d5a1065",
-      "first_case_id": "e6e565b140b5cee6ecdbbef575de6fbb8697fcfa4b305ef141b474fbd9fe212b",
-      "last_case_id": "43f2c5bd3d3698d1b08da12d9454466d3cba608a512765f1e6415b8a44b4b99e",
-      "pmid": "34806823",
-      "title": "Risk Stratification Index (RSI) for Postoperative Delirium in Elderly Patients with Hip Fractures"
+      "calibration_case_ids_sha256": "13c3c09a71a09dee6a52242be99925b190062e4f0647e287f395eb9c912f3189",
+      "candidate_state_space": 12500,
+      "code_sha256": "a2371e0daea028ec6bc263f7295e5b4d2ced186210fbc55e2899a27f9bca4aac",
+      "development_case_ids_sha256": "04e6430eacfbc25844d9298a4f13c01c2bf179861d3014d0466c60eeb4e7a84f",
+      "pmid": "23696476",
+      "title": "Respiratory Risk Score (RRS) for Liver Transplantation"
     },
     {
-      "case_ids_sha256": "98d2ffb396f147bbb1dc21596d192292c2235b3119dc3bbeeae72a2aa47ebc96",
-      "code_sha256": "be5d3b7d37210eb6eb8f4e399e3e2301a2394ddac95b97c13c7a4fc01ec918fa",
-      "first_case_id": "fd4d0a22e43d0748dd42c6b8275d44053cfa465ff546bf1d83e3eda8e5e6b037",
-      "last_case_id": "6cd4764d8b03fbacf4e5f7f17dceb389c235a271a15de535be388f929d516daa",
-      "pmid": "29111209",
-      "title": "2MACE Score Calculator"
-    },
-    {
-      "case_ids_sha256": "31c37107cec90bd4e40fd6807960f01ad9f69e94797dee3bd9dfbc961122f75b",
-      "code_sha256": "1a0900a9be70c062795a8a36e2415fc99b8ddb82b31ac8d02bdd0649724ac11c",
-      "first_case_id": "c746fd53ddcdc1eae6fac77d5b1ab8135421f33e1623c73b83a2e190abef0d95",
-      "last_case_id": "ab2e10ee587edbe771cc931ae1ae87d69eb7854e9491292ff250ea826e62bb4f",
-      "pmid": "32187076",
-      "title": "ICU-Venous Thromboembolism Score"
-    },
-    {
-      "case_ids_sha256": "23b4c38e416e2597db5e77391dcb0cbdc869566b35f29f992f91990ef8c6bd86",
-      "code_sha256": "c647ce25cb7b35d099522b133dff298055896dccfeba2e0c161207be19840ce2",
-      "first_case_id": "aa8eb7e7a9f4869b344a8ee2c00554b5197f7ce959f85b5039f156b09d86c50b",
-      "last_case_id": "38eac6518fd1985dbb6f438cc169a2dc2ad12b6563f3869fe3176aee0f9e830f",
-      "pmid": "24603434",
-      "title": "Mayo Muir-Torre Syndrome Risk Scoring System"
-    },
-    {
-      "case_ids_sha256": "97e71257928398e7af8fd53f980948bf594694b4114c677da7f0602de0a93a69",
-      "code_sha256": "5a368a879e0301c76ab9e2db4cf425b5a8eeda3a58c6e05eb1ac52cbc433ebae",
-      "first_case_id": "e396e432699ebaeec116360324fd525be4b7b139e61c46e6376aa6459d9064d2",
-      "last_case_id": "5e9db747f3e653c5c1dc24d82dd2b801ec56b83a194d5a9ca72928c7442b5e50",
-      "pmid": "32125106",
-      "title": "5MPB-Toledo Bacteremia Risk Score"
-    },
-    {
-      "case_ids_sha256": "3dccaf7fa7eaa590e43b838b3d2e8dc6379843ec25c64c952fb29f3c5ae574d3",
-      "code_sha256": "de91c877c4993a9f8a16997ce04eacb2af485d914b0ac1170097cd28420a5039",
-      "first_case_id": "2b0e1c0da77790e483c6b64d237bb0e2f55a0aa0e4fb754ce0f8dfd0fe297482",
-      "last_case_id": "95ca2d22b9c433c9f771a5b1b8aaff6a7f4dee623a304c4cea7a329e0c41cec6",
-      "pmid": "33613456",
-      "title": "Growth Hormone Deficiency (GHD) Prediction Rule"
-    },
-    {
-      "case_ids_sha256": "bac7d860824b89b0b504db3e235323a47b8e0e6ad1e011a4d1bc88262358b87b",
-      "code_sha256": "d6e1c1b2fb9d62b45aa05974affa825690da94890b7ca067d3380adddb954cdb",
-      "first_case_id": "ccdec6531a584f35f6b15ed3be2bea9739646fc96cb5b9b927b42ef7c3162ec5",
-      "last_case_id": "ca0ef21d196c2e3dfa7b408d0fcb4a1537949f0ae0379e1378aaa42cdb03d7b6",
-      "pmid": "31863515",
-      "title": "AIMS65 Score for Upper Gastrointestinal Bleeding"
-    },
-    {
-      "case_ids_sha256": "4bc2ae27aeb207af7b016ed390688c2015781a5a8a920db70943b242a2dab843",
-      "code_sha256": "8b4658cc929b205e36ed731c9daef7e2ba809fecf4c7a02244261063144ec5a6",
-      "first_case_id": "eb2f982c425dbfb6ecc067b36b1be9667a5ca6fcc8eb7ab5046d23d8f092a44f",
-      "last_case_id": "e11bcda6ae08ebd8a8949aaf121d1327b4ec331805bd2935725d5d5f07027e82",
-      "pmid": "26722355",
-      "title": "3-Month Postoperative Mortality Risk Calculator for Geriatric Cancer Patients"
-    },
-    {
-      "case_ids_sha256": "cd211ba73621a76724e22490a47db42bebadf89292131b88a3678bef5606ed28",
-      "code_sha256": "9bc40968c9cef4e5ffd1dfedfd75b25bd9495d409b556b5c75a7078e75eca2f7",
-      "first_case_id": "9914903401b6265dc1f7397cf571c480a73ae4cf3e129f47cc11fe4e9fd92fef",
-      "last_case_id": "b04f473e3ccd67c681031bfa6667e92fe680b97029a1da575cd54b016df2e974",
-      "pmid": "26281032",
-      "title": "Post-Engraftment Invasive Fungal Disease (IFD) Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "3f142d7e88e7dd1b2e00105ebe32602c1545c0c38df320769405c2b75881c458",
-      "code_sha256": "16dff144f0932a265c4d90e5e4b4684675fe8e2dffb4c5614c57b051473702f3",
-      "first_case_id": "de66f83a5c96ee720c498afdc2a20f3ceff0ca43f2ccf24c378e3c1092689656",
-      "last_case_id": "95c03a9d73426ee2058023a203f3a1be7fc13d9c1f4134473cba3b841d9d2c56",
-      "pmid": "35113971",
-      "title": "OUR-ARDs Risk Score Calculator for COVID-19 Mortality"
-    },
-    {
-      "case_ids_sha256": "4d734d39f4d6ce9738592ae4fdd86dd244875be7cd48afe36ed90b391a283d9c",
-      "code_sha256": "f0b9d36a8f7d9281e94d9be253a3d1ae525428b4650dfb2a23ce4b869559ea7a",
-      "first_case_id": "ac84b0119347ee8a46ea761a337cb710bfbd87b5870cd599b42fdfc88b4bb578",
-      "last_case_id": "cf2695a1f72b5cdf89e6fa0497d23e6f743c62e7d146f203e0b923dba0ddd508",
-      "pmid": "25404191",
-      "title": "IMPROVE VTE Risk Assessment Model"
-    },
-    {
-      "case_ids_sha256": "de7899ddaf97004f84749448c510baf962c5f9aee90568d6bb5d8e13f9bb5929",
-      "code_sha256": "b0393b1d5d02f50f1b158f4c1cdedf71f6620eb5818624a61d06d7c38611cc17",
-      "first_case_id": "6a621952539986f4d3e052b8ace33f433b9a22583a31d4785e8e30958b71f427",
-      "last_case_id": "37079a1a03a26e80de3562a0010655bff65e8b6dbef7048128aeece7d2fec03b",
-      "pmid": "35330832",
-      "title": "Vancomycin-Associated Acute Kidney Injury Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "a59826e4baf67fc15897495f8faa672792f400254964e6464b057980323e8553",
-      "code_sha256": "a8b1f95e0944494301b0110262808863b43ad6fa140c0b538a16b8ab11eba6f3",
-      "first_case_id": "6d8f632f2dfb0e6bed73ea674852f9d389bcce9815082d8b48d208b00ca2477f",
-      "last_case_id": "490e53bb5323de80e1ae6d60d2bf3a896efd62d04a4a351c83437017a86e9530",
-      "pmid": "31214103",
-      "title": "ACoAA Rupture Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "6706788ed5078ac00ae02c9267f079bd619a7a2cbbe771598be04375091a618a",
-      "code_sha256": "a05576a286972ab2d1892e5d6872de1c05ce092612749fa639db0eb54b4f94af",
-      "first_case_id": "b74b23bdc60aa15e7a5cefca59ddc7871fe73b968fe2d99c2ec622e4ec1f5324",
-      "last_case_id": "5e4123e13b61c027c1cedec19c1ab2170fe12dda300730797ed9ade2ac2319c3",
-      "pmid": "32433830",
-      "title": "Preeclampsia Risk Prediction Model for Chinese Pregnant Patients With Systemic Lupus Erythematosus"
-    },
-    {
-      "case_ids_sha256": "22f1dba1bb04174e4bba29c08988babeb5f3565b283217c2a181353eda3dde82",
-      "code_sha256": "7d7417bbfd1ef1698357c3fb6572fa12ebb0067b169cf617d66b3ae3092d1469",
-      "first_case_id": "e89836593dc047a8557693de2ea3ea48e23b9a62ca2f55eeb9977bf0eb161cec",
-      "last_case_id": "1ed267fcedc8b33dbdee1837d22be98611dde5283b1e5a2628e688d86e1adf76",
-      "pmid": "22783052",
-      "title": "Hepatocellular Carcinoma (HCC) Preoperative Survival Score Calculator"
-    },
-    {
-      "case_ids_sha256": "7c8fdd833775d3a83b6f20aefd70fe9d02bcba7fbff54b59475929cd2ef58bd5",
-      "code_sha256": "7665da7936d0cb262a9069331bd894161e14e29332f77d9f5b86fb42fef4dd0e",
-      "first_case_id": "24038928417f1f73fdc19bf75e92e05805c945b71c7a937119fa263c6637150a",
-      "last_case_id": "bbfff9eab70f1ac6732ebe59e80db874611c08e52831717d5df87c322630785c",
-      "pmid": "30172349",
-      "title": "Tibial Nonunion Risk Prediction Calculator"
-    },
-    {
-      "case_ids_sha256": "5ca91674fe4589515f1879fe3ffe958ae92ad90d82aa8480ca08c15efa52e39e",
-      "code_sha256": "03cc107e2f3839b01069e22a3768c7d04a9bc1d6876b6081e9a7df6163c99c3b",
-      "first_case_id": "602855313da693220e8a3308e28586aaec9eb2df719bdf0fe420f335d7c4d5b2",
-      "last_case_id": "c474b184c20a59f3b062c207732f980eee2e1ce7025dc65159f32634580e2593",
-      "pmid": "16887442",
-      "title": "Kawasaki Disease IVIG Resistance Prediction Calculator"
-    },
-    {
-      "case_ids_sha256": "266eca9c46e286a35d4b9938c75627426d359849aa873f3950c3249e435220b8",
-      "code_sha256": "147c0257200bffaaa7db7a41e38767a72ec82e8d48b479efb61a1fe331c37080",
-      "first_case_id": "7f0fa89f32b96724b3a669aa01a6c428b8568d231c7117bf1a9d3f9ed2666adc",
-      "last_case_id": "5bd526ddde8be52c2d8ccf73ef339d63bb884d5e3a771aaec32c4b642ff1dd62",
-      "pmid": "23973103",
-      "title": "Early Implant Loss Risk Calculator"
-    },
-    {
-      "case_ids_sha256": "193b00f837cc50114874c0ea93ed4a1d9437fd180e5ae84e62f57e5266c7eb6f",
-      "code_sha256": "07f9ce795698e2f2ef821cf8c9224903bb6a2aee14814223e0cb429982943fd5",
-      "first_case_id": "7f05367d452d1c948ab6e734997d59018734b1800d0a4f7641f00158cdd53d72",
-      "last_case_id": "3644b3923f2031b95ef035c48986bcc1d4b4e15695abe3f10715fd3c9a9e6b06",
-      "pmid": "26994779",
-      "title": "ProVent Score Calculator"
-    },
-    {
-      "case_ids_sha256": "044b6c6b35c5e0360ba093c15b47dac6c564dee09970779a4c21510643ecb234",
-      "code_sha256": "de48780affd2ac1f302f7677f8206e97bc1d27f4697cca67362ae28887373853",
-      "first_case_id": "19c147c130cc155dd8d9a88d75361d271bd015131ca9a78ec9e67deefcc14f1a",
-      "last_case_id": "5744c89a809fd26bc7033a4e289c1c403b566f83bef6988a192dd7345cdbe7d5",
-      "pmid": "25198832",
-      "title": "Abdominal Fluid Collection Infection Risk Score"
-    },
-    {
-      "case_ids_sha256": "86a7f31fe4f154c35a884aab8f1c23bc853cc8afa57a1f55f308a9b5d5990b7a",
-      "code_sha256": "7b979722eb2af2ed03b4224752c0fbc1bb1e05bf4d59483a3dbb7030b5894dea",
-      "first_case_id": "902485775507e817c058b97636a8d4527d7881eacdcb580d3dd2e4c1160060fe",
-      "last_case_id": "4aa2f3e87c27ee3e69529f27a998aa49ac148759ea5fdc3745124f61f08edd13",
-      "pmid": "35106973",
-      "title": "2022 ACR/EULAR Classification Criteria for Microscopic Polyangiitis (MPA) Calculator"
-    },
-    {
-      "case_ids_sha256": "38824ae472996357d019893e8c8e2b0f7b8ba84458028208eaf8192442da1b90",
-      "code_sha256": "b0399b35690ce6ab3f0378c07dde1a977562919cd5bab6b9ee2f894e350aa8e2",
-      "first_case_id": "e7e3faffe7ecd39a395d75ee7286dc7a91037e4f2d6aee1fa3925420f216f60f",
-      "last_case_id": "28aed08705acfb9872d2c4ae0eb5871faefb6c44eea3414727891c735fc61352",
-      "pmid": "23880071",
-      "title": "Preoperative Frailty Score Calculator"
-    },
-    {
-      "case_ids_sha256": "b7baca141b90699e15361d328252770545331c71cac9069487626100381721ee",
-      "code_sha256": "6a194b407bfe687feef89ccd2c57dadead11b2d2b75390faf40d32af3d4a8e19",
-      "first_case_id": "292191e6792c4ec6e6bc432431103ad7ddf72931df106b16e5c47d9ef276642d",
-      "last_case_id": "d6aece80b8afb5d299c79e5eb6e0a0accff56e4ca253278016927cb30739cacb",
-      "pmid": "27740520",
-      "title": "Simultaneous Liver and Kidney Transplantation (SLK) Risk Score for Elderly Patients"
-    },
-    {
-      "case_ids_sha256": "7cf4a38f64fb6cf5ca93237728e35d91a0ebf97485b85774a112a82534c9a6b6",
-      "code_sha256": "83734b5d5d98c467765ff4babf4a368ccae9a1a987328e8142e2903cc18ac235",
-      "first_case_id": "071441c3abaf76fd9366230e3b6afb35e4e894e310771a174db20d87a81208cf",
-      "last_case_id": "cdbc3c921ebbbeb474a3e60b7650ecea74b0205161719b24a830ea9df4df0426",
-      "pmid": "32524748",
-      "title": "Prostate Cancer Lymph Node Metastasis Risk Calculator"
-    },
-    {
-      "case_ids_sha256": "d32f2e152e1dc8b23cce248fc5ac20d51a54eb3ebf4b2d6e904bd0b91a0e2c16",
-      "code_sha256": "cffa086aa7a9407f1e50ed24e47ae3a5a26330fe110fffb52b70d93e29de6a72",
-      "first_case_id": "93a3f52605d9dba4600eab94c91b8789969bd64d5393c18803b54fd93cc8a2fe",
-      "last_case_id": "6404aae6d9d218f89573316e18da676e9052e3e9a33321898273d33ab5082e0b",
-      "pmid": "32920876",
-      "title": "Modified Risk Index (ModRI) for Massive Transfusion during Liver Transplantation"
-    },
-    {
-      "case_ids_sha256": "44e24609295730b3f6662043602776c9932e8852c5a1913d57a402fabb2ac6ee",
+      "calibration_case_ids_sha256": "d25cab42058aa5fe56a3bdeaa0edffe4db26993d9873267908e295a30130f3e4",
+      "candidate_state_space": 2500,
       "code_sha256": "8cf5c57639d86fcfd453af68da0e4a103d363729bba3c53da996ab33aaa381c4",
-      "first_case_id": "358843e16ae2878b98a27fba154a4e5fcf7168623196042da0a67195845ff2be",
-      "last_case_id": "5bc77d2c79e406d2ae395803b9ee9205e03cfb98e2b699508336b5871b49ecc4",
+      "development_case_ids_sha256": "f91630e87178fa27daf234a890f9775ee8d1d643db9ee9ccd031b7161748ccb6",
       "pmid": "29408989",
       "title": "Frailty-Based Predictive Score for Mid-Term Outcomes in Open Total Aortic Arch Surgery"
     },
     {
-      "case_ids_sha256": "3d8e5b9079464a3d6e093c471033b3ce611078caa18fba66457a5542ac545fc9",
-      "code_sha256": "9c6fb46a46c5baeed606fea8267c6a53d0fba02d6031c3b9c0df4e2f1a889b75",
-      "first_case_id": "4fd25d5ebe77c6a66abeafdfada6d66fcd9524d841b218db86818f7401d148fc",
-      "last_case_id": "e6e69066570b96107b4d98d579d3dd20b3b28b87c83551d4623b9a4b3e9ed58e",
-      "pmid": "21399503",
-      "title": "Melanoma Risk Score"
-    },
-    {
-      "case_ids_sha256": "dff086bf4b476dbf33e7f1fccb65c5cddc04f7c26d3d5a9f147f04ffe3646cf7",
-      "code_sha256": "1f1f7150ec35e022a3da1b505531aafc3973808ea18f8a72836643acc2cc95e5",
-      "first_case_id": "9c7a20f25c148dc99e802dc2ba0d06d464e82f04c7ed03178158a0a273330cd2",
-      "last_case_id": "90d2c976f13fdc1c6e73a6af25b328c8fee74d367a8338dba861baab6369e97b",
-      "pmid": "36160674",
-      "title": "Alcohol Misuse Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "170deaddf98693bb840c4c217c39ff1ab7ffa63de6bdd5eedc84228b2af47e01",
-      "code_sha256": "1bcc43f5c56e37474830831fa79607a56627cdb1dee98d3c65e56b1facd43f76",
-      "first_case_id": "32e826bfe9c0ea5eef86b1601b15f64c37ac95a31fda140f6b2a898122c7551d",
-      "last_case_id": "6e2541640c98fa000149278f53db084739eacebee6064500e1f81be36728c1b1",
-      "pmid": "16644622",
-      "title": "LADA Clinical Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "1ceaaa098814ffcd384f961e9ba019bd6abb57c8408ebe8485713629d7a01372",
-      "code_sha256": "a6c0e68701564ce2f338110ca37a91377c6b9e4c1402443c1e8c8ad600911f3a",
-      "first_case_id": "a8f363bfa0773538ca28aaf506f678b06e577a4e142a43b457723ec25c2119af",
-      "last_case_id": "9c4c34c4190b8ab7896f9e9f2f3401d1c117bf3f2b9848d25d61f6b2a5644400",
-      "pmid": "36672675",
-      "title": "HCC Risk Calculator for HCV-positive Patients"
-    },
-    {
-      "case_ids_sha256": "cd905eb019897fe134096aa74899d1eefce895c661fbe4730bb8bb475f21bb56",
-      "code_sha256": "3cd9ada4f7ba04501a679c4ca6c55571e8fdf015cca19499dc34c97a1bb01b15",
-      "first_case_id": "f5709a8b6ee697ad254f508e487cf816155675cc958827d1e1755be9ccb150bb",
-      "last_case_id": "ef11b8b2fb8fcf30a12a9c6af38761313268301b99ddfc9a72eb692ff6c4b2bf",
-      "pmid": "22950428",
-      "title": "Adverse Clinical Events (ACEs) Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "01c97da3958eb2057dc1557355e98872e754cae51ce94c2b22645ab31a90d66d",
-      "code_sha256": "3b7d2569de7cfe9a98f7a74aa2321b1d0bc4fc020c652244c7e7ce9e87cc0af5",
-      "first_case_id": "8df1ad2beaadec98297cc156eb0c8956c97b614e274165911ef07959f5f1aa20",
-      "last_case_id": "5ebf2c0edbbab0532d9aba18ce78e02871b5c44c5737f9a399849a173743e637",
-      "pmid": "24782120",
-      "title": "Prognostic Model for Extranodal Natural Killer/T Cell Lymphoma, Nasal Type (ENKTL)"
-    },
-    {
-      "case_ids_sha256": "dfdf5446e9d9eec9e27e191c2f20c9c1c15310aa54ecbac58a227f36eb5bdda4",
-      "code_sha256": "7f9a892d9af58d006604a35e94042e358006fb49dd1095763f24efca36510160",
-      "first_case_id": "33a677a4229f4a1868ced737f0d2a13a953a5605e80f9535d2eaa7dec27f15c8",
-      "last_case_id": "cbbcf63883695b0fc277633e9c2379484ad06b85d89819dcfc7f4df99053e6d6",
-      "pmid": "31891235",
-      "title": "INCREMENT-SOT-CPE Mortality Score Calculator"
-    },
-    {
-      "case_ids_sha256": "200c5c2ed2f7d7520610438a9a1bd9e20d6991e9452f723753211e38aff904af",
-      "code_sha256": "558d84bedaea83302d5f47c70a7df48998a0596a35d19f92fbe7e26e8670f752",
-      "first_case_id": "6f1e1d1a8e9c8a06239002ac146852a4f06ba14000be96a24ff0c68f5051a489",
-      "last_case_id": "96df4c13edc85a94433c04c395751e7d0140f9805aed34087771f3059d3f9144",
-      "pmid": "23393714",
-      "title": "Elderly Patient Readmission Risk Score"
-    },
-    {
-      "case_ids_sha256": "6c0d7e0fcfe777da87e25cea59b5a1c830fdea700485aa9ff591190a7e6dd815",
-      "code_sha256": "024de9b937eb230ee8e443951d8bcea25a54fb72fd6977948f672cbdccd29366",
-      "first_case_id": "1f0976ce2e7ea7a117a2731e27b9fc486520a7649e0607e809019ca1d3bb5acd",
-      "last_case_id": "f331138e56bcf78708449197881a03774913858a49308f36ffc413e87855fb98",
-      "pmid": "22513180",
-      "title": "DISTAL Scoring System for Predicting Failure of Snuffbox Arteriovenous Fistulas"
-    },
-    {
-      "case_ids_sha256": "9718ec2b0055128ece972a9e83a758f0467fa1846ef93ca188017452bece1084",
-      "code_sha256": "10b1961021724a341b156e92f344c031d28e25ca2c272dddc98bd0135446dcb1",
-      "first_case_id": "dcba58e8625c8fffbdc4b8519f8756034d57288eaf15e01366481815b0514023",
-      "last_case_id": "67c5cbd65a0741e9441b24458a58794bd5c46599975d53be76a615548916a4f3",
-      "pmid": "28391551",
-      "title": "Posttraumatic Hydrocephalus Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "d75ab7d8016376e98b51d0e26ac1c88b3c82d94c27304d482d5de3d2808c1698",
-      "code_sha256": "d3d023e083bdb3fd30791c95e5b8992a5ab3d64b49e60ac146b27a4c561c1d95",
-      "first_case_id": "fa6b0f36dd8d9ed49e6cf3825740f9de6ac6aa6152ce433e8760001d0f1c0b13",
-      "last_case_id": "8903a6a4c59b093ca4c28010a2b7e6a0ade0a7735b74ed411f2a5da1ad37ad1f",
-      "pmid": "31882242",
-      "title": "Cervical Cancer Prognostic Scoring System"
-    },
-    {
-      "case_ids_sha256": "d22c895e5a43707af98de0b2ee11dc2db5be2e498d60d6e74a0576382f04afad",
-      "code_sha256": "327353a627e5571373a445430823a8c77fdc50ddb6af9723bf7f9a811033c4da",
-      "first_case_id": "7e430f9519e88e90db6ef2a2af3fbd744977e658fbf4869e4521558f38e15764",
-      "last_case_id": "265d85f83a564c289ff22d8ad077a0e45fe9ffb751f297dd4a3f2f48355f3017",
-      "pmid": "36091074",
-      "title": "GPC-3 Positive Expression Risk Score Calculator for Hepatocellular Carcinoma"
-    },
-    {
-      "case_ids_sha256": "61987bacef1da012dfdd2e8aefbea4309cae2d87914d8908120d99fcaae26d00",
-      "code_sha256": "f5d49ead9ca07facb0570790fdaf020539ef88f6733b8787131507f46afb1458",
-      "first_case_id": "ba2c942bf287de4d8412e4ceb7200c7c4149aae210c25b6e3e170381871105c9",
-      "last_case_id": "2024c254ed0ed1cb224859811fefaef3aa36d52f8d232b2914ecfca040e849ca",
-      "pmid": "34884334",
-      "title": "Post-Operative Non-Union Risk Score for Subtrochanteric Femur Fractures"
-    },
-    {
-      "case_ids_sha256": "7dec731f2ef4c693b2b5903330c8be7c7ec360e07f9f98de670d02497835f975",
-      "code_sha256": "26802bc48ef600191577130826b023080363740c7e6164d5c85f09060cea7d65",
-      "first_case_id": "bf8e64a5eb33f33d95b68e4836ba1ca97cf3df30f6b37f301c22251199d6460a",
-      "last_case_id": "a9edd8ae4ef2bd6e02ded4e6ade503eaf8829ced3beb8684fcb21bad3af1b54f",
-      "pmid": "12359784",
-      "title": "Bacterial Meningitis Score (BMS) Calculator"
-    },
-    {
-      "case_ids_sha256": "540cab71383bc68430dce3c3124d52fe4fb2c75d28cf10cbec61707cc42b8bdd",
-      "code_sha256": "2741929b65a26bd6cdc0d8b5a809952770b28f693ecb256ad6b550597fb09302",
-      "first_case_id": "72b05ac4b7ed8829464a1f0e34622d2cb1057b6bc8067cebf330106cb76dd616",
-      "last_case_id": "b3af79b0857996bf87f08b44aadfdb7853140327a80c7fb457be15d14049aabb",
-      "pmid": "36082101",
-      "title": "Reduction Mammoplasty Complication Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "8bb0d503c89d535518526a86fcfd77f685a1aab506a487523d62ddfc170429dd",
-      "code_sha256": "d7d5e9d130f5a321376cd2976bf29c9f8ff6bbc26d89fe0498bbcf37a02f1478",
-      "first_case_id": "83ace818a1cb602046ab334a1244a988337762f8ffbed7e093db0ab674b3a713",
-      "last_case_id": "acb8633b5382230bb4a14cd90f4f7f4310a6c8020877a494ce94c606cbd40b41",
-      "pmid": "23782966",
-      "title": "Early Acute Lung Injury Score"
-    },
-    {
-      "case_ids_sha256": "4779ad2db46c38ae5f1a896c299ebac3a5a31f57f23c8ab0f1568192da7cbfc4",
-      "code_sha256": "eb7f2fb47c984d961ef79a918e5efcacfe526004c21b056b2a91dfd72a2a9dd5",
-      "first_case_id": "3a5df9f158ed77d0987ebc66fba3e7e41750d175b17528b7a2be5eb673addbe6",
-      "last_case_id": "bce6a22f91641b0b8c45bf547010c92845961ad84e5a810a7fc754041256c8fd",
-      "pmid": "35157042",
-      "title": "FLAW Score for Predicting Rapidly Progressive Interstitial Lung Disease in Anti-MDA5-positive Dermatomyositis Patients"
-    },
-    {
-      "case_ids_sha256": "e7be2a9369e33417f460ac03a56ee686572b2cf19099ee417125506faa931035",
-      "code_sha256": "574d8a34abffb64815dc4a147ad0e5a8c846bc6dcad9e74ef45b196289725406",
-      "first_case_id": "5cb4bf008389fdb60643a47101be15235450989c285b7cace0b94bb435765005",
-      "last_case_id": "d8c2ac96028165d5fd70ea6898907d491f2ac6daf6d3a17813d370103334220c",
-      "pmid": "30065497",
-      "title": "Ultrasound Scoring System for Preoperative Prediction of Difficult Laparoscopic Cholecystectomy"
-    },
-    {
-      "case_ids_sha256": "197dbbdb8f79f8ef6d4d3f7fd316e15b41b10437cc40cd60cb842031840a2de3",
-      "code_sha256": "434a2384b059667c006edc47f700f3a87161de3fc9bb6d42568308855bde5277",
-      "first_case_id": "7f3d6a4423cf04e0390e0a001cd039e53e567e16ef99942aa5ab57faf773f14c",
-      "last_case_id": "d988a48854a3379f97487f6eb3d3154e9f5e2cb214b5d28f7528331f1f4dcb48",
-      "pmid": "31154851",
-      "title": "\"Rule of 4's\" Surgical Intervention Predictor for Distal Ureteral Stones"
-    },
-    {
-      "case_ids_sha256": "a3f622447223cfafa022cc3c92d72d9aef4bd8e7808e41f7a75752bc981ada78",
-      "code_sha256": "5f3df41da97492074e93d302efa709045bca8d5fa5b832cbdd5f13fbcd767bdc",
-      "first_case_id": "c03c5ab684742491e27961c34644f6f18657b4991ac08408c555e4ddd1bb727c",
-      "last_case_id": "504a31f759a23c5f04eb26c05077aa117a22db3c471c2bdcecfa476b67428d7c",
-      "pmid": "34373347",
-      "title": "Sleep Apnea Risk Calculator for Chronic Pain Patients on Opioids"
-    },
-    {
-      "case_ids_sha256": "16eaf11db8442d5432aab7eac2b9a43ff0facd136b293f95a1849b5b8bcdc258",
-      "code_sha256": "d4ac55a2aaf8b727f3a279f270f9b26d741856913abc2b9e05dc04cedff9a9b0",
-      "first_case_id": "735d0b1c1655520eef067771f909eeeabcd798dd03b08edfae62cf8c97c44c52",
-      "last_case_id": "882052db752350c2ab6c7d46e299b1d080efc68b7564f163a10fff0b7ec9ec8d",
-      "pmid": "15312862",
-      "title": "Coronary Artery Bypass Graft (CABG) Risk Score Calculator"
-    },
-    {
-      "case_ids_sha256": "8fe9efb427196de1e4c84b87f5c1849938114e74a3472484b60b25e229fe1dc8",
+      "calibration_case_ids_sha256": "e88fd5e0124654f173d646efbedf93bc014ad892815475d2d44fed64b1a2d806",
+      "candidate_state_space": 31250,
       "code_sha256": "6d08f0501f11b6bf1e3de4ef6675465f4a399f329ebf2891db0178ab130533cb",
-      "first_case_id": "b7ceb0707aa828b76c300b354a89ede72acac02971900a6238d14e36c8d51f81",
-      "last_case_id": "a6a698d8f7ad1f8c73203c5651827a67f13190a37fb95362b620d200dc5b0f99",
+      "development_case_ids_sha256": "c08a3969346365343afd9c745418e322c84c1babffa6deb8d6f44b357f8a6981",
       "pmid": "10951229",
       "title": "SCORTEN: Severity-of-Illness Score for Toxic Epidermal Necrolysis"
     },
     {
-      "case_ids_sha256": "d75ec5296a56b1cbbc5229700ba4dc0783848d097f33df88b47bde138bc02f72",
-      "code_sha256": "48e0a5c2819b01c103231115f8780e6d0de2b3422bf2fd5b9448c12a25af36bf",
-      "first_case_id": "d97368630403ae8f62642e4d62bbfac74084ce65312038f0464f8f6efe444b19",
-      "last_case_id": "07647d629bb6a61e6edf129a02e99d70a0d91d8e2884349ab42908939222ab79",
-      "pmid": "11057848",
-      "title": "Acute Pulmonary Embolism Adverse Outcome Risk Score"
+      "calibration_case_ids_sha256": "ca5f07d15c464e496c987758aa957fa4891edab3f7fa373ed6281bb9587f1c0d",
+      "candidate_state_space": 3125,
+      "code_sha256": "5a368a879e0301c76ab9e2db4cf425b5a8eeda3a58c6e05eb1ac52cbc433ebae",
+      "development_case_ids_sha256": "8fc80fccf0bdf825e297377ee0043a0d2fb6a76d51ffe65faaae48b0bb17992f",
+      "pmid": "32125106",
+      "title": "5MPB-Toledo Bacteremia Risk Score"
     },
     {
-      "case_ids_sha256": "ae5c41ed2d64642fb7f0aba74d095393c0b4f0435a4019db499e0e907fa8ac26",
-      "code_sha256": "16fb71d8a9a19ac986d0a45b65c71a71126fd838efae2aa5e16c2d8aff4129cd",
-      "first_case_id": "d5d3cdfdcdc890d293a9363975b61959153f2e69b22e62ca2f30944b339d453f",
-      "last_case_id": "8c463e923fe5d34c54dfc3de347d7a626e322d4bbac54c02dc3d55bdddd4bdee",
-      "pmid": "18562980",
-      "title": "Gastroesophageal Varices Risk Score Calculator"
+      "calibration_case_ids_sha256": "ee17e1b8e18d79411dc436b5c6ebd1aecce694f4343e52efa345c756d5f249d2",
+      "candidate_state_space": 2560,
+      "code_sha256": "de91c877c4993a9f8a16997ce04eacb2af485d914b0ac1170097cd28420a5039",
+      "development_case_ids_sha256": "84e475fef31ba5e3a803f2b9b8c955e1a342f818068515227737286c6ed3f6fb",
+      "pmid": "33613456",
+      "title": "Growth Hormone Deficiency (GHD) Prediction Rule"
     },
     {
-      "case_ids_sha256": "032a546139b858cb1d55e32b774994ec285ef89dd347fe2db06809ef9857ab69",
-      "code_sha256": "64f8f3b8758f3e933eabe537f89d7c497727d7c61ab996666d20a949e14c75cb",
-      "first_case_id": "25397cc9e7c3e31800aa006fe6f5ef917eb8c9872bcc13c12b2326481fb2f2bc",
-      "last_case_id": "756ff812d10c37a204e0460bae9ad98643dbe08dff6661381433c06046829df0",
-      "pmid": "24487652",
-      "title": "NaURSE Score Calculator"
+      "calibration_case_ids_sha256": "3ad2f948374a39aa7795cbb250e4edc73ec92539e6c315fed3819f481eaed43e",
+      "candidate_state_space": 1250,
+      "code_sha256": "d6e1c1b2fb9d62b45aa05974affa825690da94890b7ca067d3380adddb954cdb",
+      "development_case_ids_sha256": "1da68acef9e726071b4aa91a47787ca00ebace5c51918e7f99ea1a2c713cb9ce",
+      "pmid": "31863515",
+      "title": "AIMS65 Score for Upper Gastrointestinal Bleeding"
     },
     {
-      "case_ids_sha256": "93a09861fa321ac7106dd16cd5f6d25cca4b8741cbf5a72ec93aac1061abd347",
-      "code_sha256": "b6e66813546dc4039d0ff7b7bac4d0863f7465518cc4f543c8ab7feb4d545c49",
-      "first_case_id": "5c1c2b02062e3eb5c56a9803638e4cdba8c27940eb0f6f3fffbc065f4c5c27e1",
-      "last_case_id": "9545d3ea5e46782ea669d5eb2cac71f34ace207ff6078bb1c669485257772470",
-      "pmid": "22331953",
-      "title": "Prognostic Staging System for Light Chain Amyloidosis"
+      "calibration_case_ids_sha256": "75acbce8cae830fcd8054af64b803745bc53617d53ce3cc5af50428b6eb81e13",
+      "candidate_state_space": 1625,
+      "code_sha256": "236126a2e0c06865f084d4ced8d3bcf6a0098c3a24003ff4d6b53d4992940ee8",
+      "development_case_ids_sha256": "166391c43ba7c6e1568a1073d44205e47c38ed07c4b9b0fcbd7e16e0eba8a128",
+      "pmid": "31118465",
+      "title": "Revised International Prognostic Score System for Waldenstr\u00f6m's Macroglobulinemia (IPSSWM)"
     },
     {
-      "case_ids_sha256": "5fdedd52ff63ed3c559afd27c74e861cb4e9712dc6c4ed0b2bb1e468dd4b501b",
+      "calibration_case_ids_sha256": "5f3ccff2f68966e80e28035779fa21ba8cc09d31dfe491b79d1a40e12dc18460",
+      "candidate_state_space": 6250,
       "code_sha256": "2b096c81715a68beca75e25341dea1298098ebf4baed79bbfa04cfa2933daa33",
-      "first_case_id": "6d16343007703e16fb5c7b7d132c6c6369ac049d8efdf6db3e254244484be09a",
-      "last_case_id": "7631cc6ca2898fe50dd9a637f3832d1afb36d5648de75d40325168b05c2a5197",
+      "development_case_ids_sha256": "e03f01996f598ac84ab3426d7a379939f76d7f34c361a47ac3ffb985e4a5b26b",
       "pmid": "19508548",
       "title": "Clostridium Difficile-Associated Diarrhoea Mortality Risk Calculator"
     },
     {
-      "case_ids_sha256": "968d852ed41742c0862d44a62a722117ae1c06e246b2703cc548bf07eb9bd339",
-      "code_sha256": "65d355b10d53389cd8bb17985172a51758681bfbda42246481ee67e31368c8a8",
-      "first_case_id": "e5457e9450dbb2c0ef83b8738cabb44a89f89b58a2c67a40c3fc767fd4fef217",
-      "last_case_id": "7f54ddd3fc000b9f9128df08ab57e244d26fa3ff8f22cc6c37afa7d11a7fa381",
-      "pmid": "32323060",
-      "title": "SOCRATE Score for Predicting Intradialytic Hemodynamic Instability"
+      "calibration_case_ids_sha256": "1dff8a5495dc97021accc2020e6d98e1e98679efcc0cf5756884efde23826c1b",
+      "candidate_state_space": 1600,
+      "code_sha256": "8dbfcbce176d60cf50f67590c4c81f1c96d183df4c89718ebdfbec623b62334f",
+      "development_case_ids_sha256": "d70c2491182a2fa29fcfb663d776145c09a974abaff1a20e0069fbe1a2c072e6",
+      "pmid": "33215084",
+      "title": "The PRESSURE Score Calculator"
     },
     {
-      "case_ids_sha256": "c72ed9ffc9f1007fab01bfc8d10e9a27101ad527ccfbc2e68129f7b497a3496c",
-      "code_sha256": "940d23c08f36d8ca48ec186bf5e6691fb82db1b8a8fd10d497f8d48d406428a3",
-      "first_case_id": "284cc4af26ef5973639ce138c50b82d4fcfc9c69669b77d77a07e71d2d1c9c15",
-      "last_case_id": "45ecd3f445c6025799fbde967ceae2d276e581eae46229e8c939fd72c699abe3",
-      "pmid": "31735079",
-      "title": "Post-Stroke Pneumonia Risk Stratification Model"
+      "calibration_case_ids_sha256": "766c9adc7feb08d14cf8186a1739a84fb080a58f2810db7f0fe8b402565a79d8",
+      "candidate_state_space": 5000,
+      "code_sha256": "a05576a286972ab2d1892e5d6872de1c05ce092612749fa639db0eb54b4f94af",
+      "development_case_ids_sha256": "181b862ce8f12c01143130df9e558dbf1d2ba15bff95096bb39fac13268efc6e",
+      "pmid": "32433830",
+      "title": "Preeclampsia Risk Prediction Model for Chinese Pregnant Patients With Systemic Lupus Erythematosus"
     },
     {
-      "case_ids_sha256": "19bb297b75497ebdad9145e92de26eb98f37bb4b571a0f285ba448151db6e629",
-      "code_sha256": "943fae2bc1f2bde2fd3b59222185009ea659d820facb55406eac009159a28c01",
-      "first_case_id": "8bf90d023b9d0e6b5bff4e864841a25178ef77f847b8efe9872ebefb31b5155f",
-      "last_case_id": "7c28865fe0ef134f923a2b858e1a1af632e94ca1345a03f047821c455cf12300",
-      "pmid": "24991535",
-      "title": "RHEA Risk-Scoring Model for Endometrial Cancer"
+      "calibration_case_ids_sha256": "e634e791e4ec5b1708e8bb64a63c9b4f2e0b9efd116a0ce111eaa79ce37ab8ba",
+      "candidate_state_space": 15625,
+      "code_sha256": "7d7417bbfd1ef1698357c3fb6572fa12ebb0067b169cf617d66b3ae3092d1469",
+      "development_case_ids_sha256": "7a636236c9d1bf457e8c91c423d8d32c8a8cb12095e6ecf78106a94fa951381e",
+      "pmid": "22783052",
+      "title": "Hepatocellular Carcinoma (HCC) Preoperative Survival Score Calculator"
     },
     {
-      "case_ids_sha256": "7db9aec7cdec596871ee273ba325143af905a7963fb566470ec0963fb4edd076",
-      "code_sha256": "b2547d85a06f67779095d90637cc5dc1137005a83084ac984e5582013577ef7d",
-      "first_case_id": "2411ca39d7b87778675dbe50db8480d52692163af84173746f83b42c0885b4d2",
-      "last_case_id": "0cb55bfaeb53bc20a08981e6559f064431e0b381c5c62cb059dbfbf1aa9c1b6e",
-      "pmid": "30050733",
-      "title": "Venous Thromboembolism Risk Score in Glioblastoma Patients"
+      "calibration_case_ids_sha256": "5a4f563c668001c5647b8d5379149a753c31f5bf3647121779bbb035971f5a65",
+      "candidate_state_space": 5600,
+      "code_sha256": "4a21a093aa98a07c213430d74d8f65850d94ce22a62336f80b84ff8b26de90c7",
+      "development_case_ids_sha256": "752b2901c716d4a1a9be36c3cacfaae1d701aaaf48edba9b1dc3762102105371",
+      "pmid": "31285117",
+      "title": "Postoperative Complication Risk Calculator for Posterior Spine Surgery"
     },
     {
-      "case_ids_sha256": "455040e3022baaa4e94edeb2f81e802dd5317643ac4c24ccf36e56776c4bf9f6",
-      "code_sha256": "16d23ccbc37acd2eae5f8079e2a51471c926ea63ff29e39572ede3f8b95b2f63",
-      "first_case_id": "b6fe1a9c679b311082a31ed74862a2d33074341887889be3e52b1c714077acaa",
-      "last_case_id": "6c2877e8f68af5ec883122f1ed12e14a2df9e56177d33069f6541b10726e2c14",
-      "pmid": "33243159",
-      "title": "Surgical Site Infection (SSI) Risk Calculator for HIV-Positive Patients Following Orthopedic Surgery"
+      "calibration_case_ids_sha256": "45c6576a476635682650ae953f7ccfd7a4371dfe7f4c0d17a4cb3ac7adb2c090",
+      "candidate_state_space": 3125,
+      "code_sha256": "03cc107e2f3839b01069e22a3768c7d04a9bc1d6876b6081e9a7df6163c99c3b",
+      "development_case_ids_sha256": "7942c26c2ff43c96c67ff7548eb65d42f5db3dc14d2ee33d16f1c94d73d398ec",
+      "pmid": "16887442",
+      "title": "Kawasaki Disease IVIG Resistance Prediction Calculator"
     },
     {
-      "case_ids_sha256": "674bbf7fc92b717d0e1f3d1e86906980c844d36892f504f51ea849b6d9740dd6",
+      "calibration_case_ids_sha256": "73764e6ea304a86f0a95baf5e0b7e2f80db451fbc7b01f18b23451983b85df1d",
+      "candidate_state_space": 1250,
+      "code_sha256": "35498e8922345ae81d78e43632ee5b92980f361c3e1a9853b81bd14131113f6a",
+      "development_case_ids_sha256": "82464ce2101a4b979552d21589fa821a1bdd287326df1cb0184e0111ef42aeae",
+      "pmid": "19384214",
+      "title": "Acute Lung Injury Mortality Risk Score"
+    },
+    {
+      "calibration_case_ids_sha256": "027506d2ddb38003d61e747a9e501a48127a2c471b86a328311a0aad8237dbcb",
+      "candidate_state_space": 78125,
+      "code_sha256": "b0399b35690ce6ab3f0378c07dde1a977562919cd5bab6b9ee2f894e350aa8e2",
+      "development_case_ids_sha256": "4c737ea5ed9926544a20c7d61085c85d83d6ddb2651209835f4658ed661b5715",
+      "pmid": "23880071",
+      "title": "Preoperative Frailty Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "4ff314360703baa3f21dda6e5d4ac569474217070405a76d2d1037dd66a3fccd",
+      "candidate_state_space": 1600,
+      "code_sha256": "94e359d4196173bd8b07b4dcd1c740cf5c6ffa8d5141f6d406e798b25f1e10f9",
+      "development_case_ids_sha256": "a6cbd229f95d7eb9573998463d838faa207c27aac8db12cc5584d07ef8834d79",
+      "pmid": "35144748",
+      "title": "MitraScore Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "565c1dfc522560cad68fc48547e4e9cb845f40c6f2687997903f3e221fd348fd",
+      "candidate_state_space": 1250,
+      "code_sha256": "b49ed18ce958c5ebb9ab424a9bb53467041a9bab5774284b49faf61355f9f205",
+      "development_case_ids_sha256": "043edb2f3e22b459bac6e924d3d7c5b848108216073d4626b213b7d62943d244",
+      "pmid": "34967427",
+      "title": "AIMS65 Score for Upper Gastrointestinal Bleeding in Elderly"
+    },
+    {
+      "calibration_case_ids_sha256": "4bb25dd2d086e96dad36be7ce59137ed0d9f49b725aae5fd74696a8bbc8d5850",
+      "candidate_state_space": 5000,
+      "code_sha256": "f0231bbae22f183915e8388d25a1bdefb6d32509f605a77ef1953bf2036749a9",
+      "development_case_ids_sha256": "7cb438555d10da91bd913ffa09722becc0e4690cfe5b9e53987447e1049a35cc",
+      "pmid": "35360522",
+      "title": "R3-AFP Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "4e927249274abc8739a355293ebe4a0e3082baa3f654f1db4bc80f963af57e32",
+      "candidate_state_space": 5000,
+      "code_sha256": "8d738bc63a54147a8605fa2751c7402e4dfca1335e17ed60b2ab4c7f6620e948",
+      "development_case_ids_sha256": "d59f190207e8b3903d7c640d2e66c4e43518b13e1a1da579f343a1f6578628e1",
+      "pmid": "30340093",
+      "title": "PLASMIC Score Calculator for Thrombotic Thrombocytopenic Purpura (TTP) Diagnosis"
+    },
+    {
+      "calibration_case_ids_sha256": "74991e8ab221306c9d2929a75a1e848a7fcaed4961f5bd1d898a41ae25269121",
+      "candidate_state_space": 5000,
+      "code_sha256": "0d915f8f8da5928549064cce7396bffa8d9886056c9a903b06cd789283beffa8",
+      "development_case_ids_sha256": "006fc8f4aceb289c8741cf4bc15f3bc037edefda3ba269bd2940c658861bf278",
+      "pmid": "32527341",
+      "title": "COVID-19 Severity Early Warning Model"
+    },
+    {
+      "calibration_case_ids_sha256": "2974cf75576e89a6ff5f907d715c7b8e6b0d2c86f8b3ef8fd30adfe90bf405f2",
+      "candidate_state_space": 2100,
+      "code_sha256": "c34cec6e81cac32a366cbc69054bdfcf964f5885bd9416ebd054df3403425a62",
+      "development_case_ids_sha256": "a1533e49f273e6e1235e942013b1396adf82266e4bf806b3902f3a84f3a55f46",
+      "pmid": "31443074",
+      "title": "The Surgical Swedish ICH Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "5ba57dec08ec059ba82f2beba01d7b98475b5591ba11b57a82f2356c136c5405",
+      "candidate_state_space": 4000,
+      "code_sha256": "bbf7f9e2c4f1b4aee25ba5d2599833feece21f3726157346440e9e587c4c8c51",
+      "development_case_ids_sha256": "0cc58c6cb3573ee2e2da5aef6dbf670d1374334151ad74a73ad5c83ca4742d34",
+      "pmid": "33819676",
+      "title": "Obstetric Warning Score System"
+    },
+    {
+      "calibration_case_ids_sha256": "e850e5c6d77593da889fb4eaae8b31337c0727d59d9c4acf53addf5582e77a8f",
+      "candidate_state_space": 2500,
+      "code_sha256": "ec792b9828f37565b6a1793b177fa20f019530055a57d3c8876a1dd535a64443",
+      "development_case_ids_sha256": "9e21d4a38c6d89001db8dcca259de5fa4bb1a2da06afcd911b20229b31a6915d",
+      "pmid": "22815214",
+      "title": "Advanced NSCLC Prognostic Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "244d721aa912b3530320ecc38fafeea6739a5910449d33773c0725d2fefdc711",
+      "candidate_state_space": 1250,
       "code_sha256": "06a571772380b2b38ae7236fbb1a519e6b390b7d80a95df0e2ddebf0cce93d21",
-      "first_case_id": "1ef166a3044b8f9fa01d8cb6dda2ea2b4a5004843cb88bd40b18b579ab97a2b0",
-      "last_case_id": "a1cab4fa4acd51913fd6992661c810032faa08f7c6f7b04453868934939c7594",
+      "development_case_ids_sha256": "c725e29a6d08aec42e655cb79bd67132875004b420212190b5d935d6fe5551a7",
       "pmid": "33441105",
       "title": "Mycoplasma Pneumoniae Pneumonia (MPP) Mucus Plug Risk Calculator"
     },
     {
-      "case_ids_sha256": "994d47c1adb20535483ec9eb6cbf8992b8e8261dac29fb0b54421509ace3ff12",
-      "code_sha256": "038b88a69f8a2439eb14fe656c443b1d32d7a35b9064d5b75ac49f55057c2f4c",
-      "first_case_id": "d2fa879ac4722b3d4428503b6a99b03297a2d92ba9598be1f51fcdae0e6363f4",
-      "last_case_id": "9e8f9dede64b874acdc6b370272c417c063e539bbfba7d1e5a9b76c1bd6048a6",
-      "pmid": "27398948",
-      "title": "Community-Acquired Pneumonia Prognosis Calculator"
+      "calibration_case_ids_sha256": "e8f2110a1bf33fbbc98ac7861e0d9781fd454cdee0d88da0d6e820d646f775cd",
+      "candidate_state_space": 5000,
+      "code_sha256": "5a69e846f5084331ee89707f4e81958cc5a0833ee7c2d13a7de49a16ed9f263a",
+      "development_case_ids_sha256": "dd5f56e652550686a4a75d45398262a72b4c06ca2d20289af833877d3f82b8e6",
+      "pmid": "21963078",
+      "title": "Pneumonia Severity Score in Inhalation Injury Patients"
     },
     {
-      "case_ids_sha256": "d8be94110e0fbfc63b824995edc24132a7ee46b388763269b5d70205fd36c56d",
-      "code_sha256": "9d657d1d40ca4bfe24c9e5bd62f9f1e8604e8def3106b84f4792840ceb39b76e",
-      "first_case_id": "8f38610985a0e1a8cce4a147c8d4781a341a67a048daa3d17c4acd85dd0955de",
-      "last_case_id": "5cc71fdd588f4f066d0f14b5b1367f293ada85026c50b1b0d72db1d33cf34098",
-      "pmid": "33995602",
-      "title": "Sj\u00f6gren's Syndrome Risk Matrix Model"
-    },
-    {
-      "case_ids_sha256": "67ab666e03555241dadabf3bd87a1c84da2979fd0dc162566c9f6f6bbf06443e",
+      "calibration_case_ids_sha256": "479801d0315bd27d1bb4f55c2244d1526983b879d21885ecfd89edba81366f4e",
+      "candidate_state_space": 2500,
       "code_sha256": "49bf733ea5034a6f6c308fa8b5f4beffae6a561f3a65f30519fffb8388ce1d08",
-      "first_case_id": "8a1d9eaa1a4df697c705e950e70e270212745acb1b763e73806f5449694a69ab",
-      "last_case_id": "ddf5117d67c26fc6a3bf4963cbfefae99192e84e413ffa43e6d2ac6db170dc36",
+      "development_case_ids_sha256": "e34cc308f6d1b90b4ef7a28c28203f58d9037a7bf9af4e9f455cb09b5e89ba28",
       "pmid": "27743591",
       "title": "Geriatric Emergency Surgery Mortality (GEM) Score Calculator"
     },
     {
-      "case_ids_sha256": "4c9de31263e42a4a1a0a2e8efca3f026e82ae21d13775dee0b68727cfe93f9c1",
-      "code_sha256": "9151bf02b24b25858adf2bc52fce4ed211841fba247e8cdcdd4d09fd1113ec97",
-      "first_case_id": "502a3ffb637c3bb1706b9279ad5157f2e873845f71e32db75354c4dab4da9640",
-      "last_case_id": "ca991daf51f058f496935b2c6e78ce55c2f714fd03ba6e3400c11c4b2bf318e3",
-      "pmid": "34729221",
-      "title": "Prostate Cancer Extracapsular Extension (ECE) Prediction Algorithm"
+      "calibration_case_ids_sha256": "c25c1ab8bc0dfeda02efb4cc7cb72b879b9b548309676715935433c13531b16f",
+      "candidate_state_space": 2000,
+      "code_sha256": "315d33d232cd433ef89fa3419babb1ef62845a75a003ed56dc2c3095f7832da7",
+      "development_case_ids_sha256": "3708af882ba841c845e3abfe613e3e3a0dcd0e19ffb9ba28ffbca189631442aa",
+      "pmid": "11792137",
+      "title": "TIMI Risk Score for Unstable Angina and Non-ST Elevation Myocardial Infarction"
     },
     {
-      "case_ids_sha256": "26ac823c69874a21404ab0a554cea8bedfe36dad8b3e00edcf741926cf6c4b0d",
-      "code_sha256": "a2371e0daea028ec6bc263f7295e5b4d2ced186210fbc55e2899a27f9bca4aac",
-      "first_case_id": "266134f019580f6bd3f7145bbd8861475728f1b7b1a15dfa9b12da1c03599647",
-      "last_case_id": "19ef18bc247bd7b03f4a628c73a21eda60ee76c1c8bac09f1655db68717e2f71",
-      "pmid": "23696476",
-      "title": "Respiratory Risk Score (RRS) for Liver Transplantation"
+      "calibration_case_ids_sha256": "90e9f515d013644fe5fc0591c6a963dae91aa226ec51671f767d1e6f1683fa9a",
+      "candidate_state_space": 12500,
+      "code_sha256": "e48af446b5eafb8a1f23f2ed61450b908e2d5f7541f2923fe2a1a286adca3338",
+      "development_case_ids_sha256": "2c214fb6c8b76b7642c36b99472e2e41eb5ae3cbc6ec5e12d455f2a42776daa2",
+      "pmid": "36426167",
+      "title": "NIPPV Weaning Success Prediction Score"
+    },
+    {
+      "calibration_case_ids_sha256": "552bbf9ef083468b941f4d59e446644b605f14741f891a19ea720813d2823c4b",
+      "candidate_state_space": 4000,
+      "code_sha256": "9b353245e8724c8ceee81fcb4d4dc6d6ed79bec1eafc4d674bf5107ef2b3efe1",
+      "development_case_ids_sha256": "dfa27e779d9b8c71de542a8084d8ea820f691e54270f2242c5ea3c87e0d54740",
+      "pmid": "27311620",
+      "title": "NOBLADS Score for Severe Lower Gastrointestinal Bleeding Risk"
+    },
+    {
+      "calibration_case_ids_sha256": "7edb5788c2f084758ba52844cc328924bbb9246af9a7a3cf5886416c4bd19218",
+      "candidate_state_space": 5000,
+      "code_sha256": "c1978df76501417bd71b01a9dcf668952c6b5a743fdcbffd19dfe350724d145d",
+      "development_case_ids_sha256": "0af73a1356750f4b6fcc6c2a0a64af15454d67f06ff026d1dbd26b76b4e20939",
+      "pmid": "31079658",
+      "title": "PLASMIC Score Calculator for Thrombotic Thrombocytopenic Purpura (TTP)"
+    },
+    {
+      "calibration_case_ids_sha256": "8a2d7d85f147cf65902cefea68425bf7966e3b74923c9b1b97c97b329049d223",
+      "candidate_state_space": 2000,
+      "code_sha256": "dc1974954c69a2af6ee2c3ec0a3b4e44ef4944a80c6b60891dd0cc66eeaa262c",
+      "development_case_ids_sha256": "39056795069f17a7af36d34dd585fb5df6732bb6677ef2a08760d569e21eb0c3",
+      "pmid": "20121574",
+      "title": "HIV Virologic Failure Prediction Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "55aa9669383ffb57b45293d40cc1834c327cc885471994a0a65a486cba291b60",
+      "candidate_state_space": 2500,
+      "code_sha256": "3b7819b30bae35d51dfc822742d38b54b488ecf3bfc90f3a32c14d5f5bd84c3c",
+      "development_case_ids_sha256": "a235bff54c48a5601988eb5291ffa802b17527451ca919fdbe0d5318bdd03bd6",
+      "pmid": "28298047",
+      "title": "Postoperative Meningitis Prediction Rule"
+    },
+    {
+      "calibration_case_ids_sha256": "0e30a6cc78a516073d35a4679604df1dbdd811b57f2cee89da5de66f6e23425d",
+      "candidate_state_space": 6250,
+      "code_sha256": "5bc7e1f75bf9cdd4331bf5a33f6f5e00ea271599ce87039d4c0023c35260f83e",
+      "development_case_ids_sha256": "7d30e0595d814bc8557a4f84697da786413f1e6baf5f220d6f6d03b00752d1d1",
+      "pmid": "26014515",
+      "title": "Nasopharyngeal Carcinoma Distant Metastasis Prediction Score"
+    },
+    {
+      "calibration_case_ids_sha256": "65849dabc17d05941264cdc0c47235fcf72a917fe41ec91f51f773fd79f44c67",
+      "candidate_state_space": 3125,
+      "code_sha256": "d8604f9f1da736e47132a3ef095d3afe3adda6d29fa1c647c7c07f023a282a40",
+      "development_case_ids_sha256": "95b85a829a4c0f8849ebf503e507bc47046cf4da7965c2183139d8b9e9b0a42e",
+      "pmid": "30026252",
+      "title": "Kawasaki Disease IVIG Resistance Predictive Tool"
+    },
+    {
+      "calibration_case_ids_sha256": "19a433e67bce7020ddc2c6dd8b9f21d7845c581f089164d90b80229e3635c091",
+      "candidate_state_space": 3125,
+      "code_sha256": "6c44fe26a6ac74bcaac2fb8184a255853b53945dd9db5dd5245ccf15a39a429d",
+      "development_case_ids_sha256": "042ccbf1fe1256149e62399315abc7f29757596d9f557a6d1f47bd0f164e5efe",
+      "pmid": "19033016",
+      "title": "Cardiopulmonary Exercise Test (CPX) Score for Heart Failure Outcomes"
+    },
+    {
+      "calibration_case_ids_sha256": "79fc80f6bb9f1d749115c32a33eb0961600b43be2bf71c73984f90206f13a4c4",
+      "candidate_state_space": 3200,
+      "code_sha256": "1041ad062d358e386896b7b31630ec534bc78b1e9d34fa93a424f709b182a385",
+      "development_case_ids_sha256": "34d999e064d83d9db3395352481af6b85bb477c4783ae3084c2272944c07c54f",
+      "pmid": "16480439",
+      "title": "Emergency Room Transfusion Score (ETS)"
+    },
+    {
+      "calibration_case_ids_sha256": "af78cc0cecc088009f2e7bc2fd32be7996e70be9e9ecc0ee2a77d6f246b6afef",
+      "candidate_state_space": 3125,
+      "code_sha256": "514eb1473b9306ffb9ec12eca9fc7ae4e42c2a449cda47c5a765e273e99a6c3c",
+      "development_case_ids_sha256": "a6cd6f47d054e79ca2216d0849a5bfea2989f3a85032adcc285a8c9487bd5e23",
+      "pmid": "23461800",
+      "title": "Predictive Scoring System for Pancreatic Fistula After Laparoscopy-Assisted Gastrectomy"
+    },
+    {
+      "calibration_case_ids_sha256": "0abdb7b6cdadd8746c199a9d43049fbf1e76a4a0fb90f59671d778ef320447e6",
+      "candidate_state_space": 1250,
+      "code_sha256": "428b1d27893f646c7760fa4ea8223fcbd96935e21d5a5a0c9a6f9c4a97108791",
+      "development_case_ids_sha256": "a00fd50ecfcd0cd9598db16371f5ce9182f83610237fd3162787dcf996f550d2",
+      "pmid": "30898482",
+      "title": "Azacitidine Infection Risk Model"
+    },
+    {
+      "calibration_case_ids_sha256": "742306be67178f58ce31485507968d5190e21eef3553fd02bf5f1ac7ec50542b",
+      "candidate_state_space": 25000,
+      "code_sha256": "677e45e7b37718f233dec173730095101ec392cad79164adb2161f05fb4cd4e7",
+      "development_case_ids_sha256": "b3851f9bb8348d489ae44eefdf115f52dd928abda9406966cd3262b60b8714e2",
+      "pmid": "35093039",
+      "title": "Flu-IV Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "726356914c35314b5f63458f0ffaacdae4d5a53d9e07a14bad325c8d1894773b",
+      "candidate_state_space": 6380,
+      "code_sha256": "d9fcbed91f90b0c4a30b8574c770e0fe52b16661ac011519910e3b3e1d221039",
+      "development_case_ids_sha256": "7c81c44aef55098181416e27d6c7474aece1a5627679e1927db4fed0d136ab13",
+      "pmid": "24103667",
+      "title": "The SAH Score"
+    },
+    {
+      "calibration_case_ids_sha256": "4657de696e8298b7dc1026e7a82c3aff31d7e545cef93679476b1803e4251591",
+      "candidate_state_space": 2500,
+      "code_sha256": "0c2b4ffe8b9a2abdc72fcc668904d0b79e2edf1c8b231f5b00dce5f4f8382239",
+      "development_case_ids_sha256": "1908565745620fd2a5822b6a90e5733aea0547ce067bedf9165bc2a2e110e151",
+      "pmid": "30888590",
+      "title": "Visceral Pleural Invasion Risk Score Calculator in NSCLC"
+    },
+    {
+      "calibration_case_ids_sha256": "e209bbb13c24971900ac5806071ce4a036ca95555e81c5c82cbb27f27fdb6e1f",
+      "candidate_state_space": 2500,
+      "code_sha256": "f8c9770728fe383bf6bffcb188bff57a6b8284003fa3f8a458fb9be81ee14d12",
+      "development_case_ids_sha256": "864a988a210d656779cfe3ed555267b9234fd5c59b5666db1c71309b61f78246",
+      "pmid": "31171439",
+      "title": "Pediatric Appendicitis Laboratory Score (PALabS)"
+    },
+    {
+      "calibration_case_ids_sha256": "108bf4641092974a14284879013a6a4aa782b7da7260246e9e55e10e73491fb4",
+      "candidate_state_space": 2000,
+      "code_sha256": "3b72ef50bed99291976138686919280f765eedab2e37d0e1f2047cdf10ad037a",
+      "development_case_ids_sha256": "d204fd5e925b9771dfc659e7af1b0414b81b2bc0c9367c67e261612637cbe5f4",
+      "pmid": "30571195",
+      "title": "Utah Bleeding Risk Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "0880454535d60a0afec53380ccf99883f9f2f3c5ddef4ff928162b3f1dd6036e",
+      "candidate_state_space": 5625,
+      "code_sha256": "6784d1d5c494d61e7c5af12f7b106000718cf704ca902495eaf0d4eb5d18eefc",
+      "development_case_ids_sha256": "a95589fa6fe527dbad3b5e009f04a32746a7d1606bf9b5afc59c6fb031b28a3d",
+      "pmid": "26113162",
+      "title": "Prehospital Early Sepsis Detection (PRESEP) Score"
+    },
+    {
+      "calibration_case_ids_sha256": "681b5063bfab316845d9f0ae5c7e49e404f6d248ad9ee0296b194ff4b6279515",
+      "candidate_state_space": 1250,
+      "code_sha256": "4fe006c27eebdc5eba3f57d02f91edf53d6a7a6702f43537bb53164c7245928b",
+      "development_case_ids_sha256": "751851733b63322e74f0e2cb01e02ca877fcbebaf959c9f80410a0091994774d",
+      "pmid": "12483269",
+      "title": "Hepatocellular Carcinoma Prognosis Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "527b699f956430abe553e217e45d537f53db44a0f9843a6b52546a4dd72102d5",
+      "candidate_state_space": 1600,
+      "code_sha256": "bfba2a5dcc15210de8dece7f7f1bd0480cb541e62a3fc72f870261e8e5c8ff70",
+      "development_case_ids_sha256": "9d99bfd6823029df003347c903d9ba994e1fef59e32a222c6a3940cb8a9ed2cb",
+      "pmid": "23118910",
+      "title": "ART Failure Clinical Prediction Score"
+    },
+    {
+      "calibration_case_ids_sha256": "4629bff176a97b612021ceffe682146eb4de0fabc108a916ee93115a80e29e59",
+      "candidate_state_space": 2500,
+      "code_sha256": "e50bc907cd02a359cacc37153aedde7b3cad02368047996d50df7605c65f7ac3",
+      "development_case_ids_sha256": "0248026d9271d3daa40abccd50d93039690eeb1f34b19fc2ab3598c758e87901",
+      "pmid": "31802959",
+      "title": "Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System"
+    },
+    {
+      "calibration_case_ids_sha256": "2c77d5236fa6e8ac5abb9e96f7267d73f27073152c58a405f90f74a95fff8417",
+      "candidate_state_space": 1250,
+      "code_sha256": "2f48ab26b454b6fa4737fec3e4cad3d8e47f4a6c34918d88745c3dd59833575d",
+      "development_case_ids_sha256": "bcd5d832505d01d60c9b3f221a9a9125d422ed4840bdbfd27e83d8e566ff7301",
+      "pmid": "33859298",
+      "title": "Hepatocellular Carcinoma Recurrence Risk Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "e3f7cb3a7ac22997caa0a4c70dd436da3a81e8b66d4ac10de70ae3f27b2aca48",
+      "candidate_state_space": 3125,
+      "code_sha256": "096849df40327e7b706ce9576fb9bc031e89bc968d708c6714eec7adaa44ef54",
+      "development_case_ids_sha256": "0831ef424d62bcff2866b8caf2448d92f8d2e7abc1363ff49b9bbc1b9ef9f1e9",
+      "pmid": "34362595",
+      "title": "AESD Risk Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "2802415cfeb8ac296c43eba7b1ac1bc0af4e0062c94f6c60fd74546c4f3e97dd",
+      "candidate_state_space": 360000,
+      "code_sha256": "7b093557804e6b90084e29c426bf447413457cb03b3d2da2781122f597e8a785",
+      "development_case_ids_sha256": "4d794e69c428a3f52ae2bce9bf896555d513ee0e379f0f07fb61055278837ee8",
+      "pmid": "35437211",
+      "title": "HLAMatchmaker and PIRCHE-II Combined Risk Calculator for Pediatric Heart Transplant Patients"
+    },
+    {
+      "calibration_case_ids_sha256": "fb6ad7f158d88d07494db4a9d06ff26b09d5761dd4b1a7bd85905ea0a0dd214d",
+      "candidate_state_space": 2000,
+      "code_sha256": "09af8211165c3f7c0b94091e1713c41f28c410ff40a1c1398d47c70b694725f9",
+      "development_case_ids_sha256": "198b37606924d206072ec5d9c87acd4a7eacf83475f8f1606da10974275212a4",
+      "pmid": "11356436",
+      "title": "Canadian CT Head Rule Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "f8096086489af2501c786eccf14ab0ad6046a3041d444b356cf50c469ec95c67",
+      "candidate_state_space": 3125,
+      "code_sha256": "a2ee2e519c517240b74e9e3192fd914e869225af668b50987a3a989e2dc58517",
+      "development_case_ids_sha256": "ca3daa1386f8313a503126c64a2d028d39c6bc9d41ff8e0e660066810d9c470d",
+      "pmid": "19393477",
+      "title": "Acute Pancreatitis Prognostic Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "e0984b2020c4633a5d3672033b674d128e25b952e3c339b2370f461e5b4c9503",
+      "candidate_state_space": 10000,
+      "code_sha256": "7a2470ff1c1f4d6fc4cc0edf2261eb872bc00cc4221f2f435e218ef7e93cdf35",
+      "development_case_ids_sha256": "2e364a85684c27c0d1ad00049a5959d3d51bbf3913d9ea0ed6e5ab273a93ef88",
+      "pmid": "21290247",
+      "title": "Prognostic Model for Metastatic or Recurrent Gastric Adenocarcinoma"
+    },
+    {
+      "calibration_case_ids_sha256": "2794ba538a22056c5878aaa5b219da8c28f4caadfe7e526650c52f11535ffb69",
+      "candidate_state_space": 3200,
+      "code_sha256": "ed109b566f627fb5add4c5d89dde48a462beb76afbd15bb6541a107e4a830647",
+      "development_case_ids_sha256": "58270361869d09236602962ad80d7952f74513e3c567b9b39a8241462a032b28",
+      "pmid": "15862409",
+      "title": "CADILLAC Risk Score for Mortality After Primary Percutaneous Coronary Intervention (PCI)"
+    },
+    {
+      "calibration_case_ids_sha256": "7ce4e4a81401c439b9a93b917505d7da6a923ba338e5ef9f4d90fbb439eca2bf",
+      "candidate_state_space": 1250,
+      "code_sha256": "9b6edb6c574af853e9fb26e9ec08116c27cba967ca9f59135eeae3a69189da82",
+      "development_case_ids_sha256": "182c9b94fdb43d8ebac46e18211db474eec74ea64126bd989aede867e191fa40",
+      "pmid": "21722666",
+      "title": "Bacteremia Risk Calculator in Women with Acute Pyelonephritis"
+    },
+    {
+      "calibration_case_ids_sha256": "d791ce0e3af7f9b54a4d935be7d8a9fb79a97580f10f4ce1a037a39548dc9ffc",
+      "candidate_state_space": 1250,
+      "code_sha256": "27cdde09d3792a70a893d259875bfea1c3543590e8fc654d4243c843a79c8cac",
+      "development_case_ids_sha256": "63bfef85746f14a8a1287dc9aa1cefd82ffd18c724bbd0a300b7e3793a8e6d9a",
+      "pmid": "35254582",
+      "title": "Circulating Lipid- and Inflammation-based Risk (CLIR) Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "e4c29f25d1475241f66d77f25ad0bd56f65c772d25313993dc1546975304d967",
+      "candidate_state_space": 5000,
+      "code_sha256": "a6a37d7b30d9246196ba60ef1a743194d5f39d9d7731af19db5bbc6a8ab579ed",
+      "development_case_ids_sha256": "4ddb5166336a8fec92474dfa2a136b6de5c845b0b1973f478366e1a9a45b791d",
+      "pmid": "33465514",
+      "title": "PREVENTION-ACHD Risk Score Model"
+    },
+    {
+      "calibration_case_ids_sha256": "23ba526fda83c33990528bb220e8995818b6525c3e22281dc749fb032ed9f333",
+      "candidate_state_space": 1250,
+      "code_sha256": "991f93945fa7f1f317b703ac118029d149efae8e4a044eeada704e7226a9c879",
+      "development_case_ids_sha256": "5bdfe76481162e7c0da86e94958b1736030eedf16d55243dfb01879d3a45bdd5",
+      "pmid": "33806240",
+      "title": "GERtality Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "797b087036208883b33cdb610b606ad9b4dbdc791421b75bd321e25d8d8d2477",
+      "candidate_state_space": 15625,
+      "code_sha256": "8537b7d0753588d3c9c83b48fc27c63637db7ac5d8cc6ae75ff1b8299f591a80",
+      "development_case_ids_sha256": "bc7e4cc5f1ed1c28d0e3a1c9ea7e0e71e96075d6ef7453aa44c9e726e3294d46",
+      "pmid": "26049405",
+      "title": "Febrile Neutropenia Prognostic Model"
+    },
+    {
+      "calibration_case_ids_sha256": "7e5af5d3bb713facff2ea01d53c202894dd3777bf65ec74dfbac0e067038b3c8",
+      "candidate_state_space": 3125,
+      "code_sha256": "72eb45035bbe76a8cdb77aea8a26e0011d0e72a1240d4af60cab0dc64c86d69e",
+      "development_case_ids_sha256": "9ed634a03e6ca41beb3c1c710ee1f7db58184681b6da9defee89e5fc69c9c5af",
+      "pmid": "33624088",
+      "title": "Heart Failure with Preserved Ejection Fraction (HFpEF) Risk Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "c305203928eeee5b721db34fa927ba4dbfd5c7aa7a0dc78e3d1e9699a25156a7",
+      "candidate_state_space": 15625,
+      "code_sha256": "b5168a8c18f1f5161f6ca06a1c46081db90359b10f8d4c7b9c49b0b7600a6359",
+      "development_case_ids_sha256": "ef5b12e41344163ccd1faaaa5cf6d9f0a0788364636feed5b527944e49940d4d",
+      "pmid": "29742138",
+      "title": "J-ERATO Score"
+    },
+    {
+      "calibration_case_ids_sha256": "f5f91ba47cade11c27ce0acbc47f162d107b806de23ab46e13430fcb89c64737",
+      "candidate_state_space": 15625,
+      "code_sha256": "d4be6ad8c5a253399900c045d3b50fd0f5f7def404a67b3af54c9241bfc6f5e0",
+      "development_case_ids_sha256": "ac2aa51e69bad5c453e80940b1a26311480c5e2a2a056b87a351ed22bf1f6c0c",
+      "pmid": "34195071",
+      "title": "Inflammatory-Nutritional Prognostic Score (INPS) Calculator for Stage III Gastric Cancer Patients"
+    },
+    {
+      "calibration_case_ids_sha256": "a0e0eba611930661e450a74d5b1db76c4f435c1a2d61eb4a25595c251c9f38d2",
+      "candidate_state_space": 1250,
+      "code_sha256": "21030f668e4c063a02f8c36e10d3c5e6efb612b2204a4fdf5fbeddcc06887e3c",
+      "development_case_ids_sha256": "17bbc4bba4449a97702b3f3d58a394c577aa2fd6f8b7c7d7cc5608746a79dd3b",
+      "pmid": "25876528",
+      "title": "APPLE Score for Predicting Rhythm Outcomes After Catheter Ablation of Atrial Fibrillation"
+    },
+    {
+      "calibration_case_ids_sha256": "dc45301155424e74592d0e2105de1ad4308c6ed585c168eadaf8580c3d353df9",
+      "candidate_state_space": 12500,
+      "code_sha256": "c70afd73d32967e763d44232513e7fdde7065e37d2e085aa57ce8634ac6fc7aa",
+      "development_case_ids_sha256": "9842f88070b1d6fb14f0cc63cea93de60da562963edfe7cc4a6507d259eb456a",
+      "pmid": "23021334",
+      "title": "MARKED-Risk Score Calculator"
     }
   ],
+  "calibration_case_count": 4096,
+  "calibration_case_ids_sha256": "976fda2bcec79c7422d79467fa21e97f2b819d490515c7d52c0e211019bafc38",
   "case_generator_path": "src/commandmed/reliability_v5/case_generator.py",
-  "case_generator_sha256": "20e48a56f5f61cc18cad74b62f084e029fd9225f8961afe1de9112e6c61971f9",
-  "cases_per_calculator": 64,
-  "ordered_case_ids_sha256": "4973506f7700fcb655a1e1ccd129eaecd1af012e532cb5534e1c643093845c39",
+  "case_generator_sha256": "1a79f6336a2f31440609b6d1af57984765b360cd09404bd7c817d61724cb73f0",
+  "confirmatory_case_identities_materialized": false,
+  "development_case_count": 4096,
+  "development_case_ids_sha256": "ac097e4a55e8b1e0aca03a3d3d571b84495cff21dd738f99a117a568169110a1",
+  "reserve_case_identities_materialized": false,
   "source_manifest": "riskcalcs-rule-oracle-final-candidate-v5.json",
-  "source_manifest_sha256": "1d9f2a52af4bd1506eb5ebe341e595de4e481dc10c967abfcbdc6f019375de76",
-  "status": "STATIC_CASE_IDENTITY_INDEX_CALCULATORS_NOT_EXECUTED",
-  "total_cases": 4096
+  "source_manifest_sha256": "351a4cf29ad520cd789feeb27e0bc4a90816979639c9bbec60919d614d21174f",
+  "status": "PREFREEZE_DEV_CAL_CASE_IDENTITY_INDEX_FUTURE_TEST_UNMATERIALIZED"
 }

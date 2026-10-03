@@ -28,3 +28,9 @@ The source case is the inferential cluster. Use paired effects, cluster-preservi
 
 Required controls include unchanged-base repeated runs, sham meaning-preserving transformations, calibration-only transformations expected not to alter argmax ordering, no-tool versus deterministic-tool conditions, and matched-capacity/readout controls.
 
+
+## 5.7 Prospective quarantine
+
+For each of 64 admitted rule calculators, the candidate state space contains at least 1,024 Boolean/numeric-threshold states. Before model execution, deterministic namespaces fix 64 development and 64 calibration states per calculator. Confirmatory and reserve identities are not selected at that stage. After the model-facing implementation is frozen at a clean Git commit, the first valid future public-randomness pulse selects 64 confirmatory and 64 reserve states per calculator from state indices not used for development or calibration. The planned confirmatory analysis therefore contains 4,096 source clusters, with another 4,096 reserved. The public rules remain knowable; the quarantine protects future case selection rather than claiming secret labels.
+
+The nonmedical retention control is the pinned SQuAD v1.1 validation task and is interpreted only as paired extractive-QA retention, not as a general-capability or contamination-free benchmark.

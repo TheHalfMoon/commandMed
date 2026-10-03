@@ -14,6 +14,7 @@ Status: internal adversarial review; intended to kill weak claims before executi
 8. **Clinical-rule tasks can be too clean.** Exact calculators strengthen rule-conformance measurement but may overstate clinical relevance if treated as current clinical ground truth. A separate natural-language/evidence task family is required for external validity.
 9. **Thresholds can be arbitrary.** Noncompensatory assurance is meaningful only if `tau_j` and `m_j` are justified before test access and sensitivity analyses are secondary.
 10. **Two backbones do not establish universality.** Replication supports transport across the named model families only.
+11. **Backbone size differs.** The Qwen and SmolLM candidates are not parameter matched; replication must therefore test prespecified within-family intervention effects, never interpret absolute between-family score differences as architecture or scale effects.
 ## Required repairs before freeze
 
 - Replace `diagonal/off-diagonal` shorthand with `target/non-target` cells throughout the confirmatory protocol.
@@ -23,6 +24,7 @@ Status: internal adversarial review; intended to kill weak claims before executi
 - For trained interventions, use at least a prespecified set of independent training seeds and estimate intervention effects across both source-item and training-run variability.
 - Separate `RULE_ORACLE` task families from `OPEN_CLINICAL_REASONING` families; do not average them into one primary effect.
 - Limit generalization language to evaluated model families, task generators and operational profiles.
+- Treat independent-family replication as a within-family directional/effect replication only; forbid absolute cross-family architecture or scale comparisons.
 - Predeclare an intervention cost vector (parameters, training FLOPs where measurable, inference calls, latency, memory, external tool calls) so reliability gains are not presented without resource consequences.
 
 ## Decision after red-team
@@ -38,5 +40,6 @@ V5 remains scientifically interesting only if these repairs are incorporated. Wi
 - `RESOLVED_IN_PROTOCOL`: `RULE_ORACLE` and `OPEN_CLINICAL_REASONING` families are reported separately rather than averaged into one primary effect.
 - `RESOLVED_IN_PROTOCOL`: intervention cost vectors report parameter, compute, inference-call, latency, memory, storage and deterministic-tool costs.
 - `RESOLVED_IN_PROTOCOL`: transport language is restricted to the named evaluated model families and task distributions.
+- `RESOLVED_IN_PROTOCOL`: Qwen/SmolLM replication is explicitly within-family; unequal parameter counts cannot support an architecture/scale comparison.
 
 These repairs improve identifiability but do not promote any V5 claim. Scientific freeze remains open until the exact models, datasets, margins, thresholds, power, intervention revisions and rights are frozen.

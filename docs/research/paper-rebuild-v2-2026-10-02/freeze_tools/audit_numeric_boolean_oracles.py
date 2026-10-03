@@ -15,6 +15,7 @@ from audit_discrete_rule_oracles import audit_discrete
 OUT = Path(__file__).resolve().parents[1] / "riskcalcs-rule-oracle-final-candidate-v5.json"
 SELECT_COUNT = 64
 MAX_ARGS = 8
+MIN_PROSPECTIVE_CASE_SPACE = 1024
 
 
 def prospective_case_space(domains: dict[str, list[object]]) -> int:
@@ -47,7 +48,7 @@ def admissible_domains(domains: dict[str, list[object]]) -> bool:
                 return False
             if isinstance(value, (int, float)) and not isinstance(value, bool) and abs(float(value)) > 1_000_000:
                 return False
-    return prospective_case_space(domains) >= 64
+    return prospective_case_space(domains) >= MIN_PROSPECTIVE_CASE_SPACE
 
 
 def selection_specialty_stratum(record: dict[str, object]) -> str:
@@ -135,7 +136,7 @@ def main() -> int:
         ),
         "eligibility": (
             "one safe parsed function; <=8 args; every input used only as boolean/simple numeric comparison; "
-            "no string domains; no input arithmetic/calls/subscripts/attributes; prospective generated input space >=64"
+            "no string domains; no input arithmetic/calls/subscripts/attributes; prospective generated input space >=1024"
         ),
         "static_eligible_count": len(eligible),
         "eligible_selection_stratum_count": len({str(row['selection_specialty_stratum']) for row in eligible}),

@@ -13,7 +13,7 @@ Status: `RULES_FROZEN`; `NUMERIC_MARGINS_PENDING_DEVELOPMENT_ONLY_PILOT`; `CONFI
 - equivalence/noninferiority uses valid TOST-style logic with prespecified margins;
 - failure to reject zero is never called equivalence.
 
-The primary `RULE_ORACLE` design contains exactly `4096` source clusters if the calculator eligibility gate passes. `RISKQA_EXTERNAL` contains `350` source clusters and is secondary validation, not a substitute for the primary power target.
+The primary confirmatory `RULE_ORACLE` design contains exactly `4096` source clusters if the hardened calculator, clinical-review and quarantine gates pass. Each of 64 selected calculators has at least `1024` candidate states. Only 64 development and 64 calibration states per calculator are fixed before model work; after the clean freeze event, future public randomness selects 64 confirmatory and 64 reserve states per calculator from the still-unselected candidate space. `RISKQA_EXTERNAL` contains `350` source clusters and remains secondary validation.
 
 ## Meaningful-effect margins
 

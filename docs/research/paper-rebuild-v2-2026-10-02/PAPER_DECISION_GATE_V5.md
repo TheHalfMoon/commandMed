@@ -6,7 +6,7 @@ Status: `PRIMARY_PAPER_SELECTED_CONDITIONALLY`; `SCIENTIFIC_FREEZE_OPEN`; `EXECU
 
 **When Reliability Fixes Collide: Cross-Property Interference in Medical Foundation Model Decisions**
 
-Primary scientific object: the **reliability intervention matrix** â€” paired changes across independently reported assurance properties after targeted reliability interventions.
+Primary scientific object: the **reliability intervention matrix** — paired changes across independently reported assurance properties after targeted reliability interventions.
 
 Formal foundation: `formal-assurance-framework.md`.
 
@@ -55,7 +55,9 @@ A collection of small statistically significant non-target effects is insufficie
 - reliability axes cannot be measured with adequate construct validity;
 - all non-target effects are negligible under meaningful frozen margins;
 - effects fail independent-family replication;
-- result depends on private/restricted data or paid compute that violates program constraints.## 2026-10-02 refresh decision
+- result depends on private/restricted data or paid compute that violates program constraints.
+
+## 2026-10-02 refresh decision
 
 A new adversarial search against MedHELM, recent medical trustworthiness surveys, MedQAbstain, abstention frameworks, ProMedical and deterministic clinical-tool studies did not identify the full V5 controlled intervention-by-assurance design. However, it substantially narrows the permissible novelty language.
 
@@ -73,11 +75,11 @@ The V5 paper remains primary and conditional. The study is now narrower and more
 Bound in this pass:
 - exact Qwen3.5-0.8B-Base primary revision and SmolLM2-1.7B independent-family revision;
 - public-domain AgentMD/RiskCalcs/RiskQA lineage at exact repository/blob identities;
-- prospective primary `RULE_ORACLE` size `4096` (`64 x 64`) and secondary RiskQA `N=350`;
-- deterministic static RiskCalcs selectors, including a strict numeric/Boolean threshold rule-oracle audit with `413` eligible candidates across `24` first-listed source specialty strata, each exposing at least 64 prospective input states, and a deterministic domain-balanced 64-entry candidate manifest;
+- deterministic `RULE_ORACLE` source design with 64 calculators, each exposing at least `1024` static candidate states; `4,096` development and `4,096` calibration cases are fixed before model work, while the planned `4,096` confirmatory and `4,096` reserve cases are selected only after the implementation freeze using future public randomness;
+- deterministic static RiskCalcs selectors, including a hardened numeric/Boolean threshold rule-oracle audit with `82` eligible candidates across `15` first-listed source specialty strata, each exposing at least `1024` prospective input states, and a deterministic 64-entry manifest;
 - family-wise alpha `0.05`, Holm control, desired power `0.90`, and learned-intervention seeds `11/29/47`;
 - relative hard-gate noninferiority `Delta[i,j] >= -m_j` rather than an arbitrary universal clinical threshold.
 
-Still unresolved: qualified clinical appropriateness review of the selected 64 rules, B1/C1/C2 learned model-integration qualification, numeric native-unit margins from development-only repeatability/pilot evidence, final power at those margins, a lawful retention task, final clean implementation bindings, and confirmatory quarantine identities.
+Still unresolved: B1/C1/C2 learned model-integration qualification, numeric native-unit margins from development-only repeatability/pilot evidence, final power at those margins, final clean implementation bindings, and confirmatory membership materialization after the clean freeze event plus future public randomness. Current-care clinical-validity interpretation remains out of scope unless separately qualified; it is not required for the primary rule-conformance construct. The narrow SQuAD retention control and quarantine mechanics are now admitted/bound; neither closes the remaining empirical gates.
 
 Decision remains: `KEEP_V5_AS_PRIMARY_CONDITIONAL`; `SCIENTIFIC_FREEZE_OPEN`; `EXECUTION_NOT_AUTHORIZED`.

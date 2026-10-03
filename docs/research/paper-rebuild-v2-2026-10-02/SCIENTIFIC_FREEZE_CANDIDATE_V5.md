@@ -33,11 +33,13 @@ The repository license identifies the software/database as a United States Gover
 
 Prospective source-item design:
 - exactly 64 selected deterministic rule calculators;
-- exactly 64 generated source cases per calculator;
-- total primary cluster count: `4096` source cases;
-- every eligible calculator must expose at least 64 prospective Boolean/numeric-threshold states;
+- each selected calculator exposes at least `1024` deterministic candidate states; no fixed confirmatory pool is materialized before the implementation freeze;
+- per calculator, `64` development and `64` calibration states are fixed before model work;
+- after a clean implementation freeze and future public-randomness event, `64` confirmatory and `64` reserve states are selected from state indices not used by development/calibration;
+- planned primary confirmatory cluster count remains `4096` (`64 calculators x 64 confirmatory cases`);
+- every eligible calculator must expose at least `1024` prospective Boolean/numeric-threshold states;
 - calculator eligibility and domain selection are decided without model outputs;
-- selection is deterministic domain-balanced round-robin across alphabetically ordered first-listed source specialty strata; within each specialty candidates are ordered by the frozen SHA-256 selection key and PMID;
+- selection is deterministic availability-constrained stratum round-robin across alphabetically ordered first-listed source specialty strata; within each specialty candidates are ordered by the frozen SHA-256 selection key and PMID;
 - the design targets domain breadth and must not be interpreted as an estimate of clinical prevalence.
 
 If 64 calculators cannot pass the frozen eligibility criteria, this design gate fails; the count is not silently reduced after seeing model behavior.
@@ -74,11 +76,11 @@ Required ordered interactions are `A1 -> A2`, `A2 -> A1`, `A1 -> C1`, and `C1 ->
 
 ## Remaining blockers to a real scientific freeze
 
-`CONFIRMATORY_FROZEN` remains `NO` until all of the following are exact: qualified clinical appropriateness review of the selected 64 rule sources; model-integration/training qualification for B1/C1/C2; generator and implementation hashes; property-specific meaningful margins; power calculation; final retention task rights; and final confirmatory source identities/quarantine procedure.
+`CONFIRMATORY_FROZEN` remains `NO` until all of the following are exact: model-integration/training qualification for B1/C1/C2; final generator and implementation hashes; property-specific meaningful margins; power calculation; and final confirmatory identity materialization after the clean implementation-freeze event plus the future public-randomness pulse. The source/provenance audit is sufficient for the declared rule-conformance construct; qualified clinical review is required only for any current-care clinical-validity interpretation and is not used to clear the methodological endpoint. The retention-task identity/rights and quarantine procedure are now bound, but no confirmatory membership has been materialized.
 
 No blocker may be cleared by inspecting confirmatory model outputs.
 ## Static selector result
 
-The committed non-executing selector `freeze_tools/select_riskcalcs_manifest.py` parsed the bound RiskCalcs source as data, used Python AST only, and did not call any calculator function. It found `1993` coarse static candidates. The strict V5 AST audit currently admits `413` numeric/Boolean threshold-rule candidates with at least 64 prospective input states across `24` first-listed source specialty strata. It selects `64` by deterministic specialty round-robin into `riskcalcs-rule-oracle-final-candidate-v5.json`.
+The committed non-executing selector parsed the bound RiskCalcs source as data, used Python AST only, and did not call any calculator function. The hardened V5 audit now admits `82` numeric/Boolean threshold-rule candidates with at least `1024` prospective input states across `15` first-listed source specialty strata. It selects `64` by deterministic specialty round-robin. For each selected calculator, only `64` development and `64` calibration cases are preselected; confirmatory/reserve states are not selected until the post-freeze future-randomness event.
 
 All 64 selected PMIDs resolve in PubMed and none carries a retraction/withdrawal publication-type flag in the current source audit. This remains a **source/provenance audit, not final clinical qualification**. Rule conformance can be measured mechanically; any claim that a rule is clinically appropriate for current care requires separate qualified review. Replacement remains deterministic and cannot use model outputs.
