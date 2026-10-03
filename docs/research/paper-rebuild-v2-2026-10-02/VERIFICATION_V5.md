@@ -61,3 +61,12 @@ A new bounded adversarial refresh is recorded in `literature-refresh-v5-2026-10-
 - Final V5-focused suite after preflight hardening: `71 passed in 0.65s`; full repository suite: `1123 passed in 23.29s`; V5 compileall and `git diff --check` passed.
 - Alibaba Open Code Review `v1.12.11` delegation rules were applied to the changed Python files. Host-agent review found an inference-path scope weakness (unknown intervention IDs were not rejected) and weak environment/output identity validation; both were repaired before the final test run. The final validator now rejects unknown intervention IDs, non-hash environment identities, and output traversal/out-of-scope destinations.
 - Jev remains `DEFERRED_ZERO_COST_POLICY`; no Jev API call was made.
+
+## 2026-10-03 statistical-mechanics update
+
+- Added project-owned paired source-cluster mean effects, deterministic paired bootstrap intervals, Holm-adjusted p-values, and normal-approximation MDE/required-cluster planning helpers.
+- The bootstrap preserves source-item pairing and uses a fixed seed; its percentile interval is conservatively widened only when necessary to satisfy the shared `EffectInterval` requirement that the observed estimate lie inside the interval.
+- Power helpers are explicitly planning approximations. They do not choose `m_j`, prove endpoint-specific power, or replace the post-pilot frozen power calculation.
+- Alibaba Open Code Review delegation rules were applied to the statistics implementation/tests. Host-agent review identified the finite-sample percentile/point-estimate contract edge case before publication; it was repaired and documented.
+- Final V5-focused suite after statistics hardening: `80 passed in 0.71s`; full repository suite: `1132 passed in 24.20s`; compileall and `git diff --check` passed.
+- No model execution, dataset payload access, confirmatory access, paid API, or paid compute occurred.

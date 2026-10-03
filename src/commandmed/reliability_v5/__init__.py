@@ -47,6 +47,14 @@ from .quarantine import (
 )
 from .registry import INTERVENTIONS, ORDERED_INTERACTION_CANDIDATES, get_intervention
 from .rule_tool import RuleToolResult, execute_rule_tool
+from .statistics import (
+    StatisticsContractError,
+    holm_adjusted_p_values,
+    normal_approx_paired_mde,
+    normal_approx_required_clusters,
+    paired_cluster_bootstrap_effect,
+    paired_mean_effect,
+)
 from .selection_bias import (
     align_display_to_semantic,
     debias_and_align,

@@ -48,4 +48,6 @@ Invalid outputs, parser failures, tool errors and abstentions are outcomes, not 
 ## Reporting
 
 Report raw effects, confidence intervals, corrected p-values where used, standardized effect sizes only as secondary summaries, per-axis thresholds, coverage for selective policies, and the complete intervention matrix including unfavorable cells. No single composite score is a primary endpoint.
+## Mechanical analysis implementation status
 
+Project-owned analysis mechanics now implement paired source-cluster mean effects, deterministic paired percentile bootstrap intervals conservatively widened when necessary to contain the observed estimate, Holm-adjusted p-values, and two-sided normal-approximation MDE/required-cluster planning helpers in `src/commandmed/reliability_v5/statistics.py`. These helpers are validated on synthetic fixtures only. They do not select meaningful margins, justify bootstrap suitability for a future endpoint, access confirmatory data, or replace the final power analysis after development-only nuisance estimates are available.
