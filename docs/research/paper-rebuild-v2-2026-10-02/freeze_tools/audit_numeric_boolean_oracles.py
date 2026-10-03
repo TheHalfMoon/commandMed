@@ -24,6 +24,19 @@ MAX_ARGS = 8
 MIN_PROSPECTIVE_CASE_SPACE = 1024
 
 
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def canonical_sha256(value: object) -> str:
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 def prospective_case_space(domains: dict[str, list[object]]) -> int:
     total = 1
     for values in domains.values():
@@ -107,6 +120,23 @@ def rejection_record(row: dict[str, object], result) -> dict[str, object]:
     }
 
 
+def mechanics_bindings() -> dict[str, dict[str, str]]:
+    paths = {
+        "selector": Path(__file__).resolve(),
+        "case_generator": ROOT / "src/commandmed/reliability_v5/case_generator.py",
+        "quarantine": ROOT / "src/commandmed/reliability_v5/quarantine.py",
+        "execution_gate": ROOT / "src/commandmed/reliability_v5/oracle_qualification.py",
+        "bound_rule_runtime": ROOT / "src/commandmed/reliability_v5/rule_dataset.py",
+    }
+    return {
+        name: {
+            "path": path.relative_to(ROOT).as_posix(),
+            "sha256": sha256_file(path),
+        }
+        for name, path in paths.items()
+    }
+
+
 def main() -> int:
     req = urllib.request.Request(SOURCE_URL, headers={"User-Agent": "CommandMed-research"})
     with urllib.request.urlopen(req, timeout=30) as response:
@@ -156,6 +186,7 @@ def main() -> int:
         else:
             execution_rejections.append(rejection_record(row, result))
 
+    execution_rejections.sort(key=lambda row: (str(row["pmid"]), str(row["function_name"])))
     selected = balanced_select(execution_qualified)
     counts: dict[str, int] = {}
     for row in selected:
@@ -183,7 +214,7 @@ def main() -> int:
             "one safe parsed function; <=8 args; every input used only as boolean/simple numeric comparison; "
             "no string domains; no input arithmetic/calls/subscripts/attributes; prospective generated input "
             "space >=1024; exact pre-frozen development/calibration execution coverage must complete without "
-            "compile/runtime/output-contract failure"
+            "compile/runtime/serialization/perturbation-contract failure"
         ),
         "execution_coverage": {
             "development_cases_per_candidate": 64,
@@ -191,9 +222,11 @@ def main() -> int:
             "confirmatory_materialized": False,
             "reserve_materialized": False,
         },
+        "mechanics": mechanics_bindings(),
         "static_eligible_count": len(static_eligible),
         "execution_qualified_count": len(execution_qualified),
         "execution_rejected_count": len(execution_rejections),
+        "execution_rejection_digest_sha256": canonical_sha256(execution_rejections),
         "execution_rejections": execution_rejections,
         "eligible_selection_stratum_count": len(
             {str(row["selection_specialty_stratum"]) for row in execution_qualified}
@@ -206,6 +239,7 @@ def main() -> int:
     print(f"STATIC_NUMBOOL_ORACLES={len(static_eligible)}")
     print(f"EXECUTION_QUALIFIED={len(execution_qualified)}")
     print(f"EXECUTION_REJECTED={len(execution_rejections)}")
+    print(f"REJECTION_DIGEST={manifest['execution_rejection_digest_sha256']}")
     print(f"SELECTION_STRATA={manifest['eligible_selection_stratum_count']}")
     print(f"SELECTED={len(selected)}")
     print(f"SELECTED_STRATUM_COUNTS={json.dumps(manifest['selected_selection_stratum_counts'], sort_keys=True)}")
