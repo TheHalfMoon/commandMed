@@ -43,3 +43,11 @@ V5 remains scientifically interesting only if these repairs are incorporated. Wi
 - `RESOLVED_IN_PROTOCOL`: Qwen/SmolLM replication is explicitly within-family; unequal parameter counts cannot support an architecture/scale comparison.
 
 These repairs improve identifiability but do not promote any V5 claim. Scientific freeze remains open until the exact models, datasets, margins, thresholds, power, intervention revisions and rights are frozen.
+## Additional nearest-neighbor attacks ? 2026-10-03
+
+12. **MedAbstain and StratCP already own much of the abstention/error-control space.** D1 cannot carry novelty; it is a control row.
+13. **CHIL 2026 already shows calibration-dependent selective-prediction failure and aggregate-metric masking.** If V5 only reproduces this phenomenon, the headline novelty fails. The primary result must involve additional prespecified properties, structurally distinct endpoints, or interaction effects.
+14. **MedFM-Robust already shows adaptation-strategy robustness differences.** A single intervention changing robustness is insufficient; V5 must estimate cross-property effects under matched source cases and frozen intervention contracts.
+15. **The design risks becoming a catalog of known trade-offs.** The paper passes the major-contribution gate only if the preregistered matrix reveals a reproducible architecture/deployment conclusion that cannot be inferred from the nearest prior studies independently.
+
+These attacks narrow rather than weaken the study: calibration, abstention, selective prediction, and robustness are treated as established ingredients; the candidate novelty is the controlled causal map of how reliability interventions compose or interfere across the assurance vector.

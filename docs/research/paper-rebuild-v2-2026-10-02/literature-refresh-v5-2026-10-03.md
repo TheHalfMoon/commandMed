@@ -31,6 +31,15 @@ Tool state on 2026-10-03:
 **CURA: Calibrated Uncertainty with Retrieval and Agents for Trustworthy Multimodal Medical Decision Support.** MICCAI 2026. CURA combines calibrated posterior estimation, selective abstention, conformal sets, retrieval, and uncertainty-driven escalation. It narrows any V5 claim based only on combining calibration and selective control. Its reported result that more experts can degrade both accuracy and calibration is also a concrete example of intervention/system trade-offs.
 
 **CALIN, Exposing and Mitigating Calibration Biases and Demographic Unfairness in MLLM Few-Shot In-Context Learning for Medical Image Classification.** MICCAI 2025, DOI `10.1007/978-3-032-04981-0_22`. CALIN jointly studies calibration, subgroup fairness, and utility. This blocks claims that calibration-versus-other-reliability trade-offs are entirely unexplored in medical AI.
+
+**Machcha et al., Knowing When to Abstain: Medical LLMs Under Clinical Uncertainty.** EACL 2026, DOI `10.18653/v1/2026.eacl-long.291`. MedAbstain already combines medical MCQA, conformal prediction, adversarial perturbations and explicit abstention options. This blocks any V5 novelty claim based on abstention benchmarking or explicit defer options alone.
+
+**Lechuga Lopez, Shamout and Rudner, An Empirical Analysis of Calibration and Selective Prediction in Multimodal Clinical Condition Classification.** CHIL 2026, PMLR 333:794--833. They show that uncertainty-based selective prediction can degrade clinical classification performance under class-dependent miscalibration and that aggregate metrics can obscure the failure. This is a direct threat to any broad claim that V5 newly discovers calibration/selective-control conflict or aggregate-metric masking.
+
+**Jin, Moon and Zitnik, Act or Defer: Error-Controlled Decision Policies for Medical Foundation Models.** medRxiv 2026, DOI `10.64898/2026.02.23.26346927`. StratCP provides error-controlled action selection and calibrated deferral. V5 must therefore treat fixed defer/error-control policies as prior-art controls, not a methodological novelty claim.
+
+**Cui et al., MedFM-Robust: Benchmarking Robustness of Medical Foundation Models.** MICCAI 2026 / arXiv `2605.19027`. The study reports strong dependence of robustness on adaptation strategy, including large differences between LoRA and full fine-tuning in some medical tasks. This is evidence that training interventions can alter a reliability property, but it does not by itself estimate a matched multi-property intervention-effect matrix. V5 must distinguish its cross-property causal estimand from robustness benchmarking.
+
 ## Current novelty boundary
 
 The bounded refresh did **not** identify one study matching the full V5 design: the same medical source cases evaluated under multiple targeted reliability interventions, a paired cross-property causal-effect matrix, preregistered ordered interaction terms, noncompensatory hard-gate certification, exact deterministic medical rule oracles, and independent-family replication.
@@ -52,3 +61,6 @@ Therefore the manuscript must not sell V5 as a new metric collection. The strong
 4. Treat Boie et al., CURA, and CALIN as baselines/threats for calibration, abstention and cross-property utility/fairness claims.
 5. Keep weighted aggregate scores only as a comparator; do not imply weighted clinical-risk evaluation is new.
 6. Retain `NOVELTY_NOT_CLEARED_FOR_FIRST_CLAIMS` until a final pre-submission refresh and reviewer-style nearest-neighbor audit are complete.
+7. Treat MedAbstain and StratCP as abstention/error-control prior art; D1 is a control intervention, not a novelty contribution.
+8. Treat the CHIL selective-prediction study as a direct novelty threat: if V5 only reproduces calibration-driven selective failure, the major-contribution claim fails.
+9. Treat MedFM-Robust as adaptation-versus-robustness prior art; the V5 novelty bar requires cross-property effects or ordered interactions beyond a single robustness axis.

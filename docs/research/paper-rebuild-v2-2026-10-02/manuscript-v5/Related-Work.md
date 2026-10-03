@@ -14,8 +14,11 @@ Preference and multiple-choice decisions can violate transitivity, negation inva
 
 ## 2.4 Abstention and decision-level confidence
 
-MedQAbstain documents systematic overcommitment under medical uncertainty, while decision-theoretic work formalizes answer-versus-abstain utility and risk-sensitive confidence evaluation [@cocchieri2026medqabstain; @presacan2026silence; @wu2026bas]. Selective behavior is therefore not novel by itself. The V5 question is whether calibration, abstention and other reliability interventions interact or remain modular when evaluated on the same source cases.
+MedQAbstain and MedAbstain document overcommitment and abstention behavior under medical uncertainty, while decision-theoretic and conformal work formalizes answer-versus-defer policies with explicit error control [@cocchieri2026medqabstain; @machcha2026abstain; @presacan2026silence; @jin2026actdefer; @wu2026bas]. Selective behavior is therefore not novel by itself. A 2026 CHIL study further shows that selective prediction can degrade multimodal clinical classification under class-dependent miscalibration and that aggregate metrics can conceal the failure [@lopez2026selective]. The V5 question is narrower: whether distinct reliability interventions causally transfer, remain modular, or interfere across a preregistered assurance vector on matched source cases.
 
 ## 2.5 Fine-grained medical alignment and deterministic tools
 
 ProMedical explicitly separates safety criteria from general proficiency during medical alignment [@geng2026promedical]. AgentMD and recent clinical-risk-score studies show that deterministic calculator pipelines can outperform unconstrained model arithmetic and improve transparency [@jin2025agentmd; @kara2025riskscores; @roeschl2026pipeline]. These works constrain our claims: deterministic tools are not a novel contribution, but they provide unusually strong action oracles for studying cross-property effects.
+## 2.6 Robustness under adaptation
+
+Medical robustness benchmarking already shows that adaptation strategy can materially change robustness, including large task-specific differences between LoRA and full fine-tuning [@cui2026medfmrobust]. V5 therefore cannot claim that interventions affect reliability as a new observation. Its contribution bar is the paired *cross-property* intervention-effect matrix, including structurally distinct non-target endpoints and ordered interactions, with independent-family replication.
