@@ -14,6 +14,8 @@ Only the following model artifact is admitted:
 - repository: `Qwen/Qwen3.5-0.8B-Base`;
 - revision: `dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68`;
 - interface: text-only path of the exact authorized multimodal checkpoint;
+- runtime dtype: checkpoint-declared float16; no precision fallback is permitted inside this S1 grain;
+- CPU execution only with 8 PyTorch intra-op threads and 1 inter-op thread;
 - no alternate revision, quantized substitute, converted third-party text-only checkpoint, provider endpoint, merged model, or Qwen-Image/HCF path.
 
 Execution is local on the Founder-owned `Abdulaziz` device with no billed compute. The environment manifest must bind OS, CPU, RAM, Python, PyTorch, Transformers, NumPy, tokenizer files, model files, and their hashes before the first model call.
