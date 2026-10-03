@@ -25,3 +25,8 @@
 - [ ] Materialize final confirmatory/reserve identities only after the clean freeze event, freeze all remaining fields, and only then request execution authority.
 
 Scientific blockers are not cleared by authoring code or documents. `CONFIRMATORY_FROZEN=NO`; model execution and training remain unauthorized.
+
+- [x] Freeze `V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md` before observing model outputs, including exact S1 data partitions, B1/C1/C2 budgets, seeds, and resource stop rules.
+- [x] Implement and unit-test the hash/AST-bound RiskCalcs development/calibration task builder without materializing confirmatory/reserve identities.
+- [ ] Qualify the pinned zero-cost runtime, materialize the 64-calculator S1 development/calibration tasks, and bind the exact model artifact/environment before the first model call.
+- [ ] Execute only preflight-approved S1 model load/smoke/B1/C1/C2 development work, then freeze development-only margins/power or record the exact resource/scientific blocker.

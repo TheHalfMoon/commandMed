@@ -84,3 +84,11 @@ No blocker may be cleared by inspecting confirmatory model outputs.
 The committed non-executing selector parsed the bound RiskCalcs source as data, used Python AST only, and did not call any calculator function. The hardened V5 audit now admits `82` numeric/Boolean threshold-rule candidates with at least `1024` prospective input states across `15` first-listed source specialty strata. It selects `64` by deterministic specialty round-robin. For each selected calculator, only `64` development and `64` calibration cases are preselected; confirmatory/reserve states are not selected until the post-freeze future-randomness event.
 
 All 64 selected PMIDs resolve in PubMed and none carries a retraction/withdrawal publication-type flag in the current source audit. This remains a **source/provenance audit, not final clinical qualification**. Rule conformance can be measured mechanically; any claim that a rule is clinically appropriate for current care requires separate qualified review. Replacement remains deterministic and cannot use model outputs.
+
+## Founder-authorized S1 development transition — 2026-10-03
+
+The bounded V5 development authority is now paired with `V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md`, frozen before any model output. The protocol fixes the S1 medical task construction, development/calibration subpartitions, B1 linear-readout budget, C1/C2 final-block rank-4 LoRA budget, seeds `11/29/47`, C2 SQuAD maintenance/evaluation separation, sequence policy, and resource stop rules.
+
+The identity-bound RuleCalcs builder is implemented and unit-tested. It binds the exact RiskCalcs source SHA-256 and selected calculator code hashes, admits only the frozen safe AST shape, and cannot select confirmatory/reserve identities. Real 64-calculator source binding passed `64/64` before runtime qualification; executable materialization remains pending the separately pinned NumPy/PyTorch/Transformers runtime.
+
+`CONFIRMATORY_FROZEN` remains `NO`. No development result may clear the later clean-freeze/future-randomness requirement for confirmatory/reserve identities.

@@ -34,3 +34,13 @@ No SQuAD output may be used to select medical intervention hyperparameters, chec
 ## Claim boundary
 
 Allowed wording if executed: "retained SQuAD v1.1 extractive-QA performance under the declared intervention." Forbidden extrapolation: "general capability preserved" or "no catastrophic forgetting" without broader independently admitted evidence.
+
+## S1 development partition amendment — 2026-10-03
+
+The Founder-authorized V5 S1 development grain uses only the already admitted pinned SQuAD v1.1 validation split, but separates C2 maintenance from retention evaluation to prevent direct training/evaluation overlap.
+
+Before any model output, identities are ranked deterministically by SHA-256 over the upstream example ID under a frozen namespace. The first 64 identities are `S1_C2_MAINTENANCE`; the next 256 disjoint identities are `S1_RETENTION_EVAL`; all remaining validation identities are unused in S1. The exact source revision remains `7b6d24c440a36b6815f21b70d25016731768db1f`.
+
+`S1_C2_MAINTENANCE` may contribute only the frozen C2 teacher-KL maintenance term. `S1_RETENTION_EVAL` is never used for training, checkpoint selection, prompt changes, medical hyperparameters, margins, or power decisions. Public CommandMed artifacts continue to store source identities/hashes and aggregate metrics rather than SQuAD passages, questions, or answer text.
+
+This amendment narrows the earlier validation-split plan for S1 and does not authorize confirmatory use or a broad capability-preservation claim.
