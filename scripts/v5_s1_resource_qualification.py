@@ -86,8 +86,17 @@ def git_text(*args: str) -> str:
 
 def require_clean_head() -> str:
     status = git_text("status", "--porcelain", "--untracked-files=all")
-    if status:
-        raise RuntimeError("working tree must be clean before V5 model execution")
+    unexpected: list[str] = []
+    evidence_prefix = OUTPUT_REL.as_posix().rstrip("/") + "/"
+    for line in status.splitlines():
+        path = line[3:].strip().replace("\\", "/")
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1]
+        if path.startswith(evidence_prefix):
+            continue
+        unexpected.append(line)
+    if unexpected:
+        raise RuntimeError("working tree has non-evidence changes before V5 model execution: " + " | ".join(unexpected))
     head = git_text("rev-parse", "HEAD")
     if len(head) != 40:
         raise RuntimeError("unexpected Git HEAD identity")
