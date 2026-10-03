@@ -297,7 +297,7 @@ def candidate_probabilities(model: Any, torch: Any, encoded: dict[str, Any], a_i
 
 
 def smoke_inference(model: Any, tokenizer: Any, torch: Any, a_id: int, b_id: int) -> dict[str, Any]:
-    prompt = "TASK: Mechanical label check.\nA = MATCH\nB = MISMATCH\nReturn only A or B.\nANSWER: "
+    prompt = "TASK: Mechanical label check.\nA = MATCH\nB = MISMATCH\nReturn only A or B.\nANSWER:\n"
     if token_suffix_id(tokenizer, prompt, "A") != a_id or token_suffix_id(tokenizer, prompt, "B") != b_id:
         raise RuntimeError("candidate token identity changed across frozen answer prefix")
     encoded = tokenizer(prompt, return_tensors="pt", add_special_tokens=False)

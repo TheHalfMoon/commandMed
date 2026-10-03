@@ -589,6 +589,6 @@
     }
   ],
   "source_manifest": "riskcalcs-rule-oracle-final-candidate-v5.json",
-  "source_manifest_sha256": "2d57d36e2559fa2e5fdfd377782e254eb5d9bfcd16f042194c15867861426baa",
+  "source_manifest_sha256": "445e37ee7b3a2bb56c21d04a6236e16a929f6207c74351c0143fe436c61abd9c",
   "status": "PREFREEZE_DEV_CAL_COMMITTED_FUTURE_CONFIRMATORY_UNMATERIALIZED"
 }

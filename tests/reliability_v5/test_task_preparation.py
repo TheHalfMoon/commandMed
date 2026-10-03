@@ -17,13 +17,14 @@ SPEC.loader.exec_module(PREPARE)
 
 
 class FixtureTokenizer:
-    def __init__(self, prefix_ids, full_ids):
+    def __init__(self, prefix_ids, full_ids, prefix="ANSWER: "):
         self.prefix_ids = prefix_ids
         self.full_ids = full_ids
+        self.prefix = prefix
 
     def __call__(self, text, *, add_special_tokens):
         assert not add_special_tokens
-        return {"input_ids": self.prefix_ids if text == "ANSWER: " else self.full_ids}
+        return {"input_ids": self.prefix_ids if text == self.prefix else self.full_ids}
 
 
 def test_retokenized_prefix_is_rejected_even_with_one_suffix_token():
@@ -48,6 +49,13 @@ def test_preserved_prefix_and_single_candidate_are_admitted():
     assert PREPARE.candidate_suffix_id(tokenizer, "ANSWER: ", "A") == 357
 
 
+@pytest.mark.parametrize("label, token", [("A", 32), ("B", 33)])
+def test_approved_newline_preserves_prefix_and_candidate(label, token):
+    prefix_ids = [11355, 38050, 25, 198]
+    tokenizer = FixtureTokenizer(prefix_ids, prefix_ids + [token], prefix="ANSWER:\n")
+    assert PREPARE.candidate_suffix_id(tokenizer, "ANSWER:\n", label) == token
+
+
 def test_failed_candidate_checks_are_persisted_and_main_returns_failure(monkeypatch, tmp_path):
     source = tmp_path / "source.json"
     source.write_bytes(b"fixture")
@@ -57,7 +65,7 @@ def test_failed_candidate_checks_are_persisted_and_main_returns_failure(monkeypa
     model.mkdir()
     for name in ("tokenizer.json", "tokenizer_config.json", "vocab.json", "merges.txt"):
         (model / name).write_text("fixture", encoding="utf-8")
-    tokenizer = FixtureTokenizer([100, 200, 300], [100, 200, 357])
+    tokenizer = FixtureTokenizer([100, 200, 300], [100, 200, 357], prefix="ANSWER:\n")
     def from_pretrained(path, *, local_files_only):
         assert path == model and local_files_only
         return tokenizer

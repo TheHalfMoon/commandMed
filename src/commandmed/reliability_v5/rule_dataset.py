@@ -312,7 +312,7 @@ def _render_prompt(
         f"A = {option_a_semantic}\n"
         f"B = {option_b_semantic}\n"
         "Return only A or B.\n"
-        "ANSWER: "
+        "ANSWER:\n"
     )
 
 

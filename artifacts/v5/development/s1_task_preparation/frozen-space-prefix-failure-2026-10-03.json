@@ -1,12 +1,13 @@
 {
-  "answer_prefix": "ANSWER:\n",
+  "answer_prefix": "ANSWER: ",
   "calculator_count": 64,
-  "candidate_token_failures": [],
-  "code_sha": "1dd61aa611e1a4804b232fdcac81c6a316783bbe",
+  "candidate_token_failures": [
+    "A",
+    "B"
+  ],
+  "code_sha": "338d0cb5fd3c9ee3131357af24333fd0e80ab4de",
   "confirmatory_materialized": false,
   "example_count": 8192,
-  "full_prompt_candidate_check_count": 32768,
-  "full_prompt_candidate_failures": [],
   "gated_data": false,
   "max_prompt_tokens_by_split": {
     "S1_CAL_EVAL": 593,
@@ -23,21 +24,18 @@
   "overlength_records": [],
   "overlength_task_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
   "phi": false,
-  "preparation_implementation_sha256": "a3897abb10c9c5ff496e82018ce5aae7651d49d0a7c950763c79ec27517b6301",
-  "prompt_content_sequence_sha256": "978c5806c8cf06e6fcdff082d94945c8ae944eb33694adb6ed5d3c316d52bd20",
-  "prompt_identity_count": 16384,
-  "renderer_implementation_sha256": "bb062209196b045295a65403fd72e132ef01c6bc556a79048ba6284d905a3433",
+  "preparation_implementation_sha256": "a5d2a092e4527b044b3844c27cd6b5093d9552acb60206ea080fd06f893da070",
   "reserve_materialized": false,
   "riskcalcs_source_sha256": "00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9",
   "schema": "commandmed.v5.s1.task-preparation.v1",
-  "selection_manifest_sha256": "445e37ee7b3a2bb56c21d04a6236e16a929f6207c74351c0143fe436c61abd9c",
+  "selection_manifest_sha256": "2d57d36e2559fa2e5fdfd377782e254eb5d9bfcd16f042194c15867861426baa",
   "split_counts": {
     "S1_CAL_EVAL": 3840,
     "S1_CAL_TUNE": 256,
     "S1_DEV_EVAL": 3840,
     "S1_TRAIN": 256
   },
-  "status": "PASS_PRE_MODEL_INTERFACE",
+  "status": "FAILED_PRE_MODEL_INTERFACE",
   "target_counts": {
     "S1_CAL_EVAL": {
       "A": 1894,
@@ -67,51 +65,49 @@
   "task_id_sequence_sha256": "36c86610e2a762cb57ab61a8dff6a829e7196a638178dc612b5d1d3d5bdd5e0c",
   "tokenizer_candidate_checks": {
     "A": {
-      "common_prefix_length": 4,
+      "common_prefix_length": 3,
       "full_ids": [
         11355,
         38050,
         25,
-        198,
-        32
+        357
       ],
       "prefix_ids": [
         11355,
         38050,
         25,
-        198
+        220
       ],
-      "prefix_preserved": true,
+      "prefix_preserved": false,
       "suffix_ids": [
-        32
+        357
       ],
-      "valid": true
+      "valid": false
     },
     "B": {
-      "common_prefix_length": 4,
+      "common_prefix_length": 3,
       "full_ids": [
         11355,
         38050,
         25,
-        198,
-        33
+        417
       ],
       "prefix_ids": [
         11355,
         38050,
         25,
-        198
+        220
       ],
-      "prefix_preserved": true,
+      "prefix_preserved": false,
       "suffix_ids": [
-        33
+        417
       ],
-      "valid": true
+      "valid": false
     }
   },
   "tokenizer_candidate_ids": {
-    "A": 32,
-    "B": 33
+    "A": null,
+    "B": null
   },
   "tokenizer_files": {
     "merges.txt": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",

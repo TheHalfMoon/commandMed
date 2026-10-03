@@ -222,3 +222,9 @@ Each run records manifest, preflight decision, seed/configuration, raw-output ha
 If resource qualification passes, S1 may estimate development/calibration repeatability and nuisance quantities and may freeze property-specific meaningful margins and power assumptions under the existing V5 power protocol. Negative or null development results are preserved.
 
 No S1 result proves the V5 thesis. No S1 result authorizes confirmatory execution, future holdout identity materialization, publication, merge, HCF/Qwen-Image work, or clinical-validity language.
+
+## 13. Approved prospective answer-interface amendment - 2026-10-03
+
+Founder approval: `FOUNDER_V5_S1_ANSWER_INTERFACE_AMENDMENT = APPROVED`, recorded in `V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md`. The sole amended terminal answer marker is `ANSWER:\n` (colon followed by one newline), replacing `ANSWER: ` (colon followed by one space). Apply identically in the medical renderer, preparation checker, and model-facing candidate-token qualification. Sections 1-12 and every other scientific/runtime constraint remain binding.
+
+Preserve the original SAH execution failure and the frozen-space-prefix tokenizer failure. Repeat all development/calibration prompt identities, full-prompt candidate-token checks and length checks, deterministic regeneration, tests, compile and exact-head/OCR review; commit/push before a fresh exact-run model-load preflight. Only after every amended pre-model gate passes may existing bounded development authority continue. No model output preceded this amendment.

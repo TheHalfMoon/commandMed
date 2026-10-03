@@ -95,7 +95,7 @@ def main() -> int:
     from transformers import AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_dir, local_files_only=True)
-    answer_prefix = "ANSWER: "
+    answer_prefix = "ANSWER:\n"
     token_checks = {
         label: candidate_token_check(tokenizer, answer_prefix, label) for label in ("A", "B")
     }
@@ -112,12 +112,26 @@ def main() -> int:
     }
     transformed_identity_failures = 0
     ordered_task_ids: list[str] = []
+    prompt_identities: list[dict[str, object]] = []
+    full_prompt_candidate_failures: list[dict[str, str]] = []
     overlength_records: list[dict[str, object]] = []
 
     for example in examples:
         ordered_task_ids.append(example.task_id)
         for variant, prompt in (("canonical", example.canonical_prompt), ("transformed", example.transformed_prompt)):
             length = len(tokenizer(prompt, add_special_tokens=False)["input_ids"])
+            prompt_identities.append({
+                "task_id": example.task_id,
+                "variant": variant,
+                "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+                "tokens": length,
+            })
+            for label in ("A", "B"):
+                check = candidate_token_check(tokenizer, prompt, label)
+                if not check["valid"] or check["suffix_ids"] != [candidate_ids[label]]:
+                    full_prompt_candidate_failures.append({
+                        "task_id": example.task_id, "variant": variant, "label": label,
+                    })
             max_lengths[example.split] = max(max_lengths[example.split], length)
             if length > MAX_TOKENS:
                 overlength.append(example.task_id)
@@ -135,9 +149,14 @@ def main() -> int:
 
     evidence: dict[str, object] = {
         "schema": "commandmed.v5.s1.task-preparation.v1",
-        "status": "FAILED_PRE_MODEL_INTERFACE" if candidate_failures or overlength or transformed_identity_failures else "PASS_PRE_MODEL_INTERFACE",
+        "status": "FAILED_PRE_MODEL_INTERFACE" if candidate_failures or full_prompt_candidate_failures or overlength or transformed_identity_failures else "PASS_PRE_MODEL_INTERFACE",
         "code_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "preparation_implementation_sha256": sha256_file(Path(__file__)),
+        "renderer_implementation_sha256": sha256_file(ROOT / "src/commandmed/reliability_v5/rule_dataset.py"),
+        "prompt_identity_count": len(prompt_identities),
+        "prompt_content_sequence_sha256": canonical_sha256(prompt_identities),
+        "full_prompt_candidate_check_count": len(prompt_identities) * 2,
+        "full_prompt_candidate_failures": full_prompt_candidate_failures,
         "model_repo": "Qwen/Qwen3.5-0.8B-Base",
         "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
         "tokenizer_files": {
@@ -180,7 +199,7 @@ def main() -> int:
     print(f"OVERLENGTH={len(overlength)}")
     print(f"CANDIDATE_TOKEN_FAILURES={json.dumps(candidate_failures)}")
     print(f"EVIDENCE_SHA256={evidence_sha}")
-    if candidate_failures or overlength or transformed_identity_failures:
+    if candidate_failures or full_prompt_candidate_failures or overlength or transformed_identity_failures:
         return 2
     return 0
 

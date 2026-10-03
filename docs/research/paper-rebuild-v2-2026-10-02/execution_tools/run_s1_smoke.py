@@ -244,7 +244,7 @@ def main() -> int:
     if torch.cuda.is_available():
         raise SystemExit("UNEXPECTED_CUDA_AVAILABLE")
     tokenizer = AutoTokenizer.from_pretrained(args.model_dir, local_files_only=True)
-    prefix = "TASK: Return only A.\nANSWER: "
+    prefix = "TASK: Return only A.\nANSWER:\n"
     token_a = candidate_suffix_id(tokenizer, prefix, "A")
     token_b = candidate_suffix_id(tokenizer, prefix, "B")
 

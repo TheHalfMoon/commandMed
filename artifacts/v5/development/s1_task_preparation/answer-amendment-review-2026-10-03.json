@@ -1,0 +1,27 @@
+{
+  "baseline_head": "1dd61aa611e1a4804b232fdcac81c6a316783bbe",
+  "blocking_findings": 0,
+  "confirmatory_materialized": false,
+  "findings": [],
+  "independent_peer_review": false,
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "model_loaded": false,
+  "negative_evidence_preserved": true,
+  "ocr_mode": "LOCAL_ZERO_COST_DELEGATE_RULES_HOST_AGENT_REVIEW",
+  "ocr_version": "1.12.11 (a758d9c)",
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "reserve_materialized": false,
+  "reviewed_pending_implementation_sha256": {
+    "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py": "a3897abb10c9c5ff496e82018ce5aae7651d49d0a7c950763c79ec27517b6301",
+    "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/run_s1_smoke.py": "c4885b94055b786fc2850725299b3c0584fb93b6b0f1a7379c9276faa10d1931",
+    "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/build_freeze_bindings.py": "5c222767ecffb78fbd468c9f846a9f1c5d36086fdbedaed6e1299692de918262",
+    "scripts/v5_s1_resource_qualification.py": "f497ee4bb527b1e8772a005b84a9b472a5bd86956df3e5963af84624b3fc7ee7",
+    "src/commandmed/reliability_v5/rule_dataset.py": "bb062209196b045295a65403fd72e132ef01c6bc556a79048ba6284d905a3433",
+    "tests/reliability_v5/test_rule_dataset.py": "e39dd2dc872da8add1c894b78c92630b96044b9a70bc394983970be8c0468eaa",
+    "tests/reliability_v5/test_task_preparation.py": "5769c8045a0a36dda4de8eef805f7443022a8240d2a38bfe9b1f135d84574d47"
+  },
+  "schema": "commandmed.v5.answer-amendment-review.v1",
+  "source_audit_reused_selected_source_records_unchanged": true
+}

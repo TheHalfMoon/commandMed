@@ -120,6 +120,8 @@ def test_materialization_uses_only_development_and_calibration(monkeypatch: pyte
     for example in examples:
         by_split.setdefault(example.split, []).append(example)
         assert example.canonical_prompt != example.transformed_prompt
+        assert example.canonical_prompt.endswith("ANSWER:\n")
+        assert example.transformed_prompt.endswith("ANSWER:\n")
         assert example.target_label in {"A", "B"}
         assert example.option_a_semantic != example.option_b_semantic
 

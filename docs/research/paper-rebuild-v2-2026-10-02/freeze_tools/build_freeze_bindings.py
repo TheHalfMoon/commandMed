@@ -57,7 +57,7 @@ def main() -> int:
     status = git("status", "--porcelain")
     payload = {
         "schema": "commandmed-v5-scientific-freeze-bindings",
-        "schema_version": "1.3",
+        "schema_version": "1.4",
         "confirmatory_frozen": False,
         "execution_authority": "NO",
         "model_execution": "NO",
@@ -71,6 +71,7 @@ def main() -> int:
         "authorization": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md"),
         "s1_protocol": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md"),
         "oracle_amendment": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md"),
+        "answer_interface_authorization": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md"),
     }
     payload["repository_context"] = {
         "branch": git("branch", "--show-current"),
@@ -175,6 +176,12 @@ def main() -> int:
             **bind(preparation_path),
             "status": preparation["status"],
             "implementation": bind("docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py"),
+            "renderer": bind("src/commandmed/reliability_v5/rule_dataset.py"),
+            "resource_runner": bind("scripts/v5_s1_resource_qualification.py"),
+            "smoke_runner": bind("docs/research/paper-rebuild-v2-2026-10-02/execution_tools/run_s1_smoke.py"),
+            "answer_prefix": preparation["answer_prefix"],
+            "prompt_content_sequence_sha256": preparation["prompt_content_sequence_sha256"],
+            "prior_negative_interface_evidence": bind("artifacts/v5/development/s1_task_preparation/frozen-space-prefix-failure-2026-10-03.json"),
         }
         if preparation["status"] != "PASS_PRE_MODEL_INTERFACE":
             payload["remaining_blockers"].insert(0, "S1 task-preparation interface qualification failed before model load")
