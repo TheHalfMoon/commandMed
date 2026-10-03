@@ -1,0 +1,105 @@
+"""Exact-head pre-model guards and observation of unchanged canonical qualifier."""
+import hashlib
+import importlib.util
+import json
+import os
+import subprocess
+import time
+import traceback
+from pathlib import Path
+for key,value in {'HF_HUB_OFFLINE':'1','TRANSFORMERS_OFFLINE':'1','HF_HUB_DISABLE_TELEMETRY':'1','DO_NOT_TRACK':'1','WANDB_DISABLED':'true'}.items(): os.environ[key]=value
+R=Path(__file__).resolve().parents[2]/'canonical-source'
+P=R/'docs/research/paper-rebuild-v2-2026-10-02'
+O=R/'artifacts/v5/development/s1-resource-qualification'
+M=Path(r'D:\CommandMed-V5-runtime\model\dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68')
+S=Path(r'D:\CommandMed-V5-runtime\source\riskcalcs.json')
+def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+def read(p): return json.loads(p.read_text(encoding='utf-8'))
+def git(*args): return subprocess.check_output(['git',*args],cwd=R,text=True).strip()
+def require(condition,message):
+    if not condition: raise RuntimeError(message)
+spec=importlib.util.spec_from_file_location('v5_resource_qualifier',R/'scripts/v5_s1_resource_qualification.py')
+q=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(q)
+head=q.require_clean_head()
+require(head==git('rev-parse','origin/research/commandmed-paper-first-principles'),'remote branch differs')
+validation=read(Path(__file__).resolve().parent/'answer-amendment-exact-run-validation-2026-10-03.json')
+require(validation['tested_head']==head and validation['worktree_clean_before_checks'],'exact-head validation mismatch')
+require(validation['v5']['exit_code']==0 and validation['full']['exit_code']==0 and validation['compile_exit_code']==0 and validation['diff_check_exit_code']==0,'validation failed')
+def bindings(v):
+    if isinstance(v,dict):
+        if 'path' in v and 'sha256' in v: require(sha(R/v['path'])==v['sha256'],'stale binding '+v['path'])
+        for c in v.values(): bindings(c)
+    elif isinstance(v,list):
+        for c in v: bindings(c)
+bindings(read(P/'scientific-freeze-bindings-v5.json'))
+bindings(read(P/'riskcalcs-rule-oracle-final-candidate-v5.json'))
+prep=read(R/'artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json')
+require(prep['status']=='PASS_PRE_MODEL_INTERFACE','preparation failed')
+require(prep['answer_prefix']=='ANSWER:\n' and prep['tokenizer_candidate_ids']=={'A':32,'B':33},'marker/candidate mismatch')
+require(prep['example_count']==8192 and prep['prompt_identity_count']==16384 and prep['full_prompt_candidate_check_count']==32768,'missing task coverage')
+require(not prep['candidate_token_failures'] and not prep['full_prompt_candidate_failures'] and not prep['overlength_count'] and not prep['transformed_identity_failures'],'interface failure')
+require(prep['max_tokens_contract']==768 and max(prep['max_prompt_tokens_by_split'].values())<=768,'length mismatch')
+require(prep['preparation_implementation_sha256']==sha(P/'execution_tools/prepare_s1_tasks.py'),'checker changed')
+require(prep['renderer_implementation_sha256']==sha(R/'src/commandmed/reliability_v5/rule_dataset.py'),'renderer changed')
+for name,digest in prep['tokenizer_files'].items(): require(sha(M/name)==digest,'tokenizer changed')
+require(sha(S)==q.FROZEN_SOURCE_SHA256,'source changed')
+artifact,bundle=q.bind_artifact(M)
+require(bundle=='b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477','model artifact changed')
+import psutil
+import torch
+from transformers import AutoModelForCausalLM
+torch.manual_seed(11)
+memory=psutil.virtual_memory()
+disk=psutil.disk_usage('D:\\')
+require(disk.free>=q.MIN_DISK_HEADROOM,'disk headroom gate')
+require(memory.available>=q.MIN_MEMORY_HEADROOM,'preload memory headroom gate')
+context={'schema':'commandmed.v5.s1-amended-exact-run-guard.v1','code_sha':head,'tree':git('log','-1','--format=%T'),'clean_allowed_worktree':True,'remote_matches':True,'guard_implementation_sha256':sha(Path(__file__)),'guard_review':'HOST_AGENT_ZERO_COST','amendment_authorization_sha256':sha(P/'V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md'),'authority_sha256':sha(P/'V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md'),'protocol_sha256':sha(P/'V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md'),'preparation_sha256':sha(R/'artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json'),'bundle_sha256':bundle,'runtime_artifact_location_identity_sha256':hashlib.sha256(str(M).encode()).hexdigest(),'ram_total_bytes':memory.total,'ram_available_before_load_bytes':memory.available,'disk_free_before_load_bytes':disk.free,'resource_synthetic_seed':11,'all_amended_pre_model_guards':'PASS','model_loaded':False,'inference':False,'optimizer_steps':0,'paid_api':False,'paid_compute':False,'phi':False,'gated_data':False,'confirmatory_materialized':False,'reserve_materialized':False,'telemetry_disabled':True,'offline':True}
+q.write_json(O/'amended-exact-run-guard.json',context)
+state={'model_loaded':False,'inference_started':False,'inference_completed':False,'benchmark_started':False,'optimizer_steps':0}
+original_load=AutoModelForCausalLM.from_pretrained
+def observed_load(*args,**kwargs):
+    result=original_load(*args,**kwargs)
+    state['model_loaded']=True
+    state['model_class']=type(result).__name__
+    state['total_parameters']=sum(p.numel() for p in result.parameters())
+    state['trainable_parameters_after_load']=sum(p.numel() for p in result.parameters() if p.requires_grad)
+    state['parameter_dtype_counts']={}
+    for p in result.parameters():
+        name=str(p.dtype)
+        state['parameter_dtype_counts'][name]=state['parameter_dtype_counts'].get(name,0)+p.numel()
+    state['device_types']=sorted({p.device.type for p in result.parameters()})
+    require(state['device_types']==['cpu'],'non-CPU parameter')
+    q.write_json(O/'model-load-observation.json',{'code_sha':head,**state})
+    return result
+AutoModelForCausalLM.from_pretrained=observed_load
+original_smoke=q.smoke_inference
+def observed_smoke(*args,**kwargs):
+    state['inference_started']=True
+    result=original_smoke(*args,**kwargs)
+    state['inference_completed']=True
+    return result
+q.smoke_inference=observed_smoke
+original_bench=q.lora_resource_benchmark
+def observed_bench(*args,**kwargs):
+    state['benchmark_started']=True
+    return original_bench(*args,**kwargs)
+q.lora_resource_benchmark=observed_bench
+original_step=torch.optim.AdamW.step
+def observed_step(*args,**kwargs):
+    result=original_step(*args,**kwargs)
+    state['optimizer_steps']+=1
+    return result
+torch.optim.AdamW.step=observed_step
+started=time.perf_counter()
+print('AMENDED_EXACT_RUN_GUARDS=PASS HEAD='+head,flush=True)
+try:
+    result=q.qualify(M,S)
+    record={'status':result['status'],'code_sha':head,'wall_seconds':time.perf_counter()-started,'canonical_qualification':result,'observation':state}
+except Exception as exc:
+    record={'status':'RESOURCE_BLOCKED','code_sha':head,'wall_seconds':time.perf_counter()-started,'exception_type':type(exc).__name__,'exception_message':str(exc),'observation':state,'traceback':traceback.format_exc()}
+    # Persist failure; no retry, fallback, changed dtype, architecture or budget.
+record.update({'schema':'commandmed.v5.s1-amended-resource-observation.v1','guard_sha256':sha(O/'amended-exact-run-guard.json'),'paid_api':False,'paid_compute':False,'spend_usd':0.0,'phi':False,'gated_data':False,'confirmatory_materialized':False,'reserve_materialized':False})
+q.write_json(O/'amended-resource-observation.json',record)
+print(json.dumps(record,sort_keys=True),flush=True)
+raise SystemExit(2 if record['status']=='RESOURCE_BLOCKED' else 0)

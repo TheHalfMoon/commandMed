@@ -1,0 +1,11 @@
+# Dataset and rights plan
+
+Only public metadata/cards, licenses and paper descriptions were retrieved. dataset-inventory.json records every requested field and immutable card revisions. No dataset has passed source-level admission for training or evaluation. The PubMedQA labelled configuration reports 1,000 items, artificial 211,269 and unlabelled 61,249; eligible rights-admitted counts are unknown. MedMCQA metadata reports 182,822 train, 4,183 validation and 6,150 test. These are upstream counts, not CommandMed experiment sample sizes [@arxiv190906146; @arxiv220314371].
+
+Dataset labels and prose answers have distinct semantics. A PubMedQA 'maybe' answer cannot automatically mean missing information, abstention or escalation. Exam correctness does not validate a treatment decision. Any altered evidence requires qualified adjudication of whether the label changes, remains answerable from prior knowledge, or becomes medically ambiguous. Failure to secure labels blocks the secondary study.
+
+Admission requires exact payload/content hashes, original publisher/exam/article rights, permitted train/eval/derivative/publication uses, notices, privacy assessment, duplicates/contamination audit and immutable group/split assignments. Do not substitute a card's license for copyrighted source-text rights. ArabicMMLU has a noncommercial card license. GPQA is gated and explicitly discouraged from online example disclosure; it is excluded. MIMIC-derived cases are excluded under no private clinical data. No teacher-generated reasoning data enter the primary without complete derivative provenance.
+
+English is the primary methodological scope. Arabic is an independent follow-up requiring lawful items, qualified semantic review and separate language-specific calibration; no machine-translated clinical labels will be called ground truth. Medical images/generation are prospectively excluded rather than scored implicitly. Prefer a small legally admitted source set over a broad mixture.
+
+NCBI policy source: https://www.ncbi.nlm.nih.gov/home/about/policies/. The source-retrieval manifest binds the retrieved policy. Rights questions that cannot be settled from explicit public grants require human rights review or replacement with explicitly licensed material.

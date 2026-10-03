@@ -1,0 +1,319 @@
+{
+  "admitted_assets": 1,
+  "datasets": [
+    {
+      "access_requirements": "Gated: False; metadata only retrieved; no dataset payload",
+      "commercial_restrictions": "Card label does not resolve all source-content restrictions",
+      "contamination_risk": "Public benchmark/source exposure possible; no uncontaminated guarantee or private-gold access",
+      "evaluation_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "generated_derivatives_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "language": "English and other card-listed languages not independently item-verified",
+      "license": "apache-2.0",
+      "metadata_sha256": "cb97f0869cb6658ac2dbd7d24ab32f6bdee25e511a1579b1cf467f7e99c94d64",
+      "modality": "text",
+      "name": "FreedomIntelligence/medical-o1-reasoning-SFT",
+      "patient_privacy_risks": "No patient records retrieved; source-level review still required",
+      "planned_role": "Excluded from primary study pending teacher-lineage qualification.",
+      "redistribution": "PENDING_SOURCE_LEVEL_REVIEW",
+      "revision": "fc2c9e8a37b38f38da6d449564a8c350b244aef4",
+      "rights_issue": "Teacher/provider and original-source derivative permissions unresolved.",
+      "size": "NR in captured card/API; exact admitted count UNKNOWN",
+      "task": "Teacher-generated medical reasoning adaptation",
+      "training_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "upstream_source": "https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT/tree/fc2c9e8a37b38f38da6d449564a8c350b244aef4"
+    },
+    {
+      "access_requirements": "Gated: False; metadata only retrieved; no dataset payload",
+      "commercial_restrictions": "Card label does not resolve all source-content restrictions",
+      "contamination_risk": "Public benchmark/source exposure possible; no uncontaminated guarantee or private-gold access",
+      "evaluation_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "generated_derivatives_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "language": "English",
+      "license": "cc-by-4.0",
+      "metadata_sha256": "5840e37ade551067475db801d4859f2396736d2d45ac101393715b559fe5f314",
+      "modality": "text",
+      "name": "GBaker/MedQA-USMLE-4-options",
+      "patient_privacy_risks": "No patient records retrieved; source-level review still required",
+      "planned_role": "Confirmatory cross-dataset candidate; not admitted.",
+      "redistribution": "PENDING_SOURCE_LEVEL_REVIEW",
+      "revision": "0fb93dd23a7339b6dcd27e241cb9b5eca62d4d18",
+      "rights_issue": "CC-BY card does not establish board-exam/textbook content rights. Verify transformation and source authorization.",
+      "size": "NR in captured card/API; exact admitted count UNKNOWN",
+      "task": "Medical examination MCQA",
+      "training_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "upstream_source": "https://huggingface.co/datasets/GBaker/MedQA-USMLE-4-options/tree/0fb93dd23a7339b6dcd27e241cb9b5eca62d4d18"
+    },
+    {
+      "access_requirements": "Gated: auto; metadata only retrieved; no dataset payload",
+      "commercial_restrictions": "Card label does not resolve all source-content restrictions",
+      "contamination_risk": "Public benchmark/source exposure possible; no uncontaminated guarantee or private-gold access",
+      "evaluation_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "generated_derivatives_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "language": "English",
+      "license": "cc-by-4.0",
+      "metadata_sha256": "403691178f1e4eceb2d738832cac5b0b60a27c89ec0421d42403597e26516d96",
+      "modality": "text",
+      "name": "Idavidrein/gpqa",
+      "patient_privacy_risks": "No patient records retrieved; source-level review still required",
+      "planned_role": "Excluded current execution/publication scope.",
+      "redistribution": "PENDING_SOURCE_LEVEL_REVIEW",
+      "revision": "83022cefff930aea54f654c0b282e74b9eeda5c6",
+      "rights_issue": "Gated access and explicit anti-contamination publication restrictions; no access requested.",
+      "size": "NR in captured card/API; exact admitted count UNKNOWN",
+      "task": "Graduate science MCQA",
+      "training_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "upstream_source": "https://huggingface.co/datasets/Idavidrein/gpqa/tree/83022cefff930aea54f654c0b282e74b9eeda5c6"
+    },
+    {
+      "access_requirements": "Gated: False; metadata only retrieved; no dataset payload",
+      "commercial_restrictions": "Noncommercial",
+      "contamination_risk": "Public benchmark/source exposure possible; no uncontaminated guarantee or private-gold access",
+      "evaluation_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "generated_derivatives_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "language": "Arabic",
+      "license": "cc-by-nc-4.0",
+      "metadata_sha256": "9269066633f4372d1de90d4e8ad5afb850165454556a6052f6132f870ec75ea4",
+      "modality": "text",
+      "name": "MBZUAI/ArabicMMLU",
+      "patient_privacy_risks": "No patient records retrieved; source-level review still required",
+      "planned_role": "Arabic follow-up only; no automatic translation-equivalence claim.",
+      "redistribution": "PENDING_SOURCE_LEVEL_REVIEW",
+      "revision": "7aa530e2893ac420352b3f5c1a1310c010e9758b",
+      "rights_issue": "Noncommercial license; subgroup identity, original content rights and clinically equivalent annotation unresolved.",
+      "size": "NR in captured card/API; exact admitted count UNKNOWN",
+      "task": "Arabic academic MCQA including medical subjects",
+      "training_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "upstream_source": "https://huggingface.co/datasets/MBZUAI/ArabicMMLU/tree/7aa530e2893ac420352b3f5c1a1310c010e9758b"
+    },
+    {
+      "access_requirements": "Gated: False; metadata only retrieved; no dataset payload",
+      "commercial_restrictions": "Card label does not resolve all source-content restrictions",
+      "contamination_risk": "Public benchmark/source exposure possible; no uncontaminated guarantee or private-gold access",
+      "evaluation_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "generated_derivatives_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "language": "English",
+      "license": [
+        "apache-2.0"
+      ],
+      "metadata_sha256": "49c2bba120a10d0bc7501e0200245251edb22107cc420fcabc6499cdbeafcfb2",
+      "modality": "text",
+      "name": "openlifescienceai/medmcqa",
+      "patient_privacy_risks": "No patient records retrieved; source-level review still required",
+      "planned_role": "Secondary medical QA candidate; not admitted.",
+      "redistribution": "PENDING_SOURCE_LEVEL_REVIEW",
+      "revision": "91c6572c454088bf71b679ad90aa8dffcd0d5868",
+      "rights_issue": "Apache card/code terms do not independently establish underlying examination content rights or test label availability.",
+      "size": [
+        {
+          "configuration": "default",
+          "splits": [
+            {
+              "count": 182822,
+              "name": "train"
+            },
+            {
+              "count": 6150,
+              "name": "test"
+            },
+            {
+              "count": 4183,
+              "name": "validation"
+            }
+          ]
+        }
+      ],
+      "task": "Medical entrance-exam MCQA",
+      "training_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "upstream_source": "https://huggingface.co/datasets/openlifescienceai/medmcqa/tree/91c6572c454088bf71b679ad90aa8dffcd0d5868"
+    },
+    {
+      "access_requirements": "Gated: False; metadata only retrieved; no dataset payload",
+      "commercial_restrictions": "Card label does not resolve all source-content restrictions",
+      "contamination_risk": "Public benchmark/source exposure possible; no uncontaminated guarantee or private-gold access",
+      "evaluation_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "generated_derivatives_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "language": "English",
+      "license": [
+        "mit"
+      ],
+      "metadata_sha256": "98fae29984435ef9435df0a1fd3e1ccfe295ba956869194129026ca939280750",
+      "modality": "text",
+      "name": "qiaojin/PubMedQA",
+      "patient_privacy_risks": "No patient records retrieved; source-level review still required",
+      "planned_role": "Primary candidate only after rights-admitted subset; yes/no/maybe is not evidence-action truth.",
+      "redistribution": "PENDING_SOURCE_LEVEL_REVIEW",
+      "revision": "9001f2853fb87cab8d220904e0de81ac6973b318",
+      "rights_issue": "Per-article abstract copyright and conclusion-derived labels need review; NCBI does not blanket-license all indexed abstracts. No article text published here.",
+      "size": [
+        {
+          "configuration": "pqa_artificial",
+          "splits": [
+            {
+              "count": 211269,
+              "name": "train"
+            }
+          ]
+        },
+        {
+          "configuration": "pqa_labeled",
+          "splits": [
+            {
+              "count": 1000,
+              "name": "train"
+            }
+          ]
+        },
+        {
+          "configuration": "pqa_unlabeled",
+          "splits": [
+            {
+              "count": 61249,
+              "name": "train"
+            }
+          ]
+        }
+      ],
+      "task": "Biomedical evidence QA",
+      "training_use_allowed": "NOT_ADMITTED_PENDING_RIGHTS",
+      "upstream_source": "https://huggingface.co/datasets/qiaojin/PubMedQA/tree/9001f2853fb87cab8d220904e0de81ac6973b318"
+    },
+    {
+      "access_requirements": "Ungated public dataset; source payload is fetched externally at the pinned revision and is not vendored in CommandMed.",
+      "admission_status": "ADMITTED_WITH_NARROW_CLAIM_AND_RIGHTS_CONTROLS",
+      "commercial_restrictions": "CC-BY-SA-4.0 attribution/share-alike obligations; no separate commercial prohibition is asserted from the pinned metadata.",
+      "contamination_risk": "HIGH_PUBLIC_BENCHMARK; interpret only as paired within-model retention, not uncontaminated generalization.",
+      "evaluation_use_allowed": "YES_PINNED_VALIDATION_ONLY_WITH_ATTRIBUTION",
+      "generated_derivatives_allowed": "NOT_REQUIRED_FOR_PLANNED_USE; separate review required before redistributed derivatives.",
+      "language": "English",
+      "license": "cc-by-sa-4.0",
+      "metadata_sha256": "2606e8e7db370505cbef32fa97cda82d456e001ca837cf7516c42f5eba3931b4",
+      "modality": "text",
+      "name": "rajpurkar/squad",
+      "patient_privacy_risks": "No patient records; Wikipedia-derived passages and crowdsourced question answering.",
+      "planned_role": "Paired nonmedical SQuAD v1.1 extractive-QA retention control only; no broad capability-preservation claim.",
+      "redistribution": "NO_SOURCE_PAYLOAD_REDISTRIBUTION_IN_COMMANDMED; IDs/hashes/configuration/aggregate metrics only unless a later CC-BY-SA compliance review expands scope.",
+      "revision": "7b6d24c440a36b6815f21b70d25016731768db1f",
+      "rights_issue": "ADMITTED_NARROW_EVALUATION: honor CC-BY-SA-4.0 attribution/share-alike and do not vendor source payload.",
+      "size": [
+        {
+          "configuration": "plain_text",
+          "splits": [
+            {
+              "count": 87599,
+              "name": "train"
+            },
+            {
+              "count": 10570,
+              "name": "validation"
+            }
+          ]
+        }
+      ],
+      "task": "Nonmedical reading comprehension",
+      "training_use_allowed": "NO_FOR_COMMANDMED_V5_RETENTION_CONTROL",
+      "upstream_source": "https://huggingface.co/datasets/rajpurkar/squad/tree/7b6d24c440a36b6815f21b70d25016731768db1f"
+    },
+    {
+      "access_requirements": "No restricted access requested",
+      "commercial_restrictions": "UNRESOLVED",
+      "contamination_risk": "Must bind origin, deduplicate and quarantine before use",
+      "evaluation_use_allowed": "NO_CURRENT_ADMISSION",
+      "generated_derivatives_allowed": "NO_CURRENT_ADMISSION",
+      "language": "English",
+      "license": "Apache-2.0 software only",
+      "modality": "text",
+      "name": "Synthea",
+      "patient_privacy_risks": "No patient data; synthetic intended where eligible",
+      "planned_role": "Candidate or excluded as stated",
+      "redistribution": "NOT_ADMITTED",
+      "revision": "d9d07a6eef91ee5144293b42ab64224d84d124f8",
+      "rights_issue": "Apache-2.0 software does not automatically qualify generated fixtures for clinical utility. No generator executed.",
+      "size": "No payload retrieved; eligible count UNKNOWN",
+      "task": "Fully synthetic clinical-style mechanical fixtures",
+      "training_use_allowed": "NO_CURRENT_ADMISSION",
+      "upstream_source": "https://github.com/synthetichealth/synthea"
+    },
+    {
+      "access_requirements": "No restricted access requested",
+      "commercial_restrictions": "UNRESOLVED",
+      "contamination_risk": "Must bind origin, deduplicate and quarantine before use",
+      "evaluation_use_allowed": "NO_CURRENT_ADMISSION",
+      "generated_derivatives_allowed": "NO_CURRENT_ADMISSION",
+      "language": "Arabic",
+      "license": "UNKNOWN / NOT_ADMITTED",
+      "modality": "text",
+      "name": "MedArabiQ",
+      "patient_privacy_risks": "No patient data; synthetic intended where eligible",
+      "planned_role": "Candidate or excluded as stated",
+      "redistribution": "NOT_ADMITTED",
+      "revision": "UNBOUND",
+      "rights_issue": "Dataset-level exact source/license not bound; paper identity alone is not access/use permission.",
+      "size": "No payload retrieved; eligible count UNKNOWN",
+      "task": "Arabic medical examination evaluation",
+      "training_use_allowed": "NO_CURRENT_ADMISSION",
+      "upstream_source": "https://arxiv.org/abs/2505.03427v2"
+    },
+    {
+      "access_requirements": "No restricted access requested",
+      "commercial_restrictions": "UNRESOLVED",
+      "contamination_risk": "Must bind origin, deduplicate and quarantine before use",
+      "evaluation_use_allowed": "NO_CURRENT_ADMISSION",
+      "generated_derivatives_allowed": "NO_CURRENT_ADMISSION",
+      "language": "Arabic",
+      "license": "UNKNOWN / NOT_ADMITTED",
+      "modality": "text",
+      "name": "MedAraBench",
+      "patient_privacy_risks": "No patient data; synthetic intended where eligible",
+      "planned_role": "Candidate or excluded as stated",
+      "redistribution": "NOT_ADMITTED",
+      "revision": "UNBOUND",
+      "rights_issue": "Exact dataset revision, subsets and source-content rights not bound.",
+      "size": "No payload retrieved; eligible count UNKNOWN",
+      "task": "Arabic medical evaluation",
+      "training_use_allowed": "NO_CURRENT_ADMISSION",
+      "upstream_source": "https://arxiv.org/abs/2602.01714v1"
+    },
+    {
+      "access_requirements": "No restricted access requested",
+      "commercial_restrictions": "UNRESOLVED",
+      "contamination_risk": "Must bind origin, deduplicate and quarantine before use",
+      "evaluation_use_allowed": "NO_CURRENT_ADMISSION",
+      "generated_derivatives_allowed": "NO_CURRENT_ADMISSION",
+      "language": "English",
+      "license": "UNKNOWN / NOT_ADMITTED",
+      "modality": "text",
+      "name": "MIMIC-IV / CliniCARE cases",
+      "patient_privacy_risks": "No patient data; synthetic intended where eligible",
+      "planned_role": "Candidate or excluded as stated",
+      "redistribution": "NOT_ADMITTED",
+      "revision": "UNBOUND",
+      "rights_issue": "EXCLUDED: restricted/private clinical records; public paper discussion only.",
+      "size": "No payload retrieved; eligible count UNKNOWN",
+      "task": "Clinical evidence-policy scenarios",
+      "training_use_allowed": "NO_CURRENT_ADMISSION",
+      "upstream_source": "https://arxiv.org/abs/2608.07796v1"
+    },
+    {
+      "access_requirements": "No restricted access requested",
+      "commercial_restrictions": "UNRESOLVED",
+      "contamination_risk": "Must bind origin, deduplicate and quarantine before use",
+      "evaluation_use_allowed": "NO_CURRENT_ADMISSION",
+      "generated_derivatives_allowed": "NO_CURRENT_ADMISSION",
+      "language": "Not applicable to primary",
+      "license": "UNKNOWN / NOT_ADMITTED",
+      "modality": "image/text",
+      "name": "Medical image understanding/generation sources",
+      "patient_privacy_risks": "No patient data; synthetic intended where eligible",
+      "planned_role": "Candidate or excluded as stated",
+      "redistribution": "NOT_ADMITTED",
+      "revision": "UNBOUND",
+      "rights_issue": "EXCLUDED_PRIMARY: dataset/modal license, patient privacy, generated derivative and clinical validity not qualified.",
+      "size": "No payload retrieved; eligible count UNKNOWN",
+      "task": "Candidate imaging tasks",
+      "training_use_allowed": "NO_CURRENT_ADMISSION",
+      "upstream_source": "https://arxiv.org/abs/2608.18937v1"
+    }
+  ],
+  "payload_downloads": 0,
+  "rights_are_not_waived_by_public_access": true
+}

@@ -1,0 +1,261 @@
+{
+  "confirmatory_frozen": false,
+  "development_authority": {
+    "answer_interface_authorization": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md",
+      "sha256": "2db3ca77e46daf071701365ce22559a21de4e63fe3a43c7666d56e62ebcfa252"
+    },
+    "authorization": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md",
+      "sha256": "cd73779ad8bc5885f10f0e81e4bc89d45eb3b749ceafc696ab2706e916510c0c"
+    },
+    "colab_runtime_authorization_source": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_COLAB_FREE_RUNTIME_AUTHORIZATION_SOURCE_2026-10-04.md",
+      "sha256": "0486ab01cf79535993c89b7ec29b46d15bca251449d2c14f913705469094c0c1"
+    },
+    "existing_colab_pro_authorization": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_EXISTING_COLAB_PRO_AUTHORIZATION_2026-10-04.md",
+      "sha256": "b7cae9e9e1b1f5f3d09180ef310226c90365480971d00fd995f6e7ce58c2f482"
+    },
+    "free_colab_selection": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_FREE_COLAB_SELECTION_2026-10-04.md",
+      "sha256": "ff5ec95e1907166c93347b1fed18bf85e24e0370052ac53d1f95b37f6efb9de8"
+    },
+    "oracle_amendment": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md",
+      "sha256": "b8f51b768f35987110c8a430d311e979b6b7f782a48fc9f8436978f130364af9"
+    },
+    "request": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORITY_REQUEST.md",
+      "sha256": "8a76ac87a71401a5212a3dd19217415fa683d633e20b56e9fa6eb99d52309929"
+    },
+    "s1_protocol": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md",
+      "sha256": "7ff26c8cbee8a78f2e11d91f6387277f88ac51ef931c93cf1f0b2a8f36faebb0"
+    },
+    "state": "APPROVED_SUBJECT_TO_EXACT_RUN_PREFLIGHT"
+  },
+  "execution_authority": "NO",
+  "implementations": {
+    "A1_TS_V1": {
+      "path": "src/commandmed/reliability_v5/probability.py",
+      "sha256": "cb2cf6db128b0054881e6cb744c0531110c00af2bf76d91d50e6004b4d7f1530",
+      "status": "MECHANICAL_IMPLEMENTED"
+    },
+    "A2_SELBIAS_V1": {
+      "path": "src/commandmed/reliability_v5/selection_bias.py",
+      "sha256": "420ec6e3d16011cd50f14ea1874e678f8cc561077c3feae893d619b655ac202c",
+      "status": "MECHANICAL_IMPLEMENTED"
+    },
+    "D1_DEFER_V1": {
+      "path": "src/commandmed/reliability_v5/policy.py",
+      "sha256": "c2452a35be4685ab36a595e388eed6b4f8700b8bbc3664b7381ca3020e760f55",
+      "status": "MECHANICAL_IMPLEMENTED"
+    },
+    "D2_RULETOOL_V1": {
+      "path": "src/commandmed/reliability_v5/rule_tool.py",
+      "sha256": "0e3be73636bc78619cb40219543bea2c5770fbcae6cee2be34543a59ba082a16",
+      "status": "MECHANICAL_IMPLEMENTED"
+    }
+  },
+  "model_execution": "NO",
+  "models": {
+    "development": {
+      "repo": "Qwen/Qwen3.5-0.8B-Base",
+      "revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68"
+    },
+    "independent_replication": {
+      "repo": "HuggingFaceTB/SmolLM2-1.7B",
+      "revision": "effd688a12921b4cc83e3312b6feb579f70f9c71"
+    }
+  },
+  "objective_mechanics": {
+    "B1_TYPED_V1": {
+      "execution_authority": "NO",
+      "locus": "DECISION_INTERFACE",
+      "path": "src/commandmed/reliability_v5/objectives.py",
+      "sha256": "bde5bdf737c29132f1a78b883e4b278c9629fad58d18c3b4b8386fe2a9bb0fa8",
+      "status": "OBJECTIVE_MECHANICS_IMPLEMENTED"
+    },
+    "C1_CRDI_V1": {
+      "execution_authority": "NO",
+      "locus": "MODEL_ADAPTATION",
+      "path": "src/commandmed/reliability_v5/objectives.py",
+      "sha256": "bde5bdf737c29132f1a78b883e4b278c9629fad58d18c3b4b8386fe2a9bb0fa8",
+      "status": "OBJECTIVE_MECHANICS_IMPLEMENTED"
+    },
+    "C2_CRDI_RETAIN_V1": {
+      "execution_authority": "NO",
+      "locus": "MODEL_ADAPTATION",
+      "path": "src/commandmed/reliability_v5/objectives.py",
+      "sha256": "bde5bdf737c29132f1a78b883e4b278c9629fad58d18c3b4b8386fe2a9bb0fa8",
+      "status": "OBJECTIVE_MECHANICS_IMPLEMENTED"
+    }
+  },
+  "paid_compute": "NO",
+  "protocols": {
+    "confirmatory_quarantine": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/CONFIRMATORY_QUARANTINE_V5.md",
+      "sha256": "6ff1c8e207628996077558550855315975b9a605ee0dfa9dbc42d69a145ff151"
+    },
+    "evaluation": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/evaluation-protocol-v5.md",
+      "sha256": "a7b368d8c84fab803501e96afa3ef89727d18f7b95ca19941685d08f71606e94"
+    },
+    "power_margin_gate": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/POWER_AND_MARGIN_GATE_V5.md",
+      "sha256": "c08dfc2327ce2ecaebefbf1b163655f3d2c8a62a303fcee6d6b2a6a0794f45e0"
+    },
+    "preregistration": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/preregistration-v5.md",
+      "sha256": "cd8cec1821fc63042a3a0ac872a82697e401b447004f98ac02d84f61408352bf"
+    },
+    "retention_task_admission": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md",
+      "sha256": "6cf296e91db6bf6f4e2ff3c6a024f3424bba9450cfa6cad463f09272d0dbe497"
+    },
+    "rights_source_admission": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/RIGHTS_AND_SOURCE_ADMISSION_V5.md",
+      "sha256": "0db6da5bd094198d8c9db474f7cc8de05cb9faa162550694521bc7b61edb4a60"
+    },
+    "statistics": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/statistics-protocol-v5.md",
+      "sha256": "9e4bc30397edd360c537835ba108da8c685b4eb4a04b3ed8f547afb1902df52e"
+    }
+  },
+  "remaining_blockers": [
+    "B1/C1/C2 model-integration and learned-execution qualification",
+    "property-specific meaningful numeric margins",
+    "power verification at frozen margins",
+    "future confirmatory state selection after clean freeze event and future beacon pulse",
+    "post-commit attestation binding the reviewed freeze commit"
+  ],
+  "repository_context": {
+    "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
+    "branch": "research/commandmed-paper-first-principles",
+    "generated_from_head": "2263e0902ea9fd2a017f534bbff2b57e79eae204",
+    "worktree_dirty_at_build": true
+  },
+  "retention_control": {
+    "admission": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md",
+      "sha256": "6cf296e91db6bf6f4e2ff3c6a024f3424bba9450cfa6cad463f09272d0dbe497"
+    },
+    "claim_scope": "paired extractive-QA retention only",
+    "dataset": "rajpurkar/squad",
+    "dataset_inventory": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/dataset-inventory.json",
+      "sha256": "45b83ff171ab420213aeb49d190987cd01215110a2bca4bd554fd59536b040eb"
+    },
+    "license": "cc-by-sa-4.0",
+    "revision": "7b6d24c440a36b6815f21b70d25016731768db1f",
+    "split": "validation"
+  },
+  "rule_oracle": {
+    "bound_rule_runtime": {
+      "path": "src/commandmed/reliability_v5/rule_dataset.py",
+      "sha256": "bb062209196b045295a65403fd72e132ef01c6bc556a79048ba6284d905a3433"
+    },
+    "calculator_count": 64,
+    "calibration_cases_per_calculator": 64,
+    "case_generator": {
+      "path": "src/commandmed/reliability_v5/case_generator.py",
+      "sha256": "1a79f6336a2f31440609b6d1af57984765b360cd09404bd7c817d61724cb73f0"
+    },
+    "case_identities": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json",
+      "sha256": "5a676b88948c3443d9c6be943d66192569666cc5333e7198816d30715664c902"
+    },
+    "clinical_source_audit": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json",
+      "sha256": "f992f4b9565f63d69e4844a9c0ea0912d0149e45f4a22c440cdef1a05ed9abac"
+    },
+    "clinical_source_review": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md",
+      "sha256": "c715c9e475b7bbec5e08b4d40819e0522202edbc85ec44f1a79cd170353324fb"
+    },
+    "confirmatory_assignment_materialized": false,
+    "development_cases_per_calculator": 64,
+    "eligible_selection_stratum_count": 15,
+    "execution_gate": {
+      "path": "src/commandmed/reliability_v5/oracle_qualification.py",
+      "sha256": "8d6e03e1af85dc4c64a002caa21999005e8a19c64a0822ff7faeebd784392438"
+    },
+    "execution_qualified_count": 81,
+    "execution_rejected_count": 1,
+    "execution_rejection_digest_sha256": "470e039d9a9f1362f93c7eafd56a32c0cac4e612c8b9e765a440ee0d37a8a83d",
+    "manifest": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json",
+      "sha256": "445e37ee7b3a2bb56c21d04a6236e16a929f6207c74351c0143fe436c61abd9c"
+    },
+    "minimum_candidate_state_space": 1024,
+    "planned_confirmatory_cases_per_calculator": 64,
+    "planned_confirmatory_cluster_count": 4096,
+    "planned_reserve_cases_per_calculator": 64,
+    "prefreeze_committed_cluster_count": 8192,
+    "quarantine_commitments": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/quarantine-commitments-v5.json",
+      "sha256": "1d3ee777a7c78c1ff03d8e2a493b6308dc6c3b7899c06c3e111af07bdc3fd175"
+    },
+    "quarantine_mechanics": {
+      "path": "src/commandmed/reliability_v5/quarantine.py",
+      "sha256": "21e8fb1339fd6eafbf87baf3fc513fc5ddc48f09b7fa0ccac86ec04377612ed9"
+    },
+    "reserve_assignment_materialized": false,
+    "selected_candidate_state_space_min": 1250,
+    "selected_candidate_state_space_total": 755395,
+    "static_eligible_count": 82
+  },
+  "s1_task_preparation": {
+    "answer_prefix": "ANSWER:\n",
+    "colab_notebook_template": {
+      "path": "notebooks/v5_s1_colab_resource_qualification.ipynb",
+      "sha256": "f42a1f96542f717526517ce1a36b37d1e46922702ce858bd4bdfa45f6faf0ca8"
+    },
+    "colab_resource_runner": {
+      "path": "scripts/v5_s1_colab_qualification.py",
+      "sha256": "236a9f3e5e62a683a60ba78dccb9b0f91376b692efec3b17d8ced37a981f94cb"
+    },
+    "implementation": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py",
+      "sha256": "a3897abb10c9c5ff496e82018ce5aae7651d49d0a7c950763c79ec27517b6301"
+    },
+    "path": "artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json",
+    "prior_negative_interface_evidence": {
+      "path": "artifacts/v5/development/s1_task_preparation/frozen-space-prefix-failure-2026-10-03.json",
+      "sha256": "6a54349f88ee1214b9f7f4f8298ca845bcf28666a620217a8002dc22d2b46c35"
+    },
+    "prompt_content_sequence_sha256": "978c5806c8cf06e6fcdff082d94945c8ae944eb33694adb6ed5d3c316d52bd20",
+    "renderer": {
+      "path": "src/commandmed/reliability_v5/rule_dataset.py",
+      "sha256": "bb062209196b045295a65403fd72e132ef01c6bc556a79048ba6284d905a3433"
+    },
+    "resource_runner": {
+      "path": "scripts/v5_s1_resource_qualification.py",
+      "sha256": "f497ee4bb527b1e8772a005b84a9b472a5bd86956df3e5963af84624b3fc7ee7"
+    },
+    "sha256": "2e6df9ef92429653d67664f1e59d8f6d97f2a3e350d46885f6ad40b7c291fdf6",
+    "smoke_runner": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/run_s1_smoke.py",
+      "sha256": "c4885b94055b786fc2850725299b3c0584fb93b6b0f1a7379c9276faa10d1931"
+    },
+    "status": "PASS_PRE_MODEL_INTERFACE"
+  },
+  "schema": "commandmed-v5-scientific-freeze-bindings",
+  "schema_version": "1.5",
+  "shared_mechanics": {
+    "contracts": {
+      "path": "src/commandmed/reliability_v5/contracts.py",
+      "sha256": "4c47e2eed005afa7ef6e6e6b1fcb681be32a59a23c453d9484dd6555ab72b23f"
+    },
+    "quarantine": {
+      "path": "src/commandmed/reliability_v5/quarantine.py",
+      "sha256": "21e8fb1339fd6eafbf87baf3fc513fc5ddc48f09b7fa0ccac86ec04377612ed9"
+    },
+    "registry": {
+      "path": "src/commandmed/reliability_v5/registry.py",
+      "sha256": "c8189d86dd9d475f2a84eca8d56f93025367b9cd2f8c050371833fc73241ddca"
+    }
+  },
+  "training": "NO"
+}

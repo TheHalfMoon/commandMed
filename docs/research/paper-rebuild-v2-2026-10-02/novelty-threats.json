@@ -1,0 +1,682 @@
+[
+  {
+    "paper_id": "RV2-P-001",
+    "key": "arxiv260818937",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2608.18937v1",
+    "evidence_depth": "ABSTRACT_REVIEW"
+  },
+  {
+    "paper_id": "RV2-P-002",
+    "key": "arxiv251015710",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2510.15710v3",
+    "evidence_depth": "ABSTRACT_REVIEW"
+  },
+  {
+    "paper_id": "RV2-P-003",
+    "key": "arxiv260508724",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2605.08724v3",
+    "evidence_depth": "ABSTRACT_REVIEW"
+  },
+  {
+    "paper_id": "RV2-P-004",
+    "key": "arxiv250519892",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "OptMerge optimizes task vectors and treats full-finetuning and LoRA settings distinctly, with low-rank noise/redundancy handling.",
+    "response": "Static medical expert combination needs more than applying a known merge method.",
+    "limits_of_inference": "Paper definition, later repository methods and hybrid recurrent/attention support must not be conflated.",
+    "source_url": "https://arxiv.org/abs/2505.19892v3",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-005",
+    "key": "arxiv250925712",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "Expert Merging learns layer/chunk coefficients with hidden/logit behavior alignment on unlabeled calibration inputs.",
+    "response": "Expert alignment and learned merge coefficients are established.",
+    "limits_of_inference": "Training-light still entails optimization; calibration data and unresolved source-code rights block direct use.",
+    "source_url": "https://arxiv.org/abs/2509.25712v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-006",
+    "key": "arxiv260936116",
+    "family": "READOUT",
+    "why_this_paper_can_kill_our_claim": "Typed action decisions can be embedded in an autoregressive LLM; the paper studies frozen and joint adaptation and general-capability preservation.",
+    "response": "A native head and retained autoregressive abilities cannot be advertised as a new paradigm. Compare its mechanism, supervision and preservation controls.",
+    "limits_of_inference": "Its action setting and training regime differ from the prospective medical probability/retention estimands; difference does not establish novelty.",
+    "source_url": "https://arxiv.org/abs/2609.36116v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-007",
+    "key": "arxiv260936965",
+    "family": "READOUT",
+    "why_this_paper_can_kill_our_claim": "A System-One-style encoder with typed probability interfaces and medical-domain adaptation already covers part of decision-specialist and multilingual motivation.",
+    "response": "Include an independently served specialist as an architecture/resource control when lawfully runnable.",
+    "limits_of_inference": "A decision-only encoder does not itself measure interference in a retained autoregressive backbone.",
+    "source_url": "https://arxiv.org/abs/2609.36965v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-008",
+    "key": "arxiv260926758",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Probability quality, selective prediction or risk guarantees are already formalized. A new head must beat the relevant calibrated control under the same assumptions.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.26758v2",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-009",
+    "key": "arxiv260939496",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Evidence-sensitive retrieval/verification is established. A generic provenance, sufficiency or abstention component must be treated as prior art.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.39496v1",
+    "evidence_depth": "ABSTRACT_REVIEW"
+  },
+  {
+    "paper_id": "RV2-P-010",
+    "key": "arxiv260932160",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Probability quality, selective prediction or risk guarantees are already formalized. A new head must beat the relevant calibrated control under the same assumptions.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.32160v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-011",
+    "key": "arxiv260422823",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2604.22823v2",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-012",
+    "key": "arxiv260939369",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.39369v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-013",
+    "key": "arxiv260932422",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.32422v1",
+    "evidence_depth": "ABSTRACT_REVIEW"
+  },
+  {
+    "paper_id": "RV2-P-014",
+    "key": "arxiv260933843",
+    "family": "UNIFICATION",
+    "why_this_paper_can_kill_our_claim": "The paper reports unified or multimodal understanding/generation. One checkpoint and medical specialization are insufficient independent novelty.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.33843v1",
+    "evidence_depth": "ABSTRACT_REVIEW"
+  },
+  {
+    "paper_id": "RV2-P-015",
+    "key": "arxiv240812528",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2408.12528v7",
+    "evidence_depth": "ABSTRACT_REVIEW"
+  },
+  {
+    "paper_id": "RV2-P-016",
+    "key": "arxiv250209838",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2502.09838v3",
+    "evidence_depth": "TITLE_AND_ABSTRACT_RETRIEVED"
+  },
+  {
+    "paper_id": "RV2-P-017",
+    "key": "arxiv250301019",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2503.01019v3",
+    "evidence_depth": "TITLE_AND_ABSTRACT_RETRIEVED"
+  },
+  {
+    "paper_id": "RV2-P-018",
+    "key": "arxiv241013848",
+    "family": "UNIFICATION",
+    "why_this_paper_can_kill_our_claim": "The paper reports unified or multimodal understanding/generation. One checkpoint and medical specialization are insufficient independent novelty.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2410.13848v1",
+    "evidence_depth": "TITLE_AND_ABSTRACT_RETRIEVED"
+  },
+  {
+    "paper_id": "RV2-P-019",
+    "key": "arxiv250117811",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2501.17811v1",
+    "evidence_depth": "TITLE_AND_ABSTRACT_RETRIEVED"
+  },
+  {
+    "paper_id": "RV2-P-020",
+    "key": "arxiv170604599",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Probability quality, selective prediction or risk guarantees are already formalized. A new head must beat the relevant calibrated control under the same assumptions.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/1706.04599v2",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-021",
+    "key": "arxiv190109192",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Probability quality, selective prediction or risk guarantees are already formalized. A new head must beat the relevant calibrated control under the same assumptions.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/1901.09192v4",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-022",
+    "key": "arxiv190602530",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Probability quality, selective prediction or risk guarantees are already formalized. A new head must beat the relevant calibrated control under the same assumptions.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/1906.02530v2",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-023",
+    "key": "arxiv190906146",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Evidence-sensitive retrieval/verification is established. A generic provenance, sufficiency or abstention component must be treated as prior art.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/1909.06146v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-024",
+    "key": "arxiv200913081",
+    "family": "BILINGUAL",
+    "why_this_paper_can_kill_our_claim": "Multilingual medical capability and evaluation already exist; adding Arabic or comparing translated accuracy alone does not establish new selective reliability.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2009.13081v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-025",
+    "key": "arxiv220314371",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2203.14371v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-026",
+    "key": "arxiv220802814",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Probability quality, selective prediction or risk guarantees are already formalized. A new head must beat the relevant calibrated control under the same assumptions.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2208.02814v4",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-027",
+    "key": "arxiv230601708",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2306.01708v2",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-028",
+    "key": "arxiv231103099",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2311.03099v3",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-029",
+    "key": "arxiv240213178",
+    "family": "UNIFICATION",
+    "why_this_paper_can_kill_our_claim": "The paper reports unified or multimodal understanding/generation. One checkpoint and medical specialization are insufficient independent novelty.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2402.13178v2",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-030",
+    "key": "arxiv240213253",
+    "family": "BILINGUAL",
+    "why_this_paper_can_kill_our_claim": "Multilingual medical capability and evaluation already exist; adding Arabic or comparing translated accuracy alone does not establish new selective reliability.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2402.13253v2",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-031",
+    "key": "arxiv240319522",
+    "family": "EVALUATION",
+    "why_this_paper_can_kill_our_claim": "Medical evaluation tasks already exist; benchmark accuracy cannot establish patient benefit or a new clinical capability.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2403.19522v2",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-032",
+    "key": "arxiv240611617",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2406.11617v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-033",
+    "key": "arxiv240614563",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "Merging can degrade safety; safety cannot be inherited from donors.",
+    "response": "A retained mean benchmark score cannot establish safe medical merging.",
+    "limits_of_inference": "Medical noncompensable constraints need validated labels and predeclared limits.",
+    "source_url": "https://arxiv.org/abs/2406.14563v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-034",
+    "key": "arxiv240917508",
+    "family": "INTERFERENCE",
+    "why_this_paper_can_kill_our_claim": "Uni-Med studies dataset/task interference at a multimodal connector and proposes Connector-MoE over six medical tasks.",
+    "response": "Medical multi-task interference and a modular mitigation mechanism are not new.",
+    "limits_of_inference": "Our proposed intervention is the decision readout crossed with maintenance supervision; multimodal connector results do not prove its direction.",
+    "source_url": "https://arxiv.org/abs/2409.17508v2",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-035",
+    "key": "arxiv241106037",
+    "family": "UNIFICATION",
+    "why_this_paper_can_kill_our_claim": "The paper reports unified or multimodal understanding/generation. One checkpoint and medical specialization are insufficient independent novelty.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2411.06037v3",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-036",
+    "key": "arxiv250305505",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Probability quality, selective prediction or risk guarantees are already formalized. A new head must beat the relevant calibrated control under the same assumptions.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2503.05505v2",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-037",
+    "key": "arxiv250503427",
+    "family": "BILINGUAL",
+    "why_this_paper_can_kill_our_claim": "Multilingual medical capability and evaluation already exist; adding Arabic or comparing translated accuracy alone does not establish new selective reliability.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2505.03427v2",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-038",
+    "key": "arxiv250514683",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2505.14683v3",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-039",
+    "key": "arxiv250607044",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2506.07044v5",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-040",
+    "key": "arxiv250924816",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Evidence-sensitive retrieval/verification is established. A generic provenance, sufficiency or abstention component must be treated as prior art.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2509.24816v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-041",
+    "key": "arxiv260107935",
+    "family": "INTERFERENCE",
+    "why_this_paper_can_kill_our_claim": "Med-MoE-LoRA combines medical specialist adapters, a knowledge-preservation component, soft routing and rank-wise decoupling, evaluating medical and general tasks.",
+    "response": "General/medical preservation and adapter interference are established motivations; a new name is insufficient.",
+    "limits_of_inference": "No claim that its reported performance or MIMIC-derived summarization benchmark is reproduced or admitted here.",
+    "source_url": "https://arxiv.org/abs/2601.07935v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-042",
+    "key": "arxiv260201714",
+    "family": "BILINGUAL",
+    "why_this_paper_can_kill_our_claim": "Multilingual medical capability and evaluation already exist; adding Arabic or comparing translated accuracy alone does not establish new selective reliability.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2602.01714v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-043",
+    "key": "arxiv260503534",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Set-level support/refute/insufficient aggregation shares a verifier with pooling baselines and evaluates shortcuts, counterfactual swaps and risk/coverage.",
+    "response": "Evidence sufficiency is already distinct from relevance; simple aggregation or label changes are weak contributions.",
+    "limits_of_inference": "Its controlled nonmedical multi-hop sufficiency task does not validate medical safety or natural hallucination detection.",
+    "source_url": "https://arxiv.org/abs/2605.03534v2",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-044",
+    "key": "arxiv260525988",
+    "family": "INTERFERENCE",
+    "why_this_paper_can_kill_our_claim": "Medical checker feedback can collapse into a low-information signal; optimizing a verifier metric can exploit that collapse.",
+    "response": "A favorable reward/checker score cannot be treated as probability calibration or reliable medical improvement.",
+    "limits_of_inference": "Non-degenerate verifier signal and probabilistic calibration are distinct endpoints.",
+    "source_url": "https://arxiv.org/abs/2605.25988v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-045",
+    "key": "arxiv260622728",
+    "family": "UNIFICATION",
+    "why_this_paper_can_kill_our_claim": "The paper reports unified or multimodal understanding/generation. One checkpoint and medical specialization are insufficient independent novelty.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2606.22728v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-046",
+    "key": "arxiv260718086",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Probability quality, selective prediction or risk guarantees are already formalized. A new head must beat the relevant calibrated control under the same assumptions.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2607.18086v1",
+    "evidence_depth": "ABSTRACT_REVIEW"
+  },
+  {
+    "paper_id": "RV2-P-047",
+    "key": "arxiv260807796",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Evidence-policy evaluation includes process quality, efficiency and calibrated abstention, with yes/no/lack-data/medical-ambiguity decisions.",
+    "response": "Do not claim a first missing-information medical benchmark or new answer/abstain ontology.",
+    "limits_of_inference": "Its MIMIC-derived cases are not accessible or admitted under the present no-private-data boundary.",
+    "source_url": "https://arxiv.org/abs/2608.07796v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-048",
+    "key": "arxiv260907687",
+    "family": "BILINGUAL",
+    "why_this_paper_can_kill_our_claim": "Multilingual medical capability and evaluation already exist; adding Arabic or comparing translated accuracy alone does not establish new selective reliability.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.07687v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-049",
+    "key": "arxiv260916301",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Candidate-path adjudication uses evidence provenance, conflict verification and override auditing across public medical benchmarks.",
+    "response": "Generic provenance-aware decisions and citation-grounded medical reasoning are already covered.",
+    "limits_of_inference": "Clinical transfer, calibration transport and same-backbone head interaction remain separate questions.",
+    "source_url": "https://arxiv.org/abs/2609.16301v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-050",
+    "key": "arxiv260925845",
+    "family": "READOUT",
+    "why_this_paper_can_kill_our_claim": "A matched typed-head control offers no consistent accuracy advantage over the LM-head readout. Shared-prefix execution, post-training, calibration and evidence interventions are already studied.",
+    "response": "Do not attribute gains to head novelty; reproduce matched LM-logit and head controls and isolate supervision.",
+    "limits_of_inference": "Shared visual question decisions; the clinical-domain, retention-factor interaction and cross-family result are not established by this paper alone.",
+    "source_url": "https://arxiv.org/abs/2609.25845v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-051",
+    "key": "arxiv260932269",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Controlled removal of required evidence, size-matched memory controls and selective gating are already studied; clinical transfer depends on adaptation.",
+    "response": "Missing-evidence perturbations plus a learned gate are insufficient novelty.",
+    "limits_of_inference": "Construct validity and cross-condition calibration transport need independent, domain-valid labels.",
+    "source_url": "https://arxiv.org/abs/2609.32269v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-052",
+    "key": "arxiv260933209",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.33209v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-053",
+    "key": "arxiv260933971",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.33971v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-054",
+    "key": "arxiv260934798",
+    "family": "UNIFICATION",
+    "why_this_paper_can_kill_our_claim": "The paper reports unified or multimodal understanding/generation. One checkpoint and medical specialization are insufficient independent novelty.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.34798v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-055",
+    "key": "arxiv260935342",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "Known-by-construction probabilities expose confusion between probability-of-event and confidence-of-correctness over typed primitives.",
+    "response": "Probability coherence and constructed probability benchmarks are already studied.",
+    "limits_of_inference": "Mechanical truth tests do not establish clinical calibration or useful deployment decisions.",
+    "source_url": "https://arxiv.org/abs/2609.35342v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-056",
+    "key": "arxiv260935627",
+    "family": "UNIFICATION",
+    "why_this_paper_can_kill_our_claim": "The paper reports unified or multimodal understanding/generation. One checkpoint and medical specialization are insufficient independent novelty.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.35627v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-057",
+    "key": "arxiv260936392",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.36392v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-058",
+    "key": "arxiv260938597",
+    "family": "UNIFICATION",
+    "why_this_paper_can_kill_our_claim": "An encoder-free pixel-native framework unifies autoregressive and flow paths with shared attention and modality-specific experts.",
+    "response": "Removing a duplicated semantic encoder or unifying AR/flow computation is not automatically novel.",
+    "limits_of_inference": "Does not establish our model-specific conditioning equivalence, medical validity, or resource savings.",
+    "source_url": "https://arxiv.org/abs/2609.38597v1",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-059",
+    "key": "arxiv260938810",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Evidence-sensitive retrieval/verification is established. A generic provenance, sufficiency or abstention component must be treated as prior art.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://arxiv.org/abs/2609.38810v1",
+    "evidence_depth": "ABSTRACT_REVIEW_FULL_TEXT_RETRIEVED_NOT_METHODS_VERIFIED"
+  },
+  {
+    "paper_id": "RV2-P-060",
+    "key": "doi101186s12911025029544",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://doi.org/10.1186/s12911-025-02954-4",
+    "evidence_depth": "PUBLISHER_DOI_IDENTITY_AND_PUBMED_ABSTRACT"
+  },
+  {
+    "paper_id": "RV2-P-061",
+    "key": "doi101038s41591025041512",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://doi.org/10.1038/s41591-025-04151-2",
+    "evidence_depth": "PUBLISHER_DOI_IDENTITY_AND_PUBMED_ABSTRACT"
+  },
+  {
+    "paper_id": "RV2-P-062",
+    "key": "doi101007bf02295996",
+    "family": "FOUNDATIONAL_REFERENCE",
+    "why_this_paper_can_kill_our_claim": "This is a reference lead, not an asserted direct novelty killer. It can invalidate an unsupported methodological statement; identity alone supplies no results evidence.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://doi.org/10.1007/bf02295996",
+    "evidence_depth": "DOI_METADATA_ABSTRACT_WHEN_PRESENT"
+  },
+  {
+    "paper_id": "RV2-P-063",
+    "key": "doi101038s41586023062912",
+    "family": "MERGING",
+    "why_this_paper_can_kill_our_claim": "The paper already proposes a merging mechanism or exposes a merging limitation. Heterogeneous donors or a medical label do not establish a new algorithm.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://doi.org/10.1038/s41586-023-06291-2",
+    "evidence_depth": "DOI_METADATA_ABSTRACT_WHEN_PRESENT"
+  },
+  {
+    "paper_id": "RV2-P-064",
+    "key": "doi1011861745621512106",
+    "family": "FOUNDATIONAL_REFERENCE",
+    "why_this_paper_can_kill_our_claim": "This is a reference lead, not an asserted direct novelty killer. It can invalidate an unsupported methodological statement; identity alone supplies no results evidence.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://doi.org/10.1186/1745-6215-12-106",
+    "evidence_depth": "METADATA_ONLY_NOT_USED_FOR_DETAILED_METHOD_CLAIMS"
+  },
+  {
+    "paper_id": "RV2-P-065",
+    "key": "doi101198016214506000001437",
+    "family": "FOUNDATIONAL_REFERENCE",
+    "why_this_paper_can_kill_our_claim": "This is a reference lead, not an asserted direct novelty killer. It can invalidate an unsupported methodological statement; identity alone supplies no results evidence.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://doi.org/10.1198/016214506000001437",
+    "evidence_depth": "METADATA_ONLY_NOT_USED_FOR_DETAILED_METHOD_CLAIMS"
+  },
+  {
+    "paper_id": "RV2-P-066",
+    "key": "doi101214aos1176344552",
+    "family": "FOUNDATIONAL_REFERENCE",
+    "why_this_paper_can_kill_our_claim": "This is a reference lead, not an asserted direct novelty killer. It can invalidate an unsupported methodological statement; identity alone supplies no results evidence.",
+    "response": "Compare the exact task, assumptions, evaluation and rights before making a narrower claim; do not infer clinical validity or implementation availability.",
+    "limits_of_inference": "Only the recorded evidence depth supports assertions. Unknown architecture, license, runtime and venue fields are not inferred.",
+    "source_url": "https://doi.org/10.1214/aos/1176344552",
+    "evidence_depth": "METADATA_ONLY_NOT_USED_FOR_DETAILED_METHOD_CLAIMS"
+  },
+  {
+    "paper_id": "RV2-P-067",
+    "key": "arxiv240705131",
+    "family": "CALIBRATION",
+    "why_this_paper_can_kill_our_claim": "RULE calibrates retrieval-context selection with risk controls and adds a knowledge-balanced objective addressing inherent/retrieved knowledge conflict.",
+    "response": "Calibrated medical RAG and risk-controlled retrieval are not new.",
+    "limits_of_inference": "Distribution-shift and clinically valid source-failure transport cannot inherit guarantees without their assumptions.",
+    "source_url": "https://arxiv.org/abs/2407.05131v2",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  },
+  {
+    "paper_id": "RV2-P-068",
+    "key": "arxiv251106668",
+    "family": "EVIDENCE",
+    "why_this_paper_can_kill_our_claim": "Temporally diverse biomedical abstracts and drug documents are used to study conflicting or outdated evidence.",
+    "response": "A medical contradiction/outdated-source perturbation benchmark is already done.",
+    "limits_of_inference": "A fixed calibration-map transport experiment and retained-capability estimands would need separate evidence.",
+    "source_url": "https://arxiv.org/abs/2511.06668v2",
+    "evidence_depth": "FULL_TEXT_TARGETED_METHODS_AND_RESULTS"
+  }
+]

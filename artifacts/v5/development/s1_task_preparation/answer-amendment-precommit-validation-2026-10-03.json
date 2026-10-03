@@ -1,0 +1,45 @@
+{
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "full": {
+    "exit_code": 0,
+    "log_path": "artifacts/v5/development/s1_task_preparation/answer-amendment-precommit-full-tests-2026-10-03.log",
+    "log_sha256": "8740d1f890ee7d44aae3e12a0ada1e25156ba8a788ee44acf887dc825ecdc6ec",
+    "raw_capture_sha256": "4e27b8a0d537e0d6468598debd8dbcadd27f43493bf6a0664eed2a0078726e01",
+    "storage_normalization": "CRLF_TO_LF",
+    "wall_seconds": 22.579767799994443
+  },
+  "inference": false,
+  "mode": "precommit",
+  "model_loaded": false,
+  "payload_files_sha256": {
+    "artifacts/v5/development/s1_task_preparation/frozen-space-prefix-failure-2026-10-03.json": "6a54349f88ee1214b9f7f4f8298ca845bcf28666a620217a8002dc22d2b46c35",
+    "artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json": "2e6df9ef92429653d67664f1e59d8f6d97f2a3e350d46885f6ad40b7c291fdf6",
+    "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md": "2db3ca77e46daf071701365ce22559a21de4e63fe3a43c7666d56e62ebcfa252",
+    "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md": "0ee9f1ba44775fa77fb4c915c42c7e6de523ad401b578b612f53645497005ffd",
+    "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py": "a3897abb10c9c5ff496e82018ce5aae7651d49d0a7c950763c79ec27517b6301",
+    "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/run_s1_smoke.py": "c4885b94055b786fc2850725299b3c0584fb93b6b0f1a7379c9276faa10d1931",
+    "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/build_freeze_bindings.py": "5c222767ecffb78fbd468c9f846a9f1c5d36086fdbedaed6e1299692de918262",
+    "docs/research/paper-rebuild-v2-2026-10-02/quarantine-commitments-v5.json": "1d3ee777a7c78c1ff03d8e2a493b6308dc6c3b7899c06c3e111af07bdc3fd175",
+    "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json": "445e37ee7b3a2bb56c21d04a6236e16a929f6207c74351c0143fe436c61abd9c",
+    "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json": "5a676b88948c3443d9c6be943d66192569666cc5333e7198816d30715664c902",
+    "docs/research/paper-rebuild-v2-2026-10-02/scientific-freeze-bindings-v5.json": "df314263ce71eb736159fe7811ca308e3f4ffe6dbe9ff72be664fe5f96f4c537",
+    "scripts/v5_s1_resource_qualification.py": "f497ee4bb527b1e8772a005b84a9b472a5bd86956df3e5963af84624b3fc7ee7",
+    "src/commandmed/reliability_v5/rule_dataset.py": "bb062209196b045295a65403fd72e132ef01c6bc556a79048ba6284d905a3433",
+    "tests/reliability_v5/test_rule_dataset.py": "e39dd2dc872da8add1c894b78c92630b96044b9a70bc394983970be8c0468eaa",
+    "tests/reliability_v5/test_task_preparation.py": "5769c8045a0a36dda4de8eef805f7443022a8240d2a38bfe9b1f135d84574d47"
+  },
+  "schema": "commandmed.v5.answer-amendment-validation.v1",
+  "tested_head": "1dd61aa611e1a4804b232fdcac81c6a316783bbe",
+  "training": false,
+  "tree": "468c311f36f193757d93aad4ec971fc695a13379",
+  "v5": {
+    "exit_code": 0,
+    "log_path": "artifacts/v5/development/s1_task_preparation/answer-amendment-precommit-v5-tests-2026-10-03.log",
+    "log_sha256": "ee6a6f5fd343a104c6a0d04b079047224cd413bd42c276ad960f39a04390fd74",
+    "raw_capture_sha256": "a7a95d1c0080da1647c28940bb80188649f792c9043fd3c66778b10a462ce9d5",
+    "storage_normalization": "CRLF_TO_LF",
+    "wall_seconds": 1.8284405000013066
+  },
+  "worktree_clean_before_checks": false
+}

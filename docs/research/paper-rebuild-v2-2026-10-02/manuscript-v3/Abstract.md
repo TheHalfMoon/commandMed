@@ -1,0 +1,9 @@
+# Abstract
+
+Foundation models are increasingly used to produce machine-consumable medical decisions, yet conventional evaluation largely scores isolated answers. This can miss a distinct reliability failure: a model may change its decision probabilities when the interface changes even though the underlying clinical meaning does not, or fail to change them when relevant evidence does. Prior work has separately documented multiple-choice selection bias, typed-decision failures, medical miscalibration, missing-answer failures, and semantic-invariance defects.
+
+We study a stricter requirement that we call a **decision contract**. Under transformations that preserve candidate meaning, a decision distribution should be invariant or equivariant after the known candidate mapping is reversed. Under interventions that change evidence or the valid answer set, the distribution should respond in a calibrated and directionally appropriate way. We define distribution-level contract metrics and propose a candidate Contract-Regularized Decision Interface (CRDI) that separates candidate semantics from presentation identifiers and trains on both equivalence and evidence-changing relations.
+
+The final manuscript will compare CRDI with restricted language-model logits, structured generation, matched typed heads, permutation/debiasing methods, calibration baselines, and decision-specialist controls under equalized data and tuning budgets. Medical decision quality, contract behavior, calibration/selective risk, and retained autoregressive capability are evaluated independently. Results are intentionally omitted until confirmatory experiments are authorized and completed.
+
+The central hypothesis is falsifiable: if contract metrics are redundant with existing robustness measures, if CRDI gains disappear under matched controls, or if robustness suppresses legitimate response to evidence, the proposed contribution is rejected or narrowed.

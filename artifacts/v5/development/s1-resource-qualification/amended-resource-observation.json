@@ -1,0 +1,35 @@
+{
+  "code_sha": "47a49e311eff3b820a5bf5ed82aeea776deb83e3",
+  "confirmatory_materialized": false,
+  "exception_message": "resource blocker: model load leaves less than 1.5 GiB system headroom",
+  "exception_type": "RuntimeError",
+  "gated_data": false,
+  "guard_sha256": "25678be35718c4f9e7282feb1559c6c66d5d33ded17c8aa1016bf4f0461d9d49",
+  "observation": {
+    "benchmark_started": false,
+    "device_types": [
+      "cpu"
+    ],
+    "inference_completed": false,
+    "inference_started": false,
+    "model_class": "Qwen3_5ForCausalLM",
+    "model_loaded": true,
+    "optimizer_steps": 0,
+    "parameter_dtype_counts": {
+      "torch.bfloat16": 752393024
+    },
+    "total_parameters": 752393024,
+    "trainable_parameters_after_load": 752393024
+  },
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "raw_observation_sha256": "714c12b08a6f34fc97f6d94d64cc88557d511c3d5e5212ae07f9107062fb7df2",
+  "reserve_materialized": false,
+  "schema": "commandmed.v5.s1-amended-resource-observation.v1",
+  "spend_usd": 0.0,
+  "status": "RESOURCE_BLOCKED",
+  "traceback": "Traceback (most recent call last):\n  File \"<LOCAL_OBSERVATION_HARNESS>\\run_amended_resource_guarded.py\", line 97, in <module>\n    result=q.qualify(M,S)\n           ^^^^^^^^^^^^^^\n  File \"<REPOSITORY>\\scripts\\v5_s1_resource_qualification.py\", line 435, in qualify\n    raise RuntimeError(\"resource blocker: model load leaves less than 1.5 GiB system headroom\")\nRuntimeError: resource blocker: model load leaves less than 1.5 GiB system headroom\n",
+  "traceback_redaction": "PERSONAL_LOCAL_PATHS_ONLY; raw retained outside publication payload with SHA-256",
+  "wall_seconds": 9.579596700001275
+}

@@ -1,0 +1,5 @@
+# Plan
+
+Specify/clarify: preserve V1 and canonical evidence while allowing a new paper thesis. Research: bounded adversarial search, primary-source identity review, methods comparison and rights/config inspection. Design: compare thesis candidates; demote V3/V4 where prior art requires; select V5 conditionally; formalize non-compensatory assurance and the intervention matrix; freeze prospective evaluation/statistics/preregistration fields. Write: V5 decision gate, novelty-threat ledger and manuscript. Verify: additive diff, UTF-8/JSON/BibTeX identities and citations, no implementation/private content, internal claim/protocol consistency and unchanged historical evidence. Publish: ordinary commit on the existing research branch, separate draft PR linked to #319, verify live head/tree/main; stop before merge.
+
+This documentation lifecycle does not authorize experiments. Rights admission, semantic-label qualification, meaningful margins/power, exact intervention revisions, free-compute binding and explicit execution authority remain separate gates. No paid review or compute service may be introduced.

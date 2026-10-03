@@ -1,0 +1,126 @@
+{
+  "checks": {
+    "ANSWER:": {
+      "candidates": {
+        "A": {
+          "common_prefix_length": 2,
+          "full_ids": [
+            11355,
+            38050,
+            53779
+          ],
+          "prefix_preserved": false,
+          "suffix_ids": [
+            53779
+          ]
+        },
+        "B": {
+          "common_prefix_length": 2,
+          "full_ids": [
+            11355,
+            38050,
+            78465
+          ],
+          "prefix_preserved": false,
+          "suffix_ids": [
+            78465
+          ]
+        }
+      },
+      "prefix_ids": [
+        11355,
+        38050,
+        25
+      ]
+    },
+    "ANSWER:\n": {
+      "candidates": {
+        "A": {
+          "common_prefix_length": 4,
+          "full_ids": [
+            11355,
+            38050,
+            25,
+            198,
+            32
+          ],
+          "prefix_preserved": true,
+          "suffix_ids": [
+            32
+          ]
+        },
+        "B": {
+          "common_prefix_length": 4,
+          "full_ids": [
+            11355,
+            38050,
+            25,
+            198,
+            33
+          ],
+          "prefix_preserved": true,
+          "suffix_ids": [
+            33
+          ]
+        }
+      },
+      "prefix_ids": [
+        11355,
+        38050,
+        25,
+        198
+      ]
+    },
+    "ANSWER: ": {
+      "candidates": {
+        "A": {
+          "common_prefix_length": 3,
+          "full_ids": [
+            11355,
+            38050,
+            25,
+            357
+          ],
+          "prefix_preserved": false,
+          "suffix_ids": [
+            357
+          ]
+        },
+        "B": {
+          "common_prefix_length": 3,
+          "full_ids": [
+            11355,
+            38050,
+            25,
+            417
+          ],
+          "prefix_preserved": false,
+          "suffix_ids": [
+            417
+          ]
+        }
+      },
+      "prefix_ids": [
+        11355,
+        38050,
+        25,
+        220
+      ]
+    }
+  },
+  "model_inference": false,
+  "model_loaded": false,
+  "packages": {
+    "tokenizers": "0.23.2",
+    "transformers": "5.18.0"
+  },
+  "schema": "commandmed.v5.prospective-interface-metadata.v1",
+  "status": "METADATA_ONLY_NOT_AN_APPROVED_INTERFACE_CHANGE",
+  "tokenizer_files": {
+    "merges.txt": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",
+    "tokenizer.json": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+    "tokenizer_config.json": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de",
+    "vocab.json": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+  },
+  "training": false
+}

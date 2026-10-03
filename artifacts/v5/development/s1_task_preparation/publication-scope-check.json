@@ -1,0 +1,39 @@
+{
+  "checked_paths": [
+    "artifacts/v5/development/s1_task_preparation/deterministic-regeneration-evidence.json",
+    "artifacts/v5/development/s1_task_preparation/model-artifact-reverification.json",
+    "artifacts/v5/development/s1_task_preparation/oracle-selection-transition.json",
+    "artifacts/v5/development/s1_task_preparation/prospective-answer-prefix-metadata.json",
+    "artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json",
+    "docs/research/paper-rebuild-v2-2026-10-02/SCIENTIFIC_FREEZE_CANDIDATE_V5.md",
+    "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_BLOCKER_2026-10-03.md",
+    "docs/research/paper-rebuild-v2-2026-10-02/V5_LOCAL_PREMODEL_REVIEW_2026-10-03.md",
+    "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ANSWER_INTERFACE_AMENDMENT_REQUEST_2026-10-03.md",
+    "docs/research/paper-rebuild-v2-2026-10-02/VERIFICATION_V5.md",
+    "docs/research/paper-rebuild-v2-2026-10-02/artifact-traceability.md",
+    "docs/research/paper-rebuild-v2-2026-10-02/claim-ledger-v5.md",
+    "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json",
+    "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md",
+    "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py",
+    "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/build_freeze_bindings.py",
+    "docs/research/paper-rebuild-v2-2026-10-02/quarantine-commitments-v5.json",
+    "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json",
+    "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json",
+    "docs/research/paper-rebuild-v2-2026-10-02/scientific-freeze-bindings-v5.json",
+    "specs/paper-first-principles-rebuild-v2/tasks.md",
+    "tests/reliability_v5/test_task_preparation.py"
+  ],
+  "dependent_artifact_ordered_pmids_verified": true,
+  "findings": [],
+  "manual_review": "No PHI, private vault content, private raw sources, model/dataset payloads, or credentials observed in the reviewed continuation scope. Pattern checks are supporting evidence, not a universal privacy guarantee.",
+  "pattern_categories": [
+    "arabic_text",
+    "email",
+    "personal_windows_path",
+    "private_key",
+    "secret_token"
+  ],
+  "schema": "commandmed.v5.local-publication-scope-check.v1",
+  "scope": "changed public continuation files only",
+  "unchanged_selected_rows_verified": 63
+}
