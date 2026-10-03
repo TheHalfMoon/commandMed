@@ -57,7 +57,7 @@ def main() -> int:
     status = git("status", "--porcelain")
     payload = {
         "schema": "commandmed-v5-scientific-freeze-bindings",
-        "schema_version": "1.4",
+        "schema_version": "1.5",
         "confirmatory_frozen": False,
         "execution_authority": "NO",
         "model_execution": "NO",
@@ -72,6 +72,9 @@ def main() -> int:
         "s1_protocol": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md"),
         "oracle_amendment": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md"),
         "answer_interface_authorization": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md"),
+        "colab_runtime_authorization_source": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_COLAB_FREE_RUNTIME_AUTHORIZATION_SOURCE_2026-10-04.md"),
+        "existing_colab_pro_authorization": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_EXISTING_COLAB_PRO_AUTHORIZATION_2026-10-04.md"),
+        "free_colab_selection": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_FREE_COLAB_SELECTION_2026-10-04.md"),
     }
     payload["repository_context"] = {
         "branch": git("branch", "--show-current"),
@@ -178,6 +181,8 @@ def main() -> int:
             "implementation": bind("docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py"),
             "renderer": bind("src/commandmed/reliability_v5/rule_dataset.py"),
             "resource_runner": bind("scripts/v5_s1_resource_qualification.py"),
+            "colab_resource_runner": bind("scripts/v5_s1_colab_qualification.py"),
+            "colab_notebook_template": bind("notebooks/v5_s1_colab_resource_qualification.ipynb"),
             "smoke_runner": bind("docs/research/paper-rebuild-v2-2026-10-02/execution_tools/run_s1_smoke.py"),
             "answer_prefix": preparation["answer_prefix"],
             "prompt_content_sequence_sha256": preparation["prompt_content_sequence_sha256"],

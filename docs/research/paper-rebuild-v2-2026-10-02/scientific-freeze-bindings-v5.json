@@ -9,6 +9,18 @@
       "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md",
       "sha256": "cd73779ad8bc5885f10f0e81e4bc89d45eb3b749ceafc696ab2706e916510c0c"
     },
+    "colab_runtime_authorization_source": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_COLAB_FREE_RUNTIME_AUTHORIZATION_SOURCE_2026-10-04.md",
+      "sha256": "0486ab01cf79535993c89b7ec29b46d15bca251449d2c14f913705469094c0c1"
+    },
+    "existing_colab_pro_authorization": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_EXISTING_COLAB_PRO_AUTHORIZATION_2026-10-04.md",
+      "sha256": "b7cae9e9e1b1f5f3d09180ef310226c90365480971d00fd995f6e7ce58c2f482"
+    },
+    "free_colab_selection": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_FREE_COLAB_SELECTION_2026-10-04.md",
+      "sha256": "ff5ec95e1907166c93347b1fed18bf85e24e0370052ac53d1f95b37f6efb9de8"
+    },
     "oracle_amendment": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md",
       "sha256": "b8f51b768f35987110c8a430d311e979b6b7f782a48fc9f8436978f130364af9"
@@ -19,7 +31,7 @@
     },
     "s1_protocol": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md",
-      "sha256": "0ee9f1ba44775fa77fb4c915c42c7e6de523ad401b578b612f53645497005ffd"
+      "sha256": "7ff26c8cbee8a78f2e11d91f6387277f88ac51ef931c93cf1f0b2a8f36faebb0"
     },
     "state": "APPROVED_SUBJECT_TO_EXACT_RUN_PREFLIGHT"
   },
@@ -121,7 +133,7 @@
   "repository_context": {
     "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     "branch": "research/commandmed-paper-first-principles",
-    "generated_from_head": "1dd61aa611e1a4804b232fdcac81c6a316783bbe",
+    "generated_from_head": "2263e0902ea9fd2a017f534bbff2b57e79eae204",
     "worktree_dirty_at_build": true
   },
   "retention_control": {
@@ -196,6 +208,14 @@
   },
   "s1_task_preparation": {
     "answer_prefix": "ANSWER:\n",
+    "colab_notebook_template": {
+      "path": "notebooks/v5_s1_colab_resource_qualification.ipynb",
+      "sha256": "f42a1f96542f717526517ce1a36b37d1e46922702ce858bd4bdfa45f6faf0ca8"
+    },
+    "colab_resource_runner": {
+      "path": "scripts/v5_s1_colab_qualification.py",
+      "sha256": "236a9f3e5e62a683a60ba78dccb9b0f91376b692efec3b17d8ced37a981f94cb"
+    },
     "implementation": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py",
       "sha256": "a3897abb10c9c5ff496e82018ce5aae7651d49d0a7c950763c79ec27517b6301"
@@ -222,7 +242,7 @@
     "status": "PASS_PRE_MODEL_INTERFACE"
   },
   "schema": "commandmed-v5-scientific-freeze-bindings",
-  "schema_version": "1.4",
+  "schema_version": "1.5",
   "shared_mechanics": {
     "contracts": {
       "path": "src/commandmed/reliability_v5/contracts.py",
