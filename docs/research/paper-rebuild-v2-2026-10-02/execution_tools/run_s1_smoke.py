@@ -108,12 +108,12 @@ def windows_memory() -> dict[str, int]:
     }
 
 
-def environment_manifest() -> dict[str, object]:
+def environment_manifest(model_dir: Path) -> dict[str, object]:
     packages = {
         name: importlib.metadata.version(name)
         for name in ("numpy", "safetensors", "tokenizers", "torch", "transformers")
     }
-    disk = shutil.disk_usage(ROOT.drive + "\\")
+    disk = shutil.disk_usage(model_dir.anchor or str(model_dir))
     payload: dict[str, object] = {
         "schema": "commandmed.v5.s1.environment.v1",
         "python": sys.version,
@@ -125,6 +125,9 @@ def environment_manifest() -> dict[str, object]:
         "memory": windows_memory(),
         "disk": {"total_bytes": disk.total, "free_bytes": disk.free},
         "packages": packages,
+        "runtime_dtype": "bfloat16",
+        "torch_threads": 8,
+        "torch_interop_threads": 1,
         "paid_resource": False,
         "expected_spend_usd": 0.0,
     }
@@ -218,7 +221,7 @@ def main() -> int:
 
     output_dir = ROOT / OUTPUT_REL
     artifact = model_artifact_manifest(args.model_dir)
-    environment = environment_manifest()
+    environment = environment_manifest(args.model_dir)
     write_json(output_dir / "model-artifact-manifest.json", artifact)
     write_json(output_dir / "environment-manifest.json", environment)
 
@@ -234,18 +237,23 @@ def main() -> int:
         return 2
 
     import torch
-    from transformers import AutoModelForMultimodalLM, AutoTokenizer
+    from transformers import AutoModelForCausalLM, AutoTokenizer
 
+    torch.set_num_threads(8)
+    torch.set_num_interop_threads(1)
+    if torch.cuda.is_available():
+        raise SystemExit("UNEXPECTED_CUDA_AVAILABLE")
     tokenizer = AutoTokenizer.from_pretrained(args.model_dir, local_files_only=True)
     prefix = "TASK: Return only A.\nANSWER: "
     token_a = candidate_suffix_id(tokenizer, prefix, "A")
     token_b = candidate_suffix_id(tokenizer, prefix, "B")
 
     started = time.perf_counter()
-    model = AutoModelForMultimodalLM.from_pretrained(
+    model = AutoModelForCausalLM.from_pretrained(
         args.model_dir,
         local_files_only=True,
-        dtype=torch.float32,
+        dtype=torch.bfloat16,
+        low_cpu_mem_usage=True,
     )
     model.eval()
     load_seconds = time.perf_counter() - started
