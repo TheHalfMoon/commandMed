@@ -1,6 +1,6 @@
 # Scientific Freeze Candidate V5
 
-Status: `PRE_FREEZE_CANDIDATE`; `CONFIRMATORY_FROZEN=NO`; `EXECUTION_AUTHORIZED=NO`.
+Status: `PRE_FREEZE_CANDIDATE`; `CONFIRMATORY_FROZEN=NO`; `V5_DEVELOPMENT_EXECUTION_AUTHORIZED=YES`; confirmatory/reserve execution remains unauthorized.
 
 This document narrows the V5 study before any model execution. It binds candidate identities and deterministic selection rules without pretending that unresolved power, rights, or implementation gates are complete.
 

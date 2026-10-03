@@ -1,8 +1,8 @@
 # Bounded spec: paper-first-principles-rebuild-v2
 
-Status: RESEARCH_DOCUMENTATION_COMPLETE; SCIENTIFIC_FREEZE_OPEN.
+Status: RESEARCH_DOCUMENTATION_COMPLETE; V5_BOUNDED_DEVELOPMENT_AUTHORIZED; SCIENTIFIC_FREEZE_OPEN.
 
-Authority: founder first-principles rebuild request and academic-paper quality steering, 2026-10-01/02. English-only repository content governs reporting. This spec permits a separate draft research PR and explicitly prohibits merge, paid services, PHI/private clinical data, training and model execution. Earlier publication authorization applies to V1 and is not used to disclose the private vault.
+Authority: founder first-principles rebuild request and academic-paper quality steering, 2026-10-01/02. The documentation-stage prohibition on training/model execution remains historical evidence. On 2026-10-03 the Founder separately approved the bounded V5 development-only execution scope exactly defined by `docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORITY_REQUEST.md` and recorded append-only in `V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md`. Merge, publication, paid services, PHI/private clinical data, confirmatory/reserve execution, HCF/Qwen-Image work, and all scope not explicitly named by that authorization remain prohibited.
 
 ## Scope and dependencies
 

@@ -1,6 +1,6 @@
 # V5 development execution preflight contract
 
-Status: `MECHANICALLY_IMPLEMENTED`; `EXECUTION_AUTHORITY=NO`.
+Status: `MECHANICALLY_IMPLEMENTED`; `FOUNDER_DEVELOPMENT_AUTHORITY=APPROVED`; every real run still requires an exact `PREFLIGHT_PASS`.
 
 This contract implements the fail-closed boundary requested in `V5_DEVELOPMENT_EXECUTION_AUTHORITY_REQUEST.md`. It validates a proposed development run but does not approve authority, acquire weights, load a model, run inference, or train.
 

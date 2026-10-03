@@ -16,6 +16,7 @@
 - [x] Implement and mechanically test B1 typed readout, C1 contract regularization, and C2 retention-preserving objective mechanics without granting model-execution authority.
 - [x] Separate deterministic rule conformance from current-care clinical validity; source/provenance screening is sufficient for the methodological endpoint, while any clinical-validity interpretation remains out of scope unless separately qualified.
 - [x] Implement and mechanically test a default-deny V5 development preflight for exact model/revision, artifact/code identity, zero-cost, role quarantine, and protected-data exclusions without granting execution authority.
+- [x] Record the 2026-10-03 Founder approval as an append-only V5 bounded development execution authorization overlay without rewriting the historical request state.
 - [ ] Integrate/qualify B1/C1/C2 against an authorized model-training path; objective mechanics alone do not authorize training or inference.
 - [x] Implement and mechanically test paired cluster-effect, deterministic bootstrap, Holm multiplicity, and normal-approximation power-planning helpers without selecting final margins or accessing confirmatory data.
 - [ ] Run development-only repeatability/pilot work after a separate bounded execution authorization; then freeze numeric `m_j` and final power.

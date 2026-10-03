@@ -11,7 +11,7 @@
 - [x] R9 zero-cost compute boundaries and scale discipline preserved.
 - [x] R10 V5 decision gate precedes experimental execution; no result was used to choose the thesis.
 - [x] R11 Manuscript V5 is prospective and explicitly contains no empirical results.
-- [ ] R12 final separate DRAFT PR linked to #319 and live-state verification.
+- [x] R12 separate DRAFT PR #320 exists, preserves #319 as historical input, and live-state verification was repeated before V5 execution authorization.
 - [x] R13 publication-scope/privacy scan: no local path, email, credential/token, PHI, private-vault payload or raw private source content found.
 - [x] R14 artifact traceability and no DESIGN-to-PAPER_CLAIM promotion contract preserved.
 - [x] R15 reviewer-red-team repairs incorporated into V5 evaluation/statistics/intervention/preregistration/manuscript drafts.
