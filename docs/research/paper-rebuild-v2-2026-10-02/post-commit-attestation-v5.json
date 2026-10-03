@@ -1,0 +1,21 @@
+{
+  "schema": "commandmed-v5-post-commit-attestation",
+  "schema_version": "1.0",
+  "status": "REVIEWED_FREEZE_CANDIDATE_PAYLOAD_ATTESTED",
+  "reviewed_payload_commit": "1146da608bb7f467e8e514429ae2825201d5f616",
+  "reviewed_payload_tree": "2f497d0eb7856343d145d937ef0ebd92ae6f2f46",
+  "parent": "b99a7402801e4006ecff4e7c91182e2517e1aae4",
+  "canonical_main_observed": "51f73ec05750137e5bd94ffa0765f6383f475fee",
+  "freeze_bindings_sha256": "c8fa8b133c5f5cd7207ecd6ecd5ab91c80a24603e6609ad9a5797ae99967defc",
+  "clinical_source_audit_sha256": "6b774c94de0d6712a80a4a5ad204c4e0a997c34f7618b2171cd2ce0f0c0bec71",
+  "rule_oracle_manifest_sha256": "1d9f2a52af4bd1506eb5ebe341e595de4e481dc10c967abfcbdc6f019375de76",
+  "focused_tests": "46 passed",
+  "full_repository_tests": "1098 passed",
+  "compile_check": "PASS",
+  "diff_check": "PASS",
+  "model_execution": "NO",
+  "training": "NO",
+  "paid_compute": "NO",
+  "paid_api": "NO",
+  "scientific_freeze_complete": false
+}
