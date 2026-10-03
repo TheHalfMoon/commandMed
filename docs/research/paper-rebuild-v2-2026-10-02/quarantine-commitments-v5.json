@@ -1,9 +1,9 @@
 {
   "calculator_count": 64,
-  "calibration_case_ids_sha256": "976fda2bcec79c7422d79467fa21e97f2b819d490515c7d52c0e211019bafc38",
+  "calibration_case_ids_sha256": "8faf5e817b79885dd33211064b96d980dc7b71e5f1ef88858b0a233b965a563d",
   "calibration_cases_per_calculator": 64,
   "confirmatory_assignment_materialized": false,
-  "development_case_ids_sha256": "ac097e4a55e8b1e0aca03a3d3d571b84495cff21dd738f99a117a568169110a1",
+  "development_case_ids_sha256": "093644bfe19d1193093984a851493e1695354d8d6dac8b6db7b9a9549ed58801",
   "development_cases_per_calculator": 64,
   "future_sampling_rule": "after a clean implementation freeze, derive a seed from the first valid future NIST Beacon 2.0 pulse and rank only state indices not used by development or calibration",
   "minimum_candidate_state_space": 1024,
@@ -363,13 +363,13 @@
       "unselected_state_count_before_future_sampling": 24872
     },
     {
-      "calibration_case_ids_sha256": "726356914c35314b5f63458f0ffaacdae4d5a53d9e07a14bad325c8d1894773b",
-      "calibration_state_indices_sha256": "75c7ad7a5ff3e801f3403cf1044303c613101975e7adce9312d8a40d42366437",
-      "candidate_state_space": 6380,
-      "development_case_ids_sha256": "7c81c44aef55098181416e27d6c7474aece1a5627679e1927db4fed0d136ab13",
-      "development_state_indices_sha256": "d9590e85021656a1b6110cad1bc19c5d85f5f1b4cd1d1da60934a95de6d37fcf",
-      "pmid": "24103667",
-      "unselected_state_count_before_future_sampling": 6252
+      "calibration_case_ids_sha256": "4629bff176a97b612021ceffe682146eb4de0fabc108a916ee93115a80e29e59",
+      "calibration_state_indices_sha256": "6900634d93f038787f314c9172301622a325066c03411d305b796b4a44ced03a",
+      "candidate_state_space": 2500,
+      "development_case_ids_sha256": "0248026d9271d3daa40abccd50d93039690eeb1f34b19fc2ab3598c758e87901",
+      "development_state_indices_sha256": "d6bdc4e8672233beda7c3d008bfbd6a1f9f63e6c4424cdb1c0b3be7806c14c63",
+      "pmid": "31802959",
+      "unselected_state_count_before_future_sampling": 2372
     },
     {
       "calibration_case_ids_sha256": "4657de696e8298b7dc1026e7a82c3aff31d7e545cef93679476b1803e4251591",
@@ -424,15 +424,6 @@
       "development_state_indices_sha256": "bf45656e0a1f511639955cbb53cc593bd8c9ba23f1bc778a13acb895d9869419",
       "pmid": "23118910",
       "unselected_state_count_before_future_sampling": 1472
-    },
-    {
-      "calibration_case_ids_sha256": "4629bff176a97b612021ceffe682146eb4de0fabc108a916ee93115a80e29e59",
-      "calibration_state_indices_sha256": "6900634d93f038787f314c9172301622a325066c03411d305b796b4a44ced03a",
-      "candidate_state_space": 2500,
-      "development_case_ids_sha256": "0248026d9271d3daa40abccd50d93039690eeb1f34b19fc2ab3598c758e87901",
-      "development_state_indices_sha256": "d6bdc4e8672233beda7c3d008bfbd6a1f9f63e6c4424cdb1c0b3be7806c14c63",
-      "pmid": "31802959",
-      "unselected_state_count_before_future_sampling": 2372
     },
     {
       "calibration_case_ids_sha256": "2c77d5236fa6e8ac5abb9e96f7267d73f27073152c58a405f90f74a95fff8417",
@@ -586,9 +577,18 @@
       "development_state_indices_sha256": "0466c65042715fbdb13fbddc1c52b5050b98f6014f58570c5d3494db057b8398",
       "pmid": "23021334",
       "unselected_state_count_before_future_sampling": 12372
+    },
+    {
+      "calibration_case_ids_sha256": "2acf2233c31d86d0db157a1c13fe220b0de192b73060b8be2e72f9a8896cc6c4",
+      "calibration_state_indices_sha256": "931aa0bf3fb2075baf6207e187a2e5a7dddc0288e1f6aa98c66d5554c83c5f8e",
+      "candidate_state_space": 2560,
+      "development_case_ids_sha256": "fd92d764259edeb79e5c0a6a74c84ef06d1b72a0436f25d4cd80d97a64d7ba53",
+      "development_state_indices_sha256": "957609887f58949462d6493eaaf5ee5eaea781f1e34717bd321e8ce791178cdd",
+      "pmid": "33444080",
+      "unselected_state_count_before_future_sampling": 2432
     }
   ],
   "source_manifest": "riskcalcs-rule-oracle-final-candidate-v5.json",
-  "source_manifest_sha256": "351a4cf29ad520cd789feeb27e0bc4a90816979639c9bbec60919d614d21174f",
+  "source_manifest_sha256": "2d57d36e2559fa2e5fdfd377782e254eb5d9bfcd16f042194c15867861426baa",
   "status": "PREFREEZE_DEV_CAL_COMMITTED_FUTURE_CONFIRMATORY_UNMATERIALIZED"
 }

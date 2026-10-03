@@ -12,3 +12,7 @@ Status: all scientific claims default to `UNPROVEN` until the frozen confirmator
 | V5-C06 | The main cross-property effect generalizes beyond one backbone family. | Directionally replicated effect on a second independently structured open-weight family. | UNPROVEN |
 | V5-C07 | Deterministic rule routing improves exact rule conformance without implying that the underlying rule is clinically valid or that broader medical reliability improved. | Identity-bound rule oracle, same extraction inputs, tool/no-tool contrast, full assurance profile; clinical-validity wording requires separate qualified review. | UNPROVEN |
 | V5-C08 | V5 is novel relative to prior medical multi-dimensional evaluation work. | Systematic prior-art search finding no substantially identical controlled intervention matrix design. | CONDITIONALLY_SUPPORTED |
+
+## Pre-model development evidence update
+
+The local execution-coverage repair qualifies 81/82 static calculators and selects exactly 64. This establishes bounded deterministic executability, not clinical validity or support for V5-C02 through V5-C07. All 8192 development/calibration tasks fit the sequence limit, but the frozen answer-token interface fails. No model logits, inference, training losses, calibration results, selective-risk results, margins, or power estimates have been observed. All empirical claim statuses above remain unchanged.

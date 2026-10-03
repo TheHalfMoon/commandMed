@@ -25,3 +25,19 @@ The repair is prospective relative to model outputs and is limited to determinis
 This blocker record does not authorize using another local runtime for model execution, changing the pinned model, weakening the rule-oracle gate, repairing upstream calculator code, deleting failing cases, materializing confirmatory/reserve identities, or moving development evidence into confirmatory evidence.
 
 The acquired model artifact is not an empirical result. The failed deterministic calculator execution is negative development evidence about the oracle construction and remains part of the study record.
+
+## Local continuation: oracle gate resolved; tokenizer gate failed
+
+Current state: `BLOCKED_BEFORE_MODEL_LOAD_FROZEN_ANSWER_INTERFACE`. The earlier Remote Desktop Commander blocker is resolved by the authorized local Codex channel. The original record above remains historical evidence.
+
+```text
+BLOCKER = The exact pinned tokenizer fails the frozen prefix-preserving A/B answer-token contract for ANSWER followed by a colon and a space.
+WHY_BLOCKED = S1 protocol section 6 requires stopping before model inference and prospectively amending an invalid answer interface. Both labels replace the terminal prefix space token instead of extending the encoded prefix. The 768-token/no-truncation gate passes and is not the blocker.
+AUTHORITY_REQUIRED = Explicit prospective approval of V5_S1_ANSWER_INTERFACE_AMENDMENT_REQUEST_2026-10-03.md. Existing bounded development authority remains approved; it does not justify silently changing a frozen interface.
+EVIDENCE_COMPLETED = Live origin fetched; clean existing branch fast-forwarded from 575aa5cc11083ea3cb3db04c23411e9422257071 to 338d0cb5fd3c9ee3131357af24333fd0e80ab4de; all 82 static candidates assessed; 81 execution-qualified and 1 rejected; exactly 64 selected; rejection evidence and original failure preserved; 4096 development and 4096 calibration identities rebound; new selected sources resolve 64/64 in PubMed with 64 abstracts present and zero publication-type retraction/withdrawal flags; all 8192 tasks materialize with maximum 593 tokens and no overlength prompt; exact 12-file model bundle reverified; no model load, inference, training, confirmatory/reserve materialization, paid API/compute, or PHI occurred.
+NEXT_SAFE_ACTION = Review and approve or reject the concrete prospective newline-marker amendment; after approval implement and repeat all affected pre-model gates before exact-run model preflight.
+```
+
+The new execution loop rejects PMID 24103667 at development state 248 after one successful development state: `age_score` is unbound. The original preparation attempt failed on `gcs_score`; neither observation supersedes the other. The new first failure follows the unchanged qualification-loop ordering and is preserved separately.
+
+Selection removes only PMID 24103667 and adds PMID 33444080 through the unchanged specialty round-robin. PMID 31802959 remains selected and advances within Neurology's order. Neurology changes from 5 to 4 selected calculators; Oncology changes from 9 to 10. This is a mechanical consequence, not a clinical-superiority claim.

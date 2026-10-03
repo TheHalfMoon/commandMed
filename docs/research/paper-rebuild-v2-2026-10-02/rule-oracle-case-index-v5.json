@@ -314,12 +314,12 @@
       "title": "Flu-IV Score Calculator"
     },
     {
-      "calibration_case_ids_sha256": "726356914c35314b5f63458f0ffaacdae4d5a53d9e07a14bad325c8d1894773b",
-      "candidate_state_space": 6380,
-      "code_sha256": "d9fcbed91f90b0c4a30b8574c770e0fe52b16661ac011519910e3b3e1d221039",
-      "development_case_ids_sha256": "7c81c44aef55098181416e27d6c7474aece1a5627679e1927db4fed0d136ab13",
-      "pmid": "24103667",
-      "title": "The SAH Score"
+      "calibration_case_ids_sha256": "4629bff176a97b612021ceffe682146eb4de0fabc108a916ee93115a80e29e59",
+      "candidate_state_space": 2500,
+      "code_sha256": "e50bc907cd02a359cacc37153aedde7b3cad02368047996d50df7605c65f7ac3",
+      "development_case_ids_sha256": "0248026d9271d3daa40abccd50d93039690eeb1f34b19fc2ab3598c758e87901",
+      "pmid": "31802959",
+      "title": "Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System"
     },
     {
       "calibration_case_ids_sha256": "4657de696e8298b7dc1026e7a82c3aff31d7e545cef93679476b1803e4251591",
@@ -368,14 +368,6 @@
       "development_case_ids_sha256": "9d99bfd6823029df003347c903d9ba994e1fef59e32a222c6a3940cb8a9ed2cb",
       "pmid": "23118910",
       "title": "ART Failure Clinical Prediction Score"
-    },
-    {
-      "calibration_case_ids_sha256": "4629bff176a97b612021ceffe682146eb4de0fabc108a916ee93115a80e29e59",
-      "candidate_state_space": 2500,
-      "code_sha256": "e50bc907cd02a359cacc37153aedde7b3cad02368047996d50df7605c65f7ac3",
-      "development_case_ids_sha256": "0248026d9271d3daa40abccd50d93039690eeb1f34b19fc2ab3598c758e87901",
-      "pmid": "31802959",
-      "title": "Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System"
     },
     {
       "calibration_case_ids_sha256": "2c77d5236fa6e8ac5abb9e96f7267d73f27073152c58a405f90f74a95fff8417",
@@ -512,17 +504,25 @@
       "development_case_ids_sha256": "9842f88070b1d6fb14f0cc63cea93de60da562963edfe7cc4a6507d259eb456a",
       "pmid": "23021334",
       "title": "MARKED-Risk Score Calculator"
+    },
+    {
+      "calibration_case_ids_sha256": "2acf2233c31d86d0db157a1c13fe220b0de192b73060b8be2e72f9a8896cc6c4",
+      "candidate_state_space": 2560,
+      "code_sha256": "7cecf02fc36abee9ce3edc802fa8c03d0d44196c369a349504622b4705374e1f",
+      "development_case_ids_sha256": "fd92d764259edeb79e5c0a6a74c84ef06d1b72a0436f25d4cd80d97a64d7ba53",
+      "pmid": "33444080",
+      "title": "Cancer and Aging Research Group-Breast Cancer (CARG-BC) Score"
     }
   ],
   "calibration_case_count": 4096,
-  "calibration_case_ids_sha256": "976fda2bcec79c7422d79467fa21e97f2b819d490515c7d52c0e211019bafc38",
+  "calibration_case_ids_sha256": "8faf5e817b79885dd33211064b96d980dc7b71e5f1ef88858b0a233b965a563d",
   "case_generator_path": "src/commandmed/reliability_v5/case_generator.py",
   "case_generator_sha256": "1a79f6336a2f31440609b6d1af57984765b360cd09404bd7c817d61724cb73f0",
   "confirmatory_case_identities_materialized": false,
   "development_case_count": 4096,
-  "development_case_ids_sha256": "ac097e4a55e8b1e0aca03a3d3d571b84495cff21dd738f99a117a568169110a1",
+  "development_case_ids_sha256": "093644bfe19d1193093984a851493e1695354d8d6dac8b6db7b9a9549ed58801",
   "reserve_case_identities_materialized": false,
   "source_manifest": "riskcalcs-rule-oracle-final-candidate-v5.json",
-  "source_manifest_sha256": "351a4cf29ad520cd789feeb27e0bc4a90816979639c9bbec60919d614d21174f",
+  "source_manifest_sha256": "2d57d36e2559fa2e5fdfd377782e254eb5d9bfcd16f042194c15867861426baa",
   "status": "PREFREEZE_DEV_CAL_CASE_IDENTITY_INDEX_FUTURE_TEST_UNMATERIALIZED"
 }

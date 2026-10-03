@@ -8,14 +8,14 @@
     "Emergency Medicine": 19,
     "Endocrinology": 1,
     "Gastroenterology": 12,
-    "Geriatrics": 8,
+    "Geriatrics": 9,
     "Hematology": 6,
     "Infectious Disease": 11,
     "Intensive Care Medicine": 1,
     "Internal Medicine": 12,
-    "Neurology": 7,
+    "Neurology": 6,
     "Obstetrics and Gynecology": 2,
-    "Oncology": 13,
+    "Oncology": 14,
     "Orthopedic Surgery": 1,
     "Pediatrics": 7,
     "Pulmonology": 9,
@@ -800,22 +800,22 @@
     },
     {
       "abstract_present": true,
-      "abstract_sha256": "04eb8bf63d214ba062f9fd90c095744af84f615d700beb0e913743487a16a986",
-      "calculator_title": "The SAH Score",
-      "code_sha256": "d9fcbed91f90b0c4a30b8574c770e0fe52b16661ac011519910e3b3e1d221039",
-      "doi": "10.1016/j.jstrokecerebrovasdis.2013.07.035",
-      "journal": "Journal of stroke and cerebrovascular diseases : the official journal of National Stroke Association",
-      "pmid": "24103667",
-      "prospective_case_space": 6380,
-      "pub_date": "2014May-Jun",
+      "abstract_sha256": "e0aadcb9f4c5bfa9563b0263e36d676f13bc51fb93e3e7a471273455f0b0eee3",
+      "calculator_title": "Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System",
+      "code_sha256": "e50bc907cd02a359cacc37153aedde7b3cad02368047996d50df7605c65f7ac3",
+      "doi": "10.2147/RMHP.S222144",
+      "journal": "Risk management and healthcare policy",
+      "pmid": "31802959",
+      "prospective_case_space": 2500,
+      "pub_date": "2019",
       "publication_types": [
         "Journal Article"
       ],
       "pubmed_resolved": true,
-      "pubmed_title": "The SAH Score: a comprehensive communication tool.",
+      "pubmed_title": "A Grading System For The Prediction Of Unilateral Chronic Subdural Hematoma Recurrence After Initial Single Burr Hole Evacuation.",
       "retraction_or_withdrawal_flag": false,
       "selection_specialty_stratum": "Neurology",
-      "source_specialty": "Neurology"
+      "source_specialty": "Neurology, Surgery"
     },
     {
       "abstract_present": true,
@@ -934,25 +934,6 @@
       "retraction_or_withdrawal_flag": false,
       "selection_specialty_stratum": "Infectious Disease",
       "source_specialty": "Infectious Disease, Internal Medicine"
-    },
-    {
-      "abstract_present": true,
-      "abstract_sha256": "e0aadcb9f4c5bfa9563b0263e36d676f13bc51fb93e3e7a471273455f0b0eee3",
-      "calculator_title": "Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System",
-      "code_sha256": "e50bc907cd02a359cacc37153aedde7b3cad02368047996d50df7605c65f7ac3",
-      "doi": "10.2147/RMHP.S222144",
-      "journal": "Risk management and healthcare policy",
-      "pmid": "31802959",
-      "prospective_case_space": 2500,
-      "pub_date": "2019",
-      "publication_types": [
-        "Journal Article"
-      ],
-      "pubmed_resolved": true,
-      "pubmed_title": "A Grading System For The Prediction Of Unilateral Chronic Subdural Hematoma Recurrence After Initial Single Burr Hole Evacuation.",
-      "retraction_or_withdrawal_flag": false,
-      "selection_specialty_stratum": "Neurology",
-      "source_specialty": "Neurology, Surgery"
     },
     {
       "abstract_present": true,
@@ -1295,6 +1276,27 @@
       "retraction_or_withdrawal_flag": false,
       "selection_specialty_stratum": "Emergency Medicine",
       "source_specialty": "Emergency Medicine, Cardiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "85f36e4ac7cd25c57c4b4e7199ad7c4a426a3ad41f766ac790602f43078ebdfd",
+      "calculator_title": "Cancer and Aging Research Group-Breast Cancer (CARG-BC) Score",
+      "code_sha256": "7cecf02fc36abee9ce3edc802fa8c03d0d44196c369a349504622b4705374e1f",
+      "doi": "10.1200/JCO.20.02063",
+      "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
+      "pmid": "33444080",
+      "prospective_case_space": 2560,
+      "pub_date": "2021Feb20",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, N.I.H., Extramural",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Development and Validation of a Risk Tool for Predicting Severe Toxicity in Older Adults Receiving Chemotherapy for Early-Stage Breast Cancer.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Geriatrics"
     }
   ],
   "selected_count": 64,

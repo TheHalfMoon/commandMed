@@ -30,3 +30,16 @@ Scientific blockers are not cleared by authoring code or documents. `CONFIRMATOR
 - [x] Implement and unit-test the hash/AST-bound RiskCalcs development/calibration task builder without materializing confirmatory/reserve identities.
 - [ ] Qualify the pinned zero-cost runtime, materialize the 64-calculator S1 development/calibration tasks, and bind the exact model artifact/environment before the first model call.
 - [ ] Execute only preflight-approved S1 model load/smoke/B1/C1/C2 development work, then freeze development-only margins/power or record the exact resource/scientific blocker.
+
+## Local continuation frontier
+
+Historical authority-denied statements above describe their earlier stages. Bounded V5 development is approved by the 2026-10-03 authorization overlay; the exact-run preflight and protocol gates still control execution.
+
+- [x] Apply the execution-coverage amendment to all 82 static candidates, preserve the 1 rejection, qualify 81, and select exactly 64 mechanically.
+- [x] Regenerate the changed development/calibration case, quarantine, source-audit/review, and freeze bindings.
+- [x] Reverify the exact existing 12-file model artifact without redownload or model load.
+- [x] Materialize all 8192 S1 development/calibration tasks and measure all prompt lengths with the pinned tokenizer; maximum 593, no truncation or overlength.
+- [x] Preserve both frozen answer-prefix candidate failures and prepare a concrete prospective amendment request without adopting it.
+- [ ] Obtain the prospective answer-interface amendment decision and, if approved, requalify all affected pre-model gates before model preflight.
+
+Model load, inference, and training remain unexecuted. The scientific freeze and project remain incomplete.

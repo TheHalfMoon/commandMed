@@ -70,3 +70,24 @@ A new bounded adversarial refresh is recorded in `literature-refresh-v5-2026-10-
 - Alibaba Open Code Review delegation rules were applied to the statistics implementation/tests. Host-agent review identified the finite-sample percentile/point-estimate contract edge case before publication; it was repaired and documented.
 - Final V5-focused suite after statistics hardening: `80 passed in 0.71s`; full repository suite: `1132 passed in 24.20s`; compileall and `git diff --check` passed.
 - No model execution, dataset payload access, confirmatory access, paid API, or paid compute occurred.
+
+## Local pre-model continuation verification
+
+Generation-context HEAD: `338d0cb5fd3c9ee3131357af24333fd0e80ab4de`. This section describes the reviewed working-tree repair; the successor post-commit attestation binds its final payload SHA/tree. Earlier counts and authority-denied statements above remain historical.
+
+- Fetched live origin and safely fast-forwarded the clean existing clone by 19 remote-only commits; no local-only commits, stashes, or additional research worktrees were present. Canonical main remains `51f73ec05750137e5bd94ffa0765f6383f475fee`; PR #320 was verified open/draft.
+- Initial current-HEAD V5 suite: `90 passed in 1.32s`.
+- Strengthened selector: `82` static candidates, `81` execution-qualified, `1` execution-rejected, exactly `64` selected. Rejection digest: `470e039d9a9f1362f93c7eafd56a32c0cac4e612c8b9e765a440ee0d37a8a83d`.
+- The prospective loop rejects SAH PMID 24103667 at development state 248 on unbound `age_score`; the historical preparation failure on unbound `gcs_score` remains byte-unchanged. No upstream code or generated state was repaired, skipped, clamped, or deleted.
+- Regenerated the selection-dependent case index, quarantine commitments, live PubMed source audit/review, and freeze bindings. A transitional suite correctly detected the not-yet-regenerated state-space binding (`1 failed, 93 passed`); completing native binding regeneration resolved that mismatch without changing the test or gate.
+- Current source audit: `64/64` identities resolve and expose abstracts; `0` publication-type retraction/withdrawal flags. Abstract bodies were not persisted. No broader no-retraction or clinical-validity claim is made.
+- All `8192` S1 tasks materialize with exact split counts `256/3840/256/3840`. Maximum prompt length is `593`; no overlength or truncation. Task preparation deliberately returns failure because both frozen answer-prefix candidate-token checks fail.
+- Enhanced preparation now persists both failed token checks and completes permitted metadata checks before returning failure. It does not adopt another answer marker, substitute token IDs, or call a model. Regression checks cover prefix retokenization, zero/multiple continuation tokens, valid continuation tokens, and failure evidence persistence.
+- Final V5 suite after the evidence repair: `95 passed in 0.65s`; full repository suite: `1147 passed in 18.05s`.
+- Two complete repository-native regeneration pipelines produce `PASS_7_OF_7_BYTE_IDENTICAL`; all bound path hashes verify. Expected task-preparation exit `2` occurs on both reruns and remains a failed gate.
+- Recomputed all `12` local artifact-file hashes without download. Full model bundle matches `b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477`; RiskCalcs source matches `00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9`.
+- Existing D-drive execution runtime lacks pytest. Pytest `8.4.2` was installed in a separate local validation directory outside the clone and injected only for test runs; the model environment was not modified.
+- Alibaba Open Code Review `v1.12.11 (a758d9c)` preview and resolved Python/JSON rules were used locally at zero cost. Test files excluded by preview were supplied explicitly to rule resolution and host review. This is host-agent review under OCR rules, not independent peer review or an OCR LLM verdict. See `V5_LOCAL_PREMODEL_REVIEW_2026-10-03.md`.
+- Jev remains `DEFERRED_ZERO_COST_POLICY`; no paid Jev execution or qualification is claimed.
+
+Current scientific state: `SCIENTIFIC_FREEZE_OPEN`; `MODEL_LOAD=NO`; `INFERENCE=NO`; `TRAINING=NO`; `CONFIRMATORY_MATERIALIZED=NO`; `RESERVE_MATERIALIZED=NO`. Existing bounded development authority is approved, but the frozen interface requires a prospective amendment. The concrete request is `V5_S1_ANSWER_INTERFACE_AMENDMENT_REQUEST_2026-10-03.md`; its proposed newline marker has not been adopted.

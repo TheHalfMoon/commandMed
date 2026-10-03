@@ -57,12 +57,20 @@ def main() -> int:
     status = git("status", "--porcelain")
     payload = {
         "schema": "commandmed-v5-scientific-freeze-bindings",
-        "schema_version": "1.2",
+        "schema_version": "1.3",
         "confirmatory_frozen": False,
         "execution_authority": "NO",
         "model_execution": "NO",
         "training": "NO",
         "paid_compute": "NO",
+    }
+    # This manifest records preparation evidence; it never grants run authority.
+    payload["development_authority"] = {
+        "state": "APPROVED_SUBJECT_TO_EXACT_RUN_PREFLIGHT",
+        "request": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORITY_REQUEST.md"),
+        "authorization": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md"),
+        "s1_protocol": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md"),
+        "oracle_amendment": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md"),
     }
     payload["repository_context"] = {
         "branch": git("branch", "--show-current"),
@@ -107,6 +115,11 @@ def main() -> int:
             "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md"
         ),
         "static_eligible_count": int(rule_manifest["static_eligible_count"]),
+        "execution_qualified_count": int(rule_manifest["execution_qualified_count"]),
+        "execution_rejected_count": int(rule_manifest["execution_rejected_count"]),
+        "execution_rejection_digest_sha256": rule_manifest["execution_rejection_digest_sha256"],
+        "execution_gate": bind("src/commandmed/reliability_v5/oracle_qualification.py"),
+        "bound_rule_runtime": bind("src/commandmed/reliability_v5/rule_dataset.py"),
         "eligible_selection_stratum_count": int(rule_manifest["eligible_selection_stratum_count"]),
         "calculator_count": int(rule_manifest["selected_count"]),
         "minimum_candidate_state_space": int(quarantine_commitments["minimum_candidate_state_space"]),
@@ -155,6 +168,16 @@ def main() -> int:
         "future confirmatory state selection after clean freeze event and future beacon pulse",
         "post-commit attestation binding the reviewed freeze commit",
     ]
+    preparation_path = "artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json"
+    if (ROOT / preparation_path).is_file():
+        preparation = json.loads((ROOT / preparation_path).read_text(encoding="utf-8"))
+        payload["s1_task_preparation"] = {
+            **bind(preparation_path),
+            "status": preparation["status"],
+            "implementation": bind("docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py"),
+        }
+        if preparation["status"] != "PASS_PRE_MODEL_INTERFACE":
+            payload["remaining_blockers"].insert(0, "S1 task-preparation interface qualification failed before model load")
     OUT.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print(f"OUT={OUT}")
     print(f"OUT_SHA256={sha256_file(OUT)}")

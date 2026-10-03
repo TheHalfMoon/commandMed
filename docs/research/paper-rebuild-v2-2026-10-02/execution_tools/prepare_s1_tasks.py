@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.metadata
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -52,16 +54,28 @@ def write_json(path: Path, value: object) -> str:
     return sha256_file(path)
 
 
-def candidate_suffix_id(tokenizer, prefix: str, label: str) -> int:
+def candidate_token_check(tokenizer, prefix: str, label: str) -> dict[str, object]:
     prefix_ids = tokenizer(prefix, add_special_tokens=False)["input_ids"]
     full_ids = tokenizer(prefix + label, add_special_tokens=False)["input_ids"]
     common = 0
     while common < min(len(prefix_ids), len(full_ids)) and prefix_ids[common] == full_ids[common]:
         common += 1
     suffix = full_ids[common:]
-    if common != len(prefix_ids) or len(suffix) != 1:
-        raise SystemExit(f"CANDIDATE_TOKEN_NOT_SINGLE={label}:{suffix}")
-    return int(suffix[0])
+    return {
+        "prefix_ids": prefix_ids,
+        "full_ids": full_ids,
+        "common_prefix_length": common,
+        "suffix_ids": suffix,
+        "prefix_preserved": common == len(prefix_ids),
+        "valid": common == len(prefix_ids) and len(suffix) == 1,
+    }
+
+
+def candidate_suffix_id(tokenizer, prefix: str, label: str) -> int:
+    check = candidate_token_check(tokenizer, prefix, label)
+    if not check["valid"]:
+        raise SystemExit(f"CANDIDATE_TOKEN_NOT_SINGLE={label}:{check['suffix_ids']}")
+    return int(check["suffix_ids"][0])
 
 
 def main() -> int:
@@ -82,8 +96,14 @@ def main() -> int:
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_dir, local_files_only=True)
     answer_prefix = "ANSWER: "
-    token_a = candidate_suffix_id(tokenizer, answer_prefix, "A")
-    token_b = candidate_suffix_id(tokenizer, answer_prefix, "B")
+    token_checks = {
+        label: candidate_token_check(tokenizer, answer_prefix, label) for label in ("A", "B")
+    }
+    candidate_failures = [label for label, check in token_checks.items() if not check["valid"]]
+    candidate_ids = {
+        label: int(check["suffix_ids"][0]) if check["valid"] else None
+        for label, check in token_checks.items()
+    }
 
     max_lengths: dict[str, int] = {name: 0 for name in EXPECTED_SPLITS}
     overlength: list[str] = []
@@ -92,14 +112,22 @@ def main() -> int:
     }
     transformed_identity_failures = 0
     ordered_task_ids: list[str] = []
+    overlength_records: list[dict[str, object]] = []
 
     for example in examples:
         ordered_task_ids.append(example.task_id)
-        for prompt in (example.canonical_prompt, example.transformed_prompt):
+        for variant, prompt in (("canonical", example.canonical_prompt), ("transformed", example.transformed_prompt)):
             length = len(tokenizer(prompt, add_special_tokens=False)["input_ids"])
             max_lengths[example.split] = max(max_lengths[example.split], length)
             if length > MAX_TOKENS:
                 overlength.append(example.task_id)
+                overlength_records.append({
+                    "task_id": example.task_id,
+                    "pmid": example.pmid,
+                    "split": example.split,
+                    "variant": variant,
+                    "tokens": length,
+                })
         if example.canonical_prompt == example.transformed_prompt:
             transformed_identity_failures += 1
         target_counts[example.split][example.target_label] += 1
@@ -107,23 +135,42 @@ def main() -> int:
 
     evidence: dict[str, object] = {
         "schema": "commandmed.v5.s1.task-preparation.v1",
+        "status": "FAILED_PRE_MODEL_INTERFACE" if candidate_failures or overlength or transformed_identity_failures else "PASS_PRE_MODEL_INTERFACE",
+        "code_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "preparation_implementation_sha256": sha256_file(Path(__file__)),
+        "model_repo": "Qwen/Qwen3.5-0.8B-Base",
+        "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+        "tokenizer_files": {
+            name: sha256_file(args.model_dir / name)
+            for name in ("tokenizer.json", "tokenizer_config.json", "vocab.json", "merges.txt")
+        },
+        "tokenizer_packages": {
+            name: importlib.metadata.version(name) for name in ("transformers", "tokenizers")
+        },
         "riskcalcs_source_sha256": sha256_file(args.riskcalcs_source),
         "selection_manifest_sha256": sha256_file(MANIFEST_PATH),
         "calculator_count": len(rules),
         "example_count": len(examples),
         "split_counts": counts,
         "task_id_sequence_sha256": hashlib.sha256("".join(ordered_task_ids).encode("ascii")).hexdigest(),
-        "tokenizer_candidate_ids": {"A": token_a, "B": token_b},
+        "answer_prefix": answer_prefix,
+        "tokenizer_candidate_ids": candidate_ids,
+        "tokenizer_candidate_checks": token_checks,
+        "candidate_token_failures": candidate_failures,
         "max_prompt_tokens_by_split": dict(sorted(max_lengths.items())),
         "max_tokens_contract": MAX_TOKENS,
         "overlength_count": len(overlength),
         "overlength_task_ids_sha256": canonical_sha256(sorted(overlength)),
+        "overlength_records": overlength_records,
         "transformed_identity_failures": transformed_identity_failures,
         "target_counts": target_counts,
         "confirmatory_materialized": False,
         "reserve_materialized": False,
         "phi": False,
         "gated_data": False,
+        "model_loaded": False,
+        "model_inference": False,
+        "training": False,
     }
     evidence_sha = write_json(OUT_DIR / "task-preparation-evidence.json", evidence)
     print(f"BOUND_RULES={len(rules)}")
@@ -131,8 +178,9 @@ def main() -> int:
     print(f"SPLITS={json.dumps(counts, sort_keys=True)}")
     print(f"MAX_PROMPT_TOKENS={max(max_lengths.values())}")
     print(f"OVERLENGTH={len(overlength)}")
+    print(f"CANDIDATE_TOKEN_FAILURES={json.dumps(candidate_failures)}")
     print(f"EVIDENCE_SHA256={evidence_sha}")
-    if overlength or transformed_identity_failures:
+    if candidate_failures or overlength or transformed_identity_failures:
         return 2
     return 0
 

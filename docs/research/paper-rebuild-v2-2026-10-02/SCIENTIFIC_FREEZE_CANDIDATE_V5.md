@@ -92,3 +92,9 @@ The bounded V5 development authority is now paired with `V5_S1_DEVELOPMENT_EXECU
 The identity-bound RuleCalcs builder is implemented and unit-tested. It binds the exact RiskCalcs source SHA-256 and selected calculator code hashes, admits only the frozen safe AST shape, and cannot select confirmatory/reserve identities. Real 64-calculator source binding passed `64/64` before runtime qualification; executable materialization remains pending the separately pinned NumPy/PyTorch/Transformers runtime.
 
 `CONFIRMATORY_FROZEN` remains `NO`. No development result may clear the later clean-freeze/future-randomness requirement for confirmatory/reserve identities.
+
+## Local oracle repair and interface gate update
+
+The earlier static-only selection result and pending materialization statements above are historical. The execution-coverage amendment has now been applied locally to all 82 static candidates: 81 qualify, 1 is rejected, and the unchanged selector produces exactly 64. The new set removes PMID 24103667 and adds PMID 33444080. Case-index, quarantine, PubMed audit/review, and freeze bindings have been regenerated for that set. The original SAH failure remains preserved.
+
+All 8192 S1 development/calibration examples materialize and fit the 768-token limit (maximum 593). Task preparation fails on the exact frozen `ANSWER: ` prefix because both A/B continuations retokenize the terminal space. Model load remains forbidden until a prospective interface amendment and successful repeated preparation. See `V5_S1_ANSWER_INTERFACE_AMENDMENT_REQUEST_2026-10-03.md`; its newline marker is proposed, not approved or adopted. Scientific freeze remains open, empirical V5 claims remain unproven, and HCF remains deferred/unproven.

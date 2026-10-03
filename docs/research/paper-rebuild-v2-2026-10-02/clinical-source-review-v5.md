@@ -558,17 +558,17 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
-### PMID 24103667 - The SAH Score
+### PMID 31802959 - Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System
 
 - first-listed source specialty stratum: Neurology
-- source-declared specialties: Neurology
-- PubMed title: The SAH Score: a comprehensive communication tool.
-- journal/date: Journal of stroke and cerebrovascular diseases : the official journal of National Stroke Association / 2014May-Jun
-- DOI: 10.1016/j.jstrokecerebrovasdis.2013.07.035
+- source-declared specialties: Neurology, Surgery
+- PubMed title: A Grading System For The Prediction Of Unilateral Chronic Subdural Hematoma Recurrence After Initial Single Burr Hole Evacuation.
+- journal/date: Risk management and healthcare policy / 2019
+- DOI: 10.2147/RMHP.S222144
 - publication types: Journal Article
 - abstract present: True
-- abstract SHA-256: 04eb8bf63d214ba062f9fd90c095744af84f615d700beb0e913743487a16a986
-- prospective case space: 6380
+- abstract SHA-256: e0aadcb9f4c5bfa9563b0263e36d676f13bc51fb93e3e7a471273455f0b0eee3
+- prospective case space: 2500
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
@@ -653,20 +653,6 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - abstract present: True
 - abstract SHA-256: 230e7ffbac04e5282b18c6dcf2ae0374d1a9c2882e5df7f37b7f7395c59a87de
 - prospective case space: 1600
-- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
-- replacement required: `PENDING`
-
-### PMID 31802959 - Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System
-
-- first-listed source specialty stratum: Neurology
-- source-declared specialties: Neurology, Surgery
-- PubMed title: A Grading System For The Prediction Of Unilateral Chronic Subdural Hematoma Recurrence After Initial Single Burr Hole Evacuation.
-- journal/date: Risk management and healthcare policy / 2019
-- DOI: 10.2147/RMHP.S222144
-- publication types: Journal Article
-- abstract present: True
-- abstract SHA-256: e0aadcb9f4c5bfa9563b0263e36d676f13bc51fb93e3e7a471273455f0b0eee3
-- prospective case space: 2500
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`
 
@@ -905,5 +891,19 @@ This queue intentionally persists publication metadata and hashes only. It does 
 - abstract present: True
 - abstract SHA-256: 7457ee5f49fccc2dcc7b6f7126b4955ce9178507cb7570c99e253d9b46befffe
 - prospective case space: 12500
+- clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
+- replacement required: `PENDING`
+
+### PMID 33444080 - Cancer and Aging Research Group-Breast Cancer (CARG-BC) Score
+
+- first-listed source specialty stratum: Oncology
+- source-declared specialties: Oncology, Geriatrics
+- PubMed title: Development and Validation of a Risk Tool for Predicting Severe Toxicity in Older Adults Receiving Chemotherapy for Early-Stage Breast Cancer.
+- journal/date: Journal of clinical oncology : official journal of the American Society of Clinical Oncology / 2021Feb20
+- DOI: 10.1200/JCO.20.02063
+- publication types: Journal Article, Research Support, N.I.H., Extramural, Research Support, Non-U.S. Gov't
+- abstract present: True
+- abstract SHA-256: 85f36e4ac7cd25c57c4b4e7199ad7c4a426a3ad41f766ac790602f43078ebdfd
+- prospective case space: 2560
 - clinical appropriateness decision: `PENDING_QUALIFIED_REVIEW`
 - replacement required: `PENDING`

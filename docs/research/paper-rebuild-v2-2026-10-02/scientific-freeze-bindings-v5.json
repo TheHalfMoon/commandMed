@@ -1,5 +1,24 @@
 {
   "confirmatory_frozen": false,
+  "development_authority": {
+    "authorization": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md",
+      "sha256": "cd73779ad8bc5885f10f0e81e4bc89d45eb3b749ceafc696ab2706e916510c0c"
+    },
+    "oracle_amendment": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md",
+      "sha256": "b8f51b768f35987110c8a430d311e979b6b7f782a48fc9f8436978f130364af9"
+    },
+    "request": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORITY_REQUEST.md",
+      "sha256": "8a76ac87a71401a5212a3dd19217415fa683d633e20b56e9fa6eb99d52309929"
+    },
+    "s1_protocol": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md",
+      "sha256": "6c7d6d2e252a01777809abbe24de21d5656e696178deecf36ebbf3bf90663a8f"
+    },
+    "state": "APPROVED_SUBJECT_TO_EXACT_RUN_PREFLIGHT"
+  },
   "execution_authority": "NO",
   "implementations": {
     "A1_TS_V1": {
@@ -77,7 +96,7 @@
     },
     "retention_task_admission": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md",
-      "sha256": "05e025c8535f7a41fc7aa842ca5e33da877ea9c8f88dfe94c4f0403d05251cd1"
+      "sha256": "6cf296e91db6bf6f4e2ff3c6a024f3424bba9450cfa6cad463f09272d0dbe497"
     },
     "rights_source_admission": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/RIGHTS_AND_SOURCE_ADMISSION_V5.md",
@@ -85,10 +104,11 @@
     },
     "statistics": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/statistics-protocol-v5.md",
-      "sha256": "bfee4ca21af61df65adc27a236cb280a0effb23c58146af3be600bab989aad90"
+      "sha256": "9e4bc30397edd360c537835ba108da8c685b4eb4a04b3ed8f547afb1902df52e"
     }
   },
   "remaining_blockers": [
+    "S1 task-preparation interface qualification failed before model load",
     "B1/C1/C2 model-integration and learned-execution qualification",
     "property-specific meaningful numeric margins",
     "power verification at frozen margins",
@@ -98,13 +118,13 @@
   "repository_context": {
     "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     "branch": "research/commandmed-paper-first-principles",
-    "generated_from_head": "12b60e22e199c86cd527be7fecfb1d4eb9d793d3",
+    "generated_from_head": "338d0cb5fd3c9ee3131357af24333fd0e80ab4de",
     "worktree_dirty_at_build": true
   },
   "retention_control": {
     "admission": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md",
-      "sha256": "05e025c8535f7a41fc7aa842ca5e33da877ea9c8f88dfe94c4f0403d05251cd1"
+      "sha256": "6cf296e91db6bf6f4e2ff3c6a024f3424bba9450cfa6cad463f09272d0dbe497"
     },
     "claim_scope": "paired extractive-QA retention only",
     "dataset": "rajpurkar/squad",
@@ -117,6 +137,10 @@
     "split": "validation"
   },
   "rule_oracle": {
+    "bound_rule_runtime": {
+      "path": "src/commandmed/reliability_v5/rule_dataset.py",
+      "sha256": "3c7ed2e241f5d4638544fb662bd544d0737ea27435276b10871d3c9d59e0cf75"
+    },
     "calculator_count": 64,
     "calibration_cases_per_calculator": 64,
     "case_generator": {
@@ -125,22 +149,29 @@
     },
     "case_identities": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json",
-      "sha256": "d378bb45bbf855ee6964110762d33936f1c14a0efedcd84b983e5a2dd0d735bc"
+      "sha256": "5a58009f24f42184414d4ec780b103b6f8c5c850f67c098e9e6c0aa535a30f8a"
     },
     "clinical_source_audit": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json",
-      "sha256": "08ae5d35446d4219d2e471b08f2270965cb37d7e516ad0abba7b8a9ff171b9c3"
+      "sha256": "f992f4b9565f63d69e4844a9c0ea0912d0149e45f4a22c440cdef1a05ed9abac"
     },
     "clinical_source_review": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md",
-      "sha256": "8c2053018193e8601941dda681b8037847a9cf50e1e8cdcab76768051d22592e"
+      "sha256": "c715c9e475b7bbec5e08b4d40819e0522202edbc85ec44f1a79cd170353324fb"
     },
     "confirmatory_assignment_materialized": false,
     "development_cases_per_calculator": 64,
     "eligible_selection_stratum_count": 15,
+    "execution_gate": {
+      "path": "src/commandmed/reliability_v5/oracle_qualification.py",
+      "sha256": "8d6e03e1af85dc4c64a002caa21999005e8a19c64a0822ff7faeebd784392438"
+    },
+    "execution_qualified_count": 81,
+    "execution_rejected_count": 1,
+    "execution_rejection_digest_sha256": "470e039d9a9f1362f93c7eafd56a32c0cac4e612c8b9e765a440ee0d37a8a83d",
     "manifest": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json",
-      "sha256": "351a4cf29ad520cd789feeb27e0bc4a90816979639c9bbec60919d614d21174f"
+      "sha256": "2d57d36e2559fa2e5fdfd377782e254eb5d9bfcd16f042194c15867861426baa"
     },
     "minimum_candidate_state_space": 1024,
     "planned_confirmatory_cases_per_calculator": 64,
@@ -149,7 +180,7 @@
     "prefreeze_committed_cluster_count": 8192,
     "quarantine_commitments": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/quarantine-commitments-v5.json",
-      "sha256": "27cdc2e35f65076af0e27d03e647492d4bdf493e60b124c8eaa6e0da363febfb"
+      "sha256": "770a703daf0614110feabf8efbc1e262a97133f1302c418001092bf910cba3df"
     },
     "quarantine_mechanics": {
       "path": "src/commandmed/reliability_v5/quarantine.py",
@@ -157,11 +188,20 @@
     },
     "reserve_assignment_materialized": false,
     "selected_candidate_state_space_min": 1250,
-    "selected_candidate_state_space_total": 759215,
+    "selected_candidate_state_space_total": 755395,
     "static_eligible_count": 82
   },
+  "s1_task_preparation": {
+    "implementation": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py",
+      "sha256": "a5d2a092e4527b044b3844c27cd6b5093d9552acb60206ea080fd06f893da070"
+    },
+    "path": "artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json",
+    "sha256": "6a54349f88ee1214b9f7f4f8298ca845bcf28666a620217a8002dc22d2b46c35",
+    "status": "FAILED_PRE_MODEL_INTERFACE"
+  },
   "schema": "commandmed-v5-scientific-freeze-bindings",
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "shared_mechanics": {
     "contracts": {
       "path": "src/commandmed/reliability_v5/contracts.py",

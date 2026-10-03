@@ -1,6 +1,52 @@
 {
-  "eligibility": "one safe parsed function; <=8 args; every input used only as boolean/simple numeric comparison; no string domains; no input arithmetic/calls/subscripts/attributes; prospective generated input space >=1024",
+  "eligibility": "one safe parsed function; <=8 args; every input used only as boolean/simple numeric comparison; no string domains; no input arithmetic/calls/subscripts/attributes; prospective generated input space >=1024; exact pre-frozen development/calibration execution coverage must complete without compile/runtime/serialization/perturbation-contract failure",
   "eligible_selection_stratum_count": 15,
+  "execution_coverage": {
+    "calibration_cases_per_candidate": 64,
+    "confirmatory_materialized": false,
+    "development_cases_per_candidate": 64,
+    "reserve_materialized": false
+  },
+  "execution_qualified_count": 81,
+  "execution_rejected_count": 1,
+  "execution_rejection_digest_sha256": "470e039d9a9f1362f93c7eafd56a32c0cac4e612c8b9e765a440ee0d37a8a83d",
+  "execution_rejections": [
+    {
+      "calibration_cases_checked": 0,
+      "code_sha256": "d9fcbed91f90b0c4a30b8574c770e0fe52b16661ac011519910e3b3e1d221039",
+      "development_cases_checked": 1,
+      "failure_case_id": "33c14d3eb67068f4f944a31b1ec3c0c38a762a2f2a0c2bda53604d5960d4e927",
+      "failure_message": "cannot access local variable 'age_score' where it is not associated with a value",
+      "failure_role": "RULE_ORACLE_DEVELOPMENT",
+      "failure_state_index": 248,
+      "failure_type": "UnboundLocalError",
+      "function_name": "compute_sah_score",
+      "pmid": "24103667",
+      "selection_specialty_stratum": "Neurology"
+    }
+  ],
+  "mechanics": {
+    "bound_rule_runtime": {
+      "path": "src/commandmed/reliability_v5/rule_dataset.py",
+      "sha256": "3c7ed2e241f5d4638544fb662bd544d0737ea27435276b10871d3c9d59e0cf75"
+    },
+    "case_generator": {
+      "path": "src/commandmed/reliability_v5/case_generator.py",
+      "sha256": "1a79f6336a2f31440609b6d1af57984765b360cd09404bd7c817d61724cb73f0"
+    },
+    "execution_gate": {
+      "path": "src/commandmed/reliability_v5/oracle_qualification.py",
+      "sha256": "8d6e03e1af85dc4c64a002caa21999005e8a19c64a0822ff7faeebd784392438"
+    },
+    "quarantine": {
+      "path": "src/commandmed/reliability_v5/quarantine.py",
+      "sha256": "21e8fb1339fd6eafbf87baf3fc513fc5ddc48f09b7fa0ccac86ec04377612ed9"
+    },
+    "selector": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/audit_numeric_boolean_oracles.py",
+      "sha256": "11fb47028bf55ad8c9ae70f170c024dd718dd905208d848e6e89fc22f08194a9"
+    }
+  },
   "selected": [
     {
       "arg_count": 7,
@@ -1305,41 +1351,37 @@
       "title": "Flu-IV Score Calculator"
     },
     {
-      "arg_count": 3,
-      "code_sha256": "d9fcbed91f90b0c4a30b8574c770e0fe52b16661ac011519910e3b3e1d221039",
+      "arg_count": 6,
+      "code_sha256": "e50bc907cd02a359cacc37153aedde7b3cad02368047996d50df7605c65f7ac3",
       "domain_constants": {
         "age": [
-          18,
-          49,
-          50,
-          69,
-          70,
-          79,
-          80
+          67
         ],
-        "comorbidities": [
-          0,
-          1,
-          2
+        "antiplatelet_or_anticoagulant_use": [
+          false,
+          true
         ],
-        "gcs": [
-          13,
-          14,
-          15,
-          3,
-          4,
-          5,
-          8,
-          9
+        "drainage_volume": [
+          101
+        ],
+        "midline_shift": [
+          11.2
+        ],
+        "ratio_PostPV_PostHCV": [
+          31.61
+        ],
+        "severe_brain_atrophy": [
+          false,
+          true
         ]
       },
-      "function_name": "compute_sah_score",
-      "pmid": "24103667",
-      "prospective_case_space": 6380,
-      "selection_key": "8b3f54b39db3b5b80bb94c446f3731bec66271bb1f7df9c5ed065322d17a5c2f",
+      "function_name": "compute_risk_score",
+      "pmid": "31802959",
+      "prospective_case_space": 2500,
+      "selection_key": "b8d64908b5d4ef075a4f03eb275d9f85b2924fc46f0f6eb8c85c7db595f4a83c",
       "selection_specialty_stratum": "Neurology",
-      "source_specialty": "Neurology",
-      "title": "The SAH Score"
+      "source_specialty": "Neurology, Surgery",
+      "title": "Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System"
     },
     {
       "arg_count": 6,
@@ -1542,39 +1584,6 @@
       "selection_specialty_stratum": "Infectious Disease",
       "source_specialty": "Infectious Disease, Internal Medicine",
       "title": "ART Failure Clinical Prediction Score"
-    },
-    {
-      "arg_count": 6,
-      "code_sha256": "e50bc907cd02a359cacc37153aedde7b3cad02368047996d50df7605c65f7ac3",
-      "domain_constants": {
-        "age": [
-          67
-        ],
-        "antiplatelet_or_anticoagulant_use": [
-          false,
-          true
-        ],
-        "drainage_volume": [
-          101
-        ],
-        "midline_shift": [
-          11.2
-        ],
-        "ratio_PostPV_PostHCV": [
-          31.61
-        ],
-        "severe_brain_atrophy": [
-          false,
-          true
-        ]
-      },
-      "function_name": "compute_risk_score",
-      "pmid": "31802959",
-      "prospective_case_space": 2500,
-      "selection_key": "b8d64908b5d4ef075a4f03eb275d9f85b2924fc46f0f6eb8c85c7db595f4a83c",
-      "selection_specialty_stratum": "Neurology",
-      "source_specialty": "Neurology, Surgery",
-      "title": "Unilateral Chronic Subdural Hematoma Recurrence Prediction Grading System"
     },
     {
       "arg_count": 5,
@@ -2124,6 +2133,50 @@
       "selection_specialty_stratum": "Emergency Medicine",
       "source_specialty": "Emergency Medicine, Cardiology",
       "title": "MARKED-Risk Score Calculator"
+    },
+    {
+      "arg_count": 8,
+      "code_sha256": "7cecf02fc36abee9ce3edc802fa8c03d0d44196c369a349504622b4705374e1f",
+      "domain_constants": {
+        "anthracycline_use": [
+          false,
+          true
+        ],
+        "falls": [
+          false,
+          true
+        ],
+        "hemoglobin": [
+          false,
+          true
+        ],
+        "liver_function": [
+          false,
+          true
+        ],
+        "social_support": [
+          false,
+          true
+        ],
+        "stage": [
+          2,
+          3
+        ],
+        "treatment_duration": [
+          3
+        ],
+        "walking": [
+          false,
+          true
+        ]
+      },
+      "function_name": "calculate_CARG_BC_score",
+      "pmid": "33444080",
+      "prospective_case_space": 2560,
+      "selection_key": "d3dcc159aa58b2b8e82c735cdcb70891093b684eed9bd419186680dce28d594d",
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Geriatrics",
+      "title": "Cancer and Aging Research Group-Breast Cancer (CARG-BC) Score"
     }
   ],
   "selected_count": 64,
@@ -2136,19 +2189,19 @@
     "Gastroenterology": 6,
     "Hematology": 4,
     "Infectious Disease": 5,
-    "Neurology": 5,
+    "Neurology": 4,
     "Obstetrics and Gynecology": 2,
-    "Oncology": 9,
+    "Oncology": 10,
     "Orthopedic Surgery": 1,
     "Pediatrics": 5,
     "Pulmonology": 2,
     "Surgery": 2
   },
-  "selection_policy": "deterministic round-robin over alphabetically ordered first-listed source specialty strata; within each specialty candidates are ordered by sha256 selection_key then PMID; the design targets domain breadth, not clinical prevalence",
+  "selection_policy": "first require static numeric/Boolean eligibility; then execute every deterministic development and calibration state through the fail-closed bound-rule compiler; preserve every rejection; then round-robin over alphabetically ordered first-listed source specialty strata, ordering within strata by sha256 selection_key then PMID",
   "selector_salt": "CommandMed-V5|RULE_ORACLE_NUMBOOL",
   "source_blob": "118474a6286ad78896a7c15682a53b68261a2330",
   "source_bytes_sha256": "00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9",
   "source_revision": "d474a95128e128623933c9be0d389ff7d82ef782",
   "static_eligible_count": 82,
-  "status": "STATIC_DOMAIN_BALANCED_NUMERIC_BOOLEAN_RULE_ORACLE_CANDIDATE_NO_FUNCTION_EXECUTION"
+  "status": "DEV_CAL_EXECUTION_QUALIFIED_DOMAIN_BALANCED_RULE_ORACLE_CANDIDATE"
 }
