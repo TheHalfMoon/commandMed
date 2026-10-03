@@ -15,6 +15,7 @@
 - [x] Resolve all 64 selected source PMIDs, verify public PubMed metadata and abstract presence without persisting abstract text, and verify zero PubMed retraction/withdrawal publication-type flags in the current audit.
 - [x] Implement and mechanically test B1 typed readout, C1 contract regularization, and C2 retention-preserving objective mechanics without granting model-execution authority.
 - [x] Separate deterministic rule conformance from current-care clinical validity; source/provenance screening is sufficient for the methodological endpoint, while any clinical-validity interpretation remains out of scope unless separately qualified.
+- [x] Implement and mechanically test a default-deny V5 development preflight for exact model/revision, artifact/code identity, zero-cost, role quarantine, and protected-data exclusions without granting execution authority.
 - [ ] Integrate/qualify B1/C1/C2 against an authorized model-training path; objective mechanics alone do not authorize training or inference.
 - [ ] Run development-only repeatability/pilot work after a separate bounded execution authorization; then freeze numeric `m_j` and final power.
 - [x] Bind `rajpurkar/squad` at an exact revision as a narrow paired extractive-QA retention control with CC-BY-SA-aware no-payload-vendoring rules.

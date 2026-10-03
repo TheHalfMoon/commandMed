@@ -51,3 +51,13 @@ V5 remains `PRIMARY_PAPER_SELECTED_CONDITIONALLY`, `NOVELTY_NOT_CLEARED_FOR_FIRS
 ## Literature refresh
 
 A new bounded adversarial refresh is recorded in `literature-refresh-v5-2026-10-03.md`. MedHELM, CSEDB, the EMNLP trustworthy-medical-QA survey, Gu et al. on probabilistic medical predictions, Boie et al. on medical confidence calibration, Matta et al. on calibration versus probabilistic validity, CURA, and CALIN further narrow the paper. The refresh does not clear a `first` claim. The surviving candidate gap is the matched intervention-to-assurance causal effect matrix with preregistered ordered interactions, exact rule-oracle cases, noncompensatory decision logic, and independent-family replication.
+
+## 2026-10-03 default-deny development preflight update
+
+- Added `src/commandmed/reliability_v5/preflight.py` and dedicated regression tests.
+- The validator requires the exact pinned Qwen3.5-0.8B repository/revision, a model-artifact SHA-256, a 40-hex code SHA, admitted development/calibration roles, zero paid resource/spend declarations, and nonempty environment/output identities.
+- Training is restricted mechanically to B1/C1/C2; SQuAD retention is restricted to C2. Confirmatory/reserve materialization, PHI, gated data, and paid resources fail closed.
+- The default authority object remains denied. Passing synthetic fixtures test contract mechanics only and do not grant founder authority or permit a real model call.
+- Final V5-focused suite after preflight hardening: `71 passed in 0.65s`; full repository suite: `1123 passed in 23.29s`; V5 compileall and `git diff --check` passed.
+- Alibaba Open Code Review `v1.12.11` delegation rules were applied to the changed Python files. Host-agent review found an inference-path scope weakness (unknown intervention IDs were not rejected) and weak environment/output identity validation; both were repaired before the final test run. The final validator now rejects unknown intervention IDs, non-hash environment identities, and output traversal/out-of-scope destinations.
+- Jev remains `DEFERRED_ZERO_COST_POLICY`; no Jev API call was made.

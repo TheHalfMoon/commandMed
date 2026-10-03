@@ -24,6 +24,14 @@ from .objectives import (
     typed_readout_probabilities,
 )
 from .policy import SelectiveDecision, fixed_defer_policy
+from .preflight import (
+    APPROVED_MODEL_REPO,
+    APPROVED_MODEL_REVISION,
+    DevelopmentAuthority,
+    DevelopmentRunManifest,
+    PreflightDecision,
+    evaluate_development_preflight,
+)
 from .probability import (
     ProbabilityContractError,
     multiclass_brier,    negative_log_likelihood,
