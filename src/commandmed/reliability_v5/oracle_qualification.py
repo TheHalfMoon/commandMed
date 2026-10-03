@@ -7,15 +7,13 @@ quarantine mechanics.
 """
 from __future__ import annotations
 
-import math
 from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any
 
 from .case_generator import case_space_size, cases_from_state_indices
 from .contracts import ReliabilityContractError
 from .quarantine import CALIBRATION_COUNT, DEVELOPMENT_COUNT, prefreeze_state_partition
-from .rule_dataset import BoundRule, compile_bound_rule
+from .rule_dataset import BoundRule, _normalize_json_value, _perturb_output, compile_bound_rule
 
 
 @dataclass(frozen=True)
@@ -30,26 +28,12 @@ class RuleExecutionQualification:
     failure_message: str | None = None
 
 
-def _validated_output(value: Any) -> object:
-    """Require a finite, deterministic JSON-like calculator output."""
-    if isinstance(value, bool) or value is None or isinstance(value, str):
-        return value
-    if isinstance(value, int) and not isinstance(value, bool):
-        return value
-    if isinstance(value, float):
-        if not math.isfinite(value):
-            raise ReliabilityContractError("rule output: non-finite float")
-        return value
-    if isinstance(value, tuple):
-        return [_validated_output(item) for item in value]
-    if isinstance(value, list):
-        return [_validated_output(item) for item in value]
-    if isinstance(value, Mapping):
-        return {str(key): _validated_output(item) for key, item in sorted(value.items())}
-    item_method = getattr(value, "item", None)
-    if callable(item_method) and type(value).__module__.startswith("numpy"):
-        return _validated_output(item_method())
-    raise ReliabilityContractError(f"rule output: unsupported type {type(value).__name__}")
+def _validate_task_output(value: object) -> None:
+    """Require the exact serialization and perturbation contract used by S1."""
+    normalized = _normalize_json_value(value)
+    perturbed = _perturb_output(normalized)
+    if normalized == perturbed:
+        raise ReliabilityContractError("rule output: perturbation must change the output")
 
 
 def _failure(
@@ -77,8 +61,9 @@ def _failure(
 def qualify_bound_rule_execution(rule: BoundRule) -> RuleExecutionQualification:
     """Execute exactly the pre-frozen development/calibration states for one rule.
 
-    Any compile, state-space, runtime, or output-contract failure rejects the
-    calculator before model access. No failing state is skipped or repaired.
+    Any compile, state-space, runtime, serialization, or perturbation-contract
+    failure rejects the calculator before model access. No failing state is
+    skipped or repaired.
     """
     development_checked = 0
     calibration_checked = 0
@@ -112,7 +97,7 @@ def qualify_bound_rule_execution(rule: BoundRule) -> RuleExecutionQualification:
                 inputs = case["inputs"]
                 if not isinstance(inputs, Mapping):
                     raise ReliabilityContractError("rule qualification: inputs must be a mapping")
-                _validated_output(calculator(**dict(inputs)))
+                _validate_task_output(calculator(**dict(inputs)))
             except Exception as exc:  # upstream calculator failure is negative evidence
                 return _failure(
                     development_checked=development_checked,
