@@ -1,0 +1,11 @@
+{
+  "code_sha": "3236304f59d6715916a5886b9965b0a1bd908f4d",
+  "durable_export_verified": false,
+  "exception_type": "ImportError",
+  "git_tree": "7f6cf00e8af550dd26370534aa0ee5906f4388dc",
+  "model_inference": true,
+  "model_loaded": true,
+  "optimization_executed": false,
+  "reason": "Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported",
+  "status": "RESOURCE_BLOCKED"
+}

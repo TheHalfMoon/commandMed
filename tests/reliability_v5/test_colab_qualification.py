@@ -78,3 +78,13 @@ def test_artifact_reordering_cannot_admit_changed_files(mutation):
         rows[0][key] = {"hash": "0" * 64, "size": 0, "case": rows[0]["path"].upper()}[mutation]
     with pytest.raises(RuntimeError, match="FILE_CONTENT_OR_INVENTORY"):
         colab.reproduce_frozen_file_order(rows)
+
+
+@pytest.mark.parametrize("seconds,headroom,reason", [(180.001, 2**40, "180_SECONDS"), (168.751, 2**40, "12_HOURS"), (10, colab.base.MIN_MEMORY_HEADROOM - 1, "HEADROOM")])
+def test_failed_benchmark_stops_before_additional_resource_inference(seconds, headroom, reason):
+    with pytest.raises(RuntimeError, match=reason):
+        colab.require_benchmark_bounds(dict(wall_seconds=seconds, min_system_available_bytes=headroom))
+
+
+def test_exact_benchmark_boundary_is_admitted():
+    colab.require_benchmark_bounds(dict(wall_seconds=168.75, min_system_available_bytes=colab.base.MIN_MEMORY_HEADROOM))

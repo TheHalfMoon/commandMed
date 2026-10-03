@@ -162,6 +162,16 @@ def project_workload(step_seconds: float, maximum_tokens: int, medical_forward_s
     }
 
 
+def require_benchmark_bounds(timing: dict) -> None:
+    """Stop before any additional model use once a frozen guard has failed."""
+    if timing["wall_seconds"] > base.MAX_BENCHMARK_SECONDS:
+        raise RuntimeError("SYNTHETIC_LORA_STEP_EXCEEDS_180_SECONDS")
+    if timing["wall_seconds"] * 256 > base.MAX_PROJECTED_SEED_SECONDS:
+        raise RuntimeError("PROJECTED_C1_C2_SEED_EXCEEDS_12_HOURS")
+    if timing["min_system_available_bytes"] < base.MIN_MEMORY_HEADROOM:
+        raise RuntimeError("SYSTEM_HEADROOM_BELOW_1_5_GIB")
+
+
 def qualify(args) -> tuple[dict, Path]:
     import importlib.metadata
     import platform
@@ -202,6 +212,14 @@ def qualify(args) -> tuple[dict, Path]:
             raise RuntimeError("DISK_HEADROOM_BELOW_2_GIB")
         authority_bindings = {name: base.sha256_file(PACKET / name) for name in AUTHORITY_FILES}
         prep = verify_preparation(args.model_dir, args.source, output)
+        # Qualify required dependency imports before loading any model. Colab can
+        # preload incompatible optional quantization packages even on this pure
+        # bfloat16 path. No quantization backend is required or used here.
+        from peft import LoraConfig, TaskType, get_peft_model
+        try:
+            torchao_version = importlib.metadata.version("torchao")
+        except importlib.metadata.PackageNotFoundError:
+            torchao_version = None
         props = torch.cuda.get_device_properties(0)
         environment = {
             "python": sys.version, "platform": platform.platform(), "cpu": platform.processor(),
@@ -212,6 +230,7 @@ def qualify(args) -> tuple[dict, Path]:
             "cuda_version": torch.version.cuda, "runtime_dtype": "bfloat16",
             "torch_threads": torch.get_num_threads(), "torch_interop_threads": torch.get_num_interop_threads(),
             "packages": {name: importlib.metadata.version(name) for name in ("torch", "transformers", "tokenizers", "peft", "numpy", "huggingface-hub", "safetensors", "psutil")},
+            "optional_torchao_version": torchao_version, "required_peft_import": "PASS",
             "authority_sha256": authority_bindings, "admission": admission,
             "artifact_bundle_sha256": bundle, "tokenizer_files": prep["tokenizer_files"],
             "preparation_sha256": base.sha256_file(output / "preparation/task-preparation-evidence.json"),
@@ -267,7 +286,6 @@ def qualify(args) -> tuple[dict, Path]:
             raise RuntimeError("NONFINITE_SMOKE_LOGITS")
         persist("smoke-inference.json", {"candidate_logits": logits.float().cpu().tolist(), "wall_seconds": smoke_seconds, "logits_dtype": str(logits.dtype), "memory": memory(torch)})
         targets = base.final_block_linear_names(model, torch)
-        from peft import LoraConfig, TaskType, get_peft_model
         adapted = get_peft_model(model, LoraConfig(r=4, lora_alpha=8, lora_dropout=0.0, bias="none", target_modules=targets, task_type=TaskType.CAUSAL_LM), autocast_adapter_dtype=False)
         trainable = [(name, p) for name, p in adapted.named_parameters() if p.requires_grad]
         if not trainable or any("lora_" not in name or "layers.23." not in name or p.dtype != torch.bfloat16 for name, p in trainable):
@@ -307,6 +325,7 @@ def qualify(args) -> tuple[dict, Path]:
         finally:
             timing = {"wall_seconds": time.perf_counter() - started, **sampler.stop(), **memory(torch)}
             persist("benchmark-timing.json", timing)
+        require_benchmark_bounds(timing)
         # Protocol section 3 admits model-output-independent hash samples solely
         # for resource qualification. Measure real paired-prompt dispatch costs
         # instead of treating a quadratic sensitivity bound as measured runtime.
