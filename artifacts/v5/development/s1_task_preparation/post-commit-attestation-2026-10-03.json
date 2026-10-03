@@ -3,8 +3,9 @@
   "canonical_main_observed": "51f73ec05750137e5bd94ffa0765f6383f475fee",
   "compile": "PASS",
   "confirmatory_materialized": false,
-  "diff_check": "PASS",
+  "diff_check": "PASS_ON_REVIEWED_PAYLOAD_BEFORE_LOG_SERIALIZATION",
   "jev": "DEFERRED_ZERO_COST_POLICY",
+  "log_serialization_correction": "Subsequent CRLF log serialization failed the full-range whitespace check. Store LF only and retain roundtrip-verified raw capture hashes.",
   "model_inference": false,
   "model_loaded": false,
   "next_gate": "Prospective answer-interface amendment approval and repeated pre-model qualification",
@@ -48,18 +49,22 @@
     "full": {
       "exit_code": 0,
       "log_path": "artifacts/v5/development/s1_task_preparation/post-commit-full-tests.log",
-      "log_sha256": "8b7a0cfe88a60ace3b6462c8d1498778ea421654ff312c20c95db65cf0e71dca",
+      "log_sha256": "f5f9149e08ae2668e4d857f4e879dd0afc155afaa10eb590c1bbf1fadd949683",
+      "log_storage_normalization": "CRLF_TO_LF_ONLY; original capture recoverable by LF-to-CRLF",
       "measured_process_seconds": 24.39,
       "passed": 1147,
-      "pytest_seconds": 22.77
+      "pytest_seconds": 22.77,
+      "raw_capture_sha256": "8b7a0cfe88a60ace3b6462c8d1498778ea421654ff312c20c95db65cf0e71dca"
     },
     "v5": {
       "exit_code": 0,
       "log_path": "artifacts/v5/development/s1_task_preparation/post-commit-v5-tests.log",
-      "log_sha256": "a79f133479424d6e78bad572b9900929033dce6a79f04a8d04d453dea769cc10",
+      "log_sha256": "e0dadc18d1660a69e644ac0daa698da36c34011e93bcaa8f71147be2a81a4ce2",
+      "log_storage_normalization": "CRLF_TO_LF_ONLY; original capture recoverable by LF-to-CRLF",
       "measured_process_seconds": 1.891,
       "passed": 95,
-      "pytest_seconds": 0.57
+      "pytest_seconds": 0.57,
+      "raw_capture_sha256": "a79f133479424d6e78bad572b9900929033dce6a79f04a8d04d453dea769cc10"
     }
   },
   "training": false

@@ -9,3 +9,7 @@ Alibaba OCR v1.12.11 (a758d9c) exact-range preview and resolved Python/JSON rule
 Seven pre-model regeneration artifacts are byte-identical across two complete pipelines; the original SAH failure remains unchanged. All 82 static calculators were assessed; 81 qualify, 1 is rejected, and exactly 64 are selected. All 8192 tasks fit (maximum 593 tokens), but both frozen answer-prefix token checks fail. This attests preserved failed-interface preparation, not model-execution PASS or scientific freeze.
 
 No model load, inference, training, confirmatory/reserve materialization, paid API/compute, or PHI occurred. The prospective newline-marker amendment remains unapproved and unimplemented. Earlier attestation files remain historical and are not rewritten. This document is added in an attestation wrapper commit after the payload above, avoiding circular SHA claims.
+
+## Test-log serialization correction
+
+The later attestation wrapper's captured Windows CRLF log bytes failed Git's complete-range whitespace check. Stored logs are normalized to LF only; original raw capture hashes remain recorded and are recoverable by converting LF back to CRLF. Test outcomes, timings, reviewed payload identity, and scientific evidence are unchanged. The attestation's original diff-check PASS refers to the reviewed payload before log serialization; the corrected full continuation range is checked separately before push.
