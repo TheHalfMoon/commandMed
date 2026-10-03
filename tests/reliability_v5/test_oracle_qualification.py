@@ -99,3 +99,15 @@ def test_execution_qualification_rejects_unsafe_calls_before_execution() -> None
     assert result.failure_role == "QUALIFICATION_SETUP"
     assert result.failure_type == "ReliabilityContractError"
     assert "only np.exp calls are allowed" in (result.failure_message or "")
+
+
+def test_execution_qualification_rejects_unperturbable_output() -> None:
+    code = """def synthetic_score(a, b, c, d, e):
+    return None"""
+    result = qualify_bound_rule_execution(
+        _bound_rule(code, function_name="synthetic_score", domains=_wide_domains())
+    )
+    assert result.qualified is False
+    assert result.failure_role == "RULE_ORACLE_DEVELOPMENT"
+    assert result.failure_type == "ReliabilityContractError"
+    assert "cannot perturb type NoneType" in (result.failure_message or "")
