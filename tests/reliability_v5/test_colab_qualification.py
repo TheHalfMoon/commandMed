@@ -1,5 +1,6 @@
 """Colab boundaries are checked without downloading or loading a model."""
 import importlib.util
+import json
 import sys
 from pathlib import Path
 
@@ -49,3 +50,31 @@ def test_original_training_projection_preserved_and_scope_explicit():
     assert projection["original_256_example_seed_seconds"] == 46080
     assert projection["c2_training_length_sensitivity_seconds"] > projection["c1_training_length_sensitivity_seconds"]
     assert "not timed" in projection["limitations"]
+
+
+def frozen_files():
+    path = SCRIPTS.parent / "artifacts/v5/development/s1-resource-qualification/model-artifact-manifest.json"
+    return json.loads(path.read_text(encoding="utf-8"))["files"]
+
+
+def test_artifact_identity_is_platform_independent():
+    rows = frozen_files()
+    assert colab.reproduce_frozen_file_order(list(reversed(rows))) == rows
+    assert colab.reproduce_frozen_file_order(sorted(rows, key=lambda row: row["path"])) == rows
+    assert colab.base.sha256_bytes(colab.base.canonical_json(rows)) == colab.EXPECTED_BUNDLE
+
+
+@pytest.mark.parametrize("mutation", ["missing", "extra", "hash", "size", "case", "duplicate"])
+def test_artifact_reordering_cannot_admit_changed_files(mutation):
+    rows = frozen_files()
+    if mutation == "missing":
+        rows.pop()
+    elif mutation == "extra":
+        rows.append(dict(path="unexpected", sha256="0" * 64, size=0))
+    elif mutation == "duplicate":
+        rows[-1] = rows[0].copy()
+    else:
+        key = {"hash": "sha256", "size": "size", "case": "path"}[mutation]
+        rows[0][key] = {"hash": "0" * 64, "size": 0, "case": rows[0]["path"].upper()}[mutation]
+    with pytest.raises(RuntimeError, match="FILE_CONTENT_OR_INVENTORY"):
+        colab.reproduce_frozen_file_order(rows)

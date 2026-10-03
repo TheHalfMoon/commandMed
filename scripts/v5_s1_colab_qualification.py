@@ -63,6 +63,25 @@ def validate_admission(record: dict) -> None:
         raise RuntimeError("RUNTIME_LIFETIME_OBSERVATION_MISSING")
 
 
+def reproduce_frozen_file_order(rows: list[dict]) -> list[dict]:
+    """Require all exact files, then use the already-bound manifest's order.
+
+    pathlib sorts Windows paths without case sensitivity but POSIX paths with
+    case sensitivity. The historical bundle bound the Windows order. Reordering
+    identical records preserves that identity; no file mismatch is admitted.
+    """
+    reference_path = REPO / "artifacts/v5/development/s1-resource-qualification/model-artifact-manifest.json"
+    reference = json.loads(reference_path.read_text(encoding="utf-8"))
+    expected_rows = reference["files"]
+    if reference["bundle_sha256"] != EXPECTED_BUNDLE or base.sha256_bytes(base.canonical_json(expected_rows)) != EXPECTED_BUNDLE:
+        raise RuntimeError("FROZEN_ARTIFACT_REFERENCE_MISMATCH")
+    actual_map = {row["path"]: row for row in rows}
+    expected_map = {row["path"]: row for row in expected_rows}
+    if len(rows) != 12 or len(actual_map) != 12 or actual_map != expected_map:
+        raise RuntimeError("EXACT_MODEL_FILE_CONTENT_OR_INVENTORY_MISMATCH")
+    return [actual_map[row["path"]] for row in expected_rows]
+
+
 def verify_preparation(model_dir: Path, source: Path, output: Path) -> dict:
     path = PACKET / "execution_tools/prepare_s1_tasks.py"
     spec = importlib.util.spec_from_file_location("colab_task_preparation", path)
@@ -121,14 +140,14 @@ def primitive_probe(torch) -> dict:
     return {"status": "PASS_PRIMITIVE_ONLY", "dtypes": [str(t.dtype) for t in tensors], "autocast": False}
 
 
-def project_workload(step_seconds: float, maximum_tokens: int) -> dict:
+def project_workload(step_seconds: float, maximum_tokens: int, medical_forward_seconds: float | None = None) -> dict:
     # Retain the original 256-step training projection. Also expose a conservative
     # sequence-length sensitivity estimate; this is not a measured full workload.
     scale = max(1.0, (maximum_tokens / 256) ** 2)
     training_per_seed = step_seconds * 256
     # The timed synthetic step contains two forwards plus backward/optimizer.
     # Half that elapsed time is a conservative per-forward estimate at 256 tokens.
-    decision_matrix_per_variant = step_seconds / 2 * 16384 * scale
+    decision_matrix_per_variant = step_seconds / 2 * 16384 * scale if medical_forward_seconds is None else medical_forward_seconds * 16384 * 1.25
     return {
         "original_256_example_seed_seconds": training_per_seed,
         "length_sensitivity_factor": scale,
@@ -136,6 +155,8 @@ def project_workload(step_seconds: float, maximum_tokens: int) -> dict:
         "c2_training_length_sensitivity_seconds": training_per_seed * scale * 2,
         "b1_feature_extraction_length_sensitivity_seconds": decision_matrix_per_variant,
         "c1_or_c2_decision_matrix_length_sensitivity_seconds": decision_matrix_per_variant,
+        "medical_forward_mean_seconds": medical_forward_seconds,
+        "medical_matrix_estimate_method": "HASH_SELECTED_PAIRED_PROMPT_MEAN_WITH_25_PERCENT_RESOURCE_BUFFER" if medical_forward_seconds is not None else "SYNTHETIC_LENGTH_SENSITIVITY_ONLY",
         "method": "256_TIMED_STEPS; HALF_PAIR_STEP_PER_FORWARD; QUADRATIC_LENGTH_SENSITIVITY; C2_TWO_TIMES_C1_TRAINING",
         "limitations": "B1 head fitting and SQuAD retention decoding not timed; full development remains separately gated.",
     }
@@ -168,6 +189,10 @@ def qualify(args) -> tuple[dict, Path]:
         torch.cuda.manual_seed_all(11)
         torch.cuda.reset_peak_memory_stats()
         artifact, bundle = base.bind_artifact(args.model_dir)
+        persist("artifact-native-order-observation.json", artifact)
+        artifact["files"] = reproduce_frozen_file_order(artifact["files"])
+        bundle = base.sha256_bytes(base.canonical_json(artifact["files"]))
+        artifact["bundle_sha256"] = bundle
         if bundle != EXPECTED_BUNDLE or artifact["file_count"] != 12:
             raise RuntimeError("EXACT_12_FILE_BUNDLE_MISMATCH")
         persist("model-artifact-manifest.json", artifact)
@@ -197,12 +222,12 @@ def qualify(args) -> tuple[dict, Path]:
         persist("environment-manifest.json", {**environment, "environment_sha256": env_sha})
         require_headroom(environment["memory_before_load"])
 
-        def preflight(action, intervention="BASELINE_V1"):
+        def preflight(action, intervention="BASELINE_V1", roles=("SYNTHETIC_MECHANICAL",), label=None):
             verify_head(head)
             founder = base.DevelopmentAuthority(approved=True, authority_id="COLAB_AUTHORITY_SHA256:" + base.sha256_bytes(base.canonical_json(authority_bindings)))
-            manifest = base.DevelopmentRunManifest(action=action, model_repo=base.MODEL_REPO, model_revision=base.MODEL_REVISION, model_artifact_sha256=bundle, intervention_id=intervention, data_roles=("SYNTHETIC_MECHANICAL",), code_sha=head, environment_id="sha256:" + env_sha, output_destination=output.relative_to(REPO).as_posix() + "/")
+            manifest = base.DevelopmentRunManifest(action=action, model_repo=base.MODEL_REPO, model_revision=base.MODEL_REVISION, model_artifact_sha256=bundle, intervention_id=intervention, data_roles=roles, code_sha=head, environment_id="sha256:" + env_sha, output_destination=output.relative_to(REPO).as_posix() + "/")
             decision = base.evaluate_development_preflight(manifest, founder)
-            persist("preflight-" + action.lower() + ".json", {"manifest": asdict(manifest), "authority": asdict(founder), "decision": asdict(decision)})
+            persist("preflight-" + (label or action.lower()) + ".json", {"manifest": asdict(manifest), "authority": asdict(founder), "decision": asdict(decision)})
             if not decision.allowed or decision.state != "PREFLIGHT_PASS":
                 raise RuntimeError("EXACT_RUN_PREFLIGHT_BLOCKED")
             print(action + "=PREFLIGHT_PASS", flush=True)
@@ -282,7 +307,30 @@ def qualify(args) -> tuple[dict, Path]:
         finally:
             timing = {"wall_seconds": time.perf_counter() - started, **sampler.stop(), **memory(torch)}
             persist("benchmark-timing.json", timing)
-        projection = project_workload(timing["wall_seconds"], max(prep["max_prompt_tokens_by_split"].values()))
+        # Protocol section 3 admits model-output-independent hash samples solely
+        # for resource qualification. Measure real paired-prompt dispatch costs
+        # instead of treating a quadratic sensitivity bound as measured runtime.
+        rules = base.bind_selected_rules(source_bytes=args.source.read_bytes(), selection_manifest=json.loads(base.SELECTION_MANIFEST.read_text(encoding="utf-8")))
+        examples = base.materialize_development_examples(rules)
+        domain = "|CommandMed-V5-S1-COLAB-RESOURCE-TIMING-v1"
+        sample = sorted(examples, key=lambda example: base.sha256_bytes((example.task_id + domain).encode("ascii")))[:16]
+        preflight("INFERENCE", roles=("RULE_ORACLE_DEVELOPMENT", "RULE_ORACLE_CALIBRATION"), label="medical-resource-timing")
+        resource_times = []
+        with adapted.disable_adapter(), torch.no_grad():
+            for example in sample:
+                for variant, prompt in (("canonical", example.canonical_prompt), ("transformed", example.transformed_prompt)):
+                    encoded = tokenizer(prompt, return_tensors="pt", add_special_tokens=False).to("cuda")
+                    torch.cuda.synchronize()
+                    started = time.perf_counter()
+                    logits = adapted(**encoded, use_cache=False).logits[0, -1, [a, b]]
+                    torch.cuda.synchronize()
+                    if not bool(torch.isfinite(logits).all()):
+                        raise RuntimeError("NONFINITE_RESOURCE_ONLY_MEDICAL_LOGITS")
+                    resource_times.append({"task_id": example.task_id, "variant": variant, "tokens": encoded.input_ids.shape[1], "wall_seconds": time.perf_counter() - started, "logits_sha256": base.sha256_bytes(base.canonical_json(logits.float().cpu().tolist()))})
+                    require_headroom(memory(torch))
+        mean_forward = sum(row["wall_seconds"] for row in resource_times) / len(resource_times)
+        persist("medical-resource-timing.json", {"scope": "RESOURCE_QUALIFICATION_ONLY; NO_SCIENTIFIC_METRIC", "selection": "FIRST_16_SHA256_TASK_ID_PLUS_DOMAIN", "domain": domain, "adapter_disabled": True, "sample": resource_times, "mean_forward_seconds": mean_forward})
+        projection = project_workload(timing["wall_seconds"], max(prep["max_prompt_tokens_by_split"].values()), mean_forward)
         persist("workload-projection.json", projection)
         blockers = []
         if timing["wall_seconds"] > 180:

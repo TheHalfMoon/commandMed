@@ -133,7 +133,7 @@
   "repository_context": {
     "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     "branch": "research/commandmed-paper-first-principles",
-    "generated_from_head": "2263e0902ea9fd2a017f534bbff2b57e79eae204",
+    "generated_from_head": "1b2571dc457cb4d2cd40e8b0cb25d16e34b5783e",
     "worktree_dirty_at_build": true
   },
   "retention_control": {
@@ -214,7 +214,7 @@
     },
     "colab_resource_runner": {
       "path": "scripts/v5_s1_colab_qualification.py",
-      "sha256": "236a9f3e5e62a683a60ba78dccb9b0f91376b692efec3b17d8ced37a981f94cb"
+      "sha256": "ce6090dda8b7a176fafd19cda9092534cc04691d3b1cde5700d585c8b90d4b82"
     },
     "implementation": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py",
