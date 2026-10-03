@@ -54,16 +54,16 @@ def test_execution_qualification_covers_all_prefrozen_dev_cal_states() -> None:
 
 def test_execution_qualification_preserves_upstream_unbound_local_failure() -> None:
     code = """def synthetic_score(a, b, c, d, e):
-    if a <= 0:
+    if a < -10:
         a_score = 1
-    elif a >= 2:
+    elif a > 10:
         a_score = 2
     return a_score"""
     result = qualify_bound_rule_execution(
         _bound_rule(code, function_name="synthetic_score", domains=_wide_domains())
     )
     assert result.qualified is False
-    assert result.failure_role in {"RULE_ORACLE_DEVELOPMENT", "RULE_ORACLE_CALIBRATION"}
+    assert result.failure_role == "RULE_ORACLE_DEVELOPMENT"
     assert result.failure_type == "UnboundLocalError"
     assert result.failure_state_index is not None
     assert result.failure_case_id is not None
