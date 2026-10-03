@@ -13,7 +13,7 @@ Determine whether targeted reliability interventions improve only their intended
 3. Probabilistic/logical coherence: complement/additivity/transitivity residuals where the task exposes linked propositions.
 4. Semantic stability: distributional change under validated meaning-preserving transformations.
 5. Evidence responsiveness: required direction or target change under validated meaning-changing interventions.
-6. Action validity: agreement with qualified deterministic rules or frozen action thresholds.
+6. Rule conformance: agreement with an identity-bound deterministic rule or frozen threshold. This measures execution fidelity; clinical action-validity language is reserved for rules separately qualified as clinically appropriate for the stated use.
 7. Selective control: risk-coverage behavior and decision-theoretic abstention metrics.
 8. Capability retention: prespecified language/reasoning tasks for any intervention that changes model parameters.
 
@@ -42,7 +42,7 @@ For probability-transforming interventions, the primary operational evaluation k
 
 ## Task-family separation
 
-`RULE_ORACLE` families use deterministic calculators or executable rules and support exact action-validity counterfactuals. `OPEN_CLINICAL_REASONING` families use auditable public labels or qualified adjudication and probe evidence use, robustness and reasoning under less deterministic semantics. Their effects are reported separately and are not averaged into one primary effect.
+`RULE_ORACLE` families use deterministic calculators or executable rules and support exact rule-conformance counterfactuals. `OPEN_CLINICAL_REASONING` families use auditable public labels or qualified adjudication and probe evidence use, robustness and reasoning under less deterministic semantics. Their effects are reported separately and are not averaged into one primary effect.
 
 Current freeze candidate: Qwen/Qwen3.5-0.8B-Base at revision dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68 is the primary development family; HuggingFaceTB/SmolLM2-1.7B at revision effd688a12921b4cc83e3312b6feb579f70f9c71 is the independent-family replication candidate. RULE_ORACLE plans 4096 source clusters from 64 statically admitted public-domain RiskCalcs calculators; RiskQA is a secondary external family with reported N=350. OPEN_CLINICAL_REASONING is currently unadmitted rather than filled with a rights-ambiguous benchmark.
 

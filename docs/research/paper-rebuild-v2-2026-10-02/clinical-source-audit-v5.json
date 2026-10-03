@@ -1,0 +1,1304 @@
+{
+  "abstract_present_count": 64,
+  "component_specialty_counts": {
+    "Allergy and Immunology": 1,
+    "Anesthesiology": 5,
+    "Cardiology": 8,
+    "Critical Care Medicine": 2,
+    "Dermatology": 3,
+    "Emergency Medicine": 9,
+    "Endocrinology": 2,
+    "Gastroenterology": 4,
+    "Geriatrics": 10,
+    "Hematology": 6,
+    "Hepatology": 2,
+    "Infectious Disease": 10,
+    "Internal Medicine": 14,
+    "Nephrology": 4,
+    "Neurology": 4,
+    "Obstetrics and Gynecology": 3,
+    "Oncology": 14,
+    "Orthopedic Surgery": 4,
+    "Pathology": 2,
+    "Pediatrics": 4,
+    "Plastic Surgery": 2,
+    "Psychiatry": 2,
+    "Pulmonology": 10,
+    "Radiology": 6,
+    "Rheumatology": 4,
+    "Surgery": 10,
+    "Transplant Surgery": 2,
+    "Urology": 3
+  },
+  "copyright_minimization": "NO_PUBMED_ABSTRACT_TEXT_OR_SOURCE_INTERPRETATION_TEXT_PERSISTED",
+  "missing_abstract_pmids": [],
+  "pubmed_resolved_count": 64,
+  "retraction_or_withdrawal_pmids": [],
+  "rows": [
+    {
+      "abstract_present": true,
+      "abstract_sha256": "b47e65eb84169ef7025bb801f12a1deb6437456e4ec19293ad703b377429710c",
+      "calculator_title": "Risk Stratification Index (RSI) for Postoperative Delirium in Elderly Patients with Hip Fractures",
+      "code_sha256": "595b019ec4913471d041465fc897539500ed85d1da4572afdeb907eb6d5a1065",
+      "doi": "10.1002/brb3.2420",
+      "journal": "Brain and behavior",
+      "pmid": "34806823",
+      "prospective_case_space": 1000,
+      "pub_date": "2021Dec",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Identification of risk factors for postoperative delirium in elderly patients with hip fractures by a risk stratification index model: A retrospective study.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Anesthesiology",
+      "source_specialty": "Anesthesiology, Geriatrics, Orthopedic Surgery"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "74aed5c30c2b339f8fbfbaec6b5cb9628e5e851365e1c261835923f7b1e8ff84",
+      "calculator_title": "2MACE Score Calculator",
+      "code_sha256": "be5d3b7d37210eb6eb8f4e399e3e2301a2394ddac95b97c13c7a4fc01ec918fa",
+      "doi": "10.1016/j.amjcard.2017.09.003",
+      "journal": "The American journal of cardiology",
+      "pmid": "29111209",
+      "prospective_case_space": 80,
+      "pub_date": "2017Dec15",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Usefulness of the 2MACE Score to Predicts Adverse Cardiovascular Events in Patients With Atrial Fibrillation.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "2f8f2e1d00f5af756315663f03252f814187596058cd1db933a646140cbd1643",
+      "calculator_title": "ICU-Venous Thromboembolism Score",
+      "code_sha256": "1a0900a9be70c062795a8a36e2415fc99b8ddb82b31ac8d02bdd0649724ac11c",
+      "doi": "10.1097/CCM.0000000000004306",
+      "journal": "Critical care medicine",
+      "pmid": "32187076",
+      "prospective_case_space": 400,
+      "pub_date": "2020Jun",
+      "publication_types": [
+        "Journal Article",
+        "Multicenter Study"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Prediction of Symptomatic Venous Thromboembolism in Critically Ill Patients: The ICU-Venous Thromboembolism Score.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Critical Care Medicine",
+      "source_specialty": "Critical Care Medicine, Hematology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "22865d04e66a9fc3ecc96fdedd9dc9ebebd1613c5e4fd15241a20f7e7531f5ec",
+      "calculator_title": "Mayo Muir-Torre Syndrome Risk Scoring System",
+      "code_sha256": "c647ce25cb7b35d099522b133dff298055896dccfeba2e0c161207be19840ce2",
+      "doi": "10.1038/gim.2014.19",
+      "journal": "Genetics in medicine : official journal of the American College of Medical Genetics",
+      "pmid": "24603434",
+      "prospective_case_space": 100,
+      "pub_date": "2014Sep",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A clinical scoring system to identify patients with sebaceous neoplasms at risk for the Muir-Torre variant of Lynch syndrome.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Dermatology",
+      "source_specialty": "Dermatology, Oncology, Pathology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "957d8ad49bb1ce9ff1a9c0acbbc09848ae374decea1a86988a7614b74ecca86e",
+      "calculator_title": "5MPB-Toledo Bacteremia Risk Score",
+      "code_sha256": "5a368a879e0301c76ab9e2db4cf425b5a8eeda3a58c6e05eb1ac52cbc433ebae",
+      "doi": "",
+      "journal": "Emergencias : revista de la Sociedad Espanola de Medicina de Emergencias",
+      "pmid": "32125106",
+      "prospective_case_space": 3125,
+      "pub_date": "2020 Abr",
+      "publication_types": [
+        "Journal Article",
+        "Observational Study"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Predicting bacteremia in patients attended for infections in an emergency department: the 5MPB-Toledo model.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Infectious Disease"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "ccaa8e2dcb32ba3bf57906c6ea41026e089408eacadef6725ae7c69a5e4ae2c6",
+      "calculator_title": "Growth Hormone Deficiency (GHD) Prediction Rule",
+      "code_sha256": "de91c877c4993a9f8a16997ce04eacb2af485d914b0ac1170097cd28420a5039",
+      "doi": "10.3389/fendo.2020.624684",
+      "journal": "Frontiers in endocrinology",
+      "pmid": "33613456",
+      "prospective_case_space": 2560,
+      "pub_date": "2020",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Development and Validation of a Prediction Rule for Growth Hormone Deficiency Without Need for Pharmacological Stimulation Tests in Children With Risk Factors.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Endocrinology",
+      "source_specialty": "Endocrinology, Pediatrics"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "1dcc044e7f34a38f7aad75135d6f45326ef3bac44babf5ff4f2e2994de629ecc",
+      "calculator_title": "AIMS65 Score for Upper Gastrointestinal Bleeding",
+      "code_sha256": "d6e1c1b2fb9d62b45aa05974affa825690da94890b7ca067d3380adddb954cdb",
+      "doi": "10.1111/den.13577",
+      "journal": "Digestive endoscopy : official journal of the Japan Gastroenterological Endoscopy Society",
+      "pmid": "31863515",
+      "prospective_case_space": 1250,
+      "pub_date": "2020Jul",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Risk stratification in acute variceal bleeding: Comparison of the AIMS65 score to established upper gastrointestinal bleeding and liver disease severity risk stratification scoring systems in predicting mortality and rebleeding.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Gastroenterology",
+      "source_specialty": "Gastroenterology, Emergency Medicine, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "93b728db15b80454deb349490f8bfab209027d777961c82c146be915cd03b274",
+      "calculator_title": "3-Month Postoperative Mortality Risk Calculator for Geriatric Cancer Patients",
+      "code_sha256": "8b4658cc929b205e36ed731c9daef7e2ba809fecf4c7a02244261063144ec5a6",
+      "doi": "10.7150/jca.13126",
+      "journal": "Journal of Cancer",
+      "pmid": "26722355",
+      "prospective_case_space": 165,
+      "pub_date": "2016",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "To Operate or Not: Prediction of 3-Month Postoperative Mortality in Geriatric Cancer Patients.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Geriatrics",
+      "source_specialty": "Geriatrics, Oncology, Surgery"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "19618df9d15e7be5c54b55e612bf1cabed23936753d92d9fc2720deda5fe0c6d",
+      "calculator_title": "Post-Engraftment Invasive Fungal Disease (IFD) Risk Score Calculator",
+      "code_sha256": "9bc40968c9cef4e5ffd1dfedfd75b25bd9495d409b556b5c75a7078e75eca2f7",
+      "doi": "10.1038/bmt.2015.181",
+      "journal": "Bone marrow transplantation",
+      "pmid": "26281032",
+      "prospective_case_space": 500,
+      "pub_date": "2015Nov",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Incidence and risk factors of post-engraftment invasive fungal disease in adult allogeneic hematopoietic stem cell transplant recipients receiving oral azoles prophylaxis.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Hematology",
+      "source_specialty": "Hematology, Infectious Disease, Oncology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "c6a62afab466c1890d0cef4e7278f0a568516a52ade27dc38f09e5fc2dfd993f",
+      "calculator_title": "OUR-ARDs Risk Score Calculator for COVID-19 Mortality",
+      "code_sha256": "16dff144f0932a265c4d90e5e4b4684675fe8e2dffb4c5614c57b051473702f3",
+      "doi": "10.1371/journal.pone.0263471",
+      "journal": "PloS one",
+      "pmid": "35113971",
+      "prospective_case_space": 64,
+      "pub_date": "2022",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Predictors of mortality among hospitalized COVID-19 patients and risk score formulation for prioritizing tertiary care-An experience from South India.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Infectious Disease",
+      "source_specialty": "Infectious Disease, Internal Medicine, Pulmonology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "9ca00e823efa187de346fffdd9374e2a54b69f3d1ff132310559127bc84b76f9",
+      "calculator_title": "IMPROVE VTE Risk Assessment Model",
+      "code_sha256": "f0b9d36a8f7d9281e94d9be253a3d1ae525428b4650dfb2a23ce4b869559ea7a",
+      "doi": "10.1161/JAHA.114.001152",
+      "journal": "Journal of the American Heart Association",
+      "pmid": "25404191",
+      "prospective_case_space": 320,
+      "pub_date": "2014Nov17",
+      "publication_types": [
+        "Journal Article",
+        "Multicenter Study",
+        "Validation Study"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "External validation of the risk assessment model of the International Medical Prevention Registry on Venous Thromboembolism (IMPROVE) for medical patients in a tertiary health system.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Internal Medicine",
+      "source_specialty": "Internal Medicine, Hematology, Cardiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "d894fa80041ddd6a82412d1035fcd8ca33c5dfa6c65d34303d9d41e5e7254d97",
+      "calculator_title": "Vancomycin-Associated Acute Kidney Injury Risk Score Calculator",
+      "code_sha256": "b0393b1d5d02f50f1b158f4c1cdedf71f6620eb5818624a61d06d7c38611cc17",
+      "doi": "10.3389/fphar.2022.815188",
+      "journal": "Frontiers in pharmacology",
+      "pmid": "35330832",
+      "prospective_case_space": 625,
+      "pub_date": "2022",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Risk Scoring System for Vancomycin-Associated Acute Kidney Injury.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Nephrology",
+      "source_specialty": "Nephrology, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "e62fa6a4243d8953a17f460e5c31b43ac1a12fb140f3ab6ff655ae9ad52a9039",
+      "calculator_title": "ACoAA Rupture Risk Score Calculator",
+      "code_sha256": "a8b1f95e0944494301b0110262808863b43ad6fa140c0b538a16b8ab11eba6f3",
+      "doi": "10.3389/fneur.2019.00520",
+      "journal": "Frontiers in neurology",
+      "pmid": "31214103",
+      "prospective_case_space": 200,
+      "pub_date": "2019",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A Simple Scoring Model for Prediction of Rupture Risk of Anterior Communicating Artery Aneurysms.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Neurology",
+      "source_specialty": "Neurology, Radiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "397aa2f12a9678a616eca0dca5a71f8446a15c55568e5ff15f7517faec45bacb",
+      "calculator_title": "Preeclampsia Risk Prediction Model for Chinese Pregnant Patients With Systemic Lupus Erythematosus",
+      "code_sha256": "a05576a286972ab2d1892e5d6872de1c05ce092612749fa639db0eb54b4f94af",
+      "doi": "10.1002/acr.24265",
+      "journal": "Arthritis care & research",
+      "pmid": "32433830",
+      "prospective_case_space": 5000,
+      "pub_date": "2020Nov",
+      "publication_types": [
+        "Journal Article",
+        "Observational Study",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Preeclampsia Risk Prediction Model for Chinese Pregnant Patients With Systemic Lupus Erythematosus.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Obstetrics and Gynecology",
+      "source_specialty": "Obstetrics and Gynecology, Rheumatology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "876e1bc00dcb353517419e52721fe40b0dd99d658e6958a46edbf27b9bbab447",
+      "calculator_title": "Hepatocellular Carcinoma (HCC) Preoperative Survival Score Calculator",
+      "code_sha256": "7d7417bbfd1ef1698357c3fb6572fa12ebb0067b169cf617d66b3ae3092d1469",
+      "doi": "10.3748/wjg.v18.i25.3272",
+      "journal": "World journal of gastroenterology",
+      "pmid": "22783052",
+      "prospective_case_space": 15625,
+      "pub_date": "2012Jul07",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Preoperative predictors of short-term survival after hepatectomy for multinodular hepatocellular carcinoma.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Surgery, Gastroenterology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "8150c811aa9ccb597556b88ad3c9c196603ca22114a5d3eb115ac29261024a28",
+      "calculator_title": "Tibial Nonunion Risk Prediction Calculator",
+      "code_sha256": "7665da7936d0cb262a9069331bd894161e14e29332f77d9f5b86fb42fef4dd0e",
+      "doi": "10.1016/j.injury.2018.07.033",
+      "journal": "Injury",
+      "pmid": "30172349",
+      "prospective_case_space": 80,
+      "pub_date": "2018Nov",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Prediction of tibial nonunion at the 6-week time point.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Orthopedic Surgery",
+      "source_specialty": "Orthopedic Surgery"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "86ee796bae82f96878ee2928c8e0290be438084bc22042a1c98e5f744a17f71b",
+      "calculator_title": "Kawasaki Disease IVIG Resistance Prediction Calculator",
+      "code_sha256": "03cc107e2f3839b01069e22a3768c7d04a9bc1d6876b6081e9a7df6163c99c3b",
+      "doi": "10.1016/j.jpeds.2006.03.050",
+      "journal": "The Journal of pediatrics",
+      "pmid": "16887442",
+      "prospective_case_space": 3125,
+      "pub_date": "2006Aug",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Prediction of resistance to intravenous immunoglobulin treatment in patients with Kawasaki disease.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Pediatrics",
+      "source_specialty": "Pediatrics, Cardiology, Allergy and Immunology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "a1d2768053b96b9996b06594efc282d011ffd5f13c9e88c6b32062ec2b1e6973",
+      "calculator_title": "Early Implant Loss Risk Calculator",
+      "code_sha256": "147c0257200bffaaa7db7a41e38767a72ec82e8d48b479efb61a1fe331c37080",
+      "doi": "10.1016/j.jamcollsurg.2013.07.389",
+      "journal": "Journal of the American College of Surgeons",
+      "pmid": "23973103",
+      "prospective_case_space": 64,
+      "pub_date": "2013Dec",
+      "publication_types": [
+        "Evaluation Study",
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Risk analysis of early implant loss after immediate breast reconstruction: a review of 14,585 patients.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Plastic Surgery",
+      "source_specialty": "Plastic Surgery, Oncology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "a799960916a246ec440fd05ffe1ea2c7597fc98a0de266083bd5ee2c355d2f2b",
+      "calculator_title": "ProVent Score Calculator",
+      "code_sha256": "07f9ce795698e2f2ef821cf8c9224903bb6a2aee14814223e0cb429982943fd5",
+      "doi": "10.1016/j.jcrc.2016.02.017",
+      "journal": "Journal of critical care",
+      "pmid": "26994779",
+      "prospective_case_space": 100,
+      "pub_date": "2016Jun",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Clinical application of the ProVent score in Korean patients requiring prolonged mechanical ventilation: A 10-year experience in a university-affiliated tertiary hospital.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Pulmonology",
+      "source_specialty": "Pulmonology, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "9d1adc472148fbc5116484a2a54321fbf936ed6f9568660268e6a336a13b1b61",
+      "calculator_title": "Abdominal Fluid Collection Infection Risk Score",
+      "code_sha256": "de48780affd2ac1f302f7677f8206e97bc1d27f4697cca67362ae28887373853",
+      "doi": "10.1097/RLI.0000000000000090",
+      "journal": "Investigative radiology",
+      "pmid": "25198832",
+      "prospective_case_space": 100,
+      "pub_date": "2015Jan",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Distinguishing infected from noninfected abdominal fluid collections after surgery: an imaging, clinical, and laboratory-based scoring system.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Radiology",
+      "source_specialty": "Radiology, Surgery, Infectious Disease"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "face8cdb34bf855f168241ffb22a14e103a65988d2f02f06c99b144910fbcf76",
+      "calculator_title": "2022 ACR/EULAR Classification Criteria for Microscopic Polyangiitis (MPA) Calculator",
+      "code_sha256": "7b979722eb2af2ed03b4224752c0fbc1bb1e05bf4d59483a3dbb7030b5894dea",
+      "doi": "10.1002/art.41983",
+      "journal": "Arthritis & rheumatology (Hoboken, N.J.)",
+      "pmid": "35106973",
+      "prospective_case_space": 160,
+      "pub_date": "2022Mar",
+      "publication_types": [
+        "Journal Article",
+        "Practice Guideline",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "2022 American College of Rheumatology/European Alliance of Associations for Rheumatology Classification Criteria for Microscopic Polyangiitis.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Rheumatology",
+      "source_specialty": "Rheumatology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "0ebedca96c3edb86fcd0db56974d3689445a551163dbc09f1c8aed88712310b2",
+      "calculator_title": "Preoperative Frailty Score Calculator",
+      "code_sha256": "b0399b35690ce6ab3f0378c07dde1a977562919cd5bab6b9ee2f894e350aa8e2",
+      "doi": "10.1016/j.amjsurg.2013.03.012",
+      "journal": "American journal of surgery",
+      "pmid": "23880071",
+      "prospective_case_space": 78125,
+      "pub_date": "2013Oct",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, N.I.H., Extramural",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Simple frailty score predicts postoperative complications across surgical specialties.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Surgery",
+      "source_specialty": "Surgery, Geriatrics, Cardiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "afdbd92fff3c49c5cddab0fec8bb253e5ccc2936862b15f14ebcd2f5f4a65157",
+      "calculator_title": "Simultaneous Liver and Kidney Transplantation (SLK) Risk Score for Elderly Patients",
+      "code_sha256": "6a194b407bfe687feef89ccd2c57dadead11b2d2b75390faf40d32af3d4a8e19",
+      "doi": "10.5604/16652681.1222103",
+      "journal": "Annals of hepatology",
+      "pmid": "27740520",
+      "prospective_case_space": 90,
+      "pub_date": "2016 Nov-Dec 2016",
+      "publication_types": [
+        "Comparative Study",
+        "Journal Article",
+        "Validation Study"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Simultaneous liver and kidney transplantation in elderly patients: Outcomes and validation of a clinical risk score for patient selection.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Transplant Surgery",
+      "source_specialty": "Transplant Surgery, Geriatrics, Nephrology, Hepatology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "1b3f41e27aa1d2dc00bb911dee8c99e1b0efaeac9b480ffe1371da77b2a845e7",
+      "calculator_title": "Prostate Cancer Lymph Node Metastasis Risk Calculator",
+      "code_sha256": "83734b5d5d98c467765ff4babf4a368ccae9a1a987328e8142e2903cc18ac235",
+      "doi": "10.1111/bju.15134",
+      "journal": "BJU international",
+      "pmid": "32524748",
+      "prospective_case_space": 80,
+      "pub_date": "2021Jan",
+      "publication_types": [
+        "Comparative Study",
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Histological comparison between predictive value of preoperative 3-T multiparametric MRI and 68 Ga-PSMA PET/CT scan for pathological outcomes at radical prostatectomy and pelvic lymph node dissection for prostate cancer.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Urology",
+      "source_specialty": "Urology, Oncology, Radiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "0f4271a80db67409c2e0edb9e542325eb463903bb7819357e8c832ec406e86a1",
+      "calculator_title": "Modified Risk Index (ModRI) for Massive Transfusion during Liver Transplantation",
+      "code_sha256": "cffa086aa7a9407f1e50ed24e47ae3a5a26330fe110fffb52b70d93e29de6a72",
+      "doi": "10.1111/trf.16019",
+      "journal": "Transfusion",
+      "pmid": "32920876",
+      "prospective_case_space": 500,
+      "pub_date": "2020Nov",
+      "publication_types": [
+        "Journal Article",
+        "Validation Study"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Validation of predictive models identifying patients at risk for massive transfusion during liver transplantation and their potential impact on blood bank resource utilization.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Anesthesiology",
+      "source_specialty": "Anesthesiology, Surgery, Hematology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "da09b4f963ec878bfaa8264186f7f364c99d1d86114852724d8ea8b05e52ea11",
+      "calculator_title": "Frailty-Based Predictive Score for Mid-Term Outcomes in Open Total Aortic Arch Surgery",
+      "code_sha256": "8cf5c57639d86fcfd453af68da0e4a103d363729bba3c53da996ab33aaa381c4",
+      "doi": "10.1093/ejcts/ezy001",
+      "journal": "European journal of cardio-thoracic surgery : official journal of the European Association for Cardio-thoracic Surgery",
+      "pmid": "29408989",
+      "prospective_case_space": 2500,
+      "pub_date": "2018Jul01",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Modified predictive score based on frailty for mid-term outcomes in open total aortic arch surgery.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology, Geriatrics, Surgery"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "64cfb2c66a65a4608c11b30872106ecc42d3798798ed1f85f1532b51e48ec2f5",
+      "calculator_title": "Melanoma Risk Score",
+      "code_sha256": "9c6fb46a46c5baeed606fea8267c6a53d0fba02d6031c3b9c0df4e2f1a889b75",
+      "doi": "10.1097/CEJ.0b013e32834474ae",
+      "journal": "European journal of cancer prevention : the official journal of the European Cancer Prevention Organisation (ECP)",
+      "pmid": "21399503",
+      "prospective_case_space": 250,
+      "pub_date": "2011May",
+      "publication_types": [
+        "Comparative Study",
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Development of an individual score for melanoma risk.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Dermatology",
+      "source_specialty": "Dermatology, Oncology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "097f6970c3ddfde433a7c910b0cfb544223cb5e592bb921d57ba2c319b4dee87",
+      "calculator_title": "Alcohol Misuse Risk Score Calculator",
+      "code_sha256": "1f1f7150ec35e022a3da1b505531aafc3973808ea18f8a72836643acc2cc95e5",
+      "doi": "",
+      "journal": "International journal of burns and trauma",
+      "pmid": "36160674",
+      "prospective_case_space": 200,
+      "pub_date": "2022",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Trauma center risk conditions for blood alcohol-positive and alcohol misuse patients: a retrospective study.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Psychiatry"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "6d06ec9cabaf13eeee1f278a73260764d43f9839f4b41d6ff6a58d6a8f4c46a9",
+      "calculator_title": "LADA Clinical Risk Score Calculator",
+      "code_sha256": "1bcc43f5c56e37474830831fa79607a56627cdb1dee98d3c65e56b1facd43f76",
+      "doi": "10.2337/diacare.295970",
+      "journal": "Diabetes care",
+      "pmid": "16644622",
+      "prospective_case_space": 200,
+      "pub_date": "2006May",
+      "publication_types": [
+        "Comparative Study",
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A clinical screening tool identifies autoimmune diabetes in adults.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Endocrinology",
+      "source_specialty": "Endocrinology, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "44d0d114b05a779ea1ceca6a2af347518117d84c70b1bfac772727c435a06c96",
+      "calculator_title": "HCC Risk Calculator for HCV-positive Patients",
+      "code_sha256": "a6c0e68701564ce2f338110ca37a91377c6b9e4c1402443c1e8c8ad600911f3a",
+      "doi": "10.3390/biomedicines11010166",
+      "journal": "Biomedicines",
+      "pmid": "36672675",
+      "prospective_case_space": 200,
+      "pub_date": "2023Jan09",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Who Should Not Be Surveilled for HCC Development after Successful Therapy with DAAS in Advanced Chronic Hepatitis C? Results of a Long-Term Prospective Study.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Gastroenterology",
+      "source_specialty": "Gastroenterology, Oncology, Infectious Disease"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "aef9908e727110b4869f6c1f11b85c2b617efbff72fd686db1b284742ffc1602",
+      "calculator_title": "Adverse Clinical Events (ACEs) Risk Score Calculator",
+      "code_sha256": "3cd9ada4f7ba04501a679c4ca6c55571e8fdf015cca19499dc34c97a1bb01b15",
+      "doi": "10.1089/rej.2012.1332",
+      "journal": "Rejuvenation research",
+      "pmid": "22950428",
+      "prospective_case_space": 160,
+      "pub_date": "2012Dec",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A score to predict the development of adverse clinical events after transition from acute hospital wards to post-acute care settings.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Geriatrics",
+      "source_specialty": "Geriatrics, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "af15a94532490fd555c9368f9caef4b7102eb57bed8c805df24cdcdf96499a07",
+      "calculator_title": "Prognostic Model for Extranodal Natural Killer/T Cell Lymphoma, Nasal Type (ENKTL)",
+      "code_sha256": "3b7d2569de7cfe9a98f7a74aa2321b1d0bc4fc020c652244c7e7ce9e87cc0af5",
+      "doi": "10.1007/s00277-014-2089-x",
+      "journal": "Annals of hematology",
+      "pmid": "24782120",
+      "prospective_case_space": 125,
+      "pub_date": "2014Sep",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, N.I.H., Extramural",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "New prognostic model for extranodal natural killer/T cell lymphoma, nasal type.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Hematology",
+      "source_specialty": "Hematology, Oncology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "8b508a12489ce90feb85f53e75acd4b12003bb9ac89e2a512924cc4974c1753d",
+      "calculator_title": "INCREMENT-SOT-CPE Mortality Score Calculator",
+      "code_sha256": "7f9a892d9af58d006604a35e94042e358006fb49dd1095763f24efca36510160",
+      "doi": "10.1111/ajt.15769",
+      "journal": "American journal of transplantation : official journal of the American Society of Transplantation and the American Society of Transplant Surgeons",
+      "pmid": "31891235",
+      "prospective_case_space": 80,
+      "pub_date": "2019Dec31",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Predictors of mortality in solid organ transplant recipients with bloodstream infections due to carbapenemase-producing Enterobacterales: The impact of cytomegalovirus disease and lymphopenia.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Infectious Disease",
+      "source_specialty": "Infectious Disease, Transplant Surgery"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "00c66d3df9f7c7f1e43dad83f842a2416144b1d2b48d4625803d6781bbf07055",
+      "calculator_title": "Elderly Patient Readmission Risk Score",
+      "code_sha256": "558d84bedaea83302d5f47c70a7df48998a0596a35d19f92fbe7e26e8670f752",
+      "doi": "",
+      "journal": "The Israel Medical Association journal : IMAJ",
+      "pmid": "23393714",
+      "prospective_case_space": 200,
+      "pub_date": "2012Dec",
+      "publication_types": [
+        "Comparative Study",
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A simplified scoring tool for prediction of readmission in elderly patients hospitalized in internal medicine departments.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Internal Medicine",
+      "source_specialty": "Internal Medicine, Geriatrics"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "4cd568cfe5de86e8d262297a818129be24aaf0219a760c4d4a2dcc86a277a0be",
+      "calculator_title": "DISTAL Scoring System for Predicting Failure of Snuffbox Arteriovenous Fistulas",
+      "code_sha256": "024de9b937eb230ee8e443951d8bcea25a54fb72fd6977948f672cbdccd29366",
+      "doi": "10.1016/j.ejvs.2012.03.014",
+      "journal": "European journal of vascular and endovascular surgery : the official journal of the European Society for Vascular Surgery",
+      "pmid": "22513180",
+      "prospective_case_space": 400,
+      "pub_date": "2012Jul",
+      "publication_types": [
+        "Comparative Study",
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A scoring system (DISTAL) for predicting failure of snuffbox arteriovenous fistulas.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Nephrology",
+      "source_specialty": "Nephrology, Surgery"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "d1bde8f7be46148fea6a663fb20a226c11f0671e56fb5d4d5a08678bd82e1e87",
+      "calculator_title": "Posttraumatic Hydrocephalus Risk Score Calculator",
+      "code_sha256": "10b1961021724a341b156e92f344c031d28e25ca2c272dddc98bd0135446dcb1",
+      "doi": "10.1007/s11011-017-0008-2",
+      "journal": "Metabolic brain disease",
+      "pmid": "28391551",
+      "prospective_case_space": 128,
+      "pub_date": "2017Oct",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Predicting posttraumatic hydrocephalus: derivation and validation of a risk scoring system based on clinical characteristics.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Neurology",
+      "source_specialty": "Neurology, Emergency Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "2caad4efa1e986d90e27c569dae5c7dfc63f57a7bd5b2818a82c5b4aed77b0a9",
+      "calculator_title": "Cervical Cancer Prognostic Scoring System",
+      "code_sha256": "d3d023e083bdb3fd30791c95e5b8992a5ab3d64b49e60ac146b27a4c561c1d95",
+      "doi": "10.1016/j.ygyno.2019.12.022",
+      "journal": "Gynecologic oncology",
+      "pmid": "31882242",
+      "prospective_case_space": 125,
+      "pub_date": "2020Mar",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "The tumor-stroma ratio is an independent predictor of survival in patients with 2018 FIGO stage IIIC squamous cell carcinoma of the cervix following primary radical surgery.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Obstetrics and Gynecology",
+      "source_specialty": "Obstetrics and Gynecology, Oncology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "b0523ef22ebb175f69cc6d5161c581111beb918abf966d621f5fd05fea943e5e",
+      "calculator_title": "GPC-3 Positive Expression Risk Score Calculator for Hepatocellular Carcinoma",
+      "code_sha256": "327353a627e5571373a445430823a8c77fdc50ddb6af9723bf7f9a811033c4da",
+      "doi": "10.3389/fimmu.2022.973153",
+      "journal": "Frontiers in immunology",
+      "pmid": "36091074",
+      "prospective_case_space": 64,
+      "pub_date": "2022",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Preoperative prediction of glypican-3 positive expression in solitary hepatocellular carcinoma on gadoxetate-disodium enhanced magnetic resonance imaging.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Radiology, Pathology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "649a846e23b0aee6c2cbb392b76e86335198f36cc151c88d1d11afe4dafa2f1a",
+      "calculator_title": "Post-Operative Non-Union Risk Score for Subtrochanteric Femur Fractures",
+      "code_sha256": "f5d49ead9ca07facb0570790fdaf020539ef88f6733b8787131507f46afb1458",
+      "doi": "10.3390/jcm10235632",
+      "journal": "Journal of clinical medicine",
+      "pmid": "34884334",
+      "prospective_case_space": 640,
+      "pub_date": "2021Nov29",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Development and Validation of a Post-Operative Non-Union Risk Score for Subtrochanteric Femur Fractures.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Orthopedic Surgery",
+      "source_specialty": "Orthopedic Surgery"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "8f547b59906f2c508d9652991e580c5b3e718ffd5f0c9b947cde9f850c96136e",
+      "calculator_title": "Bacterial Meningitis Score (BMS) Calculator",
+      "code_sha256": "26802bc48ef600191577130826b023080363740c7e6164d5c85f09060cea7d65",
+      "doi": "10.1542/peds.110.4.712",
+      "journal": "Pediatrics",
+      "pmid": "12359784",
+      "prospective_case_space": 500,
+      "pub_date": "2002Oct",
+      "publication_types": [
+        "Comparative Study",
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't",
+        "Validation Study"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Development and validation of a multivariable predictive model to distinguish bacterial from aseptic meningitis in children in the post-Haemophilus influenzae era.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Pediatrics",
+      "source_specialty": "Pediatrics, Infectious Disease, Emergency Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "ec7a584660867f986a0ecd0d24b30752b5574174924f3b23092dcb3865f3eaca",
+      "calculator_title": "Reduction Mammoplasty Complication Risk Score Calculator",
+      "code_sha256": "2741929b65a26bd6cdc0d8b5a809952770b28f693ecb256ad6b550597fb09302",
+      "doi": "10.21037/gs-22-116",
+      "journal": "Gland surgery",
+      "pmid": "36082101",
+      "prospective_case_space": 100,
+      "pub_date": "2022Aug",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Predictive risk factors of complications in reduction mammoplasty-analysis of three different pedicles.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Plastic Surgery",
+      "source_specialty": "Plastic Surgery"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "57963113579cfd593d8caccbf58e3d5e654d16d4dd902f61f02000d106e362d0",
+      "calculator_title": "Early Acute Lung Injury Score",
+      "code_sha256": "d7d5e9d130f5a321376cd2976bf29c9f8ff6bbc26d89fe0498bbcf37a02f1478",
+      "doi": "10.1097/CCM.0b013e31828a3d99",
+      "journal": "Critical care medicine",
+      "pmid": "23782966",
+      "prospective_case_space": 80,
+      "pub_date": "2013Aug",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, N.I.H., Extramural"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Early acute lung injury: criteria for identifying lung injury prior to the need for positive pressure ventilation*.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Pulmonology",
+      "source_specialty": "Pulmonology, Emergency Medicine, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "738184a6e56847cbe10293cece3d367a5779c9a1e170401f146cd480fa729a41",
+      "calculator_title": "FLAW Score for Predicting Rapidly Progressive Interstitial Lung Disease in Anti-MDA5-positive Dermatomyositis Patients",
+      "code_sha256": "eb7f2fb47c984d961ef79a918e5efcacfe526004c21b056b2a91dfd72a2a9dd5",
+      "doi": "10.1093/rheumatology/keac094",
+      "journal": "Rheumatology (Oxford, England)",
+      "pmid": "35157042",
+      "prospective_case_space": 250,
+      "pub_date": "2022Nov02",
+      "publication_types": [
+        "Journal Article",
+        "Multicenter Study",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Predictors of rapidly progressive interstitial lung disease and mortality in patients with autoantibodies against melanoma differentiation-associated protein 5 dermatomyositis.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Rheumatology",
+      "source_specialty": "Rheumatology, Pulmonology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "5a73fab7ee2f8dc7008e621423522901b80cbc852c12691bb54af5d8666a9ad0",
+      "calculator_title": "Ultrasound Scoring System for Preoperative Prediction of Difficult Laparoscopic Cholecystectomy",
+      "code_sha256": "574d8a34abffb64815dc4a147ad0e5a8c846bc6dcad9e74ef45b196289725406",
+      "doi": "10.1016/j.jmu.2017.09.001",
+      "journal": "Journal of medical ultrasound",
+      "pmid": "30065497",
+      "prospective_case_space": 128,
+      "pub_date": "2017Oct-Dec",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A Standardized Ultrasound Scoring System for Preoperative Prediction of Difficult Laparoscopic Cholecystectomy.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Surgery",
+      "source_specialty": "Surgery, Radiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "35217c47a4d29df16e2e7e0f23e3fc5018169b3fbb28e97a23be69704165e190",
+      "calculator_title": "\"Rule of 4's\" Surgical Intervention Predictor for Distal Ureteral Stones",
+      "code_sha256": "434a2384b059667c006edc47f700f3a87161de3fc9bb6d42568308855bde5277",
+      "doi": "10.1089/end.2019.0187",
+      "journal": "Journal of endourology",
+      "pmid": "31154851",
+      "prospective_case_space": 125,
+      "pub_date": "2019Sep",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Prediction of Surgical Intervention for Distal Ureteral Stones.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Urology",
+      "source_specialty": "Urology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "98da4ddbf7578110b1ab763f7dd4bebaa06328d4f16793001440c53e02d38718",
+      "calculator_title": "Sleep Apnea Risk Calculator for Chronic Pain Patients on Opioids",
+      "code_sha256": "5f3df41da97492074e93d302efa709045bca8d5fa5b832cbdd5f13fbcd767bdc",
+      "doi": "10.1136/rapm-2020-102388",
+      "journal": "Regional anesthesia and pain medicine",
+      "pmid": "34373347",
+      "prospective_case_space": 125,
+      "pub_date": "2021Oct",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Simple screening model for identifying the risk of sleep apnea in patients on opioids for chronic pain.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Anesthesiology",
+      "source_specialty": "Anesthesiology, Pulmonology, Psychiatry"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "82b3b610a396969cb1924c44762557b0995d1fe39989c4f49acfc99f558378cd",
+      "calculator_title": "Coronary Artery Bypass Graft (CABG) Risk Score Calculator",
+      "code_sha256": "d4ac55a2aaf8b727f3a279f270f9b26d741856913abc2b9e05dc04cedff9a9b0",
+      "doi": "10.1016/j.jacc.2004.03.081",
+      "journal": "Journal of the American College of Cardiology",
+      "pmid": "15312862",
+      "prospective_case_space": 64,
+      "pub_date": "2004Aug18",
+      "publication_types": [
+        "Clinical Trial",
+        "Journal Article",
+        "Randomized Controlled Trial",
+        "Research Support, Non-U.S. Gov't",
+        "Validation Study"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A risk score to estimate the likelihood of coronary artery bypass surgery during the index hospitalization among patients with unstable angina and non-ST-segment elevation myocardial infarction.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Cardiology",
+      "source_specialty": "Cardiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "e0eb4cac1d80e4743942bb7db5ea69b87b493870bef31c36d5f6dcbe1ce8594d",
+      "calculator_title": "SCORTEN: Severity-of-Illness Score for Toxic Epidermal Necrolysis",
+      "code_sha256": "6d08f0501f11b6bf1e3de4ef6675465f4a399f329ebf2891db0178ab130533cb",
+      "doi": "10.1046/j.1523-1747.2000.00061.x",
+      "journal": "The Journal of investigative dermatology",
+      "pmid": "10951229",
+      "prospective_case_space": 31250,
+      "pub_date": "2000Aug",
+      "publication_types": [
+        "Comparative Study",
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "SCORTEN: a severity-of-illness score for toxic epidermal necrolysis.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Dermatology",
+      "source_specialty": "Dermatology, Emergency Medicine, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "f5878f7b34a05b094d3f321ed0dcda2bf4f6f3c494285824cfa665a25200996e",
+      "calculator_title": "Acute Pulmonary Embolism Adverse Outcome Risk Score",
+      "code_sha256": "48e0a5c2819b01c103231115f8780e6d0de2b3422bf2fd5b9448c12a25af36bf",
+      "doi": "",
+      "journal": "Thrombosis and haemostasis",
+      "pmid": "11057848",
+      "prospective_case_space": 64,
+      "pub_date": "2000Oct",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Predicting adverse outcome in patients with acute pulmonary embolism: a risk score.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Emergency Medicine",
+      "source_specialty": "Emergency Medicine, Pulmonology, Cardiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "cecd47750f2252d5c9c680d889200c53d9bbdb4b05baff4bf185ee0a14b22700",
+      "calculator_title": "Gastroesophageal Varices Risk Score Calculator",
+      "code_sha256": "16fb71d8a9a19ac986d0a45b65c71a71126fd838efae2aa5e16c2d8aff4129cd",
+      "doi": "10.1097/MCG.0b013e318157464b",
+      "journal": "Journal of clinical gastroenterology",
+      "pmid": "18562980",
+      "prospective_case_space": 125,
+      "pub_date": "2009Jan",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A simple noninvasive score predicts gastroesophageal varices in patients with chronic viral hepatitis.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Gastroenterology",
+      "source_specialty": "Gastroenterology, Hepatology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "b35b3fb095fb867c6d51cc477c423b6dbb6eb08c99498cabc14e7a9315588b07",
+      "calculator_title": "NaURSE Score Calculator",
+      "code_sha256": "64f8f3b8758f3e933eabe537f89d7c497727d7c61ab996666d20a949e14c75cb",
+      "doi": "10.1093/ageing/afu002",
+      "journal": "Age and ageing",
+      "pmid": "24487652",
+      "prospective_case_space": 625,
+      "pub_date": "2014May",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A simple 5-point scoring system, NaURSE (Na+, urea, respiratory rate and shock index in the elderly), predicts in-hospital mortality in oldest old.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Geriatrics",
+      "source_specialty": "Geriatrics, Internal Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "ab7d2b1005552843ccb5e7f25279820e51d2881d0683edda1a91f26380b04f4c",
+      "calculator_title": "Prognostic Staging System for Light Chain Amyloidosis",
+      "code_sha256": "b6e66813546dc4039d0ff7b7bac4d0863f7465518cc4f543c8ab7feb4d545c49",
+      "doi": "10.1200/JCO.2011.38.5724",
+      "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
+      "pmid": "22331953",
+      "prospective_case_space": 125,
+      "pub_date": "2012Mar20",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, N.I.H., Extramural",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Revised prognostic staging system for light chain amyloidosis incorporating cardiac biomarkers and serum free light chain measurements.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Hematology",
+      "source_specialty": "Hematology, Cardiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "1d93b2f1641d17ac6ba66407bb595840271925fc6d00c37b4d4544ee6b6c85eb",
+      "calculator_title": "Clostridium Difficile-Associated Diarrhoea Mortality Risk Calculator",
+      "code_sha256": "2b096c81715a68beca75e25341dea1298098ebf4baed79bbfa04cfa2933daa33",
+      "doi": "10.1111/j.1463-1318.2009.01832.x",
+      "journal": "Colorectal disease : the official journal of the Association of Coloproctology of Great Britain and Ireland",
+      "pmid": "19508548",
+      "prospective_case_space": 6250,
+      "pub_date": "2010Mar",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Mortality and risk stratification in patients with Clostridium difficile-associated diarrhoea.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Infectious Disease",
+      "source_specialty": "Infectious Disease, Internal Medicine, Geriatrics"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "b653000ac17c5e6d91029a4673c71ed2c70e8e87bccb7d282fa7b9711d0c47cb",
+      "calculator_title": "SOCRATE Score for Predicting Intradialytic Hemodynamic Instability",
+      "code_sha256": "65d355b10d53389cd8bb17985172a51758681bfbda42246481ee67e31368c8a8",
+      "doi": "10.1186/s13613-020-00663-x",
+      "journal": "Annals of intensive care",
+      "pmid": "32323060",
+      "prospective_case_space": 125,
+      "pub_date": "2020Apr22",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Bedside prediction of intradialytic hemodynamic instability in critically ill patients: the SOCRATE study.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Nephrology",
+      "source_specialty": "Nephrology, Critical Care Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "9944b0a1e0db93731acb7350fe8839e8b1b4ac8d59b45a6698a4acfde67a5a2d",
+      "calculator_title": "Post-Stroke Pneumonia Risk Stratification Model",
+      "code_sha256": "940d23c08f36d8ca48ec186bf5e6691fb82db1b8a8fd10d497f8d48d406428a3",
+      "doi": "10.1177/1474515119889770",
+      "journal": "European journal of cardiovascular nursing",
+      "pmid": "31735079",
+      "prospective_case_space": 125,
+      "pub_date": "2020Aug",
+      "publication_types": [
+        "Journal Article",
+        "Research Support, Non-U.S. Gov't"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Risk stratification model for post-stroke pneumonia in patients with acute ischemic stroke.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Neurology",
+      "source_specialty": "Neurology, Pulmonology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "79e9ae21863021943909aee344dc5e79c418b581f70bfcaa7f8c2f70bfda2283",
+      "calculator_title": "RHEA Risk-Scoring Model for Endometrial Cancer",
+      "code_sha256": "943fae2bc1f2bde2fd3b59222185009ea659d820facb55406eac009159a28c01",
+      "doi": "10.1155/2014/130569",
+      "journal": "BioMed research international",
+      "pmid": "24991535",
+      "prospective_case_space": 100,
+      "pub_date": "2014",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "A risk-scoring model for the prediction of endometrial cancer among symptomatic postmenopausal women with endometrial thickness > 4\u2009mm.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Obstetrics and Gynecology",
+      "source_specialty": "Obstetrics and Gynecology, Oncology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "a61150bf82e80424330fc7d966c471339f2b799ef3a1ac2a932eff70b3101a53",
+      "calculator_title": "Venous Thromboembolism Risk Score in Glioblastoma Patients",
+      "code_sha256": "b2547d85a06f67779095d90637cc5dc1137005a83084ac984e5582013577ef7d",
+      "doi": "10.7759/cureus.2678",
+      "journal": "Cureus",
+      "pmid": "30050733",
+      "prospective_case_space": 360,
+      "pub_date": "2018May23",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Risk of Venous Thromboembolism in Glioblastoma Patients.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Oncology",
+      "source_specialty": "Oncology, Neurology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "75fa2926f28e33898c6cb74415f0a6529f3395f4572c2396861f24fcd02cd8e7",
+      "calculator_title": "Surgical Site Infection (SSI) Risk Calculator for HIV-Positive Patients Following Orthopedic Surgery",
+      "code_sha256": "16d23ccbc37acd2eae5f8079e2a51471c926ea63ff29e39572ede3f8b95b2f63",
+      "doi": "10.1186/s12879-020-05613-3",
+      "journal": "BMC infectious diseases",
+      "pmid": "33243159",
+      "prospective_case_space": 125,
+      "pub_date": "2020Nov26",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Nomogram prediction of surgical site infection of HIV-infected patients following orthopedic surgery: a retrospective study.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Orthopedic Surgery",
+      "source_specialty": "Orthopedic Surgery, Infectious Disease"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "146a1b673e7dd804b691ed75e2626e78cd464ec96fde4a2d3857f5b386f3abfc",
+      "calculator_title": "Mycoplasma Pneumoniae Pneumonia (MPP) Mucus Plug Risk Calculator",
+      "code_sha256": "06a571772380b2b38ae7236fbb1a519e6b390b7d80a95df0e2ddebf0cce93d21",
+      "doi": "10.1186/s12879-021-05765-w",
+      "journal": "BMC infectious diseases",
+      "pmid": "33441105",
+      "prospective_case_space": 1250,
+      "pub_date": "2021Jan13",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Prediction of risk factors of bronchial mucus plugs in children with Mycoplasma pneumoniae pneumonia.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Pediatrics",
+      "source_specialty": "Pediatrics, Pulmonology, Infectious Disease"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "258dbcd075eac9fb1b49604d12254d8560f29de401f8d6ae865432f9302bb2ca",
+      "calculator_title": "Community-Acquired Pneumonia Prognosis Calculator",
+      "code_sha256": "038b88a69f8a2439eb14fe656c443b1d32d7a35b9064d5b75ac49f55057c2f4c",
+      "doi": "10.1111/resp.12846",
+      "journal": "Respirology (Carlton, Vic.)",
+      "pmid": "27398948",
+      "prospective_case_space": 125,
+      "pub_date": "2016Nov",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Serial procalcitonin levels for predicting prognosis in community-acquired pneumonia.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Pulmonology",
+      "source_specialty": "Pulmonology, Internal Medicine, Emergency Medicine"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "63121d6bea277bf31a6839d7344efd5c006410e2078cfe84e5462bb9c3895484",
+      "calculator_title": "Sj\u00f6gren's Syndrome Risk Matrix Model",
+      "code_sha256": "9d657d1d40ca4bfe24c9e5bd62f9f1e8604e8def3106b84f4792840ceb39b76e",
+      "doi": "10.1177/1759720X211010592",
+      "journal": "Therapeutic advances in musculoskeletal disease",
+      "pmid": "33995602",
+      "prospective_case_space": 64,
+      "pub_date": "2021",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Ultrasonography predicts the results of labial salivary gland biopsy in patients with suspected Sj\u00f6gren's syndrome: a matrix risk model.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Rheumatology",
+      "source_specialty": "Rheumatology, Radiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "532acc746dfcfd486a90c19cd14371a54ad9a01a8f99443f725ad205016e6f94",
+      "calculator_title": "Geriatric Emergency Surgery Mortality (GEM) Score Calculator",
+      "code_sha256": "49bf733ea5034a6f6c308fa8b5f4beffae6a561f3a65f30519fffb8388ce1d08",
+      "doi": "10.1016/j.amjsurg.2016.08.007",
+      "journal": "American journal of surgery",
+      "pmid": "27743591",
+      "prospective_case_space": 2500,
+      "pub_date": "2017Apr",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Preoperative assessment of surgical risk: creation of a scoring tool to estimate 1-year mortality after emergency abdominal surgery in the elderly patient.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Surgery",
+      "source_specialty": "Surgery, Geriatrics, Anesthesiology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "30f06230d2c688547ca168d4c2584ebe89dea4bb6767561f844fdf5dd11fe910",
+      "calculator_title": "Prostate Cancer Extracapsular Extension (ECE) Prediction Algorithm",
+      "code_sha256": "9151bf02b24b25858adf2bc52fce4ed211841fba247e8cdcdd4d09fd1113ec97",
+      "doi": "10.5173/ceju.2021.0128.R2",
+      "journal": "Central European journal of urology",
+      "pmid": "34729221",
+      "prospective_case_space": 125,
+      "pub_date": "2021",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "External validation of a magnetic resonance imaging-based algorithm for prediction of side-specific extracapsular extension in prostate cancer.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Urology",
+      "source_specialty": "Urology, Oncology"
+    },
+    {
+      "abstract_present": true,
+      "abstract_sha256": "17307a51e4b4c7fc23bdfdc0425d9b5f944f6dcca55f3070d664483df19a6751",
+      "calculator_title": "Respiratory Risk Score (RRS) for Liver Transplantation",
+      "code_sha256": "a2371e0daea028ec6bc263f7295e5b4d2ced186210fbc55e2899a27f9bca4aac",
+      "doi": "10.1002/lt.23673",
+      "journal": "Liver transplantation : official publication of the American Association for the Study of Liver Diseases and the International Liver Transplantation Society",
+      "pmid": "23696476",
+      "prospective_case_space": 12500,
+      "pub_date": "2013Aug",
+      "publication_types": [
+        "Journal Article"
+      ],
+      "pubmed_resolved": true,
+      "pubmed_title": "Respiratory risk score for the prediction of 3-month mortality and prolonged ventilation after liver transplantation.",
+      "retraction_or_withdrawal_flag": false,
+      "selection_specialty_stratum": "Anesthesiology",
+      "source_specialty": "Anesthesiology, Surgery, Pulmonology"
+    }
+  ],
+  "selected_count": 64,
+  "status": "SOURCE_LEVEL_METADATA_AUDIT_NOT_FINAL_CLINICAL_ADMISSION",
+  "unresolved_pmids": []
+}

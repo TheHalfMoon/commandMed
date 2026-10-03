@@ -32,12 +32,13 @@ Source lineage:
 The repository license identifies the software/database as a United States Government Work with no restriction placed on use or reproduction. This does not convert third-party papers or private clinical records into project-owned material.
 
 Prospective source-item design:
-- exactly 64 eligible deterministic calculators;
-- exactly 16 generated source cases per calculator;
+- exactly 64 selected deterministic rule calculators;
+- exactly 64 generated source cases per calculator;
 - total primary cluster count: `4096` source cases;
-- 16 deterministic generated input states per calculator; numeric-threshold calculators must include boundary-adjacent and interior values, while Boolean-only calculators use balanced state combinations;
-- calculator eligibility is decided without model outputs;
-- after static eligibility screening, selection is deterministic by SHA-256 ordering of the stable calculator identifier plus the literal salt `CommandMed-V5`.
+- every eligible calculator must expose at least 64 prospective Boolean/numeric-threshold states;
+- calculator eligibility and domain selection are decided without model outputs;
+- selection is deterministic domain-balanced round-robin across alphabetically ordered first-listed source specialty strata; within each specialty candidates are ordered by the frozen SHA-256 selection key and PMID;
+- the design targets domain breadth and must not be interpreted as an estimate of clinical prevalence.
 
 If 64 calculators cannot pass the frozen eligibility criteria, this design gate fails; the count is not silently reduced after seeing model behavior.
 ## External validation family
@@ -63,21 +64,21 @@ No model weight, dataset payload, inference call, training run, or benchmark exe
 The confirmatory candidate set is frozen by specification ID before implementation SHA binding:
 - `A1_TS_V1`: project-owned temperature scaling; calibration target only.
 - `A2_SELBIAS_V1`: project-owned paper-spec reimplementation of selection-bias correction; no upstream code copy.
-- `B1_TYPED_V1`: matched typed readout under matched supervision/capacity.
-- `C1_CRDI_V1`: semantic-contract regularization on validated meaning-preserving transformations only.
-- `C2_CRDI_RETAIN_V1`: `C1` plus prespecified capability-maintenance objective.
+- `B1_TYPED_V1`: matched typed readout under matched supervision/capacity; pure linear typed-readout mechanics are implemented, but no learned model integration is authorized.
+- `C1_CRDI_V1`: semantic-contract regularization on validated meaning-preserving transformations only; the pure objective is implemented, but no optimization is authorized.
+- `C2_CRDI_RETAIN_V1`: `C1` plus a prespecified capability-maintenance anchor; the pure objective is implemented, but no optimization is authorized.
 - `D1_DEFER_V1`: fixed act/defer policy operating on frozen scores.
-- `D2_RULETOOL_V1`: deterministic clinical-rule routing using admitted public-domain calculator logic.
+- `D2_RULETOOL_V1`: deterministic rule-tool routing using identity-bound public-domain calculator logic; the endpoint is rule conformance, not clinical validity unless separately qualified.
 
 Required ordered interactions are `A1 -> A2`, `A2 -> A1`, `A1 -> C1`, and `C1 -> A1` when both orders are technically meaningful. The order gap is reported rather than hiding noncommutativity.
 
 ## Remaining blockers to a real scientific freeze
 
-`CONFIRMATORY_FROZEN` remains `NO` until all of the following are exact: final 64-calculator admission audit; generator specification and hashes; implementation SHAs for every admitted intervention; property-specific meaningful margins; power calculation; final retention task rights; and final confirmatory source identities/quarantine procedure.
+`CONFIRMATORY_FROZEN` remains `NO` until all of the following are exact: qualified clinical appropriateness review of the selected 64 rule sources; model-integration/training qualification for B1/C1/C2; generator and implementation hashes; property-specific meaningful margins; power calculation; final retention task rights; and final confirmatory source identities/quarantine procedure.
 
 No blocker may be cleared by inspecting confirmatory model outputs.
 ## Static selector result
 
-The committed non-executing selector `freeze_tools/select_riskcalcs_manifest.py` parsed the bound RiskCalcs source as data, used Python AST only, and did not call any calculator function. It found `1993` coarse static candidates. A stricter second-stage AST audit reduced these to `734` numeric/Boolean threshold-rule candidates with at least 16 prospective input states, then deterministically selected `64` into `riskcalcs-rule-oracle-final-candidate-v5.json`.
+The committed non-executing selector `freeze_tools/select_riskcalcs_manifest.py` parsed the bound RiskCalcs source as data, used Python AST only, and did not call any calculator function. It found `1993` coarse static candidates. The strict V5 AST audit currently admits `413` numeric/Boolean threshold-rule candidates with at least 64 prospective input states across `24` first-listed source specialty strata. It selects `64` by deterministic specialty round-robin into `riskcalcs-rule-oracle-final-candidate-v5.json`.
 
-This is a **candidate manifest**, not final clinical admission. Each selected calculator still requires a static domain/interpretation audit before its generator can enter confirmation. A failed audit may only be handled by the same prespecified deterministic next-candidate rule; model outputs cannot influence replacement.
+All 64 selected PMIDs resolve in PubMed and none carries a retraction/withdrawal publication-type flag in the current source audit. This remains a **source/provenance audit, not final clinical qualification**. Rule conformance can be measured mechanically; any claim that a rule is clinically appropriate for current care requires separate qualified review. Replacement remains deterministic and cannot use model outputs.

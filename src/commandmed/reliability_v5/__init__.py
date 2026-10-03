@@ -27,3 +27,12 @@ from .selection_bias import (
 from .case_generator import case_space_size, deterministic_cases, expanded_domains
 
 from .rule_tool import RuleToolResult, execute_rule_tool
+from .objectives import (
+    capability_retention_penalty,
+    contract_consistency_penalty,
+    contract_regularized_objective,
+    negative_log_likelihood_for_target,
+    retention_regularized_objective,
+    typed_readout_logits,
+    typed_readout_probabilities,
+)

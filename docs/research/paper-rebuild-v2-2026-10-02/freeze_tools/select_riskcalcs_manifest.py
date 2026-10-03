@@ -92,7 +92,7 @@ def main() -> int:
         "selection_rule": "AST-parse one fenced Python function; required metadata; no banned modules/calls; SHA-256 deterministic ordering",
         "selected": selected,
     }
-    OUT.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print(f"STATIC_CANDIDATES={len(candidates)}")
     print(f"SELECTED={len(selected)}")
     print(f"OUT={OUT}")

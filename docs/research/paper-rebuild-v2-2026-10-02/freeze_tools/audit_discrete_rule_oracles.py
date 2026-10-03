@@ -127,7 +127,7 @@ def main() -> int:
         "selection_rule": "Inputs used only as booleans or simple constant comparisons; no input arithmetic/calls/subscripts/attributes; deterministic SHA-256 ordering",
         "selected": selected,
     }
-    OUT.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print(f"STATIC_RULE_ORACLES={len(eligible)}")
     print(f"SELECTED={len(selected)}")
     print(f"OUT={OUT}")

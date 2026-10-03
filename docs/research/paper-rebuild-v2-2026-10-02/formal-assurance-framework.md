@@ -54,9 +54,9 @@ Let `G_change` contain interventions whose semantics are declared to change. Eac
 
 This definition intentionally does not reward arbitrary sensitivity. A change must be tied to a validated semantic intervention.
 
-## 7. Action validity
+## 7. Deterministic rule conformance
 
-Given a declared deterministic policy `a*(x)` derived from a qualified rule or decision threshold, action validity is the probability that the model-induced action equals `a*(x)` on the admitted test distribution.
+Given a declared deterministic policy `a*(x)` derived from an identity-bound rule or decision threshold, rule conformance is the probability that the model-induced action equals `a*(x)` on the admitted test distribution. This construct measures fidelity to the declared rule. It becomes evidence about clinical action validity only if that rule and intended use are separately clinically qualified.
 
 A model may execute the correct action while its probability estimates are poor. Conversely, a calibrated probabilistic model may be paired with an incorrect downstream policy. These are separate system properties.
 

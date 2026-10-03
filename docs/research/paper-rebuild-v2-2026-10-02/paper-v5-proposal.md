@@ -12,7 +12,7 @@ Working program name: **CommandMed Assurance**.
 
 When an intervention is designed to improve one reliability property of a medical foundation-model decision system, what happens to the other reliability properties?
 
-The paper tests whether calibration, semantic stability, coherence, evidence responsiveness, selective behavior, action validity, and retained language capability behave as mutually reinforcing objectives, independent properties, or competing objectives under controlled interventions.
+The paper tests whether calibration, semantic stability, coherence, evidence responsiveness, selective behavior, deterministic rule conformance, and retained language capability behave as mutually reinforcing objectives, independent properties, or competing objectives under controlled interventions.
 
 This is not a claim that reliability never composes. `DOES_NOT_AUTOMATICALLY_COMPOSE` is the falsifiable hypothesis.
 ## Reliability intervention matrix

@@ -36,3 +36,15 @@ Therefore CommandMed will not copy or vendor that repository's code. `A2_SELBIAS
 The following remain `NOT_ADMITTED` for confirmatory payload use: MedQA/USMLE derivatives, MedMCQA, PubMedQA article text, ArabicMMLU, MedArabiQ, MedAraBench, MIMIC-derived records, Yale clinical records, and medical image datasets. A permissive card label is not sufficient when underlying source-content rights or privacy constraints remain unresolved.
 
 Scite MCP was also tested during this freeze pass and required a paid plan/free-trial activation. Under the zero-cost program it was not used as qualification evidence; public primary sources were used instead.
+## Selected-calculator source audit — 2026-10-03
+
+The strict static RiskCalcs gate currently yields `413` eligible numeric/Boolean-threshold calculators across `24` first-listed source specialty strata. The prospective 64-calculator set is selected by deterministic domain-balanced round-robin, not by model performance and not as a prevalence sample.
+
+For the current 64-entry set:
+- all `64/64` PMIDs resolve through the public PubMed record;
+- all `64/64` expose an abstract in the current PubMed fetch;
+- `0/64` carry a PubMed publication-type retraction/withdrawal flag in the current metadata audit;
+- exact source metadata and PubMed identities are recorded in `clinical-source-audit-v5.json`;
+- `clinical-source-review-v5.md` remains a review queue rather than a clinical approval list.
+
+This audit establishes provenance and removes unresolved/retracted-source failure modes. It does **not** establish that every historical score remains clinically appropriate today. The primary mechanical endpoint is therefore deterministic **rule conformance**. Any clinical-validity interpretation requires a separate qualified review of the specific rule, intended population, version, and use.

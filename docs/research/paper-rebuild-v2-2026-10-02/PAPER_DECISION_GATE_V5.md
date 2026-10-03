@@ -74,10 +74,10 @@ Bound in this pass:
 - exact Qwen3.5-0.8B-Base primary revision and SmolLM2-1.7B independent-family revision;
 - public-domain AgentMD/RiskCalcs/RiskQA lineage at exact repository/blob identities;
 - prospective primary `RULE_ORACLE` size `4096` (`64 x 64`) and secondary RiskQA `N=350`;
-- deterministic static RiskCalcs selectors, including a stricter numeric/Boolean threshold rule-oracle audit with `734` eligible static candidates, each exposing at least 16 prospective input states, and a 64-entry candidate manifest;
+- deterministic static RiskCalcs selectors, including a strict numeric/Boolean threshold rule-oracle audit with `413` eligible candidates across `24` first-listed source specialty strata, each exposing at least 64 prospective input states, and a deterministic domain-balanced 64-entry candidate manifest;
 - family-wise alpha `0.05`, Holm control, desired power `0.90`, and learned-intervention seeds `11/29/47`;
 - relative hard-gate noninferiority `Delta[i,j] >= -m_j` rather than an arbitrary universal clinical threshold.
 
-Still unresolved: final 64-calculator domain/interpretation admission, synthetic generator hash, intervention implementation hashes, numeric native-unit margins from development-only repeatability/pilot evidence, final power at those margins, a lawful retention task, and confirmatory quarantine identities.
+Still unresolved: qualified clinical appropriateness review of the selected 64 rules, B1/C1/C2 learned model-integration qualification, numeric native-unit margins from development-only repeatability/pilot evidence, final power at those margins, a lawful retention task, final clean implementation bindings, and confirmatory quarantine identities.
 
 Decision remains: `KEEP_V5_AS_PRIMARY_CONDITIONAL`; `SCIENTIFIC_FREEZE_OPEN`; `EXECUTION_NOT_AUTHORIZED`.

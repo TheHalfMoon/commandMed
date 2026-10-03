@@ -14,8 +14,8 @@ from src.commandmed.reliability_v5.contracts import (
 from src.commandmed.reliability_v5.policy import fixed_defer_policy
 from src.commandmed.reliability_v5.probability import ProbabilityContractError
 from src.commandmed.reliability_v5.registry import (
-    CONTRACT_ONLY,
     IMPLEMENTED,
+    OBJECTIVE_MECHANICS_IMPLEMENTED,
     INTERVENTIONS,
     ORDERED_INTERACTION_CANDIDATES,
     get_intervention,
@@ -100,13 +100,13 @@ class InterventionRegistryTests(unittest.TestCase):
     def test_no_registry_entry_grants_execution_authority(self):
         self.assertTrue(all(spec.execution_authority == "NO" for spec in INTERVENTIONS.values()))
 
-    def test_only_mechanical_layers_are_marked_implemented(self):
+    def test_registry_distinguishes_mechanical_and_objective_mechanics(self):
         self.assertEqual(IMPLEMENTED, get_intervention("A1_TS_V1").implementation_status)
         self.assertEqual(IMPLEMENTED, get_intervention("A2_SELBIAS_V1").implementation_status)
         self.assertEqual(IMPLEMENTED, get_intervention("D1_DEFER_V1").implementation_status)
-        self.assertEqual(CONTRACT_ONLY, get_intervention("B1_TYPED_V1").implementation_status)
-        self.assertEqual(CONTRACT_ONLY, get_intervention("C1_CRDI_V1").implementation_status)
-        self.assertEqual(CONTRACT_ONLY, get_intervention("C2_CRDI_RETAIN_V1").implementation_status)
+        self.assertEqual(OBJECTIVE_MECHANICS_IMPLEMENTED, get_intervention("B1_TYPED_V1").implementation_status)
+        self.assertEqual(OBJECTIVE_MECHANICS_IMPLEMENTED, get_intervention("C1_CRDI_V1").implementation_status)
+        self.assertEqual(OBJECTIVE_MECHANICS_IMPLEMENTED, get_intervention("C2_CRDI_RETAIN_V1").implementation_status)
         self.assertEqual(IMPLEMENTED, get_intervention("D2_RULETOOL_V1").implementation_status)
 
     def test_ordered_interaction_registry_is_exact(self):

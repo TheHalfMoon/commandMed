@@ -1,19 +1,5 @@
 {
   "confirmatory_frozen": false,
-  "contract_only": {
-    "B1_TYPED_V1": {
-      "locus": "DECISION_INTERFACE",
-      "status": "CONTRACT_ONLY"
-    },
-    "C1_CRDI_V1": {
-      "locus": "MODEL_ADAPTATION",
-      "status": "CONTRACT_ONLY"
-    },
-    "C2_CRDI_RETAIN_V1": {
-      "locus": "MODEL_ADAPTATION",
-      "status": "CONTRACT_ONLY"
-    }
-  },
   "execution_authority": "NO",
   "implementations": {
     "A1_TS_V1": {
@@ -48,11 +34,34 @@
       "revision": "effd688a12921b4cc83e3312b6feb579f70f9c71"
     }
   },
+  "objective_mechanics": {
+    "B1_TYPED_V1": {
+      "execution_authority": "NO",
+      "locus": "DECISION_INTERFACE",
+      "path": "src/commandmed/reliability_v5/objectives.py",
+      "sha256": "bde5bdf737c29132f1a78b883e4b278c9629fad58d18c3b4b8386fe2a9bb0fa8",
+      "status": "OBJECTIVE_MECHANICS_IMPLEMENTED"
+    },
+    "C1_CRDI_V1": {
+      "execution_authority": "NO",
+      "locus": "MODEL_ADAPTATION",
+      "path": "src/commandmed/reliability_v5/objectives.py",
+      "sha256": "bde5bdf737c29132f1a78b883e4b278c9629fad58d18c3b4b8386fe2a9bb0fa8",
+      "status": "OBJECTIVE_MECHANICS_IMPLEMENTED"
+    },
+    "C2_CRDI_RETAIN_V1": {
+      "execution_authority": "NO",
+      "locus": "MODEL_ADAPTATION",
+      "path": "src/commandmed/reliability_v5/objectives.py",
+      "sha256": "bde5bdf737c29132f1a78b883e4b278c9629fad58d18c3b4b8386fe2a9bb0fa8",
+      "status": "OBJECTIVE_MECHANICS_IMPLEMENTED"
+    }
+  },
   "paid_compute": "NO",
   "protocols": {
     "evaluation": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/evaluation-protocol-v5.md",
-      "sha256": "247caecb5d0c277228bd7c1687498fb06868ae6e70b7dc1e1b518e25294e70dc"
+      "sha256": "7f3b3775777b15a86bfe78201bb64ba6e2383030659b679407e3883bb49d72b1"
     },
     "power_margin_gate": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/POWER_AND_MARGIN_GATE_V5.md",
@@ -64,7 +73,7 @@
     },
     "rights_source_admission": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/RIGHTS_AND_SOURCE_ADMISSION_V5.md",
-      "sha256": "6003f3c91c92ed748e5c39fde260f38381ac96787b22dc439b58ba320ab98366"
+      "sha256": "1417fa5dde01b7321b6961577fc90c03a0ec50f0028659c78c529f0550b6693d"
     },
     "statistics": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/statistics-protocol-v5.md",
@@ -72,19 +81,19 @@
     }
   },
   "remaining_blockers": [
-    "B1_TYPED_V1 exact implementation and review",
-    "C1_CRDI_V1 exact implementation and review",
-    "C2_CRDI_RETAIN_V1 exact implementation and review",
+    "B1/C1/C2 model-integration and learned-execution qualification",
+    "qualified clinical appropriateness review of the selected 64 rule sources",
     "property-specific meaningful numeric margins",
     "power verification at frozen margins",
     "final capability-retention task rights and identity",
     "final quarantine procedure and confirmatory source identity binding",
-    "final clean commit binding after review"
+    "post-commit attestation binding the reviewed freeze commit"
   ],
-  "repository": {
+  "repository_context": {
+    "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     "branch": "research/commandmed-paper-first-principles",
-    "dirty": true,
-    "head": "d237c60dbb40ce647c1e94531722627375b2a513"
+    "generated_from_head": "b99a7402801e4006ecff4e7c91182e2517e1aae4",
+    "worktree_dirty_at_build": true
   },
   "rule_oracle": {
     "calculator_count": 64,
@@ -94,12 +103,20 @@
     },
     "case_identities": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json",
-      "sha256": "141555654a21871aad0b67cbc48a3a10983f3e4cd3e44bc9ea6e3524651a6de4"
+      "sha256": "f73e6e763a5311adc9ca31c917a4d78f42585094b54f8ed8a386bd14c6a69dee"
     },
     "cases_per_calculator": 64,
+    "clinical_source_audit": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json",
+      "sha256": "6b774c94de0d6712a80a4a5ad204c4e0a997c34f7618b2171cd2ce0f0c0bec71"
+    },
+    "clinical_source_review": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md",
+      "sha256": "4ac792931fff77581dadc691f4cb9fa223a676def54b28b3438ef06647223a8d"
+    },
     "manifest": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json",
-      "sha256": "5d53b8d99600a04fc507af5e9fe7335ae7109711e3134f51bd0e7ce97f739c2d"
+      "sha256": "1d9f2a52af4bd1506eb5ebe341e595de4e481dc10c967abfcbdc6f019375de76"
     },
     "source_cluster_count": 4096
   },
@@ -112,7 +129,7 @@
     },
     "registry": {
       "path": "src/commandmed/reliability_v5/registry.py",
-      "sha256": "ffa74f3ce1511ccd602503101483bea7830e579002c466c2ce2329f2219fd50e"
+      "sha256": "c8189d86dd9d475f2a84eca8d56f93025367b9cd2f8c050371833fc73241ddca"
     }
   },
   "training": "NO"

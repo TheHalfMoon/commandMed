@@ -35,7 +35,7 @@ Primary matrix columns:
 - `P3_COHERENCE`: probability/logical relation residuals on linked questions.
 - `P4_SEMANTIC_STABILITY`: distribution change under validated meaning-preserving transforms.
 - `P5_EVIDENCE_RESPONSIVENESS`: compliance with exact direction/target relations under meaning-changing interventions.
-- `P6_ACTION_VALIDITY`: declared deterministic decision-rule compliance.
+- `P6_RULE_CONFORMANCE`: declared deterministic decision-rule compliance; clinical validity is a separate qualification.
 - `P7_SELECTIVE_CONTROL`: risk together with coverage; both must be reported.
 - `P8_CAPABILITY_RETENTION`: prespecified medical/nonmedical generation or reasoning tasks after model-level adaptation.
 
@@ -67,7 +67,7 @@ The confirmatory set must be small enough for fair tuning and complete cross-pro
 
 **D1 — Selective act/defer policy.** Frozen threshold or error-controlled policy on the same underlying probabilities; target is selective risk at declared coverage/error constraints.
 
-**D2 — Deterministic clinical-rule tool route.** The model extracts/selects inputs but arithmetic/rule execution is deterministic; target is action validity on rule-governed cases.
+**D2 — Deterministic clinical-rule tool route.** The model extracts/selects inputs but arithmetic/rule execution is deterministic; target is exact rule conformance on rule-governed cases; clinical validity is not inferred from deterministic execution.
 
 Coherence projection remains a secondary candidate until an exact reproducible implementation and task interface are qualified.
 ## 6. Selected interaction tests

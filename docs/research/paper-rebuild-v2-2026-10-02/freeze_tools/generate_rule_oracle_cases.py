@@ -71,7 +71,7 @@ def main() -> int:
         "ordered_case_ids_sha256": sha256_json(all_case_ids),
         "calculators": records,
     }
-    OUT.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print(f"CALCULATORS={payload['calculator_count']}")
     print(f"TOTAL_CASES={payload['total_cases']}")
     print(f"ORDERED_CASE_IDS_SHA256={payload['ordered_case_ids_sha256']}")

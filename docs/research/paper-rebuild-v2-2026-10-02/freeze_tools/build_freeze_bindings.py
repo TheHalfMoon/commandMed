@@ -35,7 +35,7 @@ IMPLEMENTATIONS = {
     "D2_RULETOOL_V1": "src/commandmed/reliability_v5/rule_tool.py",
 }
 
-CONTRACT_ONLY = {
+OBJECTIVE_MECHANICS = {
     "B1_TYPED_V1": "DECISION_INTERFACE",
     "C1_CRDI_V1": "MODEL_ADAPTATION",
     "C2_CRDI_RETAIN_V1": "MODEL_ADAPTATION",
@@ -64,10 +64,11 @@ def main() -> int:
         "training": "NO",
         "paid_compute": "NO",
     }
-    payload["repository"] = {
+    payload["repository_context"] = {
         "branch": git("branch", "--show-current"),
-        "head": git("rev-parse", "HEAD"),
-        "dirty": bool(status),
+        "generated_from_head": git("rev-parse", "HEAD"),
+        "worktree_dirty_at_build": bool(status),
+        "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     }
     payload["models"] = MODELS
     payload["rule_oracle"] = {
@@ -79,6 +80,12 @@ def main() -> int:
             "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json"
         ),
         "case_generator": bind("src/commandmed/reliability_v5/case_generator.py"),
+        "clinical_source_audit": bind(
+            "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json"
+        ),
+        "clinical_source_review": bind(
+            "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md"
+        ),
         "calculator_count": 64,
         "cases_per_calculator": 64,
         "source_cluster_count": 4096,
@@ -87,9 +94,14 @@ def main() -> int:
         intervention_id: {**bind(path), "status": "MECHANICAL_IMPLEMENTED"}
         for intervention_id, path in IMPLEMENTATIONS.items()
     }
-    payload["contract_only"] = {
-        intervention_id: {"locus": locus, "status": "CONTRACT_ONLY"}
-        for intervention_id, locus in CONTRACT_ONLY.items()
+    payload["objective_mechanics"] = {
+        intervention_id: {
+            **bind("src/commandmed/reliability_v5/objectives.py"),
+            "locus": locus,
+            "status": "OBJECTIVE_MECHANICS_IMPLEMENTED",
+            "execution_authority": "NO",
+        }
+        for intervention_id, locus in OBJECTIVE_MECHANICS.items()
     }
     payload["shared_mechanics"] = {
         "contracts": bind("src/commandmed/reliability_v5/contracts.py"),
@@ -103,19 +115,18 @@ def main() -> int:
         "rights_source_admission": bind("docs/research/paper-rebuild-v2-2026-10-02/RIGHTS_AND_SOURCE_ADMISSION_V5.md"),
     }
     payload["remaining_blockers"] = [
-        "B1_TYPED_V1 exact implementation and review",
-        "C1_CRDI_V1 exact implementation and review",
-        "C2_CRDI_RETAIN_V1 exact implementation and review",
+        "B1/C1/C2 model-integration and learned-execution qualification",
+        "qualified clinical appropriateness review of the selected 64 rule sources",
         "property-specific meaningful numeric margins",
         "power verification at frozen margins",
         "final capability-retention task rights and identity",
         "final quarantine procedure and confirmatory source identity binding",
-        "final clean commit binding after review",
+        "post-commit attestation binding the reviewed freeze commit",
     ]
-    OUT.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print(f"OUT={OUT}")
     print(f"OUT_SHA256={sha256_file(OUT)}")
-    print(f"DIRTY={payload['repository']['dirty']}")
+    print(f"WORKTREE_DIRTY_AT_BUILD={payload['repository_context']['worktree_dirty_at_build']}")
     return 0
 
 

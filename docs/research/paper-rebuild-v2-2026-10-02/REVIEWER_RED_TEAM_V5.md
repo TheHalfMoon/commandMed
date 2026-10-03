@@ -11,7 +11,7 @@ Status: internal adversarial review; intended to kill weak claims before executi
 5. **Cross-level interventions are not mechanistically comparable.** A deterministic tool route and a calibration transform operate at different system loci. Cross-level rows are operational system comparisons, not isolated causal mechanism estimates.
 6. **Trained interventions introduce stochastic confounding.** Adaptation effects require matched initialization/data/budget, multiple training seeds, and a declared estimator across training randomness.
 7. **Construct overlap can create tautological off-diagonal effects.** Calibration, selective risk and confidence-based abstention share probability inputs. The paper must label mathematically coupled endpoints and avoid presenting mechanical coupling as surprising interference.
-8. **Clinical-rule tasks can be too clean.** Exact calculators strengthen action validity but may overstate clinical relevance. A separate natural-language/evidence task family is required for external validity.
+8. **Clinical-rule tasks can be too clean.** Exact calculators strengthen rule-conformance measurement but may overstate clinical relevance if treated as current clinical ground truth. A separate natural-language/evidence task family is required for external validity.
 9. **Thresholds can be arbitrary.** Noncompensatory assurance is meaningful only if `tau_j` and `m_j` are justified before test access and sensitivity analyses are secondary.
 10. **Two backbones do not establish universality.** Replication supports transport across the named model families only.
 ## Required repairs before freeze
