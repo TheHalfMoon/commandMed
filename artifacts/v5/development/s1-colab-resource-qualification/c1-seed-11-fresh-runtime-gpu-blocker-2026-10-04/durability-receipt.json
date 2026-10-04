@@ -1,0 +1,21 @@
+{
+  "account_identifiers_credentials_billing_details_in_record": false,
+  "files": [
+    {
+      "path": "colab-gpu-assignment-blocker.png",
+      "sha256": "009c55aa85526fa3ba69efcf4ffbe4c68d8634c74ed42644e315a509db458890",
+      "size": 42548
+    },
+    {
+      "path": "fresh-runtime-observation.json",
+      "sha256": "90a8aa1c6e6c24622095d770743629bd625817c2a79c946e330976b479b7268a",
+      "size": 2997
+    }
+  ],
+  "origin": "NORMAL_INTERACTIVE_COLAB_VISIBLE_UI; LOCAL_SCREENSHOT_CAPTURE",
+  "recorded_utc": "2026-10-04T12:27:10.914805+00:00",
+  "schema": "commandmed.v5.ui-stop.durability.v1",
+  "seed_execution_complete": false,
+  "stored_outside_colab_vm": true,
+  "verification": "EXACT_SCREENSHOT_COPY_HASH_AND_JSON_PARSE; NO_SCIENTIFIC_REPLICATION"
+}
