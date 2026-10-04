@@ -2,29 +2,29 @@
   "account_identifiers_credentials_billing_details_in_record": false,
   "files": [
     {
-      "path": "colab-feedback-draft.png",
+      "path": "colab-feedback-draft.jpg",
       "sha256": "6774d961c5d442c12f55e401ee168988e3465448b70d577ab49063821399e0da",
       "size": 139492
     },
     {
-      "path": "colab-gpu-blocker.png",
+      "path": "colab-gpu-blocker.jpg",
       "sha256": "24ff18ec3301248a54e5a9565346eef0488ee8de548bf0842832a14877a06192",
       "size": 39869
     },
     {
-      "path": "colab-resources.png",
+      "path": "colab-resources.jpg",
       "sha256": "5e54fce8fe4656519a8b64d5628fad0fd619a6e0bb527ae3d289ba9d7fd24796",
       "size": 49567
     },
     {
-      "path": "colab-runtime-options.png",
+      "path": "colab-runtime-options.jpg",
       "sha256": "04a566f91223674ec563ef5ab43ed0bb4f0f3ca6e8936561933bc5afc5a75085",
       "size": 24418
     },
     {
       "path": "entitlement-observation.json",
-      "sha256": "1ae47574dafe030bff1c220423863b5376d85b45de0b12629b89b81891be885f",
-      "size": 4867
+      "sha256": "c0c5c6ebd0178a1869c92cc08c0dde25260d779ff18b9d2f378866669536ce7a",
+      "size": 5003
     },
     {
       "path": "feedback-draft.txt",

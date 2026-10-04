@@ -75,22 +75,26 @@
   "screenshots": [
     {
       "captured_utc": "2026-10-04T12:59:10.945951+00:00",
-      "path": "colab-resources.png",
+      "media_type": "image/jpeg",
+      "path": "colab-resources.jpg",
       "sha256": "5e54fce8fe4656519a8b64d5628fad0fd619a6e0bb527ae3d289ba9d7fd24796"
     },
     {
       "captured_utc": "2026-10-04T12:59:45.614129+00:00",
-      "path": "colab-runtime-options.png",
+      "media_type": "image/jpeg",
+      "path": "colab-runtime-options.jpg",
       "sha256": "04a566f91223674ec563ef5ab43ed0bb4f0f3ca6e8936561933bc5afc5a75085"
     },
     {
       "captured_utc": "2026-10-04T13:00:29.016382+00:00",
-      "path": "colab-gpu-blocker.png",
+      "media_type": "image/jpeg",
+      "path": "colab-gpu-blocker.jpg",
       "sha256": "24ff18ec3301248a54e5a9565346eef0488ee8de548bf0842832a14877a06192"
     },
     {
       "captured_utc": "2026-10-04T13:08:03.038505+00:00",
-      "path": "colab-feedback-draft.png",
+      "media_type": "image/jpeg",
+      "path": "colab-feedback-draft.jpg",
       "sha256": "6774d961c5d442c12f55e401ee168988e3465448b70d577ab49063821399e0da"
     }
   ],
