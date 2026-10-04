@@ -42,7 +42,7 @@ def test_prompt_excludes_gold_and_has_fixed_newline_marker():
     ("The U.S.", ["US"], (1, 1)),
     ("red blue", ["blue green", "red blue"], (1, 1)),
     ("red", ["red blue"], (0, 2/3)),
-    ("", ["the"], (1, 1)),
+    ("", ["the"], (1, 0)),
     ("other", ["answer"], (0, 0)),
 ])
 def test_official_squad_normalization_and_max_over_annotations(prediction, answers, expected):

@@ -133,7 +133,7 @@
   "repository_context": {
     "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     "branch": "research/commandmed-paper-first-principles",
-    "generated_from_head": "3347cf564999cabc1b55bff49c8dfdfeba431106",
+    "generated_from_head": "28a49e46e5e7599c78c87732387ffbf9e631fc10",
     "worktree_dirty_at_build": true
   },
   "retention_control": {
@@ -226,7 +226,7 @@
     },
     "model_integration_freeze": {
       "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_MODEL_INTEGRATION_FREEZE_2026-10-04.md",
-      "sha256": "37f933a52e1dc537289a1cb5967d023b33ceddb19d43190df77b47aa8195e7d2"
+      "sha256": "8b963e32dcf47211705e33cc45e8b5d8cd15b06fb474bbfb60d0a98b9a856eb6"
     },
     "path": "artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json",
     "prior_negative_interface_evidence": {
@@ -244,11 +244,11 @@
     },
     "retention_implementation": {
       "path": "src/commandmed/reliability_v5/retention_dataset.py",
-      "sha256": "671fbb2edec85034d10a1148a010ba22dbdb39471256651b9ec78a56ef448ebf"
+      "sha256": "94ec425cf75a2e495887de4ddbefa888a36cfddf81d3eb7c7836910f1d6f9207"
     },
     "retention_preparation_runner": {
       "path": "scripts/v5_s1_retention_preparation.py",
-      "sha256": "958c28249ccdd68f4de9d2534e02dc11955a2b170fa2534773cc2d120e4d2aec"
+      "sha256": "bb7fd593e009f7cd4632aa97dda4db7f86453349636ed7c6f3fe51dc163844c9"
     },
     "sha256": "2e6df9ef92429653d67664f1e59d8f6d97f2a3e350d46885f6ad40b7c291fdf6",
     "smoke_runner": {

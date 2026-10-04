@@ -48,6 +48,7 @@ def prepare(source: Path, model_dir: Path) -> dict:
         "max_prompt_tokens": max(item["prompt_tokens"] for pool in records.values() for item in pool),
         "maximum_answer_tokens": retention.MAX_ANSWER_TOKENS,
         "maintenance_first_gold_annotation_max_tokens": retention.MAINTENANCE_GOLD_TOKENS,
+        "official_v1_scorer_port_git_blob": retention.OFFICIAL_V1_SCORER_PORT_GIT_BLOB,
         "exact_model_context_bound": context_bound, "medical_maximum_unchanged": 768,
         "truncation": False, "source_payload_exported": False,
         "model_loaded": False, "model_inference": False, "training": False,

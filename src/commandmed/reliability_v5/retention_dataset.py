@@ -17,6 +17,7 @@ SOURCE_FILE_SHA256 = "8c6646d36bd5a95061e076788cf3161d11f6f3e7d625dac7a83bbed0a4
 SOURCE_NAMESPACE = SOURCE_REPO + "@" + SOURCE_REVISION + "/validation"
 MAX_ANSWER_TOKENS = 32
 MAINTENANCE_GOLD_TOKENS = 8
+OFFICIAL_V1_SCORER_PORT_GIT_BLOB = "e60acfd1044319e43a59ffe8db75e63b68785ba7"
 QA_PROMPT_TEMPLATE = (
     "Answer the question using a short span from the passage.\n"
     "PASSAGE:\n{context}\nQUESTION:\n{question}\nANSWER:\n"
@@ -96,6 +97,12 @@ def score_answer(prediction: str, answers: Sequence[str]) -> tuple[float, float]
         g_tokens = gold.split()
         em = max(em, float(predicted == gold))
         common = sum((Counter(p_tokens) & Counter(g_tokens)).values())
-        item_f1 = float(p_tokens == g_tokens) if not p_tokens or not g_tokens else (2 * common / (len(p_tokens) + len(g_tokens)))
+        # Official v1.1 returns zero when there are no common tokens, including
+        # two strings normalized to empty; v2's empty-answer rule is different.
+        if common == 0:
+            item_f1 = 0.0
+        else:
+            precision, recall = common / len(p_tokens), common / len(g_tokens)
+            item_f1 = 2 * precision * recall / (precision + recall)
         f1 = max(f1, item_f1)
     return em, f1
