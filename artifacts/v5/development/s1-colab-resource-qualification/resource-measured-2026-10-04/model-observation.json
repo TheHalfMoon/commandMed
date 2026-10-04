@@ -1,0 +1,8 @@
+{
+  "class": "Qwen3_5ForCausalLM",
+  "device": "cuda:0",
+  "parameter_count": 752393024,
+  "parameter_dtype_counts": {
+    "torch.bfloat16": 752393024
+  }
+}

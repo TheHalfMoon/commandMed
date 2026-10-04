@@ -1,0 +1,11 @@
+{
+  "durable_export_verified": true,
+  "export_origin": "visible Colab cell output, checksum-verified exact bytes",
+  "medical_training": false,
+  "native_ci": "NO_WORKFLOW_RUNS_TRIGGERED",
+  "original_console_sha256": "5bf8d8f3525519147e457b31a52030001c84b434991d75f0328d63e96cd1b857",
+  "original_zip_sha256": "ac90c4db049801edc911b1afa556899f868268eaad09aa807cd0891dc88e9dff",
+  "run_head": "3347cf564999cabc1b55bff49c8dfdfeba431106",
+  "scientific_metrics": false,
+  "synthetic_optimizer_steps": 2
+}

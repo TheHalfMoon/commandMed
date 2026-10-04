@@ -57,7 +57,7 @@ def main() -> int:
     status = git("status", "--porcelain")
     payload = {
         "schema": "commandmed-v5-scientific-freeze-bindings",
-        "schema_version": "1.5",
+        "schema_version": "1.6",
         "confirmatory_frozen": False,
         "execution_authority": "NO",
         "model_execution": "NO",
@@ -183,6 +183,10 @@ def main() -> int:
             "resource_runner": bind("scripts/v5_s1_resource_qualification.py"),
             "colab_resource_runner": bind("scripts/v5_s1_colab_qualification.py"),
             "colab_notebook_template": bind("notebooks/v5_s1_colab_resource_qualification.ipynb"),
+            "b1_development_runner": bind("scripts/v5_s1_b1_development.py"),
+            "retention_preparation_runner": bind("scripts/v5_s1_retention_preparation.py"),
+            "retention_implementation": bind("src/commandmed/reliability_v5/retention_dataset.py"),
+            "model_integration_freeze": bind("docs/research/paper-rebuild-v2-2026-10-02/V5_S1_MODEL_INTEGRATION_FREEZE_2026-10-04.md"),
             "smoke_runner": bind("docs/research/paper-rebuild-v2-2026-10-02/execution_tools/run_s1_smoke.py"),
             "answer_prefix": preparation["answer_prefix"],
             "prompt_content_sequence_sha256": preparation["prompt_content_sequence_sha256"],

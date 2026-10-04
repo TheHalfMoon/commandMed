@@ -1,0 +1,17 @@
+BOUND_RULES=64
+EXAMPLES=8192
+SPLITS={"S1_CAL_EVAL": 3840, "S1_CAL_TUNE": 256, "S1_DEV_EVAL": 3840, "S1_TRAIN": 256}
+MAX_PROMPT_TOKENS=593
+OVERLENGTH=0
+CANDIDATE_TOKEN_FAILURES=[]
+EVIDENCE_SHA256=5d0da6006a26e30012b5f0b00b575267dfd1f9a7a97026549ac9c1db3a5a006b
+MODEL_LOAD=PREFLIGHT_PASS
+
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 320/320 [00:00<00:00, 6918.15it/s]
+INFERENCE=PREFLIGHT_PASS
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+TRAINING=PREFLIGHT_PASS
+INFERENCE=PREFLIGHT_PASS
+{"evidence_zip": "/content/commandmed-source/artifacts/v5/development/s1-colab-resource-qualification/410bbdf9-0acd-456d-974d-169ce905b0ed.zip", "evidence_zip_sha256": "ac90c4db049801edc911b1afa556899f868268eaad09aa807cd0891dc88e9dff", "result": {"blockers": [], "code_sha": "3347cf564999cabc1b55bff49c8dfdfeba431106", "durable_export_verified": false, "full_development_gap": "B1 head fitting and SQuAD retention decoding not timed; full development remains separately gated.", "full_development_qualified": false, "git_tree": "e53dc4267d4f70412ab3195f3bafceb0d7a6a32c", "model_inference": true, "model_loaded": true, "optimization_executed": true, "status": "RESOURCE_QUALIFICATION_MEASURED"}}
