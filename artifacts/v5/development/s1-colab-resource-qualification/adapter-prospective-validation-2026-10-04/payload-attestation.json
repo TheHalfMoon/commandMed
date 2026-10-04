@@ -1,0 +1,28 @@
+{
+  "binding_regeneration": "TWICE_BYTE_IDENTICAL",
+  "c1_c2_medical_training": false,
+  "compile": "PASS",
+  "files": {
+    "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ADAPTER_INTEGRATION_FREEZE_2026-10-04.md": "71c5a2ce2bf74c8a1f9da71190604ad5b5d1da4d882936d79a67998a6c14e7bf",
+    "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/build_freeze_bindings.py": "1daa4f67cdf9e06182e4786a20326ed441224c473f9e9f81818b24081579a5f0",
+    "docs/research/paper-rebuild-v2-2026-10-02/scientific-freeze-bindings-v5.json": "98593dd6c2685477df15adfa82d8a3fd09bf58393bd91ec0d1ca9a93391a2196",
+    "notebooks/v5_s1_colab_resource_qualification.ipynb": "d61f62b023f5ec9ebf52254a3cb69d4f146c4ac7e12121441779c76149c664f9",
+    "scripts/v5_s1_adapter_development.py": "20c320eb5ae9a5d2e42b21a6a3085e89c16d814fdfdb0c43f46dc0f7d8793537",
+    "tests/reliability_v5/test_adapter_development.py": "72a45014c8aecf2379c8656e297bc9536293a34a938ff3645568f64ce6d90048"
+  },
+  "jev": "DEFERRED_NO_PAID_CALL",
+  "live_predecessor_run_head": "848692336c2b8537ee4d559338abed29da0c93d6",
+  "live_predecessor_status": "FOREGROUND_B1_IN_PROGRESS_NOT_YET_ACCEPTED",
+  "model_calls_for_this_payload": false,
+  "notebook_format": "PASS_TEMPLATE_UNEXECUTED",
+  "repository_tests": 1208,
+  "review": "HOST_AGENT_STATIC_REVIEW; EXACT_COMMITTED_OCR_REVIEW_REQUIRED_BEFORE_EXECUTION",
+  "schema": "commandmed.v5.adapter.prospective-validation.v1",
+  "spend_usd": 0,
+  "squad_model_calls": false,
+  "status": "PASS_MODEL_FREE_PAYLOAD_VALIDATION",
+  "v5_tests": 156,
+  "validation_wrapper_canonical_sha256": "c201c73d662efc35456ac0114a828b81801f32341a92b8af290602c1a7a35f12",
+  "validation_wrapper_normalization": "CRLF_TO_LF; TEST_LOG_BYTES_UNCHANGED",
+  "validation_wrapper_original_sha256": "7d38b364489ac963896462bf24890b19771cd27c6862cc10eed72b02bd590db2"
+}

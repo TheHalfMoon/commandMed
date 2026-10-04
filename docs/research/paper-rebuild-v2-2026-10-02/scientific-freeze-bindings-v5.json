@@ -133,7 +133,7 @@
   "repository_context": {
     "binding_semantics": "INFORMATIONAL_GENERATION_CONTEXT_NOT_FINAL_COMMIT_ATTESTATION",
     "branch": "research/commandmed-paper-first-principles",
-    "generated_from_head": "28a49e46e5e7599c78c87732387ffbf9e631fc10",
+    "generated_from_head": "848692336c2b8537ee4d559338abed29da0c93d6",
     "worktree_dirty_at_build": true
   },
   "retention_control": {
@@ -207,6 +207,14 @@
     "static_eligible_count": 82
   },
   "s1_task_preparation": {
+    "adapter_development_runner": {
+      "path": "scripts/v5_s1_adapter_development.py",
+      "sha256": "20c320eb5ae9a5d2e42b21a6a3085e89c16d814fdfdb0c43f46dc0f7d8793537"
+    },
+    "adapter_integration_freeze": {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ADAPTER_INTEGRATION_FREEZE_2026-10-04.md",
+      "sha256": "71c5a2ce2bf74c8a1f9da71190604ad5b5d1da4d882936d79a67998a6c14e7bf"
+    },
     "answer_prefix": "ANSWER:\n",
     "b1_development_runner": {
       "path": "scripts/v5_s1_b1_development.py",
@@ -214,7 +222,7 @@
     },
     "colab_notebook_template": {
       "path": "notebooks/v5_s1_colab_resource_qualification.ipynb",
-      "sha256": "4ced53f37e1191fc1c9ec480201e1b0592b3390790a6ae1d7d6fc8d275b81710"
+      "sha256": "d61f62b023f5ec9ebf52254a3cb69d4f146c4ac7e12121441779c76149c664f9"
     },
     "colab_resource_runner": {
       "path": "scripts/v5_s1_colab_qualification.py",
@@ -258,7 +266,7 @@
     "status": "PASS_PRE_MODEL_INTERFACE"
   },
   "schema": "commandmed-v5-scientific-freeze-bindings",
-  "schema_version": "1.6",
+  "schema_version": "1.7",
   "shared_mechanics": {
     "contracts": {
       "path": "src/commandmed/reliability_v5/contracts.py",
