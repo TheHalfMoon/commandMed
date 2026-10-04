@@ -1,0 +1,33 @@
+{
+  "admission": {
+    "compute_unit_balance": 0,
+    "conservative_admission_buffer_seconds": 600,
+    "cost_basis": "COLAB_FREE_EXPOSED_RESOURCES",
+    "cpu_model": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+    "expected_incremental_spend_usd": 0,
+    "launch_source_sha256": "6ce8081bb19968d2f89fcc01d193fa106ed38aa873f0cfdd358f554b31301e2f",
+    "new_purchase": false,
+    "new_runtime_after_operational_disconnect": true,
+    "normal_interactive_notebook": true,
+    "notebook_id": "1RfTpKjRAfqamgTWrw1j3pM4eAKzZScY4",
+    "notebook_template_sha256": "4ced53f37e1191fc1c9ec480201e1b0592b3390790a6ae1d7d6fc8d275b81710",
+    "observed_remaining_runtime_seconds": 9600,
+    "observed_utc": "2026-10-04T01:28:51.273827+00:00",
+    "reconnection_record_sha256": "f7bf3966f22dc47128c70ccfc0277a25ccf9ddaa85d1afc1208097641cee80ee",
+    "resume": false,
+    "ui_reported_window_seconds": 10200,
+    "ui_subscription": "NOT_SUBSCRIBED"
+  },
+  "config": {
+    "batch_size": 32,
+    "epochs": 40,
+    "seeds": [
+      11,
+      29,
+      47
+    ]
+  },
+  "environment_sha256": "a48a0a987e22eb78ec4c675dc51456d0b794597a09f91f318a47e98a3b230ac8",
+  "resource_environment_sha256": "a92e64f13ce919bdfe31b33e5053e49231e94aa79dac0fb570cbfbc563ad1250",
+  "runner_sha256": "0855105713727333609a6751764732294ad9ff9ef940a2880d99872b7c1ae92a"
+}

@@ -1,0 +1,11 @@
+{
+  "all_8192_tasks": true,
+  "available_seconds": 9495.548635022,
+  "projected_seconds": 6109.778806927367,
+  "resume": false,
+  "seeds": [
+    11,
+    29,
+    47
+  ]
+}

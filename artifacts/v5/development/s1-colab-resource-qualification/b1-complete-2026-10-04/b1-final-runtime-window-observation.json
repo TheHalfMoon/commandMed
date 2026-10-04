@@ -1,0 +1,11 @@
+{
+  "observed_utc": "2026-10-04T03:18:01.934Z",
+  "ui_subscription": "NOT_SUBSCRIBED",
+  "compute_units": 0,
+  "ui_reported_maximum_remaining_runtime_seconds": 3600,
+  "ui_statement": "At your current usage level, this runtime may last up to 1 hour.",
+  "hardware": "TESLA_T4_FREE_EXPOSED_RESOURCES",
+  "no_guaranteed_runtime": true,
+  "new_purchase": false,
+  "incremental_spend_usd": 0
+}

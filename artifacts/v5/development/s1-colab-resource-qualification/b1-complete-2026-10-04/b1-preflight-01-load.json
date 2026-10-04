@@ -1,0 +1,38 @@
+{
+  "authority": {
+    "approved": true,
+    "authority_id": "COLAB_AUTHORITY_SHA256:56a6e32d56885e2b7c784fd357349c87fe003194c0c6fb04e0c3e0616cac09cd",
+    "confirmatory_allowed": false,
+    "gated_data_allowed": false,
+    "paid_api": false,
+    "paid_compute": false,
+    "phi_allowed": false,
+    "reserve_allowed": false,
+    "spend_usd": 0.0
+  },
+  "decision": {
+    "allowed": true,
+    "reason_codes": [],
+    "state": "PREFLIGHT_PASS"
+  },
+  "manifest": {
+    "action": "MODEL_LOAD",
+    "code_sha": "848692336c2b8537ee4d559338abed29da0c93d6",
+    "confirmatory_materialized": false,
+    "contains_phi": false,
+    "data_roles": [
+      "RULE_ORACLE_DEVELOPMENT",
+      "RULE_ORACLE_CALIBRATION"
+    ],
+    "environment_id": "sha256:a48a0a987e22eb78ec4c675dc51456d0b794597a09f91f318a47e98a3b230ac8",
+    "expected_spend_usd": 0.0,
+    "intervention_id": "BASELINE_V1",
+    "model_artifact_sha256": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+    "model_repo": "Qwen/Qwen3.5-0.8B-Base",
+    "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "output_destination": "artifacts/v5/development/s1-colab-resource-qualification/e810ca3a-3330-4e01-8550-26caa42ffb8f/",
+    "paid_resource": false,
+    "reserve_materialized": false,
+    "uses_gated_data": false
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "dtype": "torch.bfloat16",
+  "hidden_width": 1024,
+  "scope": "SYNTHETIC_MECHANICAL_ONLY",
+  "sha256": "2f65b60f4a55302b13cae0220dfa79c517aaedcfd54d2378da6b527e9fd6e0e2"
+}

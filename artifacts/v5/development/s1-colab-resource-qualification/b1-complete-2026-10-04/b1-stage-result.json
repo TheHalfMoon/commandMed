@@ -1,0 +1,37 @@
+{
+  "base_parameter_identity_after": "8c612ed5eb24e2bb5f4b5a311347325d7e94b74f295a9ed4b636f2b4ef8b9f2b",
+  "base_parameter_identity_before": "8c612ed5eb24e2bb5f4b5a311347325d7e94b74f295a9ed4b636f2b4ef8b9f2b",
+  "baseline_prompt_count": 16384,
+  "c1_c2_executed": false,
+  "code_sha": "848692336c2b8537ee4d559338abed29da0c93d6",
+  "complete_matrix": true,
+  "confirmatory": false,
+  "durable_export_verified": false,
+  "medical_training": true,
+  "memory": {
+    "gpu_allocated_bytes": 1548063232,
+    "gpu_free_bytes": 11913723904,
+    "gpu_peak_allocated_bytes": 1892652544,
+    "gpu_peak_reserved_bytes": 3575644160,
+    "gpu_reserved_bytes": 3575644160,
+    "gpu_total_bytes": 15637086208,
+    "process_rss_bytes": 2102599680,
+    "ram_available_bytes": 10460266496
+  },
+  "raw_feature_matrix_sha256": "8ea264990d1598d682e4df15d1a03ac7aa81796daf7c2769d815987faa910351",
+  "reserve": false,
+  "retention_execution": false,
+  "seed_count": 3,
+  "seeds": [
+    11,
+    29,
+    47
+  ],
+  "spend_usd": 0,
+  "stage_memory_sampling": {
+    "min_system_available_bytes": 9474048000,
+    "peak_rss_bytes": 3280457728
+  },
+  "stage_wall_seconds": 6246.702954767,
+  "status": "B1_COMPLETE_DEVELOPMENT"
+}

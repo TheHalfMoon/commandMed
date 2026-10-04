@@ -1,0 +1,12 @@
+{
+  "blockers": [],
+  "code_sha": "848692336c2b8537ee4d559338abed29da0c93d6",
+  "durable_export_verified": false,
+  "full_development_gap": "B1 head fitting and SQuAD retention decoding not timed; full development remains separately gated.",
+  "full_development_qualified": false,
+  "git_tree": "7e94e189061358cdebab8472637a34272827e39a",
+  "model_inference": true,
+  "model_loaded": true,
+  "optimization_executed": true,
+  "status": "RESOURCE_QUALIFICATION_MEASURED"
+}

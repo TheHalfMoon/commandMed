@@ -1,0 +1,23 @@
+{
+  "schema": "commandmed.v5.colab.entitlement.observation.v1",
+  "observed_date": "2026-10-04",
+  "google_one_current_plan": "GOOGLE_AI_PRO",
+  "same_authorized_account_verified": true,
+  "colab_ui_subscription": "NOT_SUBSCRIBED",
+  "colab_compute_units": 0,
+  "colab_included_units_currently_exposed": false,
+  "paid_or_trial_status_not_established": true,
+  "cause_of_entitlement_discrepancy": "UNRESOLVED; DO_NOT_ASSUME_TRIAL_OR_PAID_ALLOCATION",
+  "official_faq": "https://research.google.com/colaboratory/faq.html",
+  "official_faq_facts": [
+    "Eligible paid Google AI plans include Colab benefits; exact benefits depend on the plan.",
+    "Benefits apply automatically to the same Google Account, with no separate Colab signup step.",
+    "Google One free trials, including promotional or extended trials, exclude premium Colab benefits.",
+    "Paid users with exhausted compute units revert to free-tier policies and restrictions."
+  ],
+  "active_runtime_cost_basis": "COLAB_FREE_EXPOSED_RESOURCES",
+  "subscription_or_payment_changes": false,
+  "purchase": false,
+  "incremental_spend_usd": 0,
+  "account_identifier_or_billing_details_exported": false
+}
