@@ -202,9 +202,11 @@ def run(args):
             context=adapted.disable_adapter() if teacher else contextlib.nullcontext()
             with context,torch.no_grad():
                 generated=adapted.generate(**encoded,do_sample=False,num_beams=1,max_new_tokens=32,min_new_tokens=0,
-                    repetition_penalty=1.0,use_cache=True,
+                    repetition_penalty=1.0,use_cache=True,return_dict_in_generate=True,output_logits=True,
                     eos_token_id=model.generation_config.eos_token_id,pad_token_id=model.generation_config.pad_token_id)
-            completion=generated[0,encoded.input_ids.shape[1]:]
+            if not generated.logits or any(not bool(torch.isfinite(logits).all()) for logits in generated.logits):
+                raise RuntimeError('C2_NONFINITE_OR_MISSING_GENERATION_LOGITS')
+            completion=generated.sequences[0,encoded.input_ids.shape[1]:]
             if completion.numel()>32:
                 raise RuntimeError('C2_GENERATION_BOUND_EXCEEDED')
             return tokenizer.decode(completion,skip_special_tokens=True),b1.tensor_sha(completion,torch),completion.numel()
@@ -277,6 +279,8 @@ def run(args):
                 decoded,digest,_=decode(row,True)
                 baseline_retention.append(retention.score_answer(retention.prediction_span(decoded),retention.gold_answers(row)))
                 baseline_output_hashes.append({'source_id':row['id'],'raw_token_sha256':digest})
+                result['baseline_retention_completed']=len(baseline_retention)
+                result['baseline_retention_raw_output_aggregate_sha256']=base.sha256_bytes(base.canonical_json(baseline_output_hashes))
                 require_observed_headroom()
         optimizer=torch.optim.AdamW([p for _,p in trainable],lr=5e-4,betas=(.9,.999),eps=1e-8,weight_decay=0.0)
         permutation=torch.randperm(256,generator=torch.Generator().manual_seed(args.seed)).tolist()
@@ -326,6 +330,8 @@ def run(args):
                 raise RuntimeError('ADAPTER_PARAMETER_CONTRACT_FAILURE')
             losses.append({'step':step+1,'mean_medical_loss':sum(medical_losses)/8,
                 'mean_retention_kl':sum(anchor_losses)/2 if c2 else None,'unclipped_gradient_norm':float(norm.cpu())})
+            base.write_json(output/'adapter-training-observation.json',{'complete':False,'config':config,'losses':losses,
+                'wall_seconds':time.perf_counter()-training_started})
             require_observed_headroom()
             elapsed_training=time.perf_counter()-training_started
             if elapsed_training > base.MAX_PROJECTED_SEED_SECONDS:
@@ -334,7 +340,7 @@ def run(args):
             require_atomic_duration(projection['c1_or_c2_decision_matrix_length_sensitivity_seconds']+
                 retention_timing/2+(32-step-1)*elapsed_training/(step+1)*1.25,remaining)
             print(f'ADAPTER_TRAIN_PROGRESS={step+1}/32',flush=True)
-        base.write_json(output/'adapter-training-observation.json',{'config':config,'losses':losses,'wall_seconds':time.perf_counter()-training_started})
+        base.write_json(output/'adapter-training-observation.json',{'complete':True,'config':config,'losses':losses,'wall_seconds':time.perf_counter()-training_started})
         adapted.eval()
         preflight('INFERENCE','complete-medical-matrix')
         matrix_started=time.perf_counter()
@@ -362,6 +368,8 @@ def run(args):
                 decoded,digest,_=decode(row,False)
                 candidate_retention.append(retention.score_answer(retention.prediction_span(decoded),retention.gold_answers(row)))
                 candidate_output_hashes.append({'source_id':row['id'],'raw_token_sha256':digest})
+                result['candidate_retention_completed']=len(candidate_retention)
+                result['candidate_retention_raw_output_aggregate_sha256']=base.sha256_bytes(base.canonical_json(candidate_output_hashes))
                 require_observed_headroom()
             def averages(items):
                 return {'exact_match':sum(x[0] for x in items)/256,'token_f1':sum(x[1] for x in items)/256,'count':256}

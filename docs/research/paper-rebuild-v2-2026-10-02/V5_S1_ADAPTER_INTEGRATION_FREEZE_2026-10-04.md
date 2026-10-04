@@ -32,4 +32,6 @@ Model-free verification compares the tensor objective operations to the separate
 
 The greedy resource sample times both disabled-base and enabled-adapter paths. If EOS stops a sample before 32 generated tokens, its timing is conservatively scaled to the full 32-token bound before the paired 512-decode projection and 25 percent buffer. No generated answer content or score informs this duration calculation.
 
+Raw native generation logits are checked for finiteness without changing greedy token selection or decoding. Native generation's float32 probability/logit arithmetic does not promote model weights or transformer execution. Interrupted training preserves completed optimizer-step observations, and interrupted retention records only completion counts and aggregate output hashes; partial paired metrics are not accepted or exported.
+
 Zero incremental spend, normal interactive Colab use, no confirmatory/reserve, no PHI/private/gated data, no external paid compute/API, no replication, HCF/Qwen-Image, paper publication or merge remain binding. All historical failures and original evidence bytes remain preserved.

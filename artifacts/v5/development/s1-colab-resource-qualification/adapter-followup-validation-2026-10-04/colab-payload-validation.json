@@ -1,0 +1,19 @@
+{
+  "head": "7866a32e2a7a449b280544cc12021be87d5d87e7",
+  "model_calls": false,
+  "v5": {
+    "exit_code": 0,
+    "sha256": "bf0017f3fbf3322f94596a1735bcbea872633f7f9061094c17f4da085b5706c8",
+    "summary": "156 passed in 0.90s"
+  },
+  "full": {
+    "exit_code": 0,
+    "sha256": "c3fd58336f2ab0be4e5ee594bd66b8916d0fc7cdb17ea488ba8d27f4f7650418",
+    "summary": "1208 passed in 24.28s"
+  },
+  "notebook_format_and_compile": "PASS_TEMPLATE_UNEXECUTED",
+  "compile": "PASS",
+  "diff_check": "PASS",
+  "deterministic_freeze_binding_regeneration": "BYTE_IDENTICAL",
+  "freeze_bindings_sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c"
+}
