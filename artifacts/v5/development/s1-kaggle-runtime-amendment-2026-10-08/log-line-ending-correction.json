@@ -1,0 +1,18 @@
+{
+  "original_commit": "bbdcf96",
+  "reason": "CRLF_LOG_LINES_FAILED_STAGED_DIFF_CHECK; ADDITIVE_CORRECTION_NO_HISTORY_REWRITE",
+  "rows": [
+    {
+      "after_sha256": "58f0c521f4b343f1be4997509a222b0cf199a00c3e54970cac719ed0131b44a3",
+      "before_sha256": "67856fa9642abd2ce6d3ada37d5426101a9833b78bb6d6c3ded4963cc10dbc4f",
+      "normalization": "CRLF_TO_LF_ONLY",
+      "path": "full-tests.log"
+    },
+    {
+      "after_sha256": "d1e98a5eb0d3515ed8b9b2b26ec048853dd3632c17166e54cb9efd309c050b81",
+      "before_sha256": "df7f70da365040c7d4716292d32ba2762aa52f27ae586e8221f99239cef23b21",
+      "normalization": "CRLF_TO_LF_ONLY",
+      "path": "v5-tests.log"
+    }
+  ]
+}
