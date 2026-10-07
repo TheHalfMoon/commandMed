@@ -1,3 +1,6 @@
+import os
+os.environ["COMMANDMED_EXPECTED_HEAD"]='1c7dc50be86b398eaaf19e597a8390893073d62b'
+os.environ["COMMANDMED_ADMISSION_JSON"]='{"cost_basis": "KAGGLE_ZERO_COST_RUNTIME", "username": "abdulazizshehri", "private": true, "expected_incremental_spend_usd": 0, "new_purchase": false, "scientific_gpu_count": 1, "scientific_device": "cuda:0", "confirmatory_materialized": false, "reserve_materialized": false, "phi": false, "kernel_ref": "abdulazizshehri/commandmed-v5-c1-seed-11-qualification", "quota_observed_unix": 1791408175.6547947, "free_gpu_seconds_available": 107973.101, "requested_session_timeout_seconds": 42000, "quota_used_seconds": 26.899, "quota_reserved_seconds": 0.0, "quota_total_allowed_seconds": 108000.0, "quota_refresh_at": "2026-10-10T00:00:00", "qualification_scope": "PREMODEL_ONLY_NO_MODEL_LOAD_INFERENCE_OR_TRAINING", "code_sha": "1c7dc50be86b398eaaf19e597a8390893073d62b", "git_tree": "24eacdae891278704c805388ba6f6630bb1cd732"}'
 #!/usr/bin/env python3
 """Official private Kaggle script bootstrap for metadata-only S1 qualification.
 
@@ -45,7 +48,7 @@ def run(expected_head: str, admission: dict) -> int:
         # These are previously used public implementation versions, selected
         # before outputs. Preserve Kaggle's supplied torch/CUDA installation.
         subprocess.run([sys.executable,'-m','pip','install','--disable-pip-version-check',
-                        'transformers==5.18.0','tokenizers==0.23.2','peft==0.21.2','psutil==7.1.0',
+                        'transformers==5.18.0','peft==0.21.2','psutil==7.1.0',
                         'safetensors==0.8.0','huggingface-hub==1.33.0'],check=True)
         if importlib.metadata.version('torch')!=torch_before:
             raise RuntimeError('KAGGLE_SUPPLIED_TORCH_CHANGED_DURING_DEPENDENCY_SETUP')

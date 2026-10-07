@@ -1,0 +1,27 @@
+{
+  "cuda_device_count": 2,
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "visible_gpus": [
+    {
+      "compute_capability": [
+        7,
+        5
+      ],
+      "index": 0,
+      "name": "Tesla T4",
+      "scientific_use": true,
+      "total_memory_bytes": 15636037632
+    },
+    {
+      "compute_capability": [
+        7,
+        5
+      ],
+      "index": 1,
+      "name": "Tesla T4",
+      "scientific_use": false,
+      "total_memory_bytes": 15636037632
+    }
+  ]
+}
