@@ -62,3 +62,23 @@ def test_wrong_gpu_or_no_bfloat16_blocks():
         get_device_capability=lambda index:(6,0),is_bf16_supported=lambda:False)
     with pytest.raises(RuntimeError,match='HARDWARE_MISMATCH'):
         kaggle.verify_gpu_binding(SimpleNamespace(cuda=cuda))
+
+
+@pytest.mark.parametrize('intervention,seed',[('C2_CRDI_RETAIN_V1',11),('C1_CRDI_V1',29),('C1_CRDI_V1',47)])
+def test_current_atomic_entry_point_stops_outside_c1_seed_11(monkeypatch,intervention,seed):
+    import v5_s1_kaggle_adapter_development as atomic
+    monkeypatch.setattr(atomic.metadata,'validate_admission',lambda record:42000)
+    with pytest.raises(RuntimeError,match='C1_SEED_11_ONLY'):
+        atomic.validate_admission({'intervention':intervention,'seed':seed})
+
+
+def test_atomic_model_action_blocks_changed_code_and_accepts_only_its_evidence(monkeypatch):
+    import v5_s1_kaggle_adapter_development as atomic
+    head='a'*40
+    monkeypatch.setattr(atomic.base,'git_text',lambda *args:head if args[0]=='rev-parse' else '?? src/changed.py')
+    with pytest.raises(RuntimeError,match='NON_EVIDENCE'):
+        atomic.verify_head(head)
+    with pytest.raises(RuntimeError,match='HEAD_MISMATCH'):
+        atomic.verify_head('b'*40)
+    monkeypatch.setattr(atomic.base,'git_text',lambda *args:head if args[0]=='rev-parse' else '?? artifacts/v5/development/s1-kaggle-preflight/seed-11/adapter-environment.json')
+    assert atomic.verify_head(head)==head

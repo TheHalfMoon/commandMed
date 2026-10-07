@@ -1,0 +1,74 @@
+{
+  "admission": {
+    "code_sha": "bf0af0f320fde6d326b7ba1b3f0bb6dd56ff2842",
+    "confirmatory_materialized": false,
+    "cost_basis": "KAGGLE_ZERO_COST_RUNTIME",
+    "expected_incremental_spend_usd": 0,
+    "free_gpu_seconds_available": 107826.51,
+    "git_tree": "3e472342033f45f37eae108d190685d3d0dbecf4",
+    "kernel_ref": "abdulazizshehri/commandmed-v5-c1-seed-11-qualification",
+    "new_purchase": false,
+    "phi": false,
+    "private": true,
+    "qualification_scope": "PREMODEL_ONLY_NO_MODEL_LOAD_INFERENCE_OR_TRAINING",
+    "quota_observed_unix": 1791409028.542787,
+    "quota_refresh_at": "2026-10-10T00:00:00",
+    "quota_reserved_seconds": 0.0,
+    "quota_total_allowed_seconds": 108000.0,
+    "quota_used_seconds": 173.49,
+    "requested_session_timeout_seconds": 42000,
+    "reserve_materialized": false,
+    "scientific_device": "cuda:0",
+    "scientific_gpu_count": 1,
+    "username": "abdulazizshehri"
+  },
+  "bfloat16_support": true,
+  "cpu_count": 4,
+  "cuda": "12.8",
+  "frozen_bindings": {
+    "amendment_sha256": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+    "binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+    "scientific_freeze_sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c",
+    "verified_entry_file_count": 307
+  },
+  "native_bfloat16_support": false,
+  "packages": {
+    "huggingface-hub": "1.33.0",
+    "numpy": "2.1.3",
+    "peft": "0.21.2",
+    "psutil": "7.1.0",
+    "safetensors": "0.8.0",
+    "tokenizers": "0.23.2",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.18.0"
+  },
+  "platform": "Linux-6.18.48+-x86_64-with-glibc2.39",
+  "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+  "ram_total_bytes": 33658318848,
+  "runner_sha256": "503c3fa459755e18d5ca679cfde97b59231c690d3aed6baa8ca395c7894d2fd9",
+  "runtime_dtype": "bfloat16",
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "visible_gpus": [
+    {
+      "compute_capability": [
+        7,
+        5
+      ],
+      "index": 0,
+      "name": "Tesla T4",
+      "scientific_use": true,
+      "total_memory_bytes": 15636037632
+    },
+    {
+      "compute_capability": [
+        7,
+        5
+      ],
+      "index": 1,
+      "name": "Tesla T4",
+      "scientific_use": false,
+      "total_memory_bytes": 15636037632
+    }
+  ]
+}
