@@ -1,3 +1,6 @@
+import os
+os.environ["COMMANDMED_EXPECTED_HEAD"]='27d2b9e51b721f9e972f8315ee487fbf4d977093'
+os.environ["COMMANDMED_ADMISSION_JSON"]='{"cost_basis": "KAGGLE_ZERO_COST_RUNTIME", "username": "abdulazizshehri", "private": true, "expected_incremental_spend_usd": 0, "new_purchase": false, "scientific_gpu_count": 1, "scientific_device": "cuda:0", "confirmatory_materialized": false, "reserve_materialized": false, "phi": false, "kernel_ref": "abdulazizshehri/commandmed-v5-c1-seed-11-qualification", "quota_observed_unix": 1791410033.664959, "free_gpu_seconds_available": 107657.407, "requested_session_timeout_seconds": 42000, "quota_used_seconds": 342.593, "quota_reserved_seconds": 0.0, "quota_total_allowed_seconds": 108000.0, "quota_refresh_at": "2026-10-10T00:00:00", "pay_to_scale_enabled": false, "qualification_scope": "FRESH_PREFLIGHT_THEN_RESOURCE_DURATION_ADMISSION_THEN_ATOMIC_C1_SEED_11_ONLY", "intervention": "C1_CRDI_V1", "seed": 11, "resume": false, "code_sha": "27d2b9e51b721f9e972f8315ee487fbf4d977093", "git_tree": "f92ebf2fca3558dfbaed5dbc0e65d634dba760fe"}'
 #!/usr/bin/env python3
 """Private atomic C1 seed-11 kernel: qualify, admit, execute, export or stop."""
 import importlib.metadata
@@ -38,22 +41,6 @@ def run(expected_head,admission):
         if actual!=expected_head:
             raise RuntimeError('ATOMIC_LIVE_GIT_HEAD_MISMATCH')
         before=importlib.metadata.version('torch')
-        # The frozen direct-BF16 path does not use optional TorchAO quantization.
-        # Reuse the recorded Colab environment repair before any model action.
-        try:
-            optional_torchao=importlib.metadata.version('torchao')
-        except importlib.metadata.PackageNotFoundError:
-            optional_torchao=None
-        if optional_torchao is not None:
-            subprocess.run([sys.executable,'-m','pip','uninstall','--yes','torchao'],check=True)
-        try:
-            importlib.metadata.version('torchao')
-        except importlib.metadata.PackageNotFoundError:
-            pass
-        else:
-            raise RuntimeError('ATOMIC_UNUSED_TORCHAO_REMOVAL_FAILED')
-        result['runtime_repair']={'unused_optional_extension':'torchao','before':optional_torchao,
-                                 'after':None,'scope':'PREMODEL_ENVIRONMENT_ONLY; DIRECT_BF16_UNCHANGED'}
         subprocess.run([sys.executable,'-m','pip','install','--disable-pip-version-check',
                         'transformers==5.18.0','tokenizers==0.23.2','peft==0.21.2',
                         'psutil==7.1.0','safetensors==0.8.0','huggingface-hub==1.33.0'],check=True)

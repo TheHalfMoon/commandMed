@@ -1,0 +1,14 @@
+{
+  "code_sha": "27d2b9e51b721f9e972f8315ee487fbf4d977093",
+  "durable_export_verified": false,
+  "exception_type": "ImportError",
+  "git_tree": "f92ebf2fca3558dfbaed5dbc0e65d634dba760fe",
+  "medical_optimizer_steps": 0,
+  "model_inference": true,
+  "model_loaded": true,
+  "optimization_executed": false,
+  "reason": "Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported",
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "status": "KAGGLE_RESOURCE_BLOCKED"
+}

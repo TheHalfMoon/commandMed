@@ -1,0 +1,12 @@
+{
+  "exit_code": 2,
+  "expected_head": "27d2b9e51b721f9e972f8315ee487fbf4d977093",
+  "exported_archive": true,
+  "intervention": "C1_CRDI_V1",
+  "resume": false,
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "seed": 11,
+  "spend_usd": 0,
+  "status": "ATOMIC_KERNEL_FINISHED"
+}
