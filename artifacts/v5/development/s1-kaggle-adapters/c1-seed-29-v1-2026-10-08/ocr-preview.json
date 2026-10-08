@@ -1,0 +1,268 @@
+{
+  "schema_version": "1",
+  "mode": "workspace",
+  "repository": "C:/Users/Shehr/CommandMed-V5",
+  "total_files": 42,
+  "reviewable_count": 40,
+  "excluded_count": 2,
+  "total_insertions": 215208,
+  "total_deletions": 0,
+  "reviewable_files": [
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/commandmed-atomic-kernel-result.json",
+      "status": "added",
+      "insertions": 18,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/commandmed-physical-hardware.json",
+      "status": "added",
+      "insertions": 22,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-analysis.json",
+      "status": "added",
+      "insertions": 61,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-decision-matrix.json",
+      "status": "added",
+      "insertions": 212999,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-environment.json",
+      "status": "added",
+      "insertions": 55,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-load-observation.json",
+      "status": "added",
+      "insertions": 11,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-preflight-01-load.json",
+      "status": "added",
+      "insertions": 38,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-preflight-02-medical-training.json",
+      "status": "added",
+      "insertions": 38,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-preflight-03-complete-medical-matrix.json",
+      "status": "added",
+      "insertions": 38,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-preliminary-duration-admission.json",
+      "status": "added",
+      "insertions": 6,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-seed-result.json",
+      "status": "added",
+      "insertions": 36,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-stage-duration-admission.json",
+      "status": "added",
+      "insertions": 7,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-trainable-parameters.json",
+      "status": "added",
+      "insertions": 84,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-training-identities.json",
+      "status": "added",
+      "insertions": 261,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-training-observation.json",
+      "status": "added",
+      "insertions": 219,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/benchmark-timing.json",
+      "status": "added",
+      "insertions": 13,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/environment-before-imports.json",
+      "status": "added",
+      "insertions": 77,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/environment-manifest.json",
+      "status": "added",
+      "insertions": 143,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/frozen-bindings.json",
+      "status": "added",
+      "insertions": 6,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/hardware-manifest.json",
+      "status": "added",
+      "insertions": 17,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/kaggle-preflight-result.json",
+      "status": "added",
+      "insertions": 19,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/load-observation.json",
+      "status": "added",
+      "insertions": 13,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/medical-resource-timing.json",
+      "status": "added",
+      "insertions": 232,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/model-artifact-manifest.json",
+      "status": "added",
+      "insertions": 69,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/preflight-model-load.json",
+      "status": "added",
+      "insertions": 38,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/preparation/task-preparation-evidence.json",
+      "status": "added",
+      "insertions": 128,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/resource-preflight-inference.json",
+      "status": "added",
+      "insertions": 37,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/resource-preflight-medical-resource-timing.json",
+      "status": "added",
+      "insertions": 38,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/resource-preflight-model_load.json",
+      "status": "added",
+      "insertions": 37,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/resource-preflight-training.json",
+      "status": "added",
+      "insertions": 37,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/resource-qualification.json",
+      "status": "added",
+      "insertions": 14,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/smoke-inference.json",
+      "status": "added",
+      "insertions": 18,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/timed-step.json",
+      "status": "added",
+      "insertions": 14,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/trainable-parameters.json",
+      "status": "added",
+      "insertions": 84,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/warmup-step.json",
+      "status": "added",
+      "insertions": 14,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/workload-projection.json",
+      "status": "added",
+      "insertions": 12,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/export-verification-receipt.json",
+      "status": "added",
+      "insertions": 202,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/launch-preparation.json",
+      "status": "added",
+      "insertions": 21,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/live-retrieval-receipt.json",
+      "status": "added",
+      "insertions": 16,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/ocr-preview.json",
+      "status": "added",
+      "insertions": 0,
+      "deletions": 0
+    }
+  ],
+  "excluded_files": [
+    {
+      "path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/original-export.zip",
+      "status": "binary",
+      "insertions": 0,
+      "deletions": 0,
+      "exclude_reason": "binary"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_C1_SEED_29_DEVELOPMENT_RESULTS_2026-10-08.md",
+      "status": "added",
+      "insertions": 16,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    }
+  ]
+}

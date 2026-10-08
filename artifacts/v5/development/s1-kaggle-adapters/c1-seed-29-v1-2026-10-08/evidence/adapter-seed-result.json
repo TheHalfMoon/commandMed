@@ -1,0 +1,36 @@
+{
+  "adapter_parameter_identity": "718edff0ecb39a97e2151c121ae5b6bacba35bc91e7354f700ec2d5bee084542",
+  "analysis_sha256": "4e188a947dbaa31777d94aa0bf18ed1a0b1a04737bcaf5e05378031181dba0c7",
+  "base_identity_before_adapter_insertion": "8c612ed5eb24e2bb5f4b5a311347325d7e94b74f295a9ed4b636f2b4ef8b9f2b",
+  "code_sha": "3c65c8e8ae9b78de72c2055a1b8575fb7da64c53",
+  "complete_matrix": true,
+  "confirmatory": false,
+  "durable_export_verified": false,
+  "frozen_parameter_identity_after": "d7d9a0758f56a9b45f10390caef1af5ecedff7f31220568bcce471822ee70ebe",
+  "frozen_parameter_identity_before": "d7d9a0758f56a9b45f10390caef1af5ecedff7f31220568bcce471822ee70ebe",
+  "intervention": "C1_CRDI_V1",
+  "medical_optimizer_steps": 32,
+  "memory": {
+    "gpu_allocated_bytes": 1547817472,
+    "gpu_free_bytes": 10144776192,
+    "gpu_peak_allocated_bytes": 2250764800,
+    "gpu_peak_reserved_bytes": 5343543296,
+    "gpu_reserved_bytes": 5343543296,
+    "gpu_total_bytes": 15636037632,
+    "process_rss_bytes": 2079260672,
+    "ram_available_bytes": 29829214208
+  },
+  "memory_sampling": {
+    "min_system_available_bytes": 29541617664,
+    "peak_rss_bytes": 3443159040
+  },
+  "prompt_count": 16384,
+  "raw_output_sha256": "37c022d535fffed59215a32eb25da0ffd85faa3d0d34b084a4c9173eb4053f28",
+  "reserve": false,
+  "resume": false,
+  "retention_evaluated": false,
+  "seed": 29,
+  "spend_usd": 0,
+  "status": "ADAPTER_SEED_COMPLETE_DEVELOPMENT",
+  "wall_seconds": 6323.503535358
+}
