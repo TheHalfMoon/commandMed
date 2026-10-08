@@ -30,8 +30,11 @@ require_headroom=shared.require_headroom
 
 def validate_admission(record):
     metadata.validate_admission(record)
-    if record.get('intervention')!='C1_CRDI_V1' or record.get('seed')!=11:
-        raise RuntimeError('KAGGLE_C1_SEED_11_ONLY')
+    if record.get('intervention')!='C1_CRDI_V1' or type(record.get('seed')) is not int or record['seed'] not in (11,29,47):
+        raise RuntimeError('KAGGLE_FROZEN_C1_SEEDS_ONLY')
+    if record.get('resume') is not False:
+        raise RuntimeError('KAGGLE_ATOMIC_NO_RESUME_REQUIRED')
+    metadata.require_prior_c1_evidence(record['seed'])
 
 
 def verify_head(expected):
@@ -200,7 +203,7 @@ def main():
     admission['observed_remaining_runtime_seconds']=metadata.validate_admission(admission)
     args.admission.write_text(json.dumps(admission),encoding='utf-8')
     args.intervention='C1_CRDI_V1'
-    args.seed=11
+    args.seed=admission['seed']
     args.retention_source=None
     frozen.colab=sys.modules[__name__]
     result,output=frozen.run(args)

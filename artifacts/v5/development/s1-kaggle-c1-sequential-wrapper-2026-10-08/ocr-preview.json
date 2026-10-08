@@ -1,0 +1,46 @@
+{
+  "schema_version": "1",
+  "mode": "workspace",
+  "repository": "C:/Users/Shehr/CommandMed-V5",
+  "total_files": 5,
+  "reviewable_count": 3,
+  "excluded_count": 2,
+  "total_insertions": 134,
+  "total_deletions": 15,
+  "reviewable_files": [
+    {
+      "path": "scripts/v5_s1_kaggle_adapter_development.py",
+      "status": "modified",
+      "insertions": 6,
+      "deletions": 3
+    },
+    {
+      "path": "scripts/v5_s1_kaggle_atomic_kernel.py",
+      "status": "modified",
+      "insertions": 9,
+      "deletions": 6
+    },
+    {
+      "path": "scripts/v5_s1_kaggle_preflight.py",
+      "status": "modified",
+      "insertions": 71,
+      "deletions": 3
+    }
+  ],
+  "excluded_files": [
+    {
+      "path": "tests/reliability_v5/test_kaggle_preflight.py",
+      "status": "modified",
+      "insertions": 37,
+      "deletions": 3,
+      "exclude_reason": "default_path"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_C1_SEQUENTIAL_KAGGLE_WRAPPER_FREEZE_2026-10-08.md",
+      "status": "added",
+      "insertions": 11,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    }
+  ]
+}

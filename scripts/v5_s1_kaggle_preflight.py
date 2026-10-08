@@ -8,6 +8,7 @@ import json
 import math
 import platform
 import shutil
+import subprocess
 import sys
 import time
 from dataclasses import asdict
@@ -23,6 +24,68 @@ AMENDMENT = 'V5_S1_KAGGLE_RUNTIME_AMENDMENT_2026-10-08.md'
 KERNEL = 'abdulazizshehri/commandmed-v5-c1-seed-11-qualification'
 
 
+def c1_kernel(seed):
+    if type(seed) is not int or seed not in (11,29,47):
+        raise RuntimeError('KAGGLE_UNFROZEN_C1_SEED')
+    return KERNEL if seed==11 else f'abdulazizshehri/commandmed-v5-c1-seed-{seed}-atomic'
+
+
+def require_prior_c1_evidence(seed):
+    """Every earlier seed must be committed, verified and reviewed; no rerun."""
+    c1_kernel(seed)
+    root=base.REPO/'artifacts/v5/development/s1-kaggle-adapters'
+    chain=[]
+    for previous in (11,29,47):
+        candidates=[]
+        for path in root.glob(f'c1-seed-{previous}-v*-*/export-verification-receipt.json'):
+            record=json.loads(path.read_text(encoding='utf-8'))
+            if record.get('status')=='PASS_MODEL_FREE_EXPORT_VERIFICATION':
+                candidates.append((path,record))
+        if previous==seed:
+            if candidates:
+                raise RuntimeError('KAGGLE_COMPLETED_SEED_RERUN_FORBIDDEN')
+            break
+        if len(candidates)!=1:
+            raise RuntimeError('KAGGLE_PRIOR_C1_SEED_NOT_CANONICALLY_VERIFIED')
+        path,record=candidates[0]
+        folder=path.parent
+        require_fields={'seed':previous,'intervention':'C1_CRDI_V1','durable_export_verified':True,
+                        'ordered_medical_rows_verified':16384,'model_weights_loaded':False,
+                        'clinical_validity':False,'confirmatory':False,'reserve':False,'spend_usd':0}
+        if any(record.get(key)!=value for key,value in require_fields.items()):
+            raise RuntimeError('KAGGLE_PRIOR_C1_RECEIPT_INVALID')
+        review_path=folder/'validation-and-review.json'
+        review=json.loads(review_path.read_text(encoding='utf-8'))
+        if (review['v5_tests']['exit_code']!=0 or review['full_repository_tests']['exit_code']!=0
+            or review['compile_exit_code']!=0 or review['diff_check_exit_code']!=0
+            or review['spend_usd']!=0 or not review['host_review'].startswith('NO_MATERIAL_BLOCKER')):
+            raise RuntimeError('KAGGLE_PRIOR_C1_REVIEW_MISSING_OR_FAILED')
+        files=[path,review_path,folder/'original-export.zip',folder/'commandmed-atomic-kernel-result.json',
+               folder/'commandmed-physical-hardware.json']
+        if base.sha256_file(files[2])!=record['archive_sha256']:
+            raise RuntimeError('KAGGLE_PRIOR_C1_ARCHIVE_CHANGED')
+        if (base.sha256_file(files[3])!=record['allowlisted_runtime_sha256'] or
+            base.sha256_file(files[4])!=record['physical_hardware_sha256']):
+            raise RuntimeError('KAGGLE_PRIOR_C1_RUNTIME_RECORD_CHANGED')
+        for row in record['files']:
+            member=Path(row['path'])
+            if member.is_absolute() or '..' in member.parts or '\\' in row['path'] or ':' in row['path']:
+                raise RuntimeError('KAGGLE_PRIOR_C1_UNSAFE_RECEIPT_PATH')
+            evidence=folder/'evidence'/member
+            if evidence.stat().st_size!=row['bytes'] or base.sha256_file(evidence)!=row['sha256']:
+                raise RuntimeError('KAGGLE_PRIOR_C1_EVIDENCE_CHANGED')
+            files.append(evidence)
+        for evidence in files:
+            relative=evidence.relative_to(base.REPO).as_posix()
+            # HEAD bytes, rather than index membership alone, prove durability.
+            committed=subprocess.check_output(['git','-C',str(base.REPO),'show','HEAD:'+relative])
+            if base.sha256_bytes(committed)!=base.sha256_file(evidence):
+                raise RuntimeError('KAGGLE_PRIOR_C1_NOT_COMMITTED')
+        chain.append({'seed':previous,'receipt':path.relative_to(base.REPO).as_posix(),
+                      'receipt_sha256':base.sha256_file(path),'archive_sha256':record['archive_sha256']})
+    return chain
+
+
 def validate_admission(record: dict, now: float | None = None) -> float:
     required = {'cost_basis':'KAGGLE_ZERO_COST_RUNTIME', 'username':'abdulazizshehri',
                 'private':True, 'expected_incremental_spend_usd':0, 'new_purchase':False,
@@ -30,7 +93,8 @@ def validate_admission(record: dict, now: float | None = None) -> float:
                 'confirmatory_materialized':False, 'reserve_materialized':False, 'phi':False}
     if any(record.get(key)!=value for key,value in required.items()):
         raise RuntimeError('KAGGLE_COST_PRIVACY_OR_GPU_ADMISSION_BLOCKED')
-    if record.get('kernel_ref') != KERNEL:
+    seed=record.get('seed',11)
+    if record.get('kernel_ref') != c1_kernel(seed):
         raise RuntimeError('KAGGLE_KERNEL_IDENTITY_MISMATCH')
     now = time.time() if now is None else now
     observed = record.get('quota_observed_unix')
@@ -79,7 +143,9 @@ def verify_gpu_binding(torch) -> list[dict]:
 
 
 def qualify(args) -> tuple[dict,Path]:
-    output = base.REPO/OUTPUT_REL/'seed-11'
+    admission = json.loads(args.admission.read_text())
+    seed=admission.get('seed',11)
+    output = base.REPO/OUTPUT_REL/f'seed-{seed}'
     output.mkdir(parents=True,exist_ok=False)
     result = {'status':'IN_PROGRESS','model_loaded':False,'model_inference':False,'training':False,
               'confirmatory_materialized':False,'reserve_materialized':False,'phi':False,'spend_usd':0,
@@ -96,6 +162,7 @@ def qualify(args) -> tuple[dict,Path]:
         result.update(code_sha=head,git_tree=base.git_text('show','-s','--format=%T','HEAD'))
         admission = json.loads(args.admission.read_text())
         validate_admission(admission)
+        chain=require_prior_c1_evidence(seed) if 'seed' in admission else []
         frozen = verify_frozen_bindings()
         persist('frozen-bindings.json',frozen)
         import torch
@@ -116,7 +183,8 @@ def qualify(args) -> tuple[dict,Path]:
                        'native_bfloat16_support':torch.cuda.is_bf16_supported(including_emulation=False),
                        'bfloat16_support':torch.cuda.is_bf16_supported(),'cpu_count':psutil.cpu_count(),
                        'ram_total_bytes':psutil.virtual_memory().total,'admission':admission,
-                       'frozen_bindings':frozen,'runner_sha256':base.sha256_file(Path(__file__))}
+                       'frozen_bindings':frozen,'runner_sha256':base.sha256_file(Path(__file__)),
+                       'prior_c1_evidence':chain}
         persist('environment-before-imports.json',environment)
         # Imports qualify implementation support; these do not load weights.
         from transformers import AutoModelForCausalLM, AutoTokenizer

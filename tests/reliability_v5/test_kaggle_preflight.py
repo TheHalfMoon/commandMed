@@ -64,11 +64,11 @@ def test_wrong_gpu_or_no_bfloat16_blocks():
         kaggle.verify_gpu_binding(SimpleNamespace(cuda=cuda))
 
 
-@pytest.mark.parametrize('intervention,seed',[('C2_CRDI_RETAIN_V1',11),('C1_CRDI_V1',29),('C1_CRDI_V1',47)])
-def test_current_atomic_entry_point_stops_outside_c1_seed_11(monkeypatch,intervention,seed):
+@pytest.mark.parametrize('intervention,seed',[('C2_CRDI_RETAIN_V1',11),('C1_CRDI_V1',12),('C1_CRDI_V1',True)])
+def test_atomic_entry_point_stops_outside_frozen_c1_seeds(monkeypatch,intervention,seed):
     import v5_s1_kaggle_adapter_development as atomic
     monkeypatch.setattr(atomic.metadata,'validate_admission',lambda record:42000)
-    with pytest.raises(RuntimeError,match='C1_SEED_11_ONLY'):
+    with pytest.raises(RuntimeError,match='FROZEN_C1_SEEDS_ONLY'):
         atomic.validate_admission({'intervention':intervention,'seed':seed})
 
 
@@ -82,3 +82,37 @@ def test_atomic_model_action_blocks_changed_code_and_accepts_only_its_evidence(m
         atomic.verify_head('b'*40)
     monkeypatch.setattr(atomic.base,'git_text',lambda *args:head if args[0]=='rev-parse' else '?? artifacts/v5/development/s1-kaggle-preflight/seed-11/adapter-environment.json')
     assert atomic.verify_head(head)==head
+
+
+@pytest.mark.parametrize('seed',[0,12,True,'29',29.0])
+def test_kernel_identity_rejects_unfrozen_or_non_integer_seeds(seed):
+    with pytest.raises(RuntimeError,match='UNFROZEN_C1_SEED'):
+        kaggle.c1_kernel(seed)
+
+
+@pytest.mark.parametrize('seed',[29,47])
+def test_later_seed_requires_predecessor_evidence_before_model_action(monkeypatch,tmp_path,seed):
+    monkeypatch.setattr(kaggle.base,'REPO',tmp_path)
+    with pytest.raises(RuntimeError,match='PRIOR_C1_SEED_NOT_CANONICALLY_VERIFIED'):
+        kaggle.require_prior_c1_evidence(seed)
+
+
+def test_atomic_admission_requires_no_resume_and_calls_sequential_gate(monkeypatch):
+    import v5_s1_kaggle_adapter_development as atomic
+    monkeypatch.setattr(atomic.metadata,'validate_admission',lambda record:42000)
+    calls=[]
+    monkeypatch.setattr(atomic.metadata,'require_prior_c1_evidence',lambda seed:calls.append(seed))
+    for resume in (True,None):
+        with pytest.raises(RuntimeError,match='NO_RESUME_REQUIRED'):
+            atomic.validate_admission({'intervention':'C1_CRDI_V1','seed':29,'resume':resume})
+    atomic.validate_admission({'intervention':'C1_CRDI_V1','seed':29,'resume':False})
+    assert calls==[29]
+
+
+def test_admission_binds_each_later_seed_to_its_private_kernel():
+    record=admission()
+    record['seed']=29
+    with pytest.raises(RuntimeError,match='KERNEL_IDENTITY_MISMATCH'):
+        kaggle.validate_admission(record,now=1100)
+    record['kernel_ref']=kaggle.c1_kernel(29)
+    assert kaggle.validate_admission(record,now=1100)==41900

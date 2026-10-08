@@ -1,0 +1,42 @@
+{
+  "alibaba_ocr": "v1.12.12 (182898c); genuine local delegate preview and resolved rules; host-agent review",
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "entry_head": "c8e977975cd372fa59e6536c4190942c9e22f712",
+  "files": [
+    {
+      "path": "scripts/v5_s1_kaggle_preflight.py",
+      "sha256": "7a4eb6c3948f29acd462cddbc83180dc7e811b67a69104cc086310c6f61606c9"
+    },
+    {
+      "path": "scripts/v5_s1_kaggle_adapter_development.py",
+      "sha256": "d075bebb1ad7eddf37b283ebc5d36de2ffb85627a5c31ae219598253538c51ea"
+    },
+    {
+      "path": "scripts/v5_s1_kaggle_atomic_kernel.py",
+      "sha256": "9c2b5048535bdec202bcdf98b2f20daab8b67c644fe108ad552e122747765bc6"
+    },
+    {
+      "path": "tests/reliability_v5/test_kaggle_preflight.py",
+      "sha256": "c8239f0a9f4115761efadb1a7225272016838925916634f2fd70e2acb565d4e6"
+    }
+  ],
+  "frozen_entry_files_verified": 307,
+  "frozen_scientific_runner_sha256": "c6a35bb1eea9c2392e6cecdb3e6b355f58adfc2aa8da574fe6e3568b6e9a75d1",
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1248,
+    "seconds": 19.0
+  },
+  "host_review": "NO_MATERIAL_BLOCKER; predecessor hashes and committed bytes; strict allowed seeds; no resume; GPU isolation; full matrix and original algorithm unchanged",
+  "independent_external_verdict": false,
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "paid_api": false,
+  "paid_compute": false,
+  "spend_usd": 0,
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 196,
+    "seconds": 2.88
+  }
+}

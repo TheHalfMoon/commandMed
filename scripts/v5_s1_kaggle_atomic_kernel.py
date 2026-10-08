@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Private atomic C1 seed-11 kernel: qualify, admit, execute, export or stop."""
+"""Private atomic frozen C1 seed: qualify, admit, execute, export or stop."""
 import importlib.metadata
 import json
 import os
@@ -14,13 +14,16 @@ from pathlib import Path
 def run(expected_head,admission):
     if not re.fullmatch('[0-9a-f]{40}',expected_head) or admission.get('private') is not True:
         raise ValueError('PRIVATE_EXACT_HEAD_REQUIRED')
-    if admission.get('intervention')!='C1_CRDI_V1' or admission.get('seed')!=11:
-        raise ValueError('ATOMIC_C1_SEED_11_ONLY')
+    seed=admission.get('seed')
+    if admission.get('intervention')!='C1_CRDI_V1' or type(seed) is not int or seed not in (11,29,47):
+        raise ValueError('ATOMIC_FROZEN_C1_SEEDS_ONLY')
+    if admission.get('resume') is not False:
+        raise ValueError('ATOMIC_NO_RESUME_REQUIRED')
     output=Path('/kaggle/working')
     workspace=Path(tempfile.mkdtemp(prefix='commandmed-atomic-'))
     repo=workspace/'repo'
     result={'status':'ATOMIC_BOOTSTRAP_IN_PROGRESS','expected_head':expected_head,
-            'intervention':'C1_CRDI_V1','seed':11,'spend_usd':0,'resume':False}
+            'intervention':'C1_CRDI_V1','seed':seed,'spend_usd':0,'resume':False}
     try:
         import torch
         physical={'python':sys.version,'torch':torch.__version__,'cuda':torch.version.cuda,
@@ -66,9 +69,9 @@ def run(expected_head,admission):
                  '--expected-head',expected_head,'--admission',str(record),'--physical-hardware',str(hardware),
                  '--model-dir',str(workspace/'model'),'--source',str(workspace/'riskcalcs.json')]
         process=subprocess.run(command,env=environment)
-        archive=repo/'artifacts/v5/development/s1-kaggle-preflight/seed-11.zip'
+        archive=repo/f'artifacts/v5/development/s1-kaggle-preflight/seed-{seed}.zip'
         if archive.is_file():
-            shutil.copyfile(archive,output/'commandmed-c1-seed-11-evidence.zip')
+            shutil.copyfile(archive,output/f'commandmed-c1-seed-{seed}-evidence.zip')
         result.update(status='ATOMIC_KERNEL_FINISHED',exit_code=process.returncode,
                       exported_archive=archive.is_file(),scientific_gpu_count=1,scientific_device='cuda:0')
     except Exception as exc:
