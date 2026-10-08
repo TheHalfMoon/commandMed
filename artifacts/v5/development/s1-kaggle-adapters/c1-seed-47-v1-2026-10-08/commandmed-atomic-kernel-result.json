@@ -1,0 +1,18 @@
+{
+  "exit_code": 0,
+  "expected_head": "90f3911438b6909ca785d78c139897af4a0bf2fc",
+  "exported_archive": true,
+  "intervention": "C1_CRDI_V1",
+  "resume": false,
+  "runtime_repair": {
+    "after": null,
+    "before": "0.10.0",
+    "scope": "PREMODEL_ENVIRONMENT_ONLY; DIRECT_BF16_UNCHANGED",
+    "unused_optional_extension": "torchao"
+  },
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "seed": 47,
+  "spend_usd": 0,
+  "status": "ATOMIC_KERNEL_FINISHED"
+}

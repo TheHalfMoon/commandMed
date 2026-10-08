@@ -1,0 +1,19 @@
+{
+  "code_sha": "90f3911438b6909ca785d78c139897af4a0bf2fc",
+  "confirmatory_materialized": false,
+  "durable_export_verified": false,
+  "duration_admission": "NOT_REACHED_NO_MODEL_RESOURCE_MEASUREMENT",
+  "finished_at": "2026-10-08T15:19:44.053972+00:00",
+  "git_tree": "1ed2f5adc0d9f7a2a53d618209a76454ea4101b0",
+  "model_inference": false,
+  "model_load_executed": false,
+  "model_loaded": false,
+  "phi": false,
+  "remaining_seconds": 41812.01835441589,
+  "reserve_materialized": false,
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "spend_usd": 0,
+  "status": "KAGGLE_PREFLIGHT_PASS",
+  "training": false
+}
