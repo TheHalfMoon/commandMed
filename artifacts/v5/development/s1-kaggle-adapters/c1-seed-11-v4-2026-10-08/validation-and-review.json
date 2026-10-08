@@ -1,0 +1,28 @@
+{
+  "alibaba_ocr": "v1.12.12 (182898c); local delegate preview and resolved Python rules; host-agent review",
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "external_model_verdict": false,
+  "frozen_entry_files_verified": 307,
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1239,
+    "seconds": 26.64
+  },
+  "historical_acquisition_record": "Original untracked acquisition.json inspected and preserved; not a fresh acquisition or next-run admission",
+  "host_review": "NO_MATERIAL_BLOCKER; archive trust boundary and evidence semantics checked; required authority inventory and fresh duration gates strengthened before commit",
+  "initial_test_errors": [
+    "Default pytest temporary directory access denied; 180 passed and 7 setup errors",
+    "First custom basetemp parent absent; 180 passed and 7 setup errors"
+  ],
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "reviewed_run_head": "e8394f6b4c3e58fc633a2eb1faef853030d645d7",
+  "schema": "commandmed.v5.seed-review.v1",
+  "spend_usd": 0,
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 187,
+    "seconds": 2.45
+  },
+  "verifier_source_sha256": "926a83d98ca5176cbacd3445860958015fd7984a9c7e7580bffbd4d2be1b73d6"
+}

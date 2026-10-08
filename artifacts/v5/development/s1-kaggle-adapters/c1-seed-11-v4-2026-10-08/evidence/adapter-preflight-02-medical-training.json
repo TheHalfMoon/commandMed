@@ -1,0 +1,38 @@
+{
+  "authority": {
+    "approved": true,
+    "authority_id": "COLAB_AUTHORITY_SHA256:6e8197f27dc099d09768585e5dca17b4e4937b6a8aca6985eb982bb5fec14889",
+    "confirmatory_allowed": false,
+    "gated_data_allowed": false,
+    "paid_api": false,
+    "paid_compute": false,
+    "phi_allowed": false,
+    "reserve_allowed": false,
+    "spend_usd": 0.0
+  },
+  "decision": {
+    "allowed": true,
+    "reason_codes": [],
+    "state": "PREFLIGHT_PASS"
+  },
+  "manifest": {
+    "action": "TRAINING",
+    "code_sha": "e8394f6b4c3e58fc633a2eb1faef853030d645d7",
+    "confirmatory_materialized": false,
+    "contains_phi": false,
+    "data_roles": [
+      "RULE_ORACLE_DEVELOPMENT",
+      "RULE_ORACLE_CALIBRATION"
+    ],
+    "environment_id": "sha256:b97c5921840c669bb47479d108e8bd645e32ebc4741f69c531874333510c73d4",
+    "expected_spend_usd": 0.0,
+    "intervention_id": "C1_CRDI_V1",
+    "model_artifact_sha256": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+    "model_repo": "Qwen/Qwen3.5-0.8B-Base",
+    "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "output_destination": "artifacts/v5/development/s1-kaggle-preflight/seed-11/",
+    "paid_resource": false,
+    "reserve_materialized": false,
+    "uses_gated_data": false
+  }
+}
