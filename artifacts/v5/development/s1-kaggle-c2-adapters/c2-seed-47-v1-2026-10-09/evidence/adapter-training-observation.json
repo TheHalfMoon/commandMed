@@ -1,0 +1,219 @@
+{
+  "complete": true,
+  "config": {
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "clip_norm": 1.0,
+    "contract_weight": 0.1,
+    "eps": 1e-08,
+    "gradient_accumulation": 8,
+    "intervention": "C2_CRDI_RETAIN_V1",
+    "lr": 0.0005,
+    "maintenance_schedule": "TWO_RANKED_ANCHORS_PER_OPTIMIZER_STEP; ALL_64_ONCE",
+    "medical_epochs": 1,
+    "medical_order": "CPU_TORCH_GENERATOR_SEEDED_RANDPERM_OF_FROZEN_MATERIALIZATION",
+    "micro_batch_size": 1,
+    "optimizer_steps": 32,
+    "retention_weight": 0.1,
+    "seed": 47,
+    "train_count": 256,
+    "weight_decay": 0.0
+  },
+  "losses": [
+    {
+      "mean_medical_loss": 0.6989223510026932,
+      "mean_retention_kl": -4.451975524615449e-16,
+      "step": 1,
+      "unclipped_gradient_norm": 1.8984375
+    },
+    {
+      "mean_medical_loss": 0.668013159185648,
+      "mean_retention_kl": 0.0011461891699582338,
+      "step": 2,
+      "unclipped_gradient_norm": 1.03125
+    },
+    {
+      "mean_medical_loss": 0.6518212892115116,
+      "mean_retention_kl": 0.0001209348629345186,
+      "step": 3,
+      "unclipped_gradient_norm": 1.484375
+    },
+    {
+      "mean_medical_loss": 0.8033347595483065,
+      "mean_retention_kl": 0.0006134890900284518,
+      "step": 4,
+      "unclipped_gradient_norm": 5.03125
+    },
+    {
+      "mean_medical_loss": 0.7681423034518957,
+      "mean_retention_kl": 0.0006399279227480292,
+      "step": 5,
+      "unclipped_gradient_norm": 4.28125
+    },
+    {
+      "mean_medical_loss": 1.1703184954822063,
+      "mean_retention_kl": 0.00037677599175367504,
+      "step": 6,
+      "unclipped_gradient_norm": 6.375
+    },
+    {
+      "mean_medical_loss": 0.9002818576991558,
+      "mean_retention_kl": 0.00011139469279441983,
+      "step": 7,
+      "unclipped_gradient_norm": 2.53125
+    },
+    {
+      "mean_medical_loss": 0.7702156379818916,
+      "mean_retention_kl": 0.0001419827458448708,
+      "step": 8,
+      "unclipped_gradient_norm": 2.765625
+    },
+    {
+      "mean_medical_loss": 0.6687703505158424,
+      "mean_retention_kl": 0.0003702428366523236,
+      "step": 9,
+      "unclipped_gradient_norm": 0.310546875
+    },
+    {
+      "mean_medical_loss": 0.6259403228759766,
+      "mean_retention_kl": 0.0004293337115086615,
+      "step": 10,
+      "unclipped_gradient_norm": 0.609375
+    },
+    {
+      "mean_medical_loss": 0.713507853448391,
+      "mean_retention_kl": 0.0006192361033754423,
+      "step": 11,
+      "unclipped_gradient_norm": 4.46875
+    },
+    {
+      "mean_medical_loss": 0.6588708758354187,
+      "mean_retention_kl": 0.0017442655225750059,
+      "step": 12,
+      "unclipped_gradient_norm": 3.0
+    },
+    {
+      "mean_medical_loss": 0.8779769018292427,
+      "mean_retention_kl": 0.0010724460589699447,
+      "step": 13,
+      "unclipped_gradient_norm": 8.625
+    },
+    {
+      "mean_medical_loss": 0.9512048847973347,
+      "mean_retention_kl": 0.002778684312943369,
+      "step": 14,
+      "unclipped_gradient_norm": 11.75
+    },
+    {
+      "mean_medical_loss": 0.8514586370438337,
+      "mean_retention_kl": 0.0011057109804823995,
+      "step": 15,
+      "unclipped_gradient_norm": 5.53125
+    },
+    {
+      "mean_medical_loss": 0.8665594607591629,
+      "mean_retention_kl": 0.00149583350867033,
+      "step": 16,
+      "unclipped_gradient_norm": 12.375
+    },
+    {
+      "mean_medical_loss": 0.6470893025398254,
+      "mean_retention_kl": 0.00026466692361282185,
+      "step": 17,
+      "unclipped_gradient_norm": 0.5390625
+    },
+    {
+      "mean_medical_loss": 0.7071893140673637,
+      "mean_retention_kl": 0.00036156030546408147,
+      "step": 18,
+      "unclipped_gradient_norm": 0.8828125
+    },
+    {
+      "mean_medical_loss": 0.5321143008768559,
+      "mean_retention_kl": 0.0007116703636711463,
+      "step": 19,
+      "unclipped_gradient_norm": 3.40625
+    },
+    {
+      "mean_medical_loss": 0.926927674561739,
+      "mean_retention_kl": 0.003226125263608992,
+      "step": 20,
+      "unclipped_gradient_norm": 10.125
+    },
+    {
+      "mean_medical_loss": 0.7302444130182266,
+      "mean_retention_kl": 0.002098576631397009,
+      "step": 21,
+      "unclipped_gradient_norm": 7.28125
+    },
+    {
+      "mean_medical_loss": 0.8228908553719521,
+      "mean_retention_kl": 0.0021480192081071436,
+      "step": 22,
+      "unclipped_gradient_norm": 7.9375
+    },
+    {
+      "mean_medical_loss": 1.0544891599565744,
+      "mean_retention_kl": 0.004490708059165627,
+      "step": 23,
+      "unclipped_gradient_norm": 11.75
+    },
+    {
+      "mean_medical_loss": 0.7495295517146587,
+      "mean_retention_kl": 0.0020234898547641933,
+      "step": 24,
+      "unclipped_gradient_norm": 4.71875
+    },
+    {
+      "mean_medical_loss": 0.9289020635187626,
+      "mean_retention_kl": 0.0010342080640839413,
+      "step": 25,
+      "unclipped_gradient_norm": 14.25
+    },
+    {
+      "mean_medical_loss": 0.6552687250077724,
+      "mean_retention_kl": 0.0016593540785834193,
+      "step": 26,
+      "unclipped_gradient_norm": 7.0
+    },
+    {
+      "mean_medical_loss": 0.8002077229321003,
+      "mean_retention_kl": 0.0020918972440995276,
+      "step": 27,
+      "unclipped_gradient_norm": 6.5625
+    },
+    {
+      "mean_medical_loss": 0.6532316245138645,
+      "mean_retention_kl": 0.003630169201642275,
+      "step": 28,
+      "unclipped_gradient_norm": 3.5625
+    },
+    {
+      "mean_medical_loss": 0.6947605200111866,
+      "mean_retention_kl": 0.0017871906165964901,
+      "step": 29,
+      "unclipped_gradient_norm": 4.34375
+    },
+    {
+      "mean_medical_loss": 1.1176589019596577,
+      "mean_retention_kl": 0.0033627907396294177,
+      "step": 30,
+      "unclipped_gradient_norm": 16.375
+    },
+    {
+      "mean_medical_loss": 0.5669965036213398,
+      "mean_retention_kl": 0.0015740375383757055,
+      "step": 31,
+      "unclipped_gradient_norm": 2.109375
+    },
+    {
+      "mean_medical_loss": 0.8614430464804173,
+      "mean_retention_kl": 0.004396808333694935,
+      "step": 32,
+      "unclipped_gradient_norm": 5.78125
+    }
+  ],
+  "wall_seconds": 259.2879197970001
+}

@@ -1,0 +1,37 @@
+{
+  "authority": {
+    "approved": true,
+    "authority_id": "KAGGLE_AUTHORITY_SHA256:6e8197f27dc099d09768585e5dca17b4e4937b6a8aca6985eb982bb5fec14889",
+    "confirmatory_allowed": false,
+    "gated_data_allowed": false,
+    "paid_api": false,
+    "paid_compute": false,
+    "phi_allowed": false,
+    "reserve_allowed": false,
+    "spend_usd": 0.0
+  },
+  "decision": {
+    "allowed": true,
+    "reason_codes": [],
+    "state": "PREFLIGHT_PASS"
+  },
+  "manifest": {
+    "action": "INFERENCE",
+    "code_sha": "d73b35759741f9331d8b55cfa17a3b9d79176c5e",
+    "confirmatory_materialized": false,
+    "contains_phi": false,
+    "data_roles": [
+      "SYNTHETIC_MECHANICAL"
+    ],
+    "environment_id": "sha256:247506817ec0ed4f16e798899b84416db4655b1682763aa7b3f6d86fd6b1a2ae",
+    "expected_spend_usd": 0.0,
+    "intervention_id": "C2_CRDI_RETAIN_V1",
+    "model_artifact_sha256": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+    "model_repo": "Qwen/Qwen3.5-0.8B-Base",
+    "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "output_destination": "artifacts/v5/development/s1-kaggle-c2-preflight/seed-47/",
+    "paid_resource": false,
+    "reserve_materialized": false,
+    "uses_gated_data": false
+  }
+}
