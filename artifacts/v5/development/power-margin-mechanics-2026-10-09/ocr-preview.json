@@ -1,0 +1,47 @@
+{
+  "schema_version": "1",
+  "mode": "workspace",
+  "repository": "C:/Users/Shehr/CommandMed-V5",
+  "total_files": 5,
+  "reviewable_count": 2,
+  "excluded_count": 3,
+  "total_insertions": 351,
+  "total_deletions": 0,
+  "reviewable_files": [
+    {
+      "path": "artifacts/v5/development/power-margin-mechanics-2026-10-09/ocr-preview.json",
+      "status": "added",
+      "insertions": 0,
+      "deletions": 0
+    },
+    {
+      "path": "scripts/v5_power_margin_plan.py",
+      "status": "added",
+      "insertions": 203,
+      "deletions": 0
+    }
+  ],
+  "excluded_files": [
+    {
+      "path": "artifacts/v5/development/power-margin-mechanics-2026-10-09/ocr-version.txt",
+      "status": "added",
+      "insertions": 3,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_POWER_MARGIN_PLANNING_MECHANICS_2026-10-09.md",
+      "status": "added",
+      "insertions": 42,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "tests/reliability_v5/test_power_margin_plan.py",
+      "status": "added",
+      "insertions": 103,
+      "deletions": 0,
+      "exclude_reason": "default_path"
+    }
+  ]
+}

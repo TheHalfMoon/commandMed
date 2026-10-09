@@ -1,0 +1,39 @@
+{
+  "schema": "commandmed.v5.power-margin-mechanics-review.v1",
+  "status": "QUALIFIED_MECHANICS_ONLY",
+  "reviewed_base_head": "7fff0c9f9f0ee6d36a1e43037b5f7b81c19229c1",
+  "targeted_tests": {
+    "exit_code": 0,
+    "passed": 12,
+    "seconds": 0.18,
+    "basetemp": "C:\\pmp"
+  },
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 291,
+    "seconds": 14.5,
+    "basetemp": "C:\\pmv5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1343,
+    "seconds": 29.68,
+    "basetemp": "C:\\pmall"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview covering 2 reviewable / 5 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; utility is fail-closed, requires frozen justification/evidence hashes, applies only m_j=max(domain_floor_j,2*repeatability95_j), uses conservative Holm first-step alpha/family_size for planning, preserves zero nuisance variance without inventing noise, and cannot choose margins or access confirmatory data",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "scope": "DEVELOPMENT_ONLY_POWER_PLANNING_MECHANICS",
+  "numeric_domain_floors_frozen": false,
+  "numeric_margins_frozen": false,
+  "confirmatory": false,
+  "reserve": false,
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "pr_320_state": "OPEN_DRAFT_UNMERGED"
+}
