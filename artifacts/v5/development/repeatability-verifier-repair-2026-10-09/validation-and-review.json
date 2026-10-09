@@ -1,0 +1,61 @@
+{
+  "schema": "commandmed.v5.repeatability-verifier-repair-review.v1",
+  "status": "QUALIFIED_VERIFICATION_MECHANICS_REPAIR",
+  "reviewed_base_head": "7fff0c9f9f0ee6d36a1e43037b5f7b81c19229c1",
+  "first_failed_verification": {
+    "expected_run_head": "e1b166ca88b1bd649e2a736e817603ec714b7192",
+    "kernel": "abdulazizshehri/commandmed-v5-base-repeatability-r1",
+    "kernel_version": 1,
+    "error": "REPEATABILITY_ANALYSIS_REPRODUCTION_MISMATCH",
+    "differing_fields": [
+      {
+        "path": "mean_semantic_js_by_split/S1_CAL_EVAL",
+        "absolute_difference": 2.168404344971009e-19
+      },
+      {
+        "path": "mean_semantic_js_by_split/S1_DEV_EVAL",
+        "absolute_difference": 2.168404344971009e-19
+      }
+    ],
+    "scientific_export_changed": false,
+    "rerun_required": false
+  },
+  "repair": {
+    "absolute_tolerance": 1e-12,
+    "precedent": "Existing qualified C1/C2 model-free verifiers",
+    "exact_structure_required": true,
+    "exact_nonfloat_values_required": true,
+    "finite_float_values_required": true
+  },
+  "targeted_tests": {
+    "exit_code": 0,
+    "passed": 23,
+    "seconds": 0.39,
+    "basetemp": "C:\\rrt"
+  },
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 299,
+    "seconds": 20.68,
+    "basetemp": "C:\\rrv5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1351,
+    "seconds": 45.92,
+    "basetemp": "C:\\rrall"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview covering 2 reviewable / 4 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; repair is limited to cross-platform deterministic-analysis float comparison, preserves exact archive/runtime/hardware/source/ordered-row/logit checks, uses the pre-existing C1/C2 1e-12 tolerance, and does not change scientific output or authorize rerun",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "confirmatory": false,
+  "reserve": false,
+  "pr_320_state": "OPEN_DRAFT_UNMERGED"
+}

@@ -7,6 +7,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
 import v5_s1_kaggle_repeatability as repeat_runtime
+import v5_s1_verify_repeatability_export as repeat_verify
 
 
 def admission() -> dict:
@@ -96,3 +97,20 @@ def test_repeatability_runner_contains_no_training_action() -> None:
     assert "torch.optim" not in source
     assert "fit_head(" not in source
     assert "BASELINE_V1" in source
+
+
+def test_repeatability_verifier_accepts_subpicounit_float_drift() -> None:
+    repeat_verify._close_analysis(
+        {"metric": 0.0012071127534052986},
+        {"metric": 0.0012071127534052989},
+    )
+
+
+def test_repeatability_verifier_rejects_material_float_drift() -> None:
+    with pytest.raises(RuntimeError, match="ANALYSIS_REPRODUCTION_MISMATCH"):
+        repeat_verify._close_analysis({"metric": 0.1}, {"metric": 0.10000000001})
+
+
+def test_repeatability_verifier_rejects_structure_drift() -> None:
+    with pytest.raises(RuntimeError, match="ANALYSIS_REPRODUCTION_MISMATCH"):
+        repeat_verify._close_analysis({"metric": 0.1, "extra": 0.2}, {"metric": 0.1})

@@ -42,6 +42,35 @@ def _safe_members(archive: zipfile.ZipFile) -> list[zipfile.ZipInfo]:
     return infos
 
 
+def _close_analysis(actual, expected, path: str = "analysis") -> None:
+    """Compare deterministic analysis while allowing platform-level float noise.
+
+    The 1e-12 absolute tolerance matches the already-qualified C1/C2 model-free
+    verifiers and is far above the observed sub-ulp JSON round-trip drift while
+    remaining far below any reported scientific precision.
+    """
+    if isinstance(expected, dict):
+        if not isinstance(actual, dict) or set(actual) != set(expected):
+            raise RuntimeError("REPEATABILITY_ANALYSIS_REPRODUCTION_MISMATCH:" + path + ":KEYS")
+        for key in expected:
+            _close_analysis(actual[key], expected[key], path + "/" + str(key))
+    elif isinstance(expected, list):
+        if not isinstance(actual, list) or len(actual) != len(expected):
+            raise RuntimeError("REPEATABILITY_ANALYSIS_REPRODUCTION_MISMATCH:" + path + ":LENGTH")
+        for index, value in enumerate(expected):
+            _close_analysis(actual[index], value, path + "/" + str(index))
+    elif isinstance(expected, float):
+        if (
+            type(actual) not in (float, int)
+            or isinstance(actual, bool)
+            or not math.isfinite(float(actual))
+            or abs(float(actual) - expected) > 1e-12
+        ):
+            raise RuntimeError("REPEATABILITY_ANALYSIS_REPRODUCTION_MISMATCH:" + path + ":METRIC")
+    elif type(actual) is not type(expected) or actual != expected:
+        raise RuntimeError("REPEATABILITY_ANALYSIS_REPRODUCTION_MISMATCH:" + path + ":VALUE")
+
+
 def verify(args) -> dict:
     if _sha(args.source) != RISKCALCS_SHA256:
         raise RuntimeError("RISKCALCS_SOURCE_HASH_MISMATCH")
@@ -160,8 +189,7 @@ def verify(args) -> dict:
 
             stored_analysis = json.loads((root / "repeatability-analysis.json").read_text(encoding="utf-8"))
             reproduced = b1.analyze_rows(rows)
-            if base.canonical_json(stored_analysis) != base.canonical_json(reproduced):
-                raise RuntimeError("REPEATABILITY_ANALYSIS_REPRODUCTION_MISMATCH")
+            _close_analysis(stored_analysis, reproduced)
 
             file_rows = []
             for info in infos:
@@ -196,6 +224,7 @@ def verify(args) -> dict:
         "reserve": False,
         "spend_usd": 0,
         "riskcalcs_sha256": RISKCALCS_SHA256,
+        "analysis_reproduced_absolute_tolerance": 1e-12,
         "archive_sha256": archive_sha,
         "allowlisted_runtime_sha256": _sha(args.runtime),
         "physical_hardware_sha256": _sha(args.hardware),
