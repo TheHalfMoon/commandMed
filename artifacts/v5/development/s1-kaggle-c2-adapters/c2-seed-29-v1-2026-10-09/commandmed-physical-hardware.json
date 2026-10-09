@@ -1,0 +1,22 @@
+{
+  "cuda": "12.8",
+  "cuda_device_count": 2,
+  "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "torch": "2.11.0+cu128",
+  "visible_gpus": [
+    {
+      "index": 0,
+      "name": "Tesla T4",
+      "scientific_use": true,
+      "total_memory_bytes": 15636037632
+    },
+    {
+      "index": 1,
+      "name": "Tesla T4",
+      "scientific_use": false,
+      "total_memory_bytes": 15636037632
+    }
+  ]
+}

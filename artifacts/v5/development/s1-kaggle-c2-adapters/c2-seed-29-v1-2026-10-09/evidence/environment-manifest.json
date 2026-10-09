@@ -1,0 +1,169 @@
+{
+  "admission": {
+    "code_sha": "8576b20ff8fd797a5680497f584b024f0a4bfc5c",
+    "confirmatory_materialized": false,
+    "cost_basis": "KAGGLE_ZERO_COST_RUNTIME",
+    "expected_incremental_spend_usd": 0,
+    "free_gpu_seconds_available": 74174.394,
+    "git_tree": "1d55f066225cff7f24d971cf708ddcf6dc7d2e67",
+    "intervention": "C2_CRDI_RETAIN_V1",
+    "kernel_ref": "abdulazizshehri/commandmed-v5-c2-seed-29-atomic",
+    "new_purchase": false,
+    "observed_remaining_runtime_seconds": 41947.34676074982,
+    "pay_to_scale_enabled": false,
+    "phi": false,
+    "private": true,
+    "qualification_scope": "FRESH_PREFLIGHT_THEN_RESOURCE_DURATION_ADMISSION_THEN_ATOMIC_C2_SEED_29_ONLY",
+    "quota_observed_unix": 1791499232.387508,
+    "quota_refresh_at": "2026-10-10T00:00:00",
+    "quota_reserved_seconds": 0.0,
+    "quota_total_allowed_seconds": 108000.0,
+    "quota_used_seconds": 33825.606,
+    "requested_session_timeout_seconds": 42000,
+    "reserve_materialized": false,
+    "resume": false,
+    "retention_file": "plain_text/validation-00000-of-00001.parquet",
+    "retention_repo": "rajpurkar/squad",
+    "retention_revision": "7b6d24c440a36b6815f21b70d25016731768db1f",
+    "retention_source_sha256": "8c6646d36bd5a95061e076788cf3161d11f6f3e7d625dac7a83bbed0a49f69f7",
+    "scientific_device": "cuda:0",
+    "scientific_gpu_count": 1,
+    "seed": 29,
+    "username": "abdulazizshehri"
+  },
+  "artifact_bundle_sha256": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+  "authority_sha256": {
+    "V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md": "cd73779ad8bc5885f10f0e81e4bc89d45eb3b749ceafc696ab2706e916510c0c",
+    "V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md": "2db3ca77e46daf071701365ce22559a21de4e63fe3a43c7666d56e62ebcfa252",
+    "V5_S1_COLAB_FREE_RUNTIME_AUTHORIZATION_SOURCE_2026-10-04.md": "0486ab01cf79535993c89b7ec29b46d15bca251449d2c14f913705469094c0c1",
+    "V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md": "7ff26c8cbee8a78f2e11d91f6387277f88ac51ef931c93cf1f0b2a8f36faebb0",
+    "V5_S1_EXISTING_COLAB_PRO_AUTHORIZATION_2026-10-04.md": "b7cae9e9e1b1f5f3d09180ef310226c90365480971d00fd995f6e7ce58c2f482",
+    "V5_S1_FREE_COLAB_SELECTION_2026-10-04.md": "ff5ec95e1907166c93347b1fed18bf85e24e0370052ac53d1f95b37f6efb9de8",
+    "V5_S1_KAGGLE_RUNTIME_AMENDMENT_2026-10-08.md": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+    "V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md": "b8f51b768f35987110c8a430d311e979b6b7f782a48fc9f8436978f130364af9"
+  },
+  "bfloat16_support": true,
+  "complete_c1_evidence": [
+    {
+      "archive_sha256": "2d7598e3007f5f278e7ef34bfbfe39c8b7ce6de07cc5af07228ac1b84e65c690",
+      "receipt": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-11-v4-2026-10-08/export-verification-receipt.json",
+      "receipt_sha256": "27156f3a499de13613fb5fe21b88cfdb5a99a462895095423291ae56178ce5a0",
+      "seed": 11
+    },
+    {
+      "archive_sha256": "35c6c8421415191c3bba3ad44e38eba04ac122f693c0cf1c2c511cd49ef9618b",
+      "receipt": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/export-verification-receipt.json",
+      "receipt_sha256": "aa639a6543e3a82ddb4bf04e11b1db3e55df161f5f375150bed405dbd2aba74c",
+      "seed": 29
+    },
+    {
+      "archive_sha256": "df850fcc574f43819d0f0a0a38ca7704c547ed3325e3e13c5aafd88de7fe5304",
+      "receipt": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-47-v1-2026-10-08/export-verification-receipt.json",
+      "receipt_sha256": "1406c68fba6fcbff437e2a9c78f960e8fe097ea97b86665c8752c3bc36f06b28",
+      "seed": 47
+    }
+  ],
+  "cpu_count": 4,
+  "cuda": "12.8",
+  "cuda_visible_devices": "0",
+  "environment_sha256": "769321b954ed4152a79a2bc6ec20db00dd94b8b168b346ec4db288d178d9eaa5",
+  "frozen_bindings": {
+    "amendment_sha256": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+    "binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+    "scientific_freeze_sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c",
+    "verified_entry_file_count": 307
+  },
+  "memory_before_load": {
+    "gpu_allocated_bytes": 0,
+    "gpu_free_bytes": 15523971072,
+    "gpu_peak_allocated_bytes": 512,
+    "gpu_peak_reserved_bytes": 2097152,
+    "gpu_reserved_bytes": 2097152,
+    "gpu_total_bytes": 15636037632,
+    "process_rss_bytes": 1014796288,
+    "ram_available_bytes": 31431086080
+  },
+  "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+  "native_bfloat16_support": false,
+  "original_adapter_runner_sha256": "c6a35bb1eea9c2392e6cecdb3e6b355f58adfc2aa8da574fe6e3568b6e9a75d1",
+  "packages": {
+    "huggingface-hub": "1.33.0",
+    "numpy": "2.1.3",
+    "peft": "0.21.2",
+    "psutil": "7.1.0",
+    "pyarrow": "23.0.1",
+    "safetensors": "0.8.0",
+    "tokenizers": "0.23.2",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.18.0"
+  },
+  "physical_hardware": {
+    "cuda": "12.8",
+    "cuda_device_count": 2,
+    "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "scientific_device": "cuda:0",
+    "scientific_gpu_count": 1,
+    "torch": "2.11.0+cu128",
+    "visible_gpus": [
+      {
+        "index": 0,
+        "name": "Tesla T4",
+        "scientific_use": true,
+        "total_memory_bytes": 15636037632
+      },
+      {
+        "index": 1,
+        "name": "Tesla T4",
+        "scientific_use": false,
+        "total_memory_bytes": 15636037632
+      }
+    ]
+  },
+  "platform": "Linux-6.18.48+-x86_64-with-glibc2.39",
+  "preparation_sha256": "0de09dfb7c988d831c493536b0b75ff175d9352a2dfabf99cd2debfa58e6a1a6",
+  "prior_c2_evidence": [
+    {
+      "archive_sha256": "62af052a4858edac1b40febd46e91d5f3f6304d29ff0650857a874255c504932",
+      "receipt": "artifacts/v5/development/s1-kaggle-c2-adapters/c2-seed-11-v2-2026-10-09/export-verification-receipt.json",
+      "receipt_sha256": "ceafb60e01823d9f6a8e77dc8548dc48e41a7c6a625cccfdd0fd0ad4315840d6",
+      "seed": 11
+    }
+  ],
+  "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+  "ram_total_bytes": 33658318848,
+  "remaining_window_and_quota_seconds": 41843.491886138916,
+  "required_imports": "PASS",
+  "retention_eval_ids_sha256": "4272d94ef9bda085e9fdbfb8f0a1fdc44990e716fc7bb3f5aeccada57df3dcff",
+  "retention_maintenance_ids_sha256": "6399c096ab5fa7a9f1743dcc3a817806c274bfb6b88730f5d13e1cdf90746498",
+  "retention_metadata_sha256": "0c7f3de811b68664a51b11e371ff207a03c00df37519bd7435428fb99c14aa22",
+  "retention_source": {
+    "file": "plain_text/validation-00000-of-00001.parquet",
+    "repo": "rajpurkar/squad",
+    "revision": "7b6d24c440a36b6815f21b70d25016731768db1f",
+    "sha256": "8c6646d36bd5a95061e076788cf3161d11f6f3e7d625dac7a83bbed0a49f69f7",
+    "source_payload_exported": false
+  },
+  "runner_sha256": "550f44cd95b9a4ee722376e77f7a13932f500e7c2cd174b42175e6897934de21",
+  "runtime_backend_sha256": "a4d374fc1205cb28d1ba61545458f0e39b4c4763317377e28876de259e35b5dd",
+  "runtime_dtype": "bfloat16",
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "tokenizer_files": {
+    "merges.txt": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",
+    "tokenizer.json": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+    "tokenizer_config.json": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de",
+    "vocab.json": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+  },
+  "visible_gpus": [
+    {
+      "compute_capability": [
+        7,
+        5
+      ],
+      "index": 0,
+      "name": "Tesla T4",
+      "scientific_use": true,
+      "total_memory_bytes": 15636037632
+    }
+  ]
+}

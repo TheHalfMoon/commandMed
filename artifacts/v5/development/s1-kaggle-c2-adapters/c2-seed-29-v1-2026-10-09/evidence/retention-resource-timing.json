@@ -1,0 +1,78 @@
+{
+  "full_paired_decode_projection_seconds": 1190.7080620800116,
+  "maintenance_cost_projection_seconds": 54.52975783999136,
+  "maintenance_resource_backward": true,
+  "maintenance_resource_memory": {
+    "min_system_available_bytes": 29886226432,
+    "peak_rss_bytes": 2174877696
+  },
+  "maintenance_resource_optimizer_steps": 0,
+  "sample": [
+    {
+      "adapter_disabled": true,
+      "full_32_token_sensitivity_seconds": 1.860481347000018,
+      "generated_tokens": 32,
+      "raw_token_sha256": "fe7d3e1fad1a2d0cc246efc9328356a74a6b5a9d701b381e51df8208c9adb448",
+      "source_id": "5725f2c838643c19005aceed",
+      "wall_seconds": 1.860481347000018
+    },
+    {
+      "adapter_disabled": false,
+      "full_32_token_sensitivity_seconds": 1.6930519120001009,
+      "generated_tokens": 32,
+      "raw_token_sha256": "fe7d3e1fad1a2d0cc246efc9328356a74a6b5a9d701b381e51df8208c9adb448",
+      "source_id": "5725f2c838643c19005aceed",
+      "wall_seconds": 1.6930519120001009
+    },
+    {
+      "adapter_disabled": true,
+      "full_32_token_sensitivity_seconds": 1.6300494450000542,
+      "generated_tokens": 32,
+      "raw_token_sha256": "a3fb449b4d9548306ec213d5ce81f283c681150baa729f0e07705f5a77b3bba2",
+      "source_id": "5725ca4389a1e219009abeb4",
+      "wall_seconds": 1.6300494450000542
+    },
+    {
+      "adapter_disabled": false,
+      "full_32_token_sensitivity_seconds": 1.6674259909999591,
+      "generated_tokens": 32,
+      "raw_token_sha256": "a3fb449b4d9548306ec213d5ce81f283c681150baa729f0e07705f5a77b3bba2",
+      "source_id": "5725ca4389a1e219009abeb4",
+      "wall_seconds": 1.6674259909999591
+    },
+    {
+      "adapter_disabled": true,
+      "full_32_token_sensitivity_seconds": 1.6579181009999502,
+      "generated_tokens": 32,
+      "raw_token_sha256": "22d2d95d1249aeddcde270e2f3a00f6ebf81d382ff5feedef3cdda8524e2df74",
+      "source_id": "57277373dd62a815002e9d28",
+      "wall_seconds": 1.6579181009999502
+    },
+    {
+      "adapter_disabled": false,
+      "full_32_token_sensitivity_seconds": 1.6353259659999821,
+      "generated_tokens": 32,
+      "raw_token_sha256": "22d2d95d1249aeddcde270e2f3a00f6ebf81d382ff5feedef3cdda8524e2df74",
+      "source_id": "57277373dd62a815002e9d28",
+      "wall_seconds": 1.6353259659999821
+    },
+    {
+      "adapter_disabled": true,
+      "full_32_token_sensitivity_seconds": 1.5912442390000479,
+      "generated_tokens": 32,
+      "raw_token_sha256": "15f69099e35b0012b7e070fb5cf1738d2eaa8bd4c477c067b0dc6493572a0829",
+      "source_id": "572695285951b619008f774b",
+      "wall_seconds": 1.5912442390000479
+    },
+    {
+      "adapter_disabled": false,
+      "full_32_token_sensitivity_seconds": 1.6228430689999414,
+      "generated_tokens": 32,
+      "raw_token_sha256": "15f69099e35b0012b7e070fb5cf1738d2eaa8bd4c477c067b0dc6493572a0829",
+      "source_id": "572695285951b619008f774b",
+      "wall_seconds": 1.6228430689999414
+    }
+  ],
+  "scope": "RESOURCE_QUALIFICATION_ONLY; NO_SCIENTIFIC_METRIC",
+  "selection": "FOUR_LONGEST_EVALUATION_PROMPTS; ID_TIEBREAK"
+}
