@@ -47,6 +47,29 @@ def test_identical_runs_have_zero_primary_repeatability() -> None:
         assert result["metrics"][metric]["repeatability95"] == 0.0
 
 
+def test_same_r1_cannot_masquerade_as_two_independent_repeats() -> None:
+    first = _matrix()
+    with pytest.raises(
+        repeatability.RepeatabilityContractError,
+        match="DISTINCT_ORDERED_REPEAT_IDENTITIES_REQUIRED",
+    ):
+        repeatability.compare(first, copy.deepcopy(first))
+
+
+def test_swapped_or_noninteger_repeat_labels_fail_closed() -> None:
+    first = _matrix()
+    second = copy.deepcopy(first)
+    second["repeat"] = 2
+    for r1_label, r2_label in ((2, 1), (True, 2), (1, 2.0), ("1", 2)):
+        first["repeat"] = r1_label
+        second["repeat"] = r2_label
+        with pytest.raises(
+            repeatability.RepeatabilityContractError,
+            match="DISTINCT_ORDERED_REPEAT_IDENTITIES_REQUIRED",
+        ):
+            repeatability.compare(first, second)
+
+
 def test_nearest_rank_95_is_no_interpolation() -> None:
     values = [0.0] * 95 + [1.0] * 5
     assert repeatability._nearest_rank_95(values) == 0.0
@@ -66,5 +89,7 @@ def test_cross_run_identity_change_fails_closed() -> None:
 def test_incomplete_matrix_fails_closed() -> None:
     first = _matrix()
     first["rows"].pop()
+    second = copy.deepcopy(first)
+    second["repeat"] = 2
     with pytest.raises(repeatability.RepeatabilityContractError, match="16384"):
-        repeatability.compare(first, copy.deepcopy(first))
+        repeatability.compare(first, second)
