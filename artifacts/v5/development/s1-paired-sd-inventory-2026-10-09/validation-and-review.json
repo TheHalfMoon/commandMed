@@ -1,0 +1,50 @@
+{
+  "alibaba_ocr": "Genuine zero-cost delegate eligibility, host code/data inspection only",
+  "branch_base_head": "eeac68c1c3224628dc9d9dcbf4be0ac6d275157c",
+  "confirmatory": false,
+  "descriptive_sd_cell_count": 72,
+  "external_model_review": "NOT_RUN",
+  "focused_v5_pytest": {
+    "exit_code": 0,
+    "passed": 305,
+    "subtests_passed": 86
+  },
+  "frozen_file_binding": {
+    "binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+    "files": 307,
+    "status": "PASS"
+  },
+  "full_repository_pytest": {
+    "exit_code": 0,
+    "passed": 1357,
+    "subtests_passed": 264
+  },
+  "git_signature": "NOT_YET_VERIFIED",
+  "incremental_paid_compute_usd": 0,
+  "intervention_seed_count": 9,
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "new_model_calls": 0,
+  "nonclinical_research_only": true,
+  "ocr_excluded_count": 2,
+  "ocr_reviewable_count": 3,
+  "one_off_independent_comparison": "PASS_ALL_72_NUMERIC_CELL_RECORDS_EXACT",
+  "open_gates": [
+    "independent_review",
+    "signed_commits",
+    "prospective_primary_non_target_family",
+    "across_training_seed_variance_model",
+    "final_power_proof",
+    "confirmatory_authorization",
+    "replication_authorization",
+    "publication_authorization"
+  ],
+  "paired_sd_frozen_for_confirmatory_power": false,
+  "power_90pct_qualification": "NOT_PROVEN",
+  "primary_non_target_family_size_frozen": false,
+  "program_scope": "DEVELOPMENT_CALIBRATION_ONLY",
+  "python_compile": "PASS",
+  "reserve": false,
+  "schema": "commandmed.v5.descriptive-sd-review.v1",
+  "source_artifact_sha256": "b1edf781b61d3f5ce227c08908ca43ad9864c0b398a7318c33895951af37bacd",
+  "status": "LOCAL_QUALIFIED_NOT_ADMITTED_TO_POWER"
+}

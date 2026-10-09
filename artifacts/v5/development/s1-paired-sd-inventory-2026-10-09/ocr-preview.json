@@ -1,0 +1,46 @@
+{
+  "schema_version": "1",
+  "mode": "workspace",
+  "repository": "/Users/abdulazizalsh/CommandMed-sd-inventory",
+  "total_files": 5,
+  "reviewable_count": 3,
+  "excluded_count": 2,
+  "total_insertions": 952,
+  "total_deletions": 0,
+  "reviewable_files": [
+    {
+      "path": "artifacts/v5/development/s1-paired-sd-inventory-2026-10-09/development-paired-sd.json",
+      "status": "added",
+      "insertions": 636,
+      "deletions": 0
+    },
+    {
+      "path": "scripts/v5_s1_development_paired_sd_inventory.py",
+      "status": "added",
+      "insertions": 198,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-paired-sd-inventory-2026-10-09/ocr-preview.json",
+      "status": "added",
+      "insertions": 0,
+      "deletions": 0
+    }
+  ],
+  "excluded_files": [
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DESCRIPTIVE_INTERVENTION_PAIRED_SD_INVENTORY_2026-10-09.md",
+      "status": "added",
+      "insertions": 42,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "tests/reliability_v5/test_development_paired_sd_inventory.py",
+      "status": "added",
+      "insertions": 76,
+      "deletions": 0,
+      "exclude_reason": "default_path"
+    }
+  ]
+}
