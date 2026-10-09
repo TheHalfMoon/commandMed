@@ -1,0 +1,50 @@
+{
+  "schema": "commandmed.v5.s1-final-development-synthesis-review.v1",
+  "status": "QUALIFIED_DEVELOPMENT_SYNTHESIS",
+  "synthesis_source_head": "cb94f923ab7cb50e07c1e4761656d10c1fe72bf3",
+  "synthesis_source_tree": "cc96061b5a1a01bcd8400b22a0e986d142c8d9f3",
+  "scope": "DEVELOPMENT_CALIBRATION_ONLY",
+  "seeds": [
+    11,
+    29,
+    47
+  ],
+  "required_interventions": [
+    "B1_TYPED_V1",
+    "C1_CRDI_V1",
+    "C2_CRDI_RETAIN_V1"
+  ],
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 245,
+    "seconds": 3.08,
+    "basetemp": "C:\\syn2v5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1297,
+    "seconds": 22.65,
+    "basetemp": "C:\\syn2all"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "frozen_entry_files_verified": 307,
+  "frozen_binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+  "scientific_freeze_sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c",
+  "kaggle_amendment_sha256": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview covering 2 reviewable / 5 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; synthesis accepts only complete reviewed durable learned-seed evidence, reports descriptive cross-seed nuisance summaries only, preserves negative B1/C1/C2 findings, does not alter frozen entry files, and does not promote confirmatory, equivalence, calibration, selective-control, margin, power, clinical-validity or broad-retention claims",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "confirmatory": false,
+  "reserve": false,
+  "repeatability95_available": false,
+  "meaningful_margins_frozen": false,
+  "final_power_closed": false,
+  "scientific_freeze_status": "OPEN",
+  "pr_320_state": "OPEN_DRAFT_UNMERGED"
+}
