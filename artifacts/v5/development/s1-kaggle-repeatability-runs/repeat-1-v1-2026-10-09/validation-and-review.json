@@ -1,0 +1,41 @@
+{
+  "schema": "commandmed.v5.repeatability-run-review.v1",
+  "reviewed_run_head": "e1b166ca88b1bd649e2a736e817603ec714b7192",
+  "reviewed_run_tree": "7a1f20449a504daa8bf25e4936108d0bae6e0f51",
+  "kernel": "abdulazizshehri/commandmed-v5-base-repeatability-r1",
+  "kernel_version": 1,
+  "repeat": 1,
+  "intervention": "BASELINE_V1",
+  "purpose": "UNCHANGED_BASE_REPEATABILITY",
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 299,
+    "seconds": 29.89,
+    "basetemp": "C:\\r1v5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1351,
+    "seconds": 66.81,
+    "basetemp": "C:\\r1all"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "control_character_scan": "PASS",
+  "frozen_entry_files_verified": 307,
+  "frozen_binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; exact archive/runtime/hardware/live-source identity, complete 16384 ordered prompt matrix, no training/optimizer/adapters, one scientific GPU, direct BF16, zero-cost boundaries, model-free verifier, and first-verifier portability repair were reviewed; R1 alone does not define repeatability95",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "confirmatory": false,
+  "reserve": false,
+  "first_verifier_attempt": "FAILED_PORTABILITY_EXACT_FLOAT_JSON",
+  "repaired_verifier_status": "PASS_MODEL_FREE_REPEATABILITY_EXPORT_VERIFICATION",
+  "archive_sha256": "dfb35b0216369bbb87bcec75c5715df974bb9f736c0db0af98148cea91d99dac",
+  "next_gate": "R2_ONLY_AFTER_THIS_EVIDENCE_IS_COMMITTED_AND_PUSHED"
+}
