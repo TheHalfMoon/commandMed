@@ -1,0 +1,67 @@
+{
+  "schema": "commandmed.v5.s1-postprocessing-results-review.v1",
+  "status": "PASS_DEVELOPMENT_POSTPROCESSING_REVIEW",
+  "run_head": "e515e088ed641b6accdb85bf031a593e751e2394",
+  "run_tree": "d070cd1ea82382c4441e747fba7b0370b10c83d6",
+  "output_sha256": "51a4f0709620b48995d887fb2956c9c2fe0836ad37b286a2cddfd65e87979893",
+  "output_bytes": 506917,
+  "scope": "DEVELOPMENT_CALIBRATION_ONLY",
+  "a1_temperature": 5.959579947582588,
+  "a1_boundary_selected": false,
+  "a2_display_slot_prior": [
+    0.6607746105018988,
+    0.3392253894981012
+  ],
+  "a2_then_a1_temperature": 403.4287934927351,
+  "a2_then_a1_boundary_selected": true,
+  "d1_tuning": {
+    "threshold": 0.8933094060543488,
+    "accepted": 2,
+    "total": 256,
+    "coverage": 0.0078125,
+    "risk": 0,
+    "risk_target": 0.05
+  },
+  "d1_dev_canonical": {
+    "coverage": 0.006510416666666667,
+    "risk": 0.48,
+    "accepted": 25,
+    "total": 3840,
+    "aurc_step_tie_block": 0.5256857913947288
+  },
+  "d1_cal_canonical": {
+    "coverage": 0.00546875,
+    "risk": 0.47619047619047616,
+    "accepted": 21,
+    "total": 3840,
+    "aurc_step_tie_block": 0.5121829374221482
+  },
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 279,
+    "seconds": 9.57,
+    "basetemp": "C:\\prv5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1331,
+    "seconds": 28.75,
+    "basetemp": "C:\\prall"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "control_character_scan": "PASS",
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview covering 2 reviewable / 4 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; results reproduce only the prospectively frozen development post-processing rules; A1 improves proper-score/calibration diagnostics without improving near-chance accuracy; A2-then-A1 reaches the upper temperature boundary and near-uniform binary proper scores; D1 tuning support is only 2/256 and does not transport, with high evaluation risk at negligible coverage; all negative/mixed findings and boundary limitations are preserved; no effect classification or clinical/confirmatory claim is promoted",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "confirmatory": false,
+  "reserve": false,
+  "meaningful_margins_selected": false,
+  "scientific_freeze_status": "OPEN",
+  "pr_320_state": "OPEN_DRAFT_UNMERGED"
+}
