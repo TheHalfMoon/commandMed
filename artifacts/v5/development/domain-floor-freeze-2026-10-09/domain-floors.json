@@ -1,0 +1,35 @@
+{
+  "schema": "commandmed.v5.domain-floor-freeze.v1",
+  "status": "FROZEN_PROSPECTIVELY_BEFORE_REPEATABILITY_OUTPUT",
+  "scope": "RULE_ORACLE_PRIMARY_REPEATABILITY_METRICS",
+  "evidence_review_sha256": "e34ce368df072a85b288e4c148ea968e07d28432495d21cc5ed54313a7fecd42",
+  "repeatability_method_freeze_sha256": "5264bd398adbd91137733fa62a692ec5be22a7fcbe272ad0b1c6b1913d9d10b1",
+  "convention": "TRANSPARENT_NONCLINICAL_RESEARCH_SCALE_MINIMUM_EFFECT",
+  "metrics": {
+    "canonical_accuracy": {
+      "domain_floor": 0.01,
+      "unit": "absolute_accuracy",
+      "justification": "One absolute percentage point; approximately 41 of the planned 4096 source clusters. Study-defined benchmark-scale floor, not a clinical tolerance."
+    },
+    "canonical_nll": {
+      "domain_floor": 0.009950330853168092,
+      "unit": "nats",
+      "justification": "ln(1.01), corresponding to approximately a one-percent multiplicative change in geometric-mean target probability. Study-defined benchmark-scale floor."
+    },
+    "canonical_brier": {
+      "domain_floor": 0.02,
+      "unit": "two_class_multiclass_brier",
+      "justification": "One percent of the implemented two-class multiclass Brier mathematical range [0,2]. Study-defined benchmark-scale floor, not clinical utility."
+    },
+    "semantic_js": {
+      "domain_floor": 0.006931471805599453,
+      "unit": "nats",
+      "justification": "ln(2)/100, one percent of the binary Jensen-Shannon divergence mathematical maximum. Study-defined benchmark-scale floor."
+    }
+  },
+  "margin_rule": "m_j=max(domain_floor_j,2*repeatability95_j)",
+  "clinical_tolerance": false,
+  "derived_from_observed_intervention_effects": false,
+  "confirmatory": false,
+  "reserve": false
+}
