@@ -50,6 +50,7 @@ LOG_T_COUNT = 2401
 D1_RISK_TARGET = 0.05
 CALIBRATION_BINS = (10, 15, 20)
 PRIMARY_CALIBRATION_BINS = 15
+TUNING_NLL_PROBABILITY_FLOOR = 1e-15
 
 
 class PostprocessingError(RuntimeError):
@@ -168,7 +169,11 @@ def fit_temperature(
         losses = []
         for row in rows:
             probabilities = tuple(probability_fn(row, temperature))
-            losses.append(negative_log_likelihood(probabilities, int(row["target_index"])))
+            target = int(row["target_index"])
+            target_probability = float(probabilities[target])
+            if not math.isfinite(target_probability) or target_probability < 0.0:
+                raise PostprocessingError("invalid temperature-fit target probability")
+            losses.append(-math.log(max(target_probability, TUNING_NLL_PROBABILITY_FLOOR)))
         nll = fmean(losses)
         if not math.isfinite(nll):
             raise PostprocessingError("nonfinite temperature-fit NLL")

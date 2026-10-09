@@ -57,7 +57,7 @@ The search variable is `log(T)`. The frozen deterministic candidate grid is:
 - 2,401 candidates inclusive;
 - `T = exp(log(T))`.
 
-For each candidate, compute mean target NLL across all 256 canonical `S1_CAL_TUNE` tasks using the exact two-candidate softmax. Choose the candidate with lowest mean NLL. Exact numeric ties are resolved by: smaller `abs(log(T))`, then smaller `log(T)`.
+For each candidate, compute mean target NLL across all 256 canonical `S1_CAL_TUNE` tasks using the exact two-candidate softmax and the existing S1 tuning probability floor `1e-15`. This floor is used only for A1 tuning so an extreme grid point with an underflowed target probability remains numerically comparable; descriptive evaluation NLL remains the existing pure probability scorer. Choose the candidate with lowest mean tuning NLL. Exact numeric ties are resolved by: smaller `abs(log(T))`, then smaller `log(T)`.
 
 The selected scalar is then frozen and applied unchanged to canonical and transformed evaluation rows. Record whether the selected point equals either grid boundary. Boundary selection is preserved as a limitation; the grid is not widened after inspecting results.
 

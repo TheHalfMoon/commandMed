@@ -62,6 +62,16 @@ def test_flat_logits_temperature_tie_resolves_to_one() -> None:
     assert fit["boundary_selected"] is False
 
 
+def test_temperature_tuning_floor_keeps_extreme_grid_finite() -> None:
+    rows = [
+        _row(index, logits=(1000.0, -1000.0), target_index=1)
+        for index in range(256)
+    ]
+    fit = post.fit_temperature(rows, lambda row, t: post._a1_display(row, t))
+    assert math.isfinite(fit["tuning_mean_nll"])
+    assert fit["tuning_mean_nll"] <= -math.log(post.TUNING_NLL_PROBABILITY_FLOOR)
+
+
 def test_a2_prior_uses_all_512_tuning_rows() -> None:
     rows = []
     for index in range(256):

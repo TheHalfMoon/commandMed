@@ -1,0 +1,39 @@
+{
+  "schema": "commandmed.v5.s1-postprocessing-tuning-floor-repair-review.v1",
+  "status": "QUALIFIED_PREOUTPUT_TUNING_NLL_FLOOR_REPAIR",
+  "base_head": "b7c5dc1d54c774a743b649b7954c6cfa71226220",
+  "failure_observed": "The first repaired direct analysis execution reached A1 temperature fitting but failed before output creation because extreme low-temperature grid candidates underflowed the target probability to zero and the generic descriptive NLL helper returned infinity.",
+  "scientific_output_created_before_repair": false,
+  "repair": "Use the already-frozen S1 tuning probability floor 1e-15 for A1 temperature-selection NLL only; keep descriptive evaluation NLL on the existing pure probability scorer. No grid, split, intervention, threshold, calibration, A2, D1, or scientific input changed.",
+  "targeted_tests": {
+    "exit_code": 0,
+    "passed": 10,
+    "seconds": 6.15,
+    "basetemp": "C:\\ppfloor"
+  },
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 279,
+    "seconds": 11.39,
+    "basetemp": "C:\\pfv5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1331,
+    "seconds": 26.26,
+    "basetemp": "C:\\pfall"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "frozen_entry_files_verified": 307,
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost delegate preview covering 2 reviewable / 5 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; repair restores the already-frozen 1e-15 S1 tuning NLL floor to the A1 selection path after a pre-output numerical underflow failure and does not change any scientific convention based on observed intervention results",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "confirmatory": false,
+  "reserve": false
+}
