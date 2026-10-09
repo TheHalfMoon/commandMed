@@ -1,0 +1,250 @@
+{
+  "allowlisted_runtime_sha256": "4aa8ab9443819ff03691645a4052050430ce1717651823cb874a16dbc043e341",
+  "analysis_reproduced_absolute_tolerance": 1e-12,
+  "archive_bytes": 1190882,
+  "archive_sha256": "aa6cd37395a9ed88fe0ff1150eb5bb2945065b9fc84c6b7d8aeb2899405391af",
+  "clinical_validity": false,
+  "confirmatory": false,
+  "durable_export_verified": true,
+  "files": [
+    {
+      "bytes": 1575,
+      "path": "adapter-analysis.json",
+      "sha256": "3fc449154a25a04434ee9fbdc4a13bc2bbb5e00dd81f4fc9893309e47df382eb"
+    },
+    {
+      "bytes": 6687320,
+      "path": "adapter-decision-matrix.json",
+      "sha256": "51f74581c0e31252948d8f0c467fbf725a71c1618d0cc8b3190518c3f7b3b6f1"
+    },
+    {
+      "bytes": 2348,
+      "path": "adapter-environment.json",
+      "sha256": "512da8e9fd79637ebc76d6e9a16fd2d8b85c0ea6872149919542c1ae2467bb2f"
+    },
+    {
+      "bytes": 337,
+      "path": "adapter-load-observation.json",
+      "sha256": "e7f293d49e507aacceaa3d0e2ce4002e9f90c83ecbf8e38a85794a6c8d910f55"
+    },
+    {
+      "bytes": 1274,
+      "path": "adapter-preflight-01-load.json",
+      "sha256": "f77f45f930dc6fcec6038bddf55b23f9ca9110e9caff829599a3665ad4d75134"
+    },
+    {
+      "bytes": 1232,
+      "path": "adapter-preflight-02-retention-resource.json",
+      "sha256": "00fb42707c52a84dc1f6c0f778de0357f1ed9c48e697f21573b690f906b47662"
+    },
+    {
+      "bytes": 1231,
+      "path": "adapter-preflight-03-maintenance-resource-backward.json",
+      "sha256": "6fd5a4ea67e3c0a71537a2e47ac0ef52212224eae39376aac3cc71c534dad359"
+    },
+    {
+      "bytes": 1232,
+      "path": "adapter-preflight-04-complete-base-retention.json",
+      "sha256": "00fb42707c52a84dc1f6c0f778de0357f1ed9c48e697f21573b690f906b47662"
+    },
+    {
+      "bytes": 1272,
+      "path": "adapter-preflight-05-medical-training.json",
+      "sha256": "341862d8e118cfd6e77c22913e3fe7e76f665b7bfab9300abaf80b3e023a2791"
+    },
+    {
+      "bytes": 1231,
+      "path": "adapter-preflight-06-maintenance-training.json",
+      "sha256": "6fd5a4ea67e3c0a71537a2e47ac0ef52212224eae39376aac3cc71c534dad359"
+    },
+    {
+      "bytes": 1273,
+      "path": "adapter-preflight-07-complete-medical-matrix.json",
+      "sha256": "73774eb48ca755c654aa0c2cd5da4017ee56a753cc532d069e28b3073814dc51"
+    },
+    {
+      "bytes": 1232,
+      "path": "adapter-preflight-08-complete-candidate-retention.json",
+      "sha256": "00fb42707c52a84dc1f6c0f778de0357f1ed9c48e697f21573b690f906b47662"
+    },
+    {
+      "bytes": 145,
+      "path": "adapter-preliminary-duration-admission.json",
+      "sha256": "a24aaadc1c14e90ccd9b7b022791819419cb5037d1b27059b0095163bf733514"
+    },
+    {
+      "bytes": 1791,
+      "path": "adapter-seed-result.json",
+      "sha256": "c971cd353b2d1945e764f39d7e6041c5420df7a724153deab0f2c67249dab62a"
+    },
+    {
+      "bytes": 188,
+      "path": "adapter-stage-duration-admission.json",
+      "sha256": "a76b2b6824aee313d4f144ad4042dc16ec7f5d994ed6c850da324bf08d79b132"
+    },
+    {
+      "bytes": 2491,
+      "path": "adapter-trainable-parameters.json",
+      "sha256": "cf135c772b5bf2643b863c07d6bc21f653deb00066233a0b1383f3e941950edb"
+    },
+    {
+      "bytes": 21058,
+      "path": "adapter-training-identities.json",
+      "sha256": "d4b6782ecf9dafbfc85002961cad2631ee87b35d1102e8a03e0a9b2454e817d5"
+    },
+    {
+      "bytes": 6024,
+      "path": "adapter-training-observation.json",
+      "sha256": "45837215064ad05febd218fd6d4eef3d1b62357c0521ccf88dc824bf4a512698"
+    },
+    {
+      "bytes": 414,
+      "path": "benchmark-timing.json",
+      "sha256": "e0da726d4d5ff9fb93812a79f2e31080a9e5ffab15e92170dcadc15866ae0898"
+    },
+    {
+      "bytes": 4405,
+      "path": "environment-before-imports.json",
+      "sha256": "94cb0855a71c173b361d21e1fa7452822e18a57637bc440df1668de7507dab4c"
+    },
+    {
+      "bytes": 7979,
+      "path": "environment-manifest.json",
+      "sha256": "aa958f35ab07608318a4062d64126a7ea12120f98d98ff7904ae01df937a5c24"
+    },
+    {
+      "bytes": 315,
+      "path": "frozen-bindings.json",
+      "sha256": "9fb1883f651d7f4114661e64bd3a44da441bfcc686c1d4beedbbad119d2ffd39"
+    },
+    {
+      "bytes": 302,
+      "path": "hardware-manifest.json",
+      "sha256": "642725923d488f3c1c21292b7eef085245e0b0340a33c1e69120e8ea08e50138"
+    },
+    {
+      "bytes": 686,
+      "path": "kaggle-preflight-result.json",
+      "sha256": "262422a878b0db551c9c707ccf4e8ae8643888782231e29a824929cd04da9647"
+    },
+    {
+      "bytes": 414,
+      "path": "load-observation.json",
+      "sha256": "7c1d942b37c2e40573e9f2ec6577478cd0bc4087c57c10aed28aacf247ee52e9"
+    },
+    {
+      "bytes": 9253,
+      "path": "medical-resource-timing.json",
+      "sha256": "56f38ffe7a3af52dd026b9c61d5bc910fbe08d943ee228b26d971cb6b2c2c469"
+    },
+    {
+      "bytes": 2115,
+      "path": "model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2"
+    },
+    {
+      "bytes": 9129,
+      "path": "paired-retention-aggregate.json",
+      "sha256": "600e7b2bebd6f0e68d7523593c73fb7068054b149ad829d5aee40848336158cd"
+    },
+    {
+      "bytes": 1300,
+      "path": "preflight-model-load.json",
+      "sha256": "191bb569e2bed7093d1eddfaf55087d10cd28b7022c7a502e8bd313d66ac3703"
+    },
+    {
+      "bytes": 3420,
+      "path": "preparation/task-preparation-evidence.json",
+      "sha256": "986da30d47e592d10f350196e49c9265c53b39cb7ec00eec4e5145865ee8448a"
+    },
+    {
+      "bytes": 1238,
+      "path": "resource-preflight-inference.json",
+      "sha256": "0afa346a0e4c206508b5377c1c3f3d98ad0df0941e7b149621a4344bcad0bd8a"
+    },
+    {
+      "bytes": 1274,
+      "path": "resource-preflight-medical-resource-timing.json",
+      "sha256": "50d0961f3b8c6afbc45ad44b460c5a200eefc5f92dd309675bf68df5068a5b0e"
+    },
+    {
+      "bytes": 1239,
+      "path": "resource-preflight-model_load.json",
+      "sha256": "a63e329bdf9360d309214a196bcd723c745db9b6177c9c939aa92c697c9a0dff"
+    },
+    {
+      "bytes": 1237,
+      "path": "resource-preflight-training.json",
+      "sha256": "6478a28554837c0009e7875dbe59464420e4124a56b19122874645485d1d22ea"
+    },
+    {
+      "bytes": 462,
+      "path": "resource-qualification.json",
+      "sha256": "80ae88054da29bd7f93458e3319857162b87393672904e0a7f683828bba9e0f0"
+    },
+    {
+      "bytes": 71070,
+      "path": "retention-preparation-preload.json",
+      "sha256": "37034986aaebdc6753d90e1a9bdc40900d621bb876bac501dfa244d7840e1f54"
+    },
+    {
+      "bytes": 71070,
+      "path": "retention-preparation.json",
+      "sha256": "37034986aaebdc6753d90e1a9bdc40900d621bb876bac501dfa244d7840e1f54"
+    },
+    {
+      "bytes": 3037,
+      "path": "retention-resource-timing.json",
+      "sha256": "baacd7980d703b25965859a536229317d565a7c8b09c7273605e4c8b47e474fc"
+    },
+    {
+      "bytes": 460,
+      "path": "smoke-inference.json",
+      "sha256": "8c94d77b494e77754fd976b454d20d8cdef59dd9f014e7c463fec30973ab0af9"
+    },
+    {
+      "bytes": 389,
+      "path": "timed-step.json",
+      "sha256": "d254b4826244c2615a47a52a13b18df339343ee082fd31f21f201a3e8240b7fc"
+    },
+    {
+      "bytes": 2491,
+      "path": "trainable-parameters.json",
+      "sha256": "cf135c772b5bf2643b863c07d6bc21f653deb00066233a0b1383f3e941950edb"
+    },
+    {
+      "bytes": 390,
+      "path": "warmup-step.json",
+      "sha256": "445039efb02c9e8266c7c5507d6c04d36aa7faf949a372b8b5b0e9b4453189c0"
+    },
+    {
+      "bytes": 781,
+      "path": "workload-projection.json",
+      "sha256": "444eab6e222bde5568b3d0f8d8829acee8b0d68d10f4f94262d4d59ac0cdd7ff"
+    }
+  ],
+  "intervention": "C2_CRDI_RETAIN_V1",
+  "kernel_ref": "abdulazizshehri/commandmed-v5-c2-seed-47-atomic",
+  "kernel_version": 1,
+  "model_weights_loaded": false,
+  "ordered_case_task_legend_target_split_prompt_verified": true,
+  "ordered_medical_rows_verified": 16384,
+  "original_payload_flags_unchanged": true,
+  "physical_hardware_sha256": "d21e9241b8ce1373b09ce4be2655a5a2cad8769b8d3a63bc59af8d02cca21f60",
+  "reserve": false,
+  "retention_evaluated": true,
+  "retention_rows_verified": 256,
+  "retention_source_sha256": "8c6646d36bd5a95061e076788cf3161d11f6f3e7d625dac7a83bbed0a49f69f7",
+  "run_head": "d73b35759741f9331d8b55cfa17a3b9d79176c5e",
+  "run_tree": "3565fa10c666a45b90ac10de0a5e2020de8b3f4a",
+  "safe_unique_members_crc": true,
+  "schema": "commandmed.v5.adapter-export-verification.v1",
+  "seed": 47,
+  "spend_usd": 0,
+  "status": "PASS_MODEL_FREE_C2_EXPORT_VERIFICATION",
+  "tensor_hashes_verified_as_recorded_bindings_only": true,
+  "training_identity_set_verified": true,
+  "training_order_rng_reexecuted": false,
+  "verification_type": "EVIDENCE_VERIFICATION_NOT_SCIENTIFIC_REPLICATION",
+  "verified_at": "2026-10-09T05:01:01.467641+00:00"
+}

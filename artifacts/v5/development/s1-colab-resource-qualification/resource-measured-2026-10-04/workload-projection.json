@@ -1,0 +1,12 @@
+{
+  "b1_feature_extraction_length_sensitivity_seconds": 6776.16199872049,
+  "c1_or_c2_decision_matrix_length_sensitivity_seconds": 6776.16199872049,
+  "c1_training_length_sensitivity_seconds": 747.022506441721,
+  "c2_training_length_sensitivity_seconds": 1494.045012883442,
+  "length_sensitivity_factor": 5.3657379150390625,
+  "limitations": "B1 head fitting and SQuAD retention decoding not timed; full development remains separately gated.",
+  "medical_forward_mean_seconds": 0.33086728509377394,
+  "medical_matrix_estimate_method": "HASH_SELECTED_PAIRED_PROMPT_MEAN_WITH_25_PERCENT_RESOURCE_BUFFER",
+  "method": "256_TIMED_STEPS; HALF_PAIR_STEP_PER_FORWARD; QUADRATIC_LENGTH_SENSITIVITY; C2_TWO_TIMES_C1_TRAINING",
+  "original_256_example_seed_seconds": 139.22083379211836
+}

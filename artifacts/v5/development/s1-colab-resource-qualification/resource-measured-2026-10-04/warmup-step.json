@@ -1,0 +1,14 @@
+{
+  "loss": 0.4981345236301422,
+  "memory": {
+    "gpu_allocated_bytes": 1547823104,
+    "gpu_free_bytes": 13551599616,
+    "gpu_peak_allocated_bytes": 1727258112,
+    "gpu_peak_reserved_bytes": 1772093440,
+    "gpu_reserved_bytes": 1772093440,
+    "gpu_total_bytes": 15637086208,
+    "process_rss_bytes": 1914986496,
+    "ram_available_bytes": 10318008320
+  },
+  "synthetic_tokens": 256
+}

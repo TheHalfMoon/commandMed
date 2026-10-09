@@ -1,0 +1,19 @@
+{
+  "cost_basis": "COLAB_FREE_EXPOSED_RESOURCES",
+  "ui_subscription": "NOT_SUBSCRIBED",
+  "compute_unit_balance": 0,
+  "expected_incremental_spend_usd": 0,
+  "new_purchase": false,
+  "normal_interactive_notebook": true,
+  "notebook_id": "1RfTpKjRAfqamgTWrw1j3pM4eAKzZScY4",
+  "observed_remaining_runtime_seconds": 9600,
+  "ui_reported_window_seconds": 10200,
+  "conservative_admission_buffer_seconds": 600,
+  "observed_utc": "2026-10-04T01:28:51.273827+00:00",
+  "notebook_template_sha256": "4ced53f37e1191fc1c9ec480201e1b0592b3390790a6ae1d7d6fc8d275b81710",
+  "new_runtime_after_operational_disconnect": true,
+  "resume": false,
+  "reconnection_record_sha256": "f7bf3966f22dc47128c70ccfc0277a25ccf9ddaa85d1afc1208097641cee80ee",
+  "launch_source_sha256": "6ce8081bb19968d2f89fcc01d193fa106ed38aa873f0cfdd358f554b31301e2f",
+  "cpu_model": "Intel(R) Xeon(R) CPU @ 2.00GHz"
+}

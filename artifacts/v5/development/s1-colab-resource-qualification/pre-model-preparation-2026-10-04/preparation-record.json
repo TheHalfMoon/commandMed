@@ -1,0 +1,18 @@
+{
+  "authority_capture_normalization": "CRLF_TO_LF_ONLY; original attachment remains preserved",
+  "canonical_authority_capture_sha256": "0486ab01cf79535993c89b7ec29b46d15bca251449d2c14f913705469094c0c1",
+  "cost_basis": "COLAB_FREE_EXPOSED_RESOURCES",
+  "existing_pro_entitlement_verified": false,
+  "hardware_record_sha256": "9dbae6532ae866f96377b1f2390c9aae607490e3256d4a4ec8ecacd823b7b6a7",
+  "head_at_authority_preparation": "2263e0902ea9fd2a017f534bbff2b57e79eae204",
+  "historical_local_resource_bindings": "Preserved unchanged; validate against their bound historical code head, not the prospectively amended freeze manifest.",
+  "inference": false,
+  "model_load": false,
+  "notebook_template_execution": "UNEXECUTED_REQUIRES_EXACT_REVIEWED_HEAD_AND_FRESH_UI_ADMISSION",
+  "observation_origin": "normal interactive Colab notebook cell output; checksum-verified exact bytes transferred through visible output",
+  "optimization": false,
+  "primitive_only_bfloat16_check": "PASS",
+  "qualification_state": "PENDING_EXACT_REVIEWED_RUN",
+  "raw_authority_attachment_sha256": "1a2dded76d6bb0d431ad7175badca7e196a225b3d7bdf16cbe16804fd692ff87",
+  "schema": "commandmed.v5.colab.pre-model-preparation.v1"
+}

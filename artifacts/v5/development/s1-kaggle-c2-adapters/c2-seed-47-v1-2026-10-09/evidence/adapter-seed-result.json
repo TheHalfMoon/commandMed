@@ -1,0 +1,40 @@
+{
+  "adapter_parameter_identity": "bc84a27879a47d984e3d0b2f9dc333654d7057989f67ea1949897d2897fb5fe5",
+  "analysis_sha256": "3fc449154a25a04434ee9fbdc4a13bc2bbb5e00dd81f4fc9893309e47df382eb",
+  "base_identity_before_adapter_insertion": "8c612ed5eb24e2bb5f4b5a311347325d7e94b74f295a9ed4b636f2b4ef8b9f2b",
+  "baseline_retention_completed": 256,
+  "baseline_retention_raw_output_aggregate_sha256": "715640546d9ea7ec2dc16040723aa8ae0eda33eab1f9682698d1448afafa0423",
+  "candidate_retention_completed": 256,
+  "candidate_retention_raw_output_aggregate_sha256": "66d912757730fb47529c9857f14368e26318a2c42b58fc6ae923074a110bd0f1",
+  "code_sha": "d73b35759741f9331d8b55cfa17a3b9d79176c5e",
+  "complete_matrix": true,
+  "confirmatory": false,
+  "durable_export_verified": false,
+  "frozen_parameter_identity_after": "d7d9a0758f56a9b45f10390caef1af5ecedff7f31220568bcce471822ee70ebe",
+  "frozen_parameter_identity_before": "d7d9a0758f56a9b45f10390caef1af5ecedff7f31220568bcce471822ee70ebe",
+  "intervention": "C2_CRDI_RETAIN_V1",
+  "medical_optimizer_steps": 32,
+  "memory": {
+    "gpu_allocated_bytes": 1547686400,
+    "gpu_free_bytes": 8536260608,
+    "gpu_peak_allocated_bytes": 2335621632,
+    "gpu_peak_reserved_bytes": 6952058880,
+    "gpu_reserved_bytes": 6952058880,
+    "gpu_total_bytes": 15636037632,
+    "process_rss_bytes": 2201370624,
+    "ram_available_bytes": 29826547712
+  },
+  "memory_sampling": {
+    "min_system_available_bytes": 28922724352,
+    "peak_rss_bytes": 3523600384
+  },
+  "prompt_count": 16384,
+  "raw_output_sha256": "51f74581c0e31252948d8f0c467fbf725a71c1618d0cc8b3190518c3f7b3b6f1",
+  "reserve": false,
+  "resume": false,
+  "retention_evaluated": true,
+  "seed": 47,
+  "spend_usd": 0,
+  "status": "ADAPTER_SEED_COMPLETE_DEVELOPMENT",
+  "wall_seconds": 6707.718230999
+}

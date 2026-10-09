@@ -1,0 +1,202 @@
+{
+  "allowlisted_runtime_sha256": "4cce5c645971c4e37ce46ba0c9897e3dd08858e36f2f7d717479d7eed9a5ed3f",
+  "analysis_reproduced_absolute_tolerance": 1e-12,
+  "archive_bytes": 1135374,
+  "archive_sha256": "2d7598e3007f5f278e7ef34bfbfe39c8b7ce6de07cc5af07228ac1b84e65c690",
+  "clinical_validity": false,
+  "confirmatory": false,
+  "durable_export_verified": true,
+  "files": [
+    {
+      "bytes": 1567,
+      "path": "adapter-analysis.json",
+      "sha256": "6791b63f508986a9fca46cc7dd0a5f3f4d9f44e517ebab2574f61125de243423"
+    },
+    {
+      "bytes": 6685641,
+      "path": "adapter-decision-matrix.json",
+      "sha256": "dd8daa62900043ea8aee1e3f26543d6c70632c1f4d54016675cb2954a62d4769"
+    },
+    {
+      "bytes": 1950,
+      "path": "adapter-environment.json",
+      "sha256": "d2257086fff31281b8bd7a3aaea29067aafc86b76dde89e61233749fe79faf2b"
+    },
+    {
+      "bytes": 337,
+      "path": "adapter-load-observation.json",
+      "sha256": "06f06e19ef217d5e04203752295751c28d7282cebd6d76db8317bce0e9853940"
+    },
+    {
+      "bytes": 1264,
+      "path": "adapter-preflight-01-load.json",
+      "sha256": "b66ba5e888d8d2da7afba60f09e7a35eef7d1acebeb6672cb4df2ee45fa99f8e"
+    },
+    {
+      "bytes": 1262,
+      "path": "adapter-preflight-02-medical-training.json",
+      "sha256": "4a9fee00000947cb6976bfaeebccd0d9d0e3107ef2ff9896173d43ea590e57c0"
+    },
+    {
+      "bytes": 1263,
+      "path": "adapter-preflight-03-complete-medical-matrix.json",
+      "sha256": "752bf481af1bcc94a2cfe0ccb9e9b659ef0bd663bd8431b680a1dba87a6c27e4"
+    },
+    {
+      "bytes": 147,
+      "path": "adapter-preliminary-duration-admission.json",
+      "sha256": "793c4ded279341bfa43fb78e910a7edffc5f389b29df037e34f5d9f7f842ca04"
+    },
+    {
+      "bytes": 1466,
+      "path": "adapter-seed-result.json",
+      "sha256": "4d8947886a5373c38e87edce1320d484a85feee62d9e313378b8315a4a1d0ec1"
+    },
+    {
+      "bytes": 186,
+      "path": "adapter-stage-duration-admission.json",
+      "sha256": "87add467e99522a4026d3fb9222013595538569cfddd07d67dd139b2339fd85d"
+    },
+    {
+      "bytes": 2491,
+      "path": "adapter-trainable-parameters.json",
+      "sha256": "cf135c772b5bf2643b863c07d6bc21f653deb00066233a0b1383f3e941950edb"
+    },
+    {
+      "bytes": 18498,
+      "path": "adapter-training-identities.json",
+      "sha256": "ec191558593c6414a3d870a8492559e8f8760bf865d18b27fc0f7e280b1e4414"
+    },
+    {
+      "bytes": 5446,
+      "path": "adapter-training-observation.json",
+      "sha256": "f773d06efc2ed278846f83dc3443c7960396435abcaf76e97609ecc58a3863d5"
+    },
+    {
+      "bytes": 414,
+      "path": "benchmark-timing.json",
+      "sha256": "20e2e00706564fbe1c3710a8f4a95c3603f51ac8030db6d3795c9b0cfd1abb9b"
+    },
+    {
+      "bytes": 2354,
+      "path": "environment-before-imports.json",
+      "sha256": "6bc537500a392f64c72d09ab651433f60fe0755367911aea8dbd32cfb7fa0772"
+    },
+    {
+      "bytes": 5514,
+      "path": "environment-manifest.json",
+      "sha256": "f22252f90ec028d100f30354f7d7f8a635f7525274432f0d18c478f2385ff18e"
+    },
+    {
+      "bytes": 315,
+      "path": "frozen-bindings.json",
+      "sha256": "9fb1883f651d7f4114661e64bd3a44da441bfcc686c1d4beedbbad119d2ffd39"
+    },
+    {
+      "bytes": 302,
+      "path": "hardware-manifest.json",
+      "sha256": "642725923d488f3c1c21292b7eef085245e0b0340a33c1e69120e8ea08e50138"
+    },
+    {
+      "bytes": 629,
+      "path": "kaggle-preflight-result.json",
+      "sha256": "93c2bd6aba97b146072f9bfc599abde8e56272abc45304eb2062302b74f36b4a"
+    },
+    {
+      "bytes": 414,
+      "path": "load-observation.json",
+      "sha256": "78a8d672a0e27e87070d62648970ed532c0075a0edaf174cfa7de2b6287aa90f"
+    },
+    {
+      "bytes": 9256,
+      "path": "medical-resource-timing.json",
+      "sha256": "bbc4dcdead7afab4c245a036fe2b5777e95baeefec96f861aac2aa0193d7d7b7"
+    },
+    {
+      "bytes": 2115,
+      "path": "model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2"
+    },
+    {
+      "bytes": 1265,
+      "path": "preflight-model-load.json",
+      "sha256": "acae8e84a498c1030a855242b937722598bd66738ac31c3d40f3fe83efb8c756"
+    },
+    {
+      "bytes": 3420,
+      "path": "preparation/task-preparation-evidence.json",
+      "sha256": "7b0851997601449adb73ae7f775940afd367a3879dc5a1ee5ccbba1831ecca75"
+    },
+    {
+      "bytes": 1228,
+      "path": "resource-preflight-inference.json",
+      "sha256": "00768163935c2b96fa14b3a9b17cb0519df8172a7aaac0e0abb0fd321f04ff8d"
+    },
+    {
+      "bytes": 1264,
+      "path": "resource-preflight-medical-resource-timing.json",
+      "sha256": "ffb48b54d40862b81ee3435b4fe043da78741ce1e839f4b44cbbef64023aed16"
+    },
+    {
+      "bytes": 1229,
+      "path": "resource-preflight-model_load.json",
+      "sha256": "217cc40b61660ea26d3b8d2d63e27fb744a934328bd4d15217b86da34a1fb4b5"
+    },
+    {
+      "bytes": 1227,
+      "path": "resource-preflight-training.json",
+      "sha256": "a76b3bcf93e95f5fb8af280ed2a4e95d832bb4cc46d5951535dfc9b9bbcd93a6"
+    },
+    {
+      "bytes": 459,
+      "path": "resource-qualification.json",
+      "sha256": "edff8574f0c9418c9b878d50a42cc2eecdb975898fc05707ead3ce37502a475a"
+    },
+    {
+      "bytes": 460,
+      "path": "smoke-inference.json",
+      "sha256": "5a6a7c8d24bf09bc0c3ee90f453e6f6d7766bbaa7471906a6f6fd6562366def1"
+    },
+    {
+      "bytes": 389,
+      "path": "timed-step.json",
+      "sha256": "b33d7d3ff04d696cf46e5f30c395cc64a196d561b50c13851483a5205a2ee926"
+    },
+    {
+      "bytes": 2491,
+      "path": "trainable-parameters.json",
+      "sha256": "cf135c772b5bf2643b863c07d6bc21f653deb00066233a0b1383f3e941950edb"
+    },
+    {
+      "bytes": 390,
+      "path": "warmup-step.json",
+      "sha256": "9834a26c3f39f831eca35c9f9f2cdcb12d6279a774577e85f3e6cae8d4b08896"
+    },
+    {
+      "bytes": 784,
+      "path": "workload-projection.json",
+      "sha256": "fe248ba92f6b4d065df8a587a0c9fc14206572ff8400a3cf52d989ae8519eeb9"
+    }
+  ],
+  "intervention": "C1_CRDI_V1",
+  "kernel_ref": "abdulazizshehri/commandmed-v5-c1-seed-11-qualification",
+  "kernel_version": 4,
+  "model_weights_loaded": false,
+  "ordered_case_task_legend_target_split_prompt_verified": true,
+  "ordered_medical_rows_verified": 16384,
+  "original_payload_flags_unchanged": true,
+  "physical_hardware_sha256": "d21e9241b8ce1373b09ce4be2655a5a2cad8769b8d3a63bc59af8d02cca21f60",
+  "reserve": false,
+  "run_head": "e8394f6b4c3e58fc633a2eb1faef853030d645d7",
+  "run_tree": "14bd297c3e104a76e402c70428fbdbe21db44804",
+  "safe_unique_members_crc": true,
+  "schema": "commandmed.v5.adapter-export-verification.v1",
+  "seed": 11,
+  "spend_usd": 0,
+  "status": "PASS_MODEL_FREE_EXPORT_VERIFICATION",
+  "tensor_hashes_verified_as_recorded_bindings_only": true,
+  "training_identity_set_verified": true,
+  "training_order_rng_reexecuted": false,
+  "verification_type": "EVIDENCE_VERIFICATION_NOT_SCIENTIFIC_REPLICATION",
+  "verified_at": "2026-10-08T03:22:17.895700+00:00"
+}

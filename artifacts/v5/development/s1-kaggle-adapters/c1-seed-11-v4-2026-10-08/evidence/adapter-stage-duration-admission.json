@@ -1,0 +1,7 @@
+{
+  "complete_medical_prompts": 16384,
+  "medical_optimizer_steps": 32,
+  "projected_seconds": 6908.291654920739,
+  "remaining_seconds": 41855.92889169775,
+  "retention_eval_count": 0
+}

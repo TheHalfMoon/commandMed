@@ -1,0 +1,10 @@
+{
+  "unused_optional_extension": "torchao",
+  "before": "0.10.0",
+  "removal_exit_code": 0,
+  "removal_console": "Found existing installation: torchao 0.10.0\nUninstalling torchao-0.10.0:\n  Successfully uninstalled torchao-0.10.0\n",
+  "import_probe_exit_code": 0,
+  "import_probe_console": "{\"required_imports\": \"PASS\", \"packages\": {\"torch\": \"2.11.0+cu130\", \"transformers\": \"5.18.0\", \"tokenizers\": \"0.23.2\", \"peft\": \"0.21.2\", \"numpy\": \"2.4.6\"}}\n",
+  "no_model_load": true,
+  "no_quantization": true
+}

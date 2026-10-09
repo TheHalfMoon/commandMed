@@ -1,0 +1,79 @@
+{
+  "admission": {
+    "compute_unit_balance": 0,
+    "cost_basis": "COLAB_FREE_EXPOSED_RESOURCES",
+    "cpu_model": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+    "expected_incremental_spend_usd": 0,
+    "new_purchase": false,
+    "normal_interactive_notebook": true,
+    "notebook_id": "1RfTpKjRAfqamgTWrw1j3pM4eAKzZScY4",
+    "notebook_template_sha256": "f42a1f96542f717526517ce1a36b37d1e46922702ce858bd4bdfa45f6faf0ca8",
+    "observed_remaining_runtime_seconds": 17400,
+    "observed_utc": "2026-10-03T22:29:30.469477+00:00",
+    "ui_subscription": "NOT_SUBSCRIBED"
+  },
+  "artifact_bundle_sha256": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+  "authority_sha256": {
+    "V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md": "cd73779ad8bc5885f10f0e81e4bc89d45eb3b749ceafc696ab2706e916510c0c",
+    "V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md": "2db3ca77e46daf071701365ce22559a21de4e63fe3a43c7666d56e62ebcfa252",
+    "V5_S1_COLAB_FREE_RUNTIME_AUTHORIZATION_SOURCE_2026-10-04.md": "0486ab01cf79535993c89b7ec29b46d15bca251449d2c14f913705469094c0c1",
+    "V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md": "7ff26c8cbee8a78f2e11d91f6387277f88ac51ef931c93cf1f0b2a8f36faebb0",
+    "V5_S1_EXISTING_COLAB_PRO_AUTHORIZATION_2026-10-04.md": "b7cae9e9e1b1f5f3d09180ef310226c90365480971d00fd995f6e7ce58c2f482",
+    "V5_S1_FREE_COLAB_SELECTION_2026-10-04.md": "ff5ec95e1907166c93347b1fed18bf85e24e0370052ac53d1f95b37f6efb9de8",
+    "V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md": "b8f51b768f35987110c8a430d311e979b6b7f782a48fc9f8436978f130364af9"
+  },
+  "bfloat16_primitive_probe": {
+    "autocast": false,
+    "dtypes": [
+      "torch.bfloat16",
+      "torch.bfloat16",
+      "torch.bfloat16"
+    ],
+    "status": "PASS_PRIMITIVE_ONLY"
+  },
+  "bfloat16_support_including_emulation": true,
+  "cpu": "x86_64",
+  "cpu_count": 2,
+  "cuda_version": "13.0",
+  "environment_sha256": "107b21d769cfdfa175350170d81d4464925e11d0de6041862c84a8c4d8184a2c",
+  "gpu_compute_capability": [
+    7,
+    5
+  ],
+  "gpu_name": "Tesla T4",
+  "memory_before_load": {
+    "gpu_allocated_bytes": 0,
+    "gpu_free_bytes": 15359344640,
+    "gpu_peak_allocated_bytes": 512,
+    "gpu_peak_reserved_bytes": 2097152,
+    "gpu_reserved_bytes": 2097152,
+    "gpu_total_bytes": 15637086208,
+    "process_rss_bytes": 1059397632,
+    "ram_available_bytes": 11044438016
+  },
+  "native_bfloat16_support": false,
+  "packages": {
+    "huggingface-hub": "1.33.0",
+    "numpy": "2.4.6",
+    "peft": "0.21.2",
+    "psutil": "7.1.0",
+    "safetensors": "0.8.0",
+    "tokenizers": "0.23.2",
+    "torch": "2.11.0+cu130",
+    "transformers": "5.18.0"
+  },
+  "platform": "Linux-6.6.122+-x86_64-with-glibc2.39",
+  "preparation_sha256": "65f03facd523adde8c4726684ad6f4c491fccfa0b0ff11186b4c365deca72c17",
+  "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+  "ram_total_bytes": 13605830656,
+  "runner_sha256": "ce6090dda8b7a176fafd19cda9092534cc04691d3b1cde5700d585c8b90d4b82",
+  "runtime_dtype": "bfloat16",
+  "tokenizer_files": {
+    "merges.txt": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",
+    "tokenizer.json": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+    "tokenizer_config.json": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de",
+    "vocab.json": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+  },
+  "torch_interop_threads": 1,
+  "torch_threads": 8
+}

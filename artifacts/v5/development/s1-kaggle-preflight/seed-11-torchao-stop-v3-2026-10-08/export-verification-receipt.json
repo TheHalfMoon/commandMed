@@ -1,0 +1,84 @@
+{
+  "archive_matches_kernel_console": true,
+  "archive_sha256": "e55a666183f5f32e655032ef3eef9356070902df513987b611157ecf8372d17f",
+  "artifact_identity": "PASS",
+  "complete_seed": false,
+  "duration_admission": "NOT_REACHED",
+  "environment_hash": "PASS",
+  "medical_optimizer_steps": 0,
+  "members": [
+    {
+      "path": "resource-qualification.json",
+      "sha256": "b3f2560e7e858ebcb3a802652fc663c4529483231f10787eba9eea330e6e453f",
+      "size": 532
+    },
+    {
+      "path": "resource-preflight-inference.json",
+      "sha256": "a3e9733c366fc7ff634275de3fe07bbb7656048e72c2df70c323fb4976bf8573",
+      "size": 1228
+    },
+    {
+      "path": "load-observation.json",
+      "sha256": "9af416b2ea6f0d8647b2aa4d3e1f34191f1dd5a15aa461fdd7ae27faeb9be852",
+      "size": 413
+    },
+    {
+      "path": "preflight-model-load.json",
+      "sha256": "72c93a370d74af7d29e56df9a61a3f259b30033098d0dbe32e667f889886a4d1",
+      "size": 1265
+    },
+    {
+      "path": "kaggle-preflight-result.json",
+      "sha256": "aea5d225e44ff638c9b5fb3a18d6ff3f2371387896925e67f07d598d6d945062",
+      "size": 630
+    },
+    {
+      "path": "hardware-manifest.json",
+      "sha256": "642725923d488f3c1c21292b7eef085245e0b0340a33c1e69120e8ea08e50138",
+      "size": 302
+    },
+    {
+      "path": "environment-manifest.json",
+      "sha256": "aa5441df2ed084a4b9810c216ffb5818e51780c49dbda144f94e7ba70f201f94",
+      "size": 5513
+    },
+    {
+      "path": "resource-preflight-model_load.json",
+      "sha256": "e2c06feb88f884dc3d629874ee11fa081de8ed6f4bf0ae1934c3f7bfff09c0b9",
+      "size": 1229
+    },
+    {
+      "path": "model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2",
+      "size": 2115
+    },
+    {
+      "path": "frozen-bindings.json",
+      "sha256": "9fb1883f651d7f4114661e64bd3a44da441bfcc686c1d4beedbbad119d2ffd39",
+      "size": 315
+    },
+    {
+      "path": "smoke-inference.json",
+      "sha256": "a23ab5cf1721a3e66a07508e2fe120b5cd3bfe0219539e48d86200daac503f02",
+      "size": 460
+    },
+    {
+      "path": "environment-before-imports.json",
+      "sha256": "087fceebe2412f1e42e02a61b413903e943d06d938e2841f4318de0b03face61",
+      "size": 2352
+    },
+    {
+      "path": "preparation/task-preparation-evidence.json",
+      "sha256": "48582ae92bac372f05ecd9c534f2f2fdeeca4e7f847fbc81eb3d3934ddff8418",
+      "size": 3420
+    }
+  ],
+  "observed_status": "KAGGLE_RESOURCE_BLOCKED",
+  "reason": "Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported",
+  "schema": "commandmed.v5.kaggle-resource-stop-export.v1",
+  "scientific_metrics": "NONE",
+  "status": "MODEL_FREE_STOP_EXPORT_VERIFIED",
+  "task_preparation": "ALL_FIELDS_MATCH_EXCEPT_CODE_SHA",
+  "verification_type": "MODEL_FREE_EVIDENCE_VERIFICATION_NOT_SCIENTIFIC_REPLICATION",
+  "verifier_model_execution": false
+}

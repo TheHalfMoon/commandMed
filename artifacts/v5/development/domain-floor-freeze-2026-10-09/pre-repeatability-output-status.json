@@ -1,0 +1,13 @@
+{
+  "schema": "commandmed.v5.domain-floor-freeze-timing.v1",
+  "observed_branch_head": "5a6d894e262b40be46ac2efbcf927e089f279f4b",
+  "r1_kernel": "abdulazizshehri/commandmed-v5-base-repeatability-r1",
+  "r1_version": 1,
+  "r1_status": "RUNNING",
+  "r1_output_retrieved": false,
+  "gpu_quota_used_hours": 14.55,
+  "gpu_quota_remaining_hours": 15.45,
+  "quota_total_hours": 30,
+  "quota_refresh_at": "2026-10-10T00:00:00",
+  "interpretation": "Numeric domain floors were frozen while R1 was still running and before any R1 output was retrieved or inspected."
+}

@@ -1,0 +1,61 @@
+{
+  "clinical_validity": false,
+  "mean_semantic_js_by_split": {
+    "S1_CAL_EVAL": 0.001671123693712134,
+    "S1_CAL_TUNE": 0.001717122332437285,
+    "S1_DEV_EVAL": 0.001646693312471819,
+    "S1_TRAIN": 0.0015155523497003371
+  },
+  "not_confirmatory": true,
+  "partitions": {
+    "S1_CAL_EVAL/canonical": {
+      "accuracy": 0.49270833333333336,
+      "brier": 0.5548382386225551,
+      "count": 3840,
+      "nll": 0.7527835544779181
+    },
+    "S1_CAL_EVAL/transformed": {
+      "accuracy": 0.49453125,
+      "brier": 0.534294138374123,
+      "count": 3840,
+      "nll": 0.7300166861215325
+    },
+    "S1_CAL_TUNE/canonical": {
+      "accuracy": 0.5625,
+      "brier": 0.5229074503525791,
+      "count": 256,
+      "nll": 0.7191630194987009
+    },
+    "S1_CAL_TUNE/transformed": {
+      "accuracy": 0.55078125,
+      "brier": 0.5147189609948151,
+      "count": 256,
+      "nll": 0.7084647521060095
+    },
+    "S1_DEV_EVAL/canonical": {
+      "accuracy": 0.48072916666666665,
+      "brier": 0.5618578151316586,
+      "count": 3840,
+      "nll": 0.760253586708653
+    },
+    "S1_DEV_EVAL/transformed": {
+      "accuracy": 0.48359375,
+      "brier": 0.5414411935914657,
+      "count": 3840,
+      "nll": 0.7380978990540136
+    },
+    "S1_TRAIN/canonical": {
+      "accuracy": 0.5,
+      "brier": 0.543980890192801,
+      "count": 256,
+      "nll": 0.7412118263983208
+    },
+    "S1_TRAIN/transformed": {
+      "accuracy": 0.49609375,
+      "brier": 0.5301087088408247,
+      "count": 256,
+      "nll": 0.7259332939771078
+    }
+  },
+  "scope": "DEVELOPMENT_CALIBRATION_ONLY"
+}

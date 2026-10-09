@@ -1,0 +1,15 @@
+BOUND_RULES=64
+EXAMPLES=8192
+SPLITS={"S1_CAL_EVAL": 3840, "S1_CAL_TUNE": 256, "S1_DEV_EVAL": 3840, "S1_TRAIN": 256}
+MAX_PROMPT_TOKENS=593
+OVERLENGTH=0
+CANDIDATE_TOKEN_FAILURES=[]
+EVIDENCE_SHA256=65f03facd523adde8c4726684ad6f4c491fccfa0b0ff11186b4c365deca72c17
+MODEL_LOAD=PREFLIGHT_PASS
+
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 320/320 [00:00<00:00, 6316.01it/s]
+INFERENCE=PREFLIGHT_PASS
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+{"evidence_zip": "/content/commandmed-source/artifacts/v5/development/s1-colab-resource-qualification/e2a00b45-d2d4-4dbc-836a-a1f2374b6f69.zip", "evidence_zip_sha256": "8e96ace05bcded3b90d886839c69dfb0745452450c181afcfd3ca13f1b9fc9bd", "result": {"code_sha": "3236304f59d6715916a5886b9965b0a1bd908f4d", "durable_export_verified": false, "exception_type": "ImportError", "git_tree": "7f6cf00e8af550dd26370534aa0ee5906f4388dc", "model_inference": true, "model_loaded": true, "optimization_executed": false, "reason": "Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported", "status": "RESOURCE_BLOCKED"}}

@@ -1,0 +1,7 @@
+# V5 S1 answer-amendment post-commit attestation
+
+Exact tested/reviewed payload: `9e157e7e534df0d612d4d25cbdcf2736be6c613f`. The working tree was clean before checks. Fresh local checks passed: 97 V5 tests (1.05 seconds), 1,149 full repository tests (24.11 seconds), Python compile validation and `git diff --check`. Actual logs, normalized only from CRLF to LF with raw and stored hashes retained, and the payload/tree identities are in `artifacts/v5/development/s1_task_preparation/answer-amendment-postcommit-validation-2026-10-03.json`.
+
+Host-agent exact-payload review reapplied Alibaba OCR v1.12.11 local rules to the amended implementations and tests: no blocking amendment finding. This records local zero-cost review, not an external model verdict or independent peer review. Jev remains deferred under zero-cost policy.
+
+This attestation wrapper changes evidence only. Before model load, reverify all amended preparation/binding hashes, the full 12-file model bundle and tokenizer hashes, the exact pushed head, and available resources; create fresh artifact/environment manifests and an exact-run preflight. The observational local harness records its own implementation hash, seeds the synthetic resource procedure with the frozen seed 11, disables telemetry/network downloads, and observes the unchanged committed qualifier. It changes no model, dtype, training objective, parameter scope or budget. Fresh `PREFLIGHT_PASS` remains mandatory for each model action. No load, inference or training has occurred at this attestation frontier.

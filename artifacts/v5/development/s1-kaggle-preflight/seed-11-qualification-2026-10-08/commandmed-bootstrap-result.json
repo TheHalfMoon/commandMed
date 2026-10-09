@@ -1,0 +1,12 @@
+{
+  "exit_code": 2,
+  "expected_head": "1c7dc50be86b398eaaf19e597a8390893073d62b",
+  "exported_archive": true,
+  "model_inference": false,
+  "model_loaded": false,
+  "spend_usd": 0,
+  "status": "KAGGLE_QUALIFICATION_FINISHED",
+  "torch_after": "2.11.0+cu128",
+  "torch_before": "2.11.0+cu128",
+  "training": false
+}

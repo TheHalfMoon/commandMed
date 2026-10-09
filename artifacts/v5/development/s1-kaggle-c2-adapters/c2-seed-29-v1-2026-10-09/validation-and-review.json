@@ -1,0 +1,44 @@
+{
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview plus host-agent review",
+  "archive_sha256": "3550c9bcb731ffe88f71a39120472a69742ae06228e415f379b70d5a77947e10",
+  "c1_chain_verified": [
+    11,
+    29,
+    47
+  ],
+  "compile_exit_code": 0,
+  "confirmatory": false,
+  "control_character_scan": "PASS",
+  "diff_check_exit_code": 0,
+  "export_verifier_sha256": "5215565d50472a11ec0b0d81f7ded8e8ffc523b3347c29d195795928a964396c",
+  "external_model_verdict": false,
+  "frozen_entry_files_verified": 307,
+  "full_repository_tests": {
+    "basetemp": "C:\\c229all",
+    "exit_code": 0,
+    "passed": 1283,
+    "seconds": 23.7
+  },
+  "host_review": "NO_MATERIAL_BLOCKER; exact archive/runtime/hardware hashes, live-source identity, single-GPU scientific isolation, no-resume atomic execution, exact retention source/hash, 16384 medical rows, 256 paired retention rows, development-only claim boundaries, frozen protocol and zero-cost constraints checked",
+  "intervention": "C2_CRDI_RETAIN_V1",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "kernel": "abdulazizshehri/commandmed-v5-c2-seed-29-atomic",
+  "kernel_version": 1,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "promotion_note": "Seed 47 remains blocked until this review/evidence is committed and pushed; the canonical predecessor gate must pass at the next exact head before model action.",
+  "reserve": false,
+  "retention_source_sha256": "8c6646d36bd5a95061e076788cf3161d11f6f3e7d625dac7a83bbed0a49f69f7",
+  "reviewed_run_head": "8576b20ff8fd797a5680497f584b024f0a4bfc5c",
+  "reviewed_run_tree": "1d55f066225cff7f24d971cf708ddcf6dc7d2e67",
+  "riskcalcs_sha256": "00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9",
+  "schema": "commandmed.v5.c2-seed-review.v1",
+  "seed": 29,
+  "spend_usd": 0,
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 231,
+    "seconds": 8.31
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "complete": true,
+  "config": {
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "clip_norm": 1.0,
+    "contract_weight": 0.1,
+    "eps": 1e-08,
+    "gradient_accumulation": 8,
+    "intervention": "C1_CRDI_V1",
+    "lr": 0.0005,
+    "maintenance_schedule": null,
+    "medical_epochs": 1,
+    "medical_order": "CPU_TORCH_GENERATOR_SEEDED_RANDPERM_OF_FROZEN_MATERIALIZATION",
+    "micro_batch_size": 1,
+    "optimizer_steps": 32,
+    "retention_weight": 0,
+    "seed": 11,
+    "train_count": 256,
+    "weight_decay": 0.0
+  },
+  "losses": [
+    {
+      "mean_medical_loss": 0.49007948487997055,
+      "mean_retention_kl": null,
+      "step": 1,
+      "unclipped_gradient_norm": 2.53125
+    },
+    {
+      "mean_medical_loss": 0.9532597810029984,
+      "mean_retention_kl": null,
+      "step": 2,
+      "unclipped_gradient_norm": 4.6875
+    },
+    {
+      "mean_medical_loss": 0.6321814637631178,
+      "mean_retention_kl": null,
+      "step": 3,
+      "unclipped_gradient_norm": 0.81640625
+    },
+    {
+      "mean_medical_loss": 1.0503310896456242,
+      "mean_retention_kl": null,
+      "step": 4,
+      "unclipped_gradient_norm": 3.765625
+    },
+    {
+      "mean_medical_loss": 0.738328518345952,
+      "mean_retention_kl": null,
+      "step": 5,
+      "unclipped_gradient_norm": 3.234375
+    },
+    {
+      "mean_medical_loss": 0.5728134028613567,
+      "mean_retention_kl": null,
+      "step": 6,
+      "unclipped_gradient_norm": 3.0
+    },
+    {
+      "mean_medical_loss": 0.7481758296489716,
+      "mean_retention_kl": null,
+      "step": 7,
+      "unclipped_gradient_norm": 1.3828125
+    },
+    {
+      "mean_medical_loss": 0.6895947679877281,
+      "mean_retention_kl": null,
+      "step": 8,
+      "unclipped_gradient_norm": 1.9765625
+    },
+    {
+      "mean_medical_loss": 0.7275717854499817,
+      "mean_retention_kl": null,
+      "step": 9,
+      "unclipped_gradient_norm": 0.80078125
+    },
+    {
+      "mean_medical_loss": 0.6995579153299332,
+      "mean_retention_kl": null,
+      "step": 10,
+      "unclipped_gradient_norm": 2.125
+    },
+    {
+      "mean_medical_loss": 0.7041836120188236,
+      "mean_retention_kl": null,
+      "step": 11,
+      "unclipped_gradient_norm": 1.9140625
+    },
+    {
+      "mean_medical_loss": 0.687254723161459,
+      "mean_retention_kl": null,
+      "step": 12,
+      "unclipped_gradient_norm": 2.828125
+    },
+    {
+      "mean_medical_loss": 0.7892033196985722,
+      "mean_retention_kl": null,
+      "step": 13,
+      "unclipped_gradient_norm": 4.5625
+    },
+    {
+      "mean_medical_loss": 0.8355652056634426,
+      "mean_retention_kl": null,
+      "step": 14,
+      "unclipped_gradient_norm": 8.0625
+    },
+    {
+      "mean_medical_loss": 0.5747485123574734,
+      "mean_retention_kl": null,
+      "step": 15,
+      "unclipped_gradient_norm": 1.625
+    },
+    {
+      "mean_medical_loss": 0.7210354283452034,
+      "mean_retention_kl": null,
+      "step": 16,
+      "unclipped_gradient_norm": 3.296875
+    },
+    {
+      "mean_medical_loss": 0.8077558279037476,
+      "mean_retention_kl": null,
+      "step": 17,
+      "unclipped_gradient_norm": 2.375
+    },
+    {
+      "mean_medical_loss": 0.6064024176448584,
+      "mean_retention_kl": null,
+      "step": 18,
+      "unclipped_gradient_norm": 3.1875
+    },
+    {
+      "mean_medical_loss": 0.6592733860015869,
+      "mean_retention_kl": null,
+      "step": 19,
+      "unclipped_gradient_norm": 0.408203125
+    },
+    {
+      "mean_medical_loss": 0.6635057553648949,
+      "mean_retention_kl": null,
+      "step": 20,
+      "unclipped_gradient_norm": 4.78125
+    },
+    {
+      "mean_medical_loss": 0.7508323341608047,
+      "mean_retention_kl": null,
+      "step": 21,
+      "unclipped_gradient_norm": 5.28125
+    },
+    {
+      "mean_medical_loss": 0.6519121713936329,
+      "mean_retention_kl": null,
+      "step": 22,
+      "unclipped_gradient_norm": 3.5625
+    },
+    {
+      "mean_medical_loss": 0.724608588963747,
+      "mean_retention_kl": null,
+      "step": 23,
+      "unclipped_gradient_norm": 7.03125
+    },
+    {
+      "mean_medical_loss": 0.7418001256883144,
+      "mean_retention_kl": null,
+      "step": 24,
+      "unclipped_gradient_norm": 4.84375
+    },
+    {
+      "mean_medical_loss": 0.8028433844447136,
+      "mean_retention_kl": null,
+      "step": 25,
+      "unclipped_gradient_norm": 2.671875
+    },
+    {
+      "mean_medical_loss": 0.89472396671772,
+      "mean_retention_kl": null,
+      "step": 26,
+      "unclipped_gradient_norm": 10.0625
+    },
+    {
+      "mean_medical_loss": 0.7118291482329369,
+      "mean_retention_kl": null,
+      "step": 27,
+      "unclipped_gradient_norm": 3.0
+    },
+    {
+      "mean_medical_loss": 0.6504658609628677,
+      "mean_retention_kl": null,
+      "step": 28,
+      "unclipped_gradient_norm": 1.1953125
+    },
+    {
+      "mean_medical_loss": 0.7367968708276749,
+      "mean_retention_kl": null,
+      "step": 29,
+      "unclipped_gradient_norm": 2.109375
+    },
+    {
+      "mean_medical_loss": 0.7463300973176956,
+      "mean_retention_kl": null,
+      "step": 30,
+      "unclipped_gradient_norm": 3.984375
+    },
+    {
+      "mean_medical_loss": 0.7236073464155197,
+      "mean_retention_kl": null,
+      "step": 31,
+      "unclipped_gradient_norm": 1.8828125
+    },
+    {
+      "mean_medical_loss": 0.7191857695579529,
+      "mean_retention_kl": null,
+      "step": 32,
+      "unclipped_gradient_norm": 1.9921875
+    }
+  ],
+  "wall_seconds": 256.46498553199996
+}

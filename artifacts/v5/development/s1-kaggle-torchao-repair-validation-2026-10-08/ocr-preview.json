@@ -1,0 +1,183 @@
+{
+  "schema_version": "1",
+  "mode": "workspace",
+  "repository": "C:/Users/Shehr/OneDrive/Documents/ChatGPT/commandMed/canonical-source",
+  "total_files": 27,
+  "reviewable_count": 20,
+  "excluded_count": 7,
+  "total_insertions": 1031,
+  "total_deletions": 0,
+  "reviewable_files": [
+    {
+      "path": "scripts/v5_s1_kaggle_atomic_kernel.py",
+      "status": "modified",
+      "insertions": 16,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/commandmed-atomic-kernel-result.json",
+      "status": "added",
+      "insertions": 12,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/commandmed-physical-hardware.json",
+      "status": "added",
+      "insertions": 22,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/console-export-receipt.json",
+      "status": "added",
+      "insertions": 5,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/environment-before-imports.json",
+      "status": "added",
+      "insertions": 69,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/environment-manifest.json",
+      "status": "added",
+      "insertions": 135,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/export-verification-receipt.json",
+      "status": "added",
+      "insertions": 84,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/frozen-bindings.json",
+      "status": "added",
+      "insertions": 6,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/hardware-manifest.json",
+      "status": "added",
+      "insertions": 17,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/kaggle-preflight-result.json",
+      "status": "added",
+      "insertions": 19,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/launch-receipt.json",
+      "status": "added",
+      "insertions": 51,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/load-observation.json",
+      "status": "added",
+      "insertions": 13,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/model-artifact-manifest.json",
+      "status": "added",
+      "insertions": 69,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/preflight-model-load.json",
+      "status": "added",
+      "insertions": 38,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/preparation/task-preparation-evidence.json",
+      "status": "added",
+      "insertions": 128,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/resource-preflight-inference.json",
+      "status": "added",
+      "insertions": 37,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/resource-preflight-model_load.json",
+      "status": "added",
+      "insertions": 37,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/resource-qualification.json",
+      "status": "added",
+      "insertions": 14,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/smoke-inference.json",
+      "status": "added",
+      "insertions": 18,
+      "deletions": 0
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-torchao-repair-validation-2026-10-08/validation-and-review.json",
+      "status": "added",
+      "insertions": 25,
+      "deletions": 0
+    }
+  ],
+  "excluded_files": [
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/kernel-console.log",
+      "status": "added",
+      "insertions": 115,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/original-console-export.zip",
+      "status": "binary",
+      "insertions": 0,
+      "deletions": 0,
+      "exclude_reason": "binary"
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/original-export.zip",
+      "status": "binary",
+      "insertions": 0,
+      "deletions": 0,
+      "exclude_reason": "binary"
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-preflight/seed-11-torchao-stop-v3-2026-10-08/submitted-kernel-source.txt",
+      "status": "added",
+      "insertions": 70,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-torchao-repair-validation-2026-10-08/full-tests.log",
+      "status": "added",
+      "insertions": 18,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "artifacts/v5/development/s1-kaggle-torchao-repair-validation-2026-10-08/v5-tests.log",
+      "status": "added",
+      "insertions": 4,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_KAGGLE_TORCHAO_STOP_AND_RUNTIME_REPAIR_2026-10-08.md",
+      "status": "added",
+      "insertions": 9,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    }
+  ]
+}

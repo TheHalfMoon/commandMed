@@ -1,0 +1,12 @@
+{
+  "gated": false,
+  "model_artifact_sha256": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+  "model_files": 12,
+  "paid_api": false,
+  "paid_compute": false,
+  "private": false,
+  "resolved_sha": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+  "runtime_drive_free_bytes": 75464028160,
+  "source_sha256": "00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9",
+  "spend_usd": 0.0
+}

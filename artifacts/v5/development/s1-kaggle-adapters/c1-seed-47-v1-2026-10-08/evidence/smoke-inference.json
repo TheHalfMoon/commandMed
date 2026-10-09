@@ -1,0 +1,18 @@
+{
+  "candidate_logits": [
+    15.0625,
+    13.375
+  ],
+  "logits_dtype": "torch.bfloat16",
+  "memory": {
+    "gpu_allocated_bytes": 1547015680,
+    "gpu_free_bytes": 13854638080,
+    "gpu_peak_allocated_bytes": 1560701952,
+    "gpu_peak_reserved_bytes": 1635778560,
+    "gpu_reserved_bytes": 1635778560,
+    "gpu_total_bytes": 15636037632,
+    "process_rss_bytes": 1719078912,
+    "ram_available_bytes": 30891151360
+  },
+  "wall_seconds": 0.907843841999977
+}

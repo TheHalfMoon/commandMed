@@ -1,0 +1,27 @@
+{
+  "bindings": "ALL_CURRENT_HASHES_MATCH",
+  "compile": "PASS",
+  "deterministic_bindings": "BYTE_IDENTICAL; GENERATION_CONTEXT_ONLY_DIFFERS_FROM_COMMITTED_MANIFEST",
+  "exact_head_review": "HOST_AGENT_REVIEW_APPLYING_OCR_DELEGATE_RULES; NO_EXTERNAL_MODEL_VERDICT",
+  "full": {
+    "exit_code": 0,
+    "sha256": "4c67d8969129f328d143778a7e5cc4a1fb6c74959103f3217009653e2c0c3a9b",
+    "summary": "1171 passed in 20.83s"
+  },
+  "head": "3347cf564999cabc1b55bff49c8dfdfeba431106",
+  "historical_negative_evidence": "UNCHANGED",
+  "jev": "DEFERRED_NO_PAID_CALL",
+  "local_full_prompt_reproduction": "ALL_SCIENTIFIC_FIELDS_IDENTICAL_EXCEPT_GENERATION_HEAD",
+  "local_preparation_backend": "TOKENIZER_ONLY_USE_TORCH_0; NO_MODEL_CALL",
+  "model_calls": false,
+  "notebook_format": "PASS_TEMPLATE_UNEXECUTED",
+  "schema": "commandmed.v5.colab.exact-head-validation.v1",
+  "tree": "e53dc4267d4f70412ab3195f3bafceb0d7a6a32c",
+  "v5": {
+    "exit_code": 0,
+    "sha256": "d41d87fb08dae71a2a779c5065bba20dd2308acea17a1832ded2598994c66d74",
+    "summary": "119 passed in 0.59s"
+  },
+  "whitespace": "PASS",
+  "worktree_clean": true
+}

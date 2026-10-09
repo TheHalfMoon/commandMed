@@ -1,0 +1,29 @@
+{
+  "schema": "commandmed.v5.seed-review.v1",
+  "reviewed_run_head": "90f3911438b6909ca785d78c139897af4a0bf2fc",
+  "reviewed_run_tree": "1ed2f5adc0d9f7a2a53d618209a76454ea4101b0",
+  "archive_sha256": "df850fcc574f43819d0f0a0a38ca7704c547ed3325e3e13c5aafd88de7fe5304",
+  "export_verifier_status": "PASS_MODEL_FREE_EXPORT_VERIFICATION",
+  "extracted_member_hashes": "34/34 PASS",
+  "frozen_entry_files_verified": 307,
+  "v5_tests": {
+    "passed": 196,
+    "seconds": 6.31,
+    "exit_code": 0,
+    "basetemp": "C:\\cm47v5"
+  },
+  "full_repository_tests": {
+    "passed": 1248,
+    "seconds": 19.07,
+    "exit_code": 0,
+    "basetemp": "C:\\cm47full"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "alibaba_ocr": "v1.12.13 (fabbdb29); zero-cost delegate preview 38 reviewable / 40 total; JSON rules resolved; host-agent review",
+  "host_review": "NO_MATERIAL_BLOCKER; exact ZIP and runtime/hardware hashes, 34 extracted hashes, 16,384 ordered identities, frozen source/authority/model/tokenizer/entry bindings, original negative flags, no-resume atomic execution, zero incremental spend, and development-only claims checked",
+  "external_model_verdict": false,
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "scientific_claim_status": "DEVELOPMENT_ONLY; NO_CLINICAL_OR_CONFIRMATORY_CLAIM",
+  "spend_usd": 0
+}

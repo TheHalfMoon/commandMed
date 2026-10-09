@@ -1,0 +1,28 @@
+[
+  {
+    "model": "HuggingFaceTB/SmolLM2-1.7B",
+    "revision": "effd688a12921b4cc83e3312b6feb579f70f9c71",
+    "card_license": "apache-2.0",
+    "metadata_sha256": "fa496a37751bc49e7cf811e734ae729c5e24039edda8bd43d165aff711392528",
+    "config_sha256": "33397f6af8090f7290f27ce6fb1cd23a95fd0915a5c648dfd10b6002aaf7fc48",
+    "architectures": [
+      "LlamaForCausalLM"
+    ],
+    "hidden_size": 2048,
+    "status": "CANDIDATE_ONLY_NO_WEIGHTS_OR_EXECUTION",
+    "training_data_provenance": "Not fully independently verified; contamination cannot be ruled out"
+  },
+  {
+    "model": "Qwen/Qwen3.5-0.8B-Base",
+    "revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "card_license": "apache-2.0",
+    "metadata_sha256": "e276103f745a5985fe8b50c15fe02b2a415834123b60b12d9fb7931a366d5bd0",
+    "config_sha256": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
+    "architectures": [
+      "Qwen3_5ForConditionalGeneration"
+    ],
+    "hidden_size": 1024,
+    "status": "CANDIDATE_ONLY_NO_WEIGHTS_OR_EXECUTION",
+    "training_data_provenance": "Not fully independently verified; contamination cannot be ruled out"
+  }
+]

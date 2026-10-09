@@ -1,0 +1,37 @@
+{
+  "schema": "commandmed.v5.calibration-selective-mechanics-review.v1",
+  "status": "QUALIFIED_MECHANICS_ONLY",
+  "reviewed_head": "1f7c9dd262b1a4e0dfb3417c210c2e63b4c5ebe3",
+  "scope": "MECHANICS_ONLY_NO_DIAGNOSTIC_CONVENTION_FROZEN",
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 245,
+    "seconds": 4.25,
+    "basetemp": "C:\\dv5b"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1297,
+    "seconds": 30.05,
+    "basetemp": "C:\\dallb"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "control_character_scan": "PASS",
+  "frozen_entry_files_verified": 307,
+  "frozen_binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+  "scientific_freeze_sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c",
+  "kaggle_amendment_sha256": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview covering 2 reviewable / 5 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; mechanics are parameter-explicit and do not choose calibration definition, binning, threshold, risk target, AURC convention, margin, or domain floor; malformed/nonfinite/zero-coverage cases fail closed",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "confirmatory": false,
+  "reserve": false,
+  "scientific_freeze_status": "OPEN",
+  "pr_320_state": "OPEN_DRAFT_UNMERGED"
+}

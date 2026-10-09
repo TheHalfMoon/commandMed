@@ -1,0 +1,50 @@
+{
+  "all_scientific_preparation_identities": "MATCH",
+  "archive_sha256": "f66305d0d55daad214348e2e78a41282137f429397380251d828d4a71f3ed419",
+  "members": [
+    {
+      "path": "kaggle-preflight-result.json",
+      "sha256": "42b522abe3d646c643825b1f71cc10ac5cbca0b3f0b0467961464650ca374726",
+      "size": 540
+    },
+    {
+      "path": "hardware-manifest.json",
+      "sha256": "c9c8e6c785817e7454e6c6146153402bd21655e4f62784511d564a704d83c344",
+      "size": 490
+    },
+    {
+      "path": "preparation-mismatch.json",
+      "sha256": "59de230cbbafc75ccf26c9a7804b49b3bb3b7b73f6d45b2ee692efed5f4beca8",
+      "size": 57
+    },
+    {
+      "path": "model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2",
+      "size": 2115
+    },
+    {
+      "path": "frozen-bindings.json",
+      "sha256": "9fb1883f651d7f4114661e64bd3a44da441bfcc686c1d4beedbbad119d2ffd39",
+      "size": 315
+    },
+    {
+      "path": "environment-before-imports.json",
+      "sha256": "e992327ff057a555f5db182aec74bae30c51d6f43bb9d0489af412e7cc564c94",
+      "size": 2346
+    },
+    {
+      "path": "preparation/task-preparation-evidence.json",
+      "sha256": "255d291b0911bdb86fd061337f3ca3cf3d485a6e89d100e240249706f4ef5a30",
+      "size": 3420
+    }
+  ],
+  "model_execution": false,
+  "observed_reason": "COLAB_FROZEN_PREPARATION_MISMATCH:tokenizer_packages",
+  "observed_status": "KAGGLE_PREFLIGHT_BLOCKED",
+  "preparation_differences_except_code_sha": [
+    "tokenizer_packages"
+  ],
+  "schema": "commandmed.v5.kaggle-premodel-export-verification.v1",
+  "status": "MODEL_FREE_EXPORT_VERIFIED",
+  "verification_type": "MODEL_FREE_EVIDENCE_VERIFICATION_NOT_SCIENTIFIC_REPLICATION"
+}

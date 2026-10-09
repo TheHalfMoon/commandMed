@@ -1,0 +1,47 @@
+{
+  "schema_version": "1",
+  "mode": "workspace",
+  "repository": "C:/Users/Shehr/CommandMed-V5",
+  "total_files": 5,
+  "reviewable_count": 2,
+  "excluded_count": 3,
+  "total_insertions": 701,
+  "total_deletions": 0,
+  "reviewable_files": [
+    {
+      "path": "artifacts/v5/development/s1-cross-property-completion-prospective-2026-10-09/ocr-preview.json",
+      "status": "added",
+      "insertions": 0,
+      "deletions": 0
+    },
+    {
+      "path": "scripts/v5_s1_cross_property_completion.py",
+      "status": "added",
+      "insertions": 413,
+      "deletions": 0
+    }
+  ],
+  "excluded_files": [
+    {
+      "path": "artifacts/v5/development/s1-cross-property-completion-prospective-2026-10-09/ocr-version.txt",
+      "status": "added",
+      "insertions": 3,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_CROSS_PROPERTY_DEVELOPMENT_COMPLETION_FREEZE_2026-10-09.md",
+      "status": "added",
+      "insertions": 97,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "tests/reliability_v5/test_cross_property_completion.py",
+      "status": "added",
+      "insertions": 188,
+      "deletions": 0,
+      "exclude_reason": "default_path"
+    }
+  ]
+}

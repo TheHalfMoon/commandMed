@@ -1,0 +1,10 @@
+{
+  "durable_export_verified": true,
+  "export_origin": "visible Colab cell output, base64 exact-byte transfer, locally verified SHA-256",
+  "frozen_bundle_unchanged": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+  "individual_file_identity": "12_OF_12_EXACT_MATCH",
+  "mismatch_mechanism": "WINDOWS_VS_POSIX_PATH_ORDER_ONLY",
+  "model_load": false,
+  "original_zip_sha256": "530b4ea067469f7107256cf943c0b989ec8fb146f3e650b2fe1d84ed13b9c9fe",
+  "run_head": "1b2571dc457cb4d2cd40e8b0cb25d16e34b5783e"
+}

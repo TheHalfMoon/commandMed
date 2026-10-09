@@ -1,0 +1,47 @@
+{
+  "schema_version": "1",
+  "mode": "workspace",
+  "repository": "C:/Users/Shehr/CommandMed-V5",
+  "total_files": 5,
+  "reviewable_count": 2,
+  "excluded_count": 3,
+  "total_insertions": 20,
+  "total_deletions": 2,
+  "reviewable_files": [
+    {
+      "path": "scripts/v5_s1_postprocessing_development.py",
+      "status": "modified",
+      "insertions": 6,
+      "deletions": 1
+    },
+    {
+      "path": "artifacts/v5/development/s1-postprocessing-tuning-floor-repair-2026-10-09/ocr-preview.json",
+      "status": "added",
+      "insertions": 0,
+      "deletions": 0
+    }
+  ],
+  "excluded_files": [
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_POSTPROCESSING_DEVELOPMENT_CONVENTIONS_FREEZE_2026-10-09.md",
+      "status": "modified",
+      "insertions": 1,
+      "deletions": 1,
+      "exclude_reason": "unsupported_ext"
+    },
+    {
+      "path": "tests/reliability_v5/test_postprocessing_development.py",
+      "status": "modified",
+      "insertions": 10,
+      "deletions": 0,
+      "exclude_reason": "default_path"
+    },
+    {
+      "path": "artifacts/v5/development/s1-postprocessing-tuning-floor-repair-2026-10-09/ocr-version.txt",
+      "status": "added",
+      "insertions": 3,
+      "deletions": 0,
+      "exclude_reason": "unsupported_ext"
+    }
+  ]
+}

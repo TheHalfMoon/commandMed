@@ -1,0 +1,39 @@
+{
+  "schema": "commandmed.v5.s1-postprocessing-import-repair-review.v1",
+  "status": "QUALIFIED_PREOUTPUT_IMPORT_REPAIR",
+  "base_head": "ff0b88b89efda7b83a27ed7f2bf25d38bf96ea17",
+  "failure_observed": "Direct execution of scripts/v5_s1_postprocessing_development.py failed before analysis output creation because the script process path did not include the repository root, causing ModuleNotFoundError: No module named 'src'.",
+  "scientific_output_created_before_repair": false,
+  "repair": "Insert the repository root into sys.path before importing project-owned src modules; no scientific convention, input, tuning rule, or analysis mechanic changed.",
+  "targeted_tests": {
+    "exit_code": 0,
+    "passed": 9,
+    "seconds": 4.94,
+    "basetemp": "C:\\ppfix"
+  },
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 278,
+    "seconds": 6.57,
+    "basetemp": "C:\\pfxv5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1330,
+    "seconds": 24.3,
+    "basetemp": "C:\\pfxall"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "frozen_entry_files_verified": 307,
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost delegate preview covering 2 reviewable / 3 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; repair changes import reachability only and occurred after a pre-output failure, before any post-processing scientific output was produced; frozen conventions remain unchanged",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "confirmatory": false,
+  "reserve": false
+}

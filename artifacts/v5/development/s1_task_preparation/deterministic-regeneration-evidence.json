@@ -1,0 +1,24 @@
+{
+  "artifact_count": 7,
+  "artifacts_sha256": {
+    "artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json": "6a54349f88ee1214b9f7f4f8298ca845bcf28666a620217a8002dc22d2b46c35",
+    "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json": "f992f4b9565f63d69e4844a9c0ea0912d0149e45f4a22c440cdef1a05ed9abac",
+    "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md": "c715c9e475b7bbec5e08b4d40819e0522202edbc85ec44f1a79cd170353324fb",
+    "docs/research/paper-rebuild-v2-2026-10-02/quarantine-commitments-v5.json": "770a703daf0614110feabf8efbc1e262a97133f1302c418001092bf910cba3df",
+    "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json": "2d57d36e2559fa2e5fdfd377782e254eb5d9bfcd16f042194c15867861426baa",
+    "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json": "5a58009f24f42184414d4ec780b103b6f8c5c850f67c098e9e6c0aa535a30f8a",
+    "docs/research/paper-rebuild-v2-2026-10-02/scientific-freeze-bindings-v5.json": "442232487ac74d83ff3719f8daa185230486979be5757fc3a696f36f5d783f96"
+  },
+  "bound_paths_sha256_verified": true,
+  "code_generation_context_sha": "338d0cb5fd3c9ee3131357af24333fd0e80ab4de",
+  "confirmatory_materialized": false,
+  "model_inference": false,
+  "model_loaded": false,
+  "original_preparation_failure_unchanged": true,
+  "reserve_materialized": false,
+  "schema": "commandmed.v5.premodel-regeneration.v1",
+  "task_preparation_exit_code_each_run": 2,
+  "task_preparation_status": "FAILED_PRE_MODEL_INTERFACE",
+  "training": false,
+  "two_pipeline_runs_byte_identical": true
+}

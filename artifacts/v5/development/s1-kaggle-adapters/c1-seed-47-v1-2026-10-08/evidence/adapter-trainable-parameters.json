@@ -1,0 +1,84 @@
+{
+  "parameters": [
+    {
+      "count": 4096,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.self_attn.q_proj.lora_A.default.weight"
+    },
+    {
+      "count": 16384,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.self_attn.q_proj.lora_B.default.weight"
+    },
+    {
+      "count": 4096,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.self_attn.k_proj.lora_A.default.weight"
+    },
+    {
+      "count": 2048,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.self_attn.k_proj.lora_B.default.weight"
+    },
+    {
+      "count": 4096,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.self_attn.v_proj.lora_A.default.weight"
+    },
+    {
+      "count": 2048,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.self_attn.v_proj.lora_B.default.weight"
+    },
+    {
+      "count": 8192,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.self_attn.o_proj.lora_A.default.weight"
+    },
+    {
+      "count": 4096,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.self_attn.o_proj.lora_B.default.weight"
+    },
+    {
+      "count": 4096,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.mlp.gate_proj.lora_A.default.weight"
+    },
+    {
+      "count": 14336,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.mlp.gate_proj.lora_B.default.weight"
+    },
+    {
+      "count": 4096,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.mlp.up_proj.lora_A.default.weight"
+    },
+    {
+      "count": 14336,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.mlp.up_proj.lora_B.default.weight"
+    },
+    {
+      "count": 14336,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.mlp.down_proj.lora_A.default.weight"
+    },
+    {
+      "count": 4096,
+      "dtype": "torch.bfloat16",
+      "name": "base_model.model.model.layers.23.mlp.down_proj.lora_B.default.weight"
+    }
+  ],
+  "target_modules": [
+    "model.layers.23.mlp.down_proj",
+    "model.layers.23.mlp.gate_proj",
+    "model.layers.23.mlp.up_proj",
+    "model.layers.23.self_attn.k_proj",
+    "model.layers.23.self_attn.o_proj",
+    "model.layers.23.self_attn.q_proj",
+    "model.layers.23.self_attn.v_proj"
+  ],
+  "total": 100352
+}

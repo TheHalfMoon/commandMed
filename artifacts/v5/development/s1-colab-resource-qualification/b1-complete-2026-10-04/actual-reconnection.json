@@ -1,0 +1,12 @@
+{
+  "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+  "torch": "2.11.0+cu130",
+  "cuda": "13.0",
+  "gpu": "Tesla T4",
+  "ram_bytes": 13605830656,
+  "repo_present": false,
+  "model_present": false,
+  "previous_runtime_disconnected": true,
+  "new_model_load": false,
+  "no_incremental_spend": true
+}

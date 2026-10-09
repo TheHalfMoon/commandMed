@@ -1,0 +1,1248 @@
+{
+  "amendment_sha256": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+  "canonical_main": "51f73ec05750137e5bd94ffa0765f6383f475fee",
+  "confirmatory_materialized": false,
+  "entry_head": "b7278f123111c1026cd5af45c76e1646eff2826c",
+  "entry_tree": "8590be05bd88d789b26153e16daaf3b3031047fe",
+  "founder_instruction_sha256": "aa92d5d795808b1dc192dbe4b2658316ead5a7909dd1d49ab1d11cac1dfb4c15",
+  "fresh_kaggle_preflight": "NOT_REACHED",
+  "model_execution": false,
+  "reserve_materialized": false,
+  "runtime": "KAGGLE_ZERO_COST_RUNTIME",
+  "schema": "commandmed.v5.kaggle-runtime-amendment-bindings.v1",
+  "scientific_changes": [],
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "smoke_source": "FOUNDER_REPORTED_INFRASTRUCTURE_ONLY_NOT_FRESH_PREFLIGHT",
+  "spend_usd": 0,
+  "unchanged_entry_files": [
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/adapter-followup-validation-2026-10-04/colab-payload-full-tests.log",
+      "sha256": "c3fd58336f2ab0be4e5ee594bd66b8916d0fc7cdb17ea488ba8d27f4f7650418"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/adapter-followup-validation-2026-10-04/colab-payload-v5-tests.log",
+      "sha256": "bf0017f3fbf3322f94596a1735bcbea872633f7f9061094c17f4da085b5706c8"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/adapter-followup-validation-2026-10-04/colab-payload-validation.json",
+      "sha256": "8340779cfbe3163c4f0daa1a545ab26fddee88687d5aa9bc4fa4e6d4122a37b6"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/adapter-followup-validation-2026-10-04/payload-attestation.json",
+      "sha256": "cfb18274875d3e647a4428f859cf69bdc451fa125edaa747c1f32b7bace0646f"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/adapter-prospective-validation-2026-10-04/colab-payload-full-tests.log",
+      "sha256": "2bd42b191e6d280d9984bd7aff80a0331761da429e1db04e426af68afc254c6a"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/adapter-prospective-validation-2026-10-04/colab-payload-v5-tests.log",
+      "sha256": "efe385239614edf4e57aa397ccfbf0adffd9aab8867d8135f6353e0aa3bf6f97"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/adapter-prospective-validation-2026-10-04/colab-payload-validation.json",
+      "sha256": "c201c73d662efc35456ac0114a828b81801f32341a92b8af290602c1a7a35f12"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/adapter-prospective-validation-2026-10-04/payload-attestation.json",
+      "sha256": "ab5a59fba6eb32d399bc707d61a44c75afd8f54f35d56d5b5694e01cb8478ef9"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/artifact-order-failure-2026-10-04/artifact-order-diagnostic.json",
+      "sha256": "f0504d15cfc04599b1f3a86f3d92f66cd927da4f0f42676836c18f32e6b327c1"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/artifact-order-failure-2026-10-04/durable-export-receipt.json",
+      "sha256": "ddbd900f54c94d89a8ff2bbb60bc1bb676fb72586f632a625e8c15c9d47c136e"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/artifact-order-failure-2026-10-04/original-console.log",
+      "sha256": "8ca27db1887c7953ca90012f93763b9afdd38cafea3d894f94f473958fb2f222"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/artifact-order-failure-2026-10-04/original-evidence.zip",
+      "sha256": "530b4ea067469f7107256cf943c0b989ec8fb146f3e650b2fe1d84ed13b9c9fe"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/artifact-order-failure-2026-10-04/progress.json",
+      "sha256": "99c964462dd9da880ad794258de77abab86d66248c59496022b30b0358ea5995"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/artifact-order-failure-2026-10-04/resource-qualification.json",
+      "sha256": "99c964462dd9da880ad794258de77abab86d66248c59496022b30b0358ea5995"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/actual-admission.json",
+      "sha256": "7d99f13c62b2cd81749181136d830771bcb8e3a2050a56e4c1b177dc3af83e96"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/actual-b1-foreground-launch.py",
+      "sha256": "6ce8081bb19968d2f89fcc01d193fa106ed38aa873f0cfdd358f554b31301e2f"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/actual-reconnection.json",
+      "sha256": "f7bf3966f22dc47128c70ccfc0277a25ccf9ddaa85d1afc1208097641cee80ee"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/artifact-native-order-observation.json",
+      "sha256": "246530bb14a13a493a2d25da2037e9ae404aeedbdc1e1b0c4b6ba8af6b52ac82"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-environment.json",
+      "sha256": "90a8e1b15dde001e25ae48fbf10c7aad356be64023679c26bf4642606e24163d"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-final-runtime-window-observation.json",
+      "sha256": "9c24f9274ed04283c15dfa44694d57b5c0b85825f04eb4a9ec95f01941f7c2ee"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-fit-seed-11.json",
+      "sha256": "761caab32b3b93dd315c28533616942e07f3d25fb4afdcfdc6ac15beb8362c9a"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-fit-seed-29.json",
+      "sha256": "ef6a964d233594387077b98f76e1cf4e5d4f82a1d9e62c7ced32129a212e541b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-fit-seed-47.json",
+      "sha256": "14c7db737bbcc2f06d2f89cef656894d785d30759218f649af6a8aceaefbecb7"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-head-resource-timing.json",
+      "sha256": "719f0cb30cd571ac0b6ae9587696bd1af387aac75aa6b1a2eefbdb2e54bf49e0"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-independent-export-inspection.json",
+      "sha256": "29f8fc6adff964ccc9ec7f4572e2cdda89d00664e40d4416c80688dd5ebe4652"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-load-observation.json",
+      "sha256": "38e5d219831ecb38c8c261c138b088394e6ac25adceae8c8617061df0b7ccc9d"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-mechanical-representation.json",
+      "sha256": "2a47dc0d1820325013bcdc8060b902b25340b3f0a6c7b2666e0ae8a564b99144"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-next-stage-duration-gate.json",
+      "sha256": "0e35a78fd5f33f9317b6c6c109c2be4da13e7af28d1719270f7e6a08c54a4a6a"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-01-load.json",
+      "sha256": "6e71186a2c70cbef1a5bbe7a7a0c40ad1031add373304058cb0cc26ed5b9865c"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-02-resource-representation.json",
+      "sha256": "f215569cdc40429f4e93afb7fdb23bde3024895558bdf4aeaf472782b0801d6a"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-03-resource-head.json",
+      "sha256": "3b665147daaa83f4146d2b10f5ca55f69e07d85c81027e7e2c4a95a14d11ed7a"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-04-complete-base-matrix.json",
+      "sha256": "1cdf6c990e43ac994fdc7b0ec824cfe75a6367cf60e204192318a51670b95a06"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-05-fit-seed-11.json",
+      "sha256": "aec52d70635771a8941122b33f20e4e7edd751363db9f65dd4f9a684197a3a51"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-06-complete-head-matrix-seed-11.json",
+      "sha256": "33824a31f61461a8b1f79e425d75f584fc143c304d84a35e4834fbcab940c8f0"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-07-fit-seed-29.json",
+      "sha256": "aec52d70635771a8941122b33f20e4e7edd751363db9f65dd4f9a684197a3a51"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-08-complete-head-matrix-seed-29.json",
+      "sha256": "33824a31f61461a8b1f79e425d75f584fc143c304d84a35e4834fbcab940c8f0"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-09-fit-seed-47.json",
+      "sha256": "aec52d70635771a8941122b33f20e4e7edd751363db9f65dd4f9a684197a3a51"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-preflight-10-complete-head-matrix-seed-47.json",
+      "sha256": "33824a31f61461a8b1f79e425d75f584fc143c304d84a35e4834fbcab940c8f0"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-progress.json",
+      "sha256": "f3d3454781b6cefada46a536bbf383304cde3a92e781e08012c1fbf4c6c74db2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-11-analysis.json",
+      "sha256": "f1db3b976af92cd2d1d32f5958c6f0bb5605f853b1dd7b1f6be090a8fbefc946"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-11-decision-matrix.json",
+      "sha256": "24f6be4368723f403bcb5c017ea79934a17986d517c57411df2012ca6826baf0"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-29-analysis.json",
+      "sha256": "96a002357a35f04d886dc55ba49830ae3f9f71afe255f4f3a522186c3615a84d"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-29-decision-matrix.json",
+      "sha256": "37d9604165562bda296fba163ea0e4bc152663baadcfdbccecdd4e9cdb35faaa"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-47-analysis.json",
+      "sha256": "b9908dd2d96d47fbbed6c71bbeaff0e9d9ccf75f0710d3462567ecaccd4ff481"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-47-decision-matrix.json",
+      "sha256": "9cacfb2e46cc4db7c628b40fc7e857e31635c40150e87ec71dcfdb8e00a73ee0"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-stage-duration-admission.json",
+      "sha256": "92591ac27cc9b4cc392ff13725a9b3dfdf37427bd997a238ec8e837ad8794b10"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-stage-result.json",
+      "sha256": "f3d3454781b6cefada46a536bbf383304cde3a92e781e08012c1fbf4c6c74db2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/baseline-analysis.json",
+      "sha256": "9a7ce22d8adce5347b36d3d062b3350f876407b9b5eb7beb435dabc093f79202"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/baseline-decision-matrix.json",
+      "sha256": "4308392b831da1ac7d60f5f75e5eec6a011a685ccbd8c9252f77d593d0bf5dc9"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/benchmark-timing.json",
+      "sha256": "d27155f83eafce19f54ec54857a0fddf0d6d67c15d2e695b6e010d84b54c398c"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/colab-entitlement-check.json",
+      "sha256": "943a75aa7aab2ef263328d455139457c0f6415835628e75285fcc2d85d5dc38c"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/colab-exact-validation-625bbe7c.json",
+      "sha256": "438133dd97e2792cc065305a1491b5fdb50704c0fc1691182ab862247b68d331"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/colab-exact-validation-84869233.json",
+      "sha256": "94e0770e12d6e8a8e23493ecaeecd7b9bf109fae42c554f7484b3fd0d56055c4"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/durable-export-receipt.json",
+      "sha256": "dddde22293060dbe80038b19822528956c051c704af0d15ce60ded0cb25746a4"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/environment-manifest.json",
+      "sha256": "ab18ec7bdeac862709fcb2d6da5152dd108e97f115a5c8d6473a30dbde796828"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/exact-head-625bbe7c-full-tests.log",
+      "sha256": "62c6c987e9a14394636b46b2109ee7cf0ad611f3028b8098502bf54927f2767b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/exact-head-625bbe7c-v5-tests.log",
+      "sha256": "e171b1524dd889f5ae232a63669237599074bac8051d5ae52e982a228d4937c0"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/exact-head-84869233-full-tests.log",
+      "sha256": "a75c8df6385062c6f9f09108bac9327939924aa731e8a1eb2f24620ce8aa1fb3"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/exact-head-84869233-v5-tests.log",
+      "sha256": "13f058ce01d59d26255932255618a5ec1ae03b3d0582004e421555c9bf122af4"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/load-observation.json",
+      "sha256": "70091fb9991dea95f86763588550628c933564ee7e415a645fb400a353eb859c"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/medical-resource-timing.json",
+      "sha256": "9adeefdad4ef410c223690a4a88f1c3feba52c2d1c53f414f3e1fc166b9638ca"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/model-observation.json",
+      "sha256": "7a70623c77084a19bd1f791e66b4f3ff95dedc2c78ce77cba7eae79db996cde2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/original-console.log",
+      "sha256": "fd8a1979d6b44f7f7d8178876b5e2cf199efe800f7ca2362d1cada44baad70a8"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/original-evidence.zip",
+      "sha256": "7e6e21ed73d8b672b4cf6836cc199f3450a02fb5ad0ea1d3b157009a431ed913"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/preflight-inference.json",
+      "sha256": "406af6090cbcfceaae5f75c62e6c40767a657ee265c4fc5c6b25b4d1dc0ad235"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/preflight-medical-resource-timing.json",
+      "sha256": "3b2e574ced5a82ba44921b39e62167feb84de1525593c6e2cb113257d801b31b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/preflight-model_load.json",
+      "sha256": "b822931badea8f2bcc42f78f7becaafbe060774f833895d6d06f614f9e4062e3"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/preflight-training.json",
+      "sha256": "79c7007e9c87bf2aac10292c9dd5788327ffa90a2262ba693186e0a27fde8e12"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/preparation/task-preparation-evidence.json",
+      "sha256": "84e38b02000f9c73b6a353e1ce055c1f2fcab17ab3682465d1442ac1f0c79152"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/progress.json",
+      "sha256": "19fbea8ac2fc307fd9badaaf30e6205ded1ed85eaaa73a5d4f2e88e5785ddab8"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/resource-qualification.json",
+      "sha256": "19fbea8ac2fc307fd9badaaf30e6205ded1ed85eaaa73a5d4f2e88e5785ddab8"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/retention-metadata-console.log",
+      "sha256": "c3b5bd09cfe365868c06644750fb81b709a4bb4148e2f36c6bb71b8a8fc4d370"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/retention-preparation.json",
+      "sha256": "3c28f423ea0d9ae599785a0322ecf53a07ddebdcc95846ee7d299272bf06a151"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/smoke-inference.json",
+      "sha256": "1e282c82a4d9559410f640465a270b733242af5c89a860c5e0203a6b7918bb07"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/timed-step.json",
+      "sha256": "ba3115386b282c62a7be453a6fc74b34ff6c494b4b51eb7b8218b8096eacd0f9"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/trainable-parameters.json",
+      "sha256": "cf135c772b5bf2643b863c07d6bc21f653deb00066233a0b1383f3e941950edb"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/warmup-step.json",
+      "sha256": "2884110576cb4b764c95655f2e5b578a79d1595febff5888a18342aa7a7d590e"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/workload-projection.json",
+      "sha256": "386f988d10fe0fdf570bf0f2254c4db744682d9d747d7c3e5fd67d06a619fe6b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-ai-pro-entitlement-blocker-2026-10-04/colab-feedback-draft.jpg",
+      "sha256": "6774d961c5d442c12f55e401ee168988e3465448b70d577ab49063821399e0da"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-ai-pro-entitlement-blocker-2026-10-04/colab-gpu-blocker.jpg",
+      "sha256": "24ff18ec3301248a54e5a9565346eef0488ee8de548bf0842832a14877a06192"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-ai-pro-entitlement-blocker-2026-10-04/colab-resources.jpg",
+      "sha256": "5e54fce8fe4656519a8b64d5628fad0fd619a6e0bb527ae3d289ba9d7fd24796"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-ai-pro-entitlement-blocker-2026-10-04/colab-runtime-options.jpg",
+      "sha256": "04a566f91223674ec563ef5ab43ed0bb4f0f3ca6e8936561933bc5afc5a75085"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-ai-pro-entitlement-blocker-2026-10-04/durability-receipt.json",
+      "sha256": "ee118f2d28b2cf75c8904105a9c01d3c92cf711c74abb7ef72771c1e17e4b893"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-ai-pro-entitlement-blocker-2026-10-04/entitlement-observation.json",
+      "sha256": "c0c5c6ebd0178a1869c92cc08c0dde25260d779ff18b9d2f378866669536ce7a"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-ai-pro-entitlement-blocker-2026-10-04/feedback-draft.txt",
+      "sha256": "6296b27376971b2e54ebda28d64bf59c520d234339226b29987e6b14e7f20546"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-fresh-runtime-gpu-blocker-2026-10-04/colab-gpu-assignment-blocker.png",
+      "sha256": "009c55aa85526fa3ba69efcf4ffbe4c68d8634c74ed42644e315a509db458890"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-fresh-runtime-gpu-blocker-2026-10-04/durability-receipt.json",
+      "sha256": "f17a93822c0f1cba6c825d75ed8e14fdebf7e550f69ed6ea002bc35c36f37f43"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/c1-seed-11-fresh-runtime-gpu-blocker-2026-10-04/fresh-runtime-observation.json",
+      "sha256": "90a8aa1c6e6c24622095d770743629bd625817c2a79c946e330976b479b7268a"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/pre-model-preparation-2026-10-04/initial-hardware.json",
+      "sha256": "9dbae6532ae866f96377b1f2390c9aae607490e3256d4a4ec8ecacd823b7b6a7"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/pre-model-preparation-2026-10-04/preparation-record.json",
+      "sha256": "b3093cd908ed38952185443cd000cca470ff15014c857493933d3285b5674f25"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/artifact-native-order-observation.json",
+      "sha256": "246530bb14a13a493a2d25da2037e9ae404aeedbdc1e1b0c4b6ba8af6b52ac82"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/benchmark-timing.json",
+      "sha256": "9330e1e687bd08e94c08e6dc4a4936d9b1475d71f93e3a8d94539ddcc8a4ed8b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/durable-export-receipt.json",
+      "sha256": "b524c431fcd231a8267f27904753482296ed57f017df44e45c54c527176e143f"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/environment-manifest.json",
+      "sha256": "a3e9404afe9f0990b9d18326773d036f02d0bc758a0b8440e64aa935e99bc818"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/exact-run-full-tests.log",
+      "sha256": "4c67d8969129f328d143778a7e5cc4a1fb6c74959103f3217009653e2c0c3a9b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/exact-run-v5-tests.log",
+      "sha256": "d41d87fb08dae71a2a779c5065bba20dd2308acea17a1832ded2598994c66d74"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/exact-run-validation.json",
+      "sha256": "be1447190e3f0a57aed86842d882c4ab581ee2bf1f089693806f5cc6de39b29c"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/load-observation.json",
+      "sha256": "7336e0d9410b708d4d1fe553f2913898e8d9d9822e5a2fa4c04fa31f6a7f6427"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/medical-resource-timing.json",
+      "sha256": "4cfa002a667c24454bf0fb51f0ee39d4e2f0187c3ce774bbd97509f822e2de65"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/model-observation.json",
+      "sha256": "7a70623c77084a19bd1f791e66b4f3ff95dedc2c78ce77cba7eae79db996cde2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/original-console.log",
+      "sha256": "5bf8d8f3525519147e457b31a52030001c84b434991d75f0328d63e96cd1b857"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/original-evidence.zip",
+      "sha256": "ac90c4db049801edc911b1afa556899f868268eaad09aa807cd0891dc88e9dff"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/preflight-inference.json",
+      "sha256": "04d95bfd3b011aea178fb5f1afebb849e9ab478b7b9af55ab93585b5c67c57a6"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/preflight-medical-resource-timing.json",
+      "sha256": "2779a2604f899c4aa52a0d1310410c6c8c4aad22ee88540bac85162dd226f340"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/preflight-model_load.json",
+      "sha256": "f6f97936c596e049e37c0596ab709c9ce71654b8b7be6ff0ef024f209d28150b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/preflight-training.json",
+      "sha256": "ea1f6254bcd7f14e3433587cfd2eaf628eccdc8c160f2e55ec3ddbf9ab8dc3d1"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/preparation/task-preparation-evidence.json",
+      "sha256": "5d0da6006a26e30012b5f0b00b575267dfd1f9a7a97026549ac9c1db3a5a006b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/progress.json",
+      "sha256": "c1f9d7ff052f38dafb16e6c2c0839db90e0e3654f6d4418182bb12a9d48f2d13"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/resource-qualification.json",
+      "sha256": "c1f9d7ff052f38dafb16e6c2c0839db90e0e3654f6d4418182bb12a9d48f2d13"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/smoke-inference.json",
+      "sha256": "9d25eb227ca0e8e6c83043fb8a0a4d8e0b12e921a36ffd8d01862f2029054b1f"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/timed-step.json",
+      "sha256": "c00e70e4ea794137e2cd29f53fd70eb761eda8433f9eb5a3d9705ca7b95ddf95"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/trainable-parameters.json",
+      "sha256": "cf135c772b5bf2643b863c07d6bc21f653deb00066233a0b1383f3e941950edb"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/warmup-step.json",
+      "sha256": "5e728febbc86083fa8650042e1bd9cd3dc6827a42bbfb75f61a09823496264b7"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/resource-measured-2026-10-04/workload-projection.json",
+      "sha256": "898e1f333b380a0af124efe8d9b3553a23ed52837375180fa27d44bd892fd7c2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/artifact-native-order-observation.json",
+      "sha256": "246530bb14a13a493a2d25da2037e9ae404aeedbdc1e1b0c4b6ba8af6b52ac82"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/dependency-repair.json",
+      "sha256": "67344a8052b881fcfe5c0a5adccfafc4e501184860add413544ad797eb723d5b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/durable-export-receipt.json",
+      "sha256": "960b985c9f43e8f0d9ce976b24b7a1c903651b82f849942b36c972593875d509"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/environment-manifest.json",
+      "sha256": "5b82f8bc72396d2985f25d4ab169b6978aa6696282bd112c2360c3d41fcf877b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/load-observation.json",
+      "sha256": "da9d967053998d89f5f50c3cde22df1420ae4979c153d7d52ff2a40b52831034"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/model-observation.json",
+      "sha256": "7a70623c77084a19bd1f791e66b4f3ff95dedc2c78ce77cba7eae79db996cde2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/original-console.log",
+      "sha256": "1d9d1aa8ca312f89bc6be19a7d8b09c28e8199f510b684c0247a262c35ec6cfe"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/original-evidence.zip",
+      "sha256": "8e96ace05bcded3b90d886839c69dfb0745452450c181afcfd3ca13f1b9fc9bd"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/preflight-inference.json",
+      "sha256": "d46d7faa4fe087f97420ba43909b3f194989505974126235da8c6a98d6a1cf25"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/preflight-model_load.json",
+      "sha256": "fbda6368088b66c7dd4aa7cb775c7484af6c0a39b27321d35f08510ba7f2178e"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/preparation/task-preparation-evidence.json",
+      "sha256": "65f03facd523adde8c4726684ad6f4c491fccfa0b0ff11186b4c365deca72c17"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/progress.json",
+      "sha256": "d6ea59686568dcf35c02410d8c079b7aad0ad486315bfcc527efdb7a888a2e31"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/resource-qualification.json",
+      "sha256": "d6ea59686568dcf35c02410d8c079b7aad0ad486315bfcc527efdb7a888a2e31"
+    },
+    {
+      "path": "artifacts/v5/development/s1-colab-resource-qualification/torchao-import-failure-2026-10-04/smoke-inference.json",
+      "sha256": "4742760f9eb75a58fadf14af0f650949b7afd8243fe80af8f27ded640152ef29"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/amended-exact-run-guard.json",
+      "sha256": "25678be35718c4f9e7282feb1559c6c66d5d33ded17c8aa1016bf4f0461d9d49"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/amended-resource-observation.json",
+      "sha256": "405f442aa14f072e6db90b4ec0c9e00a53eee12d001da73fe3714aaffa73a30d"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/answer-amendment-exact-run-full-tests-2026-10-03.log",
+      "sha256": "8f8b227922a558cc24f41b5ae1166e44e1acbabcfee4aeaf9a8ed242d875ab03"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/answer-amendment-exact-run-v5-tests-2026-10-03.log",
+      "sha256": "abbc33cca9b0e2d7acfc5ee4bc8f77d8d9b8a2e6f4e1708615c97c19a5268250"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/answer-amendment-exact-run-validation-2026-10-03.json",
+      "sha256": "04d3675890159369334d8a08fd56b66d1e268f94a4b7bf491f93504b9285be60"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/environment-manifest.json",
+      "sha256": "9c8075b6e62d16c6cb4f9a1acdf08e9c63571574309d4e51eea32d6e33538537"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/guarded-resource-observation-harness-source-2026-10-04.txt",
+      "sha256": "2bea73e695974b6bfa7590b7b73a888d854ff49153afebd14695155e9558972b"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/model-load-observation.json",
+      "sha256": "dab2255c28f440dd54e6c6cf6e0c152054082b577e1ce2bee1c899d97c95f4b9"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/preflight-model-load.json",
+      "sha256": "dba19aa8fcedaf6bc3db5a2e682e3c958d22bbb25ed07987c25b01035d167031"
+    },
+    {
+      "path": "artifacts/v5/development/s1-resource-qualification/resource-blocker-evidence-2026-10-04.json",
+      "sha256": "546612296e73ab3eb5afce35165efecd3f918849fadb75c7b6e778ff05579fa7"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/answer-amendment-postcommit-full-tests-2026-10-03.log",
+      "sha256": "130f9362ab77403d06ff8dd861e7881570937d3850fb537d64d20c355933996e"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/answer-amendment-postcommit-v5-tests-2026-10-03.log",
+      "sha256": "b32fd6f3c20c8e4b4b8dfd2b25e79ff06a5bc70369585458f94dae58a5a99d73"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/answer-amendment-postcommit-validation-2026-10-03.json",
+      "sha256": "5a38778d239579a510022792fd658d1258233631a48ca02430d7a8e3a3829bef"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/answer-amendment-precommit-full-tests-2026-10-03.log",
+      "sha256": "8740d1f890ee7d44aae3e12a0ada1e25156ba8a788ee44acf887dc825ecdc6ec"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/answer-amendment-precommit-v5-tests-2026-10-03.log",
+      "sha256": "ee6a6f5fd343a104c6a0d04b079047224cd413bd42c276ad960f39a04390fd74"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/answer-amendment-precommit-validation-2026-10-03.json",
+      "sha256": "b4c63883ecb36feaf7393cf1257b15bfc54e6487d204afe77c2504416f3d1842"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/answer-amendment-regeneration-2026-10-03.json",
+      "sha256": "2719ee7e7f534a044233a5da47116a6cbce9bf770c58625441f5f4ec6882758b"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/answer-amendment-review-2026-10-03.json",
+      "sha256": "d2f4862650db77842a35f8fa1f2937e262cea38dd45a46e16145aa2bab738b9b"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/deterministic-regeneration-evidence.json",
+      "sha256": "e97b700f2bcaa435e7d7a5724c4ca051988864bda0588510642e359f2872e593"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/frozen-space-prefix-failure-2026-10-03.json",
+      "sha256": "6a54349f88ee1214b9f7f4f8298ca845bcf28666a620217a8002dc22d2b46c35"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/model-artifact-reverification.json",
+      "sha256": "f87185dceba7a6c1bbc1b43ac3d41786f2f8b24e17dbaf1e10fcc66c13066c7a"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/oracle-selection-transition.json",
+      "sha256": "3e96990d00d994c6bd6bebc815276700eb8d0b102c3ae22d1733c2fe7ec4ff1a"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/post-commit-attestation-2026-10-03.json",
+      "sha256": "d3f2e3ce6f3cd2ee0aa23bbd4332e5fef16debfe335285c01232ad0651def8dd"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/post-commit-full-tests.log",
+      "sha256": "f5f9149e08ae2668e4d857f4e879dd0afc155afaa10eb590c1bbf1fadd949683"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/post-commit-v5-tests.log",
+      "sha256": "e0dadc18d1660a69e644ac0daa698da36c34011e93bcaa8f71147be2a81a4ce2"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/preparation-failure-2026-10-03.json",
+      "sha256": "8d7f310c662897419fca1390fac2894fb937cd21c97ad813f10d52bb6be8cee7"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/prospective-answer-prefix-metadata.json",
+      "sha256": "a577257530e0ca646209c0492cb9c42db0d495aa4b228ce7b10ef1c4e9f1310b"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/publication-scope-check.json",
+      "sha256": "3f906269438729bde1e43b0623c3fa2de12074a943641df481cf4db7540f26ad"
+    },
+    {
+      "path": "artifacts/v5/development/s1_task_preparation/task-preparation-evidence.json",
+      "sha256": "2e6df9ef92429653d67664f1e59d8f6d97f2a3e350d46885f6ad40b7c291fdf6"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/CONFIRMATORY_QUARANTINE_V5.md",
+      "sha256": "6ff1c8e207628996077558550855315975b9a605ee0dfa9dbc42d69a145ff151"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/PAPER_DECISION_GATE.md",
+      "sha256": "3fc5ec0e1489b985fb2d697e9e596df8d4a2e95319c776f76a6edb3098a452aa"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/PAPER_DECISION_GATE_V3.md",
+      "sha256": "3916a3ed5e71d58c4cb617f8822757dc01341c6bcdfffe50d41b1f6a3a9ab955"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/PAPER_DECISION_GATE_V5.md",
+      "sha256": "4557b955cc2484ad9516f549067ad7964fc9e70adbf126781ffbed3f398dde14"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/POST_COMMIT_ATTESTATION_V5.md",
+      "sha256": "7ad8716594d20f0f8542b3edbc4b3f60b997c80c740d104fd4a1a431c5ce32cf"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/POST_COMMIT_ATTESTATION_V5_ANSWER_AMENDMENT_2026-10-03.md",
+      "sha256": "d54b0d859f277b62e3a0a199b305081a5401c3b9a7d180024f8b57fbea21f233"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/POST_COMMIT_ATTESTATION_V5_LOCAL_2026-10-03.md",
+      "sha256": "904bd14070d61a66d93583f0bb3a8c5888d97697b584c4791d18729089d88c07"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/POWER_AND_MARGIN_GATE_V5.md",
+      "sha256": "c08dfc2327ce2ecaebefbf1b163655f3d2c8a62a303fcee6d6b2a6a0794f45e0"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/README-followup.md",
+      "sha256": "1854177a1a54db4da3f8adf6da8d2aa89ffb3729b9468d1fd59e6379395d6f15"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/RETENTION_TASK_ADMISSION_V5.md",
+      "sha256": "6cf296e91db6bf6f4e2ff3c6a024f3424bba9450cfa6cad463f09272d0dbe497"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/REVIEWER_RED_TEAM_V5.md",
+      "sha256": "ed02b931e51c71c7a4de84b0376ffaf03f4f862b77b72dd7ddd8c53273f2f86f"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/RIGHTS_AND_SOURCE_ADMISSION_V5.md",
+      "sha256": "0db6da5bd094198d8c9db474f7cc8de05cb9faa162550694521bc7b61edb4a60"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/SCIENTIFIC_FREEZE_CANDIDATE_V5.md",
+      "sha256": "4832eed35e158c52cceaed1939f46f48c3bbab5aeaffe91a9a232faf3e25e8da"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V3_NOVELTY_REASSESSMENT.md",
+      "sha256": "1c64d437c5c812d29d50140723d50ebc15d0295be7e122e482928f4c48f9bbfe"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V4_NOVELTY_THREATS.md",
+      "sha256": "5194ba74dfc29ca53719e6451f1cfcd31060433215237caabfe51fb9784445de"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORITY_REQUEST.md",
+      "sha256": "8a76ac87a71401a5212a3dd19217415fa683d633e20b56e9fa6eb99d52309929"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md",
+      "sha256": "cd73779ad8bc5885f10f0e81e4bc89d45eb3b749ceafc696ab2706e916510c0c"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_EXECUTION_BLOCKER_2026-10-03.md",
+      "sha256": "f46489af21b1ec6ecfbcbf6dbf7088bbce6dfd54ac6a93a2c0e823e26fddf7ec"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_DEVELOPMENT_PREFLIGHT_CONTRACT.md",
+      "sha256": "be2f9307e15d0812203e359b865e2a3ca4035a7532b892af13c1f10c620e4da0"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_LOCAL_PREMODEL_REVIEW_2026-10-03.md",
+      "sha256": "fc0d1a71f0de237f7d65449899086ad40a78c58e8e0c748d426213971cf107b9"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_NOVELTY_THREATS.md",
+      "sha256": "68c416cdf73c5efcd9503c7e31fe707ca0acee6a057494c5dcb91f243e28aedb"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ADAPTER_INTEGRATION_FREEZE_2026-10-04.md",
+      "sha256": "c2daec00da0a9fff5bad7161793e6a89a30e602f75c1a6cf55760cf57ced9a96"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ANSWER_INTERFACE_AMENDMENT_AUTHORIZATION_2026-10-03.md",
+      "sha256": "2db3ca77e46daf071701365ce22559a21de4e63fe3a43c7666d56e62ebcfa252"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ANSWER_INTERFACE_AMENDMENT_REQUEST_2026-10-03.md",
+      "sha256": "ec2f54703710be16fa94ac7d643cbf1b05936fb6708d172cfe7991c721601599"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_B1_DEVELOPMENT_RESULTS_2026-10-04.md",
+      "sha256": "965e39f03ef2dd79b4c47a521142044c1ea9fba379e5ac040e82ad72ffd873a6"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_C1_FRESH_RUNTIME_GPU_BLOCKER_2026-10-04.md",
+      "sha256": "4ce1b5337bcb34bf8de25716ebce72251a1d9edca2c94d424ee287bb3fc97cc8"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_COLAB_ARTIFACT_ORDER_FAILURE_2026-10-04.md",
+      "sha256": "271bb40872cd46b2ddc288e84e57790f867523f51547de3e5f064aaf4b99893d"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_COLAB_DEPENDENCY_FAILURE_2026-10-04.md",
+      "sha256": "1ee41a80a64fd114114823c807798655bbd17ce2619ae2b976c3695ea60852a0"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_COLAB_FREE_RUNTIME_AUTHORIZATION_SOURCE_2026-10-04.md",
+      "sha256": "0486ab01cf79535993c89b7ec29b46d15bca251449d2c14f913705469094c0c1"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_COLAB_RESOURCE_MEASUREMENTS_2026-10-04.md",
+      "sha256": "a388369f393ea399c23fe09ed9d4282f39f4664cbeb8d288676391eab815ceab"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_EXECUTION_PROTOCOL_2026-10-03.md",
+      "sha256": "7ff26c8cbee8a78f2e11d91f6387277f88ac51ef931c93cf1f0b2a8f36faebb0"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_EXISTING_COLAB_PRO_AUTHORIZATION_2026-10-04.md",
+      "sha256": "b7cae9e9e1b1f5f3d09180ef310226c90365480971d00fd995f6e7ce58c2f482"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_FREE_COLAB_SELECTION_2026-10-04.md",
+      "sha256": "ff5ec95e1907166c93347b1fed18bf85e24e0370052ac53d1f95b37f6efb9de8"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_GOOGLE_AI_PRO_ENTITLEMENT_BLOCKER_2026-10-04.md",
+      "sha256": "283e5ad3aab1b5d708c0d26f82419ce6efa8388961508af5b9151d671daf3421"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_MODEL_INTEGRATION_FREEZE_2026-10-04.md",
+      "sha256": "8b963e32dcf47211705e33cc45e8b5d8cd15b06fb474bbfb60d0a98b9a856eb6"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RESOURCE_BLOCKER_2026-10-04.md",
+      "sha256": "d745818834edeaea0caa1b4ad2f9dd03bb366c3dbc12b7f3ca68431b2a8171a7"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RESOURCE_FRONTIER_BINDINGS_2026-10-04.json",
+      "sha256": "c81a34104810f226baf811f9a1f19e548713430d384dfd8f6fb56193c32d5fcb"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_RULE_ORACLE_EXECUTION_COVERAGE_AMENDMENT_2026-10-03.md",
+      "sha256": "b8f51b768f35987110c8a430d311e979b6b7f782a48fc9f8436978f130364af9"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/VERIFICATION_V5.md",
+      "sha256": "10f8f807011c744e6b048fe6ff0189a277d4d6828e0f3410030617c1e8a7f29b"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/architecture-candidates.md",
+      "sha256": "1aa7ef65c39e18c23c18bc0d6deb5c86aff47ddfe589564d5b4592011ea71799"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/artifact-traceability.md",
+      "sha256": "925cc8f9bcfbacf0d9db93f3e213acdad40ab559b87fcd9160822ad4cc1eb0c9"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/bibliography-v3-additions.bib",
+      "sha256": "956950cf9adc93622ae2d742231d00342046dd69bda72e3decb95aa11721a8c5"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/bibliography-v5-additions.bib",
+      "sha256": "6943e7316f2a72b8ab44157cb186793a5c0b2f4db89ae812ea5cc0fb3e9b65b9"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/bibliography.bib",
+      "sha256": "7cb9a1080da9dba6516f9ff0cf9eea08a599749138d9ebe84af7bf5744d17e7c"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/bibliography.json",
+      "sha256": "483bf059ef1b25b108a7321f9deb85c9179a5878aa86d28f0b59f998c3aa2947"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/candidate-paper-theses.md",
+      "sha256": "35866db035cb12d4adad423e5b03491f586ed3c223252144ddaca7938f082f49"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/candidate-ranking.json",
+      "sha256": "0b33af221096f392e91b8669a6143a05160571d12655e75bc392969594c17cec"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/claim-ledger-v2.md",
+      "sha256": "080de9e4e94e5a63ffd3cc0d05cdee56d8d9e38651c6ebf2044812b4e3fd2836"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/claim-ledger-v3.md",
+      "sha256": "2975a39443c08be606d9adf320df2fe185ffdcb186035c0260d4462a88b86e60"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/claim-ledger-v5.md",
+      "sha256": "916f695f7c4c109b8147caa4b2cae27de30a32090ae4a355f037495a4668f4fb"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-audit-v5.json",
+      "sha256": "f992f4b9565f63d69e4844a9c0ea0912d0149e45f4a22c440cdef1a05ed9abac"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/clinical-source-review-v5.md",
+      "sha256": "c715c9e475b7bbec5e08b4d40819e0522202edbc85ec44f1a79cd170353324fb"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/compatibility-design-matrix.md",
+      "sha256": "a309ed0f2766278c87bec39e7beb5dde6ffe5ab0f104d717e08b73b0199a9dc7"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/competitor-matrix.json",
+      "sha256": "c05e4bc68b56473780dfa8d453cf56486a7df8c8023aedf73daeb86f46612d5a"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/competitor-matrix.md",
+      "sha256": "7d9acaceeea51e27b367a875daf7f2b6b61713ecdbec6184b97cef52eefc26d0"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/compute-feasibility.md",
+      "sha256": "80ffa81bbabbfb2f2d85aa4b5b88fc94f50da2b9d015ef3b054f74395088122c"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/dataset-and-rights-plan.md",
+      "sha256": "f66a1662a00999f92a08f294a74222286dc2e47fda8bb2f266858e183d8d31e3"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/dataset-inventory.json",
+      "sha256": "45b83ff171ab420213aeb49d190987cd01215110a2bca4bd554fd59536b040eb"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/evaluation-protocol-v3.md",
+      "sha256": "9330bf0afeb0683882a310a4c65aa8ca126818fdb292659ed347b4b9fb24863d"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/evaluation-protocol-v5.md",
+      "sha256": "a7b368d8c84fab803501e96afa3ef89727d18f7b95ca19941685d08f71606e94"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/evaluation-protocol.md",
+      "sha256": "577d088d6071c439e2ee3dfdb1b60a89e4fc815af7bd86c70fb93f62e0e9edc4"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/prepare_s1_tasks.py",
+      "sha256": "a3897abb10c9c5ff496e82018ce5aae7651d49d0a7c950763c79ec27517b6301"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/execution_tools/run_s1_smoke.py",
+      "sha256": "c4885b94055b786fc2850725299b3c0584fb93b6b0f1a7379c9276faa10d1931"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/falsification-plan.md",
+      "sha256": "8b65f88dbd05956945108930fc3263c24ef73041b4a6c667b3c5b9e0a65954cd"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/formal-assurance-framework.md",
+      "sha256": "bff6c6eb0ce26f9da67f09ec351adfc0729a212f91548729b7149136a282bece"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/audit_clinical_sources.py",
+      "sha256": "ea3126577f2f96df74be05824b35d6b8d98d7ce733b955679e27b6b38067d213"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/audit_discrete_rule_oracles.py",
+      "sha256": "a4c4ec623765a783c97fa339aad443a1e27d8da877dee6402c7b75be2f18d38d"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/audit_numeric_boolean_oracles.py",
+      "sha256": "11fb47028bf55ad8c9ae70f170c024dd718dd905208d848e6e89fc22f08194a9"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/build_freeze_bindings.py",
+      "sha256": "1daa4f67cdf9e06182e4786a20326ed441224c473f9e9f81818b24081579a5f0"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/build_quarantine_commitments.py",
+      "sha256": "91397e978b51c63bf6564a39096268d41654357eefbc858abda7ef92d9eb910d"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/generate_rule_oracle_cases.py",
+      "sha256": "0b548b60a46d6da866a6dae2db2e887671e4ec757a84e8065df6f7ea909f6c6b"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/freeze_tools/select_riskcalcs_manifest.py",
+      "sha256": "d46f8b2c2390d7dd9539cb58564078af1c449cce3d881b11d6113735cc36e7fe"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/intervention-matrix-protocol.md",
+      "sha256": "1641bb0d6cb5ecc75ff5430d43aacf5fd24c991fb6ec10e49a5f3a344781a76f"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/literature-protocol.md",
+      "sha256": "e1901966419538e19c46f8f12bee551a95a13c035d37a55fc47b76947d1e883a"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/literature-refresh-2026-10-02.md",
+      "sha256": "fca6a955fd5c0de8eca88fdcc32116acd2b478039344b95edb03106f4b3adeb1"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/literature-refresh-v5-2026-10-02.md",
+      "sha256": "41f11735c004cd147f1480c3b7051ffb1663f91be596494685c2346d62749969"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/literature-refresh-v5-2026-10-03.md",
+      "sha256": "f9bd2d1306e9108cdc998b9874a9256cb8152e7b611f57654e6a0cb55db43731"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/literature-search.json",
+      "sha256": "be7ff436cea05fa61c245f1b6d46e08748fd9400df5a23d5ca60c786bef298a5"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Abstract.md",
+      "sha256": "17a5a73e35ec786aaa51fba8e97c1b0868d2f182a50e1c53cb11e6a152a31e9d"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Appendix-Plan.md",
+      "sha256": "bcaea602bf11c756fe1ab95491a9002f21ca1a954800a168fe2eca8b4cff4189"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Discussion.md",
+      "sha256": "fe48002d53e734946fe4c815b18ee90827c5d7e7e16cfd4939f2a69a4a7f7468"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Ethics-And-Safety.md",
+      "sha256": "98f09059044b328118c8f7f67178177d04dbb0eb34797f40353c578144a5daa6"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Experimental-Design.md",
+      "sha256": "a97c0e6c75821fde88fb8445a661a47185660ce2432501e8f2ae0f3fb6883ab5"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Formal-Problem.md",
+      "sha256": "9a6d66930140fc741a2fcf09f7d95b5651c46c7edb359f520a18cb32a64e2faf"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Introduction.md",
+      "sha256": "5f766031895383e4f0d9374dbdbdb84f98969953768d90f9cfe52ab78efbd456"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Limitations.md",
+      "sha256": "b10eb7033452b3e37974d54dcf6a2a464d2dc453a662b3f2098bb57b5a87cedf"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Method.md",
+      "sha256": "e7f45b648891caff6b2688ccbe77cfa65c8496788929a4e7f6e06ec144113aa8"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/README.md",
+      "sha256": "b641b5ba221eb08eb71eb160207c38fcd41fc36df53ee5e9cc7194bb5468925e"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Related-Work.md",
+      "sha256": "3db75fff2dd8bb4615d6a98869570d248309eee3108bead88fcf87a633264b52"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Reproducibility.md",
+      "sha256": "e620e91ff0b73dab9d5a70d340ee9abe6f48a1b3629f8fb86f901a57e3abc1fe"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v3/Results.md",
+      "sha256": "898c45cf62051d0d78cc446cf3565fcd20454023450f51e699176c646398e58c"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Abstract.md",
+      "sha256": "1fad06d67560260db5b1bbb318bea9d69bb71a71ca73c45277fa0b3ec04e40aa"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Appendix-Plan.md",
+      "sha256": "01e3924a4d6635dfeeb62423964aa6e46d9fac86bb6a8c30136832a8547d6ca9"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Conclusion.md",
+      "sha256": "fecc785222489cdf418bb703400eae77f299c0abeabb181d6634b81e7a8e2a82"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Discussion.md",
+      "sha256": "5af9a3004651c1de5213807be71c89bf51c394fb680395226d8d6c39f3a3d119"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Ethics-And-Safety.md",
+      "sha256": "dce22434ec1c5553afec804f2d4e868cee494c872fb1a77c0a37eaf3b3ff0280"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Experimental-Design.md",
+      "sha256": "afcf7198d9ac46f0dc5798faa3b1904e0a23f2f13c49dcf034ceb656136f5ee6"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Formal-Problem.md",
+      "sha256": "752afee96502ce7f88de44ddbb3f41ac90d175bbf7f125c381011e54428b4ca2"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Introduction.md",
+      "sha256": "b7628acdd22963a6ad77d21a1e20eca72eb7ceed7e394f0d94f31241e0a318ce"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Limitations.md",
+      "sha256": "c8d6bf5f8ae8f8933c8cb43bb4fcc6b3ef376b6ff5efab523477b6ae713c12b5"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Method.md",
+      "sha256": "7af742db8115a1f6c5a24b8873582f46039fed1601da8afb37fcc252a3206ae6"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/README.md",
+      "sha256": "3ed619e768548d02633202bfc0a3ccee4218bdf14dfaafb82da2bb531560c081"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Related-Work.md",
+      "sha256": "52e4127292466f917f96b4e3afe6a39bb980d521a211a2183e7f1cfa30be306e"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Reproducibility.md",
+      "sha256": "d60f14ff5231cc2e2e9fa34cf94af931bc9e936a29170aba4d4ceb1d21114c42"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/manuscript-v5/Results.md",
+      "sha256": "67c14bddce28f0f637d279d464e67e40b88b0a8fa1e554c74f5245727fb11a59"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/method-candidates.md",
+      "sha256": "a8f2a6d167ec25fb71e8b0320ad69d5a9c3574bfc3257f6b62d94ba7fee57075"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/novelty-killers.md",
+      "sha256": "bad2485a60385620d91eade959e1aadb28c37c28d29ddb805826696f4de2c708"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/novelty-threats.json",
+      "sha256": "0c9f9d079830e533c26e2725a88cd11368aed98e1238b6d3b86bd73e3c496d9c"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/paper-v3-proposal.md",
+      "sha256": "3178db5ee7ee92d9fc56720547844eaf78eefaee62a2de6c9353f5ac01da7c39"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/paper-v4-proposal.md",
+      "sha256": "4ac59ca8b1983a4b89b9418794eb070a977122a9114781c5c7040fcdce62effc"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/paper-v5-proposal.md",
+      "sha256": "98aaea411cf7c0fd28477f6375c2f483cccbeef42ac7fedf5355f5c741934768"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/post-commit-attestation-v5.json",
+      "sha256": "efb86b6dd899f10a920d0f730bce9031f6f6cb8793bc2723b42f6d8039ad7949"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/preregistration-v5.md",
+      "sha256": "cd8cec1821fc63042a3a0ac872a82697e401b447004f98ac02d84f61408352bf"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/prior-input-identities.json",
+      "sha256": "bc91e59dab5fdb8a6217cd7b7cbd122939e754a6b7784df822a0efcc15b0d308"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/problem-selection.md",
+      "sha256": "9b3acfe148740b652c7ffbd40a99b08a7faf07953f534497cda67ca55117c02d"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/quarantine-commitments-v5.json",
+      "sha256": "1d3ee777a7c78c1ff03d8e2a493b6308dc6c3b7899c06c3e111af07bdc3fd175"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/research-gaps.md",
+      "sha256": "a1d1adc08343da1b07108fc2493f37a47f36841af0afbbb032b0cf8e672c9ca1"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/reviewer-attack-surface.md",
+      "sha256": "5d39d890a8db5fc3e27198c7be1527ac81c2ab01c6c5dccbda1937a9d951b690"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/riskcalcs-rule-oracle-final-candidate-v5.json",
+      "sha256": "445e37ee7b3a2bb56c21d04a6236e16a929f6207c74351c0143fe436c61abd9c"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/rule-oracle-case-index-v5.json",
+      "sha256": "5a676b88948c3443d9c6be943d66192569666cc5333e7198816d30715664c902"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/scientific-freeze-bindings-v5.json",
+      "sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/small-model-candidates.json",
+      "sha256": "6c37c682c794192af67d44acc658c1b33ade66ce386c42b2c979681eb59e3bd7"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/source-retrieval-manifest.json",
+      "sha256": "2377c0caac173f189cef105ee5fd4c371407bc7d21ba4d08ca0385d917d3f329"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/statistics-protocol-v3.md",
+      "sha256": "0ebccb6dbce3526ed11cbbc1e0718dba1325e6d25446abd3a8d0980fe4bb3532"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/statistics-protocol-v5.md",
+      "sha256": "9e4bc30397edd360c537835ba108da8c685b4eb4a04b3ed8f547afb1902df52e"
+    },
+    {
+      "path": "docs/research/paper-rebuild-v2-2026-10-02/statistics-protocol.md",
+      "sha256": "bda88ed88b06d28c771033f14131d212c72324ead813d88b23b2a2a8c159ea98"
+    },
+    {
+      "path": "scripts/v5_s1_adapter_development.py",
+      "sha256": "c6a35bb1eea9c2392e6cecdb3e6b355f58adfc2aa8da574fe6e3568b6e9a75d1"
+    },
+    {
+      "path": "scripts/v5_s1_b1_development.py",
+      "sha256": "0855105713727333609a6751764732294ad9ff9ef940a2880d99872b7c1ae92a"
+    },
+    {
+      "path": "scripts/v5_s1_colab_qualification.py",
+      "sha256": "d96e701053e36b5e42846db31c440eed169f64c0421c41beea5462c4773f4b2f"
+    },
+    {
+      "path": "scripts/v5_s1_resource_qualification.py",
+      "sha256": "f497ee4bb527b1e8772a005b84a9b472a5bd86956df3e5963af84624b3fc7ee7"
+    },
+    {
+      "path": "scripts/v5_s1_retention_preparation.py",
+      "sha256": "bb7fd593e009f7cd4632aa97dda4db7f86453349636ed7c6f3fe51dc163844c9"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/__init__.py",
+      "sha256": "6ed6e444add3bac4d8bdf8a0f0adb467eca10339038a73e42cd3c77caf2be396"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/case_generator.py",
+      "sha256": "1a79f6336a2f31440609b6d1af57984765b360cd09404bd7c817d61724cb73f0"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/contracts.py",
+      "sha256": "4c47e2eed005afa7ef6e6e6b1fcb681be32a59a23c453d9484dd6555ab72b23f"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/objectives.py",
+      "sha256": "bde5bdf737c29132f1a78b883e4b278c9629fad58d18c3b4b8386fe2a9bb0fa8"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/oracle_qualification.py",
+      "sha256": "8d6e03e1af85dc4c64a002caa21999005e8a19c64a0822ff7faeebd784392438"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/policy.py",
+      "sha256": "c2452a35be4685ab36a595e388eed6b4f8700b8bbc3664b7381ca3020e760f55"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/preflight.py",
+      "sha256": "1f4de098b16d9201bf331be58cae31ed5d680811454c1cde12d9a0be47832446"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/probability.py",
+      "sha256": "cb2cf6db128b0054881e6cb744c0531110c00af2bf76d91d50e6004b4d7f1530"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/quarantine.py",
+      "sha256": "21e8fb1339fd6eafbf87baf3fc513fc5ddc48f09b7fa0ccac86ec04377612ed9"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/registry.py",
+      "sha256": "c8189d86dd9d475f2a84eca8d56f93025367b9cd2f8c050371833fc73241ddca"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/retention_dataset.py",
+      "sha256": "94ec425cf75a2e495887de4ddbefa888a36cfddf81d3eb7c7836910f1d6f9207"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/rule_dataset.py",
+      "sha256": "bb062209196b045295a65403fd72e132ef01c6bc556a79048ba6284d905a3433"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/rule_tool.py",
+      "sha256": "0e3be73636bc78619cb40219543bea2c5770fbcae6cee2be34543a59ba082a16"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/selection_bias.py",
+      "sha256": "420ec6e3d16011cd50f14ea1874e678f8cc561077c3feae893d619b655ac202c"
+    },
+    {
+      "path": "src/commandmed/reliability_v5/statistics.py",
+      "sha256": "fe2add08fcf53de1d52333ff52fc4d7e7ec6de5acd812ef61bbde1c01b9bb1e8"
+    }
+  ]
+}

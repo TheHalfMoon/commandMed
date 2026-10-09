@@ -1,0 +1,17 @@
+{
+  "benchmark_started": false,
+  "code_sha": "47a49e311eff3b820a5bf5ed82aeea776deb83e3",
+  "device_types": [
+    "cpu"
+  ],
+  "inference_completed": false,
+  "inference_started": false,
+  "model_class": "Qwen3_5ForCausalLM",
+  "model_loaded": true,
+  "optimizer_steps": 0,
+  "parameter_dtype_counts": {
+    "torch.bfloat16": 752393024
+  },
+  "total_parameters": 752393024,
+  "trainable_parameters_after_load": 752393024
+}

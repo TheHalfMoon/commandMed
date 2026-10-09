@@ -1,0 +1,17 @@
+{
+  "code_sha": "1c7dc50be86b398eaaf19e597a8390893073d62b",
+  "confirmatory_materialized": false,
+  "durable_export_verified": false,
+  "exception_type": "RuntimeError",
+  "git_tree": "24eacdae891278704c805388ba6f6630bb1cd732",
+  "model_inference": false,
+  "model_loaded": false,
+  "phi": false,
+  "reason": "COLAB_FROZEN_PREPARATION_MISMATCH:tokenizer_packages",
+  "reserve_materialized": false,
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "spend_usd": 0,
+  "status": "KAGGLE_PREFLIGHT_BLOCKED",
+  "training": false
+}

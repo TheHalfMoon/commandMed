@@ -1,0 +1,42 @@
+{
+  "schema": "commandmed.v5.c2-seed-review.v1",
+  "reviewed_run_head": "d73b35759741f9331d8b55cfa17a3b9d79176c5e",
+  "reviewed_run_tree": "3565fa10c666a45b90ac10de0a5e2020de8b3f4a",
+  "review_workspace_head": "dad8062d8010e842d262ab5a3253dace2c9060c4",
+  "kernel": "abdulazizshehri/commandmed-v5-c2-seed-47-atomic",
+  "kernel_version": 1,
+  "seed": 47,
+  "intervention": "C2_CRDI_RETAIN_V1",
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 245,
+    "seconds": 7.94,
+    "basetemp": "C:\\c247v5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1297,
+    "seconds": 25.41,
+    "basetemp": "C:\\c247all"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "frozen_entry_files_verified": 307,
+  "c2_completed_seed_rerun_guard": "PASS_EXPECTED_KAGGLE_COMPLETED_C2_SEED_RERUN_FORBIDDEN",
+  "validation_command_note": "One auxiliary helper name was stale (require_complete_c1_evidence); all tests/compile/diff had already passed before that non-scientific helper error. The corrected C2 preflight check then observed the completed seed-47 evidence and correctly rejected any rerun.",
+  "retention_source_sha256": "8c6646d36bd5a95061e076788cf3161d11f6f3e7d625dac7a83bbed0a49f69f7",
+  "riskcalcs_sha256": "00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9",
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview covering 49 reviewable / 52 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; exact archive/runtime/hardware hashes, live-source identity, single-GPU scientific isolation, no-resume atomic execution, exact retention source/hash, 16384 medical rows, 256 paired retention rows, development-only claim boundaries, frozen protocol and zero-cost constraints checked",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "confirmatory": false,
+  "reserve": false,
+  "archive_sha256": "aa6cd37395a9ed88fe0ff1150eb5bb2945065b9fc84c6b7d8aeb2899405391af",
+  "scientific_freeze_status": "OPEN",
+  "pr_320_state": "OPEN_DRAFT_UNMERGED"
+}

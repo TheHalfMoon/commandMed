@@ -1,0 +1,13 @@
+{
+  "gpu_allocated_bytes": 1529974784,
+  "gpu_free_bytes": 13921746944,
+  "gpu_peak_allocated_bytes": 1529974784,
+  "gpu_peak_reserved_bytes": 1604321280,
+  "gpu_reserved_bytes": 1604321280,
+  "gpu_total_bytes": 15636037632,
+  "load_seconds": 0.9910909779999884,
+  "min_system_available_bytes": 31226515456,
+  "peak_rss_bytes": 2662518784,
+  "process_rss_bytes": 1244364800,
+  "ram_available_bytes": 31231066112
+}

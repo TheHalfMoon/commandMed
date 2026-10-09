@@ -1,0 +1,14 @@
+{
+  "code_sha": "90f3911438b6909ca785d78c139897af4a0bf2fc",
+  "durable_export_verified": false,
+  "git_tree": "1ed2f5adc0d9f7a2a53d618209a76454ea4101b0",
+  "medical_optimizer_steps": 0,
+  "model_inference": true,
+  "model_loaded": true,
+  "optimization_executed": true,
+  "projected_complete_c1_seconds": 6314.090361605904,
+  "resource_only": true,
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "status": "RESOURCE_QUALIFICATION_MEASURED"
+}

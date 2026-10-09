@@ -1,0 +1,23 @@
+{
+  "analysis_sha256": "9a7ce22d8adce5347b36d3d062b3350f876407b9b5eb7beb435dabc093f79202",
+  "base_parameter_identity": "8c612ed5eb24e2bb5f4b5a311347325d7e94b74f295a9ed4b636f2b4ef8b9f2b",
+  "code_sha": "e1b166ca88b1bd649e2a736e817603ec714b7192",
+  "complete_matrix": true,
+  "confirmatory_materialized": false,
+  "durable_export_verified": false,
+  "git_tree": "7a1f20449a504daa8bf25e4936108d0bae6e0f51",
+  "intervention": "BASELINE_V1",
+  "optimizer_steps": 0,
+  "phi": false,
+  "prompt_count": 16384,
+  "purpose": "UNCHANGED_BASE_REPEATABILITY",
+  "raw_output_sha256": "600dbd236098b967558e96d5ddf7d4144903fad96b172ad2871ec02fb0f30a44",
+  "repeat": 1,
+  "reserve_materialized": false,
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "spend_usd": 0,
+  "status": "BASELINE_REPEAT_COMPLETE_DEVELOPMENT",
+  "training": false,
+  "wall_seconds": 5972.115509542
+}

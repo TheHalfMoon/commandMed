@@ -1,0 +1,30 @@
+{
+  "alibaba_ocr": "v1.12.13 (fabbdb29); zero-cost delegate preview of 40 reviewable / 42 total files; host-agent review",
+  "archive_sha256": "35c6c8421415191c3bba3ad44e38eba04ac122f693c0cf1c2c511cd49ef9618b",
+  "compile_exit_code": 0,
+  "control_character_scan": "PASS",
+  "diff_check_exit_code": 0,
+  "export_verifier_sha256": "926a83d98ca5176cbacd3445860958015fd7984a9c7e7580bffbd4d2be1b73d6",
+  "external_model_verdict": false,
+  "frozen_entry_files_verified": 307,
+  "full_repository_tests": {
+    "basetemp": "C:\\cm29",
+    "exit_code": 0,
+    "passed": 1248,
+    "seconds": 17.13
+  },
+  "host_review": "NO_MATERIAL_BLOCKER; exact archive/runtime/hardware hashes, model-free verification, development-only claim boundaries, no-resume atomic execution, single-GPU scientific isolation, frozen protocol and sequential predecessor gate checked",
+  "initial_full_test_attempts": [
+    "Invocation outside repository root produced 3 collection errors from repository-relative fixture paths; no product failure.",
+    "First repository-root invocation used a long basetemp path and produced 20 Windows temp/git setup errors; rerun with short C:\\cm29 passed all 1248 tests."
+  ],
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "reviewed_run_head": "3c65c8e8ae9b78de72c2055a1b8575fb7da64c53",
+  "schema": "commandmed.v5.seed-review.v1",
+  "spend_usd": 0,
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 196,
+    "seconds": 8.63
+  }
+}

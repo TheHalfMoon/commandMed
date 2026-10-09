@@ -1,0 +1,18 @@
+{
+  "schema": "commandmed.v5.kaggle-live-retrieval.v1",
+  "observed_at": "2026-10-08T17:40:44Z",
+  "kernel": "abdulazizshehri/commandmed-v5-c1-seed-47-atomic",
+  "current_version": 1,
+  "private": true,
+  "fresh_output_downloaded": true,
+  "expected_head": "90f3911438b6909ca785d78c139897af4a0bf2fc",
+  "expected_tree": "1ed2f5adc0d9f7a2a53d618209a76454ea4101b0",
+  "live_source_sha256": "73443db475511e37a815a350110425b2f0b2ffd41183bf08a63a8ae4cde6aeca",
+  "original_export_sha256": "df850fcc574f43819d0f0a0a38ca7704c547ed3325e3e13c5aafd88de7fe5304",
+  "runtime_result_sha256": "d1bff17cab41eeefb67020a4e33777b6ca3ab70fb3fa5e33482e3d7b3dc5b10d",
+  "physical_hardware_sha256": "d21e9241b8ce1373b09ce4be2655a5a2cad8769b8d3a63bc59af8d02cca21f60",
+  "console_log_encoding_error_after_allowlisted_downloads": true,
+  "source_head_and_private_admission_observed": true,
+  "source_matches_local_launch": "NOT_INDEPENDENTLY_VERIFIED",
+  "model_free_export_verification": "PASS_MODEL_FREE_EXPORT_VERIFICATION"
+}

@@ -1,0 +1,49 @@
+{
+  "auxiliary_exports": [
+    {
+      "local_name": "original-console.log",
+      "sha256": "fd8a1979d6b44f7f7d8178876b5e2cf199efe800f7ca2362d1cada44baad70a8",
+      "size": 11060
+    },
+    {
+      "local_name": "actual-admission.json",
+      "sha256": "7d99f13c62b2cd81749181136d830771bcb8e3a2050a56e4c1b177dc3af83e96",
+      "size": 875
+    },
+    {
+      "local_name": "actual-reconnection.json",
+      "sha256": "f7bf3966f22dc47128c70ccfc0277a25ccf9ddaa85d1afc1208097641cee80ee",
+      "size": 314
+    },
+    {
+      "local_name": "retention-preparation.json",
+      "sha256": "3c28f423ea0d9ae599785a0322ecf53a07ddebdcc95846ee7d299272bf06a151",
+      "size": 71070
+    },
+    {
+      "local_name": "retention-metadata-console.log",
+      "sha256": "c3b5bd09cfe365868c06644750fb81b709a4bb4148e2f36c6bb71b8a8fc4d370",
+      "size": 163
+    }
+  ],
+  "b1_seeds": [
+    11,
+    29,
+    47
+  ],
+  "baseline_prompts": 16384,
+  "c1_c2_executed": false,
+  "confirmatory": false,
+  "durable_export_verified": true,
+  "export_origin": "NORMAL_NOTEBOOK_VISIBLE_OUTPUT; SHA256_VERIFIED_EXACT_BYTES",
+  "incremental_spend_usd": 0,
+  "matrix_identity_and_metric_checks": "ALL_FOUR_ANALYSES_REPRODUCE_WITH_1E_MINUS12_CROSS_PLATFORM_FLOAT_TOLERANCE",
+  "original_flags_preserved": true,
+  "original_zip_sha256": "7e6e21ed73d8b672b4cf6836cc199f3450a02fb5ad0ea1d3b157009a431ed913",
+  "original_zip_size": 7138435,
+  "prompts_per_seed": 16384,
+  "reserve": false,
+  "run_head": "848692336c2b8537ee4d559338abed29da0c93d6",
+  "schema": "commandmed.v5.b1.durability.v1",
+  "squad_model_calls": false
+}

@@ -1,0 +1,69 @@
+{
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); zero-cost workspace delegate preview/rules resolved for C2 implementation; no external LLM verdict",
+  "authority": "V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md explicitly authorizes C2_CRDI_RETAIN_V1 development-only training and SQUAD_RETENTION; Kaggle amendment authorizes zero-cost runtime substitution.",
+  "c2_output_observed": false,
+  "c2_predecessor_gate_seed11": "PASS_EMPTY_EXPECTED",
+  "compile_exit_code": 0,
+  "complete_c1_chain_verified": [
+    11,
+    29,
+    47
+  ],
+  "confirmatory_execution": false,
+  "control_character_scan": "PASS",
+  "diff_check_exit_code": 0,
+  "entry_head": "e1dbf9bc88d0db88da26032bd45e5ac76140ba09",
+  "entry_tree": "101270e84b3007e076db354ff48ebddb7093320f",
+  "frozen_entry_files_verified": 307,
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1283,
+    "seconds": 20.91
+  },
+  "host_review": "NO_MATERIAL_BLOCKER_AFTER_REPAIR; caught and repaired C2-specific preflight-state mismatch in runtime wrapper and verifier before commit; reviewed exact authority/source identity, sequential predecessor gates, single-GPU isolation, payload non-export, zero-cost admission, atomic duration path and model-free export boundary.",
+  "implementation_sha256": {
+    "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_C2_SEQUENTIAL_KAGGLE_WRAPPER_FREEZE_2026-10-08.md": "6b1e73a262fa0c91253ddc11fbf1ce341ca15566a81c957571e1ca5823e9f253",
+    "scripts/v5_s1_kaggle_c2_adapter_development.py": "a4d374fc1205cb28d1ba61545458f0e39b4c4763317377e28876de259e35b5dd",
+    "scripts/v5_s1_kaggle_c2_atomic_kernel.py": "14e1ec64ce3f369d1631f5c96c3f3754d9bc4fafc8aa735b0c13f450409b5faa",
+    "scripts/v5_s1_kaggle_c2_preflight.py": "550f44cd95b9a4ee722376e77f7a13932f500e7c2cd174b42175e6897934de21",
+    "scripts/v5_s1_verify_c2_adapter_export.py": "5215565d50472a11ec0b0d81f7ded8e8ffc523b3347c29d195795928a964396c",
+    "tests/reliability_v5/test_c2_adapter_export_verification.py": "f7a3a44b9d9acfdf1e76dadaea4f05e075e60b72007590df8c9e8cb365fd0123",
+    "tests/reliability_v5/test_kaggle_c2_preflight.py": "1235461ecaa7f8343241cf726b03b77ba93c4643db12d0e5cc66c4ba213e0061"
+  },
+  "incremental_founder_spend_usd": 0,
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "local_retention_download_probe": "NOT_RUN_TO_COMPLETION_LOCAL_TOOL_ENV_LACKED_HUGGINGFACE_HUB; exact anonymous acquisition/hash check remains a mandatory fresh Kaggle pre-model gate. No scientific execution occurred.",
+  "model_inference": false,
+  "model_loaded": false,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "preserved_frozen_sha256": {
+    "scripts/v5_s1_adapter_development.py": "c6a35bb1eea9c2392e6cecdb3e6b355f58adfc2aa8da574fe6e3568b6e9a75d1",
+    "scripts/v5_s1_kaggle_adapter_development.py": "d075bebb1ad7eddf37b283ebc5d36de2ffb85627a5c31ae219598253538c51ea",
+    "scripts/v5_s1_kaggle_atomic_kernel.py": "9c2b5048535bdec202bcdf98b2f20daab8b67c644fe108ad552e122747765bc6",
+    "scripts/v5_s1_kaggle_preflight.py": "7a4eb6c3948f29acd462cddbc83180dc7e811b67a69104cc086310c6f61606c9",
+    "scripts/v5_s1_retention_preparation.py": "bb7fd593e009f7cd4632aa97dda4db7f86453349636ed7c6f3fe51dc163844c9",
+    "src/commandmed/reliability_v5/retention_dataset.py": "94ec425cf75a2e495887de4ddbefa888a36cfddf81d3eb7c7836910f1d6f9207"
+  },
+  "reserve_execution": false,
+  "retention_source": {
+    "file": "plain_text/validation-00000-of-00001.parquet",
+    "payload_committed": false,
+    "repo": "rajpurkar/squad",
+    "revision": "7b6d24c440a36b6815f21b70d25016731768db1f",
+    "sha256": "8c6646d36bd5a95061e076788cf3161d11f6f3e7d625dac7a83bbed0a49f69f7"
+  },
+  "schema": "commandmed.v5.c2-kaggle-wrapper-qualification.v1",
+  "status": "PASS_PROSPECTIVE_IMPLEMENTATION_NO_C2_MODEL_OUTPUT",
+  "targeted_c2_tests": {
+    "exit_code": 0,
+    "passed": 35
+  },
+  "training": false,
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 231,
+    "seconds": 2.07
+  }
+}

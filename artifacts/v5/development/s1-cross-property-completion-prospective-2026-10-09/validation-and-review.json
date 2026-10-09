@@ -1,0 +1,45 @@
+{
+  "schema": "commandmed.v5.s1-cross-property-completion-prospective-review.v1",
+  "status": "QUALIFIED_PROSPECTIVE_BEFORE_REAL_OUTPUT",
+  "reviewed_base_head": "9786dedccbda8c06fed4999763967f37b2b92317",
+  "canonical_postprocessing_sha256": "51a4f0709620b48995d887fb2956c9c2fe0836ad37b286a2cddfd65e87979893",
+  "fixed_d1_threshold": 0.8933094060543488,
+  "targeted_tests": {
+    "exit_code": 0,
+    "passed": 5,
+    "seconds": 0.31,
+    "basetemp": "C:\\xpc"
+  },
+  "v5_tests": {
+    "exit_code": 0,
+    "passed": 296,
+    "seconds": 18.07,
+    "basetemp": "C:\\xpv5"
+  },
+  "full_repository_tests": {
+    "exit_code": 0,
+    "passed": 1348,
+    "seconds": 37.72,
+    "basetemp": "C:\\xpall"
+  },
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "frozen_entry_files_verified": 307,
+  "frozen_binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+  "scientific_freeze_sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c",
+  "kaggle_amendment_sha256": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+  "real_cross_property_output_generated": false,
+  "model_call": false,
+  "tuning": false,
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview covering 2 reviewable / 5 total files plus host-agent review",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; implementation binds the canonical post-processing artifact hash and exact frozen D1 threshold, reuses only already-frozen transforms, requires durable reviewed C1/C2 matrices, preserves seed-specific learned outputs, reports fixed-policy risk with coverage, and explicitly marks C1 capability retention NOT_MEASURED_DEVELOPMENT rather than imputing C2 evidence",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "confirmatory": false,
+  "reserve": false,
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "pr_320_state": "OPEN_DRAFT_UNMERGED"
+}

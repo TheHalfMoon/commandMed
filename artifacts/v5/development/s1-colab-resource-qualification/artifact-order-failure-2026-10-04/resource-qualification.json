@@ -1,0 +1,11 @@
+{
+  "code_sha": "1b2571dc457cb4d2cd40e8b0cb25d16e34b5783e",
+  "durable_export_verified": false,
+  "exception_type": "RuntimeError",
+  "git_tree": "522cff3cd119394179657eb712150422c4cbf048",
+  "model_inference": false,
+  "model_loaded": false,
+  "optimization_executed": false,
+  "reason": "EXACT_12_FILE_BUNDLE_MISMATCH",
+  "status": "RESOURCE_BLOCKED"
+}

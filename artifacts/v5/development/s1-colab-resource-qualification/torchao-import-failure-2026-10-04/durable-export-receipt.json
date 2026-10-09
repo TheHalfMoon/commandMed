@@ -1,0 +1,11 @@
+{
+  "completed_smoke_inference": true,
+  "durable_export_verified": true,
+  "export_origin": "visible Colab cell output, checksum-verified base64 exact bytes",
+  "medical_training": false,
+  "optimization_steps": 0,
+  "original_console_sha256": "1d9d1aa8ca312f89bc6be19a7d8b09c28e8199f510b684c0247a262c35ec6cfe",
+  "original_zip_sha256": "8e96ace05bcded3b90d886839c69dfb0745452450c181afcfd3ca13f1b9fc9bd",
+  "run_head": "3236304f59d6715916a5886b9965b0a1bd908f4d",
+  "torchao_version_independently_observed": "0.10.0"
+}

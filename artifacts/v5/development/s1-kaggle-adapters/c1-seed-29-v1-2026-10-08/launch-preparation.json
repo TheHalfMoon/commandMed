@@ -1,0 +1,21 @@
+{
+  "atomic_source_sha256": "2b300c8ab282736b06ccc402c44ea61a2683d4dbd8b570d751fb3f62c3ca1705",
+  "committed_runner_sha256": "9c2b5048535bdec202bcdf98b2f20daab8b67c644fe108ad552e122747765bc6",
+  "expected_head": "3c65c8e8ae9b78de72c2055a1b8575fb7da64c53",
+  "free_gpu_seconds_available": 100990.271,
+  "git_tree": "9f2d22f82c79dc68d13c35aeebd2c939d4e5776f",
+  "incremental_spend_usd": 0,
+  "intervention": "C1_CRDI_V1",
+  "kernel_ref": "abdulazizshehri/commandmed-v5-c1-seed-29-atomic",
+  "private": true,
+  "quota_observed_unix": 1791430429.4770722,
+  "quota_refresh_at": "2026-10-10T00:00:00",
+  "quota_total_allowed_seconds": 108000.0,
+  "quota_used_seconds": 7009.729,
+  "requested_session_timeout_seconds": 42000,
+  "schema": "commandmed.v5.kaggle-launch-preparation.v1",
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "seed": 29,
+  "status": "READY_TO_PUSH"
+}

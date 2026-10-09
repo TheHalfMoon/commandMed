@@ -1,0 +1,19 @@
+{
+  "c1_c2_medical_training": false,
+  "changes": "FINITE_NATIVE_GENERATION_LOGIT_GUARD; PARTIAL_STEP_AND_RETENTION_HASH_PRESERVATION",
+  "exact_head_review_required": true,
+  "files": {
+    "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_ADAPTER_INTEGRATION_FREEZE_2026-10-04.md": "c2daec00da0a9fff5bad7161793e6a89a30e602f75c1a6cf55760cf57ced9a96",
+    "docs/research/paper-rebuild-v2-2026-10-02/scientific-freeze-bindings-v5.json": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c",
+    "scripts/v5_s1_adapter_development.py": "c6a35bb1eea9c2392e6cecdb3e6b355f58adfc2aa8da574fe6e3568b6e9a75d1"
+  },
+  "implementation_parent": "7866a32e2a7a449b280544cc12021be87d5d87e7",
+  "live_B1_head": "848692336c2b8537ee4d559338abed29da0c93d6",
+  "model_calls": false,
+  "original_prospective_validation_preserved": true,
+  "repository_tests": 1208,
+  "spend_usd": 0,
+  "squad_model_calls": false,
+  "status": "PASS_MODEL_FREE_FOLLOWUP_VALIDATION",
+  "v5_tests": 156
+}

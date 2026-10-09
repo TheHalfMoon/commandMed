@@ -1,0 +1,33 @@
+{
+  "alibaba_ocr": "1.12.12 (182898c); local delegate preview and resolved rules inspected; host-agent review",
+  "compile_pass": true,
+  "diff_check_exit_code": 0,
+  "entry_head": "b7278f123111c1026cd5af45c76e1646eff2826c",
+  "host_review": "NO_MATERIAL_BLOCKER_KAGGLE_PREMODEL_CODE; NO_MODEL_LOAD_CALL; DEFAULT_DENY_ADMISSION; SINGLE_GPU; FROZEN_307_ENTRY_FILES",
+  "implementation_entry_head": "387426de644719530444586a35c641f553c76923",
+  "implementation_files": [
+    "scripts/v5_s1_kaggle_preflight.py",
+    "tests/reliability_v5/test_kaggle_preflight.py"
+  ],
+  "independent_external_verdict": false,
+  "initial_harness_failure": "Newly written logs used CRLF; model-free tests and compile passed. New logs normalized to LF and old validation files restored from committed bytes.",
+  "initial_validation_harness_exit": 1,
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "model_execution": false,
+  "review_scope": "Alibaba local zero-cost resolved Python rules plus host-agent review; not independent peer review",
+  "schema": "commandmed.v5.kaggle-runtime-amendment-review.v1",
+  "spend_usd": 0,
+  "tests": {
+    "full": {
+      "exit_code": 0,
+      "seconds": 27.047000000005937,
+      "summary": "........................................................................ [  5%]\n........................................................................................... [ 13%]\n............................................................................................................................................ [ 24%]\n...................................................... [ 29%]\n.................................................................... [ 34%]\n........................................................................ [ 40%]\n........................................................................ [ 46%]\n........................................................................ [ 52%]\n................................................................................................. [ 60%]\n.................................................................... [ 65%]\n................................................................ [ 71%]\n........................................................................ [ 76%]\n................................................................ [ 82%]\n........................................................... [ 87%]\n................................................... [ 91%]\n................................................................... [ 96%]\n.........................................                         [100%]\n1224 passed, 264 subtests passed in 25.91s\n"
+    },
+    "v5": {
+      "exit_code": 0,
+      "seconds": 3.4060000000026776,
+      "summary": "................................................................................ [ 46%]\n...................................................... [ 77%]\n......................................                               [100%]\n172 passed, 86 subtests passed in 2.35s\n"
+    }
+  },
+  "unchanged_files_verified": 307
+}

@@ -1,0 +1,21 @@
+{
+  "code_sha": "d73b35759741f9331d8b55cfa17a3b9d79176c5e",
+  "confirmatory_materialized": false,
+  "durable_export_verified": false,
+  "duration_admission": "NOT_REACHED_NO_MODEL_RESOURCE_MEASUREMENT",
+  "finished_at": "2026-10-09T01:22:14.438615+00:00",
+  "git_tree": "3565fa10c666a45b90ac10de0a5e2020de8b3f4a",
+  "intervention": "C2_CRDI_RETAIN_V1",
+  "model_inference": false,
+  "model_load_executed": false,
+  "model_loaded": false,
+  "phi": false,
+  "remaining_seconds": 41839.143214941025,
+  "reserve_materialized": false,
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "seed": 47,
+  "spend_usd": 0,
+  "status": "KAGGLE_C2_PREFLIGHT_PASS",
+  "training": false
+}
