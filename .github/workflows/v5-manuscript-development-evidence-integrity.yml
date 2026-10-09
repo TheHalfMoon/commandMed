@@ -1,0 +1,77 @@
+# Offline, read-only V5 development evidence integrity CI.
+# No model weights, GPU, Kaggle, PHI, confirmatory/reserve access or paid APIs.
+name: V5 manuscript development evidence integrity
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/v5-manuscript-development-evidence-integrity.yml"
+      - "scripts/v5_manuscript_development_evidence_audit.py"
+      - "tests/reliability_v5/test_manuscript_development_evidence_audit.py"
+      - "docs/research/paper-rebuild-v2-2026-10-02/V5_MANUSCRIPT_SOURCE_EVIDENCE_AUDIT_2026-10-09.md"
+      - "docs/research/paper-rebuild-v2-2026-10-02/V5_MANUSCRIPT_DEVELOPMENT_RESULTS_CROSSWALK_2026-10-09.md"
+      - "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_KAGGLE_RUNTIME_AMENDMENT_BINDINGS_2026-10-08.json"
+      - "artifacts/v5/development/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v5-development-integrity-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  source-bound-integrity:
+    name: Source-bound development evidence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+
+    steps:
+      - name: Checkout exact pull-request head without persisting credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify exact-head checkout and no mutable external inputs
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          echo "QUALIFICATION_SCOPE=IMMUTABLE_DEVELOPMENT_INPUTS"
+          echo "MODEL_LOAD=NO"
+          echo "GPU=NO"
+          echo "CONFIRMATORY_OR_RESERVE_ACCESS=NO"
+          echo "PAID_API=NO"
+          python3 --version
+
+      - name: Compile model-free verifier and regression fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            scripts/v5_manuscript_development_evidence_audit.py \
+            tests/reliability_v5/test_manuscript_development_evidence_audit.py
+
+      - name: Reverify source hashes, R1 and R2 archives, and 307 frozen files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/v5_manuscript_development_evidence_audit.py
+
+      - name: Install focused pytest test runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check --no-cache-dir pytest==8.4.2
+
+      - name: Fail-closed regression tests
+        shell: bash
+        env:
+          PYTHONPATH: src
+        run: |
+          set -euo pipefail
+          python3 -m pytest -q tests/reliability_v5/test_manuscript_development_evidence_audit.py
