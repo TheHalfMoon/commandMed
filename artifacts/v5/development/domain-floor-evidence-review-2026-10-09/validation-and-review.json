@@ -1,0 +1,43 @@
+{
+  "schema": "commandmed.v5.domain-floor-evidence-review.v1",
+  "status": "EVIDENCE_REVIEW_COMPLETE_NUMERIC_FLOORS_NOT_FROZEN",
+  "reviewed_base_head": "ea69010c05761d36d88f11b18b280489841cc6a8",
+  "sources": [
+    {
+      "doi": "10.1093/jamia/ocz228",
+      "pmid": "32106284",
+      "role": "calibration_measurement_has_no_single_universal_best_measure"
+    },
+    {
+      "doi": "10.1186/s41512-017-0020-3",
+      "pmid": "31093548",
+      "role": "brier_score_does_not_encode_clinical_utility"
+    },
+    {
+      "doi": "10.1111/bcp.13280",
+      "pmid": "28252213",
+      "role": "noninferiority_margin_requires_prespecified_statistical_and_substantive_reasoning"
+    }
+  ],
+  "universal_literature_cutoff_found": false,
+  "candidate_research_scale_convention_documented": true,
+  "candidate_research_scale_convention_frozen": false,
+  "numeric_domain_floors_frozen": false,
+  "numeric_meaningful_margins_frozen": false,
+  "frozen_entry_files_verified": 307,
+  "frozen_binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+  "scientific_freeze_sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c",
+  "kaggle_amendment_sha256": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+  "diff_check_exit_code": 0,
+  "alibaba_ocr": "open-code-review v1.12.13 (fabbdb29); genuine zero-cost workspace delegate preview; markdown unsupported, host-agent substantive review performed",
+  "external_model_verdict": false,
+  "host_review": "NO_MATERIAL_BLOCKER; sources support fail-closed conclusion that no universal clinical cutoff should be imported for calibration/Brier/noninferiority; documented candidate floors are explicitly not frozen and are derived from metric scales rather than observed development rankings",
+  "jev": "DEFERRED_ZERO_COST_POLICY",
+  "confirmatory": false,
+  "reserve": false,
+  "spend_usd": 0,
+  "paid_api": false,
+  "paid_compute": false,
+  "phi": false,
+  "pr_320_state": "OPEN_DRAFT_UNMERGED"
+}
