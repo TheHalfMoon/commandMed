@@ -1,0 +1,52 @@
+{
+  "clinical_validity": false,
+  "confirmatory": false,
+  "frozen_domain_floor_file": "artifacts/v5/development/domain-floor-freeze-2026-10-09/domain-floors.json",
+  "frozen_domain_floor_sha256": "8c284a98f504c8529a4da5d9bb1e265465af66b10d0c3b0414505dcebc9c7ca7",
+  "inference_unit": "source_task",
+  "margin_formula": "max(frozen_domain_floor,2*repeatability95)",
+  "metrics": {
+    "canonical_accuracy": {
+      "clinical_tolerance": false,
+      "frozen_benchmark_scale_domain_floor": 0.01,
+      "meaningful_margin": 0.01,
+      "twice_repeatability95": 0.0,
+      "unit": "absolute_accuracy",
+      "verified_repeatability95": 0.0
+    },
+    "canonical_brier": {
+      "clinical_tolerance": false,
+      "frozen_benchmark_scale_domain_floor": 0.02,
+      "meaningful_margin": 0.02,
+      "twice_repeatability95": 0.0,
+      "unit": "two_class_multiclass_brier",
+      "verified_repeatability95": 0.0
+    },
+    "canonical_nll": {
+      "clinical_tolerance": false,
+      "frozen_benchmark_scale_domain_floor": 0.009950330853168092,
+      "meaningful_margin": 0.009950330853168092,
+      "twice_repeatability95": 0.0,
+      "unit": "nats",
+      "verified_repeatability95": 0.0
+    },
+    "semantic_js": {
+      "clinical_tolerance": false,
+      "frozen_benchmark_scale_domain_floor": 0.006931471805599453,
+      "meaningful_margin": 0.006931471805599453,
+      "twice_repeatability95": 0.0,
+      "unit": "nats",
+      "verified_repeatability95": 0.0
+    }
+  },
+  "paired_repeatability_file": "artifacts/v5/development/s1-kaggle-repeatability-runs/paired-r1-r2-repeatability95-2026-10-09.json",
+  "paired_repeatability_sha256": "f6ace697d61de05c470c1260dafc7b54f13524b0dd2960e45c268c46bb7e64be",
+  "power_plan_status": "PENDING_PAIRED_SD_AND_FROZEN_PRIMARY_NON_TARGET_FAMILY_SIZE",
+  "publication_authorized": false,
+  "r1_export_sha256": "dfb35b0216369bbb87bcec75c5715df974bb9f736c0db0af98148cea91d99dac",
+  "r2_export_sha256": "73f24c06f2d54e34cc20f2137f06b0728f02cccfc0d96c346f619d73184e4216",
+  "reserve": false,
+  "schema": "commandmed.v5.s1-final-development-benchmark-margins.v1",
+  "scope": "DEVELOPMENT_ONLY",
+  "status": "CALCULATED_FROM_PROSPECTIVELY_FROZEN_RESEARCH_SCALE_FLOORS"
+}

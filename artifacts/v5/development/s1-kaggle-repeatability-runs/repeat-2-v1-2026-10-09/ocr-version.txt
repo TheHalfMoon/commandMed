@@ -1,0 +1,3 @@
+open-code-review v1.12.13 (fabbdb29) darwin/arm64
+built at: 2026-10-08T11:54:55Z
+https://github.com/alibaba/open-code-review

@@ -1,0 +1,9 @@
+{
+  "buffer_multiplier": 1.25,
+  "completion_export_buffer_seconds": 600,
+  "full_prompt_count": 16384,
+  "mean_forward_seconds": 0.42001299984374363,
+  "projected_full_matrix_seconds_with_buffer": 9201.86623679987,
+  "remaining_window_and_quota_seconds": 41774.68495178223,
+  "sample_prompt_count": 32
+}

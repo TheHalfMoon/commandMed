@@ -1,0 +1,96 @@
+{
+  "allowlisted_runtime_sha256": "82f71fca47d41eb4f9d94243fa06ce78f7ee94ae1d1d821b9405e33b18a4e766",
+  "analysis_reproduced_absolute_tolerance": 1e-12,
+  "archive_sha256": "73f24c06f2d54e34cc20f2137f06b0728f02cccfc0d96c346f619d73184e4216",
+  "clinical_validity": false,
+  "confirmatory": false,
+  "durable_export_verified": true,
+  "expected_head": "819cf1dda443937eec0360e6051a89062b545cb9",
+  "files": [
+    {
+      "bytes": 305,
+      "path": "duration-admission.json",
+      "sha256": "14789539133cac7930b63ecab137f621c8d8ff8d3995767547d294131cfe2018"
+    },
+    {
+      "bytes": 3826,
+      "path": "environment-before-load.json",
+      "sha256": "4be2f69a766863bece34b8ba923ff70afbf8f36ab88b0363e3c87293e9e82290"
+    },
+    {
+      "bytes": 4556,
+      "path": "environment-manifest.json",
+      "sha256": "d0bea7b65383f08e870d6890fe79203590ba7cf37353399ac90178c3536e302b"
+    },
+    {
+      "bytes": 315,
+      "path": "frozen-bindings.json",
+      "sha256": "9fb1883f651d7f4114661e64bd3a44da441bfcc686c1d4beedbbad119d2ffd39"
+    },
+    {
+      "bytes": 302,
+      "path": "hardware-manifest.json",
+      "sha256": "642725923d488f3c1c21292b7eef085245e0b0340a33c1e69120e8ea08e50138"
+    },
+    {
+      "bytes": 414,
+      "path": "load-observation.json",
+      "sha256": "4fbef1ad8c70ae8e3b319afb13e49c93933e937719ae35e0afee6298563057b2"
+    },
+    {
+      "bytes": 2115,
+      "path": "model-artifact-manifest.json",
+      "sha256": "47af7d0f18da4405f809425302c989987787609f64e14939557200e62bacefc2"
+    },
+    {
+      "bytes": 1293,
+      "path": "preflight-01-load.json",
+      "sha256": "4b745fc432b73fcae6bf371e08c0d32d83a33263d4c7f2d15da7503289ac3182"
+    },
+    {
+      "bytes": 1292,
+      "path": "preflight-02-resource-timing.json",
+      "sha256": "9f36e431d39cc95372c55a9c88171b63f981ec5495c0995e5e780da7e261abb8"
+    },
+    {
+      "bytes": 1292,
+      "path": "preflight-03-complete-matrix.json",
+      "sha256": "9f36e431d39cc95372c55a9c88171b63f981ec5495c0995e5e780da7e261abb8"
+    },
+    {
+      "bytes": 3420,
+      "path": "preparation/task-preparation-evidence.json",
+      "sha256": "fd51cbdd3c2dae6e3137272b80261b9e56c32a865ffc67701e0f99c284fa9036"
+    },
+    {
+      "bytes": 1573,
+      "path": "repeatability-analysis.json",
+      "sha256": "9a7ce22d8adce5347b36d3d062b3350f876407b9b5eb7beb435dabc093f79202"
+    },
+    {
+      "bytes": 6687630,
+      "path": "repeatability-decision-matrix.json",
+      "sha256": "37a78d4d067d00a486e2c63fc72662ecb2cee4d54c522ac8e05048e432eec902"
+    },
+    {
+      "bytes": 875,
+      "path": "repeatability-result.json",
+      "sha256": "230a3ca776125d1d5a8126fa7b34aa38ff746713de6f93aa0297a2d34253cd61"
+    }
+  ],
+  "intervention": "BASELINE_V1",
+  "kernel": "abdulazizshehri/commandmed-v5-base-repeatability-r2",
+  "kernel_version": 1,
+  "model_weights_loaded": false,
+  "ordered_rows_verified": 16384,
+  "physical_hardware_sha256": "d21e9241b8ce1373b09ce4be2655a5a2cad8769b8d3a63bc59af8d02cca21f60",
+  "purpose": "UNCHANGED_BASE_REPEATABILITY",
+  "repeat": 2,
+  "reserve": false,
+  "riskcalcs_sha256": "00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9",
+  "schema": "commandmed.v5.repeatability-export-verification.v1",
+  "scientific_replication": false,
+  "source_task_count_verified": 8192,
+  "spend_usd": 0,
+  "status": "PASS_MODEL_FREE_REPEATABILITY_EXPORT_VERIFICATION"
+}

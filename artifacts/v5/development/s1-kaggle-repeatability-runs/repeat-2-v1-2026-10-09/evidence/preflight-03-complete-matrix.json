@@ -1,0 +1,38 @@
+{
+  "authority": {
+    "approved": true,
+    "authority_id": "KAGGLE_REPEATABILITY_AUTHORITY_SHA256:0a5725a4bc6d8bf06362fcd3b729eda676859733784c210e18a2c353faf0c52c",
+    "confirmatory_allowed": false,
+    "gated_data_allowed": false,
+    "paid_api": false,
+    "paid_compute": false,
+    "phi_allowed": false,
+    "reserve_allowed": false,
+    "spend_usd": 0.0
+  },
+  "decision": {
+    "allowed": true,
+    "reason_codes": [],
+    "state": "PREFLIGHT_PASS"
+  },
+  "manifest": {
+    "action": "INFERENCE",
+    "code_sha": "819cf1dda443937eec0360e6051a89062b545cb9",
+    "confirmatory_materialized": false,
+    "contains_phi": false,
+    "data_roles": [
+      "RULE_ORACLE_DEVELOPMENT",
+      "RULE_ORACLE_CALIBRATION"
+    ],
+    "environment_id": "sha256:b401ec1cc018a2a4ee2886db55793f253c253c72468186bf56c17bc2bf8d8c11",
+    "expected_spend_usd": 0.0,
+    "intervention_id": "BASELINE_V1",
+    "model_artifact_sha256": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+    "model_repo": "Qwen/Qwen3.5-0.8B-Base",
+    "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "output_destination": "artifacts/v5/development/s1-kaggle-repeatability-runtime/repeat-2/",
+    "paid_resource": false,
+    "reserve_materialized": false,
+    "uses_gated_data": false
+  }
+}
