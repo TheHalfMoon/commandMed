@@ -1,0 +1,19 @@
+{
+  "exit_code": 0,
+  "expected_head": "819cf1dda443937eec0360e6051a89062b545cb9",
+  "exported_archive": true,
+  "intervention": "BASELINE_V1",
+  "purpose": "UNCHANGED_BASE_REPEATABILITY",
+  "repeat": 2,
+  "resume": false,
+  "runtime_repair": {
+    "after": null,
+    "before": "0.10.0",
+    "scope": "PREMODEL_ENVIRONMENT_ONLY; DIRECT_BF16_UNCHANGED",
+    "unused_optional_extension": "torchao"
+  },
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "spend_usd": 0,
+  "status": "ATOMIC_KERNEL_FINISHED"
+}

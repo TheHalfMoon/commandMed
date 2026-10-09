@@ -1,0 +1,95 @@
+{
+  "admission": {
+    "authority": "V5_S1_KAGGLE_REPEATABILITY_RUNTIME_AUTHORIZATION_2026-10-09.md",
+    "code_sha": "819cf1dda443937eec0360e6051a89062b545cb9",
+    "confirmatory_materialized": false,
+    "cost_basis": "KAGGLE_ZERO_COST_RUNTIME",
+    "expected_incremental_spend_usd": 0,
+    "free_gpu_seconds_available": 54280.358,
+    "git_tree": "4ee326864bb3c13aa6a34630aec629c358c1c582",
+    "intervention": "BASELINE_V1",
+    "kernel_ref": "abdulazizshehri/commandmed-v5-base-repeatability-r2",
+    "method_freeze": "V5_S1_REPEATABILITY_METHOD_FREEZE_2026-10-09.md",
+    "new_purchase": false,
+    "pay_to_scale_enabled": false,
+    "phi": false,
+    "private": true,
+    "purpose": "UNCHANGED_BASE_REPEATABILITY",
+    "quota_observed_unix": 1791563407.7426074,
+    "quota_refresh_at": "2026-10-10T00:00:00",
+    "quota_total_allowed_seconds": 108000.0,
+    "quota_used_seconds": 53719.642,
+    "repeat": 2,
+    "requested_session_timeout_seconds": 42000,
+    "reserve_materialized": false,
+    "resume": false,
+    "scientific_device": "cuda:0",
+    "scientific_gpu_count": 1,
+    "username": "abdulazizshehri"
+  },
+  "artifact_bundle_sha256": "b2b4de85ad1149ad987d01e5226c83389fa974fac8d2698bac0e4bdc7e682477",
+  "authority_sha256": {
+    "V5_DEVELOPMENT_EXECUTION_AUTHORIZATION_2026-10-03.md": "cd73779ad8bc5885f10f0e81e4bc89d45eb3b749ceafc696ab2706e916510c0c",
+    "V5_S1_KAGGLE_REPEATABILITY_RUNTIME_AUTHORIZATION_2026-10-09.md": "0a5725a4bc6d8bf06362fcd3b729eda676859733784c210e18a2c353faf0c52c",
+    "V5_S1_REPEATABILITY_METHOD_FREEZE_2026-10-09.md": "5264bd398adbd91137733fa62a692ec5be22a7fcbe272ad0b1c6b1913d9d10b1"
+  },
+  "complete_c2_evidence": [
+    {
+      "archive_sha256": "62af052a4858edac1b40febd46e91d5f3f6304d29ff0650857a874255c504932",
+      "receipt": "artifacts/v5/development/s1-kaggle-c2-adapters/c2-seed-11-v2-2026-10-09/export-verification-receipt.json",
+      "receipt_sha256": "ceafb60e01823d9f6a8e77dc8548dc48e41a7c6a625cccfdd0fd0ad4315840d6",
+      "seed": 11
+    },
+    {
+      "archive_sha256": "3550c9bcb731ffe88f71a39120472a69742ae06228e415f379b70d5a77947e10",
+      "receipt": "artifacts/v5/development/s1-kaggle-c2-adapters/c2-seed-29-v1-2026-10-09/export-verification-receipt.json",
+      "receipt_sha256": "7d9a2cc8ea4d5c94017a605242538576615f120f09493bd69a3119eeef8ed378",
+      "seed": 29
+    },
+    {
+      "archive_sha256": "aa6cd37395a9ed88fe0ff1150eb5bb2945065b9fc84c6b7d8aeb2899405391af",
+      "receipt": "artifacts/v5/development/s1-kaggle-c2-adapters/c2-seed-47-v1-2026-10-09/export-verification-receipt.json",
+      "receipt_sha256": "ea611866cc57152ce69fdedaf2ad5c6da539ea470bd78e938809bf9b9af976f6",
+      "seed": 47
+    }
+  ],
+  "cuda": "12.8",
+  "environment_sha256": "b401ec1cc018a2a4ee2886db55793f253c253c72468186bf56c17bc2bf8d8c11",
+  "frozen_bindings": {
+    "amendment_sha256": "34d9a5152cb46bd44f4213ab9bd726799b9789285c0bbd6dc62f48d42f2c5b76",
+    "binding_sha256": "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f",
+    "scientific_freeze_sha256": "261c2324e40dcd59c9ff5a4f9970440356442ea2ceacf6a5531999b25030304c",
+    "verified_entry_file_count": 307
+  },
+  "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+  "packages": {
+    "huggingface-hub": "1.33.0",
+    "numpy": "2.1.3",
+    "psutil": "7.1.0",
+    "safetensors": "0.8.0",
+    "tokenizers": "0.23.2",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.18.0"
+  },
+  "preparation_sha256": "fd51cbdd3c2dae6e3137272b80261b9e56c32a865ffc67701e0f99c284fa9036",
+  "prior_repeatability_evidence": [
+    {
+      "archive_sha256": "dfb35b0216369bbb87bcec75c5715df974bb9f736c0db0af98148cea91d99dac",
+      "receipt": "artifacts/v5/development/s1-kaggle-repeatability-runs/repeat-1-v1-2026-10-09/export-verification-receipt.json",
+      "receipt_sha256": "b445406380ea967ce8bb8bc7a61efe1cd48ade50e03f6c0eabba6e559d58eb53",
+      "repeat": 1
+    }
+  ],
+  "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+  "repeat_rng_seed": 991,
+  "runner_sha256": "325b24b6f3cbf95146eea6b982ad35a60940fa77f46783a54cab5095e34dc77a",
+  "runtime_dtype": "bfloat16",
+  "scientific_device": "cuda:0",
+  "scientific_gpu_count": 1,
+  "tokenizer_files": {
+    "merges.txt": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",
+    "tokenizer.json": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+    "tokenizer_config.json": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de",
+    "vocab.json": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+  }
+}
