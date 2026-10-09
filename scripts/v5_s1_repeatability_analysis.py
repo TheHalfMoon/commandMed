@@ -148,6 +148,15 @@ def _nearest_rank_95(values: list[float]) -> float:
 
 
 def compare(payload_r1: dict[str, Any], payload_r2: dict[str, Any]) -> dict[str, Any]:
+    # Enforce the prospectively frozen R1 -> R2 pairing before computing any metric.
+    # Without this guard, passing R1 twice falsely yields zero repeatability.
+    if (
+        type(payload_r1.get("repeat")) is not int
+        or payload_r1["repeat"] != 1
+        or type(payload_r2.get("repeat")) is not int
+        or payload_r2["repeat"] != 2
+    ):
+        raise RepeatabilityContractError("DISTINCT_ORDERED_REPEAT_IDENTITIES_REQUIRED")
     r1 = _index_rows(payload_r1)
     r2 = _index_rows(payload_r2)
     if tuple(r1) != tuple(r2):
