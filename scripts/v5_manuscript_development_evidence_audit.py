@@ -18,6 +18,8 @@ DEV = "artifacts/v5/development/"
 RUNS = DEV + "s1-kaggle-repeatability-runs/"
 DOC = "docs/research/paper-rebuild-v2-2026-10-02/"
 RISKCALCS_SHA256 = "00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9"
+FROZEN_BINDINGS_RELATIVE = DOC + "V5_S1_KAGGLE_RUNTIME_AMENDMENT_BINDINGS_2026-10-08.json"
+FROZEN_BINDINGS_SHA256 = "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f"
 
 # The immutable receipts, scientific metrics, frozen floor and reporting text are
 # locked at the exact evidence state qualified on 2026-10-09.
@@ -159,10 +161,13 @@ def audit(root: Path = ROOT) -> dict[str, Any]:
 
     # Recheck each original frozen entry directly. Never silently edit the
     # prospective paper/manuscript/claim ledger to match this addendum.
-    binding = root / DOC / "V5_S1_KAGGLE_RUNTIME_AMENDMENT_BINDINGS_2026-10-08.json"
+    # The manifest is *not* among its own 307 entries. Pin its original SHA
+    # separately or a coordinated manifest+source rewrite could falsely pass.
+    binding = _locked_file(root, FROZEN_BINDINGS_RELATIVE, FROZEN_BINDINGS_SHA256)
     b = json.loads(binding.read_text(encoding="utf-8"))
     frozen = b["unchanged_entry_files"]
     _check(len(frozen) == 307, "FROZEN_ENTRY_COUNT_CHANGED")
+    _check(len({row["path"] for row in frozen}) == 307, "DUPLICATE_FROZEN_ENTRY_PATH")
     for row in frozen:
         _locked_file(root, row["path"], row["sha256"])
     result.update(frozen_source_files_verified=307, locked_evidence_sources=len(LOCKED_SOURCES),

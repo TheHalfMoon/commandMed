@@ -69,3 +69,15 @@ def test_nonfinite_sd_and_changed_repeatability_rejected() -> None:
     records["paired"]["metrics"]["canonical_accuracy"]["repeatability95"] = 0.001
     with pytest.raises(audit.ManuscriptEvidenceAuditError, match="PAIRED_REPEATABILITY_CHANGED"):
         audit.assert_development_semantics(records)
+
+
+def test_frozen_307_entry_manifest_is_itself_cryptographically_pinned(tmp_path: Path) -> None:
+    manifest = audit.ROOT / audit.FROZEN_BINDINGS_RELATIVE
+    assert audit._digest(manifest) == audit.FROZEN_BINDINGS_SHA256
+    path = tmp_path / audit.FROZEN_BINDINGS_RELATIVE
+    path.parent.mkdir(parents=True)
+    original = json.loads(manifest.read_text(encoding="utf-8"))
+    assert len(original["unchanged_entry_files"]) == 307
+    path.write_text(json.dumps(original) + "\n", encoding="utf-8")
+    with pytest.raises(audit.ManuscriptEvidenceAuditError, match="SOURCE_SHA256_MISMATCH"):
+        audit._locked_file(tmp_path, audit.FROZEN_BINDINGS_RELATIVE, audit.FROZEN_BINDINGS_SHA256)
