@@ -11,9 +11,14 @@ import argparse
 import hashlib
 import json
 import math
+import sys
 from pathlib import Path
 from statistics import fmean
 from typing import Any, Callable, Iterable, Sequence
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from src.commandmed.reliability_v5.diagnostics import (
     reliability_bins,
