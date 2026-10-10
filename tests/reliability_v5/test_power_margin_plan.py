@@ -273,3 +273,97 @@ def test_large_finite_nuisance_exposes_contract_error_not_overflow() -> None:
     spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 1e308
     with pytest.raises(plan.PowerPlanContractError, match="unrepresentable"):
         plan.build_plan(spec)
+
+def _run_unambiguous_input_cli(
+    tmp_path: Path, raw_json: str
+) -> tuple[subprocess.CompletedProcess[str], Path]:
+    spec = tmp_path / "submitted-input.json"
+    output = tmp_path / "unqualified-plan.json"
+    spec.write_text(raw_json, encoding="utf-8")
+    script = Path(__file__).resolve().parents[2] / "scripts" / "v5_power_margin_plan.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--spec", str(spec), "--output", str(output)],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        env={"PATH": "/usr/bin:/bin"},
+    )
+    return completed, output
+
+
+@pytest.mark.parametrize(
+    "mutator,reason",
+    [
+        (
+            lambda raw: raw[:-1] + ', "primary_non_target_family_size": 1, "primary_non_target_family_size": 4}',
+            "AMBIGUOUS_JSON_DUPLICATE_KEY",
+        ),
+        (
+            lambda raw: raw.replace(
+                '"paired_sd": 0.2', '"paired_sd": 0.1, "paired_sd": 0.2', 1
+            ),
+            "AMBIGUOUS_JSON_DUPLICATE_KEY",
+        ),
+        (
+            lambda raw: raw.replace(
+                '"hypothesis_id": "SYNTH-HYP-00"',
+                '"hypothesis_id": "SYNTH-HYP-01", "hypothesis_id": "SYNTH-HYP-00"',
+                1,
+            ),
+            "AMBIGUOUS_JSON_DUPLICATE_KEY",
+        ),
+        (
+            lambda raw: raw.replace(
+                '"paired_sd": 0.2',
+                '"paired_sd": 0.1, "paired_\\u0073d": 0.2',
+                1,
+            ),
+            "AMBIGUOUS_JSON_DUPLICATE_KEY",
+        ),
+        (
+            lambda raw: raw.replace('"paired_sd": 0.2', '"paired_sd": NaN', 1),
+            "NONSTANDARD_JSON_CONSTANT",
+        ),
+        (
+            lambda raw: raw.replace('"paired_sd": 0.2', '"paired_sd": Infinity', 1),
+            "NONSTANDARD_JSON_CONSTANT",
+        ),
+    ],
+)
+def test_direct_cli_rejects_ambiguous_or_nonstandard_json_at_all_depths(
+    tmp_path: Path, mutator, reason: str
+) -> None:
+    original = json.dumps(_spec(), sort_keys=True)
+    submitted = mutator(original)
+    assert submitted != original
+    completed, output = _run_unambiguous_input_cli(tmp_path, submitted)
+    assert completed.returncode != 0
+    assert reason in completed.stderr
+    assert not output.exists()
+
+
+def test_direct_cli_accepts_single_key_equivalent_unicode_json(
+    tmp_path: Path,
+) -> None:
+    original = json.dumps(_spec(), sort_keys=True)
+    completed, output = _run_unambiguous_input_cli(tmp_path, original)
+    assert completed.returncode == 0, completed.stderr
+    receipt = json.loads(completed.stdout)
+    assert receipt["status"] == "PASS_DEVELOPMENT_ONLY_INPUT_CONTRACT"
+    assert receipt["final_90_percent_power_qualified"] is False
+    result = json.loads(output.read_text(encoding="utf-8"))
+    assert result["family_membership_frozen_and_independently_reviewed"] is False
+    assert result["confirmatory_execution_authorized"] is False
+
+
+def test_reject_json_array_root_and_invalid_syntax(tmp_path: Path) -> None:
+    for idx, (raw, reason) in enumerate((
+        ("[]", "POWER_PLAN_ROOT_MUST_BE_OBJECT"),
+        ('{"scope": "DEVELOPMENT_ONLY_POWER_PLANNING"', "INVALID_POWER_PLAN_JSON"),
+    )):
+        case = tmp_path / str(idx)
+        case.mkdir()
+        completed, output = _run_unambiguous_input_cli(case, raw)
+        assert completed.returncode != 0
+        assert reason in completed.stderr
+        assert not output.exists()

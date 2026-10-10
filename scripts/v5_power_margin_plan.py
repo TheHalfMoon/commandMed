@@ -327,12 +327,44 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _strict_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    """Reject duplicate keys after JSON unicode-escape decoding at every depth."""
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise PowerPlanContractError(
+                f"AMBIGUOUS_JSON_DUPLICATE_KEY: {key!r}"
+            )
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value: str) -> None:
+    # Python's default JSON parser accepts NaN/Infinity despite JSON RFC 8259.
+    raise PowerPlanContractError(f"NONSTANDARD_JSON_CONSTANT: {value}")
+
+
+def _load_strict_plan(path: Path) -> dict[str, Any]:
+    """Load only unambiguous JSON; preserve every downstream provenance check."""
+    try:
+        payload = json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=_strict_json_object,
+            parse_constant=_reject_json_constant,
+        )
+    except (UnicodeError, OSError, json.JSONDecodeError) as exc:
+        raise PowerPlanContractError("INVALID_POWER_PLAN_JSON") from exc
+    if not isinstance(payload, dict):
+        raise PowerPlanContractError("POWER_PLAN_ROOT_MUST_BE_OBJECT")
+    return payload
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--spec", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    spec = json.loads(args.spec.read_text(encoding="utf-8"))
+    spec = _load_strict_plan(args.spec)
     payload = build_plan(spec)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
