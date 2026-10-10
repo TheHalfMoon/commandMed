@@ -88,6 +88,18 @@ def test_build_plan_applies_frozen_margin_rule_and_power() -> None:
     assert result["confirmatory_execution_authorized"] is False
 
 
+@pytest.mark.parametrize("malformed_metric", [
+    " canonical_nll ",
+    "canonical_nll ",
+    "\tcanonical_nll",
+])
+def test_reject_whitespace_metric_aliases_even_when_unreferenced(malformed_metric: str) -> None:
+    spec = _spec()
+    spec["metrics"][malformed_metric] = copy.deepcopy(spec["metrics"]["canonical_nll"])
+    with pytest.raises(plan.PowerPlanContractError, match="unpadded metric name"):
+        plan.build_plan(spec)
+
+
 def test_zero_paired_sd_is_handled_without_fake_positive_noise() -> None:
     spec = _spec()
     spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 0.0

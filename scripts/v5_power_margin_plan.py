@@ -225,8 +225,11 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
     metrics = spec.get("metrics")
     if not isinstance(metrics, dict) or not metrics:
         raise PowerPlanContractError("metrics: expected a non-empty object")
-    if any(not isinstance(name, str) or not name.strip() for name in metrics):
-        raise PowerPlanContractError("metrics: invalid metric name")
+    if any(
+        not isinstance(name, str) or not name.strip() or name != name.strip()
+        for name in metrics
+    ):
+        raise PowerPlanContractError("metrics: nonempty unpadded metric name required")
     family_size, unreviewed_family_sha = _unreviewed_family_bindings(spec, set(metrics))
     planning_alpha = conservative_holm_planning_alpha(family_alpha, family_size)
     desired_power = _finite_positive(spec.get("desired_power"), "desired_power")
