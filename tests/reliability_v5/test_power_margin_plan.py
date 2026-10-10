@@ -55,6 +55,10 @@ def test_build_plan_applies_frozen_margin_rule_and_power() -> None:
     assert isinstance(result["all_metrics_meet_normal_approx_target"], bool)
     assert result["confirmatory"] is False
     assert result["reserve"] is False
+    assert result["family_membership_frozen_and_independently_reviewed"] is False
+    assert result["source_case_seed_nuisance_qualified"] is False
+    assert result["final_90_percent_power_qualified"] is False
+    assert result["confirmatory_execution_authorized"] is False
 
 
 def test_zero_paired_sd_is_handled_without_fake_positive_noise() -> None:
@@ -97,6 +101,33 @@ def test_zero_paired_sd_is_handled_without_fake_positive_noise() -> None:
     ],
 )
 def test_plan_fails_closed_on_unfrozen_or_invalid_inputs(mutator, match) -> None:
+    spec = copy.deepcopy(_spec())
+    mutator(spec)
+    with pytest.raises(plan.PowerPlanContractError, match=match):
+        plan.build_plan(spec)
+
+@pytest.mark.parametrize(
+    "mutator,match",
+    [
+        (lambda s: s.update(family_alpha=0.20), "frozen V5 family-wise alpha"),
+        (lambda s: s.update(family_alpha=0.01), "frozen V5 family-wise alpha"),
+        (lambda s: s.update(desired_power=0.51), "frozen V5 target"),
+        (lambda s: s.update(desired_power=0.95), "frozen V5 target"),
+        (lambda s: s.update(planned_clusters=2), "frozen V5 plan"),
+        (lambda s: s.update(planned_clusters=8192), "frozen V5 plan"),
+        (lambda s: s["metrics"]["canonical_nll"].update(paired_sd=False), "JSON number"),
+        (lambda s: s["metrics"]["canonical_nll"].update(paired_sd=True), "JSON number"),
+        (lambda s: s["metrics"]["canonical_nll"].update(paired_sd="0.001"), "JSON number"),
+        (lambda s: s["metrics"]["canonical_nll"].update(paired_sd=10 ** 1000), "JSON number"),
+        (lambda s: s["metrics"]["canonical_nll"].update(domain_floor=True), "JSON number"),
+        (lambda s: s["metrics"]["canonical_nll"].update(repeatability95="0"), "JSON number"),
+        (lambda s: s["metrics"]["canonical_nll"].update(domain_floor_justification_sha256="x"), "SHA-256"),
+        (lambda s: s["metrics"]["canonical_nll"].update(repeatability_evidence_sha256="g" * 64), "SHA-256"),
+        (lambda s: s["metrics"]["canonical_nll"].update(paired_sd_evidence_sha256="0" * 63), "SHA-256"),
+        (lambda s: s["metrics"]["canonical_nll"].update(paired_sd_evidence_sha256="A" * 64), "SHA-256"),
+    ],
+)
+def test_reject_unreviewed_power_relaxation_or_forged_hash(mutator, match) -> None:
     spec = copy.deepcopy(_spec())
     mutator(spec)
     with pytest.raises(plan.PowerPlanContractError, match=match):

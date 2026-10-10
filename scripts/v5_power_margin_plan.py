@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 from pathlib import Path
 from typing import Any
 
@@ -24,11 +25,24 @@ class PowerPlanContractError(ValueError):
     """Raised when a prospective power-plan input is incomplete or malformed."""
 
 
+SHA256_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
+
+
+def _require_sha256(value: Any, field: str) -> str:
+    """Require actual SHA-256 syntax, not a placeholder or arbitrary nonempty text."""
+    if not isinstance(value, str) or SHA256_PATTERN.fullmatch(value) is None:
+        raise PowerPlanContractError(f"{field}: frozen 64-character lowercase SHA-256 required")
+    return value
+
+
 def _finite_nonnegative(value: Any, field: str) -> float:
+    # JSON booleans and numeric strings must not silently become real variance.
+    if type(value) not in (int, float):
+        raise PowerPlanContractError(f"{field}: expected a finite nonnegative JSON number")
     try:
         number = float(value)
-    except (TypeError, ValueError) as exc:
-        raise PowerPlanContractError(f"{field}: expected a finite nonnegative number") from exc
+    except OverflowError as exc:
+        raise PowerPlanContractError(f"{field}: expected a finite nonnegative JSON number") from exc
     if not math.isfinite(number) or number < 0.0:
         raise PowerPlanContractError(f"{field}: expected a finite nonnegative number")
     return number
@@ -116,12 +130,16 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
         raise PowerPlanContractError("multiplicity: HOLM required")
 
     family_alpha = _finite_positive(spec.get("family_alpha"), "family_alpha")
+    if family_alpha != 0.05:
+        raise PowerPlanContractError("family_alpha: frozen V5 family-wise alpha 0.05 required")
     family_size = spec.get("primary_non_target_family_size")
     planning_alpha = conservative_holm_planning_alpha(family_alpha, family_size)
     desired_power = _finite_positive(spec.get("desired_power"), "desired_power")
+    if desired_power != 0.90:
+        raise PowerPlanContractError("desired_power: frozen V5 target 0.90 required")
     planned_clusters = spec.get("planned_clusters")
-    if type(planned_clusters) is not int or planned_clusters < 2:
-        raise PowerPlanContractError("planned_clusters: expected an integer >= 2")
+    if type(planned_clusters) is not int or planned_clusters != 4096:
+        raise PowerPlanContractError("planned_clusters: current frozen V5 plan is exactly 4096")
 
     metrics = spec.get("metrics")
     if not isinstance(metrics, dict) or not metrics:
@@ -131,18 +149,12 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
         row = metrics[name]
         if not isinstance(name, str) or not name.strip() or not isinstance(row, dict):
             raise PowerPlanContractError("metrics: invalid metric entry")
-        if row.get("domain_floor_justification_sha256") in (None, "", "TBD"):
-            raise PowerPlanContractError(
-                f"metrics.{name}.domain_floor_justification_sha256: frozen justification required"
-            )
-        if row.get("repeatability_evidence_sha256") in (None, "", "TBD"):
-            raise PowerPlanContractError(
-                f"metrics.{name}.repeatability_evidence_sha256: frozen repeatability evidence required"
-            )
-        if row.get("paired_sd_evidence_sha256") in (None, "", "TBD"):
-            raise PowerPlanContractError(
-                f"metrics.{name}.paired_sd_evidence_sha256: frozen nuisance evidence required"
-            )
+        _require_sha256(row.get("domain_floor_justification_sha256"),
+                        f"metrics.{name}.domain_floor_justification_sha256: frozen justification")
+        _require_sha256(row.get("repeatability_evidence_sha256"),
+                        f"metrics.{name}.repeatability_evidence_sha256: repeatability evidence")
+        _require_sha256(row.get("paired_sd_evidence_sha256"),
+                        f"metrics.{name}.paired_sd_evidence_sha256: nuisance evidence")
         result_metrics[name] = {
             **_plan_metric(
                 domain_floor=row.get("domain_floor"),
@@ -174,6 +186,10 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
             row["planned_clusters_meet_normal_approx_target"]
             for row in result_metrics.values()
         ),
+        "family_membership_frozen_and_independently_reviewed": False,
+        "source_case_seed_nuisance_qualified": False,
+        "final_90_percent_power_qualified": False,
+        "confirmatory_execution_authorized": False,
         "interpretation_boundary": (
             "Normal-approximation development planning only. Holm is handled "
             "conservatively using the first-step alpha/family_size threshold. "
