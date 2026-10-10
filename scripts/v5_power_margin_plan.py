@@ -8,6 +8,7 @@ or confirmatory identity. Its only role is to apply already-frozen mechanics.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import re
@@ -53,6 +54,62 @@ def _finite_positive(value: Any, field: str) -> float:
     if number <= 0.0:
         raise PowerPlanContractError(f"{field}: expected a finite positive number")
     return number
+
+
+FAMILY_TAGS = frozenset(("STRUCTURALLY_DISTINCT", "SHARED_INPUT", "MATHEMATICALLY_COUPLED"))
+HYPOTHESIS_ID_PATTERN = re.compile(r"[A-Z][A-Z0-9_-]{3,63}\Z")
+
+
+def _unreviewed_family_bindings(spec: dict[str, Any], metric_names: set[str]) -> tuple[int, str]:
+    """Check manifest completeness, not the scientific validity of its members.
+
+    This manifest is entirely caller-provided and remains *unreviewed*.
+    No input field can change the hard-coded review/confirmatory=false outputs.
+    """
+    hypotheses = spec.get("primary_non_target_hypotheses")
+    if not isinstance(hypotheses, list) or not hypotheses:
+        raise PowerPlanContractError("primary_non_target_hypotheses: nonempty explicit list required")
+    declared_size = spec.get("primary_non_target_family_size")
+    if type(declared_size) is not int or declared_size != len(hypotheses):
+        raise PowerPlanContractError("primary_non_target_family_size: must equal declared hypothesis list length")
+    ids: set[str] = set()
+    cells: set[tuple[str, str, str]] = set()
+    required_fields = frozenset((
+        "hypothesis_id", "intervention", "target_property",
+        "non_target_metric", "coupling_tag", "inferential_unit", "primary",
+    ))
+    for idx, row in enumerate(hypotheses):
+        prefix = f"primary_non_target_hypotheses[{idx}]"
+        if not isinstance(row, dict) or set(row) != required_fields:
+            raise PowerPlanContractError(prefix + ": exact hypothesis fields required")
+        identifier = row["hypothesis_id"]
+        if not isinstance(identifier, str) or HYPOTHESIS_ID_PATTERN.fullmatch(identifier) is None:
+            raise PowerPlanContractError(prefix + ": stable uppercase hypothesis ID required")
+        if identifier in ids:
+            raise PowerPlanContractError(prefix + ": duplicate hypothesis_id")
+        ids.add(identifier)
+        for key in ("intervention", "target_property", "non_target_metric"):
+            val = row[key]
+            if not isinstance(val, str) or not val.strip() or val != val.strip():
+                raise PowerPlanContractError(prefix + ": invalid " + key)
+        if row["non_target_metric"] not in metric_names:
+            raise PowerPlanContractError(prefix + ": non_target_metric lacks planning metric")
+        if row["target_property"] == row["non_target_metric"]:
+            raise PowerPlanContractError(prefix + ": non-target cannot equal target")
+        if not isinstance(row["coupling_tag"], str) or row["coupling_tag"] not in FAMILY_TAGS:
+            raise PowerPlanContractError(prefix + ": coupling_tag must be declared")
+        if row["inferential_unit"] != "SOURCE_CASE":
+            raise PowerPlanContractError(prefix + ": source medical case is required inferential unit")
+        if row["primary"] is not True:
+            raise PowerPlanContractError(prefix + ": primary hard-gate membership required")
+        cell = (row["intervention"], row["target_property"], row["non_target_metric"])
+        if cell in cells:
+            raise PowerPlanContractError(prefix + ": duplicate primary intervention-target-non-target cell")
+        cells.add(cell)
+    digest = hashlib.sha256(
+        json.dumps(hypotheses, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    ).hexdigest()
+    return len(hypotheses), digest
 
 
 def conservative_holm_planning_alpha(family_alpha: float, family_size: int) -> float:
@@ -132,7 +189,12 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
     family_alpha = _finite_positive(spec.get("family_alpha"), "family_alpha")
     if family_alpha != 0.05:
         raise PowerPlanContractError("family_alpha: frozen V5 family-wise alpha 0.05 required")
-    family_size = spec.get("primary_non_target_family_size")
+    metrics = spec.get("metrics")
+    if not isinstance(metrics, dict) or not metrics:
+        raise PowerPlanContractError("metrics: expected a non-empty object")
+    if any(not isinstance(name, str) or not name.strip() for name in metrics):
+        raise PowerPlanContractError("metrics: invalid metric name")
+    family_size, unreviewed_family_sha = _unreviewed_family_bindings(spec, set(metrics))
     planning_alpha = conservative_holm_planning_alpha(family_alpha, family_size)
     desired_power = _finite_positive(spec.get("desired_power"), "desired_power")
     if desired_power != 0.90:
@@ -141,9 +203,6 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
     if type(planned_clusters) is not int or planned_clusters != 4096:
         raise PowerPlanContractError("planned_clusters: current frozen V5 plan is exactly 4096")
 
-    metrics = spec.get("metrics")
-    if not isinstance(metrics, dict) or not metrics:
-        raise PowerPlanContractError("metrics: expected a non-empty object")
     result_metrics: dict[str, Any] = {}
     for name in sorted(metrics):
         row = metrics[name]
@@ -177,6 +236,8 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
         "family_alpha": family_alpha,
         "multiplicity": "HOLM",
         "primary_non_target_family_size": family_size,
+        "unreviewed_family_declaration_sha256": unreviewed_family_sha,
+        "family_size_matches_unreviewed_declared_hypotheses": True,
         "conservative_holm_planning_alpha": planning_alpha,
         "desired_power": desired_power,
         "planned_clusters": planned_clusters,
@@ -191,9 +252,11 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
         "final_90_percent_power_qualified": False,
         "confirmatory_execution_authorized": False,
         "interpretation_boundary": (
-            "Normal-approximation development planning only. Holm is handled "
-            "conservatively using the first-step alpha/family_size threshold. "
-            "This output is not final inference and cannot authorize confirmatory access."
+            "Normal-approximation development planning only. Family membership "
+            "and multiplicity count derive from a caller-supplied, unreviewed "
+            "hypothesis list, not independently qualified prospective science. "
+            "Holm uses first-step alpha/family_size. This is not final power "
+            "or authorization for confirmatory access."
         ),
     }
 

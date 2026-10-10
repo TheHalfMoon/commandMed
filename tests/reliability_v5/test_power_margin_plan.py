@@ -18,6 +18,23 @@ def _spec() -> dict:
         "family_alpha": 0.05,
         "multiplicity": "HOLM",
         "primary_non_target_family_size": 4,
+        "primary_non_target_hypotheses": [
+            {
+                "hypothesis_id": f"SYNTH-HYP-{i:02d}",
+                "intervention": intervention,
+                "target_property": "canonical_accuracy",
+                "non_target_metric": metric,
+                "coupling_tag": "SHARED_INPUT",
+                "inferential_unit": "SOURCE_CASE",
+                "primary": True,
+            }
+            for i, (intervention, metric) in enumerate((
+                ("B1", "canonical_nll"),
+                ("B1", "semantic_js"),
+                ("C1", "canonical_nll"),
+                ("C1", "semantic_js"),
+            ))
+        ],
         "desired_power": 0.90,
         "planned_clusters": 4096,
         "margin_rule": "MAX_DOMAIN_FLOOR_2X_REPEATABILITY95",
@@ -49,6 +66,8 @@ def test_holm_planning_alpha_is_conservative_first_step() -> None:
 def test_build_plan_applies_frozen_margin_rule_and_power() -> None:
     result = plan.build_plan(_spec())
     assert result["conservative_holm_planning_alpha"] == pytest.approx(0.0125)
+    assert result["family_size_matches_unreviewed_declared_hypotheses"] is True
+    assert len(result["unreviewed_family_declaration_sha256"]) == 64
     assert result["metrics"]["canonical_nll"]["meaningful_margin"] == pytest.approx(0.01)
     assert result["metrics"]["semantic_js"]["meaningful_margin"] == pytest.approx(0.002)
     assert result["metrics"]["canonical_nll"]["normal_approx_required_clusters_at_margin"] >= 2
@@ -132,3 +151,41 @@ def test_reject_unreviewed_power_relaxation_or_forged_hash(mutator, match) -> No
     mutator(spec)
     with pytest.raises(plan.PowerPlanContractError, match=match):
         plan.build_plan(spec)
+
+
+@pytest.mark.parametrize("mutator,match", [
+    (lambda s: s.pop("primary_non_target_hypotheses"), "explicit list"),
+    (lambda s: s.update(primary_non_target_hypotheses=[]), "explicit list"),
+    (lambda s: s.update(primary_non_target_family_size=1), "must equal declared"),
+    (lambda s: s.update(primary_non_target_family_size=True), "must equal declared"),
+    (lambda s: s["primary_non_target_hypotheses"][1].update(hypothesis_id="SYNTH-HYP-00"), "duplicate hypothesis_id"),
+    (lambda s: s["primary_non_target_hypotheses"][1].update(intervention="B1", non_target_metric="canonical_nll"), "duplicate primary"),
+    (lambda s: s["primary_non_target_hypotheses"][0].update(non_target_metric="unknown"), "lacks planning metric"),
+    (lambda s: s["primary_non_target_hypotheses"][0].update(target_property="canonical_nll"), "non-target cannot equal target"),
+    (lambda s: s["primary_non_target_hypotheses"][0].update(inferential_unit="PROMPT_VARIANT"), "source medical case"),
+    (lambda s: s["primary_non_target_hypotheses"][0].update(primary=False), "primary hard-gate"),
+    (lambda s: s["primary_non_target_hypotheses"][0].update(coupling_tag="NOT_REVIEWED"), "coupling_tag"),
+    (lambda s: s["primary_non_target_hypotheses"][0].update(coupling_tag=[]), "coupling_tag"),
+    (lambda s: s["primary_non_target_hypotheses"][0].update(hypothesis_id="x"), "stable uppercase"),
+    (lambda s: s["primary_non_target_hypotheses"][0].update(extra_field="hidden"), "exact hypothesis fields"),
+])
+def test_unreviewed_family_declaration_rejects_count_or_membership_drift(mutator, match) -> None:
+    spec = copy.deepcopy(_spec())
+    mutator(spec)
+    with pytest.raises(plan.PowerPlanContractError, match=match):
+        plan.build_plan(spec)
+
+
+def test_unreviewed_family_digest_binds_order_and_member_content() -> None:
+    original = plan.build_plan(_spec())
+    spec = _spec()
+    spec["primary_non_target_hypotheses"].reverse()
+    reordered = plan.build_plan(spec)
+    assert reordered["primary_non_target_family_size"] == original["primary_non_target_family_size"]
+    assert reordered["unreviewed_family_declaration_sha256"] != original["unreviewed_family_declaration_sha256"]
+    assert reordered["family_membership_frozen_and_independently_reviewed"] is False
+    spec = _spec()
+    spec["primary_non_target_hypotheses"][0]["coupling_tag"] = "STRUCTURALLY_DISTINCT"
+    changed = plan.build_plan(spec)
+    assert changed["unreviewed_family_declaration_sha256"] != original["unreviewed_family_declaration_sha256"]
+    assert changed["final_90_percent_power_qualified"] is False
