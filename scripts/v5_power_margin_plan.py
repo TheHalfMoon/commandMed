@@ -127,6 +127,20 @@ def conservative_holm_planning_alpha(family_alpha: float, family_size: int) -> f
     return alpha / family_size
 
 
+
+def _finite_meaningful_margin(domain_floor: float, repeatability95: float) -> float:
+    """Keep the fixed 2x-repeatability margin finite at every planning scope."""
+    repeat_component = 2.0 * repeatability95
+    if not math.isfinite(repeat_component):
+        raise PowerPlanContractError(
+            "repeatability95: two-times repeatability margin overflows finite precision"
+        )
+    margin = max(domain_floor, repeat_component)
+    if not math.isfinite(margin) or margin <= 0.0:
+        raise PowerPlanContractError("meaningful_margin: positive finite margin required")
+    return margin
+
+
 def _plan_metric(
     *,
     domain_floor: float,
@@ -139,7 +153,7 @@ def _plan_metric(
     floor = _finite_positive(domain_floor, "domain_floor")
     repeat = _finite_nonnegative(repeatability95, "repeatability95")
     sd = _finite_nonnegative(paired_sd, "paired_sd")
-    margin = max(floor, 2.0 * repeat)
+    margin = _finite_meaningful_margin(floor, repeat)
     if type(planned_clusters) is not int or planned_clusters < 2:
         raise PowerPlanContractError("planned_clusters: expected an integer >= 2")
     power = _finite_positive(desired_power, "desired_power")
@@ -247,7 +261,7 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
         result_metrics[name] = {
             "domain_floor": floor,
             "repeatability95": repeat,
-            "meaningful_margin": max(floor, 2.0 * repeat),
+            "meaningful_margin": _finite_meaningful_margin(floor, repeat),
             "domain_floor_justification_sha256": row["domain_floor_justification_sha256"],
             "repeatability_evidence_sha256": row["repeatability_evidence_sha256"],
         }

@@ -298,6 +298,44 @@ def test_subnormal_nuisance_cli_never_creates_false_zero_power_evidence(tmp_path
     assert "underflowed to a zero MDE" in completed.stderr
     assert not result.exists()
 
+
+
+def test_overflowed_twice_repeatability_rejected_even_for_unused_metric() -> None:
+    spec = _spec()
+    spec["metrics"]["additional_unreviewed_metric"] = {
+        "domain_floor": 0.001,
+        "repeatability95": 1e308,
+        "domain_floor_justification_sha256": "a" * 64,
+        "repeatability_evidence_sha256": "b" * 64,
+    }
+    with pytest.raises(plan.PowerPlanContractError, match="repeatability margin overflows"):
+        plan.build_plan(spec)
+    spec = _spec()
+    spec["metrics"]["canonical_nll"]["repeatability95"] = 1e308
+    with pytest.raises(plan.PowerPlanContractError, match="repeatability margin overflows"):
+        plan.build_plan(spec)
+
+
+def test_cli_rejects_overflow_margin_before_creating_evidence(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["metrics"]["additional_unreviewed_metric"] = {
+        "domain_floor": 0.001,
+        "repeatability95": 1e308,
+        "domain_floor_justification_sha256": "a" * 64,
+        "repeatability_evidence_sha256": "b" * 64,
+    }
+    source = tmp_path / "overlarge-development-only-input.json"
+    output = tmp_path / "must-not-exist.json"
+    source.write_text(json.dumps(spec), encoding="utf-8")
+    script = Path(__file__).resolve().parents[2] / "scripts" / "v5_power_margin_plan.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--spec", str(source), "--output", str(output)],
+        cwd=tmp_path, capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"},
+    )
+    assert completed.returncode != 0
+    assert "repeatability margin overflows" in completed.stderr
+    assert not output.exists()
+
 def _run_unambiguous_input_cli(
     tmp_path: Path, raw_json: str
 ) -> tuple[subprocess.CompletedProcess[str], Path]:
