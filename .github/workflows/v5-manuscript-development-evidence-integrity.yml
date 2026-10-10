@@ -78,18 +78,20 @@ jobs:
             00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9 \
             "$RUNNER_TEMP/v5-riskcalcs-pinned.json" | sha256sum --check --status
 
+      - name: Install pinned model-free audit dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          # One frozen public calculator calls np.exp; match verified macOS NumPy.
+          python3 -m pip install --disable-pip-version-check --no-cache-dir \
+            numpy==2.4.6 pytest==8.4.2
+
       - name: Verify synthetic source-case IDs map one-to-one to tasks and both full runs
         shell: bash
         run: |
           set -euo pipefail
           python3 scripts/v5_s1_source_case_pairing_audit.py \
             --riskcalcs-source "$RUNNER_TEMP/v5-riskcalcs-pinned.json"
-
-      - name: Install focused pytest test runner
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 -m pip install --disable-pip-version-check --no-cache-dir pytest==8.4.2
 
       - name: Fail-closed regression tests
         shell: bash

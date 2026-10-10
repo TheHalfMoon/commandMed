@@ -22,7 +22,7 @@ PYTHONPATH=src python3 -m pytest -q tests/reliability_v5/test_source_case_pairin
 
 The output contains the exact frozen ordered task sequence SHA `36c86610e2a762cb57ab61a8dff6a829e7196a638178dc612b5d1d3d5bdd5e0c` and a freshly derived case-to-task mapping SHA-256 `43ce4be40bb5c1749dbbe21f6d8788dfd5c33bf72cea78936ec47011e72cf700`. It does not persist cases, prompt text or source medical inputs. Both source/output matrices, generator and selected manifest are SHA-bound in the script.
 
-The existing minimal-permission GitHub Actions V5 provenance workflow now also retrieves **only this pinned public blob** using HTTPS and SHA-256-verifies the download before replaying both full response matrices, without using credentials, GPU or any model. This is deterministic integrity verification, not a new scientific model execution.
+The existing minimal-permission GitHub Actions V5 provenance workflow now also retrieves **only this pinned public blob** using HTTPS and SHA-256-verifies the download before replaying both full response matrices, without using credentials, GPU or any model. The frozen public-rule evaluator requires `numpy` for its verified `np.exp` calculator; the CI runner explicitly installs `numpy==2.4.6` and `pytest==8.4.2` before running this check. This is deterministic integrity verification, not a new scientific model execution.
 
 ## Interpretation boundary
 
