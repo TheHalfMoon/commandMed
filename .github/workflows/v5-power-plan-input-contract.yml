@@ -1,0 +1,65 @@
+# Model-free protection of frozen V5 development power-planning constants.
+# This CI is a source-input contract check, not a statistical power certificate.
+name: V5 power planner input contract
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/v5-power-plan-input-contract.yml"
+      - "scripts/v5_power_margin_plan.py"
+      - "tests/reliability_v5/test_power_margin_plan.py"
+      - "docs/research/paper-rebuild-v2-2026-10-02/V5_POWER_PLANNER_INPUT_VALIDATION_HARDENING_2026-10-10.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v5-power-plan-contract-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Frozen-statistic input contract (mechanics only)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact PR head with no persistent credential
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Assert exact event head
+        shell: bash
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          echo "DEVELOPMENT_ONLY_PLANNING=YES"
+          echo "SCIENTIFIC_FAMILY_FREEZE=NO"
+          echo "QUALIFIED_POWER=NO"
+          echo "MODEL_LOAD_AND_GPU=NO"
+
+      - name: Compile local statistical source and synthetic tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q \
+            scripts/v5_power_margin_plan.py \
+            tests/reliability_v5/test_power_margin_plan.py
+
+      - name: Install pinned test runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check --no-cache-dir pytest==8.4.2
+
+      - name: Reject weakened frozen design, fake source hashes and Boolean variance
+        shell: bash
+        env:
+          PYTHONPATH: src
+        run: |
+          set -euo pipefail
+          python3 -m pytest -q tests/reliability_v5/test_power_margin_plan.py
