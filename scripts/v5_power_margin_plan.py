@@ -366,12 +366,20 @@ def main() -> int:
     args = parser.parse_args()
     spec = _load_strict_plan(args.spec)
     payload = build_plan(spec)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    # Evidence is append-only: an accidental --output pointing at the input,
+    # an existing scientific artifact, or a symlink must not overwrite bytes.
+    # Exclusive creation is atomic at the destination on macOS/Linux/Windows.
+    serialized = json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n"
+    try:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        with args.output.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(serialized)
+    except FileExistsError as exc:
+        raise PowerPlanContractError(
+            "OUTPUT_ALREADY_EXISTS: refusing to overwrite prior research evidence"
+        ) from exc
+    except OSError as exc:
+        raise PowerPlanContractError("OUTPUT_NOT_WRITABLE") from exc
     print(json.dumps({
         "status": "PASS_DEVELOPMENT_ONLY_INPUT_CONTRACT",
         "final_90_percent_power_qualified": False,

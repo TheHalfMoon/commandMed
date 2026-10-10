@@ -14,6 +14,12 @@ The CLI now loads all caller-supplied planning specifications with a strict JSON
 
 Real CLI subprocess negative tests (from an unrelated working directory with no `PYTHONPATH`) cover conflicting top-level Holm-family sizes, nested descriptive paired SD, nested hypothesis ID, Unicode-escaped equivalent duplicate names, `NaN`, `Infinity`, non-object roots and malformed JSON. The existing exact-head GitHub Actions V5 input-contract workflow includes the expanded focused test suite.
 
+## Non-overwrite protection for existing scientific evidence
+
+A separate Mac-only synthetic regression demonstrated that the original direct CLI allowed `--spec` and `--output` to reference the **same existing path**: it exited with `PASS_DEVELOPMENT_ONLY_INPUT_CONTRACT` while destroying its own input bytes. Any previously written development planning receipt or original evidence file could have been similarly overwritten by an unintended output path.
+
+The CLI now serializes its *unqualified* development-only result first, then creates its destination with exclusive file mode `x` rather than truncating an existing path. An already existing file, the input source itself, a symlink to evidence, or a second attempt to write the same output filename is rejected with `OUTPUT_ALREADY_EXISTS` and no success receipt. This is a **destination no-clobber guarantee**, not an atomic full-file transaction guarantee if the filesystem fails partway through a fresh write. Direct-subprocess regressions use temp files to verify preserved bytes, symlink preservation and repeat invocation, without touching any actual frozen evidence.
+
 ## Explicit boundaries
 
 - Strict JSON syntax **cannot** establish that a user-supplied hypothesis list is prospectively complete, that declared coupling tags are valid, or that an SHA-shaped evidence identifier identifies genuine qualified research evidence.
