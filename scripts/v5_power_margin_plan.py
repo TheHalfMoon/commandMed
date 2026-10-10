@@ -163,8 +163,15 @@ def _plan_metric(
                 alpha=planning_alpha,
                 power=power,
             )
-        except StatisticsContractError as exc:
-            raise PowerPlanContractError(str(exc)) from exc
+        except (StatisticsContractError, OverflowError) as exc:
+            raise PowerPlanContractError(
+                "paired_sd/meaningful_margin: finite input produced "
+                "an unrepresentable normal-approximation planning result"
+            ) from exc
+        if not math.isfinite(mde):
+            raise PowerPlanContractError(
+                "paired_sd: normal-approximation minimum effect must be finite"
+            )
 
     return {
         "domain_floor": floor,

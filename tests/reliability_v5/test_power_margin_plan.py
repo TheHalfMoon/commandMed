@@ -146,6 +146,7 @@ def test_plan_fails_closed_on_unfrozen_or_invalid_inputs(mutator, match) -> None
         (lambda s: s["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"].update(paired_sd=True), "JSON number"),
         (lambda s: s["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"].update(paired_sd="0.001"), "JSON number"),
         (lambda s: s["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"].update(paired_sd=10 ** 1000), "JSON number"),
+        (lambda s: s["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"].update(paired_sd=1e308), "unrepresentable"),
         (lambda s: s["metrics"]["canonical_nll"].update(domain_floor=True), "JSON number"),
         (lambda s: s["metrics"]["canonical_nll"].update(repeatability95="0"), "JSON number"),
         (lambda s: s["metrics"]["canonical_nll"].update(domain_floor_justification_sha256="x"), "SHA-256"),
@@ -266,3 +267,9 @@ def test_direct_cli_rejects_fake_family_nuisance_without_output(tmp_path: Path) 
     assert completed.returncode != 0
     assert "one hypothesis-specific" in completed.stderr
     assert not out.exists()
+
+def test_large_finite_nuisance_exposes_contract_error_not_overflow() -> None:
+    spec = _spec()
+    spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 1e308
+    with pytest.raises(plan.PowerPlanContractError, match="unrepresentable"):
+        plan.build_plan(spec)
