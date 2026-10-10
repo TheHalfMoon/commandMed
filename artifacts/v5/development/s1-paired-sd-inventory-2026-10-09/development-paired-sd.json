@@ -1,0 +1,636 @@
+{
+  "baseline_sha256": "4308392b831da1ac7d60f5f75e5eec6a011a685ccbd8c9252f77d593d0bf5dc9",
+  "calibration_and_training_excluded_from_sd": true,
+  "confirmatory": false,
+  "confirmatory_power_claim": false,
+  "delta_orientation": "candidate_metric_minus_unchanged_baseline_metric",
+  "intervention_results": {
+    "B1_11": {
+      "artifact_path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-11-decision-matrix.json",
+      "artifact_sha256": "24f6be4368723f403bcb5c017ea79934a17986d517c57411df2012ca6826baf0",
+      "intervention": "B1_TYPED_V1",
+      "seed": 11,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.04564949078990303,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 1.5604706967747475,
+            "mean_delta_raw_orientation": 0.44150742060646947,
+            "min_delta": -0.5643667967202775,
+            "paired_source_task_sample_sd": 0.6809635417332688,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 33.906177359593514,
+            "mean_delta_raw_orientation": 16.728810833401017,
+            "min_delta": -0.757599035317169,
+            "paired_source_task_sample_sd": 16.913526906811402,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 9.57011885716761e-67,
+            "mean_delta_raw_orientation": -0.0011929065899829092,
+            "min_delta": -0.011955515090201978,
+            "paired_source_task_sample_sd": 0.001576085624924554,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.05103768227223688,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 1.5604706967747475,
+            "mean_delta_raw_orientation": 0.45753694318235555,
+            "min_delta": -0.5643667967202775,
+            "paired_source_task_sample_sd": 0.6817620899869352,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 33.906177359593514,
+            "mean_delta_raw_orientation": 17.13381277305445,
+            "min_delta": -0.757599035317169,
+            "paired_source_task_sample_sd": 16.90355404821849,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 5.804570503966179e-67,
+            "mean_delta_raw_orientation": -0.0012071127534053192,
+            "min_delta": -0.011773360598332477,
+            "paired_source_task_sample_sd": 0.0015590836876537464,
+            "task_count": 3840
+          }
+        }
+      }
+    },
+    "B1_29": {
+      "artifact_path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-29-decision-matrix.json",
+      "artifact_sha256": "37d9604165562bda296fba163ea0e4bc152663baadcfdbccecdd4e9cdb35faaa",
+      "intervention": "B1_TYPED_V1",
+      "seed": 29,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.013541666666666667,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.9989960880748663,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 1.987085354408976,
+            "mean_delta_raw_orientation": 0.4144240872731361,
+            "min_delta": -1.6740875148941328,
+            "paired_source_task_sample_sd": 1.3423680684845563,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 34.45500615739771,
+            "mean_delta_raw_orientation": 16.2610982363866,
+            "min_delta": -2.4639394654749385,
+            "paired_source_task_sample_sd": 17.628429762541145,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 1.8941752281174937e-98,
+            "mean_delta_raw_orientation": -0.0011929065899829092,
+            "min_delta": -0.011955515090201978,
+            "paired_source_task_sample_sd": 0.001576085624924554,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0375,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.9981227495569474,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 1.9884910730477292,
+            "mean_delta_raw_orientation": 0.38253694318235554,
+            "min_delta": -1.6558615192742494,
+            "paired_source_task_sample_sd": 1.3413716999350427,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 34.45988666061813,
+            "mean_delta_raw_orientation": 15.838608658245303,
+            "min_delta": -2.4069128758600944,
+            "paired_source_task_sample_sd": 17.617371239287852,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 1.0775872960309831e-98,
+            "mean_delta_raw_orientation": -0.0012071127534053192,
+            "min_delta": -0.011773360598332477,
+            "paired_source_task_sample_sd": 0.0015590836876537464,
+            "task_count": 3840
+          }
+        }
+      }
+    },
+    "B1_47": {
+      "artifact_path": "artifacts/v5/development/s1-colab-resource-qualification/b1-complete-2026-10-04/b1-seed-47-decision-matrix.json",
+      "artifact_sha256": "9cacfb2e46cc4db7c628b40fc7e857e31635c40150e87ec71dcfdb8e00a73ee0",
+      "intervention": "B1_TYPED_V1",
+      "seed": 47,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.04564949078990303,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 1.5604706967747475,
+            "mean_delta_raw_orientation": 0.44150742060646947,
+            "min_delta": -0.5643667967202775,
+            "paired_source_task_sample_sd": 0.6809635417332688,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 33.906177359593514,
+            "mean_delta_raw_orientation": 16.728810833401017,
+            "min_delta": -0.757599035317169,
+            "paired_source_task_sample_sd": 16.913526906811402,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 3.073359399924031e-99,
+            "mean_delta_raw_orientation": -0.0011929065899829092,
+            "min_delta": -0.011955515090201978,
+            "paired_source_task_sample_sd": 0.001576085624924554,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.05103768227223688,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 1.5604706967747475,
+            "mean_delta_raw_orientation": 0.45753694318235555,
+            "min_delta": -0.5643667967202775,
+            "paired_source_task_sample_sd": 0.6817620899869352,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 33.906177359593514,
+            "mean_delta_raw_orientation": 17.13381277305445,
+            "min_delta": -0.757599035317169,
+            "paired_source_task_sample_sd": 16.90355404821849,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 2.5634874099705635e-99,
+            "mean_delta_raw_orientation": -0.0012071127534053192,
+            "min_delta": -0.011773360598332477,
+            "paired_source_task_sample_sd": 0.0015590836876537464,
+            "task_count": 3840
+          }
+        }
+      }
+    },
+    "C1_11": {
+      "artifact_path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-11-v4-2026-10-08/evidence/adapter-decision-matrix.json",
+      "artifact_sha256": "dd8daa62900043ea8aee1e3f26543d6c70632c1f4d54016675cb2954a62d4769",
+      "intervention": "C1_CRDI_V1",
+      "seed": 11,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.002864583333333333,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.13974308431098253,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.19255553307114703,
+            "mean_delta_raw_orientation": -0.03383745709027565,
+            "min_delta": -0.35986382891612045,
+            "paired_source_task_sample_sd": 0.11907580629432579,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.19334038456167457,
+            "mean_delta_raw_orientation": -0.03997805953903574,
+            "min_delta": -0.5002255115055372,
+            "paired_source_task_sample_sd": 0.13599166902715992,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.006323109149101582,
+            "mean_delta_raw_orientation": -8.890612907443458e-05,
+            "min_delta": -0.007584471838430279,
+            "paired_source_task_sample_sd": 0.001160656989884033,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.1369484723697091,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.19642244244120177,
+            "mean_delta_raw_orientation": -0.03562428311822003,
+            "min_delta": -0.293982052776526,
+            "paired_source_task_sample_sd": 0.11839556239668464,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.2038983570406503,
+            "mean_delta_raw_orientation": -0.042230409515244476,
+            "min_delta": -0.49297948073359654,
+            "paired_source_task_sample_sd": 0.13562373979744197,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.007608634054007246,
+            "mean_delta_raw_orientation": -6.481724229309947e-05,
+            "min_delta": -0.006826790986250306,
+            "paired_source_task_sample_sd": 0.0011428278367251752,
+            "task_count": 3840
+          }
+        }
+      }
+    },
+    "C1_29": {
+      "artifact_path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-29-v1-2026-10-08/evidence/adapter-decision-matrix.json",
+      "artifact_sha256": "37c022d535fffed59215a32eb25da0ffd85faa3d0d34b084a4c9173eb4053f28",
+      "intervention": "C1_CRDI_V1",
+      "seed": 29,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0026041666666666665,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.8066495524560556,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.5391885780739507,
+            "mean_delta_raw_orientation": -0.05847347656141426,
+            "min_delta": -0.6698542546244335,
+            "paired_source_task_sample_sd": 0.40125591364192076,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.5609315862360564,
+            "mean_delta_raw_orientation": -0.06732335401979703,
+            "min_delta": -1.1046063276037317,
+            "paired_source_task_sample_sd": 0.42743677423265,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.008855284057901374,
+            "mean_delta_raw_orientation": 1.9884117086192228e-05,
+            "min_delta": -0.006416866977265477,
+            "paired_source_task_sample_sd": 0.0012734437900963269,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.019270833333333334,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.8077144905133814,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.516685321862312,
+            "mean_delta_raw_orientation": -0.06846399753914564,
+            "min_delta": -0.6698542546244335,
+            "paired_source_task_sample_sd": 0.4004160043512207,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.5305774141366786,
+            "mean_delta_raw_orientation": -0.07816734636624217,
+            "min_delta": -1.0475797379888876,
+            "paired_source_task_sample_sd": 0.42710344903741737,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.00864792062217859,
+            "mean_delta_raw_orientation": 2.540431657398543e-05,
+            "min_delta": -0.007600079392661725,
+            "paired_source_task_sample_sd": 0.001265250139545107,
+            "task_count": 3840
+          }
+        }
+      }
+    },
+    "C1_47": {
+      "artifact_path": "artifacts/v5/development/s1-kaggle-adapters/c1-seed-47-v1-2026-10-08/evidence/adapter-decision-matrix.json",
+      "artifact_sha256": "565b83b42e4476f458466a1b6e7193891ee6b38e81823538383a7a028739a8a8",
+      "intervention": "C1_CRDI_V1",
+      "seed": 47,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0013020833333333333,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.06653225275976475,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.17752621862762114,
+            "mean_delta_raw_orientation": -0.02302059307995781,
+            "min_delta": -0.3706397698733215,
+            "paired_source_task_sample_sd": 0.0900057778073333,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.18906841376394373,
+            "mean_delta_raw_orientation": -0.02850244318823005,
+            "min_delta": -0.7111403250953825,
+            "paired_source_task_sample_sd": 0.11169996417957474,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.009890873380984787,
+            "mean_delta_raw_orientation": 0.0003362990790036817,
+            "min_delta": -0.010013778143060623,
+            "paired_source_task_sample_sd": 0.0016096714091009096,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": -0.00026041666666666666,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.05819132822622998,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.19642244244120177,
+            "mean_delta_raw_orientation": -0.025161784855332308,
+            "min_delta": -0.3706397698733215,
+            "paired_source_task_sample_sd": 0.0919869006526937,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.2038983570406503,
+            "mean_delta_raw_orientation": -0.031346826949133176,
+            "min_delta": -0.7497939073150992,
+            "paired_source_task_sample_sd": 0.11509845122444952,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.009331419836978577,
+            "mean_delta_raw_orientation": 0.00030776079872690235,
+            "min_delta": -0.009831623651191123,
+            "paired_source_task_sample_sd": 0.0016013933167382222,
+            "task_count": 3840
+          }
+        }
+      }
+    },
+    "C2_11": {
+      "artifact_path": "artifacts/v5/development/s1-kaggle-c2-adapters/c2-seed-11-v2-2026-10-09/evidence/adapter-decision-matrix.json",
+      "artifact_sha256": "9b320389a9aa16b22f8e8fc5e4699a20975deaebd7d3e1deab6372db4b163970",
+      "intervention": "C2_CRDI_RETAIN_V1",
+      "seed": 11,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.00026041666666666666,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.10079101007138244,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.18098796396707034,
+            "mean_delta_raw_orientation": -0.018885842186717083,
+            "min_delta": -0.2858227375372303,
+            "paired_source_task_sample_sd": 0.07606321139112197,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.18165961543832532,
+            "mean_delta_raw_orientation": -0.022493430248402828,
+            "min_delta": -0.3650580752304726,
+            "paired_source_task_sample_sd": 0.08621870137686419,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.009120323540441618,
+            "mean_delta_raw_orientation": -2.623242995836794e-05,
+            "min_delta": -0.007584471838430279,
+            "paired_source_task_sample_sd": 0.001207166053757415,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": -0.0010416666666666667,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.0994853039019062,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.1681590024140443,
+            "mean_delta_raw_orientation": -0.019839864164092672,
+            "min_delta": -0.22135377303726145,
+            "paired_source_task_sample_sd": 0.07577938693196312,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.17002391642010528,
+            "mean_delta_raw_orientation": -0.02374340880927646,
+            "min_delta": -0.2871509640834251,
+            "paired_source_task_sample_sd": 0.08604680373058383,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.008953046549649228,
+            "mean_delta_raw_orientation": -1.4436824493398018e-05,
+            "min_delta": -0.0075027197900484205,
+            "paired_source_task_sample_sd": 0.0011946247231131484,
+            "task_count": 3840
+          }
+        }
+      }
+    },
+    "C2_29": {
+      "artifact_path": "artifacts/v5/development/s1-kaggle-c2-adapters/c2-seed-29-v1-2026-10-09/evidence/adapter-decision-matrix.json",
+      "artifact_sha256": "33633cd0542863e913f38da0d6b1443f589da0433d95db330872c54aa2e9ebeb",
+      "intervention": "C2_CRDI_RETAIN_V1",
+      "seed": 29,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.00234375,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.741888304518861,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.516685321862312,
+            "mean_delta_raw_orientation": -0.060045393276461884,
+            "min_delta": -0.634348650844387,
+            "paired_source_task_sample_sd": 0.3736266314498486,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.5305774141366786,
+            "mean_delta_raw_orientation": -0.06892823893404372,
+            "min_delta": -1.0577893292266238,
+            "paired_source_task_sample_sd": 0.39921650266444775,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.009034074073966761,
+            "mean_delta_raw_orientation": 5.545291349656339e-05,
+            "min_delta": -0.008812360298424304,
+            "paired_source_task_sample_sd": 0.0012720997650370685,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": 0.0125,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.74790669058188,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.516685321862312,
+            "mean_delta_raw_orientation": -0.06844128144483554,
+            "min_delta": -0.6283957249683876,
+            "paired_source_task_sample_sd": 0.3723804676136071,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.5305774141366786,
+            "mean_delta_raw_orientation": -0.07815683653241842,
+            "min_delta": -1.025879032373383,
+            "paired_source_task_sample_sd": 0.39854238263238106,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.00831975507674296,
+            "mean_delta_raw_orientation": 4.3942259301281294e-05,
+            "min_delta": -0.007600079392661725,
+            "paired_source_task_sample_sd": 0.0012451153313204088,
+            "task_count": 3840
+          }
+        }
+      }
+    },
+    "C2_47": {
+      "artifact_path": "artifacts/v5/development/s1-kaggle-c2-adapters/c2-seed-47-v1-2026-10-09/evidence/adapter-decision-matrix.json",
+      "artifact_sha256": "51f74581c0e31252948d8f0c467fbf725a71c1618d0cc8b3190518c3f7b3b6f1",
+      "intervention": "C2_CRDI_RETAIN_V1",
+      "seed": 47,
+      "splits": {
+        "S1_CAL_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": -0.0005208333333333333,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.055906553068885485,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.22036697132877836,
+            "mean_delta_raw_orientation": -0.017196007437642023,
+            "min_delta": -0.2912669553464349,
+            "paired_source_task_sample_sd": 0.07992033107112116,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.2595610092417042,
+            "mean_delta_raw_orientation": -0.021650108083615303,
+            "min_delta": -0.5537153150368515,
+            "paired_source_task_sample_sd": 0.0975868204907611,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.00898308566767207,
+            "mean_delta_raw_orientation": 0.0004782171037292447,
+            "min_delta": -0.008799166473454969,
+            "paired_source_task_sample_sd": 0.0017319925871849859,
+            "task_count": 3840
+          }
+        },
+        "S1_DEV_EVAL": {
+          "canonical_accuracy": {
+            "max_delta": 1.0,
+            "mean_delta_raw_orientation": -0.0005208333333333333,
+            "min_delta": -1.0,
+            "paired_source_task_sample_sd": 0.060386353411913105,
+            "task_count": 3840
+          },
+          "canonical_brier": {
+            "max_delta": 0.22036697132877836,
+            "mean_delta_raw_orientation": -0.01810524168598592,
+            "min_delta": -0.2858227375372303,
+            "paired_source_task_sample_sd": 0.07944530471976274,
+            "task_count": 3840
+          },
+          "canonical_nll": {
+            "max_delta": 0.2595610092417042,
+            "mean_delta_raw_orientation": -0.022923895096810733,
+            "min_delta": -0.5454619235310882,
+            "paired_source_task_sample_sd": 0.09747790936694539,
+            "task_count": 3840
+          },
+          "semantic_js": {
+            "max_delta": 0.009331419836978577,
+            "mean_delta_raw_orientation": 0.000439580559066519,
+            "min_delta": -0.008330994086470827,
+            "paired_source_task_sample_sd": 0.001751758616376404,
+            "task_count": 3840
+          }
+        }
+      }
+    }
+  },
+  "primary_metrics": [
+    "canonical_accuracy",
+    "canonical_nll",
+    "canonical_brier",
+    "semantic_js"
+  ],
+  "primary_non_target_family_size": null,
+  "reserve": false,
+  "schema": "commandmed.v5.descriptive-development-paired-sd-inventory.v1",
+  "scope": "DEVELOPMENT_CALIBRATION_ONLY",
+  "source_task_cluster": "task_id",
+  "status": "EXPLORATORY_NUISANCE_NOT_FROZEN_POWER_INPUT",
+  "training_seed_uncertainty_not_included_in_paired_item_sd": true,
+  "variance_estimator": "sample_stddev_ddof_1_within_each_split_and_intervention_seed",
+  "verified_r1_reference_sha256": "600dbd236098b967558e96d5ddf7d4144903fad96b172ad2871ec02fb0f30a44"
+}
