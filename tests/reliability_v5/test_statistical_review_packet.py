@@ -79,7 +79,7 @@ def test_saved_packet_is_exact_fresh_deterministic_replay(tmp_path: Path) -> Non
     (lambda sd,icc: icc["all_development_cells"][0].update(seed=29,condition="B1_29"), "DUPLICATE_OR_UNKNOWN_ICC_CELL"),
     (lambda sd,icc: icc["all_development_cells"][0].update(calculator_count=63),
      "SOURCE_CASE_OR_CONDITION_DRIFT"),
-    (lambda sd,icc: icc["all_development_cells"][0].update(anovamom_rho_unclipped=0.2),
+    (lambda sd,icc: icc["all_development_cells"][0].update(rho_status="DESCRIPTIVE_NONNEGATIVE_ESTIMATE"),
      "ICC_SIGN_STATUS_DRIFT"),
     (lambda sd,icc: icc["three_seed_between_effect_spreads"][0].update(uncertainty_qualified=True),
      "SEED_UNCERTAINTY_PROMOTED"),
@@ -89,6 +89,16 @@ def test_saved_packet_is_exact_fresh_deterministic_replay(tmp_path: Path) -> Non
      "SEED_EFFECT_MISMATCH"),
     (lambda sd,icc: sd["intervention_results"]["B1_11"]["splits"]["S1_CAL_EVAL"]["canonical_accuracy"].update(paired_source_task_sample_sd=-0.1),
      "INVALID_PAIRED_SD"),
+    (lambda sd,icc: icc["all_development_cells"][0].update(between_calculator_ms=float("nan")),
+     "INVALID_ANOVA_COMPONENTS"),
+    (lambda sd,icc: icc["all_development_cells"][0].update(within_calculator_ms=0.0),
+     "ICC_MOMENT_RECONSTRUCTION_DRIFT"),
+    (lambda sd,icc: icc["all_development_cells"][0].update(
+        between_calculator_ms=icc["all_development_cells"][0]["between_calculator_ms"] * 2,
+        within_calculator_ms=icc["all_development_cells"][0]["within_calculator_ms"] * 2),
+     "ANOVA_SOURCE_CASE_SD_RECONSTRUCTION_DRIFT"),
+    (lambda sd,icc: sd["intervention_results"]["B1_11"]["splits"]["S1_CAL_EVAL"]["canonical_accuracy"].update(paired_source_task_sample_sd=0.5),
+     "ANOVA_SOURCE_CASE_SD_RECONSTRUCTION_DRIFT"),
 ])
 def test_fail_closed_on_missing_science_provenance_or_seed_alignment(mutate,expected) -> None:
     sd,icc=originals()

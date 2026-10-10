@@ -64,8 +64,18 @@ def create_packet(sd: dict[str, Any], icc: dict[str, Any]) -> dict[str, Any]:
                 and row.get("calculator_count") == 64
                 and row.get("source_cases_per_calculator") == 60,
                 "SOURCE_CASE_OR_CONDITION_DRIFT")
+        # Recalculate the ANOVA moment ICC independently of the saved rho
+        # field; retaining negative sampling estimates is intentional.
+        between_ms, within_ms = row.get("between_calculator_ms"), row.get("within_calculator_ms")
+        require(type(between_ms) is float and math.isfinite(between_ms) and between_ms >= 0
+                and type(within_ms) is float and math.isfinite(within_ms) and within_ms >= 0,
+                "INVALID_ANOVA_COMPONENTS")
+        denominator = between_ms + (60 - 1) * within_ms
+        require(math.isfinite(denominator) and denominator > 0, "INVALID_ANOVA_COMPONENTS")
         rho = row.get("anovamom_rho_unclipped")
         require(type(rho) is float and math.isfinite(rho), "INVALID_ICC_VALUE")
+        require(exact_float((between_ms - within_ms) / denominator, rho),
+                "ICC_MOMENT_RECONSTRUCTION_DRIFT")
         require(row.get("rho_status") == (
                 "NEGATIVE_FINITE_SAMPLE_ESTIMATE" if rho < 0
                 else "DESCRIPTIVE_NONNEGATIVE_ESTIMATE"), "ICC_SIGN_STATUS_DRIFT")
@@ -103,6 +113,15 @@ def create_packet(sd: dict[str, Any], icc: dict[str, Any]) -> dict[str, Any]:
                     and math.isfinite(cell["paired_source_task_sample_sd"])
                     and cell["paired_source_task_sample_sd"] >= 0,
                     "INVALID_PAIRED_SD")
+            # Independent sample-SD reconstruction from the original K=64,
+            # m=60 ANOVA mean-square components; source cases remain the unit.
+            between_ms = icc_row["between_calculator_ms"]
+            within_ms = icc_row["within_calculator_ms"]
+            sample_variance = ((64 - 1) * between_ms + 64 * (60 - 1) * within_ms) / (3840 - 1)
+            require(math.isfinite(sample_variance) and sample_variance >= 0
+                    and exact_float(math.sqrt(sample_variance),
+                                    cell["paired_source_task_sample_sd"]),
+                    "ANOVA_SOURCE_CASE_SD_RECONSTRUCTION_DRIFT")
             examples.append({
                 "seed": seed,
                 "paired_delta_mean_raw_metric_orientation": cell["mean_delta_raw_orientation"],
