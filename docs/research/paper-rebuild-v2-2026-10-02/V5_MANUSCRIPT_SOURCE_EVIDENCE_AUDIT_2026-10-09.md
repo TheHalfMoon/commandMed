@@ -26,3 +26,9 @@ The model-free frozen-entry manifest is checked on each run: all **307** origina
 The four research-scale margins are study-defined nonclinical effect scales; the three trained seeds' within-source-task paired SDs are **descriptive** and do not substitute for a reviewed source-and-training-seed variance model. The primary hard-gate non-target hypothesis family and its count remain unfrozen, so the fixed 4,096-source-cluster design cannot be declared to meet 90% power. No V5-C01–V5-C07 empirical claim is promoted by this guard.
 
 Repository branch/PR work is DCO-signed off only until GitHub independently verifies cryptographic signatures. Genuine zero-cost Alibaba OCR delegation eligibility and a host audit must not be represented as independent model or methodological review. No PHI, paid APIs/compute, new scientific inference or altered frozen source was used to build this offline qualification utility.
+
+## 2026-10-10 calculator-ICC source-binding extension (development only)
+
+The updated manuscript crosswalk references the new 72-cell source-bound calculator-effect ICC inventory from draft #323. The audit now requires the exact original artifact SHA-256 `37d64c0f6ac14d04cc6420a020e7bb7997fb333e50729f33798b2d403d292370`; it fails closed if that artifact is absent, overwritten, re-labeled, misses any expected intervention/seed/split/metric cell, erases its 12 negative finite-sample ICC values, loses the pre-existing paired-SD source hash, or escalates a scientific approval flag. This brings the total number of separately locked development text/JSON sources to nine plus two original Kaggle ZIP exports and the independently pinned 307-entry frozen manifest.
+
+The source-based ICCs are descriptive only. No population correlation, confirmatory power, Holm-family review, clinical validation, external peer review, or paper/compute authority follows from this integrity extension. The originally frozen scientific files are unchanged.

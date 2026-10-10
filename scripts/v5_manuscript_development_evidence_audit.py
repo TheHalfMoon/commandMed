@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+from statistics import median
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +31,7 @@ LOCKED_SOURCES: dict[str, tuple[str, str]] = {
     "margins": (RUNS + "final-development-benchmark-margins-2026-10-09.json", "361ad34e0c2deb0ca7646cfb9dd9346bb63471296a003e9ef12a858743f6917f"),
     "floors": (DEV + "domain-floor-freeze-2026-10-09/domain-floors.json", "8c284a98f504c8529a4da5d9bb1e265465af66b10d0c3b0414505dcebc9c7ca7"),
     "sd_inventory": (DEV + "s1-paired-sd-inventory-2026-10-09/development-paired-sd.json", "b1edf781b61d3f5ce227c08908ca43ad9864c0b398a7318c33895951af37bacd"),
+    "icc_inventory": (DEV + "s1-calculator-icc-inventory-2026-10-10/development-calculator-icc.json", "37d64c0f6ac14d04cc6420a020e7bb7997fb333e50729f33798b2d403d292370"),
     "synthesis": (DEV + "s1-development-synthesis-2026-10-09/final-synthesis.json", "76b7f7503a743991fd81f4e1758d5710cc646a0a665c1e3e2128d1e533ea2e82"),
     "crosswalk": (DOC + "V5_MANUSCRIPT_DEVELOPMENT_RESULTS_CROSSWALK_2026-10-09.md", "7ff52c5b616543c7d85a44e6ecbf9b982a95b2a58531cc17a66e002367d04c41"),
 }
@@ -125,6 +127,47 @@ def assert_development_semantics(records: dict[str, Any]) -> dict[str, Any]:
                 _check(cell["task_count"] == 3840 and _finite_number(cell["paired_source_task_sample_sd"]) and cell["paired_source_task_sample_sd"] >= 0, "INVALID_SD_CELL")
                 cells += 1
     _check(cells == 72, "INCOMPLETE_72_CELL_INVENTORY")
+    # The dated manuscript crosswalk cites calculator ICC evidence in parent
+    # draft #323. Its original bytes must be present, not merely linked as text.
+    icc = records["icc_inventory"]
+    _check(icc.get("status") == "DEVELOPMENT_ONLY_CALCULATOR_ANOVAMOM_SENSITIVITY_NOT_POWER"
+           and icc.get("source") == "ORIGINAL_PINNED_DEVELOPMENT_MATRIX_SHA256", "ICC_UNQUALIFIED_SOURCE_DRIFT")
+    _check(icc.get("reference_sd_sha256") == LOCKED_SOURCES["sd_inventory"][1], "ICC_SD_PROVENANCE_DRIFT")
+    _check(icc.get("reference_sd_cells_reproduced") == 72 and icc.get("n_missing_icc") == 0,
+           "ICC_REPLAY_INCOMPLETE")
+    bounds = icc.get("boundaries")
+    _check(isinstance(bounds, dict) and bounds.get("source_cases_per_split") == 3840
+           and bounds.get("frozen_confirmatory_source_case_count") == 4096,
+           "ICC_DESIGN_BOUNDARY_DRIFT")
+    for key in ("calculator_effect_icc_confirmatory_qualified", "calculator_sampling_generalization_qualified",
+                "confirmatory_authorized", "final_90_percent_power_qualified",
+                "primary_holm_family_independently_reviewed", "source_case_seed_crossed_variance_qualified"):
+        _check(bounds.get(key) is False, "ICC_AUTHORITY_ESCALATION:" + key)
+    icc_cells = icc.get("all_development_cells")
+    _check(isinstance(icc_cells, list) and len(icc_cells) == 72, "ICC_CELL_COUNT_DRIFT")
+    expected_keys = {(f"{condition}_{seed}", split, metric)
+                     for condition in ("B1", "C1", "C2") for seed in (11, 29, 47)
+                     for split in SPLITS for metric in METRICS}
+    observed_keys = set()
+    rho_values = []
+    for cell in icc_cells:
+        _check(isinstance(cell, dict), "INVALID_ICC_CELL")
+        key = (cell.get("condition"), cell.get("split"), cell.get("metric"))
+        _check(key in expected_keys and key not in observed_keys, "ICC_CELL_MEMBERSHIP_DRIFT")
+        observed_keys.add(key)
+        rho = cell.get("anovamom_rho_unclipped")
+        _check(_finite_number(rho) and cell.get("calculator_count") == 64
+               and cell.get("source_cases_per_calculator") == 60,
+               "INVALID_ICC_CELL")
+        rho_values.append(rho)
+    _check(observed_keys == expected_keys, "ICC_CELL_SET_DRIFT")
+    _check(sum(x < 0 for x in rho_values) == icc.get("n_negative_icc") == 12
+           and sum(x >= 0 for x in rho_values) == icc.get("n_nonnegative_icc") == 60,
+           "ICC_NEGATIVE_ESTIMATES_ERASED")
+    _check(all(math.isclose(actual, icc.get(name), rel_tol=1e-12, abs_tol=1e-12)
+               for actual, name in ((min(rho_values), "rho_min"),
+                                    (median(rho_values), "rho_median"),
+                                    (max(rho_values), "rho_max"))), "ICC_SUMMARY_DRIFT")
     _check(synthesis.get("confirmatory") is False and synthesis.get("reserve") is False, "SYNTHESIS_SCOPE_ESCALATION")
     _check(synthesis.get("claim_promotion") in (False, "NONE"), "UNAUTHORIZED_CLAIM_PROMOTION")
     return {
@@ -133,6 +176,7 @@ def assert_development_semantics(records: dict[str, Any]) -> dict[str, Any]:
         "ordered_rows_per_run": 16384,
         "paired_source_eval_tasks": 7680,
         "descriptive_sd_cells": cells,
+        "descriptive_calculator_icc_cells": len(icc_cells),
         "frozen_primary_metrics": len(METRICS),
         "repeatability95_all_seven_zero": True,
         "clinical_validity": False,

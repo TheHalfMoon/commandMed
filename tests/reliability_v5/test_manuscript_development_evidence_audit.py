@@ -24,6 +24,7 @@ def test_real_immutable_evidence_and_all_307_frozen_entries() -> None:
     result = audit.audit()
     assert result["status"] == "PASS_DEVELOPMENT_ONLY_EVIDENCE_ADMISSION"
     assert result["descriptive_sd_cells"] == 72
+    assert result["descriptive_calculator_icc_cells"] == 72
     assert result["frozen_source_files_verified"] == 307
     assert result["confirmatory"] is False
     assert result["independent_peer_review"] is False
@@ -81,3 +82,34 @@ def test_frozen_307_entry_manifest_is_itself_cryptographically_pinned(tmp_path: 
     path.write_text(json.dumps(original) + "\n", encoding="utf-8")
     with pytest.raises(audit.ManuscriptEvidenceAuditError, match="SOURCE_SHA256_MISMATCH"):
         audit._locked_file(tmp_path, audit.FROZEN_BINDINGS_RELATIVE, audit.FROZEN_BINDINGS_SHA256)
+
+
+def test_original_calculator_icc_is_sha_bound_and_present(tmp_path: Path) -> None:
+    relative, expected = audit.LOCKED_SOURCES["icc_inventory"]
+    assert audit._digest(audit.ROOT / relative) == expected
+    with pytest.raises(audit.ManuscriptEvidenceAuditError, match="MISSING_LOCKED_SOURCE"):
+        audit._locked_file(tmp_path, relative, expected)
+    tampered = tmp_path / relative
+    tampered.parent.mkdir(parents=True)
+    tampered.write_bytes((audit.ROOT / relative).read_bytes() + b"\n")
+    with pytest.raises(audit.ManuscriptEvidenceAuditError, match="SOURCE_SHA256_MISMATCH"):
+        audit._locked_file(tmp_path, relative, expected)
+
+
+def test_calculator_icc_provenance_negative_cells_and_authority_fail_closed() -> None:
+    records = _records()
+    records["icc_inventory"]["boundaries"]["final_90_percent_power_qualified"] = True
+    with pytest.raises(audit.ManuscriptEvidenceAuditError, match="ICC_AUTHORITY_ESCALATION"):
+        audit.assert_development_semantics(records)
+    records = _records()
+    records["icc_inventory"]["reference_sd_sha256"] = "0" * 64
+    with pytest.raises(audit.ManuscriptEvidenceAuditError, match="ICC_SD_PROVENANCE_DRIFT"):
+        audit.assert_development_semantics(records)
+    records = _records()
+    records["icc_inventory"]["all_development_cells"][0]["anovamom_rho_unclipped"] = 0.0
+    with pytest.raises(audit.ManuscriptEvidenceAuditError, match="ICC_NEGATIVE_ESTIMATES_ERASED"):
+        audit.assert_development_semantics(records)
+    records = _records()
+    records["icc_inventory"]["all_development_cells"][1]["condition"] = "B1_29"
+    with pytest.raises(audit.ManuscriptEvidenceAuditError, match="ICC_CELL_MEMBERSHIP_DRIFT"):
+        audit.assert_development_semantics(records)
