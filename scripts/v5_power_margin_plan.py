@@ -13,7 +13,12 @@ import json
 import math
 import re
 from pathlib import Path
+import sys
 from typing import Any
+
+# Direct CLI execution must find the repository module from outside scripts/.
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from src.commandmed.reliability_v5.statistics import (
     StatisticsContractError,
@@ -203,33 +208,84 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
     if type(planned_clusters) is not int or planned_clusters != 4096:
         raise PowerPlanContractError("planned_clusters: current frozen V5 plan is exactly 4096")
 
+    # Metric-level margins are shared, but training-run/source-case variance
+    # is intervention/hypothesis-specific. Never infer cell power from an
+    # arbitrary pooled or favorable metric-level paired_sd.
     result_metrics: dict[str, Any] = {}
+    expected_metric_fields = {
+        "domain_floor", "repeatability95",
+        "domain_floor_justification_sha256", "repeatability_evidence_sha256",
+    }
     for name in sorted(metrics):
         row = metrics[name]
         if not isinstance(name, str) or not name.strip() or not isinstance(row, dict):
             raise PowerPlanContractError("metrics: invalid metric entry")
-        _require_sha256(row.get("domain_floor_justification_sha256"),
+        if set(row) != expected_metric_fields:
+            raise PowerPlanContractError(
+                f"metrics.{name}: margins must not supply metric-level paired_sd"
+            )
+        floor = _finite_positive(row["domain_floor"], f"metrics.{name}.domain_floor")
+        repeat = _finite_nonnegative(row["repeatability95"], f"metrics.{name}.repeatability95")
+        _require_sha256(row["domain_floor_justification_sha256"],
                         f"metrics.{name}.domain_floor_justification_sha256: frozen justification")
-        _require_sha256(row.get("repeatability_evidence_sha256"),
+        _require_sha256(row["repeatability_evidence_sha256"],
                         f"metrics.{name}.repeatability_evidence_sha256: repeatability evidence")
-        _require_sha256(row.get("paired_sd_evidence_sha256"),
-                        f"metrics.{name}.paired_sd_evidence_sha256: nuisance evidence")
         result_metrics[name] = {
+            "domain_floor": floor,
+            "repeatability95": repeat,
+            "meaningful_margin": max(floor, 2.0 * repeat),
+            "domain_floor_justification_sha256": row["domain_floor_justification_sha256"],
+            "repeatability_evidence_sha256": row["repeatability_evidence_sha256"],
+        }
+
+    nuisance = spec.get("paired_nuisance_by_hypothesis")
+    ids = {row["hypothesis_id"] for row in spec["primary_non_target_hypotheses"]}
+    if not isinstance(nuisance, dict) or set(nuisance) != ids:
+        raise PowerPlanContractError(
+            "paired_nuisance_by_hypothesis: one hypothesis-specific "
+            "descriptive nuisance record required for every declared "
+            "hypothesis, with no extras"
+        )
+    result_hypotheses: dict[str, Any] = {}
+    for row in spec["primary_non_target_hypotheses"]:
+        hypothesis_id = row["hypothesis_id"]
+        metric_name = row["non_target_metric"]
+        metric = metrics[metric_name]
+        record = nuisance[hypothesis_id]
+        if not isinstance(record, dict) or set(record) != {
+            "paired_sd", "paired_sd_evidence_sha256", "nuisance_scope"
+        }:
+            raise PowerPlanContractError(
+                f"paired_nuisance_by_hypothesis.{hypothesis_id}: exact nuisance fields required"
+            )
+        if record["nuisance_scope"] != "UNQUALIFIED_DEVELOPMENT_DESCRIPTIVE":
+            raise PowerPlanContractError(
+                f"paired_nuisance_by_hypothesis.{hypothesis_id}: unqualified development scope required"
+            )
+        _require_sha256(
+            record["paired_sd_evidence_sha256"],
+            f"paired_nuisance_by_hypothesis.{hypothesis_id}.paired_sd_evidence_sha256: nuisance evidence",
+        )
+        result_hypotheses[hypothesis_id] = {
+            "intervention": row["intervention"],
+            "target_property": row["target_property"],
+            "non_target_metric": metric_name,
+            "coupling_tag": row["coupling_tag"],
+            "inferential_unit": row["inferential_unit"],
+            "nuisance_scope": "UNQUALIFIED_DEVELOPMENT_DESCRIPTIVE",
             **_plan_metric(
-                domain_floor=row.get("domain_floor"),
-                repeatability95=row.get("repeatability95"),
-                paired_sd=row.get("paired_sd"),
+                domain_floor=metric["domain_floor"],
+                repeatability95=metric["repeatability95"],
+                paired_sd=record["paired_sd"],
                 planned_clusters=planned_clusters,
                 planning_alpha=planning_alpha,
                 desired_power=desired_power,
             ),
-            "domain_floor_justification_sha256": row["domain_floor_justification_sha256"],
-            "repeatability_evidence_sha256": row["repeatability_evidence_sha256"],
-            "paired_sd_evidence_sha256": row["paired_sd_evidence_sha256"],
+            "paired_sd_evidence_sha256": record["paired_sd_evidence_sha256"],
         }
 
     return {
-        "schema": "commandmed.v5.power-margin-plan.v1",
+        "schema": "commandmed.v5.power-margin-plan.v2",
         "scope": "DEVELOPMENT_ONLY_POWER_PLANNING",
         "confirmatory": False,
         "reserve": False,
@@ -243,9 +299,10 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
         "planned_clusters": planned_clusters,
         "margin_rule": "MAX_DOMAIN_FLOOR_2X_REPEATABILITY95",
         "metrics": result_metrics,
-        "all_metrics_meet_normal_approx_target": all(
+        "hypothesis_plans": result_hypotheses,
+        "all_declared_hypotheses_meet_illustrative_normal_approx_target": all(
             row["planned_clusters_meet_normal_approx_target"]
-            for row in result_metrics.values()
+            for row in result_hypotheses.values()
         ),
         "family_membership_frozen_and_independently_reviewed": False,
         "source_case_seed_nuisance_qualified": False,
@@ -255,6 +312,8 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
             "Normal-approximation development planning only. Family membership "
             "and multiplicity count derive from a caller-supplied, unreviewed "
             "hypothesis list, not independently qualified prospective science. "
+            "Each declared hypothesis has its own unqualified descriptive paired "
+            "SD; a shared metric SD cannot stand in for an intervention cell. "
             "Holm uses first-step alpha/family_size. This is not final power "
             "or authorization for confirmatory access."
         ),
@@ -274,7 +333,11 @@ def main() -> int:
         encoding="utf-8",
         newline="\n",
     )
-    print(json.dumps({"status": "PASS_POWER_MARGIN_PLAN", "output": str(args.output)}, sort_keys=True))
+    print(json.dumps({
+        "status": "PASS_DEVELOPMENT_ONLY_INPUT_CONTRACT",
+        "final_90_percent_power_qualified": False,
+        "output": str(args.output),
+    }, sort_keys=True))
     return 0
 
 
