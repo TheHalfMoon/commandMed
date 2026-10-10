@@ -416,6 +416,20 @@ def test_direct_cli_rejects_ambiguous_or_nonstandard_json_at_all_depths(
     assert not output.exists()
 
 
+@pytest.mark.parametrize("malformed", [
+    '{"planned_clusters": ' + '9' * 6000 + '}',
+    '{"nested":' + '[' * 10000 + '0' + ']' * 10000 + '}',
+])
+def test_cli_rejects_oversized_or_deeply_nested_json_as_contract_error(
+    tmp_path: Path, malformed: str,
+) -> None:
+    completed, output = _run_unambiguous_input_cli(tmp_path, malformed)
+    assert completed.returncode != 0
+    assert "PowerPlanContractError: INVALID_POWER_PLAN_JSON" in completed.stderr
+    assert "Traceback" in completed.stderr  # CLI is developer-facing, not a silent success.
+    assert not output.exists()
+
+
 def test_direct_cli_accepts_single_key_equivalent_unicode_json(
     tmp_path: Path,
 ) -> None:

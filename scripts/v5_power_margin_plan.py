@@ -376,7 +376,12 @@ def _load_strict_plan(path: Path) -> dict[str, Any]:
             object_pairs_hook=_strict_json_object,
             parse_constant=_reject_json_constant,
         )
-    except (UnicodeError, OSError, json.JSONDecodeError) as exc:
+    except PowerPlanContractError:
+        # Preserve precise ambiguity and nonstandard-constant rejections.
+        raise
+    except (UnicodeError, OSError, ValueError, RecursionError) as exc:
+        # json.loads can raise ValueError for Python's oversized integer guard
+        # and RecursionError for adversarial nesting, not just JSONDecodeError.
         raise PowerPlanContractError("INVALID_POWER_PLAN_JSON") from exc
     if not isinstance(payload, dict):
         raise PowerPlanContractError("POWER_PLAN_ROOT_MUST_BE_OBJECT")
