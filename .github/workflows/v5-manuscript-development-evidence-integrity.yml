@@ -7,6 +7,9 @@ on:
     paths:
       - ".github/workflows/v5-manuscript-development-evidence-integrity.yml"
       - "scripts/v5_manuscript_development_evidence_audit.py"
+      - "scripts/v5_s1_statistical_review_packet.py"
+      - "tests/reliability_v5/test_statistical_review_packet.py"
+      - "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DESCRIPTIVE_STATISTICAL_REVIEW_PACKET_2026-10-10.md"
       - "scripts/v5_s1_source_case_pairing_audit.py"
       - "scripts/v5_s1_development_calculator_icc_inventory.py"
       - "tests/reliability_v5/test_development_calculator_icc_inventory.py"
@@ -59,11 +62,14 @@ jobs:
           set -euo pipefail
           python3 -m compileall -q \
             scripts/v5_manuscript_development_evidence_audit.py \
+            scripts/v5_s1_statistical_review_packet.py \
+            tests/reliability_v5/test_statistical_review_packet.py \
             scripts/v5_s1_source_case_pairing_audit.py \
             scripts/v5_s1_development_calculator_icc_inventory.py \
             tests/reliability_v5/test_manuscript_development_evidence_audit.py \
             tests/reliability_v5/test_source_case_pairing_audit.py \
-            tests/reliability_v5/test_development_calculator_icc_inventory.py
+            tests/reliability_v5/test_development_calculator_icc_inventory.py \
+            tests/reliability_v5/test_statistical_review_packet.py
 
       - name: Reverify source hashes, R1 and R2 archives, and 307 frozen files
         shell: bash
@@ -129,6 +135,17 @@ jobs:
           print('PASS_72_ORIGINAL_DEVELOPMENT_CALCULATOR_ICC_CELLS_NOT_POWER')
           PYCODE
 
+      - name: Replay exact source-bound statistical review packet without modifying evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/v5_s1_statistical_review_packet.py --verify \
+            artifacts/v5/development/s1-statistical-review-packet-2026-10-10/reviewer-packet.json
+          python3 scripts/v5_s1_statistical_review_packet.py --output \
+            "$RUNNER_TEMP/v5-statistical-review-packet-replay.json"
+          cmp artifacts/v5/development/s1-statistical-review-packet-2026-10-10/reviewer-packet.json \
+            "$RUNNER_TEMP/v5-statistical-review-packet-replay.json"
+
       - name: Fail-closed regression tests
         shell: bash
         env:
@@ -138,4 +155,5 @@ jobs:
           python3 -m pytest -q \
             tests/reliability_v5/test_manuscript_development_evidence_audit.py \
             tests/reliability_v5/test_source_case_pairing_audit.py \
-            tests/reliability_v5/test_development_calculator_icc_inventory.py
+            tests/reliability_v5/test_development_calculator_icc_inventory.py \
+            tests/reliability_v5/test_statistical_review_packet.py
