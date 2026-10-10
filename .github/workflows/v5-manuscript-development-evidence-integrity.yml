@@ -8,6 +8,9 @@ on:
       - ".github/workflows/v5-manuscript-development-evidence-integrity.yml"
       - "scripts/v5_manuscript_development_evidence_audit.py"
       - "scripts/v5_s1_source_case_pairing_audit.py"
+      - "scripts/v5_s1_development_calculator_icc_inventory.py"
+      - "tests/reliability_v5/test_development_calculator_icc_inventory.py"
+      - "docs/research/paper-rebuild-v2-2026-10-02/V5_S1_DEVELOPMENT_CALCULATOR_EFFECT_ICC_INVENTORY_2026-10-10.md"
       - "tests/reliability_v5/test_source_case_pairing_audit.py"
       - "tests/reliability_v5/test_manuscript_development_evidence_audit.py"
       - "docs/research/paper-rebuild-v2-2026-10-02/V5_MANUSCRIPT_SOURCE_EVIDENCE_AUDIT_2026-10-09.md"
@@ -57,8 +60,10 @@ jobs:
           python3 -m compileall -q \
             scripts/v5_manuscript_development_evidence_audit.py \
             scripts/v5_s1_source_case_pairing_audit.py \
+            scripts/v5_s1_development_calculator_icc_inventory.py \
             tests/reliability_v5/test_manuscript_development_evidence_audit.py \
-            tests/reliability_v5/test_source_case_pairing_audit.py
+            tests/reliability_v5/test_source_case_pairing_audit.py \
+            tests/reliability_v5/test_development_calculator_icc_inventory.py
 
       - name: Reverify source hashes, R1 and R2 archives, and 307 frozen files
         shell: bash
@@ -93,6 +98,37 @@ jobs:
           python3 scripts/v5_s1_source_case_pairing_audit.py \
             --riskcalcs-source "$RUNNER_TEMP/v5-riskcalcs-pinned.json"
 
+      - name: Replay original development calculator ICC without replacing evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/v5_s1_development_calculator_icc_inventory.py \
+            --output "$RUNNER_TEMP/v5-original-icc-replay.json"
+          python3 - "$RUNNER_TEMP/v5-original-icc-replay.json" <<'PYCODE'
+          import json, math, sys
+          from pathlib import Path
+          saved = json.loads(Path('artifacts/v5/development/s1-calculator-icc-inventory-2026-10-10/development-calculator-icc.json').read_text())
+          replay = json.loads(Path(sys.argv[1]).read_text())
+          def same(a, b, label='$'):
+              if type(a) is dict:
+                  assert type(b) is dict and a.keys() == b.keys(), label
+                  for k in a: same(a[k], b[k], f'{label}.{k}')
+              elif type(a) is list:
+                  assert type(b) is list and len(a) == len(b), label
+                  for i, (x, y) in enumerate(zip(a, b)): same(x, y, f'{label}[{i}]')
+              elif type(a) is float:
+                  assert type(b) is float and math.isfinite(b), label
+                  assert math.isclose(a, b, rel_tol=1e-10, abs_tol=1e-10), label
+              else:
+                  assert type(a) is type(b) and a == b, label
+          same(saved, replay)
+          assert replay['rows'] == replay['reference_sd_cells_reproduced'] == 72
+          assert replay['n_negative_icc'] == 12
+          assert replay['boundaries']['final_90_percent_power_qualified'] is False
+          assert replay['boundaries']['confirmatory_authorized'] is False
+          print('PASS_72_ORIGINAL_DEVELOPMENT_CALCULATOR_ICC_CELLS_NOT_POWER')
+          PYCODE
+
       - name: Fail-closed regression tests
         shell: bash
         env:
@@ -101,4 +137,5 @@ jobs:
           set -euo pipefail
           python3 -m pytest -q \
             tests/reliability_v5/test_manuscript_development_evidence_audit.py \
-            tests/reliability_v5/test_source_case_pairing_audit.py
+            tests/reliability_v5/test_source_case_pairing_audit.py \
+            tests/reliability_v5/test_development_calculator_icc_inventory.py
