@@ -22,7 +22,7 @@ FROZEN_BINDINGS_RELATIVE = DOC + "V5_S1_KAGGLE_RUNTIME_AMENDMENT_BINDINGS_2026-1
 FROZEN_BINDINGS_SHA256 = "c33e603e531b5f3957a0fbe5fa63d45f070e21e2243b268af232516990dd428f"
 
 # The immutable receipts, scientific metrics, frozen floor and reporting text are
-# locked at the exact evidence state qualified on 2026-10-09.
+# locked to the 2026-10-09 evidence state plus the 2026-10-10 dated ICC crosswalk update.
 LOCKED_SOURCES: dict[str, tuple[str, str]] = {
     "r1_receipt": (RUNS + "repeat-1-v1-2026-10-09/export-verification-receipt.json", "b445406380ea967ce8bb8bc7a61efe1cd48ade50e03f6c0eabba6e559d58eb53"),
     "r2_receipt": (RUNS + "repeat-2-v1-2026-10-09/export-verification-receipt.json", "f55e1b0271918538c16d347a1e91b0aeeece47acb84aa4314f3cc3169e45b4a2"),
@@ -31,7 +31,7 @@ LOCKED_SOURCES: dict[str, tuple[str, str]] = {
     "floors": (DEV + "domain-floor-freeze-2026-10-09/domain-floors.json", "8c284a98f504c8529a4da5d9bb1e265465af66b10d0c3b0414505dcebc9c7ca7"),
     "sd_inventory": (DEV + "s1-paired-sd-inventory-2026-10-09/development-paired-sd.json", "b1edf781b61d3f5ce227c08908ca43ad9864c0b398a7318c33895951af37bacd"),
     "synthesis": (DEV + "s1-development-synthesis-2026-10-09/final-synthesis.json", "76b7f7503a743991fd81f4e1758d5710cc646a0a665c1e3e2128d1e533ea2e82"),
-    "crosswalk": (DOC + "V5_MANUSCRIPT_DEVELOPMENT_RESULTS_CROSSWALK_2026-10-09.md", "cc70f46824269712135678de7a182da45a459f10bfc1aa19e4d65e4c9b4665ae"),
+    "crosswalk": (DOC + "V5_MANUSCRIPT_DEVELOPMENT_RESULTS_CROSSWALK_2026-10-09.md", "7ff52c5b616543c7d85a44e6ecbf9b982a95b2a58531cc17a66e002367d04c41"),
 }
 ORIGINAL_ARCHIVES = {
     1: (RUNS + "repeat-1-v1-2026-10-09/original-export.zip", "dfb35b0216369bbb87bcec75c5715df974bb9f736c0db0af98148cea91d99dac"),
