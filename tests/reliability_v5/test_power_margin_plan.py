@@ -274,6 +274,30 @@ def test_large_finite_nuisance_exposes_contract_error_not_overflow() -> None:
     with pytest.raises(plan.PowerPlanContractError, match="unrepresentable"):
         plan.build_plan(spec)
 
+
+
+def test_positive_subnormal_nuisance_cannot_report_exact_zero_mde() -> None:
+    spec = _spec()
+    spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 5e-324
+    with pytest.raises(plan.PowerPlanContractError, match="underflowed to a zero MDE"):
+        plan.build_plan(spec)
+
+
+def test_subnormal_nuisance_cli_never_creates_false_zero_power_evidence(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 5e-324
+    source = tmp_path / "subnormal-development-only-input.json"
+    result = tmp_path / "must-not-exist-power-plan.json"
+    source.write_text(json.dumps(spec), encoding="utf-8")
+    script = Path(__file__).resolve().parents[2] / "scripts" / "v5_power_margin_plan.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--spec", str(source), "--output", str(result)],
+        cwd=tmp_path, capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"},
+    )
+    assert completed.returncode != 0
+    assert "underflowed to a zero MDE" in completed.stderr
+    assert not result.exists()
+
 def _run_unambiguous_input_cli(
     tmp_path: Path, raw_json: str
 ) -> tuple[subprocess.CompletedProcess[str], Path]:

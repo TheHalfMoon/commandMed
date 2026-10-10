@@ -168,6 +168,13 @@ def _plan_metric(
                 "paired_sd/meaningful_margin: finite input produced "
                 "an unrepresentable normal-approximation planning result"
             ) from exc
+        # A strictly positive source-case SD must never become an *exact zero*
+        # detectable effect because float arithmetic underflows. Zero has a
+        # distinct, explicitly handled branch above; reject lost precision.
+        if mde == 0.0:
+            raise PowerPlanContractError(
+                "paired_sd: positive planning noise underflowed to a zero MDE"
+            )
         if not math.isfinite(mde):
             raise PowerPlanContractError(
                 "paired_sd: normal-approximation minimum effect must be finite"
