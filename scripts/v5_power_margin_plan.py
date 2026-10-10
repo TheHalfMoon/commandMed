@@ -127,6 +127,20 @@ def conservative_holm_planning_alpha(family_alpha: float, family_size: int) -> f
     return alpha / family_size
 
 
+
+def _finite_meaningful_margin(domain_floor: float, repeatability95: float) -> float:
+    """Keep the fixed 2x-repeatability margin finite at every planning scope."""
+    repeat_component = 2.0 * repeatability95
+    if not math.isfinite(repeat_component):
+        raise PowerPlanContractError(
+            "repeatability95: two-times repeatability margin overflows finite precision"
+        )
+    margin = max(domain_floor, repeat_component)
+    if not math.isfinite(margin) or margin <= 0.0:
+        raise PowerPlanContractError("meaningful_margin: positive finite margin required")
+    return margin
+
+
 def _plan_metric(
     *,
     domain_floor: float,
@@ -139,7 +153,7 @@ def _plan_metric(
     floor = _finite_positive(domain_floor, "domain_floor")
     repeat = _finite_nonnegative(repeatability95, "repeatability95")
     sd = _finite_nonnegative(paired_sd, "paired_sd")
-    margin = max(floor, 2.0 * repeat)
+    margin = _finite_meaningful_margin(floor, repeat)
     if type(planned_clusters) is not int or planned_clusters < 2:
         raise PowerPlanContractError("planned_clusters: expected an integer >= 2")
     power = _finite_positive(desired_power, "desired_power")
@@ -168,6 +182,13 @@ def _plan_metric(
                 "paired_sd/meaningful_margin: finite input produced "
                 "an unrepresentable normal-approximation planning result"
             ) from exc
+        # A strictly positive source-case SD must never become an *exact zero*
+        # detectable effect because float arithmetic underflows. Zero has a
+        # distinct, explicitly handled branch above; reject lost precision.
+        if mde == 0.0:
+            raise PowerPlanContractError(
+                "paired_sd: positive planning noise underflowed to a zero MDE"
+            )
         if not math.isfinite(mde):
             raise PowerPlanContractError(
                 "paired_sd: normal-approximation minimum effect must be finite"
@@ -204,8 +225,11 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
     metrics = spec.get("metrics")
     if not isinstance(metrics, dict) or not metrics:
         raise PowerPlanContractError("metrics: expected a non-empty object")
-    if any(not isinstance(name, str) or not name.strip() for name in metrics):
-        raise PowerPlanContractError("metrics: invalid metric name")
+    if any(
+        not isinstance(name, str) or not name.strip() or name != name.strip()
+        for name in metrics
+    ):
+        raise PowerPlanContractError("metrics: nonempty unpadded metric name required")
     family_size, unreviewed_family_sha = _unreviewed_family_bindings(spec, set(metrics))
     planning_alpha = conservative_holm_planning_alpha(family_alpha, family_size)
     desired_power = _finite_positive(spec.get("desired_power"), "desired_power")
@@ -240,7 +264,7 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
         result_metrics[name] = {
             "domain_floor": floor,
             "repeatability95": repeat,
-            "meaningful_margin": max(floor, 2.0 * repeat),
+            "meaningful_margin": _finite_meaningful_margin(floor, repeat),
             "domain_floor_justification_sha256": row["domain_floor_justification_sha256"],
             "repeatability_evidence_sha256": row["repeatability_evidence_sha256"],
         }
@@ -327,19 +351,64 @@ def build_plan(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _strict_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    """Reject duplicate keys after JSON unicode-escape decoding at every depth."""
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise PowerPlanContractError(
+                f"AMBIGUOUS_JSON_DUPLICATE_KEY: {key!r}"
+            )
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value: str) -> None:
+    # Python's default JSON parser accepts NaN/Infinity despite JSON RFC 8259.
+    raise PowerPlanContractError(f"NONSTANDARD_JSON_CONSTANT: {value}")
+
+
+def _load_strict_plan(path: Path) -> dict[str, Any]:
+    """Load only unambiguous JSON; preserve every downstream provenance check."""
+    try:
+        payload = json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=_strict_json_object,
+            parse_constant=_reject_json_constant,
+        )
+    except PowerPlanContractError:
+        # Preserve precise ambiguity and nonstandard-constant rejections.
+        raise
+    except (UnicodeError, OSError, ValueError, RecursionError) as exc:
+        # json.loads can raise ValueError for Python's oversized integer guard
+        # and RecursionError for adversarial nesting, not just JSONDecodeError.
+        raise PowerPlanContractError("INVALID_POWER_PLAN_JSON") from exc
+    if not isinstance(payload, dict):
+        raise PowerPlanContractError("POWER_PLAN_ROOT_MUST_BE_OBJECT")
+    return payload
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--spec", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    spec = json.loads(args.spec.read_text(encoding="utf-8"))
+    spec = _load_strict_plan(args.spec)
     payload = build_plan(spec)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    # Evidence is append-only: an accidental --output pointing at the input,
+    # an existing scientific artifact, or a symlink must not overwrite bytes.
+    # Exclusive creation is atomic at the destination on macOS/Linux/Windows.
+    serialized = json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n"
+    try:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        with args.output.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(serialized)
+    except FileExistsError as exc:
+        raise PowerPlanContractError(
+            "OUTPUT_ALREADY_EXISTS: refusing to overwrite prior research evidence"
+        ) from exc
+    except OSError as exc:
+        raise PowerPlanContractError("OUTPUT_NOT_WRITABLE") from exc
     print(json.dumps({
         "status": "PASS_DEVELOPMENT_ONLY_INPUT_CONTRACT",
         "final_90_percent_power_qualified": False,

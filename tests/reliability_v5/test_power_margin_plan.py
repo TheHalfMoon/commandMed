@@ -88,6 +88,18 @@ def test_build_plan_applies_frozen_margin_rule_and_power() -> None:
     assert result["confirmatory_execution_authorized"] is False
 
 
+@pytest.mark.parametrize("malformed_metric", [
+    " canonical_nll ",
+    "canonical_nll ",
+    "\tcanonical_nll",
+])
+def test_reject_whitespace_metric_aliases_even_when_unreferenced(malformed_metric: str) -> None:
+    spec = _spec()
+    spec["metrics"][malformed_metric] = copy.deepcopy(spec["metrics"]["canonical_nll"])
+    with pytest.raises(plan.PowerPlanContractError, match="unpadded metric name"):
+        plan.build_plan(spec)
+
+
 def test_zero_paired_sd_is_handled_without_fake_positive_noise() -> None:
     spec = _spec()
     spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 0.0
@@ -273,3 +285,226 @@ def test_large_finite_nuisance_exposes_contract_error_not_overflow() -> None:
     spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 1e308
     with pytest.raises(plan.PowerPlanContractError, match="unrepresentable"):
         plan.build_plan(spec)
+
+
+
+def test_positive_subnormal_nuisance_cannot_report_exact_zero_mde() -> None:
+    spec = _spec()
+    spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 5e-324
+    with pytest.raises(plan.PowerPlanContractError, match="underflowed to a zero MDE"):
+        plan.build_plan(spec)
+
+
+def test_subnormal_nuisance_cli_never_creates_false_zero_power_evidence(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["paired_nuisance_by_hypothesis"]["SYNTH-HYP-00"]["paired_sd"] = 5e-324
+    source = tmp_path / "subnormal-development-only-input.json"
+    result = tmp_path / "must-not-exist-power-plan.json"
+    source.write_text(json.dumps(spec), encoding="utf-8")
+    script = Path(__file__).resolve().parents[2] / "scripts" / "v5_power_margin_plan.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--spec", str(source), "--output", str(result)],
+        cwd=tmp_path, capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"},
+    )
+    assert completed.returncode != 0
+    assert "underflowed to a zero MDE" in completed.stderr
+    assert not result.exists()
+
+
+
+def test_overflowed_twice_repeatability_rejected_even_for_unused_metric() -> None:
+    spec = _spec()
+    spec["metrics"]["additional_unreviewed_metric"] = {
+        "domain_floor": 0.001,
+        "repeatability95": 1e308,
+        "domain_floor_justification_sha256": "a" * 64,
+        "repeatability_evidence_sha256": "b" * 64,
+    }
+    with pytest.raises(plan.PowerPlanContractError, match="repeatability margin overflows"):
+        plan.build_plan(spec)
+    spec = _spec()
+    spec["metrics"]["canonical_nll"]["repeatability95"] = 1e308
+    with pytest.raises(plan.PowerPlanContractError, match="repeatability margin overflows"):
+        plan.build_plan(spec)
+
+
+def test_cli_rejects_overflow_margin_before_creating_evidence(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["metrics"]["additional_unreviewed_metric"] = {
+        "domain_floor": 0.001,
+        "repeatability95": 1e308,
+        "domain_floor_justification_sha256": "a" * 64,
+        "repeatability_evidence_sha256": "b" * 64,
+    }
+    source = tmp_path / "overlarge-development-only-input.json"
+    output = tmp_path / "must-not-exist.json"
+    source.write_text(json.dumps(spec), encoding="utf-8")
+    script = Path(__file__).resolve().parents[2] / "scripts" / "v5_power_margin_plan.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--spec", str(source), "--output", str(output)],
+        cwd=tmp_path, capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"},
+    )
+    assert completed.returncode != 0
+    assert "repeatability margin overflows" in completed.stderr
+    assert not output.exists()
+
+def _run_unambiguous_input_cli(
+    tmp_path: Path, raw_json: str
+) -> tuple[subprocess.CompletedProcess[str], Path]:
+    spec = tmp_path / "submitted-input.json"
+    output = tmp_path / "unqualified-plan.json"
+    spec.write_text(raw_json, encoding="utf-8")
+    script = Path(__file__).resolve().parents[2] / "scripts" / "v5_power_margin_plan.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--spec", str(spec), "--output", str(output)],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        env={"PATH": "/usr/bin:/bin"},
+    )
+    return completed, output
+
+
+@pytest.mark.parametrize(
+    "mutator,reason",
+    [
+        (
+            lambda raw: raw[:-1] + ', "primary_non_target_family_size": 1, "primary_non_target_family_size": 4}',
+            "AMBIGUOUS_JSON_DUPLICATE_KEY",
+        ),
+        (
+            lambda raw: raw.replace(
+                '"paired_sd": 0.2', '"paired_sd": 0.1, "paired_sd": 0.2', 1
+            ),
+            "AMBIGUOUS_JSON_DUPLICATE_KEY",
+        ),
+        (
+            lambda raw: raw.replace(
+                '"hypothesis_id": "SYNTH-HYP-00"',
+                '"hypothesis_id": "SYNTH-HYP-01", "hypothesis_id": "SYNTH-HYP-00"',
+                1,
+            ),
+            "AMBIGUOUS_JSON_DUPLICATE_KEY",
+        ),
+        (
+            lambda raw: raw.replace(
+                '"paired_sd": 0.2',
+                '"paired_sd": 0.1, "paired_\\u0073d": 0.2',
+                1,
+            ),
+            "AMBIGUOUS_JSON_DUPLICATE_KEY",
+        ),
+        (
+            lambda raw: raw.replace('"paired_sd": 0.2', '"paired_sd": NaN', 1),
+            "NONSTANDARD_JSON_CONSTANT",
+        ),
+        (
+            lambda raw: raw.replace('"paired_sd": 0.2', '"paired_sd": Infinity', 1),
+            "NONSTANDARD_JSON_CONSTANT",
+        ),
+    ],
+)
+def test_direct_cli_rejects_ambiguous_or_nonstandard_json_at_all_depths(
+    tmp_path: Path, mutator, reason: str
+) -> None:
+    original = json.dumps(_spec(), sort_keys=True)
+    submitted = mutator(original)
+    assert submitted != original
+    completed, output = _run_unambiguous_input_cli(tmp_path, submitted)
+    assert completed.returncode != 0
+    assert reason in completed.stderr
+    assert not output.exists()
+
+
+@pytest.mark.parametrize("malformed", [
+    '{"planned_clusters": ' + '9' * 6000 + '}',
+    '{"nested":' + '[' * 10000 + '0' + ']' * 10000 + '}',
+])
+def test_cli_rejects_oversized_or_deeply_nested_json_as_contract_error(
+    tmp_path: Path, malformed: str,
+) -> None:
+    completed, output = _run_unambiguous_input_cli(tmp_path, malformed)
+    assert completed.returncode != 0
+    assert "PowerPlanContractError: INVALID_POWER_PLAN_JSON" in completed.stderr
+    assert "Traceback" in completed.stderr  # CLI is developer-facing, not a silent success.
+    assert not output.exists()
+
+
+def test_direct_cli_accepts_single_key_equivalent_unicode_json(
+    tmp_path: Path,
+) -> None:
+    original = json.dumps(_spec(), sort_keys=True)
+    completed, output = _run_unambiguous_input_cli(tmp_path, original)
+    assert completed.returncode == 0, completed.stderr
+    receipt = json.loads(completed.stdout)
+    assert receipt["status"] == "PASS_DEVELOPMENT_ONLY_INPUT_CONTRACT"
+    assert receipt["final_90_percent_power_qualified"] is False
+    result = json.loads(output.read_text(encoding="utf-8"))
+    assert result["family_membership_frozen_and_independently_reviewed"] is False
+    assert result["confirmatory_execution_authorized"] is False
+
+
+def test_reject_json_array_root_and_invalid_syntax(tmp_path: Path) -> None:
+    for idx, (raw, reason) in enumerate((
+        ("[]", "POWER_PLAN_ROOT_MUST_BE_OBJECT"),
+        ('{"scope": "DEVELOPMENT_ONLY_POWER_PLANNING"', "INVALID_POWER_PLAN_JSON"),
+    )):
+        case = tmp_path / str(idx)
+        case.mkdir()
+        completed, output = _run_unambiguous_input_cli(case, raw)
+        assert completed.returncode != 0
+        assert reason in completed.stderr
+        assert not output.exists()
+
+
+
+def test_direct_cli_does_not_overwrite_its_input(tmp_path: Path) -> None:
+    source = tmp_path / "source-plan.json"
+    original = json.dumps(_spec(), sort_keys=True)
+    source.write_text(original, encoding="utf-8")
+    script = Path(__file__).resolve().parents[2] / "scripts" / "v5_power_margin_plan.py"
+    result = subprocess.run(
+        [sys.executable, str(script), "--spec", str(source), "--output", str(source)],
+        cwd=tmp_path, capture_output=True, text=True, env={"PATH": "/usr/bin:/bin"},
+    )
+    assert result.returncode != 0
+    assert "OUTPUT_ALREADY_EXISTS" in result.stderr
+    assert source.read_text(encoding="utf-8") == original
+    assert "PASS_DEVELOPMENT_ONLY_INPUT_CONTRACT" not in result.stdout
+
+
+def test_direct_cli_does_not_overwrite_existing_evidence(tmp_path: Path) -> None:
+    destination = tmp_path / "unqualified-plan.json"
+    original = b"ORIGINAL_IMMUTABLE_EVIDENCE_2026-10-10\n"
+    destination.write_bytes(original)
+    result, output = _run_unambiguous_input_cli(tmp_path, json.dumps(_spec()))
+    assert output == destination
+    assert result.returncode != 0
+    assert "OUTPUT_ALREADY_EXISTS" in result.stderr
+    assert output.read_bytes() == original
+    assert "PASS_DEVELOPMENT_ONLY_INPUT_CONTRACT" not in result.stdout
+
+
+def test_direct_cli_refuses_existing_evidence_symlink(tmp_path: Path) -> None:
+    target = tmp_path / "untouchable-source-evidence.txt"
+    target.write_text("EVIDENCE_MUST_BE_PRESERVED", encoding="utf-8")
+    destination = tmp_path / "unqualified-plan.json"
+    destination.symlink_to(target)
+    result, output = _run_unambiguous_input_cli(tmp_path, json.dumps(_spec()))
+    assert result.returncode != 0
+    assert "OUTPUT_ALREADY_EXISTS" in result.stderr
+    assert output.is_symlink()
+    assert target.read_text(encoding="utf-8") == "EVIDENCE_MUST_BE_PRESERVED"
+
+
+def test_repeated_identical_cli_invocation_never_rewrites_first_receipt(
+    tmp_path: Path,
+) -> None:
+    spec = json.dumps(_spec())
+    first, output = _run_unambiguous_input_cli(tmp_path, spec)
+    assert first.returncode == 0, first.stderr
+    first_bytes = output.read_bytes()
+    second, output2 = _run_unambiguous_input_cli(tmp_path, spec)
+    assert second.returncode != 0
+    assert "OUTPUT_ALREADY_EXISTS" in second.stderr
+    assert output2.read_bytes() == first_bytes
