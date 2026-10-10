@@ -7,6 +7,8 @@ on:
     paths:
       - ".github/workflows/v5-manuscript-development-evidence-integrity.yml"
       - "scripts/v5_manuscript_development_evidence_audit.py"
+      - "scripts/v5_s1_source_case_pairing_audit.py"
+      - "tests/reliability_v5/test_source_case_pairing_audit.py"
       - "tests/reliability_v5/test_manuscript_development_evidence_audit.py"
       - "docs/research/paper-rebuild-v2-2026-10-02/V5_MANUSCRIPT_SOURCE_EVIDENCE_AUDIT_2026-10-09.md"
       - "docs/research/paper-rebuild-v2-2026-10-02/V5_MANUSCRIPT_DEVELOPMENT_RESULTS_CROSSWALK_2026-10-09.md"
@@ -54,13 +56,34 @@ jobs:
           set -euo pipefail
           python3 -m compileall -q \
             scripts/v5_manuscript_development_evidence_audit.py \
-            tests/reliability_v5/test_manuscript_development_evidence_audit.py
+            scripts/v5_s1_source_case_pairing_audit.py \
+            tests/reliability_v5/test_manuscript_development_evidence_audit.py \
+            tests/reliability_v5/test_source_case_pairing_audit.py
 
       - name: Reverify source hashes, R1 and R2 archives, and 307 frozen files
         shell: bash
         run: |
           set -euo pipefail
           python3 scripts/v5_manuscript_development_evidence_audit.py
+
+      - name: Retrieve SHA-pinned public RiskCalcs blob without credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 --fail --location --silent --show-error \
+            --retry 2 --connect-timeout 15 --max-time 120 \
+            --output "$RUNNER_TEMP/v5-riskcalcs-pinned.json" \
+            "https://raw.githubusercontent.com/ncbi-nlp/Clinical-Tool-Learning/d474a95128e128623933c9be0d389ff7d82ef782/riskqa_evaluation/tools/riskcalcs.json"
+          printf '%s  %s\n' \
+            00a7a0089afffb66f2f32903bad94a5a2ea842841defb2d78e0686b0a5eb9ab9 \
+            "$RUNNER_TEMP/v5-riskcalcs-pinned.json" | sha256sum --check --status
+
+      - name: Verify synthetic source-case IDs map one-to-one to tasks and both full runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/v5_s1_source_case_pairing_audit.py \
+            --riskcalcs-source "$RUNNER_TEMP/v5-riskcalcs-pinned.json"
 
       - name: Install focused pytest test runner
         shell: bash
@@ -74,4 +97,6 @@ jobs:
           PYTHONPATH: src
         run: |
           set -euo pipefail
-          python3 -m pytest -q tests/reliability_v5/test_manuscript_development_evidence_audit.py
+          python3 -m pytest -q \
+            tests/reliability_v5/test_manuscript_development_evidence_audit.py \
+            tests/reliability_v5/test_source_case_pairing_audit.py
