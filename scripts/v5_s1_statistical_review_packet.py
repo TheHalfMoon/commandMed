@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 import v5_manuscript_development_evidence_audit as bound
+from v5_development_evidence_writer import publish_no_clobber
 
 INTERVENTIONS = {"B1_TYPED_V1": "B1", "C1_CRDI_V1": "C1", "C2_CRDI_RETAIN_V1": "C2"}
 SEEDS = (11, 29, 47)
@@ -194,9 +195,7 @@ def main() -> int:
         require(args.verify.is_file() and args.verify.read_bytes() == payload.encode("utf-8"),
                 "COMMITTED_REVIEW_PACKET_REPLAY_DRIFT")
     else:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        with args.output.open("x", encoding="utf-8", newline="\n") as f:
-            f.write(payload)
+        publish_no_clobber(args.output, payload.encode("utf-8"))
     print(json.dumps({"status": "PASS_SOURCE_BOUND_DESCRIPTIVE_REVIEW_PACKET_REPLAY",
                       "groups": 24, "cells": 72, "statistical_power_qualified": False},
                      sort_keys=True))
