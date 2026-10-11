@@ -458,6 +458,51 @@ def test_reject_json_array_root_and_invalid_syntax(tmp_path: Path) -> None:
 
 
 
+@pytest.mark.parametrize("failed_stage", ["partial_write", "fsync", "publish_link"])
+def test_complete_output_never_publishes_partial_bytes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, failed_stage: str,
+) -> None:
+    output = tmp_path / "unqualified-plan.json"
+    payload = json.dumps(plan.build_plan(_spec()), sort_keys=True, allow_nan=False) + "\n"
+    original_write = plan.os.write
+    writes = 0
+
+    def partial_then_fail(fd: int, data: bytes) -> int:
+        nonlocal writes
+        writes += 1
+        if writes == 1:
+            return original_write(fd, data[: max(1, len(data) // 2)])
+        raise OSError("synthetic disk full after partial write")
+
+    def simulated_error(*_args: object) -> None:
+        raise OSError("synthetic evidence publication failure")
+
+    with monkeypatch.context() as patcher:
+        if failed_stage == "partial_write":
+            patcher.setattr(plan.os, "write", partial_then_fail)
+        elif failed_stage == "fsync":
+            patcher.setattr(plan.os, "fsync", simulated_error)
+        else:
+            patcher.setattr(plan.os, "link", simulated_error)
+        with pytest.raises(OSError, match="synthetic"):
+            plan._publish_complete_output_no_clobber(output, payload)
+    assert not output.exists()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_complete_output_publishes_exact_bytes_and_never_overwrites(
+    tmp_path: Path,
+) -> None:
+    output = tmp_path / "unqualified-plan.json"
+    payload = json.dumps(plan.build_plan(_spec()), sort_keys=True, allow_nan=False) + "\n"
+    plan._publish_complete_output_no_clobber(output, payload)
+    assert output.read_bytes() == payload.encode("utf-8")
+    with pytest.raises(FileExistsError):
+        plan._publish_complete_output_no_clobber(output, "ATTEMPTED_OVERWRITE")
+    assert output.read_bytes() == payload.encode("utf-8")
+    assert list(tmp_path.iterdir()) == [output]
+
+
 def test_direct_cli_does_not_overwrite_its_input(tmp_path: Path) -> None:
     source = tmp_path / "source-plan.json"
     original = json.dumps(_spec(), sort_keys=True)

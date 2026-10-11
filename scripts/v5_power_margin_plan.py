@@ -11,6 +11,8 @@ import argparse
 import hashlib
 import json
 import math
+import os
+import tempfile
 import re
 from pathlib import Path
 import sys
@@ -388,6 +390,36 @@ def _load_strict_plan(path: Path) -> dict[str, Any]:
     return payload
 
 
+
+def _publish_complete_output_no_clobber(output: Path, serialized: str) -> None:
+    """Expose a new evidence filename only after all bytes are written and synced.
+
+    Hard-link publication is atomic and fails if the destination already exists,
+    including a symlink. Temp and destination are on the same filesystem.
+    This does not claim directory fsync or power-loss durability.
+    """
+    destination_bytes = serialized.encode("utf-8")
+    fd, temporary = tempfile.mkstemp(
+        dir=output.parent, prefix=f".{output.name}.", suffix=".tmp"
+    )
+    try:
+        try:
+            pending = memoryview(destination_bytes)
+            while pending:
+                written = os.write(fd, pending)
+                if written <= 0:
+                    raise OSError("incomplete output write")
+                pending = pending[written:]
+            os.fsync(fd)
+        finally:
+            os.close(fd)
+        # Unlike replace/rename, this cannot overwrite even if a competing
+        # writer creates the destination while our temporary file is written.
+        os.link(temporary, output)
+    finally:
+        Path(temporary).unlink(missing_ok=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--spec", type=Path, required=True)
@@ -401,8 +433,7 @@ def main() -> int:
     serialized = json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n"
     try:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        with args.output.open("x", encoding="utf-8", newline="\n") as stream:
-            stream.write(serialized)
+        _publish_complete_output_no_clobber(args.output, serialized)
     except FileExistsError as exc:
         raise PowerPlanContractError(
             "OUTPUT_ALREADY_EXISTS: refusing to overwrite prior research evidence"
