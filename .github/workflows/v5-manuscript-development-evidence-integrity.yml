@@ -9,6 +9,8 @@ on:
       - "scripts/v5_manuscript_development_evidence_audit.py"
       - "scripts/v5_s1_statistical_review_packet.py"
       - "scripts/v5_holm_family_coverage_inventory.py"
+      - "scripts/v5_development_evidence_writer.py"
+      - "tests/reliability_v5/test_development_evidence_writer.py"
       - "tests/reliability_v5/test_holm_candidate_coverage_inventory.py"
       - "docs/research/paper-rebuild-v2-2026-10-02/V5_PRIMARY_NON_TARGET_CANDIDATE_COVERAGE_2026-10-11.md"
       - "tests/reliability_v5/test_statistical_review_packet.py"
@@ -67,6 +69,8 @@ jobs:
             scripts/v5_manuscript_development_evidence_audit.py \
             scripts/v5_s1_statistical_review_packet.py \
             scripts/v5_holm_family_coverage_inventory.py \
+            scripts/v5_development_evidence_writer.py \
+            tests/reliability_v5/test_development_evidence_writer.py \
             tests/reliability_v5/test_holm_candidate_coverage_inventory.py \
             tests/reliability_v5/test_statistical_review_packet.py \
             scripts/v5_s1_source_case_pairing_audit.py \
@@ -75,7 +79,8 @@ jobs:
             tests/reliability_v5/test_source_case_pairing_audit.py \
             tests/reliability_v5/test_development_calculator_icc_inventory.py \
             tests/reliability_v5/test_statistical_review_packet.py \
-            tests/reliability_v5/test_holm_candidate_coverage_inventory.py
+            tests/reliability_v5/test_holm_candidate_coverage_inventory.py \
+            tests/reliability_v5/test_development_evidence_writer.py
 
       - name: Reverify source hashes, R1 and R2 archives, and 307 frozen files
         shell: bash
@@ -174,4 +179,5 @@ jobs:
             tests/reliability_v5/test_source_case_pairing_audit.py \
             tests/reliability_v5/test_development_calculator_icc_inventory.py \
             tests/reliability_v5/test_statistical_review_packet.py \
-            tests/reliability_v5/test_holm_candidate_coverage_inventory.py
+            tests/reliability_v5/test_holm_candidate_coverage_inventory.py \
+            tests/reliability_v5/test_development_evidence_writer.py

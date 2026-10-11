@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 
 import v5_manuscript_development_evidence_audit as audit
+from v5_development_evidence_writer import publish_no_clobber
 
 PRE = 'docs/research/paper-rebuild-v2-2026-10-02/preregistration-v5.md'
 MATRIX = 'docs/research/paper-rebuild-v2-2026-10-02/intervention-matrix-protocol.md'
@@ -124,9 +125,7 @@ def main() -> int:
     if args.verify is not None:
         require(args.verify.is_file() and args.verify.read_bytes() == payload, 'CANDIDATE_COVERAGE_REPLAY_DRIFT')
     else:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        with args.output.open('xb') as stream:
-            stream.write(payload)
+        publish_no_clobber(args.output, payload)
     print(json.dumps({'status': result['status'], 'coverage_slots': 56, 'holm_family_size': None,
                       'confirmatory_authorized': False}, sort_keys=True))
     return 0
